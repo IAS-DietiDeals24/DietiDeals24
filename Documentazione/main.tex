@@ -1,0 +1,100 @@
+\documentclass{report} % Pagina con solo logo, titolo, indice e altre informazioni
+
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+
+\usepackage[margin=3.0cm]{geometry} %Per avere un margine di 3.0 cm
+\usepackage{multirow} %Per poter inserire celle multiriga
+\usepackage{graphicx} % Utilizzato per mostrare immagini (\includegraphics)
+\usepackage[colorlinks=true, allcolors=black]{hyperref} %Per avere link
+
+%Per controllare la larghezza delle colonne nelle tabelle
+\usepackage{array} 
+    \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+    \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+    \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+%Per controllare la visualizzazione dei capitoli
+\usepackage{titlesec}
+    \titleformat{\chapter}[display]{\normalfont}{\LARGE\scshape Capitolo \thechapter}{0.5cm}{\huge\bfseries}
+    \titlespacing{\chapter}{0cm}{-0.7cm}{1.4cm} 
+    
+\setlength{\parindent}{0.7cm} %Per impostare l'interspazio di tutti i paragrafi a 0.7 cm
+
+\setcounter{chapter}{-1} %Per far iniziare la numerazione dei capitoli da 0
+
+%Info documento
+\title{DietiDeals24}
+\author{
+    Scisciola Simone, N86004025
+    \and
+    Carandente Ilaria Giuseppina, N86004269
+    \and
+    Lucchese Andrea, N86004112
+}
+\date{Anno Accademico 2023-2024}
+
+%Inizio documento
+\begin{document}
+    \begin{titlepage} %Per non far comparire il numero di pagina in basso
+    
+        \begin{figure}[htbp!]
+            \begin{center}
+                \includegraphics[width=.30\textwidth]{Immagini/Logo/FedericoII.png}
+            \end{center}
+        \end{figure}
+        
+        \begin{center}
+        
+            \textbf{\LARGE DietiDeals24}
+        
+            \vspace{3\baselineskip}
+            
+            {\LARGE Università degli Studi di Napoli Federico II}         
+            \vspace{1\baselineskip}
+            
+            {\large Scuola Politecnica e delle Scienze di Base \\
+            Dipartimento di Ingegneria Elettrica e delle Tecnologie dell’Informazione \\
+            Corso di Laurea in Informatica}
+            \vspace{1\baselineskip}
+            
+            Anno Accademico 2023-2024
+            \vspace{8\baselineskip}
+
+
+            
+            {\large \bfseries Scisciola Simone} \\
+            N86004025
+    	  \vspace{1\baselineskip}
+    
+            {\large \bfseries Lucchese Andrea} \\
+            N86004112
+    	  \vspace{1\baselineskip}
+    
+            {\large \bfseries Carandente Ilaria Giuseppina} \\
+            N86004269
+            \vspace{10\baselineskip}
+
+
+    
+    	  {\large \today}
+       
+        \end{center}
+    \end{titlepage}
+
+\newpage
+
+    \tableofcontents
+    
+    \include{Argomenti/Capitolo0/Traccia}
+    \include{Argomenti/Capitolo1/Glossario}
+    \include{Argomenti/Capitolo2/RequirementElicitation}
+    \include{Argomenti/Capitolo2/RequirementAnalysis}
+    \include{Argomenti/Capitolo2/RequirementSpecification}
+    \include{Argomenti/Capitolo3/Usabilita}
+    \include{Argomenti/Capitolo4/SystemDesign}
+    \include{Argomenti/Capitolo5/ObjectDesign}
+    \include{Argomenti/Capitolo6/Verification}
+    \include{Argomenti/Capitolo6/Validation}
+    
+\end{document}
