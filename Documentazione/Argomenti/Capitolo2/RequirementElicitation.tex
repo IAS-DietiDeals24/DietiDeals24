@@ -2,7 +2,7 @@
 
 \chapter{Requirement Elicitation}
      \section{Introduzione al sistema} %Requisiti sistema. 1 pagina
-        Sulla base dalle richieste definite dagli stakeholders sono stati individuati i seguenti requisiti di sistema.
+        Sulla base dalle richieste definite dagli stakeholders sono stati individuati i seguenti requisiti di sistema:
         
         \begin{itemize}
             \item[1]
@@ -24,14 +24,13 @@
                 \item Il venditore può inserire/modificare la descrizione dell'asta da lui gestita.
                 \item Il venditore può opzionalmente inserire/modificare la fotografia dell'oggetto in vendita nell'asta da lui gestita.
                 \item Il venditore può inserire/modificare la categoria dell'asta da lui gestita.
-                \item Il compratore può presentare offerte per le aste correntemente attive e gestite da venditori.                
-                \item Il compratore può inserire/modificare la categoria dell'asta da lui gestita.
+                \item Il compratore può presentare offerte per le aste correntemente attive e gestite da venditori.
             \end{itemize} %%%
             \item[3]
             \begin{itemize} % Requisiti %
                 \item L'utente può ricercare un'asta attraverso parole chiave.
-                \item L'utente può filtrare le aste sulla base della categoria.
-                \item L’utente può filtrare i risultati della ricerca per parole chiave sulla base della categoria.
+                \item L'utente può ricercare le aste sulla base della categoria.
+                \item L’utente dopo aver ricercato per parole chiave può filtrare i risultati sulla base della categoria.
                 \item L'utente può visualizzare i dettagli di un'asta.
                 \item L'utente può visualizzare il profilo del proprietario dell'asta.
             \end{itemize} %%%
@@ -56,6 +55,7 @@
                 \item Il compratore non può vedere le offerte degli altri compratori a un'asta.
                 \item Il venditore può accettare o rifiutare le singole offerte. Possono essere rifiutate un numero arbitrario di offerte ma può essere accettata solo una sola. \textbf{??????}
                 \item Il sistema assegna la vincita dell'asta al compratore la cui offerta è stata accettata dal venditore.
+                \item Il sistema dichiara l'asta fallita se il venditore non ha accettato alcuna offerta o non ne è stata avanzata alcuna da parte di un compratore entro la data di scadenza dell'asta.
             \end{itemize} %%%
             \item[8]
             \begin{itemize}            
@@ -64,8 +64,10 @@
                 \item Il compratore può specificare il prodotto/servizio che richiede nell'asta inversa creata.
                 \item Il compratore può opzionalmente inserire/modificare un'immagine del prodotto/servizio specificato nell'asta inversa creata.
                 \item Il compratore può inserire un prezzo minimo che è disposto a pagare per il prodotto/servizio dell'asta creata.
+                \item Il compratore può inserire/modificare la categoria dell'asta inversa da lui gestita.
                 \item Il venditore può offrire una somma in euro minore rispetto alla somma più bassa attualmente raggiunta, entro la data di scadenza.
                 \item Il sistema assegna la vincita dell'asta al venditore che ha offerto la somma più bassa al sopraggiungere della data di scadenza dell'asta a cui ha partecipato.
+                \item Il sistema dichiara l'asta fallita se nessun venditore ha avanzato un'offerta entro la data di scadenza dell'asta.
             \end{itemize}
         \end{itemize}
 
