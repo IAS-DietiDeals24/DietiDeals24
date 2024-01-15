@@ -4465,11 +4465,11 @@
 								"$ref": "AAAAAAGNCjwO+TRuPDQ="
 							},
 							"font": "Arial;13;0",
-							"left": 528,
-							"top": 1616,
+							"left": 1232,
+							"top": 1648,
 							"width": 177,
-							"height": 73,
-							"text": "non può vedere le offerte degli altri compratori che partecipano a un'asta \"silenziosa\"."
+							"height": 90,
+							"text": "Un compratore di un'asta di tipo \"silenziosa\" non può vedere le offerte degli altri compratori che partecipano a un'asta \"silenziosa\"."
 						},
 						{
 							"_type": "UMLNoteLinkView",
@@ -4479,13 +4479,13 @@
 							},
 							"font": "Arial;13;0",
 							"head": {
-								"$ref": "AAAAAAGNCkCn5TlxVl4="
+								"$ref": "AAAAAAGNClDxf7hImeM="
 							},
 							"tail": {
 								"$ref": "AAAAAAGNClKbF9kHiII="
 							},
 							"lineStyle": 1,
-							"points": "637:1615;690:1520"
+							"points": "1287:1647;1255:1603"
 						},
 						{
 							"_type": "UMLUseCaseView",
@@ -4530,7 +4530,7 @@
 											"top": 1179.5,
 											"width": 661,
 											"height": 13,
-											"text": "Accetta una e una sola singola offerta inviata tra le offerte non ancora rifiutate dell'asta da lui gestita."
+											"text": "Accetta una e una sola offerta inviata tra le offerte non ancora rifiutate dell'asta da lui gestita."
 										},
 										{
 											"_type": "LabelView",
@@ -6068,7 +6068,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGNCjwO+DRtT1E="
 					},
-					"name": "Accetta una e una sola singola offerta inviata tra le offerte non ancora rifiutate dell'asta da lui gestita."
+					"name": "Accetta una e una sola offerta inviata tra le offerte non ancora rifiutate dell'asta da lui gestita."
 				},
 				{
 					"_type": "UMLUseCase",
