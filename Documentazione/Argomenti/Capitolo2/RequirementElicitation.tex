@@ -8,7 +8,7 @@
             \item[1]
                 \begin{itemize}
                     \item L'utente può registrarsi con email correttamente formattata e password.
-                    \item Il sistema controlla che l'email abbia il formato corretto (ovvero sia del tipo x+@y+.z+) e che la password sia sicura (ovvero sia lunga almeno 8 caratteri e contenga almeno una lettera maiuscola [A-Z], un numero [0-9] e un carattere speciale [!@\#\$\%\^{}\&*])
+                    \item Il sistema controlla che l'email abbia il formato corretto (ovvero sia del tipo x+@y+.z+) e che la password sia sicura (ovvero sia lunga almeno 8 caratteri e contenga, nel complesso, almeno una lettera maiuscola [A-Z], un numero [0-9] e un carattere speciale [!@\#\$\%\^{}\&*])
                     \item L'utente può registrarsi con altri account già esistenti come Google, Facebook, GitHub e altri social.
                     \item L'utente può selezionare se il suo nuovo account è di tipo compratore o venditore.
                     \item L'utente può creare uno e un solo account di tipo compratore con la stessa email.
@@ -22,9 +22,9 @@
                 \begin{itemize}
                     \item Il venditore può creare aste di vendita di un prodotto/servizio. L'asta risulterà attiva (cioè sarà possibile presentare offerte) fin da subito.
                     \item Il venditore può selezionare il tipo di asta da creare. L'asta può essere di tipo "a tempo fisso" o "silenziosa".
-                    \item Il venditore può inserire/modificare la descrizione dell'asta da lui gestita.
-                    \item Il venditore può opzionalmente inserire/modificare la fotografia dell'oggetto in vendita nell'asta da lui gestita.
-                    \item Il venditore può inserire/modificare la categoria dell'asta da lui gestita.
+                    \item Il venditore può inserire/modificare la descrizione dell'asta da lui creata.
+                    \item Il venditore può opzionalmente inserire/modificare la fotografia dell'oggetto in vendita nell'asta da lui creata.
+                    \item Il venditore può inserire/modificare la categoria dell'asta da lui creata.
                     \item Il compratore può presentare offerte per le aste correntemente attive e gestite da venditori.
                 \end{itemize}
             \item[3]
@@ -37,8 +37,8 @@
                 \end{itemize}
             \item[4]
                 \begin{itemize}
-                    \item Il venditore di un'asta di tipo "a tempo fisso" può inserire una data e ora di scadenza per l'asta a tempo fisso.
-                    \item Il venditore di un asta di tipo "a tempo fisso" può stabilire una soglia minima segreta per l'asta (mai visibile ad altri utenti al di fuori del creatore dell'asta e deve essere un valore maggiore o uguale a 0).
+                    \item Il venditore di un'asta di tipo "a tempo fisso" può inserire una data e ora di scadenza per l'asta a tempo fisso da lui creata.
+                    \item Il venditore di un asta di tipo "a tempo fisso" può stabilire una soglia minima segreta per l'asta da lui creata (mai visibile ad altri utenti al di fuori del creatore dell'asta e deve essere un valore maggiore o uguale a 0).
                     \item Il compratore di un asta di tipo "a tempo fisso" può visualizzare i dettagli dell'asta. \textbf{??????}
                     \item Il compratore di un asta di tipo "a tempo fisso" può visualizzare l'attuale offerta più alta dell'asta. \textbf{??????}
                     \item Il compratore di un asta di tipo "a tempo fisso" può offrire una somma in euro maggiore rispetto alla soglia più alta attualmente raggiunta, entro la data e ora di scadenza.
@@ -49,11 +49,11 @@
                 \end{itemize}
             \item[7] 
                 \begin{itemize}
-                    \item Il venditore di un'asta di tipo "silenziosa" può inserire una data e ora di scadenza per l'asta silenziosa da lui gestita.
-                    \item Il compratore di un'asta di tipo "silenziosa" può inviare un'offerta segreta al venditore di un'asta di tipo "silenziosa", entro la data e ora di scadenza.
+                    \item Il venditore di un'asta di tipo "silenziosa" può inserire una data e ora di scadenza per l'asta silenziosa da lui creata.
+                    \item Il compratore di un'asta di tipo "silenziosa" può inviare un'offerta segreta al venditore di un'asta di tipo "silenziosa", entro la data e ora di scadenza dell'asta.
                     \item Il compratore di un'asta di tipo "silenziosa" non può vedere le offerte degli altri compratori che partecipano a un'asta di tipo "silenziosa".
-                    \item Il venditore di un'asta di tipo "silenziosa" può accettare una e una sola offerta, inviata tra le offerte non ancora rifiutate dell'asta di tipo "silenziosa" da lui gestita.
-                    \item Il venditore di un'asta di tipo "silenziosa" può rifiutare le singole offerte ricevute all'asta di tipo "silenziosa" da lui gestita. \textbf{??????}
+                    \item Il venditore di un'asta di tipo "silenziosa" può accettare una e una sola offerta, inviata tra le offerte non ancora rifiutate dell'asta di tipo "silenziosa" da lui creata.
+                    \item Il venditore di un'asta di tipo "silenziosa" può rifiutare le singole offerte ricevute all'asta di tipo "silenziosa" da lui creata. \textbf{??????}
                     \item Il sistema assegna la vincita dell'asta al compratore di un'asta di tipo "silenziosa" la cui offerta è stata accettata dal venditore dell'asta di tipo "silenziosa".
                     \item Il sistema dichiara l'asta fallita se il venditore di un'asta di tipo "silenziosa" non ha accettato alcuna offerta entro la data e ora di scadenza dell'asta.
                     \item Il sistema dichiara l'asta fallita se non è stata avanzata alcuna offerta da parte di un compratore di un'asta di tipo "silenziosa" entro la data e ora di scadenza dell'asta.
