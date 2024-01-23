@@ -14,6 +14,10 @@
     \newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
     \newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
+%Per avere tabelle su più pagine
+\usepackage{longtable}
+\usepackage{multirow}
+
 %Per controllare la visualizzazione dei capitoli
 \usepackage{titlesec}
     \titleformat{\chapter}[display]{\normalfont}{\LARGE\scshape Capitolo \thechapter}{0.5cm}{\huge\bfseries}
