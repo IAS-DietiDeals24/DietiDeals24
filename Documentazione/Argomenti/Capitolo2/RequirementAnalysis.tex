@@ -9,7 +9,7 @@
         \begin{figure}[htbp!]
             \centering
                 \vspace{2\baselineskip}
-                \includegraphics[width=0.51\linewidth]{Immagini/Diagrammi/UseCaseDiagram.pdf}
+                \includegraphics[width=0.42\linewidth]{Immagini/Diagrammi/UseCaseDiagram.pdf}
             \caption{Use Case Diagram}
             \label{fig:Use Case Diagram}
         \end{figure}
@@ -60,6 +60,8 @@
         
     \section{Mockup}
 
+    \newpage
+
     \section{Tabelle di Cockburn}
         \subsection{Crea un’asta inversa}
             \begin{longtable}{|C{3.0cm}|C{1.3cm}|L{5.2cm}|L{5.2cm}|}
@@ -71,14 +73,14 @@
                     \multicolumn{3}{|l|}{L'utente di tipo "compratore" vuole creare un'asta inversa.}\\
                 \hline
                     Preconditions &
-                    \multicolumn{3}{|l|}{L'utente ha effettuato l'accesso con un account di tipo compratore.}\\
+                    \multicolumn{3}{|l|}{L'utente ha effettuato l'accesso con un account di tipo "compratore".}\\
                 \hline
                     Success End Condition &
-                    \multicolumn{3}{|l|}{L'utente di tipo "compratore" ha correttamente creato un'asta inversa}\\
+                    \multicolumn{3}{|l|}{L'utente di tipo "compratore" ha correttamente creato un'asta "inversa"}\\
                 \hline
-                    \multirow[|c|]{5}{*}{DESCRIPTION} 
+                    \multirow[|c|]{30}{*}{DESCRIPTION} 
                     & \textbf{Step n°}
-                    & \textbf{Compratore di asta inversa}
+                    & \textbf{Compratore}
                     & \textbf{Sistema}\\
                 \cline{2-4}
                         & 1
@@ -106,128 +108,161 @@
                         & \\
                 \cline{2-4}
                         & 7
+                        & 
+                        & Scrive la data selezionata nel campo di input "Data di scadenza"\\
+                \cline{2-4}
+                        & 8
                         & Preme sul campo di input "Ora di scadenza"
                         & \\
                 \cline{2-4}
-                        & 8
+                        & 9
                         & 
                         & Mostra il pannello di selezione dell'ora\\
                 \cline{2-4}
-                        & 9
+                        & 10
                         & Seleziona l'ora
                         & \\
                 \cline{2-4}
-                        & 10
-                        & Clicca su OK
-                        & \\
-                \cline{2-4}
                         & 11
-                        & Preme sul campo di input "Prezzo di partenza"
+                        & Clicca su OK
                         & \\
                 \cline{2-4}
                         & 12
-                        &
-                        & Mostra il tastierino numerico \\
+                        & 
+                        & Scrive l'ora selezionata nel campo di input "Ora di scadenza"\\
                 \cline{2-4}
                         & 13
-                        & Inserisce il prezzo di partenza
+                        & Preme sul campo di input "Prezzo di partenza"
                         & \\
                 \cline{2-4}
                         & 14
+                        &
+                        & Mostra il tastierino numerico \\
+                \cline{2-4}
+                        & 15
+                        & Inserisce il prezzo di partenza
+                        & \\
+                \cline{2-4}
+                        & 16
                         & Preme sul campo di input "Nome prodotto"
                         & \\
                 \cline{2-4}
-                        & 15
+                        & 17
                         &
                         & Mostra la tastiera \\
                 \cline{2-4}
-                        & 16
+                        & 18
                         & Inserisce il nome del prodotto oggetto dell'asta
                         & \\
                 \cline{2-4}
-                        & 17
+                        & 19
                         & Preme sul campo di input "Categoria"
                         & \\
                 \cline{2-4}
-                        & 18
+                        & 20
                         &
                         & Mostra il menù a tendina con le diverse categorie tra cui scegliere \\
                 \cline{2-4}
-                        & 19
+                        & 21
                         & Seleziona la categoria
                         & \\
                 \cline{2-4}
-                        & 20
+                        & 22
+                        & 
+                        & Scrive la categoria scelta nel campo di input "Categoria"\\
+                \cline{2-4}
+                        & 23
                         & Preme sul campo di input "Descrizione"
                         & \\
                 \cline{2-4}
-                        & 21
+                        & 24
                         &
                         & Mostra la tastiera \\
                 \cline{2-4}
-                        & 22
+                        & 25
                         & Inserisce la descrizione del prodotto oggetto dell'asta
                         & \\
                 \cline{2-4}
-                        & 23
+                        & 26
                         & Preme sul pulsante "Crea"
                         & \\
                 \cline{2-4}
-                        & 24
+                        & 27
                         & 
-                        & Mostra Mockup X (Schermata di successo)\\
+                        & Mostra Mockup P29 (Pop-up di successo)\\
+                \cline{2-4}
+                        & 28
+                        & Preme il pulsante X sul Mockup P29
+                        & \\
+                \cline{2-4}
+                        & 29
+                        & 
+                        & Torna al Mockup 6 (Home)\\
                 \hline
                     EXTENSIONS
                     & \textbf{Step n°} 
-                    & \textbf{Compratore di asta inversa} 
+                    & \textbf{Compratore} 
                     & \textbf{Sistema}\\
                 \hline
-                    \multirow[|c|]{3}{*}{\shortstack[c]{Seleziona ora \\ antecedente a \\quella attuale (la\\ data è quella\\ attuale)}}
-                        & 11.a
+                    \multirow[|c|]{3}{*}{\shortstack[c]{Seleziona data \\  antecedente a \\quella odierna}}
+                        & 7.a
                         & 
-                        & Mostra Mockup Y con testo "Non puoi selezionare un'ora antecedente a quella attuale"\\
+                        & Mostra Mockup P37 con testo "Non puoi inserire una data antecedente a quella odierna!"\\
                 \cline{2-4}
-                        & 12.a
-                        & Clicca su OK
+                        & 8.a
+                        & Clicca su X
                         & \\
                 \cline{2-4}
-                        & 13.a
+                        & 9.a
                         & 
-                        & Continua da step 7 di main scenario\\
+                        & Continua da step 3 di main scenario\\
+                \hline
+                    \multirow[|c|]{3}{*}{\shortstack[c]{Seleziona data \\ odierna e ora \\ antecedente a \\quella attuale}}
+                        & 12.a
+                        & 
+                        & Mostra Mockup P28 con testo "Non puoi selezionare un’ora antecedente a quella attuale in data odierna!"\\
+                \cline{2-4}
+                        & 13.a
+                        & Clicca su X
+                        & \\
+                \cline{2-4}
+                        & 14.a
+                        & 
+                        & Continua da step 8 di main scenario\\
                 \hline
                     \multirow[|c|]{3}{*}{\shortstack[c]{Seleziona prezzo di \\ partenza negativo}}
-                        & 14.b
+                        & 16.b
                         & 
-                        & Mostra Mockup P24 con testo "Non puoi inserire un prezzo di partenza negativo"\\
+                        & Mostra Mockup P24 con testo "Non puoi inserire una somma di partenza minore di 0 €."\\
                 \cline{2-4}
-                        & 15.b
-                        & Clicca su OK
+                        & 17.b
+                        & Clicca su X
                         & \\
                 \cline{2-4}
                         & 16.b
                         & 
-                        & Continua da step 11 di main scenario\\
+                        & Continua da step 13 di main scenario\\
                 \hline
                     \multirow[|c|]{2}{*}{\shortstack[c]{Alcuni campi \\ obbligatori non \\ compilati}}
-                        & 24.c
+                        & 27.c
                         & 
                         & Mostra Mockup E11 dove vengono segnalati in rosso i campi obbligatori non compilati\\
                 \cline{2-4}
-                        & 25.c
+                        & 28.c
                         & Riparte da step 3 di main scenario, saltando i campi di input già compilati
                         & \\
                 \hline
                     \multirow[|c|]{4}{*}{\shortstack[c]{Esce dalla pagina \\ di creazione asta}}
                         & \textit{In qualunque passo del main scenario}
-                        & Preme qualsiasi tasto di navigazione (della navbar in basso o tasto "indietro")
+                        & Preme qualsiasi tasto di navigazione (della navbar in basso o tasto "indietro" del dispositivo)
                         & \\
                 \cline{2-4}
                         & 
                         & 
-                        & Mostra Mockup Z con testo "Sei sicuro di voler uscire dalla creazione asta? I dati inseriti andranno persi." \\
+                        & Mostra Mockup P33 con testo "Se uscirai da questa schermata, i dati inseriti nei campi saranno cancellati. Vuoi proseguire?" \\
                 \cline{2-4}
                         & 
-                        & Clicca su OK
+                        & Clicca su Esci
                         & \\
                 \cline{2-4}
                         & 
@@ -236,28 +271,128 @@
                 \hline
                     SUBVARIATIONS
                     & \textbf{Step n°} 
-                    & \textbf{Compratore di asta inversa} 
+                    & \textbf{Compratore} 
                     & \textbf{Sistema}\\
                 \hline
-                    \multirow[|c|]{5}{*}{\shortstack[c]{Inserisce immagine}}
-                        & 14.s1
+                    \multirow[|c|]{1}{*}{\shortstack[c]{Inserisce immagine}}
+                        & 16.s1
                         & Preme sul campo di input "Aggiungi immagine prodotto"
-                        & \\
-                \cline{2-4}
-                        & 15.s1
-                        & 
-                        & Mostra il sistema per selezionare le immagini\\
-                \cline{2-4}
-                        & 16.s1
-                        & Seleziona una o più immagini
-                        & \\
-                \cline{2-4}
-                        & 16.s1
-                        & Clicca su OK
                         & \\
                 \cline{2-4}
                         & 17.s1
                         & 
-                        & Continua da step 14 di main scenario\\
+                        & Mostra il sistema per selezionare le immagini\\
+                \cline{2-4}
+                        & 18.s1
+                        & Seleziona una o più immagini
+                        & \\
+                \cline{2-4}
+                        & 19.s1
+                        & Clicca su OK
+                        & \\
+                \cline{2-4}
+                        & 20.s1
+                        & 
+                        & Continua da step 16 di main scenario\\
+                \hline
+            \end{longtable}
+
+        \newpage
+
+        \subsection{Accetta un'offerta ricevuta all'asta silenziosa}
+            \begin{longtable}{|C{3.0cm}|C{1.3cm}|L{5.2cm}|L{5.2cm}|}
+                \hline
+                    \textbf{USE CASE \#2} &
+                    \multicolumn{3}{|l|}{\textbf{Accetta un'offerta ricevuta all'asta silenziosa}}\\
+                \hline
+                    Goal in Context &
+                    \multicolumn{3}{|l|}{\shortstack[l]{L'utente di tipo "venditore" vuole accettare un'offerta ricevuta in un'asta \\ "silenziosa" da lui creata}}\\
+                \hline
+                    Preconditions &
+                    \multicolumn{3}{|l|}{\shortstack[l]{L'utente ha effettuato l'accesso con un account di tipo "venditore" e ha creato \\ un'asta "silenziosa"}}\\
+                \hline
+                    Success End Condition &
+                    \multicolumn{3}{|l|}{\shortstack[l]{L'utente di tipo "venditore" ha correttamente accettato un'offerta di un'asta \\ "silenziosa" da lui creata}}\\
+                \hline
+                    \multirow[|c|]{11}{*}{DESCRIPTION} 
+                    & \textbf{Step n°}
+                    & \textbf{Venditore di asta silenziosa}
+                    & \textbf{Sistema}\\
+                \cline{2-4}
+                        & 1
+                        & Preme bottone "Profilo" su Mockup 10
+                        & \\
+                \cline{2-4}
+                        & 2
+                        & 
+                        & Mostra Mockup 18 con tutte le opzioni per utenti loggati.\\
+                \cline{2-4}
+                        & 3
+                        & Preme sul bottone "Le mie aste create".
+                        & \\
+                \cline{2-4}
+                        & 4
+                        & 
+                        & Mostra il Mockup 27 con tutte le aste create dal venditore.\\
+                \cline{2-4}
+                        & 5
+                        & Clicca sull'icona a forma di elenco dell'asta di cui si vogliono visualizzare le offerte ricevute.
+                        & \\
+                \cline{2-4}
+                        & 6
+                        & 
+                        & Mostra Mockup 31 con l'elenco di tutte le offerte ricevute.\\
+                \cline{2-4}
+                        & 7
+                        & Clicca sulla spunta verde dell'offerta che si vuole accettare.
+                        & \\
+                \cline{2-4}
+                        & 8
+                        & 
+                        & Mostra il Mockup P9 con testo "Confermi di voler accettare questa offerta? Tutte le altre saranno automaticamente rifiutate."\\
+                \cline{2-4}
+                        & 9
+                        & Clicca sul pulsante "Accetta"
+                        & \\
+                \cline{2-4}
+                        & 10
+                        & 
+                        & Mostra Mockup 32 dove vengono elencate tutte le offerte ricevute a questa asta "silenziosa". L'offerta accettata sarà l'unica in bianco, tutte le altre saranno in grigio.\\
+                \hline
+                    EXTENSIONS
+                    & \textbf{Step n°} 
+                    & \textbf{Venditore di asta silenziosa} 
+                    & \textbf{Sistema}\\
+                \hline
+                    \multirow[|c|]{2}{*}{\shortstack[c]{Esce dalla pagina \\ di gestione delle \\ offerta ricevute}}
+                        & 7.a
+                        & Preme sul tasto "indietro" (del dispositivo o dell'interfaccia)
+                        & \\
+                \cline{2-4}
+                        & 8.a
+                        & 
+                        & Mostra Mockup nel quale ci si trovava in precedenza\\
+                \hline
+                    SUBVARIATIONS
+                    & \textbf{Step n°} 
+                    & \textbf{Venditore di asta silenziosa}
+                    & \textbf{Sistema}\\
+                \hline
+                    \multirow[|c|]{4}{*}{\shortstack[c]{Riceve notifica \\ di proposta offerta \\ per l'asta silenziosa}}
+                        & 1.s1
+                        & Preme sul bottone "Notifiche"
+                        & \\
+                \cline{2-4}
+                        & 2.s1
+                        & 
+                        & Mostra il Mockup 34 con la notifica relativa all'offerta ricevuta\\
+                \cline{2-4}
+                        & 3.s1
+                        & Clicca sul bottone relativo alla notifica
+                        & \\
+                \cline{2-4}
+                        & 4.s1
+                        &
+                        & Continua con step 6 di main scenario\\
                 \hline
             \end{longtable}
