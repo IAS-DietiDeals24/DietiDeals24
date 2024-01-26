@@ -9,7 +9,7 @@
         \begin{figure}[htbp!]
             \centering
                 \vspace{2\baselineskip}
-                \includegraphics[width=0.42\linewidth]{Immagini/Diagrammi/UseCaseDiagram.pdf}
+                \includegraphics[width=0.41\linewidth]{Immagini/Diagrammi/UseCaseDiagram.pdf}
             \caption{Use Case Diagram}
             \label{fig:Use Case Diagram}
         \end{figure}
@@ -396,3 +396,108 @@
                         & Continua con step 6 di main scenario\\
                 \hline
             \end{longtable}
+
+    \newpage
+
+    \section{Valutazione dell’usabilità a priori}
+        \subsection{Valutazioni con utenti}
+            Sono stati effettuati una serie di valutazioni di usabilità attraverso i prototipi costruiti con strumenti di rapid prototyping, in particolare “Figma”. In particolare, nelle tabelle seguenti sono riportati tutti i casi d'uso testati e, per ogni utente, viene indicato con:
+            \begin{itemize}
+                \item S = Successo (ovvero la task è stata completata velocemente e senza intoppi)
+                \item P = Successo parziale (ovvero è stato necessario un po' di tempo in più e piccoli suggerimenti)
+                \item F = Fallimento (ovvero la task non è stata completata nonostante i piccoli suggerimenti)
+                \item X = Non testato
+            \end{itemize}
+        
+            \begin{table}[ht]
+            \resizebox{\textwidth}{!}{
+                \begin{tabular}{l|l|l|l|l|l|l|l|l|l|}
+                \cline{2-10}
+                &
+                \begin{tabular}[c]{@{}l@{}}Registrazione\\ account\end{tabular} &
+                \begin{tabular}[c]{@{}l@{}}Accesso\\ account\end{tabular} &
+                \begin{tabular}[c]{@{}l@{}}Ricerca\\ aste\end{tabular} &
+                \begin{tabular}[c]{@{}l@{}}Filtra\\ aste\end{tabular} &
+                \begin{tabular}[c]{@{}l@{}}Visualizza\\ dettagli asta\end{tabular} &
+                \begin{tabular}[c]{@{}l@{}}Visualizza\\ profilo\\ proprietario\\ asta\end{tabular} &
+                \begin{tabular}[c]{@{}l@{}}Visualizza\\ le tue aste\\ create\end{tabular} &
+                \begin{tabular}[c]{@{}l@{}}Modifica\\ la tua\\ asta\end{tabular} &
+                \begin{tabular}[c]{@{}l@{}}Elimina\\ la tua\\ asta\end{tabular}\\ \hline
+                \multicolumn{1}{|l|}{Utente 1} & S & S & S & S & S & S & S & S & S \\ \hline
+                \multicolumn{1}{|l|}{Utente 2} & S & S & S & P & S & P & S & S & S \\ \hline
+                \multicolumn{1}{|l|}{Utente 3} & S & S & S & S & S & S & S & S & S \\ \hline
+                \multicolumn{1}{|l|}{Utente 4} & S & S & S & S & S & P & S & S & S \\ \hline
+                \multicolumn{1}{|l|}{Utente 5} & S & S & S & S & P & P & P & S & S \\ \hline
+                \multicolumn{1}{|l|}{Utente 6} & S & S & S & S & P & S & P & S & S \\ \hline %Kevin
+                \multicolumn{1}{|l|}{Utente 7} & S & S & X & X & P & P & S & S & S \\ \hline %Nancy
+                \multicolumn{1}{|l|}{Utente 8} & S & S & S & S & S & S & P & S & S \\ \hline %Cristina
+                \multicolumn{1}{|l|}{Utente 9} & S & S & X & X & S & S & S & P & S \\ \hline %Francesco
+                \end{tabular}
+                }
+            \end{table}
+    
+            \begin{table}[ht]
+            \resizebox{\textwidth}{!}{
+                \begin{tabular}{l|l|l|l|l|l|l|l|l|}
+                \cline{2-9}
+                &
+                \begin{tabular}[c]{@{}l@{}}Visualizza\\ il tuo\\ profilo\end{tabular} &
+                \begin{tabular}[c]{@{}l@{}}Visualizza\\ aste a cui\\ hai\\ partecipato\end{tabular} &
+                \begin{tabular}[c]{@{}l@{}}Modifica\\ il tuo\\ profilo\end{tabular} &
+                \begin{tabular}[c]{@{}l@{}}Visualizza\\ offerte per\\ la tua asta\end{tabular} &
+                \begin{tabular}[c]{@{}l@{}}Fai un'offerta\\ ad un'asta\end{tabular} &
+                \begin{tabular}[c]{@{}l@{}}Crea\\ asta\end{tabular} &
+                \begin{tabular}[c]{@{}l@{}}Accetta\\ offerte\\ asta\\ silenziosa\end{tabular} &
+                \begin{tabular}[c]{@{}l@{}}Rifiuta\\ offerte\\ asta\\ silenziosa\end{tabular}\\ \hline
+                \multicolumn{1}{|l|}{Utente 1} & S & S & S & S & S & S & X & X \\ \hline
+                \multicolumn{1}{|l|}{Utente 2} & S & S & P & S & S & S & X & X \\ \hline
+                \multicolumn{1}{|l|}{Utente 3} & S & S & P & S & S & S & S & S \\ \hline
+                \multicolumn{1}{|l|}{Utente 4} & S & S & P & S & S & S & S & S \\ \hline
+                \multicolumn{1}{|l|}{Utente 5} & S & F & P & S & S & S & S & S \\ \hline
+                \multicolumn{1}{|l|}{Utente 6} & S & P & F & S & X & S & X & X \\ \hline %Kevin
+                \multicolumn{1}{|l|}{Utente 7} & P & S & P & S & X & S & X & X \\ \hline %Nancy
+                \multicolumn{1}{|l|}{Utente 8} & S & P & S & S & S & S & X & X \\ \hline %Cristina
+                \multicolumn{1}{|l|}{Utente 9} & S & S & S & S & S & S & X & X \\ \hline %Francesco
+                \end{tabular}
+                }
+            \end{table}
+
+        \newpage
+        
+        \subsection{Modifiche a seguito delle valutazioni}
+            Dalle valutazioni effettuate, abbiamo riscontato alcuni problemi che hanno comportato una rielaborazione di alcuni aspetti dell’interfaccia. \\[1\baselineskip]
+
+            \begin{center}
+            \begin{tabular}{|C{7.35cm}|C{7.35cm}|}
+                \hline
+                    \textbf{Problematica riscontrata} & \textbf{Modifica apportata}\\
+                \hline
+                    La presenza dello sfondo bianco sotto le singole informazioni delle "informazioni utente" ha indotto alcuni soggetti a cliccare direttamente i campi per effettuare una modifica, ignorando la presenza del pulsantino apposito. &
+                    Abbiamo rimosso lo sfondo bianco da tutti gli elementi non cliccabili, concentrando l’attenzione del soggetto solo ed esclusivamente sul pulsante di modifica apposito. \\
+                \hline
+                    All'interno della schermata "home", la presenza di un nome utente all’interno della scheda di anteprima subito al di sotto dell’offerta più elevata ha erroneamente indotto alcuni soggetti a pensare che quell’utente fosse l’offerente del prezzo, e non il creatore dell’asta come inteso. &
+                    Abbiamo rimosso il nome dell’utente nelle schede di anteprima delle aste specificandolo solo ed esclusivamente nei dettagli dell’asta, preceduto dalla dicitura “Creata da”. \\
+                \hline
+                    La presenza della propria asta creata all’interno della "home" ha confuso un soggetto e lo ha spinto a voler offrire una somma di denaro per suddetta asta, quando invece ciò non è possibile essendone lui stesso il creatore. &
+                    Abbiamo rimosso dalla "home" le aste a cui l’utente non può partecipare, ossia le aste create da altri account dello stesso tipo e le aste da lui stesso create. \\
+                \hline
+                    La presenza del tasto "home" nella barra di navigazione dell’applicazione ha portato alcuni soggetti a cliccare su di essa per tornare alla schermata principale una volta effettuata una ricerca per parola chiave o per categoria, ignorando il tasto indietro apposito (del dispositivo). &
+                    Abbiamo reso il pulsante "home" utilizzabile anche per tornare alla schermata principale una volta effettuata una ricerca per parola chiave o per categoria.\\
+                \hline
+                    La presenza di inglesismi (logout, guest) ha confuso i soggetti più anziani, ignari del significato della parola. &
+                    Abbiamo reso la nostra applicazione completamente in italiano.\\
+                \hline
+                    Un utente ha provato ad effettuare lo zoom sulle immagini con un pinch out anziché toccando l’immagine stessa. & 
+                    Tale azione sarà implementata nell'applicazione finale.\\
+                \hline
+                    Nella sezione "Aiuto", alcuni utenti hanno cliccato sulla parte bianca del pulsante per accedere ai singoli pop-up informativi; quando era inteso cliccare solo sulla freccia blu. &
+                    Abbiamo reso cliccabili ogni singolo pulsante bianco nella sezione "Aiuto".\\
+                \hline
+                    Un utente non esperto del dominio desiderava conoscere quali fossero le caratteristiche di un determinato tipo di asta direttamente dai dettagli dell'asta e non andando a cercare nella sezione "Aiuto". &
+                    Abbiamo aggiunto un "?" che rimanda alle informazioni sul tipo di asta visualizzata. Tale bottone si trova vicino al tipo di asta nella sezione "Dettagli asta", raggiungibile cliccando sul'anteprima di un'asta nella "Home".\\
+                \hline
+                    Un utente ha trovato difficoltà nel modificare il profilo poichè non vedeva il bottone dedicato a tale funzionalità. In particolare, ha cercato il bottone nella parte bassa dello schermo. &
+                    Abbiamo spostato il bottone di "modifica profilo" rendendolo un bottone in sovrimpressione in basso a destra all'interno della sezione delle "informazioni utente". \\
+                \hline
+            \end{tabular}
+            \end{center}
