@@ -2946,16 +2946,16 @@
 									},
 									"font": "Arial;13;0",
 									"left": 704,
-									"top": 511,
-									"width": 7.22998046875,
+									"top": 510,
+									"width": 21.68359375,
 									"height": 13,
-									"alpha": -1.0121965620132582,
-									"distance": 18.867962264113206,
+									"alpha": -0.7229790615727937,
+									"distance": 22.67156809750927,
 									"hostEdge": {
 										"$ref": "AAAAAAGNUJncW3fY84Q="
 									},
 									"edgePosition": 2,
-									"text": "1"
+									"text": "1..2"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -5047,7 +5047,7 @@
 											"top": 452,
 											"width": 205.3466796875,
 											"height": 13,
-											"text": "UtenteRegistrato"
+											"text": "UtenteLoggato"
 										},
 										{
 											"_type": "LabelView",
@@ -7870,7 +7870,7 @@
 								"reference": {
 									"$ref": "AAAAAAGNWzgo/5FgUpA="
 								},
-								"multiplicity": "1"
+								"multiplicity": "1..2"
 							},
 							"end2": {
 								"_type": "UMLAssociationEnd",
@@ -8642,7 +8642,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "UtenteRegistrato",
+					"name": "UtenteLoggato",
 					"ownedElements": [
 						{
 							"_type": "UMLGeneralization",
