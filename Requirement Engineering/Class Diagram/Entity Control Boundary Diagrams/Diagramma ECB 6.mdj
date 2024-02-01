@@ -159,7 +159,7 @@
 											"top": 282,
 											"width": 400.64501953125,
 											"height": 13,
-											"text": "-filtraCategoria: Menu",
+											"text": "-filtraCategoria: Dropdown",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2839,8 +2839,8 @@
 							"left": 1504,
 							"top": 464,
 							"width": 457,
-							"height": 40,
-							"text": "le singole anteprime corrispondono a frame separati?\nsetAnteprimeAsteAttive(in anteprimeAste:List<FrameAnteprimaAsta>) OK?"
+							"height": 55,
+							"text": "le singole anteprime corrispondono a frame separati?\nsetAnteprimeAsteAttive(in anteprimeAste:List<FrameAnteprimaAsta>) OK?\nBoundary non dovrebbe mai interagire con Model! asteAttiveList?"
 						},
 						{
 							"_type": "UMLClassView",
@@ -2872,7 +2872,7 @@
 											"font": "Arial;13;0",
 											"left": 1629,
 											"top": 243,
-											"width": 131.4853515625,
+											"width": 166.6513671875,
 											"height": 13,
 											"text": "«boundary»"
 										},
@@ -2886,7 +2886,7 @@
 											"font": "Arial;13;1",
 											"left": 1629,
 											"top": 258,
-											"width": 131.4853515625,
+											"width": 166.6513671875,
 											"height": 13,
 											"text": "FrameAnteprimaAsta"
 										},
@@ -2924,7 +2924,7 @@
 									"font": "Arial;13;0",
 									"left": 1624,
 									"top": 238,
-									"width": 141.4853515625,
+									"width": 176.6513671875,
 									"height": 38,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGNZKa9g5iOm6Y="
@@ -2962,9 +2962,9 @@
 											"font": "Arial;13;0",
 											"left": 1629,
 											"top": 281,
-											"width": 131.4853515625,
+											"width": 166.6513671875,
 											"height": 13,
-											"text": "-tipoAsta",
+											"text": "-tipoAsta: String",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2980,9 +2980,9 @@
 											"font": "Arial;13;0",
 											"left": 1629,
 											"top": 296,
-											"width": 131.4853515625,
+											"width": 166.6513671875,
 											"height": 13,
-											"text": "-dataScadenzaAsta",
+											"text": "-dataScadenzaAsta: Date",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2998,9 +2998,9 @@
 											"font": "Arial;13;0",
 											"left": 1629,
 											"top": 311,
-											"width": 131.4853515625,
+											"width": 166.6513671875,
 											"height": 13,
-											"text": "-oraScadenzaAsta",
+											"text": "-oraScadenzaAsta: Time",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3016,9 +3016,9 @@
 											"font": "Arial;13;0",
 											"left": 1629,
 											"top": 326,
-											"width": 131.4853515625,
+											"width": 166.6513671875,
 											"height": 13,
-											"text": "-immagineAsta",
+											"text": "-immagineAsta: Immagine",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3034,9 +3034,9 @@
 											"font": "Arial;13;0",
 											"left": 1629,
 											"top": 341,
-											"width": 131.4853515625,
+											"width": 166.6513671875,
 											"height": 13,
-											"text": "-nomeAsta",
+											"text": "-nomeAsta: String",
 											"horizontalAlignment": 0
 										},
 										{
@@ -3052,9 +3052,9 @@
 											"font": "Arial;13;0",
 											"left": 1629,
 											"top": 356,
-											"width": 131.4853515625,
+											"width": 166.6513671875,
 											"height": 13,
-											"text": "-offertaMiglioreAsta",
+											"text": "-offertaMiglioreAsta: Decimal",
 											"horizontalAlignment": 0
 										}
 									],
@@ -3062,7 +3062,7 @@
 									"font": "Arial;13;0",
 									"left": 1624,
 									"top": 276,
-									"width": 141.4853515625,
+									"width": 176.6513671875,
 									"height": 98
 								},
 								{
@@ -3078,7 +3078,7 @@
 									"font": "Arial;13;0",
 									"left": 1624,
 									"top": 374,
-									"width": 141.4853515625,
+									"width": 176.6513671875,
 									"height": 10
 								},
 								{
@@ -3121,7 +3121,7 @@
 							"containerChangeable": true,
 							"left": 1624,
 							"top": 238,
-							"width": 141.4853515625,
+							"width": 176.6513671875,
 							"height": 146,
 							"nameCompartment": {
 								"$ref": "AAAAAAGNZKa9g5iNdsY="
@@ -3160,7 +3160,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1865,
+									"left": 1883,
 									"top": 319,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -3181,7 +3181,7 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 1865,
+									"left": 1883,
 									"top": 334,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -3202,7 +3202,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1866,
+									"left": 1884,
 									"top": 289,
 									"height": 13,
 									"alpha": -1.5707963267948966,
@@ -3286,7 +3286,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1790,
+									"left": 1826,
 									"top": 318,
 									"height": 13,
 									"alpha": -0.5235987755982988,
@@ -3306,7 +3306,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1793,
+									"left": 1829,
 									"top": 332,
 									"height": 13,
 									"alpha": -0.7853981633974483,
@@ -3326,7 +3326,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1786,
+									"left": 1822,
 									"top": 291,
 									"height": 13,
 									"alpha": 0.5235987755982988,
@@ -3376,7 +3376,7 @@
 								"$ref": "AAAAAAGNWdllrru6zyA="
 							},
 							"lineStyle": 1,
-							"points": "1967:310;1765:310",
+							"points": "1967:310;1801:310",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGNZKitmqYgmSk="
@@ -10745,7 +10745,7 @@
 							},
 							"name": "filtraCategoria",
 							"visibility": "private",
-							"type": "Menu"
+							"type": "Dropdown"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -11511,7 +11511,7 @@
 							},
 							"name": "tipoAsta",
 							"visibility": "private",
-							"type": ""
+							"type": "String"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -11521,7 +11521,7 @@
 							},
 							"name": "dataScadenzaAsta",
 							"visibility": "private",
-							"type": ""
+							"type": "Date"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -11531,7 +11531,7 @@
 							},
 							"name": "oraScadenzaAsta",
 							"visibility": "private",
-							"type": ""
+							"type": "Time"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -11541,7 +11541,7 @@
 							},
 							"name": "immagineAsta",
 							"visibility": "private",
-							"type": ""
+							"type": "Immagine"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -11551,7 +11551,7 @@
 							},
 							"name": "nomeAsta",
 							"visibility": "private",
-							"type": ""
+							"type": "String"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -11561,7 +11561,7 @@
 							},
 							"name": "offertaMiglioreAsta",
 							"visibility": "private",
-							"type": ""
+							"type": "Decimal"
 						}
 					]
 				},
