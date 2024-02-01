@@ -249,7 +249,7 @@
 											"top": 269,
 											"width": 204.8642578125,
 											"height": 13,
-											"text": "+clickAsta()",
+											"text": "+clickDettagliAsta()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -4042,6 +4042,19 @@
 							"headQualifiersCompartment": {
 								"$ref": "AAAAAAGNYfaog34sxok="
 							}
+						},
+						{
+							"_type": "UMLNoteView",
+							"_id": "AAAAAAGNZEEcYANxnZo=",
+							"_parent": {
+								"$ref": "AAAAAAGNWdllrbumwMw="
+							},
+							"font": "Arial;13;0",
+							"left": 1544,
+							"top": 224,
+							"width": 225,
+							"height": 144,
+							"text": "Rimuovere entità Ricerca\nAggiungere frame di ricerca e bottone \"X\" per chiudere ricerca\nMenu > dropdown"
 						}
 					]
 				},
@@ -4164,7 +4177,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNWdlltbyz5PA="
 							},
-							"name": "clickAsta"
+							"name": "clickDettagliAsta"
 						},
 						{
 							"_type": "UMLOperation",

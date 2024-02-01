@@ -249,7 +249,7 @@
 											"top": 269,
 											"width": 204.8642578125,
 											"height": 13,
-											"text": "+clickAsta()",
+											"text": "+clickDettagliAsta()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -4164,7 +4164,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNWdlltbyz5PA="
 							},
-							"name": "clickAsta"
+							"name": "clickDettagliAsta"
 						},
 						{
 							"_type": "UMLOperation",

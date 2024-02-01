@@ -249,7 +249,7 @@
 											"top": 269,
 											"width": 204.8642578125,
 											"height": 13,
-											"text": "+clickAsta()",
+											"text": "+clickDettagliAsta()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -626,7 +626,7 @@
 									"fillColor": "#49FFE0",
 									"font": "Arial;13;0",
 									"left": -88,
-									"top": 80,
+									"top": 72,
 									"width": 10,
 									"height": 10
 								},
@@ -643,7 +643,7 @@
 									"fillColor": "#49FFE0",
 									"font": "Arial;13;0",
 									"left": -88,
-									"top": 80,
+									"top": 72,
 									"width": 10,
 									"height": 10
 								}
@@ -2777,6 +2777,19 @@
 							"headQualifiersCompartment": {
 								"$ref": "AAAAAAGNYeIaPweAskY="
 							}
+						},
+						{
+							"_type": "UMLNoteView",
+							"_id": "AAAAAAGNZDul/Eaadwg=",
+							"_parent": {
+								"$ref": "AAAAAAGNWdllrbumwMw="
+							},
+							"font": "Arial;13;0",
+							"left": 1096,
+							"top": 400,
+							"width": 321,
+							"height": 178,
+							"text": "Mettere tipo parametro nel campo apposito\nFotografia > Immagine\nAggiungere entità account collegata a asta e metodo get account per le aste attive da visualizzare\nMostrare solo le cose utili per questo use case\nAggingere entity offerta perchè nell'anteprima asta vi è l'offerta più alta\nAggiungere specializzazioni"
 						}
 					]
 				},
@@ -2872,7 +2885,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNWdlltbyz5PA="
 							},
-							"name": "clickAsta"
+							"name": "clickDettagliAsta"
 						},
 						{
 							"_type": "UMLOperation",
