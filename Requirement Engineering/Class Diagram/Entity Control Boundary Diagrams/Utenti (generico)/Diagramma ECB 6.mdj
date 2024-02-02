@@ -4818,7 +4818,7 @@
 							"top": 456,
 							"width": 169,
 							"height": 92,
-							"text": "L'account venditore può vedere solo le aste di compratori.\nL'account compratore può vedere solo le aste di venditori"
+							"text": "L'account venditore può vedere solo le aste di compratori.\nL'account compratore può vedere solo le aste di venditori."
 						},
 						{
 							"_type": "UMLNoteLinkView",
