@@ -1,7 +1,7 @@
 {
 	"_type": "Project",
 	"_id": "AAAAAAFF+h6SjaM2Hec=",
-	"name": "DietiDeals24",
+	"name": "IAS-DietiDeals24",
 	"ownedElements": [
 		{
 			"_type": "UMLModel",
@@ -9,7 +9,7 @@
 			"_parent": {
 				"$ref": "AAAAAAFF+h6SjaM2Hec="
 			},
-			"name": "Class Diagram del dominio",
+			"name": "Class Diagram del dominio del problema",
 			"ownedElements": [
 				{
 					"_type": "UMLClassDiagram",
@@ -17,7 +17,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Main",
+					"name": "ClassDiagramDominio",
 					"defaultDiagram": true,
 					"ownedViews": [
 						{
@@ -75,9 +75,9 @@
 											"font": "Arial;13;0",
 											"left": -300,
 											"top": 820,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
@@ -287,9 +287,9 @@
 											"font": "Arial;13;0",
 											"left": -140,
 											"top": 834,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
@@ -463,9 +463,9 @@
 											"font": "Arial;13;0",
 											"left": 376,
 											"top": 512,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
@@ -830,9 +830,9 @@
 											"font": "Arial;13;0",
 											"left": 432,
 											"top": 162,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
@@ -1129,9 +1129,9 @@
 											"font": "Arial;13;0",
 											"left": 2994,
 											"top": -320,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
@@ -1358,9 +1358,9 @@
 											"font": "Arial;13;0",
 											"left": 2256,
 											"top": 652,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
@@ -1553,9 +1553,9 @@
 											"font": "Arial;13;0",
 											"left": 1798,
 											"top": 388,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
@@ -1729,9 +1729,9 @@
 											"font": "Arial;13;0",
 											"left": 1336,
 											"top": 124,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
@@ -1925,9 +1925,9 @@
 											"font": "Arial;13;0",
 											"left": -1088,
 											"top": -276,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
@@ -2154,9 +2154,9 @@
 											"font": "Arial;13;0",
 											"left": 2128,
 											"top": -226,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
@@ -2626,9 +2626,9 @@
 											"font": "Arial;13;0",
 											"left": 240,
 											"top": 768,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
@@ -2802,9 +2802,9 @@
 											"font": "Arial;13;0",
 											"left": 544,
 											"top": 576,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
@@ -3996,9 +3996,9 @@
 											"font": "Arial;13;0",
 											"left": 608,
 											"top": -1216,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
@@ -4172,9 +4172,9 @@
 											"font": "Arial;13;0",
 											"left": 464,
 											"top": -1248,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
@@ -4534,9 +4534,9 @@
 											"font": "Arial;13;0",
 											"left": 32,
 											"top": 48,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
@@ -5906,9 +5906,9 @@
 											"font": "Arial;13;0",
 											"left": -564,
 											"top": -274,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
@@ -6175,9 +6175,9 @@
 											"font": "Arial;13;0",
 											"left": 344,
 											"top": 622,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
@@ -6444,9 +6444,9 @@
 											"font": "Arial;13;0",
 											"left": -896,
 											"top": -416,
-											"width": 193.60986328125,
+											"width": 272.3779296875,
 											"height": 13,
-											"text": "(from Class Diagram del dominio)"
+											"text": "(from Class Diagram del dominio del problema)"
 										},
 										{
 											"_type": "LabelView",
