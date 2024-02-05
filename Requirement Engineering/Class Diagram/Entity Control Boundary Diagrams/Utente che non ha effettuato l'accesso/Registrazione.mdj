@@ -411,7 +411,7 @@
 											"top": 327,
 											"width": 176.26171875,
 											"height": 13,
-											"text": "+clickAvanti()",
+											"text": "+clickRegistrati()",
 											"horizontalAlignment": 0
 										}
 									],
@@ -2897,7 +2897,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNWdlltbyz5PA="
 							},
-							"name": "clickAvanti"
+							"name": "clickRegistrati"
 						}
 					]
 				},

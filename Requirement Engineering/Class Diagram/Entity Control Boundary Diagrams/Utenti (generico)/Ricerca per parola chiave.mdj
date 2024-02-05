@@ -10890,7 +10890,7 @@
 											"top": 621,
 											"width": 299.126953125,
 											"height": 13,
-											"text": "+getAsta(nomeAsta: String)",
+											"text": "+getAstaDaElenco(nomeAsta: String)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -12096,7 +12096,7 @@
 								"$ref": "AAAAAAGNWdllrbumwMw="
 							},
 							"font": "Arial;13;0",
-							"left": 2672,
+							"left": 2616,
 							"top": 416,
 							"width": 169,
 							"height": 92,
@@ -12116,7 +12116,7 @@
 								"$ref": "AAAAAAGNYdKoVt/NGQk="
 							},
 							"lineStyle": 1,
-							"points": "2526:554;2671:495"
+							"points": "2508:554;2615:502"
 						}
 					]
 				},
@@ -14822,7 +14822,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNdiPzzlaSS54="
 							},
-							"name": "getAsta",
+							"name": "getAstaDaElenco",
 							"parameters": [
 								{
 									"_type": "UMLParameter",

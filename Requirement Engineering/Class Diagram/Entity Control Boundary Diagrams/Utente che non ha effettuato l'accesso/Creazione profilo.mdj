@@ -1398,7 +1398,7 @@
 											"top": 734,
 											"width": 464.24853515625,
 											"height": 13,
-											"text": "+aggiungiInfoProfiloEmail()",
+											"text": "+aggiungiInfoProfilo()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1416,7 +1416,7 @@
 											"top": 749,
 											"width": 464.24853515625,
 											"height": 13,
-											"text": "+aggiungiLinkProfiloEmail()",
+											"text": "+aggiungiLinkProfilo()",
 											"horizontalAlignment": 0
 										}
 									],
@@ -8247,7 +8247,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNWdllt7zy7BU="
 							},
-							"name": "aggiungiInfoProfiloEmail"
+							"name": "aggiungiInfoProfilo"
 						},
 						{
 							"_type": "UMLOperation",
@@ -8255,7 +8255,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNWdllt7zy7BU="
 							},
-							"name": "aggiungiLinkProfiloEmail"
+							"name": "aggiungiLinkProfilo"
 						}
 					]
 				},

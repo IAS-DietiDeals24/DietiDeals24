@@ -9989,7 +9989,7 @@
 											"top": 621,
 											"width": 299.126953125,
 											"height": 13,
-											"text": "+getAsta(nomeAsta: String)",
+											"text": "+getAstaDaElenco(nomeAsta: String)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -14618,7 +14618,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNdiPzzlaSS54="
 							},
-							"name": "getAsta",
+							"name": "getAstaDaElenco",
 							"parameters": [
 								{
 									"_type": "UMLParameter",
