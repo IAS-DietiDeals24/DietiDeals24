@@ -7143,7 +7143,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 653,
-											"top": 619,
+											"top": 613,
 											"width": 180.6416015625,
 											"height": 13,
 											"text": "«control»"
@@ -7157,7 +7157,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;1",
 											"left": 653,
-											"top": 634,
+											"top": 628,
 											"width": 180.6416015625,
 											"height": 13,
 											"text": "ControllerRegistrazione"
@@ -7195,7 +7195,7 @@
 									"fillColor": "#ffc082",
 									"font": "Arial;13;0",
 									"left": 648,
-									"top": 614,
+									"top": 608,
 									"width": 190.6416015625,
 									"height": 38,
 									"stereotypeLabel": {
@@ -7233,7 +7233,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 653,
-											"top": 657,
+											"top": 651,
 											"width": 180.6416015625,
 											"height": 13,
 											"text": "-accountDaRegistrare: Account",
@@ -7243,7 +7243,7 @@
 									"fillColor": "#ffc082",
 									"font": "Arial;13;0",
 									"left": 648,
-									"top": 652,
+									"top": 646,
 									"width": 190.6416015625,
 									"height": 23
 								},
@@ -7256,12 +7256,32 @@
 									"model": {
 										"$ref": "AAAAAAGNdfwWKrs44co="
 									},
+									"subViews": [
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGNfxGkUEFi9+E=",
+											"_parent": {
+												"$ref": "AAAAAAGNdfwbT7t6RXY="
+											},
+											"model": {
+												"$ref": "AAAAAAGNfxGkMkE+Cr4="
+											},
+											"fillColor": "#ffc082",
+											"font": "Arial;13;0",
+											"left": 653,
+											"top": 674,
+											"width": 180.6416015625,
+											"height": 13,
+											"text": "+getAccountDaRegistrare()",
+											"horizontalAlignment": 0
+										}
+									],
 									"fillColor": "#ffc082",
 									"font": "Arial;13;0",
 									"left": 648,
-									"top": 675,
+									"top": 669,
 									"width": 190.6416015625,
-									"height": 10
+									"height": 23
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -7302,9 +7322,9 @@
 							"font": "Arial;13;0",
 							"containerChangeable": true,
 							"left": 648,
-							"top": 614,
+							"top": 608,
 							"width": 190.6416015625,
-							"height": 71,
+							"height": 84,
 							"nameCompartment": {
 								"$ref": "AAAAAAGNdfwbT7t0kIo="
 							},
@@ -8145,7 +8165,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGNWdllt7zy7BU="
 							},
-							"name": "isProfiloGiaAssociato"
+							"name": "isProfiloGiaAssociato",
+							"documentation": "Verifica se esiste un account venditore o compratore già definitivamente registrato con la stessa email dell'accountDaRegistrare"
 						},
 						{
 							"_type": "UMLOperation",
@@ -9284,6 +9305,16 @@
 							"type": {
 								"$ref": "AAAAAAGNahH+kmrjYlo="
 							}
+						}
+					],
+					"operations": [
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGNfxGkMkE+Cr4=",
+							"_parent": {
+								"$ref": "AAAAAAGNdfwWKrs44co="
+							},
+							"name": "getAccountDaRegistrare"
 						}
 					]
 				}
