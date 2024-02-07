@@ -10511,7 +10511,7 @@
 											"top": 566,
 											"width": 308.90234375,
 											"height": 13,
-											"text": "+getAsta(nomeAsta: String)",
+											"text": "+setAsta(nomeAsta: String)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -10547,7 +10547,7 @@
 											"top": 596,
 											"width": 308.90234375,
 											"height": 13,
-											"text": "+getOffertaMigliore(offerteRicevuteList: List<Offerta>)",
+											"text": "+setOffertaMigliore(offerteRicevuteList: List<Offerta>)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -10583,7 +10583,7 @@
 											"top": 626,
 											"width": 308.90234375,
 											"height": 13,
-											"text": "+getProprietario(asta: Asta)",
+											"text": "+setProprietario(asta: Asta)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -10601,7 +10601,7 @@
 											"top": 641,
 											"width": 308.90234375,
 											"height": 13,
-											"text": "+getProfiloProprietario(proprietario: Account)",
+											"text": "+setProfiloProprietario(proprietario: Account)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -16075,7 +16075,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNdk+ug2slyZg="
 							},
-							"name": "getAsta",
+							"name": "setAsta",
 							"parameters": [
 								{
 									"_type": "UMLParameter",
@@ -16115,7 +16115,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNdk+ug2slyZg="
 							},
-							"name": "getOffertaMigliore",
+							"name": "setOffertaMigliore",
 							"documentation": "Recupera offerteRicevuteList e sceglie la più recente",
 							"parameters": [
 								{
@@ -16156,7 +16156,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNdk+ug2slyZg="
 							},
-							"name": "getProprietario",
+							"name": "setProprietario",
 							"parameters": [
 								{
 									"_type": "UMLParameter",
@@ -16177,7 +16177,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNdk+ug2slyZg="
 							},
-							"name": "getProfiloProprietario",
+							"name": "setProfiloProprietario",
 							"parameters": [
 								{
 									"_type": "UMLParameter",
