@@ -9,7 +9,7 @@
 			"_parent": {
 				"$ref": "AAAAAAFF+h6SjaM2Hec="
 			},
-			"name": "Invia un'offerta",
+			"name": "Fai un'offerta",
 			"ownedElements": [
 				{
 					"_type": "UMLClassDiagram",
@@ -17,7 +17,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGNWdllrbulRCM="
 					},
-					"name": "InviaiOfferta",
+					"name": "FaiOfferta",
 					"ownedViews": [
 						{
 							"_type": "UMLClassView",
@@ -80,7 +80,7 @@
 											"top": 1852,
 											"width": 266.6015625,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -631,7 +631,7 @@
 											"top": 1664,
 											"width": 266.6015625,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -876,7 +876,7 @@
 											"top": 1648,
 											"width": 266.6015625,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -1307,7 +1307,7 @@
 											"top": 1532,
 											"width": 266.6015625,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -1660,7 +1660,7 @@
 											"top": 1568,
 											"width": 266.6015625,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -1905,7 +1905,7 @@
 											"top": 1568,
 											"width": 266.6015625,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -2150,7 +2150,7 @@
 											"top": 1520,
 											"width": 266.6015625,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -2449,7 +2449,7 @@
 											"top": 1600,
 											"width": 266.6015625,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -2784,7 +2784,7 @@
 											"top": 1632,
 											"width": 266.6015625,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -3119,7 +3119,7 @@
 											"top": 1600,
 											"width": 266.6015625,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -4498,7 +4498,7 @@
 											"top": 1224,
 											"width": 266.6015625,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -5466,7 +5466,7 @@
 											"top": 700,
 											"width": 214.70947265625,
 											"height": 13,
-											"text": "ControllerInviaOfferta"
+											"text": "ControllerFaiOfferta"
 										},
 										{
 											"_type": "LabelView",
@@ -5481,7 +5481,7 @@
 											"top": 304,
 											"width": 207.44775390625,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -6038,7 +6038,7 @@
 											"top": 421,
 											"width": 123.3349609375,
 											"height": 13,
-											"text": "FrameInviaOfferta"
+											"text": "FrameFaiOfferta"
 										},
 										{
 											"_type": "LabelView",
@@ -6053,7 +6053,7 @@
 											"top": -196,
 											"width": 207.44775390625,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -6608,7 +6608,7 @@
 											"top": 1502,
 											"width": 122.9033203125,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -6946,7 +6946,7 @@
 											"top": 1738,
 											"width": 122.9033203125,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -7563,7 +7563,7 @@
 											"top": 2132,
 											"width": 122.9033203125,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -7934,7 +7934,7 @@
 											"top": 2278,
 											"width": 122.9033203125,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -9397,7 +9397,7 @@
 											"top": -24,
 											"width": 122.9033203125,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -10384,7 +10384,7 @@
 											"top": -106,
 											"width": 122.9033203125,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -11954,7 +11954,7 @@
 											"top": -654,
 											"width": 122.9033203125,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -12725,7 +12725,7 @@
 											"top": -394,
 											"width": 122.9033203125,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -12968,7 +12968,7 @@
 											"font": "Arial;13;0",
 											"width": 122.9033203125,
 											"height": 13,
-											"text": "(from Invia un'offerta)"
+											"text": "(from Fai un'offerta)"
 										},
 										{
 											"_type": "LabelView",
@@ -15984,7 +15984,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGNWdllrbulRCM="
 					},
-					"name": "ControllerInviaOfferta",
+					"name": "ControllerFaiOfferta",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -16138,7 +16138,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGNWdllrbulRCM="
 					},
-					"name": "FrameInviaOfferta",
+					"name": "FrameFaiOfferta",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
