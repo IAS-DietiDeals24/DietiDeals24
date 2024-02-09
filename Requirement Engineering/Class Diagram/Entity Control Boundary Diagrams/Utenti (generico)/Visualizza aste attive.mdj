@@ -2223,7 +2223,7 @@
 											"top": 738,
 											"width": 334.18505859375,
 											"height": 13,
-											"text": "+apriDettagliAstaCliccata(nomeAsta: String)",
+											"text": "+apriDettagliAstaCliccata(idAsta: Integer)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2808,6 +2808,24 @@
 									"subViews": [
 										{
 											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGNjo6rKuNMKK4=",
+											"_parent": {
+												"$ref": "AAAAAAGNZKa9g5iS8Y4="
+											},
+											"model": {
+												"$ref": "AAAAAAGNjo6rE+NG57c="
+											},
+											"fillColor": "#49ffe0",
+											"font": "Arial;13;0",
+											"left": 1605,
+											"top": 279,
+											"width": 166.6513671875,
+											"height": 13,
+											"text": "-idAsta: Integer",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
 											"_id": "AAAAAAGNZKc8w5zCM9c=",
 											"_parent": {
 												"$ref": "AAAAAAGNZKa9g5iS8Y4="
@@ -2818,7 +2836,7 @@
 											"fillColor": "#49ffe0",
 											"font": "Arial;13;0",
 											"left": 1605,
-											"top": 279,
+											"top": 294,
 											"width": 166.6513671875,
 											"height": 13,
 											"text": "-tipoAsta: String",
@@ -2836,7 +2854,7 @@
 											"fillColor": "#49ffe0",
 											"font": "Arial;13;0",
 											"left": 1605,
-											"top": 294,
+											"top": 309,
 											"width": 166.6513671875,
 											"height": 13,
 											"text": "-dataScadenzaAsta: Date",
@@ -2854,7 +2872,7 @@
 											"fillColor": "#49ffe0",
 											"font": "Arial;13;0",
 											"left": 1605,
-											"top": 309,
+											"top": 324,
 											"width": 166.6513671875,
 											"height": 13,
 											"text": "-oraScadenzaAsta: Time",
@@ -2872,7 +2890,7 @@
 											"fillColor": "#49ffe0",
 											"font": "Arial;13;0",
 											"left": 1605,
-											"top": 324,
+											"top": 339,
 											"width": 166.6513671875,
 											"height": 13,
 											"text": "-immagineAsta: Immagine",
@@ -2890,7 +2908,7 @@
 											"fillColor": "#49ffe0",
 											"font": "Arial;13;0",
 											"left": 1605,
-											"top": 339,
+											"top": 354,
 											"width": 166.6513671875,
 											"height": 13,
 											"text": "-nomeAsta: String",
@@ -2908,7 +2926,7 @@
 											"fillColor": "#49ffe0",
 											"font": "Arial;13;0",
 											"left": 1605,
-											"top": 354,
+											"top": 369,
 											"width": 166.6513671875,
 											"height": 13,
 											"text": "-offertaMiglioreAsta: Decimal",
@@ -2920,7 +2938,7 @@
 									"left": 1600,
 									"top": 274,
 									"width": 176.6513671875,
-									"height": 98
+									"height": 113
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -2944,7 +2962,7 @@
 											"fillColor": "#49ffe0",
 											"font": "Arial;13;0",
 											"left": 1605,
-											"top": 377,
+											"top": 392,
 											"width": 166.6513671875,
 											"height": 13,
 											"text": "+clickDettagliAsta()",
@@ -2954,7 +2972,7 @@
 									"fillColor": "#49ffe0",
 									"font": "Arial;13;0",
 									"left": 1600,
-									"top": 372,
+									"top": 387,
 									"width": 176.6513671875,
 									"height": 23
 								},
@@ -2999,7 +3017,7 @@
 							"left": 1600,
 							"top": 236,
 							"width": 176.6513671875,
-							"height": 159,
+							"height": 174,
 							"nameCompartment": {
 								"$ref": "AAAAAAGNZKa9g5iNdsY="
 							},
@@ -11168,7 +11186,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1702,
-									"top": 413,
+									"top": 428,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -11189,7 +11207,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1715,
-									"top": 416,
+									"top": 431,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -11210,7 +11228,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1674,
-									"top": 409,
+									"top": 424,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -11315,7 +11333,7 @@
 							"tail": {
 								"$ref": "AAAAAAGNZKa9g5iMcFw="
 							},
-							"points": "1687:394;1687:552;1973:552",
+							"points": "1687:409;1687:552;1973:552",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGNgLU7JcAEdiU="
@@ -12097,7 +12115,7 @@
 								"$ref": "AAAAAAGNWdllt7zy7BU="
 							},
 							"name": "apriCreaAsta",
-							"documentation": "Apre il controllerCreaAsta passando il tipo account"
+							"documentation": "Apre il controllerCreaAstaXXX passando l'account.\nPer l'account compratore apre il controllerCreaAstaInversa.\nPer l'account venditore apre il controllerCreaAstaTempoFisso"
 						},
 						{
 							"_type": "UMLOperation",
@@ -12667,7 +12685,7 @@
 								"$ref": "AAAAAAGNYdJ+cN+uxEM="
 							},
 							"name": "apriDettagliAstaCliccata",
-							"documentation": "apre controllerDettagliAsta dell'anteprima cliccata, passando l'asta cliccata",
+							"documentation": "apre controllerDettagliAsta dell'anteprima cliccata, passando l'asta cliccata.\nTale asta è quella in risultatoRicerca[idAsta]",
 							"parameters": [
 								{
 									"_type": "UMLParameter",
@@ -12675,8 +12693,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGNig3Mf6GcdbI="
 									},
-									"name": "nomeAsta",
-									"type": "String"
+									"name": "idAsta",
+									"type": "Integer"
 								}
 							]
 						},
@@ -12905,6 +12923,16 @@
 					],
 					"stereotype": "boundary",
 					"attributes": [
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGNjo6rE+NG57c=",
+							"_parent": {
+								"$ref": "AAAAAAGNZKa9gpiKLQA="
+							},
+							"name": "idAsta",
+							"visibility": "private",
+							"type": "Integer"
+						},
 						{
 							"_type": "UMLAttribute",
 							"_id": "AAAAAAGNZKc8sZyzkz8=",

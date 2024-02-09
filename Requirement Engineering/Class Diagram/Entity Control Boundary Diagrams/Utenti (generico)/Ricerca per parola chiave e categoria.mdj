@@ -2282,12 +2282,12 @@
 										},
 										{
 											"_type": "UMLOperationView",
-											"_id": "AAAAAAGNig3MkKGlm5Q=",
+											"_id": "AAAAAAGNjpVOCJTru2k=",
 											"_parent": {
 												"$ref": "AAAAAAGNYdKoVt/Uguw="
 											},
 											"model": {
-												"$ref": "AAAAAAGNig3Mf6GcdbI="
+												"$ref": "AAAAAAGNjpVN95Tj5bU="
 											},
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
@@ -2295,7 +2295,7 @@
 											"top": 682,
 											"width": 371.76318359375,
 											"height": 13,
-											"text": "+apriDettagliAstaCliccata(nomeAsta: String)",
+											"text": "+apriDettagliAstaCliccata(idAsta: Integer)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2898,6 +2898,24 @@
 									"subViews": [
 										{
 											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGNjpYPo5y7NIY=",
+											"_parent": {
+												"$ref": "AAAAAAGNZKa9g5iS8Y4="
+											},
+											"model": {
+												"$ref": "AAAAAAGNjpYPjpy1BE0="
+											},
+											"fillColor": "#49ffe0",
+											"font": "Arial;13;0",
+											"left": 1605,
+											"top": 187,
+											"width": 166.6513671875,
+											"height": 13,
+											"text": "-idAsta: Integer",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
 											"_id": "AAAAAAGNZKc8w5zCM9c=",
 											"_parent": {
 												"$ref": "AAAAAAGNZKa9g5iS8Y4="
@@ -2908,7 +2926,7 @@
 											"fillColor": "#49ffe0",
 											"font": "Arial;13;0",
 											"left": 1605,
-											"top": 187,
+											"top": 202,
 											"width": 166.6513671875,
 											"height": 13,
 											"text": "-tipoAsta: String",
@@ -2926,7 +2944,7 @@
 											"fillColor": "#49ffe0",
 											"font": "Arial;13;0",
 											"left": 1605,
-											"top": 202,
+											"top": 217,
 											"width": 166.6513671875,
 											"height": 13,
 											"text": "-dataScadenzaAsta: Date",
@@ -2944,7 +2962,7 @@
 											"fillColor": "#49ffe0",
 											"font": "Arial;13;0",
 											"left": 1605,
-											"top": 217,
+											"top": 232,
 											"width": 166.6513671875,
 											"height": 13,
 											"text": "-oraScadenzaAsta: Time",
@@ -2962,7 +2980,7 @@
 											"fillColor": "#49ffe0",
 											"font": "Arial;13;0",
 											"left": 1605,
-											"top": 232,
+											"top": 247,
 											"width": 166.6513671875,
 											"height": 13,
 											"text": "-immagineAsta: Immagine",
@@ -2980,7 +2998,7 @@
 											"fillColor": "#49ffe0",
 											"font": "Arial;13;0",
 											"left": 1605,
-											"top": 247,
+											"top": 262,
 											"width": 166.6513671875,
 											"height": 13,
 											"text": "-nomeAsta: String",
@@ -2998,7 +3016,7 @@
 											"fillColor": "#49ffe0",
 											"font": "Arial;13;0",
 											"left": 1605,
-											"top": 262,
+											"top": 277,
 											"width": 166.6513671875,
 											"height": 13,
 											"text": "-offertaMiglioreAsta: Decimal",
@@ -3010,7 +3028,7 @@
 									"left": 1600,
 									"top": 182,
 									"width": 176.6513671875,
-									"height": 98
+									"height": 113
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -3034,7 +3052,7 @@
 											"fillColor": "#49ffe0",
 											"font": "Arial;13;0",
 											"left": 1605,
-											"top": 285,
+											"top": 300,
 											"width": 166.6513671875,
 											"height": 13,
 											"text": "+clickDettagliAsta()",
@@ -3044,7 +3062,7 @@
 									"fillColor": "#49ffe0",
 									"font": "Arial;13;0",
 									"left": 1600,
-									"top": 280,
+									"top": 295,
 									"width": 176.6513671875,
 									"height": 23
 								},
@@ -3089,7 +3107,7 @@
 							"left": 1600,
 							"top": 144,
 							"width": 176.6513671875,
-							"height": 159,
+							"height": 174,
 							"nameCompartment": {
 								"$ref": "AAAAAAGNZKa9g5iNdsY="
 							},
@@ -11258,7 +11276,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1702,
-									"top": 321,
+									"top": 336,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -11279,7 +11297,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1715,
-									"top": 324,
+									"top": 339,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -11300,7 +11318,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1674,
-									"top": 317,
+									"top": 332,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -11405,7 +11423,7 @@
 							"tail": {
 								"$ref": "AAAAAAGNZKa9g5iMcFw="
 							},
-							"points": "1687:302;1687:552;1951:552",
+							"points": "1687:317;1687:552;1951:552",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGNgLU7JcAEdiU="
@@ -12227,7 +12245,7 @@
 								"$ref": "AAAAAAGNWdllt7zy7BU="
 							},
 							"name": "apriCreaAsta",
-							"documentation": "Apre il controllerCreaAsta passando il tipo account"
+							"documentation": "Apre il controllerCreaAstaXXX passando l'account.\nPer l'account compratore apre il controllerCreaAstaInversa.\nPer l'account venditore apre il controllerCreaAstaTempoFisso"
 						},
 						{
 							"_type": "UMLOperation",
@@ -12803,21 +12821,21 @@
 						},
 						{
 							"_type": "UMLOperation",
-							"_id": "AAAAAAGNig3Mf6GcdbI=",
+							"_id": "AAAAAAGNjpVN95Tj5bU=",
 							"_parent": {
 								"$ref": "AAAAAAGNYdJ+cN+uxEM="
 							},
 							"name": "apriDettagliAstaCliccata",
-							"documentation": "apre controllerDettagliAsta dell'anteprima cliccata, passando l'asta cliccata",
+							"documentation": "apre controllerDettagliAsta dell'anteprima cliccata, passando l'asta cliccata.\nTale asta è quella in risultatoRicerca[idAsta]",
 							"parameters": [
 								{
 									"_type": "UMLParameter",
-									"_id": "AAAAAAGNig4pVqVjxjs=",
+									"_id": "AAAAAAGNjpVN95TkcYQ=",
 									"_parent": {
-										"$ref": "AAAAAAGNig3Mf6GcdbI="
+										"$ref": "AAAAAAGNjpVN95Tj5bU="
 									},
-									"name": "nomeAsta",
-									"type": "String"
+									"name": "idAsta",
+									"type": "Integer"
 								}
 							]
 						},
@@ -13055,6 +13073,16 @@
 					],
 					"stereotype": "boundary",
 					"attributes": [
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAGNjpYPjpy1BE0=",
+							"_parent": {
+								"$ref": "AAAAAAGNZKa9gpiKLQA="
+							},
+							"name": "idAsta",
+							"visibility": "private",
+							"type": "Integer"
+						},
 						{
 							"_type": "UMLAttribute",
 							"_id": "AAAAAAGNZKc8sZyzkz8=",
