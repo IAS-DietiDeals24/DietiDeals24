@@ -9975,7 +9975,7 @@
 											"top": 1189,
 											"width": 317.8017578125,
 											"height": 13,
-											"text": "+apriOfferteRicevute(idAsta: Integer)",
+											"text": "+apriVisualizzaOfferteRicevute(idAsta: Integer)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -16773,8 +16773,8 @@
 							"_parent": {
 								"$ref": "AAAAAAGNejRJlURjR/o="
 							},
-							"name": "apriOfferteRicevute",
-							"documentation": "Apre il controllerOfferteRicevute passando l'asta cliccata.\nTale asta è quella in asteCreate[idAsta].\nCASO SPECIALE: Se l'asta è di tipo silenziosa apre il controllerOfferteSilenzioseRicevute",
+							"name": "apriVisualizzaOfferteRicevute",
+							"documentation": "Apre il controllerVisualizzaOfferteRicevute passando l'asta cliccata.\nTale asta è quella in asteCreate[idAsta].\nCASO SPECIALE: Se l'asta è di tipo silenziosa apre il controllerVisualizzaOfferteSilenzioseRicevute",
 							"parameters": [
 								{
 									"_type": "UMLParameter",

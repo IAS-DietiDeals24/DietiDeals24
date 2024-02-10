@@ -9958,7 +9958,7 @@
 											"top": 340,
 											"width": 257.59423828125,
 											"height": 13,
-											"text": "ControllerOfferteRicevute"
+											"text": "ControllerVisualizzaOfferteRicevute"
 										},
 										{
 											"_type": "LabelView",
@@ -15603,7 +15603,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGNWdllrbulRCM="
 					},
-					"name": "ControllerOfferteRicevute",
+					"name": "ControllerVisualizzaOfferteRicevute",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
