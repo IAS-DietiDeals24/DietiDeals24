@@ -16267,7 +16267,7 @@
 								"$ref": "AAAAAAGNdk+ug2slyZg="
 							},
 							"name": "apriVisualizzaProfiloProprietario",
-							"documentation": "Apre il controllerVisualizzaProfiloProprietario passando l'account proprietario"
+							"documentation": "Apre il ControllerVisualizzaProfiloUtente passando l'account proprietario"
 						},
 						{
 							"_type": "UMLOperation",
