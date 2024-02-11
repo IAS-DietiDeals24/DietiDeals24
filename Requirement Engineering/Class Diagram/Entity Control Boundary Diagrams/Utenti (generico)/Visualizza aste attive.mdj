@@ -2043,7 +2043,25 @@
 											"top": 588,
 											"width": 334.18505859375,
 											"height": 13,
-											"text": "+setAstaInEsame(nomeAsta: String)",
+											"text": "+setAstaInEsame(asta: Asta)",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGNmThYPzGKgKg=",
+											"_parent": {
+												"$ref": "AAAAAAGNYdKoVt/Uguw="
+											},
+											"model": {
+												"$ref": "AAAAAAGNmThYMjGEp4E="
+											},
+											"fillColor": "#ffc082",
+											"font": "Arial;13;0",
+											"left": 1978,
+											"top": 603,
+											"width": 334.18505859375,
+											"height": 13,
+											"text": "+getIdAsta()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2058,7 +2076,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1978,
-											"top": 603,
+											"top": 618,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+getTipoAsta()",
@@ -2076,7 +2094,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1978,
-											"top": 618,
+											"top": 633,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+getDataScadenzaAsta()",
@@ -2094,7 +2112,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1978,
-											"top": 633,
+											"top": 648,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+getOraScadenzaAsta()",
@@ -2112,7 +2130,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1978,
-											"top": 648,
+											"top": 663,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+getImmagineAsta()",
@@ -2130,46 +2148,10 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1978,
-											"top": 663,
-											"width": 334.18505859375,
-											"height": 13,
-											"text": "+getNomeAsta()",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
-											"_id": "AAAAAAGNgLMWq4Z41uc=",
-											"_parent": {
-												"$ref": "AAAAAAGNYdKoVt/Uguw="
-											},
-											"model": {
-												"$ref": "AAAAAAGNgLMWm4Zv7rw="
-											},
-											"fillColor": "#ffc082",
-											"font": "Arial;13;0",
-											"left": 1978,
 											"top": 678,
 											"width": 334.18505859375,
 											"height": 13,
-											"text": "+getDescrizioneAsta()",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
-											"_id": "AAAAAAGNgLPHGpCyxYk=",
-											"_parent": {
-												"$ref": "AAAAAAGNYdKoVt/Uguw="
-											},
-											"model": {
-												"$ref": "AAAAAAGNgLPHDJCp8yU="
-											},
-											"fillColor": "#ffc082",
-											"font": "Arial;13;0",
-											"left": 1978,
-											"top": 693,
-											"width": 334.18505859375,
-											"height": 13,
-											"text": "+setOffertaMiglioreAsta(offerteRicevuteList: List<Offerta>)",
+											"text": "+getNomeAsta()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2184,10 +2166,28 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1978,
+											"top": 693,
+											"width": 334.18505859375,
+											"height": 13,
+											"text": "+getValoreOffertaMiglioreAsta()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGNgLPHGpCyxYk=",
+											"_parent": {
+												"$ref": "AAAAAAGNYdKoVt/Uguw="
+											},
+											"model": {
+												"$ref": "AAAAAAGNgLPHDJCp8yU="
+											},
+											"fillColor": "#ffc082",
+											"font": "Arial;13;0",
+											"left": 1978,
 											"top": 708,
 											"width": 334.18505859375,
 											"height": 13,
-											"text": "+getValoreOfferta()",
+											"text": "+setOffertaMiglioreAsta(offerteRicevuteList: List<Offerta>)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -12590,10 +12590,20 @@
 									"_parent": {
 										"$ref": "AAAAAAGNgLG4RFlnQJU="
 									},
-									"name": "nomeAsta",
-									"type": "String"
+									"name": "asta",
+									"type": {
+										"$ref": "AAAAAAGNYc/VyMhsMJs="
+									}
 								}
 							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGNmThYMjGEp4E=",
+							"_parent": {
+								"$ref": "AAAAAAGNYdJ+cN+uxEM="
+							},
+							"name": "getIdAsta"
 						},
 						{
 							"_type": "UMLOperation",
@@ -12637,11 +12647,11 @@
 						},
 						{
 							"_type": "UMLOperation",
-							"_id": "AAAAAAGNgLMWm4Zv7rw=",
+							"_id": "AAAAAAGNgLRyDJeNJ2k=",
 							"_parent": {
 								"$ref": "AAAAAAGNYdJ+cN+uxEM="
 							},
-							"name": "getDescrizioneAsta"
+							"name": "getValoreOffertaMiglioreAsta"
 						},
 						{
 							"_type": "UMLOperation",
@@ -12661,14 +12671,6 @@
 									"type": "List<Offerta>"
 								}
 							]
-						},
-						{
-							"_type": "UMLOperation",
-							"_id": "AAAAAAGNgLRyDJeNJ2k=",
-							"_parent": {
-								"$ref": "AAAAAAGNYdJ+cN+uxEM="
-							},
-							"name": "getValoreOfferta"
 						},
 						{
 							"_type": "UMLOperation",
