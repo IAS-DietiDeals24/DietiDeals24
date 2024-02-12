@@ -2156,24 +2156,6 @@
 										},
 										{
 											"_type": "UMLOperationView",
-											"_id": "AAAAAAGNgLRyGZeWBmE=",
-											"_parent": {
-												"$ref": "AAAAAAGNYdKoVt/Uguw="
-											},
-											"model": {
-												"$ref": "AAAAAAGNgLRyDJeNJ2k="
-											},
-											"fillColor": "#ffc082",
-											"font": "Arial;13;0",
-											"left": 1978,
-											"top": 693,
-											"width": 334.18505859375,
-											"height": 13,
-											"text": "+getValoreOffertaMiglioreAsta()",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
 											"_id": "AAAAAAGNgLPHGpCyxYk=",
 											"_parent": {
 												"$ref": "AAAAAAGNYdKoVt/Uguw="
@@ -2184,10 +2166,28 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1978,
-											"top": 708,
+											"top": 693,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+setOffertaMiglioreAsta(offerteRicevuteList: List<Offerta>)",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGNgLRyGZeWBmE=",
+											"_parent": {
+												"$ref": "AAAAAAGNYdKoVt/Uguw="
+											},
+											"model": {
+												"$ref": "AAAAAAGNgLRyDJeNJ2k="
+											},
+											"fillColor": "#ffc082",
+											"font": "Arial;13;0",
+											"left": 1978,
+											"top": 708,
+											"width": 334.18505859375,
+											"height": 13,
+											"text": "+getValoreOffertaMiglioreAsta()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -12647,14 +12647,6 @@
 						},
 						{
 							"_type": "UMLOperation",
-							"_id": "AAAAAAGNgLRyDJeNJ2k=",
-							"_parent": {
-								"$ref": "AAAAAAGNYdJ+cN+uxEM="
-							},
-							"name": "getValoreOffertaMiglioreAsta"
-						},
-						{
-							"_type": "UMLOperation",
 							"_id": "AAAAAAGNgLPHDJCp8yU=",
 							"_parent": {
 								"$ref": "AAAAAAGNYdJ+cN+uxEM="
@@ -12671,6 +12663,14 @@
 									"type": "List<Offerta>"
 								}
 							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGNgLRyDJeNJ2k=",
+							"_parent": {
+								"$ref": "AAAAAAGNYdJ+cN+uxEM="
+							},
+							"name": "getValoreOffertaMiglioreAsta"
 						},
 						{
 							"_type": "UMLOperation",

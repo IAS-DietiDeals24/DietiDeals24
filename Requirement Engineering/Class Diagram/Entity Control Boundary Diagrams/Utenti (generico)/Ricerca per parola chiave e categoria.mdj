@@ -2115,7 +2115,25 @@
 											"top": 532,
 											"width": 371.76318359375,
 											"height": 13,
-											"text": "+setAstaInEsame(nomeAsta: String)",
+											"text": "+setAstaInEsame(asta: Asta)",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGNnWpKmxKrSvc=",
+											"_parent": {
+												"$ref": "AAAAAAGNYdKoVt/Uguw="
+											},
+											"model": {
+												"$ref": "AAAAAAGNnWpKexKlsvw="
+											},
+											"fillColor": "#ffc082",
+											"font": "Arial;13;0",
+											"left": 1956,
+											"top": 547,
+											"width": 371.76318359375,
+											"height": 13,
+											"text": "+getIdAsta()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2130,7 +2148,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1956,
-											"top": 547,
+											"top": 562,
 											"width": 371.76318359375,
 											"height": 13,
 											"text": "+getTipoAsta()",
@@ -2148,7 +2166,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1956,
-											"top": 562,
+											"top": 577,
 											"width": 371.76318359375,
 											"height": 13,
 											"text": "+getDataScadenzaAsta()",
@@ -2166,7 +2184,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1956,
-											"top": 577,
+											"top": 592,
 											"width": 371.76318359375,
 											"height": 13,
 											"text": "+getOraScadenzaAsta()",
@@ -2184,7 +2202,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1956,
-											"top": 592,
+											"top": 607,
 											"width": 371.76318359375,
 											"height": 13,
 											"text": "+getImmagineAsta()",
@@ -2202,28 +2220,10 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1956,
-											"top": 607,
-											"width": 371.76318359375,
-											"height": 13,
-											"text": "+getNomeAsta()",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
-											"_id": "AAAAAAGNgLMWq4Z41uc=",
-											"_parent": {
-												"$ref": "AAAAAAGNYdKoVt/Uguw="
-											},
-											"model": {
-												"$ref": "AAAAAAGNgLMWm4Zv7rw="
-											},
-											"fillColor": "#ffc082",
-											"font": "Arial;13;0",
-											"left": 1956,
 											"top": 622,
 											"width": 371.76318359375,
 											"height": 13,
-											"text": "+getDescrizioneAsta()",
+											"text": "+getNomeAsta()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2259,7 +2259,7 @@
 											"top": 652,
 											"width": 371.76318359375,
 											"height": 13,
-											"text": "+getValoreOfferta()",
+											"text": "+getValoreOffertaMiglioreAsta()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -6317,7 +6317,7 @@
 											"top": 1451,
 											"width": 309.6005859375,
 											"height": 13,
-											"text": "-isAccettata: Boolean = False",
+											"text": "-isAccettata: Boolean",
 											"horizontalAlignment": 0
 										},
 										{
@@ -12731,10 +12731,20 @@
 									"_parent": {
 										"$ref": "AAAAAAGNgLG4RFlnQJU="
 									},
-									"name": "nomeAsta",
-									"type": "String"
+									"name": "asta",
+									"type": {
+										"$ref": "AAAAAAGNYc/VyMhsMJs="
+									}
 								}
 							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGNnWpKexKlsvw=",
+							"_parent": {
+								"$ref": "AAAAAAGNYdJ+cN+uxEM="
+							},
+							"name": "getIdAsta"
 						},
 						{
 							"_type": "UMLOperation",
@@ -12778,14 +12788,6 @@
 						},
 						{
 							"_type": "UMLOperation",
-							"_id": "AAAAAAGNgLMWm4Zv7rw=",
-							"_parent": {
-								"$ref": "AAAAAAGNYdJ+cN+uxEM="
-							},
-							"name": "getDescrizioneAsta"
-						},
-						{
-							"_type": "UMLOperation",
 							"_id": "AAAAAAGNgLPHDJCp8yU=",
 							"_parent": {
 								"$ref": "AAAAAAGNYdJ+cN+uxEM="
@@ -12809,7 +12811,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNYdJ+cN+uxEM="
 							},
-							"name": "getValoreOfferta"
+							"name": "getValoreOffertaMiglioreAsta"
 						},
 						{
 							"_type": "UMLOperation",
@@ -13708,8 +13710,7 @@
 							},
 							"name": "isAccettata",
 							"visibility": "private",
-							"type": "Boolean",
-							"defaultValue": "False"
+							"type": "Boolean"
 						},
 						{
 							"_type": "UMLAttribute",

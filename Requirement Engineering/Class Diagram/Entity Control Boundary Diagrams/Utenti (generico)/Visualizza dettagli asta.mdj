@@ -4207,7 +4207,7 @@
 											"top": 1619,
 											"width": 309.6005859375,
 											"height": 13,
-											"text": "-isAccettata: Boolean = False",
+											"text": "-isAccettata: Boolean",
 											"horizontalAlignment": 0
 										},
 										{
@@ -10401,7 +10401,7 @@
 											"top": 695,
 											"width": 334.18505859375,
 											"height": 13,
-											"text": "+getValoreOffertaMigliore()",
+											"text": "+getValoreOffertaMiglioreAsta()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -14550,8 +14550,7 @@
 							},
 							"name": "isAccettata",
 							"visibility": "private",
-							"type": "Boolean",
-							"defaultValue": "False"
+							"type": "Boolean"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -16184,7 +16183,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNdk+ug2slyZg="
 							},
-							"name": "getValoreOffertaMigliore"
+							"name": "getValoreOffertaMiglioreAsta"
 						},
 						{
 							"_type": "UMLOperation",
