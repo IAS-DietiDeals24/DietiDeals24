@@ -2,22 +2,23 @@
 
 \chapter{Requirement Analysis}
     \section{Obiettivo}
-        In questa sezione verranno analizzate le informazioni definite nei requisiti di sistema al fine di schematizzare opportunamente il dominio del problema.
+        Le informazioni ottenute attraverso la raccolta sono state organizzate attraverso l'uso di diagrammi ad alto livello, quali diagramma UML dei casi d'uso, tabelle di Cockburn e mock-up. \\
+        Sono stati anche individuati gli utenti target del sistema, nonché sono stati effettuati test di usabilità a priori sui mock-up dell'interfaccia utente.
 
     \section{Use Case Diagram}
+        Il diagramma dei casi d'uso indica per ciascun attore (utente che utilizzerà il sistema) quali sono le funzionalità alle quali egli potrà accedere.
         %Use Case Diagram costruito con StarUML
         \begin{figure}[htbp!]
             \centering
-                \vspace{2\baselineskip}
-                \includegraphics[width=0.41\linewidth]{Immagini/Diagrammi/UseCaseDiagram.pdf}
+                \includegraphics[width=0.378\linewidth]{Immagini/Diagrammi/UseCaseDiagram.pdf}
             \caption{Use Case Diagram}
             \label{fig:Use Case Diagram}
         \end{figure}
-
-    \newpage
     
-    \section{Target utenti}
-        La personas principale scelta è Maria Lombardo. La personas secondaria è Luca Serra
+    \section{Utenti target}
+        L'individuazione di utenti target risulta cruciale per sviluppare un applicativo che possa essere indirizzato ad una specifica demografica. \\
+        In particolare, permette di comprendere quali sono i bisogni delle diverse tipologie di utenti, rendendo semplici le operazioni che hanno bisogno di effettuare più spesso ciascuno di loro e risolvere le frustrazioni che essi possono riscontrare nei confronti di applicativi già esistenti. \\
+        Lo studio avviene attraverso la creazione di mock-up definiti "personas". Abbiamo indiviuato in totale sei gruppi di utenti, dei quali i più prominenti sono quelli rappresentati da Maria Lombardo (persona primaria) e Luca Serra (persona secondaria).
         
         \begin{figure}[!htb]
            \begin{minipage}{0.48\textwidth}
@@ -45,6 +46,8 @@
            \end{minipage}
         \end{figure}
 
+        \clearpage
+        
         \begin{figure}[!htb]
            \begin{minipage}{0.48\textwidth}
                 \centering
@@ -57,12 +60,281 @@
              \caption{Arturo Campobello}\label{Fig:Arturo Campobello}
            \end{minipage}
         \end{figure}
-        
+    
     \section{Mockup}
+    La realizzazione dell'interfaccia è stata eseguita attraverso il software di prototipazione Figma (il link al mock-up è visualizzabile \href{https://www.figma.com/file/kieERzm8U3jsHALXk4IjKS/Mockup?type=design&node-id=0%3A1&mode=design&t=CAyNdczd5giYLJ1j-1}{\underline{qui}}). \\
+    Il software ha consentito di individuare l'assetto generale dell'interfaccia utente per l'esecuzione di ogni caso d'uso individuato, nonché indicare le trasformazioni dell'interfaccia stessa in caso di errori del sistema.
 
-    \newpage
+    \begin{figure}[!htb]
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/0.pdf}
+            \caption{Scelta tipo account}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/1.pdf}
+            \caption{Schermata venditore}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/5.pdf}
+            \caption{Schermata compratore}
+        \end{minipage}\hfill
+    \end{figure}
 
+    \clearpage
+    
+    \begin{figure}[!htb]
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/2.pdf}
+            \caption{Accesso}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Errori/E1.pdf}
+            \caption{Errore credenziali errate}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Errori/E2.pdf}
+            \caption{Errore accesso social}
+        \end{minipage}\hfill
+    \end{figure}
+    
+    \begin{figure}[!htb]
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/3.pdf}
+            \caption{Registrazione}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/4.pdf}
+            \caption{Profilo già associato}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/8.pdf}
+            \caption{Registrazione, fase 1}
+        \end{minipage}\hfill
+    \end{figure}
+
+    \clearpage
+    
+    \begin{figure}[!htb]
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/9.pdf}
+            \caption{Registrazione, fase 2}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/10.pdf}
+            \caption{Registrazione, fase 3}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Errori/E3.pdf}
+            \caption{Errore email già usata}
+        \end{minipage}\hfill
+    \end{figure}
+    
+    \begin{figure}[!htb]
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Errori/E4.pdf}
+            \caption{Errore password non sicura}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Errori/E5.pdf}
+            \caption{Errore campi obbligatori vuoti, fase 1}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Errori/E6.pdf}
+            \caption{Errore registrazione social}
+        \end{minipage}\hfill
+    \end{figure}
+
+    \clearpage
+    
+    \begin{figure}[!htb]
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Errori/E7.pdf}
+            \caption{Errore nome utente già usato}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Errori/E8.pdf}
+            \caption{Errore campi obbligatori vuoti, fase 2}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C1.pdf}
+            \caption{Home}
+        \end{minipage}\hfill
+    \end{figure}
+
+    \begin{figure}[!htb]
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C2.pdf}
+            \caption{Ricerca per parola chiave}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C3.pdf}
+            \caption{Ricerca per categoria}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C4.pdf}
+            \caption{Creazione asta}
+        \end{minipage}\hfill
+    \end{figure}
+
+    \clearpage
+
+    \begin{figure}[!htb]
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Errori/E11.pdf}
+            \caption{Errore campi obbligatori vuoti, crea asta}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C5.pdf}
+            \caption{Notifiche}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C6.pdf}
+            \caption{Menu profilo}
+        \end{minipage}\hfill
+    \end{figure}
+
+    \begin{figure}[!htb]
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C7.pdf}
+            \caption{Dettagli asta}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C10.pdf}
+            \caption{Profilo proprietario asta}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C11.pdf}
+            \caption{Pofilo personale}
+        \end{minipage}\hfill
+    \end{figure}
+
+    \clearpage
+
+    \begin{figure}[!htb]
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C12.pdf}
+            \caption{Modifica profilo personale}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Errori/E13.pdf}
+            \caption{Errore campi obbligatori vuoti, modifica profilo}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C13.pdf}
+            \caption{Aste create}
+        \end{minipage}\hfill
+    \end{figure}
+
+    \begin{figure}[!htb]
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C15.pdf}
+            \caption{Aste partecipate}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C16.pdf}
+            \caption{Offerte ricevute per un'asta}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Venditore/V13.pdf}
+            \caption{Offerte ricevute per un'asta silenziosa}
+        \end{minipage}\hfill
+    \end{figure}
+
+    \clearpage
+
+    \begin{figure}[!htb]
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Venditore/V14.pdf}
+            \caption{Offerta accettata (sopra) ed offerta rifiutata (sotto)}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C17.pdf}
+            \caption{Modifica asta}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Errori/E12.pdf}
+            \caption{Errore campi obbligatori vuoti, modifica asta}
+        \end{minipage}\hfill
+    \end{figure}
+
+    \begin{figure}[!htb]
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C18.pdf}
+            \caption{Sezione aiuto}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Popup/P1.pdf}
+            \caption{Popup per avanzare un'offerta}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Popup/P5.pdf}
+            \caption{Popup conferma operazione}
+        \end{minipage}\hfill
+    \end{figure}
+
+    \clearpage
+
+    \begin{figure}[!htb]
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Popup/P9.pdf}
+            \caption{Esito negativo operazione}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Popup/P20.pdf}
+            \caption{Esito positivo operazione}
+        \end{minipage}\hfill
+        \begin{minipage}{0.32\textwidth}
+            \centering
+            \includegraphics[width=.7\linewidth]{Immagini/Frames/Aiuto/A2.pdf}
+            \caption{Popup di aiuto}
+        \end{minipage}\hfill
+        
+    \end{figure}
+    
     \section{Tabelle di Cockburn}
+    Basandosi sull'interfaccia designata nel mock-up al punto precedente, è stata effettuata la stesura delle tabelle di Cockburn di due casi d'uso significativi. \\
+    Lo scopo delle tabelle è quello di presentare in maniera sequenziale come giungere all'esecuzione di un caso d'uso interagendo con l'interfaccia utente, evidenziando anche possibili metodi alternativi per raggiungere lo stesso scopo.
         \subsection{Crea un’asta inversa}
             \begin{longtable}{|C{3.0cm}|C{1.3cm}|L{5.2cm}|L{5.2cm}|}
                 \hline
@@ -297,8 +569,6 @@
                 \hline
             \end{longtable}
 
-        \vspace{3.0 cm}
-
         \subsection{Accetta un'offerta ricevuta all'asta silenziosa}
             \begin{longtable}{|C{3.0cm}|C{1.3cm}|L{5.2cm}|L{5.2cm}|}
                 \hline
@@ -397,11 +667,21 @@
                 \hline
             \end{longtable}
 
-    \newpage
-
     \section{Valutazione dell’usabilità a priori}
+    La valutazione dell'usabilità consiste nel verificare l'aderenza dell'interfaccia alle 8 regole d'oro di Ben Shneiderman o alle 10 euristiche di Nielsen. In particolare, alcuni punti forti individuati sono stati:
+    \begin{itemize}
+        \item Consistenza: Lo stile dell'applicazione, sia nei colori che nelle dimensioni di font ed elementi dell'interfaccia rimane costante e coerente.
+        \item Standard: L'interfaccia utilizza convenzioni dell'industria sia nel posizionamento degli elementi sull'interfaccia e sia nelle icone utilizzate.
+        \item Scorciatoie: L'applicazione permette agli utenti di effettuare delle operazioni con un numero estremamente basso di tap e re-direzioni.
+        \item Messaggi informativi: L'applicazione permette agli utenti di essere a conoscenza di esiti negativi delle loro operazioni grazie a dei pop-up informativi. Lo stesso vale per l'esito positivo di una operazione.
+        \item Memoria a breve termine: L'applicazione ha un'interfaccia minimale senza troppi ingombri visivi che possono sovraccaricare la memoria a breve termine dell'utente; in tal modo non si sentirò disorientato dalla mole di informazioni mostrate su schermo.
+        \item Corrispondenza con il mondo reale: L'applicazione utilizza un linguaggio semplice e non costringe gli utenti ad informarsi attraverso fonti esterne per comprendere ciò che gli viene mostrato.
+        \item Controllo dell'utente e prevenzione errori: L'applicazione impedisce all'utente di effettuare delle operazioni importanti senza prima richiedere una conferma, così da consentire di cambiare idea oppure prevenire errori di tap.
+        \item Aiuto e documentazione: L'applicazione fornisce una sezione di aiuto interna che permette all'utente di capire come effettuare passo per passo ogni operazione più importante.
+    \end{itemize}
         \subsection{Valutazioni con utenti}
-            Sono stati effettuati una serie di valutazioni di usabilità attraverso i prototipi costruiti con strumenti di rapid prototyping, in particolare “Figma”. In particolare, nelle tabelle seguenti sono riportati tutti i casi d'uso testati e, per ogni utente, viene indicato con:
+            Sono stati effettuati una serie di valutazioni di usabilità attraverso i prototipi costruiti con Figma. \\
+            In particolare, nelle tabelle seguenti sono riportati i casi d'uso testati e, per ogni utente, viene indicato con:
             \begin{itemize}
                 \item S = Successo (ovvero la task è stata completata velocemente e senza intoppi)
                 \item P = Successo parziale (ovvero è stato necessario un po' di tempo in più e piccoli suggerimenti)
@@ -461,17 +741,49 @@
                 \end{tabular}
                 }
             \end{table}
-
-        \newpage
+            
+            Al fine di quantificare la bontà di realizzazione dell'interfaccia e la riposta degli utenti ad essa (in particolare il primo, utilizzeremo un sistema di punteggio per ogni caso d'uso. \\
+            Il punteggio è riferito al primo test di usabilità sulla prima versione del prototipo. \\
+            Il campione di utenti in esame distingue ogni individuo per sesso, età, livello di inclinazione al digitale e contesto familiare. \\
+            In particolare seguiremo le seguenti regole:
+            \begin{itemize}
+                \item Per ogni caso d'uso, il punteggio massimo attribuibile è da 0 ad N (dove N è il numero di utenti che hanno testato quel caso d'uso).
+                \item Se l'utente ha testato il caso d'uso con successo (S), si somma al totale 1.
+                \item Se l'utente ha testato il caso d'uso con parziale successo (P), si somma al totale 0,5.
+                \item Se l'utente ha testato il caso d'uso con insuccesso (F), si somma al totale 0.
+                \item Si calcola infine per ogni caso d'uso la percentuale di successo così: \\ $\displaystyle\frac{\sum_{utente = 1} ^{N}punteggio(utente)}{\sum_{utente = 1} ^{N}1} = \frac{punteggioOttenuto}{punteggioTotale}$.
+            \end{itemize}
+            Le percentuali di successo per ogni caso d'uso testato al sono:
+            \begin{itemize}
+                \item Registrazione account: $\frac{9}{9} = 1 = 100\%$
+                \item Accesso account: $\frac{9}{9} = 1 = 100\%$
+                \item Ricerca aste: $\frac{7}{7} = 1 = 100\%$
+                \item Filtra aste: $\frac{6,5}{7} = 0,93 = 93\%$
+                \item Visualizza dettagli asta: $\frac{7,5}{9} = 0,83 = 83\%$
+                \item Visualizza profilo proprietario asta: $\frac{7}{9} = 0,78 = 78\%$
+                \item Visualizza le tue aste create: $\frac{7,5}{9} = 0,83 = 83\%$
+                \item Modifica la tua asta: $\frac{8,5}{9} = 0,94 = 94\%$
+                \item Elimina la tua asta: $\frac{9}{9} = 1 = 100\%$
+                \item Visualizza il tuo profilo: $\frac{8,5}{9} = 0,94 = 94\%$
+                \item Visualizza asta a cui hai partecipato: $\frac{7}{9} = 0,78 = 78\%$
+                \item Modifica il tuo profilo: $\frac{6,5}{9} = 0,72 = 72\%$
+                \item Visualizza offerte per la tua asta: $\frac{9}{9} = 1 = 100\%$
+                \item Fai un'offerta ad un'asta: $\frac{7}{7} = 1 = 100\%$
+                \item Crea asta: $\frac{9}{9} = 1 = 100\%$
+                \item Accetta offerte asta silenziosa: $\frac{3}{3} = 1 = 100\%$
+                \item Rifiuta offerte asta silenziosa: $\frac{3}{3} = 1 = 100\%$
+            \end{itemize}
         
         \subsection{Modifiche a seguito delle valutazioni}
-            Dalle valutazioni effettuate, abbiamo riscontato alcuni problemi che hanno comportato una rielaborazione di alcuni aspetti dell’interfaccia. \\[1\baselineskip]
+            Dalle valutazioni effettuate, sono state riscontrate alcune criticità che hanno comportato una rielaborazione di alcuni aspetti dell’interfaccia. \\
+            Dopo la risoluzione di tali problemi, il tasso di successo ha registrato un incremento.
 
             \begin{center}
-            \begin{tabular}{|C{7.35cm}|C{7.35cm}|}
+            \begin{longtable}{|C{7.35cm}|C{7.35cm}|}
                 \hline
                     \textbf{Problematica riscontrata} & \textbf{Modifica apportata}\\
                 \hline
+                \endhead
                     La presenza dello sfondo bianco sotto le singole informazioni delle "informazioni utente" ha indotto alcuni soggetti a cliccare direttamente i campi per effettuare una modifica, ignorando la presenza del pulsantino apposito. &
                     Abbiamo rimosso lo sfondo bianco da tutti gli elementi non cliccabili, concentrando l’attenzione del soggetto solo ed esclusivamente sul pulsante di modifica apposito. \\
                 \hline
@@ -499,5 +811,5 @@
                     Un utente ha trovato difficoltà nel modificare il profilo poichè non vedeva il bottone dedicato a tale funzionalità. In particolare, ha cercato il bottone nella parte bassa dello schermo. &
                     Abbiamo spostato il bottone di "modifica profilo" rendendolo un bottone in sovrimpressione in basso a destra all'interno della sezione delle "informazioni utente". \\
                 \hline
-            \end{tabular}
+            \end{longtable}
             \end{center}
