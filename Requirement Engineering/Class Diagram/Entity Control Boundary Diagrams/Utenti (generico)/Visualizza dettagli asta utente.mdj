@@ -9,7 +9,7 @@
 			"_parent": {
 				"$ref": "AAAAAAFF+h6SjaM2Hec="
 			},
-			"name": "Visualizza i dettagli di un'asta",
+			"name": "Visualizza i dettagli di un'asta di un utente",
 			"ownedElements": [
 				{
 					"_type": "UMLClassDiagram",
@@ -17,7 +17,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGNWdllrbulRCM="
 					},
-					"name": "VisualizzaDettagliAsta",
+					"name": "VisualizzaDettagliAstaUtente",
 					"ownedViews": [
 						{
 							"_type": "UMLClassView",
@@ -78,9 +78,9 @@
 											"font": "Arial;13;0",
 											"left": 5168,
 											"top": 368,
-											"width": 266.6015625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -413,9 +413,9 @@
 											"font": "Arial;13;0",
 											"left": 752,
 											"top": 1036,
-											"width": 266.6015625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -964,9 +964,9 @@
 											"font": "Arial;13;0",
 											"left": 3114,
 											"top": 502,
-											"width": 266.6015625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -1317,9 +1317,9 @@
 											"font": "Arial;13;0",
 											"left": 1744,
 											"top": 848,
-											"width": 266.6015625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -1562,9 +1562,9 @@
 											"font": "Arial;13;0",
 											"left": 2304,
 											"top": 832,
-											"width": 266.6015625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -1993,9 +1993,9 @@
 											"font": "Arial;13;0",
 											"left": 5184,
 											"top": 760,
-											"width": 266.6015625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -2274,9 +2274,9 @@
 											"font": "Arial;13;0",
 											"left": 4034,
 											"top": 696,
-											"width": 266.6015625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -2741,9 +2741,9 @@
 											"font": "Arial;13;0",
 											"left": 488,
 											"top": 700,
-											"width": 266.6015625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -3094,9 +3094,9 @@
 											"font": "Arial;13;0",
 											"left": 656,
 											"top": 720,
-											"width": 266.6015625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -3281,9 +3281,9 @@
 											"font": "Arial;13;0",
 											"left": 1360,
 											"top": 688,
-											"width": 266.6015625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -3654,9 +3654,9 @@
 											"font": "Arial;13;0",
 											"left": 1568,
 											"top": 752,
-											"width": 266.6015625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -3899,9 +3899,9 @@
 											"font": "Arial;13;0",
 											"left": 512,
 											"top": 752,
-											"width": 266.6015625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -4144,9 +4144,9 @@
 											"font": "Arial;13;0",
 											"left": -704,
 											"top": 704,
-											"width": 266.6015625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -4443,9 +4443,9 @@
 											"font": "Arial;13;0",
 											"left": 1280,
 											"top": 784,
-											"width": 266.6015625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -4778,9 +4778,9 @@
 											"font": "Arial;13;0",
 											"left": 1776,
 											"top": 816,
-											"width": 266.6015625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -5113,9 +5113,9 @@
 											"font": "Arial;13;0",
 											"left": 2016,
 											"top": 784,
-											"width": 266.6015625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -6771,9 +6771,9 @@
 											"font": "Arial;13;0",
 											"left": 824,
 											"top": 408,
-											"width": 266.6015625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -8014,7 +8014,7 @@
 											"top": 97,
 											"width": 211.6943359375,
 											"height": 13,
-											"text": "FrameDettagliAsta"
+											"text": "FrameDettagliAstaUtente"
 										},
 										{
 											"_type": "LabelView",
@@ -8027,9 +8027,9 @@
 											"font": "Arial;13;0",
 											"left": -1668,
 											"top": -82,
-											"width": 207.44775390625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -8542,9 +8542,9 @@
 											"font": "Arial;13;0",
 											"left": -3870,
 											"top": -1010,
-											"width": 207.44775390625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -8749,7 +8749,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1638,
+									"left": 1632,
 									"top": 373,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -8770,8 +8770,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 1625,
-									"top": 381,
+									"left": 1619,
+									"top": 380,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -8791,7 +8791,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1663,
+									"left": 1659,
 									"top": 358,
 									"height": 13,
 									"alpha": -1.5707963267948966,
@@ -8812,8 +8812,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1678,
-									"top": 442,
+									"left": 1672,
+									"top": 441,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -8833,8 +8833,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1666,
-									"top": 447,
+									"left": 1659,
+									"top": 446,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -8854,7 +8854,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1704,
+									"left": 1698,
 									"top": 432,
 									"height": 13,
 									"alpha": -0.5235987755982988,
@@ -8875,7 +8875,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1597,
+									"left": 1594,
 									"top": 304,
 									"height": 13,
 									"alpha": -0.5235987755982988,
@@ -8895,7 +8895,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1587,
+									"left": 1584,
 									"top": 313,
 									"height": 13,
 									"alpha": -0.7853981633974483,
@@ -8915,7 +8915,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1618,
+									"left": 1616,
 									"top": 287,
 									"height": 13,
 									"alpha": 0.5235987755982988,
@@ -8965,7 +8965,7 @@
 								"$ref": "AAAAAAGNdk+1UGtoN8w="
 							},
 							"lineStyle": 1,
-							"points": "1705:463;1597:281",
+							"points": "1698:463;1595:281",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGNZj+Uz3g1F78="
@@ -9061,9 +9061,9 @@
 											"font": "Arial;13;0",
 											"left": 454,
 											"top": 38,
-											"width": 207.44775390625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -9250,7 +9250,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 2024,
+									"left": 2029,
 									"top": 371,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -9271,7 +9271,7 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 2036,
+									"left": 2042,
 									"top": 379,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -9292,7 +9292,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1999,
+									"left": 2004,
 									"top": 354,
 									"height": 13,
 									"alpha": -1.5707963267948966,
@@ -9313,7 +9313,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 2073,
+									"left": 2075,
 									"top": 299,
 									"height": 13,
 									"alpha": 0.5235987755982988,
@@ -9334,7 +9334,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 2083,
+									"left": 2085,
 									"top": 309,
 									"height": 13,
 									"alpha": 0.7853981633974483,
@@ -9355,8 +9355,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 2053,
-									"top": 280,
+									"left": 2054,
+									"top": 281,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -9376,7 +9376,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1976,
+									"left": 1983,
 									"top": 443,
 									"height": 13,
 									"alpha": -0.5235987755982988,
@@ -9396,8 +9396,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1988,
-									"top": 449,
+									"left": 1996,
+									"top": 448,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -9416,7 +9416,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1950,
+									"left": 1958,
 									"top": 432,
 									"height": 13,
 									"alpha": 0.5235987755982988,
@@ -9466,7 +9466,7 @@
 								"$ref": "AAAAAAGNZlRQ1h40ap4="
 							},
 							"lineStyle": 1,
-							"points": "2076:276;1949:463",
+							"points": "2077:276;1957:463",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGNZlWmxTLsfj4="
@@ -10091,7 +10091,7 @@
 											"top": 484,
 											"width": 334.18505859375,
 											"height": 13,
-											"text": "ControllerDettagliAsta"
+											"text": "ControllerDettagliAstaUtente"
 										},
 										{
 											"_type": "LabelView",
@@ -10104,9 +10104,9 @@
 											"font": "Arial;13;0",
 											"left": -1130,
 											"top": -202,
-											"width": 207.44775390625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -10154,6 +10154,24 @@
 									"subViews": [
 										{
 											"_type": "UMLAttributeView",
+											"_id": "AAAAAAGNp3q/Xqt+RbE=",
+											"_parent": {
+												"$ref": "AAAAAAGNdk+1UGtu7hY="
+											},
+											"model": {
+												"$ref": "AAAAAAGNp3q/Latjad8="
+											},
+											"fillColor": "#ffc082",
+											"font": "Arial;13;0",
+											"left": 1653,
+											"top": 507,
+											"width": 334.18505859375,
+											"height": 13,
+											"text": "-accountLoggato: Account",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLAttributeView",
 											"_id": "AAAAAAGNdk+1aWvYxpw=",
 											"_parent": {
 												"$ref": "AAAAAAGNdk+1UGtu7hY="
@@ -10164,7 +10182,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 507,
+											"top": 522,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "-asta: Asta",
@@ -10182,7 +10200,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 522,
+											"top": 537,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "-proprietario: Account",
@@ -10200,7 +10218,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 537,
+											"top": 552,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "-profiloProprietario: Profilo",
@@ -10218,7 +10236,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 552,
+											"top": 567,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "-offertaMigliore: Offerta",
@@ -10230,7 +10248,7 @@
 									"left": 1648,
 									"top": 502,
 									"width": 344.18505859375,
-									"height": 68
+									"height": 83
 								},
 								{
 									"_type": "UMLOperationCompartmentView",
@@ -10254,10 +10272,46 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 575,
+											"top": 590,
 											"width": 334.18505859375,
 											"height": 13,
-											"text": "+mostraDettagliAsta()",
+											"text": "+mostraDettagliAstaUtente()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGNp3vm38GsT0M=",
+											"_parent": {
+												"$ref": "AAAAAAGNdk+1UGtviC4="
+											},
+											"model": {
+												"$ref": "AAAAAAGNp3vmwsGR0Jo="
+											},
+											"fillColor": "#ffc082",
+											"font": "Arial;13;0",
+											"left": 1653,
+											"top": 605,
+											"width": 334.18505859375,
+											"height": 13,
+											"text": "+isAccountLoggatoOspite()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAGNp5kiEubT1Vc=",
+											"_parent": {
+												"$ref": "AAAAAAGNdk+1UGtviC4="
+											},
+											"model": {
+												"$ref": "AAAAAAGNp5kh/Oa4V74="
+											},
+											"fillColor": "#ffc082",
+											"font": "Arial;13;0",
+											"left": 1653,
+											"top": 620,
+											"width": 334.18505859375,
+											"height": 13,
+											"text": "+isAstaScaduta()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -10272,7 +10326,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 590,
+											"top": 635,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+getTipoAsta()",
@@ -10290,7 +10344,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 605,
+											"top": 650,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+getNomeAsta()",
@@ -10308,7 +10362,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 620,
+											"top": 665,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+getDataScadenzaAsta()",
@@ -10326,7 +10380,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 635,
+											"top": 680,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+getOraScadenzaAsta()",
@@ -10344,7 +10398,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 650,
+											"top": 695,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+getDescrizioneAsta()",
@@ -10362,7 +10416,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 665,
+											"top": 710,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+getImmagineAsta()",
@@ -10380,7 +10434,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 680,
+											"top": 725,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+setOffertaMiglioreAsta(offerteRicevuteList: List<Offerta>)",
@@ -10398,7 +10452,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 695,
+											"top": 740,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+getValoreOffertaMiglioreAsta()",
@@ -10416,7 +10470,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 710,
+											"top": 755,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+setProprietario(asta: Asta)",
@@ -10434,7 +10488,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 725,
+											"top": 770,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+setProfiloProprietario(proprietario: Account)",
@@ -10452,7 +10506,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 740,
+											"top": 785,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+getProfilePictureProfilo()",
@@ -10470,7 +10524,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 755,
+											"top": 800,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+getNomeUtenteProfilo()",
@@ -10488,7 +10542,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 770,
+											"top": 815,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+mostraImmagineAsta()",
@@ -10506,7 +10560,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 785,
+											"top": 830,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+mostraInfoTipoAsta()",
@@ -10524,7 +10578,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 800,
+											"top": 845,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+apriVisualizzaProfiloProprietario()",
@@ -10542,7 +10596,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 815,
+											"top": 860,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+apriFaiOfferta()",
@@ -10560,7 +10614,7 @@
 											"fillColor": "#ffc082",
 											"font": "Arial;13;0",
 											"left": 1653,
-											"top": 830,
+											"top": 875,
 											"width": 334.18505859375,
 											"height": 13,
 											"text": "+mostraFinestraPrecedente()",
@@ -10570,9 +10624,9 @@
 									"fillColor": "#ffc082",
 									"font": "Arial;13;0",
 									"left": 1648,
-									"top": 570,
+									"top": 585,
 									"width": 344.18505859375,
-									"height": 278
+									"height": 308
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -10615,7 +10669,7 @@
 							"left": 1648,
 							"top": 464,
 							"width": 344.18505859375,
-							"height": 384,
+							"height": 429,
 							"nameCompartment": {
 								"$ref": "AAAAAAGNdk+1UGtpUNk="
 							},
@@ -10654,7 +10708,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1833,
-									"top": 912,
+									"top": 935,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -10675,7 +10729,7 @@
 									"visible": null,
 									"font": "Arial;13;0",
 									"left": 1848,
-									"top": 912,
+									"top": 935,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -10696,7 +10750,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1804,
-									"top": 913,
+									"top": 936,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -10717,7 +10771,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1834,
-									"top": 867,
+									"top": 912,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -10738,7 +10792,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1847,
-									"top": 870,
+									"top": 914,
 									"height": 13,
 									"alpha": 0.7853981633974483,
 									"distance": 40,
@@ -10759,7 +10813,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1806,
-									"top": 863,
+									"top": 908,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 25,
@@ -10799,7 +10853,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1848,
+									"left": 1847,
 									"top": 956,
 									"height": 13,
 									"alpha": -0.7853981633974483,
@@ -10869,7 +10923,7 @@
 								"$ref": "AAAAAAGNdk+1UGtoN8w="
 							},
 							"lineStyle": 1,
-							"points": "1819:848;1820:991",
+							"points": "1819:893;1820:991",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGNdlEDtKi5i4E="
@@ -12056,9 +12110,9 @@
 											"font": "Arial;13;0",
 											"left": -600,
 											"top": 130,
-											"width": 207.44775390625,
+											"width": 279.0048828125,
 											"height": 13,
-											"text": "(from Visualizza i dettagli di un'asta)"
+											"text": "(from Visualizza i dettagli di un'asta di un utente)"
 										},
 										{
 											"_type": "LabelView",
@@ -15627,7 +15681,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGNWdllrbulRCM="
 					},
-					"name": "FrameDettagliAsta",
+					"name": "FrameDettagliAstaUtente",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -15965,7 +16019,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGNWdllrbulRCM="
 					},
-					"name": "ControllerDettagliAsta",
+					"name": "ControllerDettagliAstaUtente",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -16053,6 +16107,18 @@
 					"attributes": [
 						{
 							"_type": "UMLAttribute",
+							"_id": "AAAAAAGNp3q/Latjad8=",
+							"_parent": {
+								"$ref": "AAAAAAGNdk+ug2slyZg="
+							},
+							"name": "accountLoggato",
+							"visibility": "private",
+							"type": {
+								"$ref": "AAAAAAGNZKQVwIcixPo="
+							}
+						},
+						{
+							"_type": "UMLAttribute",
 							"_id": "AAAAAAGNdk+ug2spOoE=",
 							"_parent": {
 								"$ref": "AAAAAAGNdk+ug2slyZg="
@@ -16107,7 +16173,23 @@
 							"_parent": {
 								"$ref": "AAAAAAGNdk+ug2slyZg="
 							},
-							"name": "mostraDettagliAsta"
+							"name": "mostraDettagliAstaUtente"
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGNp3vmwsGR0Jo=",
+							"_parent": {
+								"$ref": "AAAAAAGNdk+ug2slyZg="
+							},
+							"name": "isAccountLoggatoOspite"
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGNp5kh/Oa4V74=",
+							"_parent": {
+								"$ref": "AAAAAAGNdk+ug2slyZg="
+							},
+							"name": "isAstaScaduta"
 						},
 						{
 							"_type": "UMLOperation",
@@ -16275,7 +16357,7 @@
 								"$ref": "AAAAAAGNdk+ug2slyZg="
 							},
 							"name": "apriFaiOfferta",
-							"documentation": "Apre il controllerFaiOfferta passando l'asta di riferimento"
+							"documentation": "Apre il controllerFaiOfferta passando l'asta di riferimento e l'accountLoggato"
 						},
 						{
 							"_type": "UMLOperation",
@@ -16398,7 +16480,7 @@
 								"$ref": "AAAAAAGNikE9ovBUVeU="
 							},
 							"name": "apriHome",
-							"documentation": "Apre il controllerHome passando il tipo account"
+							"documentation": "Apre il controllerHome passando l'accountLoggato"
 						},
 						{
 							"_type": "UMLOperation",

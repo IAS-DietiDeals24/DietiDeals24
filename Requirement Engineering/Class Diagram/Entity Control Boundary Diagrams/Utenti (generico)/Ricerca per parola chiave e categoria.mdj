@@ -1971,7 +1971,7 @@
 											"top": 419,
 											"width": 371.76318359375,
 											"height": 13,
-											"text": "-tipoAccountLoggato: String",
+											"text": "-accountLoggato: Account",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2819,7 +2819,7 @@
 											"font": "Arial;13;0",
 											"left": 1605,
 											"top": 149,
-											"width": 166.6513671875,
+											"width": 167.603515625,
 											"height": 13,
 											"text": "«boundary»"
 										},
@@ -2833,9 +2833,9 @@
 											"font": "Arial;13;1",
 											"left": 1605,
 											"top": 164,
-											"width": 166.6513671875,
+											"width": 167.603515625,
 											"height": 13,
-											"text": "FrameAnteprimaAsta"
+											"text": "FrameAnteprimaAstaAttiva"
 										},
 										{
 											"_type": "LabelView",
@@ -2871,7 +2871,7 @@
 									"font": "Arial;13;0",
 									"left": 1600,
 									"top": 144,
-									"width": 176.6513671875,
+									"width": 177.603515625,
 									"height": 38,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGNZKa9g5iOm6Y="
@@ -2909,7 +2909,7 @@
 											"font": "Arial;13;0",
 											"left": 1605,
 											"top": 187,
-											"width": 166.6513671875,
+											"width": 167.603515625,
 											"height": 13,
 											"text": "-idAsta: Integer",
 											"horizontalAlignment": 0
@@ -2927,7 +2927,7 @@
 											"font": "Arial;13;0",
 											"left": 1605,
 											"top": 202,
-											"width": 166.6513671875,
+											"width": 167.603515625,
 											"height": 13,
 											"text": "-tipoAsta: String",
 											"horizontalAlignment": 0
@@ -2945,7 +2945,7 @@
 											"font": "Arial;13;0",
 											"left": 1605,
 											"top": 217,
-											"width": 166.6513671875,
+											"width": 167.603515625,
 											"height": 13,
 											"text": "-dataScadenzaAsta: Date",
 											"horizontalAlignment": 0
@@ -2963,7 +2963,7 @@
 											"font": "Arial;13;0",
 											"left": 1605,
 											"top": 232,
-											"width": 166.6513671875,
+											"width": 167.603515625,
 											"height": 13,
 											"text": "-oraScadenzaAsta: Time",
 											"horizontalAlignment": 0
@@ -2981,7 +2981,7 @@
 											"font": "Arial;13;0",
 											"left": 1605,
 											"top": 247,
-											"width": 166.6513671875,
+											"width": 167.603515625,
 											"height": 13,
 											"text": "-immagineAsta: Immagine",
 											"horizontalAlignment": 0
@@ -2999,7 +2999,7 @@
 											"font": "Arial;13;0",
 											"left": 1605,
 											"top": 262,
-											"width": 166.6513671875,
+											"width": 167.603515625,
 											"height": 13,
 											"text": "-nomeAsta: String",
 											"horizontalAlignment": 0
@@ -3017,7 +3017,7 @@
 											"font": "Arial;13;0",
 											"left": 1605,
 											"top": 277,
-											"width": 166.6513671875,
+											"width": 167.603515625,
 											"height": 13,
 											"text": "-offertaMiglioreAsta: Decimal",
 											"horizontalAlignment": 0
@@ -3027,7 +3027,7 @@
 									"font": "Arial;13;0",
 									"left": 1600,
 									"top": 182,
-									"width": 176.6513671875,
+									"width": 177.603515625,
 									"height": 113
 								},
 								{
@@ -3053,7 +3053,7 @@
 											"font": "Arial;13;0",
 											"left": 1605,
 											"top": 300,
-											"width": 166.6513671875,
+											"width": 167.603515625,
 											"height": 13,
 											"text": "+clickDettagliAsta()",
 											"horizontalAlignment": 0
@@ -3063,7 +3063,7 @@
 									"font": "Arial;13;0",
 									"left": 1600,
 									"top": 295,
-									"width": 176.6513671875,
+									"width": 177.603515625,
 									"height": 23
 								},
 								{
@@ -3106,7 +3106,7 @@
 							"containerChangeable": true,
 							"left": 1600,
 							"top": 144,
-							"width": 176.6513671875,
+							"width": 177.603515625,
 							"height": 174,
 							"nameCompartment": {
 								"$ref": "AAAAAAGNZKa9g5iNdsY="
@@ -12236,7 +12236,7 @@
 								"$ref": "AAAAAAGNWdllt7zy7BU="
 							},
 							"name": "apriHome",
-							"documentation": "Apre il controllerHome passando il tipo account"
+							"documentation": "Apre il controllerHome passando l'accountLoggato"
 						},
 						{
 							"_type": "UMLOperation",
@@ -12641,9 +12641,11 @@
 							"_parent": {
 								"$ref": "AAAAAAGNYdJ+cN+uxEM="
 							},
-							"name": "tipoAccountLoggato",
+							"name": "accountLoggato",
 							"visibility": "private",
-							"type": "String"
+							"type": {
+								"$ref": "AAAAAAGNZKQVwIcixPo="
+							}
 						},
 						{
 							"_type": "UMLAttribute",
@@ -12828,7 +12830,7 @@
 								"$ref": "AAAAAAGNYdJ+cN+uxEM="
 							},
 							"name": "apriDettagliAstaCliccata",
-							"documentation": "apre controllerDettagliAsta dell'anteprima cliccata, passando l'asta cliccata.\nTale asta è quella in risultatoRicerca[idAsta]",
+							"documentation": "apre controllerDettagliAstaUtente dell'anteprima cliccata, passando l'asta cliccata e l'accountLoggato.\nTale asta è quella in risultatoRicerca[idAsta]",
 							"parameters": [
 								{
 									"_type": "UMLParameter",
@@ -12848,7 +12850,7 @@
 								"$ref": "AAAAAAGNYdJ+cN+uxEM="
 							},
 							"name": "apriRicercaCategoria",
-							"documentation": "apre il controllerRicercaCategoria il tipoAccountLoggato"
+							"documentation": "apre il controllerRicercaCategoria passando l'accountLoggato"
 						},
 						{
 							"_type": "UMLOperation",
@@ -12857,7 +12859,7 @@
 								"$ref": "AAAAAAGNYdJ+cN+uxEM="
 							},
 							"name": "apriRicercaParolaChiave",
-							"documentation": "apre il controllerRicercaParolaChiave passando il tipoAccountLoggato"
+							"documentation": "apre il controllerRicercaParolaChiave passando l'accountLoggato"
 						},
 						{
 							"_type": "UMLOperation",
@@ -12866,7 +12868,7 @@
 								"$ref": "AAAAAAGNYdJ+cN+uxEM="
 							},
 							"name": "apriHome",
-							"documentation": "Apre il controllerHome passando il tipoAccountLoggato"
+							"documentation": "Apre il controllerHome passando l'accountLoggato"
 						},
 						{
 							"_type": "UMLOperation",
@@ -12875,7 +12877,7 @@
 								"$ref": "AAAAAAGNYdJ+cN+uxEM="
 							},
 							"name": "apriRicercaParolaChiaveCategoria",
-							"documentation": "apre il controllerRicercaParolaChiaveCategoria passando il tipoAccountLoggato"
+							"documentation": "apre il controllerRicercaParolaChiaveCategoria passando l'accountLoggato"
 						}
 					]
 				},
@@ -13043,7 +13045,7 @@
 					"_parent": {
 						"$ref": "AAAAAAGNWdllrbulRCM="
 					},
-					"name": "FrameAnteprimaAsta",
+					"name": "FrameAnteprimaAstaAttiva",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
