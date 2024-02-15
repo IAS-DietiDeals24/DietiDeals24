@@ -3801,7 +3801,7 @@
 											"top": 336,
 											"width": 123.9443359375,
 											"height": 13,
-											"text": "-tastoIndietro: Button",
+											"text": "-chiudi: Button",
 											"horizontalAlignment": 0
 										}
 									],
@@ -3855,7 +3855,7 @@
 											"top": 374,
 											"width": 123.9443359375,
 											"height": 13,
-											"text": "+clickIndietro()",
+											"text": "+clickChiudi()",
 											"horizontalAlignment": 0
 										}
 									],
@@ -8364,7 +8364,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNa8HX+YwHebs="
 							},
-							"name": "tastoIndietro",
+							"name": "chiudi",
 							"visibility": "private",
 							"type": "Button"
 						}
@@ -8384,7 +8384,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNa8HX+YwHebs="
 							},
-							"name": "clickIndietro"
+							"name": "clickChiudi"
 						}
 					]
 				},

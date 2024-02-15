@@ -16873,7 +16873,7 @@
 								"$ref": "AAAAAAGNejRJlURjR/o="
 							},
 							"name": "apriEliminaAsta",
-							"documentation": "Apre il controllerEliminaAstaCreata passando l'asta cliccata.\nTale asta è quella in asteCreate[idAsta]",
+							"documentation": "Apre il controllerEliminaAstaCreata passando l'asta cliccata e l'accountLoggato\nTale asta è quella in asteCreate[idAsta]",
 							"parameters": [
 								{
 									"_type": "UMLParameter",

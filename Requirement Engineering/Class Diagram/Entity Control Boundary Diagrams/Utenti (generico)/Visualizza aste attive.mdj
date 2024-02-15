@@ -907,7 +907,7 @@
 									"fillColor": "#FFC082",
 									"font": "Arial;13;0",
 									"left": 2106,
-									"top": 62,
+									"top": 61,
 									"width": 10,
 									"height": 10
 								},
@@ -924,7 +924,7 @@
 									"fillColor": "#FFC082",
 									"font": "Arial;13;0",
 									"left": 2106,
-									"top": 62,
+									"top": 61,
 									"width": 10,
 									"height": 10
 								}
@@ -12385,7 +12385,7 @@
 								"$ref": "AAAAAAGNWdllt7zy7BU="
 							},
 							"name": "apriCreaAsta",
-							"documentation": "Apre il controllerCreaAstaXXX passando l'account.\nPer l'account compratore apre il controllerCreaAstaInversa.\nPer l'account venditore apre il controllerCreaAstaTempoFisso"
+							"documentation": "Apre il controllerSceltaCreazioneAsta passando l'account."
 						},
 						{
 							"_type": "UMLOperation",
