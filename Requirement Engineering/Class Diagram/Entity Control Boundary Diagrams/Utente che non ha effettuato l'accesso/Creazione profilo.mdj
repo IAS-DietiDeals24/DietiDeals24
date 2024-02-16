@@ -906,6 +906,24 @@
 										},
 										{
 											"_type": "UMLOperationView",
+											"_id": "AAAAAAGNskaqyToX8a8=",
+											"_parent": {
+												"$ref": "AAAAAAGNWdllsLwiWHo="
+											},
+											"model": {
+												"$ref": "AAAAAAGNskaquToUOX8="
+											},
+											"fillColor": "#FFC082",
+											"font": "Arial;13;0",
+											"left": 980,
+											"top": 767,
+											"width": 464.24853515625,
+											"height": 13,
+											"text": "+isTuttiCampiCompilati()",
+											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
 											"_id": "AAAAAAGNg/UnvIyp3iA=",
 											"_parent": {
 												"$ref": "AAAAAAGNWdllsLwiWHo="
@@ -916,7 +934,7 @@
 											"fillColor": "#FFC082",
 											"font": "Arial;13;0",
 											"left": 980,
-											"top": 767,
+											"top": 782,
 											"width": 464.24853515625,
 											"height": 13,
 											"text": "+creaProfilo()",
@@ -934,7 +952,7 @@
 											"fillColor": "#FFC082",
 											"font": "Arial;13;0",
 											"left": 980,
-											"top": 782,
+											"top": 797,
 											"width": 464.24853515625,
 											"height": 13,
 											"text": "+apriHome()",
@@ -952,7 +970,7 @@
 											"fillColor": "#FFC082",
 											"font": "Arial;13;0",
 											"left": 980,
-											"top": 797,
+											"top": 812,
 											"width": 464.24853515625,
 											"height": 13,
 											"text": "+apriNavbar()",
@@ -964,7 +982,7 @@
 									"left": 975,
 									"top": 657,
 									"width": 474.24853515625,
-									"height": 158
+									"height": 173
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -1007,7 +1025,7 @@
 							"left": 975,
 							"top": 581,
 							"width": 474.24853515625,
-							"height": 234,
+							"height": 249,
 							"nameCompartment": {
 								"$ref": "AAAAAAGNWdllsLwc1z8="
 							},
@@ -3913,7 +3931,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1185,
-									"top": 833,
+									"top": 848,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -3933,7 +3951,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1171,
-									"top": 836,
+									"top": 851,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -3953,7 +3971,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1212,
-									"top": 829,
+									"top": 844,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 25,
@@ -4001,7 +4019,7 @@
 							"tail": {
 								"$ref": "AAAAAAGNahI4YGwDR/M="
 							},
-							"points": "544:992;544:864;1200:864;1200:814",
+							"points": "544:992;544:864;1200:864;1200:829",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGNah+AN05ygSw="
@@ -4186,7 +4204,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1209,
-									"top": 833,
+									"top": 848,
 									"height": 13,
 									"alpha": -0.5235987755982988,
 									"distance": 30,
@@ -4206,7 +4224,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1195,
-									"top": 836,
+									"top": 851,
 									"height": 13,
 									"alpha": -0.7853981633974483,
 									"distance": 40,
@@ -4226,7 +4244,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 1236,
-									"top": 829,
+									"top": 844,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 25,
@@ -4274,7 +4292,7 @@
 							"tail": {
 								"$ref": "AAAAAAGNahJAP2zDROY="
 							},
-							"points": "1175:1448;1224:1448;1224:814",
+							"points": "1175:1448;1224:1448;1224:829",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGNah+H61E6UxI="
@@ -6501,6 +6519,14 @@
 								"$ref": "AAAAAAGNWdllt7zy7BU="
 							},
 							"name": "aggiungiLinkProfilo"
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAGNskaquToUOX8=",
+							"_parent": {
+								"$ref": "AAAAAAGNWdllt7zy7BU="
+							},
+							"name": "isTuttiCampiCompilati"
 						},
 						{
 							"_type": "UMLOperation",
