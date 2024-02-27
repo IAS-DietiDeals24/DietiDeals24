@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">DietiDeals24</string>
-    <string name="scelteIniziali_textView6">Entra come…</string>
-    <string name="scelteIniziali_button">Compratore</string>
-    <string name="scelteIniziali_button2">Venditore</string>
-    <string name="scelteInziali_textView7"><u>Entra come ospite</u></string>
-    <string name="scelteIniziali_accesibilitàLogo">Logo DietiDeals24</string>
-</resources>
