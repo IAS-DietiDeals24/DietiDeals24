@@ -1,0 +1,26 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.DietiDeals24" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+    <style name="BottoneArancioneGrande">
+        <item name="android:layout_width">260sp</item>
+        <item name="android:layout_height">50sp</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:backgroundTint">@color/arancione</item>
+        <item name="android:fontFamily">@font/fira_sans</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/grigio</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="BottoneBluGrande">
+        <item name="android:layout_width">260sp</item>
+        <item name="android:layout_height">50sp</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:backgroundTint">@color/blu</item>
+        <item name="android:fontFamily">@font/fira_sans</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/grigio</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+</resources>
