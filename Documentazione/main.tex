@@ -7,7 +7,12 @@
 \usepackage{multirow} %Per poter inserire celle multiriga
 \usepackage{graphicx} % Utilizzato per mostrare immagini (\includegraphics)
 \usepackage[colorlinks=true, allcolors=black]{hyperref} %Per avere link
-\usepackage{tabularx}
+
+\usepackage{tabularx} % Utitlità per tabelle
+\usepackage[backend=biber, sorting=ynt]{biblatex} % Per la bibliografia
+\usepackage{csquotes} % Per la corretta formattazione della bibliografia
+
+\addbibresource{bibliografia.bib} % Il file della bibliografia
 
 %Per controllare la larghezza delle colonne nelle tabelle
 \usepackage{array} 
@@ -25,7 +30,7 @@
     
 \setlength{\parindent}{0.7cm} %Per impostare l'interspazio di tutti i paragrafi a 0.7 cm
 
-\setcounter{chapter}{-1} %Per far iniziare la numerazione dei capitoli da 0
+%\setcounter{chapter}{-1} %Per far iniziare la numerazione dei capitoli da 0
 
 %Info documento
 \title{DietiDeals24}
@@ -96,9 +101,11 @@
     \include{Argomenti/Capitolo2/RequirementAnalysis}
     \include{Argomenti/Capitolo2/RequirementSpecification}
     %\include{Argomenti/Capitolo3/Usabilita}
-    %\include{Argomenti/Capitolo4/SystemDesign}
-    %\include{Argomenti/Capitolo5/ObjectDesign}
+    \include{Argomenti/Capitolo4/SystemDesign}
+    \include{Argomenti/Capitolo5/ObjectDesign}
     %\include{Argomenti/Capitolo6/Verification}
     %\include{Argomenti/Capitolo6/Validation}
+    
+    \printbibliography[heading=bibintoc]
     
 \end{document}

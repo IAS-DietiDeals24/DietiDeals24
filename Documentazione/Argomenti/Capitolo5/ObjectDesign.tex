@@ -1,31 +1,29 @@
 \chapter{Object Design}
-    \section{Legenda}
-        Di seguito è riportato il diagramma di dettaglio delle classi nel dominio della soluzione del processo server e del processo client.\\
-        In particolare, il tipo di visibilità è espressa da questa tabella:
-        \begin{figure}[htbp!]
-            \centering
-            \includegraphics[width=0.25\linewidth]{Immagini/Legend visibility.png}
-            \caption{Legenda della visibilità}
-            \label{fig:Legenda della visibilità}
-        \end{figure}\\
-        Inoltre, i costruttori della classe sono i metodi contrassegnati da \textless{}\textless{}Create\textgreater{}\textgreater{}.
+    La progettazione orientata agli oggetti è la fase di sviluppo del software nella quale si definisce il dettaglio implementativo dei vari sottosistemi. \\
+    Tali sottosistemi devono soddisfare i requisiti identificati, e sono costruiti sulla base degli oggetti individuati nel dominio del problema, ai quali inevitabilmente saranno aggiunti nuovi oggetti per giungere alla soluzione del problema. \\
+    Avendo impiegato un approccio "orientato ai casi d'uso", all'interno del sistema, vi sono tanti \textbf{sottosistemi} quanti sono gli use case. ognuno dei quali si occupa di uno e uno solo use case. \\
+    All'interno di ogni sottosistema, vi sono quattro strati:
+    \begin{itemize}
+        \item (Client) Lo strato di presentazione dell'interfaccia utente;
+        \item (Client) Lo strato di controllo dell'interfaccia utente che costruisce l'interfaccia, controlla la validità dei dati inseriti, gestisce le richieste da inviare al server attraverso le REST API, gestisce le risposte ricevute dal server attraverso le REST API;
+        \item (Server) Lo strato di controllo dei dati che controlla la validità dei dati in arrivo, invia i dati da archiviare allo strato di archiviazione, gestisce le risposte da inviare al client attraverso le REST API, gestisce le richieste ricevute dal client attraverso le REST API;
+        \item (Server) Lo strato di archiviazione dei dati che si occupa di comunicare con la base di dati per il recupero e il salvataggio dei dati.
+    \end{itemize}
+    
 
-    \section{Class Diagram del dominio della soluzione del Server}
-        %Class Diagram costruito con PlantUML
-        \begin{figure}[htbp!]
-            \centering
-                \vspace{2\baselineskip}
-                \includegraphics[width=\linewidth]{Immagini/WorkInProgress.pdf}
-            \caption{Class Diagram del dominio della soluzione del Server}
-            \label{fig:Class Diagram del dominio della soluzione del Server}
-        \end{figure}
-
-    \section{Class Diagram del dominio della soluzione del Client}
-        %Class Diagram costruito con PlantUML
-        \begin{figure}[htbp!]
-            \centering
-                \vspace{2\baselineskip}
-                \includegraphics[width=\linewidth]{Immagini/WorkInProgress.pdf}
-            \caption{Class Diagram del dominio della soluzione del Client}
-            \label{fig:Class Diagram del dominio della soluzione del Client}
-        \end{figure}
+    \section{Class Diagram}
+        \subsection{Class Diagram del dominio della soluzione del Server}
+            \begin{figure}[htbp!]
+                \centering
+                    \includegraphics[width=0.1\linewidth]{Immagini/WorkInProgress.pdf}
+                \caption{Class Diagram del dominio della soluzione del Server}
+                \label{fig:Class Diagram del dominio della soluzione del Server}
+            \end{figure}
+    
+        \subsection{Class Diagram del dominio della soluzione del Client}
+            \begin{figure}[htbp!]
+                \centering
+                    \includegraphics[width=0.1\linewidth]{Immagini/WorkInProgress.pdf}
+                \caption{Class Diagram del dominio della soluzione del Client}
+                \label{fig:Class Diagram del dominio della soluzione del Client}
+            \end{figure}
