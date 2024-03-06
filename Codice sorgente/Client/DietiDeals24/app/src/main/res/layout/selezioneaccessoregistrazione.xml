@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grigio">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/selezioneAccessoRegistrazione_logo"
+        android:layout_width="205dp"
+        android:layout_height="203dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/scelteIniziali_accesibilitàLogo"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.15"
+        app:srcCompat="@drawable/logo" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/selezioneAccessoRegistrazione_motto1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="203dp"
+        android:fontFamily="@font/fira_sans"
+        android:text="@string/scelteIniziali_motto1"
+        android:textColor="@color/blu"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/selezioneAccessoRegistrazione_logo"
+        app:layout_constraintStart_toStartOf="@+id/selezioneAccessoRegistrazione_logo" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/selezioneAccessoRegistrazione_motto2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/fira_sans_bold"
+        android:text="@string/scelteIniziali_motto2"
+        android:textColor="@color/arancione"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/selezioneAccessoRegistrazione_motto1"
+        app:layout_constraintStart_toEndOf="@+id/selezioneAccessoRegistrazione_motto1" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/selezioneAccessoRegistrazione_motto3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/fira_sans"
+        android:text="@string/scelteIniziali_motto3"
+        android:textColor="@color/blu"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/selezioneAccessoRegistrazione_motto2"
+        app:layout_constraintStart_toEndOf="@+id/selezioneAccessoRegistrazione_motto2" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/selezioneAccessoRegistrazione_nomeApp1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:fontFamily="@font/fira_sans_medium"
+        android:text="@string/scelteIniziali_nomeApp1"
+        android:textColor="@color/blu"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="@+id/selezioneAccessoRegistrazione_logo"
+        app:layout_constraintTop_toBottomOf="@+id/selezioneAccessoRegistrazione_logo" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/selezioneAccessoRegistrazione_nomeApp2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/fira_sans_medium"
+        android:text="@string/scelteIniziali_nomeApp2"
+        android:textColor="@color/arancione"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/selezioneAccessoRegistrazione_nomeApp1"
+        app:layout_constraintStart_toEndOf="@+id/selezioneAccessoRegistrazione_nomeApp1" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/selezioneAccessoRegistrazione_saluto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/fira_sans_medium"
+        android:text="@string/selezioneAccessoRegistrazione_saluto"
+        android:textColor="@color/blu"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selezioneAccessoRegistrazione_nomeApp1" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/selezioneAccessoRegistrazione_pulsanteAccedi"
+        style="@style/BottoneArancioneGrande"
+        android:layout_marginTop="32dp"
+        android:text="@string/selezioneAccessoRegistrazione_pulsanteAccedi"
+        android:translationZ="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/selezioneAccessoRegistrazione_saluto"
+        app:layout_constraintStart_toStartOf="@+id/selezioneAccessoRegistrazione_saluto"
+        app:layout_constraintTop_toBottomOf="@+id/selezioneAccessoRegistrazione_saluto" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/selezioneAccessoRegistrazione_separatore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/fira_sans"
+        android:text="@string/selezioneAccessoRegistrazione_separatore"
+        android:textColor="@color/blu"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/selezioneAccessoRegistrazione_pulsanteAccedi"
+        app:layout_constraintHorizontal_bias="0.509"
+        app:layout_constraintStart_toStartOf="@+id/selezioneAccessoRegistrazione_pulsanteAccedi"
+        app:layout_constraintTop_toBottomOf="@+id/selezioneAccessoRegistrazione_pulsanteAccedi" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/selezioneAccessoRegistrazione_pulsanteRegistrati"
+        style="@style/BottoneBluGrande"
+        android:layout_marginTop="32dp"
+        android:text="@string/selezioneAccessoRegistrazione_pulsanteRegistrati"
+        android:translationZ="10dp"
+        app:layout_constraintEnd_toEndOf="@+id/selezioneAccessoRegistrazione_separatore"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintStart_toStartOf="@+id/selezioneAccessoRegistrazione_separatore"
+        app:layout_constraintTop_toBottomOf="@+id/selezioneAccessoRegistrazione_separatore" />
+
+    <ImageButton
+        android:id="@+id/selezioneAccessoRegistrazione_pulsanteIndietro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/indietro_blu"
+        android:contentDescription="@string/accessibilitàIndietro"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.050000012" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

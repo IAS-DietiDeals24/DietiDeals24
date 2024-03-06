@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blu">
+
+    <ImageButton
+        android:id="@+id/registrazione_pulsanteIndietro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/indietro_arancione"
+        android:contentDescription="@string/accessibilitàIndietro"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.050000012" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/registrazione_sfondoLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/accessoregistrazione_accessibilitàLogo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.10"
+        app:srcCompat="@drawable/cerchio" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/registrazione_logo"
+        android:layout_width="106dp"
+        android:layout_height="106dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/scelteIniziali_accesibilitàLogo"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/registrazione_sfondoLogo"
+        app:layout_constraintEnd_toEndOf="@+id/registrazione_sfondoLogo"
+        app:layout_constraintStart_toStartOf="@+id/registrazione_sfondoLogo"
+        app:layout_constraintTop_toTopOf="@+id/registrazione_sfondoLogo"
+        app:layout_constraintVertical_bias="0.10"
+        app:srcCompat="@drawable/logo" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/registrazione_nomeApp1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/fira_sans_medium"
+        android:text="@string/scelteIniziali_nomeApp1"
+        android:textColor="@color/blu"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="@+id/registrazione_logo"
+        app:layout_constraintTop_toBottomOf="@+id/registrazione_logo" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/registrazione_nomeApp2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/fira_sans_medium"
+        android:text="@string/scelteIniziali_nomeApp2"
+        android:textColor="@color/arancione"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/registrazione_nomeApp1"
+        app:layout_constraintStart_toEndOf="@+id/registrazione_nomeApp1" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/registrazione_tipoAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/fira_sans_light"
+        android:text="@string/accessoregistrazione_tipoAccount"
+        android:textColor="@color/grigio"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registrazione_sfondoLogo"
+        app:textAllCaps="true" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/registrazione_messaggioCorpo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/fira_sans"
+        android:text="@string/registrazione_messaggioCorpo"
+        android:textColor="@color/grigio"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registrazione_tipoAccount" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registrazione_messaggioCorpo">
+
+        <LinearLayout
+            android:id="@+id/registrazione_linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/registrazione_etichettaEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/accessoregistrazione_etichettaEmail"
+                    android:textColor="@color/grigio"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@+id/registrazione_campoEmail"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/registrazione_campoEmail"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+
+                    app:boxBackgroundColor="@color/grigio"
+                    app:boxCornerRadiusBottomEnd="30dp"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    app:boxCornerRadiusTopEnd="30dp"
+                    app:boxCornerRadiusTopStart="30dp"
+                    app:boxStrokeColor="@color/arancione"
+                    app:boxStrokeErrorColor="@color/rosso"
+                    app:boxStrokeWidth="1.5dp"
+                    app:cursorColor="@color/arancione"
+                    app:cursorErrorColor="@color/rosso"
+                    app:errorIconTint="@color/rosso"
+                    app:errorTextColor="@color/arancione"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/registrazione_etichettaEmail">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/registrazione_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:importantForAccessibility="no"
+                        android:inputType="text|textEmailAddress"
+                        android:textColor="@color/nero" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/registrazione_campoEmail" />
+
+                <TextView
+                    android:id="@+id/registrazione_asteriscoEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/asterisco"
+                    android:textColor="@color/arancione"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toEndOf="@+id/registrazione_etichettaEmail"
+                    app:layout_constraintTop_toTopOf="@+id/registrazione_etichettaEmail" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/registrazione_etichettaPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/accessoregistrazione_etichettaPassword"
+                    android:textColor="@color/grigio"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@+id/registrazione_campoPassword"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/registrazione_campoPassword"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+
+                    app:boxBackgroundColor="@color/grigio"
+                    app:boxCornerRadiusBottomEnd="30dp"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    app:boxCornerRadiusTopEnd="30dp"
+                    app:boxCornerRadiusTopStart="30dp"
+                    app:boxStrokeColor="@color/arancione"
+                    app:boxStrokeErrorColor="@color/rosso"
+                    app:boxStrokeWidth="1.5dp"
+                    app:cursorColor="@color/arancione"
+                    app:cursorErrorColor="@color/rosso"
+                    app:endIconDrawable="@drawable/icona_aiuto"
+                    app:endIconMode="custom"
+                    app:endIconTint="@null"
+                    app:endIconTintMode="multiply"
+                    app:errorIconTint="@color/rosso"
+                    app:errorTextColor="@color/arancione"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/registrazione_etichettaPassword">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/registrazione_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:importantForAccessibility="no"
+                        android:inputType="text|textPassword"
+                        android:textColor="@color/nero" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/registrazione_campoPassword" />
+
+                <TextView
+                    android:id="@+id/registrazione_asteriscoPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/asterisco"
+                    android:textColor="@color/arancione"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toEndOf="@+id/registrazione_etichettaPassword"
+                    app:layout_constraintTop_toTopOf="@+id/registrazione_etichettaPassword" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/registrazione_separatore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/fira_sans"
+                android:text="@string/selezioneAccessoRegistrazione_separatore"
+                android:textColor="@color/grigio"
+                android:textSize="30sp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Space
+                    android:id="@+id/space"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/registrazione_pulsanteGoogle"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:background="@drawable/cerchio"
+                    android:contentDescription="@string/accessoregistrazione_accessibilitàpulsanteGoogle"
+                    app:layout_constraintEnd_toStartOf="@+id/registrazione_pulsanteFacebook"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/space"
+                    app:srcCompat="@drawable/google_logo" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/registrazione_pulsanteGitHub"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:background="@drawable/cerchio"
+                    android:contentDescription="@string/accessoregistrazione_accesibilitàPulsanteGitHub"
+                    app:layout_constraintEnd_toStartOf="@+id/registrazione_pulsanteX"
+                    app:layout_constraintStart_toEndOf="@+id/registrazione_pulsanteFacebook"
+                    app:layout_constraintTop_toTopOf="@+id/registrazione_pulsanteFacebook"
+                    app:srcCompat="@drawable/github_logo" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/registrazione_pulsanteX"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:background="@drawable/cerchio"
+                    android:contentDescription="@string/accessoregistrazione_accesibilitàPulsanteX"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/registrazione_pulsanteGitHub"
+                    app:layout_constraintTop_toTopOf="@+id/registrazione_pulsanteGitHub"
+                    app:srcCompat="@drawable/x_logo" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/registrazione_pulsanteFacebook"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:contentDescription="@string/accessoregistrazione_accesibilitàPulsanteFacebook"
+                    app:layout_constraintEnd_toStartOf="@+id/registrazione_pulsanteGitHub"
+                    app:layout_constraintStart_toEndOf="@+id/registrazione_pulsanteGoogle"
+                    app:layout_constraintTop_toTopOf="@+id/registrazione_pulsanteGoogle"
+                    app:srcCompat="@drawable/facebook_logo" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/registrazione_pulsanteGoogle" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/registrazione_pulsanteAvanti"
+                style="@style/BottoneBluPiccolo"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/arancione"
+                android:text="@string/registrazione_pulsanteAvanti" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/registrazione_pulsanteGoogle" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
