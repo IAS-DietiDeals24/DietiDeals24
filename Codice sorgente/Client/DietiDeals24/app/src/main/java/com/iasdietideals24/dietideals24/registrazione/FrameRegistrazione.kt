@@ -73,31 +73,49 @@ class FrameRegistrazione(private val controller: ControllerRegistrazione) {
     }
 
     private fun impostaEventiClick() {
-        pulsanteIndietro.setOnClickListener {
-            controller.clickIndietro()
-        }
+        campoPassword.setEndIconOnClickListener { clickInfoPassword() }
 
-        pulsanteAvanti.setOnClickListener {
-            val email = estraiTestoDaElemento(email)
-            val password = estraiTestoDaElemento(password)
-            controller.registrati(email, password)
-        }
+        pulsanteIndietro.setOnClickListener { clickIndietro() }
 
-        pulsanteGoogle.setOnClickListener {
-            controller.registrazioneGoogle()
-        }
+        pulsanteAvanti.setOnClickListener { clickAvanti() }
 
-        pulsanteFacebook.setOnClickListener {
-            controller.registrazioneFacebook()
-        }
+        pulsanteGoogle.setOnClickListener { clickGoogle() }
 
-        pulsanteGitHub.setOnClickListener {
-            controller.registrazioneGitHub()
-        }
+        pulsanteFacebook.setOnClickListener { clickFacebook() }
 
-        pulsanteX.setOnClickListener {
-            controller.registrazioneX()
-        }
+        pulsanteGitHub.setOnClickListener { clickGitHub() }
+
+        pulsanteX.setOnClickListener { clickX() }
+    }
+
+    private fun clickInfoPassword() {
+        controller.mostraInfoPassword()
+    }
+
+    private fun clickIndietro() {
+        controller.apriSchermataAccessoRegistrazione()
+    }
+
+    private fun clickAvanti() {
+        val email = estraiTestoDaElemento(email)
+        val password = estraiTestoDaElemento(password)
+        controller.registrati(email, password)
+    }
+
+    private fun clickGoogle() {
+        controller.registrazioneGoogle()
+    }
+
+    private fun clickFacebook() {
+        controller.registrazioneFacebook()
+    }
+
+    private fun clickGitHub() {
+        controller.registrazioneGitHub()
+    }
+
+    private fun clickX() {
+        controller.registrazioneX()
     }
 
     private fun estraiTestoDaElemento(elemento: TextInputEditText): String {

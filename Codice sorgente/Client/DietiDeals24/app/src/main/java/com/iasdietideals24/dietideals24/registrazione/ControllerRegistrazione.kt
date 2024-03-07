@@ -1,19 +1,17 @@
 package com.iasdietideals24.dietideals24.registrazione
 
-import android.accounts.Account
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.scelteIniziali.ControllerScelteIniziali
 
-class ControllerRegistrazione : Activity() {
+class ControllerRegistrazione : AppCompatActivity() {
     private var tipoAccount: String = ""
-    private lateinit var accountDaRegistrare: Account
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +42,11 @@ class ControllerRegistrazione : Activity() {
         TODO("Not yet implemented")
     }
 
-    fun clickIndietro() {
+    fun mostraInfoPassword() {
+        TODO("Not yet implemented")
+    }
+
+    fun apriSchermataAccessoRegistrazione() {
         cambiaAttivita(ControllerScelteIniziali::class.java)
     }
 

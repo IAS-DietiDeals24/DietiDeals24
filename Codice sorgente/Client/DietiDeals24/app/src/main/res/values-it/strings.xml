@@ -34,5 +34,8 @@
     <string name="registrazione_errorePasswordNonSicura">La password inserita non rispetta i criteri di sicurezza minimi.</string>
     <string name="registrazione_erroreCampiObbligatoriNonCompilati">Non hai compilato tutti i campi obbligatori.</string>
     <string name="registrazione_erroreRegistrazioneSocial">Si è verificato un errore con la registrazione attraverso l’account social.</string>
+    <string name="infoPassword_titolo">Requisiti</string>
+    <string name="infoPassword_messaggioCorpo">La password deve:\n—Essere lunga almeno 8 caratteri;\n—Contenere almeno una lettera maiuscola;\n—Contenere almeno un numero;\n—Contenere almeno un carattere speciale tra i seguenti:\n<b>!@#$%^{}&amp;*</b></string>
+    <string name="infoPassword_accessibilitàChiudi">Pulsante chiudi finestra</string>
 
 </resources>

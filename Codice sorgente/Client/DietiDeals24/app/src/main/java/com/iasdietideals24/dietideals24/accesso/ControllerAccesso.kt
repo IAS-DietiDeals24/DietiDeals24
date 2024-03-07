@@ -1,18 +1,18 @@
 package com.iasdietideals24.dietideals24.accesso
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.scelteIniziali.ControllerScelteIniziali
 
 
-class ControllerAccesso : Activity() {
+class ControllerAccesso : AppCompatActivity() {
     private var tipoAccount: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +44,7 @@ class ControllerAccesso : Activity() {
         TODO("Not yet implemented")
     }
 
-    fun clickIndietro() {
+    fun apriSelezioneAccessoRegistrazione() {
         cambiaAttivita(ControllerScelteIniziali::class.java)
     }
 

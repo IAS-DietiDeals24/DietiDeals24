@@ -73,36 +73,48 @@ class FrameAccesso(private val controller: ControllerAccesso) {
     }
 
     private fun impostaEventiClick() {
-        pulsanteIndietro.setOnClickListener {
-            controller.clickIndietro()
-        }
+        pulsanteIndietro.setOnClickListener { clickIndietro() }
 
-        pulsanteAccedi.setOnClickListener {
-            val email = estraiTestoDaElemento(email)
-            val password = estraiTestoDaElemento(password)
-            controller.accedi(email, password)
-        }
+        pulsanteAccedi.setOnClickListener { clickAccedi() }
 
-        pulsanteGoogle.setOnClickListener {
-            controller.accessoGoogle()
-        }
+        pulsanteGoogle.setOnClickListener { clickGoogle() }
 
-        pulsanteFacebook.setOnClickListener {
-            controller.accessoFacebook()
-        }
+        pulsanteFacebook.setOnClickListener { clickFacebook() }
 
-        pulsanteGitHub.setOnClickListener {
-            controller.accessoGitHub()
-        }
+        pulsanteGitHub.setOnClickListener { clickGitHub() }
 
-        pulsanteX.setOnClickListener {
-            controller.accessoConX()
-        }
+        pulsanteX.setOnClickListener { clickX() }
     }
 
     private fun estraiTestoDaElemento(elemento: TextInputEditText): String {
         val testoElemento = elemento.text
         return testoElemento.toString()
+    }
+
+    private fun clickIndietro() {
+        controller.apriSelezioneAccessoRegistrazione()
+    }
+
+    private fun clickAccedi() {
+        val email = estraiTestoDaElemento(email)
+        val password = estraiTestoDaElemento(password)
+        controller.accedi(email, password)
+    }
+
+    private fun clickGoogle() {
+        controller.accessoGoogle()
+    }
+
+    private fun clickFacebook() {
+        controller.accessoFacebook()
+    }
+
+    private fun clickGitHub() {
+        controller.accessoGitHub()
+    }
+
+    private fun clickX() {
+        controller.accessoConX()
     }
 
     private fun impostaEventiDiCambiamentoCampi() {

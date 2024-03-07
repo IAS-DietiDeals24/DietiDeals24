@@ -1,13 +1,13 @@
 package com.iasdietideals24.dietideals24.scelteIniziali
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.iasdietideals24.dietideals24.accesso.ControllerAccesso
 import com.iasdietideals24.dietideals24.registrazione.ControllerRegistrazione
 
 
-class ControllerScelteIniziali : Activity() {
+class ControllerScelteIniziali : AppCompatActivity() {
     private var tipoAccount: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {

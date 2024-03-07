@@ -40,5 +40,8 @@
     <string name="registrazione_errorePasswordNonSicura">The privided password does not follow the minimum security criteria.</string>
     <string name="registrazione_erroreCampiObbligatoriNonCompilati">You did not fill all the mandatory fields.</string>
     <string name="registrazione_erroreRegistrazioneSocial">An error occurred while trying to sign up with the social account.</string>
+    <string name="infoPassword_messaggioCorpo">The password must:\n—Contain at least 8 characters;\n—Contain at least an uppercase character;\n—Contain at least a number;\n—Contain at least a special character included among:\n<b>!@#$%^{}&amp;*</b></string>
+    <string name="infoPassword_titolo">Requirements</string>
+    <string name="infoPassword_accessibilitàChiudi">Close window button</string>
 
 </resources>
