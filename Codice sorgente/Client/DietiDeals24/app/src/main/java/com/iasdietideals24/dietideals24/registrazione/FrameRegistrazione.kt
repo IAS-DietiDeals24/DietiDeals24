@@ -2,6 +2,7 @@ package com.iasdietideals24.dietideals24.registrazione
 
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
@@ -23,12 +24,20 @@ class FrameRegistrazione(private val controller: ControllerRegistrazione) {
     private lateinit var pulsanteFacebook: ShapeableImageView
     private lateinit var pulsanteGitHub: ShapeableImageView
     private lateinit var pulsanteX: ShapeableImageView
-    private lateinit var layout: LinearLayout
+    private lateinit var linearLayout: LinearLayout
+    private lateinit var constraintLayout: ConstraintLayout
 
     init {
         controller.setContentView(R.layout.registrazione)
 
         trovaElementiInterfaccia()
+
+        // Al fine di rendere il popup di info password più visibile, il frame di registrazione ha
+        // una cortina nera come foreground.
+        // Viene resa invisibile quando la pagina di registrazione è creata e quando è aperto il
+        // popup.
+        // Viene resa invisibile quando il popup è chiuso.
+        constraintLayout.foreground.alpha = 0
 
         impostaMessaggioCorpo()
 
@@ -49,7 +58,8 @@ class FrameRegistrazione(private val controller: ControllerRegistrazione) {
         pulsanteFacebook = controller.findViewById(R.id.registrazione_pulsanteFacebook)
         pulsanteGitHub = controller.findViewById(R.id.registrazione_pulsanteGitHub)
         pulsanteX = controller.findViewById(R.id.registrazione_pulsanteX)
-        layout = controller.findViewById(R.id.registrazione_linearLayout)
+        linearLayout = controller.findViewById(R.id.registrazione_linearLayout)
+        constraintLayout = controller.findViewById(R.id.registrazione_constraintLayout)
     }
 
     private fun impostaMessaggioCorpo() {
@@ -93,7 +103,7 @@ class FrameRegistrazione(private val controller: ControllerRegistrazione) {
     }
 
     private fun clickIndietro() {
-        controller.apriSchermataAccessoRegistrazione()
+        controller.apriSelezioneAccessoRegistrazione()
     }
 
     private fun clickAvanti() {
@@ -134,22 +144,22 @@ class FrameRegistrazione(private val controller: ControllerRegistrazione) {
     }
 
     private fun erroreEmailGiaUsata() {
-        controller.creaMessaggioErroreEmailGiaUsata(layout)
+        controller.creaMessaggioErroreEmailGiaUsata(linearLayout)
         controller.evidenziaCampiErrore(campoEmail)
     }
 
     private fun errorePasswordNonSicura() {
-        controller.creaMessaggioErrorePasswordNonSicura(layout)
+        controller.creaMessaggioErrorePasswordNonSicura(linearLayout)
         controller.evidenziaCampiErrore(campoPassword)
     }
 
     private fun erroreCampiObbligatoriNonCompilati() {
-        controller.creaMessaggioErroreCampiObbligatoriNonCompilati(layout)
+        controller.creaMessaggioErroreCampiObbligatoriNonCompilati(linearLayout)
         controller.evidenziaCampiErrore(campoEmail, campoPassword)
     }
 
     private fun erroreRegistrazioneSocial() {
-        controller.creaMessaggioErroreRegistrazioneSocial(layout)
+        controller.creaMessaggioErroreRegistrazioneSocial(linearLayout)
     }
 
 }

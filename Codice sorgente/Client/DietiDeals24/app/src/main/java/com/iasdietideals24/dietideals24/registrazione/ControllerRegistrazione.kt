@@ -10,6 +10,7 @@ import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.scelteIniziali.ControllerScelteIniziali
 
+
 class ControllerRegistrazione : AppCompatActivity() {
     private var tipoAccount: String = ""
 
@@ -43,10 +44,10 @@ class ControllerRegistrazione : AppCompatActivity() {
     }
 
     fun mostraInfoPassword() {
-        TODO("Not yet implemented")
+        FrameInfoPassword(this)
     }
 
-    fun apriSchermataAccessoRegistrazione() {
+    fun apriSelezioneAccessoRegistrazione() {
         cambiaAttivita(ControllerScelteIniziali::class.java)
     }
 
