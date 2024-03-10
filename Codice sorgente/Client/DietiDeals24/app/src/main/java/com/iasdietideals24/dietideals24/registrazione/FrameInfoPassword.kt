@@ -34,12 +34,12 @@ class FrameInfoPassword(private val controller: ControllerRegistrazione) {
     }
 
     private fun gonfiaLayout(): View {
-        val servizioGonfiatore =
+        val servizioInflater =
             controller.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val radiceLayout =
             controller.findViewById<ConstraintLayout>(R.id.infoPassword_constraintLayout)
 
-        return servizioGonfiatore.inflate(R.layout.infopassword, radiceLayout)
+        return servizioInflater.inflate(R.layout.infopassword, radiceLayout)
     }
 
     private fun creaFinestraPopup(popupDaCreare: View): PopupWindow {

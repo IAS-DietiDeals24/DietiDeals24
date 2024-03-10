@@ -13,7 +13,13 @@ import com.iasdietideals24.dietideals24.scelteIniziali.ControllerScelteIniziali
 
 
 class ControllerAccesso : AppCompatActivity() {
-    private var tipoAccount: String = ""
+    private var _tipoAccount: String = ""
+
+    var tipoAccount: String
+        get() = _tipoAccount
+        set(valore) {
+            _tipoAccount = valore
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,10 +40,6 @@ class ControllerAccesso : AppCompatActivity() {
 
     private fun mostraAccesso() {
         FrameAccesso(this)
-    }
-
-    fun getTipoAccount(): String {
-        return tipoAccount
     }
 
     fun accedi(email: String, password: String) {

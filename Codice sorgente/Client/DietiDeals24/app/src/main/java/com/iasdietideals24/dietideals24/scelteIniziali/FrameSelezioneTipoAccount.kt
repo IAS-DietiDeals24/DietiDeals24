@@ -29,13 +29,13 @@ class FrameSelezioneTipoAccount(private val controller: ControllerScelteIniziali
     }
 
     private fun clickCompratore() {
-        controller.setTipoAccount("compratore")
+        controller.tipoAccount = "compratore"
 
         controller.mostraSelezioneAccessoRegistrazione()
     }
 
     private fun clickVenditore() {
-        controller.setTipoAccount("venditore")
+        controller.tipoAccount = "venditore"
 
         controller.mostraSelezioneAccessoRegistrazione()
     }

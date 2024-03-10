@@ -63,11 +63,11 @@ class FrameRegistrazione(private val controller: ControllerRegistrazione) {
     }
 
     private fun impostaMessaggioCorpo() {
-        when (controller.getTipoAccount()) {
+        when (controller.tipoAccount) {
             "compratore" -> {
                 val stringaTipoAccount = controller.getString(R.string.tipoAccount_compratore)
                 tipoAccount.text = controller.getString(
-                    R.string.accessoregistrazione_tipoAccount,
+                    R.string.selezioneAccessoRegistrazione_tipoAccount,
                     stringaTipoAccount
                 )
             }
@@ -75,7 +75,7 @@ class FrameRegistrazione(private val controller: ControllerRegistrazione) {
             "venditore" -> {
                 val stringaTipoAccount = controller.getString(R.string.tipoAccount_venditore)
                 tipoAccount.text = controller.getString(
-                    R.string.accessoregistrazione_tipoAccount,
+                    R.string.selezioneAccessoRegistrazione_tipoAccount,
                     stringaTipoAccount
                 )
             }

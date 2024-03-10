@@ -5,7 +5,7 @@
     <string name="scelteIniziali_motto3" translatable="false">it.</string>
     <string name="scelteIniziali_nomeApp1" translatable="false">DietiDeals</string>
     <string name="scelteIniziali_nomeApp2" translatable="false">24</string>
-    <string name="scelteIniziali_accesibilitàLogo">DietiDeals24 logo</string>
+    <string name="scelteIniziali_accessibilitàLogo">DietiDeals24 logo</string>
     <string name="selezioneTipoAccount_messaggioCorpo">Log in as…</string>
     <string name="selezioneTipoAccount_pulsanteCompratore">Buyer</string>
     <string name="selezioneTipoAccount_pulsanteVenditore">Seller</string>
@@ -17,31 +17,30 @@
     <string name="tipoAccount_compratore">buyer</string>
     <string name="tipoAccount_venditore">seller</string>
     <string name="accessibilitàIndietro">Back</string>
-    <string name="accessoregistrazione_accessibilitàLogo">DietiDeals24 logo</string>
-    <string name="accessoregistrazione_tipoAccount">%1$s</string>
+    <string name="selezioneAccessoRegistrazione_accessibilitàLogo">DietiDeals24 logo</string>
+    <string name="selezioneAccessoRegistrazione_tipoAccount">%1$s</string>
     <string name="accesso_messaggioCorpo">Log in</string>
-    <string name="accessoregistrazione_suggerimentoEmail">example@example.example</string>
-    <string name="accessoregistrazione_etichettaEmail">Email</string>
-    <string name="accessoregistrazione_etichettaPassword">Password</string>
-    <string name="accessoregistrazione_suggerimentoPassword">Your password</string>
+    <string name="selezioneAccessoRegistrazione_suggerimentoEmail">example@example.example</string>
+    <string name="selezioneAccessoRegistrazione_etichettaEmail">Email</string>
+    <string name="selezioneAccessoRegistrazione_etichettaPassword">Password</string>
+    <string name="selezioneAccessoRegistrazione_suggerimentoPassword">Your password</string>
     <string name="accesso_pulsanteAccedi">Log in</string>
-    <string name="accessoregistrazione_separatore">or</string>
-    <string name="accessoregistrazione_accessibilitàpulsanteGoogle">Google access button</string>
-    <string name="accessoregistrazione_accesibilitàPulsanteFacebook">Facebook access button</string>
-    <string name="accessoregistrazione_accesibilitàPulsanteGitHub">GitHub access button</string>
-    <string name="accessoregistrazione_accesibilitàPulsanteX">X access button</string>
-    <string name="accesso_erroreCredenzialiNonCorrette">Either your credentials are wrong or no account with such credentials exists.</string>
+    <string name="selezioneAccessoRegistrazione_accessibilitàPulsanteGoogle">Google access</string>
+    <string name="selezioneAccessoRegistrazione_accessibilitàPulsanteFacebook">Facebook access</string>
+    <string name="selezioneAccessoRegistrazione_accessibilitàPulsanteGitHub">GitHub access</string>
+    <string name="selezioneAccessoRegistrazione_accessibilitàPulsanteX">X access</string>
+    <string name="accesso_erroreCredenzialiNonCorrette">Either your credentials are wrong or no account with these credentials exists.</string>
     <string name="accesso_erroreCampi">There\'s an issue in this field.</string>
     <string name="accesso_erroreSocial">An error occurred while trying to log in with the social account.</string>
     <string name="registrazione_pulsanteAvanti">Next</string>
     <string name="registrazione_messaggioCorpo">Sign up</string>
     <string name="asterisco" translatable="false">*</string>
-    <string name="registrazione_erroreEmailGiaUsata">The email was already used to create an account of the same type.</string>
-    <string name="registrazione_errorePasswordNonSicura">The privided password does not follow the minimum security criteria.</string>
+    <string name="registrazione_erroreEmailGiàUsata">The email was already used to create an account of the same type.</string>
+    <string name="registrazione_errorePasswordNonSicura">The provided password does not follow the minimum security criteria.</string>
     <string name="registrazione_erroreCampiObbligatoriNonCompilati">You did not fill all the mandatory fields.</string>
     <string name="registrazione_erroreRegistrazioneSocial">An error occurred while trying to sign up with the social account.</string>
     <string name="infoPassword_messaggioCorpo">The password must:\n—Contain at least 8 characters;\n—Contain at least an uppercase character;\n—Contain at least a number;\n—Contain at least a special character included among:\n<b>!@#$%^{}&amp;*</b></string>
     <string name="infoPassword_titolo">Requirements</string>
-    <string name="infoPassword_accessibilitàChiudi">Close window button</string>
+    <string name="infoPassword_accessibilitàChiudi">Close window</string>
 
 </resources>

@@ -31,7 +31,7 @@ class FrameSelezioneAccessoRegistrazione(private val controller: ControllerScelt
     }
 
     private fun impostaMessaggioCorpo() {
-        when (controller.getTipoAccount()) {
+        when (controller.tipoAccount) {
             "compratore" -> {
                 val stringaTipoAccount = controller.getString(R.string.tipoAccount_compratore)
                 saluto.text = controller.getString(

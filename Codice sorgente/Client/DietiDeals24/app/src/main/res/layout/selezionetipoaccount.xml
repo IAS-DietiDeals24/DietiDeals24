@@ -11,7 +11,7 @@
         android:layout_width="205dp"
         android:layout_height="203dp"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/scelteIniziali_accesibilitàLogo"
+        android:contentDescription="@string/scelteIniziali_accessibilitàLogo"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

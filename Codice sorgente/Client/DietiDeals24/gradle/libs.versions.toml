@@ -1,0 +1,40 @@
+[versions]
+# Dipendenze livello app
+core-ktx = "1.12.0"
+appcompat = "1.6.1"
+material = "1.11.0"
+firebase-crashlytics = "18.6.2"
+junit-jupiter-api = "5.10.2"
+junit = "1.1.5"
+espresso-core = "3.5.1"
+
+# Dipendenze livello progetto
+gradle = "8.3.0"
+google-services = "4.4.1"
+firebase-crashlytics-gradle = "2.9.9"
+
+# Plugin livello progetto
+android-application = "8.3.0"
+jetbrains-kotlin-android = "1.9.23"
+sonarqube = "4.4.1.3373"
+
+[libraries]
+# Dipendenze livello app
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebase-crashlytics" }
+junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter-api" }
+junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+
+# Dipendenze livello progetto
+gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle" }
+google-services = { group = "com.google.gms", name = "google-services", version.ref = "google-services" }
+firebase-crashlytics-gradle = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebase-crashlytics-gradle" }
+
+[plugins]
+# Plugin livello progetto
+android-application = { id = "com.android.application", version.ref = "android-application" }
+jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "jetbrains-kotlin-android" }
+sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }

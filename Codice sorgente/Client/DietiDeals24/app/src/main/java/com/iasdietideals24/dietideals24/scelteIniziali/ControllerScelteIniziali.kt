@@ -8,7 +8,13 @@ import com.iasdietideals24.dietideals24.registrazione.ControllerRegistrazione
 
 
 class ControllerScelteIniziali : AppCompatActivity() {
-    private var tipoAccount: String = ""
+    private var _tipoAccount: String = ""
+
+     var tipoAccount: String
+        get() = _tipoAccount
+        set(valore) {
+            _tipoAccount = valore
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,19 +53,8 @@ class ControllerScelteIniziali : AppCompatActivity() {
     }
 
     fun mostraSelezioneAccessoRegistrazione() {
-        setTipoAccount(tipoAccount)
-
         FrameSelezioneAccessoRegistrazione(this)
     }
-
-    fun setTipoAccount(tipoAccount: String) {
-        this.tipoAccount = tipoAccount
-    }
-
-    fun getTipoAccount(): String {
-        return tipoAccount
-    }
-
 
     fun apriAccesso() {
         cambiaAttivita(ControllerAccesso::class.java)

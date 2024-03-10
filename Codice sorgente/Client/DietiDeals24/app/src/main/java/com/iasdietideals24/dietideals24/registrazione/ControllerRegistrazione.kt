@@ -12,7 +12,13 @@ import com.iasdietideals24.dietideals24.scelteIniziali.ControllerScelteIniziali
 
 
 class ControllerRegistrazione : AppCompatActivity() {
-    private var tipoAccount: String = ""
+    private var _tipoAccount: String = ""
+
+    var tipoAccount: String
+        get() = _tipoAccount
+        set(valore) {
+            _tipoAccount = valore
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,10 +39,6 @@ class ControllerRegistrazione : AppCompatActivity() {
 
     private fun mostraRegistrazione() {
         FrameRegistrazione(this)
-    }
-
-    fun getTipoAccount(): String {
-        return tipoAccount
     }
 
     fun registrati(email: String, password: String) {
@@ -85,7 +87,7 @@ class ControllerRegistrazione : AppCompatActivity() {
     }
 
     fun creaMessaggioErroreEmailGiaUsata(layoutDoveInserireErrore: LinearLayout) {
-        val testoMessaggio = getString(R.string.registrazione_erroreEmailGiaUsata)
+        val testoMessaggio = getString(R.string.registrazione_erroreEmailGiàUsata)
         val messaggioDiErrore = creaMessaggioErrore(testoMessaggio)
 
         layoutDoveInserireErrore.addView(messaggioDiErrore)
