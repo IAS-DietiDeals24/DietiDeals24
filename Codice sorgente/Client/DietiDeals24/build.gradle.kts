@@ -5,8 +5,9 @@ buildscript {
         classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.9")
     }
 }
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
 plugins {
     id("com.android.application") version "8.3.0" apply false
     id("org.jetbrains.kotlin.android") version "1.9.23" apply false
+    id("org.sonarqube") version "4.4.1.3373"
 }

@@ -19,6 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DietiDeals24"
+        android:usesCleartextTraffic="false"
         tools:targetApi="34">
         <activity
             android:name=".scelteIniziali.ControllerScelteIniziali"
@@ -34,13 +35,11 @@
         </activity>
         <activity
             android:name=".accesso.ControllerAccesso"
-            android:exported="true"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.DietiDeals24" />
         <activity
             android:name=".registrazione.ControllerRegistrazione"
-            android:exported="true"
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.DietiDeals24" />
