@@ -27,14 +27,30 @@
     <string name="accesso_erroreCredenzialiNonCorrette">Le credenziali d\'accesso sono errate o non esiste un account associato ad esse.</string>
     <string name="accesso_erroreCampi">C\'è un problema con questo campo.</string>
     <string name="accesso_erroreSocial">Si è verificato un errore con l’accesso attraverso l’account social.</string>
-    <string name="registrazione_pulsanteAvanti">Avanti</string>
-    <string name="registrazione_messaggioCorpo">Registrati</string>
-    <string name="registrazione_erroreEmailGiàUsata">L’email è già stata utilizzata per creare un account dello stesso tipo.</string>
-    <string name="registrazione_errorePasswordNonSicura">La password inserita non rispetta i criteri di sicurezza minimi.</string>
-    <string name="registrazione_erroreCampiObbligatoriNonCompilati">Non hai compilato tutti i campi obbligatori.</string>
-    <string name="registrazione_erroreRegistrazioneSocial">Si è verificato un errore con la registrazione attraverso l’account social.</string>
+    <string name="registrazioneFase1e2e3_pulsanteAvanti">Avanti</string>
+    <string name="registrazioneFase1_messaggioCorpo">Registrati</string>
+    <string name="registrazioneFase1_erroreEmailGiàUsata">L’email è già stata utilizzata per creare un account dello stesso tipo.</string>
+    <string name="registrazioneFase1_errorePasswordNonSicura">La password inserita non rispetta i criteri di sicurezza minimi.</string>
+    <string name="registrazioneFase1_erroreCampiObbligatoriNonCompilati">Non hai compilato tutti i campi obbligatori.</string>
+    <string name="registrazioneFase1_erroreRegistrazioneSocial">Si è verificato un errore con la registrazione attraverso l’account social.</string>
     <string name="infoPassword_titolo">Requisiti</string>
     <string name="infoPassword_messaggioCorpo">La password deve:\n—Essere lunga almeno 8 caratteri;\n—Contenere almeno una lettera maiuscola;\n—Contenere almeno un numero;\n—Contenere almeno un carattere speciale tra i seguenti:\n<b>!@#$%^{}&amp;*</b></string>
     <string name="infoPassword_accessibilitàChiudi">Pulsante chiudi finestra</string>
+    <string name="registrazioneFase2e3_messaggioCorpo">Dicci un po\' di te!</string>
+    <string name="registrazioneFase2_etichettaNomeUtente">Nome utente</string>
+    <string name="registrazioneFase2_etichettaNome">Nome</string>
+    <string name="registrazioneFase2_etichettaCognome">Cognome</string>
+    <string name="registrazioneFase2_etichettaDataNascita">Data di nascita</string>
+    <string name="registrazioneFase3_etichettaBiografia">Biografia</string>
+    <string name="registrazioneFase3_etichettaAreaGeografica">Area geografica</string>
+    <string name="registrazioneFase3_etichettaGenere">Genere</string>
+    <string name="registrazioneFase3_etichettaFoto">Inserisci immagine di profilo</string>
+    <string name="registrazioneFase4_etichettaLinkPersonale">Link personale</string>
+    <string name="registrazioneFase4_etichettaLinkInstagram">Link Instagram</string>
+    <string name="registrazioneFase4_etichettaLinkFacebook">Link Facebook</string>
+    <string name="registrazioneFase4_messaggioCorpo">Hai quasi finito...</string>
+    <string name="registrazioneFase4_etichettaLinkGitHub">Link GitHub</string>
+    <string name="registrazioneFase4_etichettaLinkX">Link X</string>
+    <string name="registrazioneFase4_pulsanteFine">Fine</string>
 
 </resources>

@@ -32,15 +32,31 @@
     <string name="accesso_erroreCredenzialiNonCorrette">Either your credentials are wrong or no account with these credentials exists.</string>
     <string name="accesso_erroreCampi">There\'s an issue in this field.</string>
     <string name="accesso_erroreSocial">An error occurred while trying to log in with the social account.</string>
-    <string name="registrazione_pulsanteAvanti">Next</string>
-    <string name="registrazione_messaggioCorpo">Sign up</string>
+    <string name="registrazioneFase1e2e3_pulsanteAvanti">Next</string>
+    <string name="registrazioneFase1_messaggioCorpo">Sign up</string>
     <string name="asterisco" translatable="false">*</string>
-    <string name="registrazione_erroreEmailGiàUsata">The email was already used to create an account of the same type.</string>
-    <string name="registrazione_errorePasswordNonSicura">The provided password does not follow the minimum security criteria.</string>
-    <string name="registrazione_erroreCampiObbligatoriNonCompilati">You did not fill all the mandatory fields.</string>
-    <string name="registrazione_erroreRegistrazioneSocial">An error occurred while trying to sign up with the social account.</string>
+    <string name="registrazioneFase1_erroreEmailGiàUsata">The email was already used to create an account of the same type.</string>
+    <string name="registrazioneFase1_errorePasswordNonSicura">The provided password does not follow the minimum security criteria.</string>
+    <string name="registrazioneFase1_erroreCampiObbligatoriNonCompilati">You did not fill all the mandatory fields.</string>
+    <string name="registrazioneFase1_erroreRegistrazioneSocial">An error occurred while trying to sign up with the social account.</string>
     <string name="infoPassword_messaggioCorpo">The password must:\n—Contain at least 8 characters;\n—Contain at least an uppercase character;\n—Contain at least a number;\n—Contain at least a special character included among:\n<b>!@#$%^{}&amp;*</b></string>
     <string name="infoPassword_titolo">Requirements</string>
     <string name="infoPassword_accessibilitàChiudi">Close window</string>
+    <string name="registrazioneFase2e3_messaggioCorpo">Tell us a bit about you!</string>
+    <string name="registrazioneFase2_etichettaNomeUtente">Username</string>
+    <string name="registrazioneFase2_etichettaNome">Name</string>
+    <string name="registrazioneFase2_etichettaCognome">Surname</string>
+    <string name="registrazioneFase2_etichettaDataNascita">Birthdate</string>
+    <string name="registrazioneFase3_etichettaBiografia">Biography</string>
+    <string name="registrazioneFase3_etichettaAreaGeografica">Geographic location</string>
+    <string name="registrazioneFase3_etichettaGenere">Gender</string>
+    <string name="registrazioneFase3_etichettaFoto">Import profile picture</string>
+    <string name="registrazioneFase4_etichettaLinkPersonale">Personal link</string>
+    <string name="registrazioneFase4_etichettaLinkInstagram">Instagram link</string>
+    <string name="registrazioneFase4_etichettaLinkFacebook">Facebook link</string>
+    <string name="registrazioneFase4_messaggioCorpo">It\'s almost over…</string>
+    <string name="registrazioneFase4_etichettaLinkGitHub">GitHub link</string>
+    <string name="registrazioneFase4_etichettaLinkX">X link</string>
+    <string name="registrazioneFase4_pulsanteFine">End</string>
 
 </resources>

@@ -51,7 +51,7 @@ class FrameInfoPassword(private val controller: ControllerRegistrazione) {
     }
 
     private fun trovaElementiInterfaccia(layoutPopupCreato: View) {
-        constraintLayout = controller.findViewById(R.id.registrazione_constraintLayout)
+        constraintLayout = controller.findViewById(R.id.registrazioneFase1_constraintLayout)
         pulsanteChiudi = layoutPopupCreato.findViewById(R.id.infoPassword_pulsanteChiudi)
     }
 

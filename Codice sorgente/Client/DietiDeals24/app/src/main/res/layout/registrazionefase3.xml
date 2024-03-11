@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:id="@+id/registrazioneFase3_constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blu">
+
+    <ImageButton
+        android:id="@+id/registrazioneFase3_pulsanteIndietro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:contentDescription="@string/accessibilitàIndietro"
+        android:src="@drawable/indietro_arancione"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.050000012" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/registrazioneFase3_messaggioCorpo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/fira_sans"
+        android:text="@string/registrazioneFase2e3_messaggioCorpo"
+        android:textColor="@color/grigio"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="@+id/registrazioneFase3_pulsanteIndietro"
+        app:layout_constraintStart_toEndOf="@+id/registrazioneFase3_pulsanteIndietro"
+        app:layout_constraintTop_toTopOf="@+id/registrazioneFase3_pulsanteIndietro" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registrazioneFase3_messaggioCorpo">
+
+        <LinearLayout
+            android:id="@+id/registrazioneFase3_linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/registrazioneFase3_etichettaFoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/registrazioneFase3_etichettaFoto"
+                    android:textColor="@color/grigio"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/registrazioneFase3_campoFoto"
+                    android:layout_width="158dp"
+                    android:layout_height="158dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/cerchio"
+                    android:contentDescription="@string/selezioneAccessoRegistrazione_accessibilitàLogo"
+                    android:scaleType="centerInside"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/registrazioneFase3_etichettaFoto"
+                    app:srcCompat="@drawable/icona_fotocamera" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/registrazioneFase3_etichettaBiografia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/registrazioneFase3_etichettaBiografia"
+                    android:textColor="@color/grigio"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@+id/registrazioneFase3_campoBiografia"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/registrazioneFase3_campoBiografia"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+
+                    app:boxBackgroundColor="@color/grigio"
+                    app:boxCornerRadiusBottomEnd="30dp"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    app:boxCornerRadiusTopEnd="30dp"
+                    app:boxCornerRadiusTopStart="30dp"
+                    app:boxStrokeColor="@color/arancione"
+                    app:boxStrokeErrorColor="@color/rosso"
+                    app:boxStrokeWidth="1.5dp"
+                    app:cursorColor="@color/arancione"
+                    app:cursorErrorColor="@color/rosso"
+                    app:errorIconTint="@color/rosso"
+                    app:errorTextColor="@color/arancione"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/registrazioneFase3_etichettaBiografia">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/registrazioneFase3_Biografia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:importantForAccessibility="no"
+                        android:inputType="text"
+                        android:textColor="@color/nero" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/registrazioneFase3_etichettaAreaGeografica"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/registrazioneFase3_etichettaAreaGeografica"
+                    android:textColor="@color/grigio"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@+id/registrazioneFase3_campoAreaGeografica"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/registrazioneFase3_campoAreaGeografica"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+
+                    app:boxBackgroundColor="@color/grigio"
+                    app:boxCornerRadiusBottomEnd="30dp"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    app:boxCornerRadiusTopEnd="30dp"
+                    app:boxCornerRadiusTopStart="30dp"
+                    app:boxStrokeColor="@color/arancione"
+                    app:boxStrokeErrorColor="@color/rosso"
+                    app:boxStrokeWidth="1.5dp"
+                    app:cursorColor="@color/arancione"
+                    app:cursorErrorColor="@color/rosso"
+                    app:errorIconTint="@color/rosso"
+                    app:errorTextColor="@color/arancione"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/registrazioneFase3_etichettaAreaGeografica">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/registrazioneFase3_AreaGeografica"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:importantForAccessibility="no"
+                        android:inputType="text"
+                        android:textColor="@color/nero" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/registrazioneFase3_etichettaGenere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/registrazioneFase3_etichettaGenere"
+                    android:textColor="@color/grigio"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@+id/registrazioneFase3_campoGenere"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/registrazioneFase3_campoGenere"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+
+                    app:boxBackgroundColor="@color/grigio"
+                    app:boxCornerRadiusBottomEnd="30dp"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    app:boxCornerRadiusTopEnd="30dp"
+                    app:boxCornerRadiusTopStart="30dp"
+                    app:boxStrokeColor="@color/arancione"
+                    app:boxStrokeErrorColor="@color/rosso"
+                    app:boxStrokeWidth="1.5dp"
+                    app:cursorColor="@color/arancione"
+                    app:cursorErrorColor="@color/rosso"
+                    app:errorIconTint="@color/rosso"
+                    app:errorTextColor="@color/arancione"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/registrazioneFase3_etichettaGenere">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/registrazioneFase3_Genere"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:importantForAccessibility="no"
+                        android:inputType="text"
+                        android:textColor="@color/nero" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/registrazioneFase3_pulsanteAvanti"
+                    style="@style/BottoneBluPiccolo"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="32dp"
+                    android:backgroundTint="@color/arancione"
+                    android:text="@string/registrazioneFase1e2e3_pulsanteAvanti"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

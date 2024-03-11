@@ -28,7 +28,7 @@ class FrameRegistrazione(private val controller: ControllerRegistrazione) {
     private lateinit var constraintLayout: ConstraintLayout
 
     init {
-        controller.setContentView(R.layout.registrazione)
+        controller.setContentView(R.layout.registrazionefase1)
 
         trovaElementiInterfaccia()
 
@@ -47,19 +47,19 @@ class FrameRegistrazione(private val controller: ControllerRegistrazione) {
     }
 
     private fun trovaElementiInterfaccia() {
-        tipoAccount = controller.findViewById(R.id.registrazione_tipoAccount)
-        campoEmail = controller.findViewById(R.id.registrazione_campoEmail)
-        email = controller.findViewById(R.id.registrazione_email)
-        campoPassword = controller.findViewById(R.id.registrazione_campoPassword)
-        password = controller.findViewById(R.id.registrazione_password)
-        pulsanteIndietro = controller.findViewById(R.id.registrazione_pulsanteIndietro)
-        pulsanteAvanti = controller.findViewById(R.id.registrazione_pulsanteAvanti)
-        pulsanteGoogle = controller.findViewById(R.id.registrazione_pulsanteGoogle)
-        pulsanteFacebook = controller.findViewById(R.id.registrazione_pulsanteFacebook)
-        pulsanteGitHub = controller.findViewById(R.id.registrazione_pulsanteGitHub)
-        pulsanteX = controller.findViewById(R.id.registrazione_pulsanteX)
-        linearLayout = controller.findViewById(R.id.registrazione_linearLayout)
-        constraintLayout = controller.findViewById(R.id.registrazione_constraintLayout)
+        tipoAccount = controller.findViewById(R.id.registrazioneFase1_tipoAccount)
+        campoEmail = controller.findViewById(R.id.registrazioneFase1_campoEmail)
+        email = controller.findViewById(R.id.registrazioneFase1_email)
+        campoPassword = controller.findViewById(R.id.registrazioneFase1_campoPassword)
+        password = controller.findViewById(R.id.registrazioneFase1_password)
+        pulsanteIndietro = controller.findViewById(R.id.registrazioneFase1_pulsanteIndietro)
+        pulsanteAvanti = controller.findViewById(R.id.registrazioneFase1_pulsanteAvanti)
+        pulsanteGoogle = controller.findViewById(R.id.registrazioneFase1_pulsanteGoogle)
+        pulsanteFacebook = controller.findViewById(R.id.registrazioneFase1_pulsanteFacebook)
+        pulsanteGitHub = controller.findViewById(R.id.registrazioneFase1_pulsanteGitHub)
+        pulsanteX = controller.findViewById(R.id.registrazioneFase1_pulsanteX)
+        linearLayout = controller.findViewById(R.id.registrazioneFase1_linearLayout)
+        constraintLayout = controller.findViewById(R.id.registrazioneFase1_constraintLayout)
     }
 
     private fun impostaMessaggioCorpo() {

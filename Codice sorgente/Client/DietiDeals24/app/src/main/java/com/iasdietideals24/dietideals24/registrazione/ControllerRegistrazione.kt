@@ -87,28 +87,29 @@ class ControllerRegistrazione : AppCompatActivity() {
     }
 
     fun creaMessaggioErroreEmailGiaUsata(layoutDoveInserireErrore: LinearLayout) {
-        val testoMessaggio = getString(R.string.registrazione_erroreEmailGiàUsata)
+        val testoMessaggio = getString(R.string.registrazioneFase1_erroreEmailGiàUsata)
         val messaggioDiErrore = creaMessaggioErrore(testoMessaggio)
 
         layoutDoveInserireErrore.addView(messaggioDiErrore)
     }
 
     fun creaMessaggioErrorePasswordNonSicura(layoutDoveInserireErrore: LinearLayout) {
-        val testoMessaggio = getString(R.string.registrazione_errorePasswordNonSicura)
+        val testoMessaggio = getString(R.string.registrazioneFase1_errorePasswordNonSicura)
         val messaggioDiErrore = creaMessaggioErrore(testoMessaggio)
 
         layoutDoveInserireErrore.addView(messaggioDiErrore)
     }
 
     fun creaMessaggioErroreCampiObbligatoriNonCompilati(layoutDoveInserireErrore: LinearLayout) {
-        val testoMessaggio = getString(R.string.registrazione_erroreCampiObbligatoriNonCompilati)
+        val testoMessaggio =
+            getString(R.string.registrazioneFase1_erroreCampiObbligatoriNonCompilati)
         val messaggioDiErrore = creaMessaggioErrore(testoMessaggio)
 
         layoutDoveInserireErrore.addView(messaggioDiErrore)
     }
 
     fun creaMessaggioErroreRegistrazioneSocial(layoutDoveInserireErrore: LinearLayout) {
-        val testoMessaggio = getString(R.string.registrazione_erroreRegistrazioneSocial)
+        val testoMessaggio = getString(R.string.registrazioneFase1_erroreRegistrazioneSocial)
         val messaggioDiErrore = creaMessaggioErrore(testoMessaggio)
 
         layoutDoveInserireErrore.addView(messaggioDiErrore)

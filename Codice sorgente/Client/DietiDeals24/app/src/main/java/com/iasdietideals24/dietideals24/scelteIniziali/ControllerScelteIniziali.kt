@@ -10,7 +10,7 @@ import com.iasdietideals24.dietideals24.registrazione.ControllerRegistrazione
 class ControllerScelteIniziali : AppCompatActivity() {
     private var _tipoAccount: String = ""
 
-     var tipoAccount: String
+    var tipoAccount: String
         get() = _tipoAccount
         set(valore) {
             _tipoAccount = valore
