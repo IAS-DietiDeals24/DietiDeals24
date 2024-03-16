@@ -94,7 +94,6 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/selezioneTipoAccount_pulsanteCompratore"
         style="@style/BottoneArancioneGrande"
-        android:layout_width="260dp"
         android:layout_marginTop="32dp"
         android:text="@string/selezioneTipoAccount_pulsanteCompratore"
         app:layout_constraintEnd_toEndOf="@+id/selezioneTipoAccount_messaggioCorpo"
@@ -106,6 +105,7 @@
         style="@style/BottoneBluGrande"
         android:layout_marginTop="32dp"
         android:text="@string/selezioneTipoAccount_pulsanteVenditore"
+        app:layout_constraintEnd_toEndOf="@+id/selezioneTipoAccount_pulsanteCompratore"
         app:layout_constraintStart_toStartOf="@+id/selezioneTipoAccount_pulsanteCompratore"
         app:layout_constraintTop_toBottomOf="@+id/selezioneTipoAccount_pulsanteCompratore" />
 

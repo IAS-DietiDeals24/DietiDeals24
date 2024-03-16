@@ -9,16 +9,24 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.model.account.Account
 import com.iasdietideals24.dietideals24.scelteIniziali.ControllerScelteIniziali
 
 
 class ControllerAccesso : AppCompatActivity() {
-    private var _tipoAccount: String = ""
+    private var _tipoAccountDaLoggare: String = ""
+    private var _accountDaLoggare: Account? = null
 
-    var tipoAccount: String
-        get() = _tipoAccount
+    var tipoAccountDaLoggare: String
+        get() = _tipoAccountDaLoggare
         set(valore) {
-            _tipoAccount = valore
+            _tipoAccountDaLoggare = valore
+        }
+
+    private var accountDaLoggare: Account?
+        get() = _accountDaLoggare
+        set(valore) {
+            _accountDaLoggare = valore
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +42,7 @@ class ControllerAccesso : AppCompatActivity() {
         val dati = vecchiaAttivita.extras
         val datoTipoAccount = dati?.getString("tipoAccount")
         val stringaTipoAccount = datoTipoAccount.toString()
-        tipoAccount = stringaTipoAccount
+        tipoAccountDaLoggare = stringaTipoAccount
         dati?.remove("tipoAccount")
     }
 
@@ -42,8 +50,20 @@ class ControllerAccesso : AppCompatActivity() {
         FrameAccesso(this)
     }
 
-    fun accedi(email: String, password: String) {
-        TODO("Not yet implemented")
+    fun isAccountDaLoggareRegistrato(email: String, password: String): Boolean {
+        recuperaAccount(email, password)
+
+        return accountDaLoggare != null
+    }
+
+    private fun recuperaAccount(email: String, password: String) {
+        val controlloreScambioDati = AccessoDB()
+
+        accountDaLoggare = controlloreScambioDati.recuperaAccount(email, password)
+    }
+
+    fun apriHome() {
+        //TODO
     }
 
     fun apriSelezioneAccessoRegistrazione() {
@@ -52,25 +72,33 @@ class ControllerAccesso : AppCompatActivity() {
 
     private fun cambiaAttivita(controllerAttivita: Class<*>) {
         val nuovaAttivita = Intent(this, controllerAttivita)
-        nuovaAttivita.putExtra("tipoAccount", tipoAccount)
+        nuovaAttivita.putExtra("tipoAccount", tipoAccountDaLoggare)
         nuovaAttivita.putExtra("attivitaChiamante", "ControllerAccesso")
         startActivity(nuovaAttivita)
     }
 
-    fun accessoGoogle() {
-        TODO("Not yet implemented")
+    fun accessoGoogle(): Boolean {
+        //TODO
+
+        return false
     }
 
-    fun accessoFacebook() {
-        TODO("Not yet implemented")
+    fun accessoFacebook(): Boolean {
+        //TODO
+
+        return false
     }
 
-    fun accessoGitHub() {
-        TODO("Not yet implemented")
+    fun accessoGitHub(): Boolean {
+        //TODO
+
+        return false
     }
 
-    fun accessoConX() {
-        TODO("Not yet implemented")
+    fun accessoConX(): Boolean {
+        //TODO
+
+        return false
     }
 
     fun evidenziaCampiErrore(vararg campiDaEvidenziare: TextInputLayout) {
@@ -81,6 +109,10 @@ class ControllerAccesso : AppCompatActivity() {
     fun rimuoviErroreCampo(vararg campiEvidenziati: TextInputLayout) {
         for (campo in campiEvidenziati)
             campo.error = null
+    }
+
+    fun rimuoviMessaggioErrore(layoutDoveEliminareMessaggio: LinearLayout) {
+        layoutDoveEliminareMessaggio.removeViewAt(2)
     }
 
     fun creaMessaggioErroreCredenzialiNonCorrette(layoutDoveInserireErrore: LinearLayout) {

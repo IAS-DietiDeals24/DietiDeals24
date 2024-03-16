@@ -144,6 +144,7 @@
                     app:cursorErrorColor="@color/rosso"
                     app:errorIconTint="@color/rosso"
                     app:errorTextColor="@color/blu"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/accesso_etichettaEmail">
@@ -158,14 +159,6 @@
                         android:textColor="@color/nero" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="16dp"
-                    android:layout_marginTop="5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/accesso_campoEmail" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -202,6 +195,7 @@
                     app:cursorErrorColor="@color/rosso"
                     app:errorIconTint="@color/rosso"
                     app:errorTextColor="@color/blu"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/accesso_etichettaPassword">
@@ -217,45 +211,42 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/accesso_campoPassword" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/accesso_separatore"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/fira_sans"
-                android:text="@string/selezioneAccessoRegistrazione_separatore"
-                android:textColor="@color/grigio"
-                android:textSize="30sp" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/accesso_separatore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans"
+                    android:text="@string/selezioneAccessoRegistrazione_separatore"
+                    android:textColor="@color/grigio"
+                    android:textSize="30sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <Space
-                    android:id="@+id/space"
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/accesso_pulsanteGoogle"
                     android:layout_width="42dp"
                     android:layout_height="42dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
                     android:background="@drawable/cerchio"
                     android:contentDescription="@string/selezioneAccessoRegistrazione_accessibilitàPulsanteGoogle"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/accesso_pulsanteFacebook"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/space"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/google_logo" />
 
                 <com.google.android.material.imageview.ShapeableImageView
@@ -290,28 +281,23 @@
                     app:layout_constraintTop_toTopOf="@+id/accesso_pulsanteGoogle"
                     app:srcCompat="@drawable/facebook_logo" />
 
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="32dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/accesso_pulsanteGoogle" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/accesso_pulsanteAccedi"
-                style="@style/BottoneBluPiccolo"
-                android:layout_height="wrap_content"
-                android:text="@string/accesso_pulsanteAccedi" />
-
-            <Space
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="32dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/accesso_pulsanteGoogle" />
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/accesso_pulsanteAccedi"
+                    style="@style/BottoneBluPiccolo"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="64dp"
+                    android:text="@string/accesso_pulsanteAccedi"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
     </ScrollView>

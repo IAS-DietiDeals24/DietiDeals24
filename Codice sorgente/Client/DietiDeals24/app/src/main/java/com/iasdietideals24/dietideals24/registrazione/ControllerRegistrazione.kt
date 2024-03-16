@@ -8,16 +8,28 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.model.Profilo
+import com.iasdietideals24.dietideals24.model.account.Account
+import com.iasdietideals24.dietideals24.model.account.AccountCompratore
+import com.iasdietideals24.dietideals24.model.account.AccountVenditore
 import com.iasdietideals24.dietideals24.scelteIniziali.ControllerScelteIniziali
+import java.sql.Date
 
 
 class ControllerRegistrazione : AppCompatActivity() {
-    private var _tipoAccount: String = ""
+    private var _tipoAccountDaRegistrare: String = ""
+    private var _accountDaRegistrare: Account? = null
 
-    var tipoAccount: String
-        get() = _tipoAccount
+    var tipoAccountDaRegistrare: String
+        get() = _tipoAccountDaRegistrare
         set(valore) {
-            _tipoAccount = valore
+            _tipoAccountDaRegistrare = valore
+        }
+
+    private var accountDaRegistrare: Account?
+        get() = _accountDaRegistrare
+        set(valore) {
+            _accountDaRegistrare = valore
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +45,7 @@ class ControllerRegistrazione : AppCompatActivity() {
         val dati = vecchiaAttivita.extras
         val datoTipoAccount = dati?.getString("tipoAccount")
         val stringaTipoAccount = datoTipoAccount.toString()
-        tipoAccount = stringaTipoAccount
+        tipoAccountDaRegistrare = stringaTipoAccount
         dati?.remove("tipoAccount")
     }
 
@@ -41,8 +53,83 @@ class ControllerRegistrazione : AppCompatActivity() {
         FrameRegistrazione(this)
     }
 
-    fun registrati(email: String, password: String) {
-        TODO("Not yet implemented")
+    fun isCampiCompilati(email: String, password: String): Boolean {
+        return verificaCampiCompilati(email, password)
+    }
+
+    private fun verificaCampiCompilati(email: String, password: String): Boolean {
+        return email.isNotEmpty() && password.isNotEmpty()
+    }
+
+    fun isEmailFormatoCorretto(email: String): Boolean {
+        return verificaEmailFormatoCorretto(email)
+    }
+
+    private fun verificaEmailFormatoCorretto(email: String): Boolean {
+        return email.contains(Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"))
+    }
+
+    fun isEmailUsataAccountStessoTipo(email: String, tipoAccount: String): Boolean {
+        return verificaEmailUsataAccountStessoTipo(email, tipoAccount)
+    }
+
+    private fun verificaEmailUsataAccountStessoTipo(email: String, tipoAccount: String): Boolean {
+        val registrazioneDB = RegistrazioneDB()
+
+        return registrazioneDB.verificaEmailUsataAccountStessoTipo(email, tipoAccount)
+    }
+
+    fun isPasswordSicura(password: String): Boolean {
+        return verificaPasswordSicura(password)
+    }
+
+    private fun verificaPasswordSicura(password: String): Boolean {
+        return password.length >= 8 &&
+                password.contains(Regex("[A-Z]")) &&
+                password.contains(Regex("[0-9]")) &&
+                password.contains(Regex("[!@#\$%^{}&*]"))
+    }
+
+    fun scegliAssociaCreaProfilo(email: String, password: String) {
+        recuperaAccountRegistrato(email)
+
+        if (accountDaRegistrare != null)
+            apriAssociaProfilo()
+        else {
+            creaAccount(email, password)
+            apriCreaProfilo()
+        }
+    }
+
+    private fun recuperaAccountRegistrato(email: String) {
+        val controlloreScambioDati = RegistrazioneDB()
+
+        accountDaRegistrare =
+            controlloreScambioDati.recuperaAccountTipoDiverso(email, tipoAccountDaRegistrare)
+    }
+
+    private fun creaAccount(email: String, password: String) {
+        val profilo = Profilo(
+            "", "", "", "",
+            Date.valueOf(""), "", "", "", "",
+            "", "", "", "", mutableListOf()
+        )
+
+        when (tipoAccountDaRegistrare) {
+            "Compratore" -> accountDaRegistrare = AccountCompratore(
+                email, password, profilo,
+                mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf()
+            )
+
+            "Venditore" -> accountDaRegistrare = AccountVenditore(
+                email, password, profilo,
+                mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf()
+            )
+        }
+    }
+
+    private fun apriAssociaProfilo() {
+        //TODO
     }
 
     fun mostraInfoPassword() {
@@ -55,25 +142,37 @@ class ControllerRegistrazione : AppCompatActivity() {
 
     private fun cambiaAttivita(controllerAttivita: Class<*>) {
         val nuovaAttivita = Intent(this, controllerAttivita)
-        nuovaAttivita.putExtra("tipoAccount", tipoAccount)
+        nuovaAttivita.putExtra("tipoAccount", tipoAccountDaRegistrare)
         nuovaAttivita.putExtra("attivitaChiamante", "ControllerRegistrazione")
         startActivity(nuovaAttivita)
     }
 
-    fun registrazioneGoogle() {
-        TODO("Not yet implemented")
+    fun apriCreaProfilo() {
+        //TODO
     }
 
-    fun registrazioneFacebook() {
-        TODO("Not yet implemented")
+    fun registrazioneGoogle(): Boolean {
+        //TODO
+
+        return false
     }
 
-    fun registrazioneGitHub() {
-        TODO("Not yet implemented")
+    fun registrazioneFacebook(): Boolean {
+        //TODO
+
+        return false
     }
 
-    fun registrazioneX() {
-        TODO("Not yet implemented")
+    fun registrazioneGitHub(): Boolean {
+        //TODO
+
+        return false
+    }
+
+    fun registrazioneX(): Boolean {
+        //TODO
+
+        return false
     }
 
     fun evidenziaCampiErrore(vararg campiDaEvidenziare: TextInputLayout) {
@@ -86,33 +185,44 @@ class ControllerRegistrazione : AppCompatActivity() {
             campo.error = null
     }
 
+    fun rimuoviMessaggioErrore(layoutDoveEliminareMessaggio: LinearLayout) {
+        layoutDoveEliminareMessaggio.removeViewAt(2)
+    }
+
     fun creaMessaggioErroreEmailGiaUsata(layoutDoveInserireErrore: LinearLayout) {
-        val testoMessaggio = getString(R.string.registrazioneFase1_erroreEmailGiàUsata)
+        val testoMessaggio = getString(R.string.registrazione_erroreEmailGiàUsata)
         val messaggioDiErrore = creaMessaggioErrore(testoMessaggio)
 
-        layoutDoveInserireErrore.addView(messaggioDiErrore)
+        layoutDoveInserireErrore.addView(messaggioDiErrore, 2)
     }
 
     fun creaMessaggioErrorePasswordNonSicura(layoutDoveInserireErrore: LinearLayout) {
-        val testoMessaggio = getString(R.string.registrazioneFase1_errorePasswordNonSicura)
+        val testoMessaggio = getString(R.string.registrazione_errorePasswordNonSicura)
         val messaggioDiErrore = creaMessaggioErrore(testoMessaggio)
 
-        layoutDoveInserireErrore.addView(messaggioDiErrore)
+        layoutDoveInserireErrore.addView(messaggioDiErrore, 2)
     }
 
     fun creaMessaggioErroreCampiObbligatoriNonCompilati(layoutDoveInserireErrore: LinearLayout) {
         val testoMessaggio =
-            getString(R.string.registrazioneFase1_erroreCampiObbligatoriNonCompilati)
+            getString(R.string.registrazione_erroreCampiObbligatoriNonCompilati)
         val messaggioDiErrore = creaMessaggioErrore(testoMessaggio)
 
-        layoutDoveInserireErrore.addView(messaggioDiErrore)
+        layoutDoveInserireErrore.addView(messaggioDiErrore, 2)
     }
 
     fun creaMessaggioErroreRegistrazioneSocial(layoutDoveInserireErrore: LinearLayout) {
-        val testoMessaggio = getString(R.string.registrazioneFase1_erroreRegistrazioneSocial)
+        val testoMessaggio = getString(R.string.registrazione_erroreRegistrazioneSocial)
         val messaggioDiErrore = creaMessaggioErrore(testoMessaggio)
 
-        layoutDoveInserireErrore.addView(messaggioDiErrore)
+        layoutDoveInserireErrore.addView(messaggioDiErrore, 2)
+    }
+
+    fun creaMessaggioErroreFormatoEmail(layoutDoveInserireErrore: LinearLayout) {
+        val testoMessaggio = getString(R.string.registrazione_erroreFormatoEmail)
+        val messaggioDiErrore = creaMessaggioErrore(testoMessaggio)
+
+        layoutDoveInserireErrore.addView(messaggioDiErrore, 2)
     }
 
     private fun creaMessaggioErrore(testoMessaggio: String): MaterialTextView {

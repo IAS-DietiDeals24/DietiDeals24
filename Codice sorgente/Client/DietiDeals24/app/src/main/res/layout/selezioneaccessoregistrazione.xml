@@ -98,7 +98,6 @@
         style="@style/BottoneArancioneGrande"
         android:layout_marginTop="32dp"
         android:text="@string/selezioneAccessoRegistrazione_pulsanteAccedi"
-        android:translationZ="10dp"
         app:layout_constraintEnd_toEndOf="@+id/selezioneAccessoRegistrazione_saluto"
         app:layout_constraintStart_toStartOf="@+id/selezioneAccessoRegistrazione_saluto"
         app:layout_constraintTop_toBottomOf="@+id/selezioneAccessoRegistrazione_saluto" />
@@ -122,7 +121,6 @@
         style="@style/BottoneBluGrande"
         android:layout_marginTop="32dp"
         android:text="@string/selezioneAccessoRegistrazione_pulsanteRegistrati"
-        android:translationZ="10dp"
         app:layout_constraintEnd_toEndOf="@+id/selezioneAccessoRegistrazione_separatore"
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="@+id/selezioneAccessoRegistrazione_separatore"

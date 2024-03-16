@@ -5,7 +5,7 @@ import com.iasdietideals24.dietideals24.model.account.Account
 import java.sql.Date
 import java.sql.Time
 
-abstract class AstaVenditore(
+abstract class AstaVenditore protected constructor(
     categoria: String,
     nome: String,
     descrizione: String,

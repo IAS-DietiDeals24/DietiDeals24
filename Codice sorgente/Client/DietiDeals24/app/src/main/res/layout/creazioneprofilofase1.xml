@@ -2,14 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    android:id="@+id/registrazioneFase1_constraintLayout"
+    android:id="@+id/creazioneProfiloFase1_constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blu"
-    android:foreground="#00000000">
+    android:background="@color/blu">
 
     <ImageButton
-        android:id="@+id/registrazioneFase1_pulsanteIndietro"
+        android:id="@+id/creazioneProfiloFase1_pulsanteIndietro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
@@ -23,7 +22,7 @@
         app:layout_constraintVertical_bias="0.050000012" />
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/registrazioneFase1_sfondoLogo"
+        android:id="@+id/creazioneProfiloFase1_sfondoLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/selezioneAccessoRegistrazione_accessibilitàLogo"
@@ -35,21 +34,21 @@
         app:srcCompat="@drawable/cerchio" />
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/registrazioneFase1_logo"
+        android:id="@+id/creazioneProfiloFase1_logo"
         android:layout_width="106dp"
         android:layout_height="106dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/scelteIniziali_accessibilitàLogo"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="@+id/registrazioneFase1_sfondoLogo"
-        app:layout_constraintEnd_toEndOf="@+id/registrazioneFase1_sfondoLogo"
-        app:layout_constraintStart_toStartOf="@+id/registrazioneFase1_sfondoLogo"
-        app:layout_constraintTop_toTopOf="@+id/registrazioneFase1_sfondoLogo"
+        app:layout_constraintBottom_toBottomOf="@+id/creazioneProfiloFase1_sfondoLogo"
+        app:layout_constraintEnd_toEndOf="@+id/creazioneProfiloFase1_sfondoLogo"
+        app:layout_constraintStart_toStartOf="@+id/creazioneProfiloFase1_sfondoLogo"
+        app:layout_constraintTop_toTopOf="@+id/creazioneProfiloFase1_sfondoLogo"
         app:layout_constraintVertical_bias="0.10"
         app:srcCompat="@drawable/logo" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/registrazioneFase1_nomeApp1"
+        android:id="@+id/creazioneProfiloFase1_nomeApp1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -57,45 +56,32 @@
         android:text="@string/scelteIniziali_nomeApp1"
         android:textColor="@color/blu"
         android:textSize="15sp"
-        app:layout_constraintStart_toStartOf="@+id/registrazioneFase1_logo"
-        app:layout_constraintTop_toBottomOf="@+id/registrazioneFase1_logo" />
+        app:layout_constraintStart_toStartOf="@+id/creazioneProfiloFase1_logo"
+        app:layout_constraintTop_toBottomOf="@+id/creazioneProfiloFase1_logo" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/registrazioneFase1_nomeApp2"
+        android:id="@+id/creazioneProfiloFase1_nomeApp2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/fira_sans_medium"
         android:text="@string/scelteIniziali_nomeApp2"
         android:textColor="@color/arancione"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@+id/registrazioneFase1_nomeApp1"
-        app:layout_constraintStart_toEndOf="@+id/registrazioneFase1_nomeApp1" />
+        app:layout_constraintBottom_toBottomOf="@+id/creazioneProfiloFase1_nomeApp1"
+        app:layout_constraintStart_toEndOf="@+id/creazioneProfiloFase1_nomeApp1" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/registrazioneFase1_tipoAccount"
+        android:id="@+id/creazioneProfiloFase1_messaggioCorpo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:fontFamily="@font/fira_sans_light"
-        android:text="@string/selezioneAccessoRegistrazione_tipoAccount"
-        android:textColor="@color/grigio"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registrazioneFase1_sfondoLogo"
-        app:textAllCaps="true" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/registrazioneFase1_messaggioCorpo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:fontFamily="@font/fira_sans"
-        android:text="@string/registrazioneFase1_messaggioCorpo"
+        android:text="@string/creazioneProfiloFase1e2_messaggioCorpo"
         android:textColor="@color/grigio"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registrazioneFase1_tipoAccount" />
+        app:layout_constraintTop_toBottomOf="@+id/creazioneProfiloFase1_sfondoLogo" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -104,10 +90,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registrazioneFase1_messaggioCorpo">
+        app:layout_constraintTop_toBottomOf="@+id/creazioneProfiloFase1_messaggioCorpo">
 
         <LinearLayout
-            android:id="@+id/registrazioneFase1_linearLayout"
+            android:id="@+id/creazioneProfiloFase1_linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -118,18 +104,18 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/registrazioneFase1_etichettaEmail"
+                    android:id="@+id/creazioneProfiloFase1_etichettaNomeUtente"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans_medium"
-                    android:text="@string/selezioneAccessoRegistrazione_etichettaEmail"
+                    android:text="@string/creazioneProfiloFase1_etichettaNomeUtente"
                     android:textColor="@color/grigio"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/registrazioneFase1_campoEmail"
+                    app:layout_constraintStart_toStartOf="@+id/creazioneProfiloFase1_campoNomeUtente"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/registrazioneFase1_campoEmail"
+                    android:id="@+id/creazioneProfiloFase1_campoNomeUtente"
                     android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
@@ -149,28 +135,28 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/registrazioneFase1_etichettaEmail">
+                    app:layout_constraintTop_toBottomOf="@+id/creazioneProfiloFase1_etichettaNomeUtente">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/registrazioneFase1_email"
+                        android:id="@+id/creazioneProfiloFase1_nomeUtente"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
                         android:importantForAccessibility="no"
-                        android:inputType="text|textEmailAddress"
+                        android:inputType="text"
                         android:textColor="@color/nero" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/registrazioneFase1_asteriscoEmail"
+                    android:id="@+id/creazioneProfiloFase1_asteriscoNomeUtente"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/asterisco"
                     android:textColor="@color/arancione"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toEndOf="@+id/registrazioneFase1_etichettaEmail"
-                    app:layout_constraintTop_toTopOf="@+id/registrazioneFase1_etichettaEmail" />
+                    app:layout_constraintStart_toEndOf="@+id/creazioneProfiloFase1_etichettaNomeUtente"
+                    app:layout_constraintTop_toTopOf="@+id/creazioneProfiloFase1_etichettaNomeUtente" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -179,18 +165,18 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/registrazioneFase1_etichettaPassword"
+                    android:id="@+id/creazioneProfiloFase1_etichettaNome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans_medium"
-                    android:text="@string/selezioneAccessoRegistrazione_etichettaPassword"
+                    android:text="@string/creazioneProfiloFase1_etichettaNome"
                     android:textColor="@color/grigio"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/registrazioneFase1_campoPassword"
+                    app:layout_constraintStart_toStartOf="@+id/creazioneProfiloFase1_campoNome"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/registrazioneFase1_campoPassword"
+                    android:id="@+id/creazioneProfiloFase1_campoNome"
                     android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
@@ -205,107 +191,153 @@
                     app:boxStrokeWidth="1.5dp"
                     app:cursorColor="@color/arancione"
                     app:cursorErrorColor="@color/rosso"
-                    app:endIconDrawable="@drawable/icona_aiuto"
-                    app:endIconMode="custom"
-                    app:endIconTint="@null"
-                    app:endIconTintMode="multiply"
                     app:errorIconTint="@color/rosso"
                     app:errorTextColor="@color/arancione"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/registrazioneFase1_etichettaPassword">
+                    app:layout_constraintTop_toBottomOf="@+id/creazioneProfiloFase1_etichettaNome">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/registrazioneFase1_password"
+                        android:id="@+id/creazioneProfiloFase1_nome"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
                         android:importantForAccessibility="no"
-                        android:inputType="text|textPassword"
+                        android:inputType="text"
                         android:textColor="@color/nero" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:id="@+id/registrazioneFase1_asteriscoPassword"
+                    android:id="@+id/creazioneProfiloFase1_asteriscoNome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/asterisco"
                     android:textColor="@color/arancione"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toEndOf="@+id/registrazioneFase1_etichettaPassword"
-                    app:layout_constraintTop_toTopOf="@+id/registrazioneFase1_etichettaPassword" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/registrazioneFase1_separatore"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/fira_sans"
-                    android:text="@string/selezioneAccessoRegistrazione_separatore"
-                    android:textColor="@color/grigio"
-                    android:textSize="30sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toEndOf="@+id/creazioneProfiloFase1_etichettaNome"
+                    app:layout_constraintTop_toTopOf="@+id/creazioneProfiloFase1_etichettaNome" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/registrazioneFase1_pulsanteGoogle"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/cerchio"
-                    android:contentDescription="@string/selezioneAccessoRegistrazione_accessibilitàPulsanteGoogle"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/creazioneProfiloFase1_etichettaCognome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/creazioneProfiloFase1_etichettaCognome"
+                    android:textColor="@color/grigio"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@+id/creazioneProfiloFase1_campoCognome"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/creazioneProfiloFase1_campoCognome"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+
+                    app:boxBackgroundColor="@color/grigio"
+                    app:boxCornerRadiusBottomEnd="30dp"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    app:boxCornerRadiusTopEnd="30dp"
+                    app:boxCornerRadiusTopStart="30dp"
+                    app:boxStrokeColor="@color/arancione"
+                    app:boxStrokeErrorColor="@color/rosso"
+                    app:boxStrokeWidth="1.5dp"
+                    app:cursorColor="@color/arancione"
+                    app:cursorErrorColor="@color/rosso"
+                    app:errorIconTint="@color/rosso"
+                    app:errorTextColor="@color/arancione"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/registrazioneFase1_pulsanteFacebook"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/google_logo" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/registrazioneFase1_pulsanteGitHub"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:background="@drawable/cerchio"
-                    android:contentDescription="@string/selezioneAccessoRegistrazione_accessibilitàPulsanteGitHub"
-                    app:layout_constraintEnd_toStartOf="@+id/registrazioneFase1_pulsanteX"
-                    app:layout_constraintStart_toEndOf="@+id/registrazioneFase1_pulsanteFacebook"
-                    app:layout_constraintTop_toTopOf="@+id/registrazioneFase1_pulsanteFacebook"
-                    app:srcCompat="@drawable/github_logo" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/registrazioneFase1_pulsanteX"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:background="@drawable/cerchio"
-                    android:contentDescription="@string/selezioneAccessoRegistrazione_accessibilitàPulsanteX"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/registrazioneFase1_pulsanteGitHub"
-                    app:layout_constraintTop_toTopOf="@+id/registrazioneFase1_pulsanteGitHub"
-                    app:srcCompat="@drawable/x_logo" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/creazioneProfiloFase1_etichettaCognome">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/registrazioneFase1_pulsanteFacebook"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:contentDescription="@string/selezioneAccessoRegistrazione_accessibilitàPulsanteFacebook"
-                    app:layout_constraintEnd_toStartOf="@+id/registrazioneFase1_pulsanteGitHub"
-                    app:layout_constraintStart_toEndOf="@+id/registrazioneFase1_pulsanteGoogle"
-                    app:layout_constraintTop_toTopOf="@+id/registrazioneFase1_pulsanteGoogle"
-                    app:srcCompat="@drawable/facebook_logo" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/creazioneProfiloFase1_cognome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
 
+                        android:importantForAccessibility="no"
+                        android:inputType="text"
+                        android:textColor="@color/nero" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/creazioneProfiloFase1_asteriscoCognome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/asterisco"
+                    android:textColor="@color/arancione"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toEndOf="@+id/creazioneProfiloFase1_etichettaCognome"
+                    app:layout_constraintTop_toTopOf="@+id/creazioneProfiloFase1_etichettaCognome" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/creazioneProfiloFase1_etichettaDataNascita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/creazioneProfiloFase1_etichettaDataNascita"
+                    android:textColor="@color/grigio"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@+id/creazioneProfiloFase1_campoDataNascita"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/creazioneProfiloFase1_campoDataNascita"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+
+                    app:boxBackgroundColor="@color/grigio"
+                    app:boxCornerRadiusBottomEnd="30dp"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    app:boxCornerRadiusTopEnd="30dp"
+                    app:boxCornerRadiusTopStart="30dp"
+                    app:boxStrokeColor="@color/arancione"
+                    app:boxStrokeErrorColor="@color/rosso"
+                    app:boxStrokeWidth="1.5dp"
+                    app:cursorColor="@color/arancione"
+                    app:cursorErrorColor="@color/rosso"
+                    app:errorIconTint="@color/rosso"
+                    app:errorTextColor="@color/arancione"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/creazioneProfiloFase1_etichettaDataNascita">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/creazioneProfiloFase1_dataNascita"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:importantForAccessibility="no"
+                        android:inputType="datetime|date"
+                        android:textColor="@color/nero" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/creazioneProfiloFase1_asteriscoDataNascita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/asterisco"
+                    android:textColor="@color/arancione"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toEndOf="@+id/creazioneProfiloFase1_etichettaDataNascita"
+                    app:layout_constraintTop_toTopOf="@+id/creazioneProfiloFase1_etichettaDataNascita" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -313,13 +345,11 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/registrazioneFase1_pulsanteAvanti"
-                    style="@style/BottoneBluPiccolo"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/creazioneProfiloFase1_pulsanteAvanti"
+                    style="@style/BottoneArancionePiccolo"
                     android:layout_marginTop="32dp"
-                    android:layout_marginBottom="32dp"
-                    android:backgroundTint="@color/arancione"
-                    android:text="@string/registrazioneFase1e2e3_pulsanteAvanti"
+                    android:layout_marginBottom="64dp"
+                    android:text="@string/creazioneProfiloFase1e2_pulsanteAvanti"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

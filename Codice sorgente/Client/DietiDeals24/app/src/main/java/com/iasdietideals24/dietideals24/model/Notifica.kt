@@ -9,7 +9,7 @@ class Notifica(
     private var oraInvio: Time,
     private var messaggio: String,
     private var mittente: Account,
-    private var destinatario: MutableList<Account>
+    private var destinatari: MutableList<Account>
 ) {
     fun getDataInvio(): Date {
         return dataInvio
@@ -27,8 +27,8 @@ class Notifica(
         return mittente
     }
 
-    fun getDestinatario(): MutableList<Account> {
-        return destinatario
+    fun getDestinatari(): MutableList<Account> {
+        return destinatari
     }
 
     fun setDataInvio(dataInvio: Date) {
@@ -48,14 +48,14 @@ class Notifica(
     }
 
     fun setDestinatario(destinatario: MutableList<Account>) {
-        this.destinatario = destinatario
+        this.destinatari = destinatario
     }
 
     fun addDestinatario(destinatario: Account) {
-        this.destinatario.add(destinatario)
+        this.destinatari.add(destinatario)
     }
 
     fun removeDestinatario(destinatario: Account) {
-        this.destinatario.remove(destinatario)
+        this.destinatari.remove(destinatario)
     }
 }

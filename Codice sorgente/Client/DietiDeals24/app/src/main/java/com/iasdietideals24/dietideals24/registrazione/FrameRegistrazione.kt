@@ -28,7 +28,7 @@ class FrameRegistrazione(private val controller: ControllerRegistrazione) {
     private lateinit var constraintLayout: ConstraintLayout
 
     init {
-        controller.setContentView(R.layout.registrazionefase1)
+        controller.setContentView(R.layout.registrazione)
 
         trovaElementiInterfaccia()
 
@@ -47,23 +47,23 @@ class FrameRegistrazione(private val controller: ControllerRegistrazione) {
     }
 
     private fun trovaElementiInterfaccia() {
-        tipoAccount = controller.findViewById(R.id.registrazioneFase1_tipoAccount)
-        campoEmail = controller.findViewById(R.id.registrazioneFase1_campoEmail)
-        email = controller.findViewById(R.id.registrazioneFase1_email)
-        campoPassword = controller.findViewById(R.id.registrazioneFase1_campoPassword)
-        password = controller.findViewById(R.id.registrazioneFase1_password)
-        pulsanteIndietro = controller.findViewById(R.id.registrazioneFase1_pulsanteIndietro)
-        pulsanteAvanti = controller.findViewById(R.id.registrazioneFase1_pulsanteAvanti)
-        pulsanteGoogle = controller.findViewById(R.id.registrazioneFase1_pulsanteGoogle)
-        pulsanteFacebook = controller.findViewById(R.id.registrazioneFase1_pulsanteFacebook)
-        pulsanteGitHub = controller.findViewById(R.id.registrazioneFase1_pulsanteGitHub)
-        pulsanteX = controller.findViewById(R.id.registrazioneFase1_pulsanteX)
-        linearLayout = controller.findViewById(R.id.registrazioneFase1_linearLayout)
-        constraintLayout = controller.findViewById(R.id.registrazioneFase1_constraintLayout)
+        tipoAccount = controller.findViewById(R.id.registrazione_tipoAccount)
+        campoEmail = controller.findViewById(R.id.registrazione_campoEmail)
+        email = controller.findViewById(R.id.registrazione_email)
+        campoPassword = controller.findViewById(R.id.registrazione_campoPassword)
+        password = controller.findViewById(R.id.registrazione_password)
+        pulsanteIndietro = controller.findViewById(R.id.registrazione_pulsanteIndietro)
+        pulsanteAvanti = controller.findViewById(R.id.registrazione_pulsanteAvanti)
+        pulsanteGoogle = controller.findViewById(R.id.registrazione_pulsanteGoogle)
+        pulsanteFacebook = controller.findViewById(R.id.registrazione_pulsanteFacebook)
+        pulsanteGitHub = controller.findViewById(R.id.registrazione_pulsanteGitHub)
+        pulsanteX = controller.findViewById(R.id.registrazione_pulsanteX)
+        linearLayout = controller.findViewById(R.id.registrazione_linearLayout)
+        constraintLayout = controller.findViewById(R.id.registrazione_constraintLayout)
     }
 
     private fun impostaMessaggioCorpo() {
-        when (controller.tipoAccount) {
+        when (controller.tipoAccountDaRegistrare) {
             "compratore" -> {
                 val stringaTipoAccount = controller.getString(R.string.tipoAccount_compratore)
                 tipoAccount.text = controller.getString(
@@ -109,23 +109,82 @@ class FrameRegistrazione(private val controller: ControllerRegistrazione) {
     private fun clickAvanti() {
         val email = estraiTestoDaElemento(email)
         val password = estraiTestoDaElemento(password)
-        controller.registrati(email, password)
+
+        effettuaVerificheEAvanza(email, password)
+    }
+
+    private fun effettuaVerificheEAvanza(email: String, password: String) {
+        val isCampiCompilati = controller.isCampiCompilati(email, password)
+
+        if (isCampiCompilati) {
+            val isEmailFormatoCorretto = controller.isEmailFormatoCorretto(email)
+
+            if (isEmailFormatoCorretto) {
+                val tipoAccount = controller.tipoAccountDaRegistrare
+                val isEmailUsataAccountStessoTipo =
+                    controller.isEmailUsataAccountStessoTipo(email, tipoAccount)
+
+                if (!isEmailUsataAccountStessoTipo) {
+                    val isPasswordSicura = controller.isPasswordSicura(password)
+
+                    if (isPasswordSicura) {
+                        controller.scegliAssociaCreaProfilo(email, password)
+                    } else {
+                        controller.rimuoviMessaggioErrore(linearLayout)
+                        errorePasswordNonSicura()
+                    }
+                } else {
+                    controller.rimuoviMessaggioErrore(linearLayout)
+                    erroreEmailGiaUsata()
+                }
+            } else {
+                controller.rimuoviMessaggioErrore(linearLayout)
+                erroreFormatoEmail()
+            }
+        } else {
+            controller.rimuoviMessaggioErrore(linearLayout)
+            erroreCampiObbligatoriNonCompilati()
+        }
     }
 
     private fun clickGoogle() {
-        controller.registrazioneGoogle()
+        val registrazioneRiuscita = controller.registrazioneGoogle()
+
+        if (registrazioneRiuscita) controller.apriCreaProfilo()
+        else {
+            controller.rimuoviMessaggioErrore(linearLayout)
+            erroreRegistrazioneSocial()
+        }
     }
 
     private fun clickFacebook() {
-        controller.registrazioneFacebook()
+        val registrazioneRiuscita = controller.registrazioneFacebook()
+
+        if (registrazioneRiuscita) controller.apriCreaProfilo()
+        else {
+            controller.rimuoviMessaggioErrore(linearLayout)
+            erroreRegistrazioneSocial()
+        }
     }
 
     private fun clickGitHub() {
-        controller.registrazioneGitHub()
+        val registrazioneRiuscita = controller.registrazioneGitHub()
+
+        if (registrazioneRiuscita) controller.apriCreaProfilo()
+        else {
+            controller.rimuoviMessaggioErrore(linearLayout)
+            erroreRegistrazioneSocial()
+        }
     }
 
     private fun clickX() {
-        controller.registrazioneX()
+        val registrazioneRiuscita = controller.registrazioneX()
+
+        if (registrazioneRiuscita) controller.apriCreaProfilo()
+        else {
+            controller.rimuoviMessaggioErrore(linearLayout)
+            erroreRegistrazioneSocial()
+        }
     }
 
     private fun estraiTestoDaElemento(elemento: TextInputEditText): String {
@@ -160,6 +219,11 @@ class FrameRegistrazione(private val controller: ControllerRegistrazione) {
 
     private fun erroreRegistrazioneSocial() {
         controller.creaMessaggioErroreRegistrazioneSocial(linearLayout)
+    }
+
+    private fun erroreFormatoEmail() {
+        controller.creaMessaggioErroreFormatoEmail(linearLayout)
+        controller.evidenziaCampiErrore(campoEmail)
     }
 
 }

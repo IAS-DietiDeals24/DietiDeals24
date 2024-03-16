@@ -71,6 +71,6 @@ class ControllerScelteIniziali : AppCompatActivity() {
     }
 
     fun apriHome() {
-        TODO("Not yet implemented")
+        //TODO
     }
 }

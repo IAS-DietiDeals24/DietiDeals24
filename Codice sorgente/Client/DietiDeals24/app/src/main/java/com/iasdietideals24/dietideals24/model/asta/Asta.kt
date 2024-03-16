@@ -4,7 +4,7 @@ import com.iasdietideals24.dietideals24.model.Notifica
 import java.sql.Date
 import java.sql.Time
 
-abstract class Asta(
+abstract class Asta protected constructor(
     private var categoria: String,
     private var nome: String,
     private var descrizione: String,

@@ -53,7 +53,7 @@ class FrameAccesso(private val controller: ControllerAccesso) {
     }
 
     private fun impostaMessaggioCorpo() {
-        when (controller.tipoAccount) {
+        when (controller.tipoAccountDaLoggare) {
             "compratore" -> {
                 val stringaTipoAccount = controller.getString(R.string.tipoAccount_compratore)
                 tipoAccount.text = controller.getString(
@@ -98,23 +98,53 @@ class FrameAccesso(private val controller: ControllerAccesso) {
     private fun clickAccedi() {
         val email = estraiTestoDaElemento(email)
         val password = estraiTestoDaElemento(password)
-        controller.accedi(email, password)
+        val isUtenteRegistrato = controller.isAccountDaLoggareRegistrato(email, password)
+
+        if (isUtenteRegistrato) controller.apriHome()
+        else {
+            controller.rimuoviMessaggioErrore(layout)
+            erroreCredenzialiNonCorrette()
+        }
     }
 
     private fun clickGoogle() {
-        controller.accessoGoogle()
+        val accessoRiuscito = controller.accessoGoogle()
+
+        if (accessoRiuscito) controller.apriHome()
+        else {
+            controller.rimuoviMessaggioErrore(layout)
+            erroreAccessoSocial()
+        }
     }
 
     private fun clickFacebook() {
-        controller.accessoFacebook()
+        val accessoRiuscito = controller.accessoFacebook()
+
+        if (accessoRiuscito) controller.apriHome()
+        else {
+            controller.rimuoviMessaggioErrore(layout)
+            erroreAccessoSocial()
+        }
     }
 
     private fun clickGitHub() {
-        controller.accessoGitHub()
+        val accessoRiuscito = controller.accessoGitHub()
+
+        if (accessoRiuscito) controller.apriHome()
+        else {
+            controller.rimuoviMessaggioErrore(layout)
+            erroreAccessoSocial()
+        }
     }
 
     private fun clickX() {
-        controller.accessoConX()
+        val accessoRiuscito = controller.accessoConX()
+
+        if (accessoRiuscito) controller.apriHome()
+        else {
+            controller.rimuoviMessaggioErrore(layout)
+            erroreAccessoSocial()
+        }
     }
 
     private fun impostaEventiDiCambiamentoCampi() {

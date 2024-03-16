@@ -3,7 +3,7 @@ package com.iasdietideals24.dietideals24.model.account
 import com.iasdietideals24.dietideals24.model.Notifica
 import com.iasdietideals24.dietideals24.model.Profilo
 
-abstract class Account(
+abstract class Account protected constructor(
     private var email: String,
     private var password: String,
     private var profilo: Profilo,

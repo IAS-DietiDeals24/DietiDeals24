@@ -5,7 +5,7 @@ import java.math.BigDecimal
 import java.sql.Date
 import java.sql.Time
 
-abstract class OffertaVenditore(
+abstract class OffertaVenditore protected constructor(
     dataInvio: Date,
     oraInvio: Time,
     valore: BigDecimal,
