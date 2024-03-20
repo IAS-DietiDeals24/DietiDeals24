@@ -10,6 +10,11 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.eccezioni.EccezioneCampiNonCompilati
+import com.iasdietideals24.dietideals24.eccezioni.EccezioneCollegamentoSocialNonRiuscito
+import com.iasdietideals24.dietideals24.eccezioni.EccezioneEmailNonValida
+import com.iasdietideals24.dietideals24.eccezioni.EccezioneEmailUsata
+import com.iasdietideals24.dietideals24.eccezioni.EccezionePasswordNonSicura
 
 
 class FrameRegistrazione(private val controller: ControllerRegistrazione) {
@@ -114,74 +119,71 @@ class FrameRegistrazione(private val controller: ControllerRegistrazione) {
     }
 
     private fun effettuaVerificheEAvanza(email: String, password: String) {
-        val isCampiCompilati = controller.isCampiCompilati(email, password)
+        try {
+            controller.verificaCampiCompilati(email, password)
 
-        if (isCampiCompilati) {
-            val isEmailFormatoCorretto = controller.isEmailFormatoCorretto(email)
+            controller.verificaEmailFormatoCorretto(email)
 
-            if (isEmailFormatoCorretto) {
-                val tipoAccount = controller.tipoAccountDaRegistrare
-                val isEmailUsataAccountStessoTipo =
-                    controller.isEmailUsataAccountStessoTipo(email, tipoAccount)
+            val tipoAccount = controller.tipoAccountDaRegistrare
+            controller.verificaEmailUsataAccountStessoTipo(email, tipoAccount)
 
-                if (!isEmailUsataAccountStessoTipo) {
-                    val isPasswordSicura = controller.isPasswordSicura(password)
+            controller.verificaPasswordSicura(password)
 
-                    if (isPasswordSicura) {
-                        controller.scegliAssociaCreaProfilo(email, password)
-                    } else {
-                        controller.rimuoviMessaggioErrore(linearLayout)
-                        errorePasswordNonSicura()
-                    }
-                } else {
-                    controller.rimuoviMessaggioErrore(linearLayout)
-                    erroreEmailGiaUsata()
-                }
-            } else {
-                controller.rimuoviMessaggioErrore(linearLayout)
-                erroreFormatoEmail()
-            }
-        } else {
+            controller.scegliAssociaCreaProfilo(email, password)
+        } catch (eccezione: EccezioneCampiNonCompilati) {
             controller.rimuoviMessaggioErrore(linearLayout)
             erroreCampiObbligatoriNonCompilati()
+        } catch (eccezione: EccezioneEmailNonValida) {
+            controller.rimuoviMessaggioErrore(linearLayout)
+            erroreFormatoEmail()
+        } catch (eccezione: EccezioneEmailUsata) {
+            controller.rimuoviMessaggioErrore(linearLayout)
+            erroreEmailGiaUsata()
+        } catch (eccezione: EccezionePasswordNonSicura) {
+            controller.rimuoviMessaggioErrore(linearLayout)
+            errorePasswordNonSicura()
         }
     }
 
     private fun clickGoogle() {
-        val registrazioneRiuscita = controller.registrazioneGoogle()
+        try {
+            controller.registrazioneGoogle()
 
-        if (registrazioneRiuscita) controller.apriCreaProfilo()
-        else {
+            controller.apriCreaProfilo()
+        } catch (eccezione: EccezioneCollegamentoSocialNonRiuscito) {
             controller.rimuoviMessaggioErrore(linearLayout)
             erroreRegistrazioneSocial()
         }
     }
 
     private fun clickFacebook() {
-        val registrazioneRiuscita = controller.registrazioneFacebook()
+        try {
+            controller.registrazioneFacebook()
 
-        if (registrazioneRiuscita) controller.apriCreaProfilo()
-        else {
+            controller.apriCreaProfilo()
+        } catch (eccezione: EccezioneCollegamentoSocialNonRiuscito) {
             controller.rimuoviMessaggioErrore(linearLayout)
             erroreRegistrazioneSocial()
         }
     }
 
     private fun clickGitHub() {
-        val registrazioneRiuscita = controller.registrazioneGitHub()
+        try {
+            controller.registrazioneGitHub()
 
-        if (registrazioneRiuscita) controller.apriCreaProfilo()
-        else {
+            controller.apriCreaProfilo()
+        } catch (eccezione: EccezioneCollegamentoSocialNonRiuscito) {
             controller.rimuoviMessaggioErrore(linearLayout)
             erroreRegistrazioneSocial()
         }
     }
 
     private fun clickX() {
-        val registrazioneRiuscita = controller.registrazioneX()
+        try {
+            controller.registrazioneX()
 
-        if (registrazioneRiuscita) controller.apriCreaProfilo()
-        else {
+            controller.apriCreaProfilo()
+        } catch (eccezione: EccezioneCollegamentoSocialNonRiuscito) {
             controller.rimuoviMessaggioErrore(linearLayout)
             erroreRegistrazioneSocial()
         }

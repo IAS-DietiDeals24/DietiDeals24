@@ -9,6 +9,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.eccezioni.EccezioneAccountNonEsistente
+import com.iasdietideals24.dietideals24.eccezioni.EccezioneCollegamentoSocialNonRiuscito
 
 
 class FrameAccesso(private val controller: ControllerAccesso) {
@@ -86,11 +88,6 @@ class FrameAccesso(private val controller: ControllerAccesso) {
         pulsanteX.setOnClickListener { clickX() }
     }
 
-    private fun estraiTestoDaElemento(elemento: TextInputEditText): String {
-        val testoElemento = elemento.text
-        return testoElemento.toString()
-    }
-
     private fun clickIndietro() {
         controller.apriSelezioneAccessoRegistrazione()
     }
@@ -98,62 +95,53 @@ class FrameAccesso(private val controller: ControllerAccesso) {
     private fun clickAccedi() {
         val email = estraiTestoDaElemento(email)
         val password = estraiTestoDaElemento(password)
-        val isUtenteRegistrato = controller.isAccountDaLoggareRegistrato(email, password)
 
-        if (isUtenteRegistrato) controller.apriHome()
-        else {
+        try {
+            controller.accedi(email, password)
+        } catch (eccezione: EccezioneAccountNonEsistente) {
             controller.rimuoviMessaggioErrore(layout)
             erroreCredenzialiNonCorrette()
         }
     }
 
-    private fun clickGoogle() {
-        val accessoRiuscito = controller.accessoGoogle()
+    private fun estraiTestoDaElemento(elemento: TextInputEditText): String {
+        val testoElemento = elemento.text
+        return testoElemento.toString()
+    }
 
-        if (accessoRiuscito) controller.apriHome()
-        else {
+    private fun clickGoogle() {
+        try {
+            controller.accessoGoogle()
+        } catch (eccezione: EccezioneCollegamentoSocialNonRiuscito) {
             controller.rimuoviMessaggioErrore(layout)
             erroreAccessoSocial()
         }
     }
 
     private fun clickFacebook() {
-        val accessoRiuscito = controller.accessoFacebook()
-
-        if (accessoRiuscito) controller.apriHome()
-        else {
+        try {
+            controller.accessoFacebook()
+        } catch (eccezione: EccezioneCollegamentoSocialNonRiuscito) {
             controller.rimuoviMessaggioErrore(layout)
             erroreAccessoSocial()
         }
     }
 
     private fun clickGitHub() {
-        val accessoRiuscito = controller.accessoGitHub()
-
-        if (accessoRiuscito) controller.apriHome()
-        else {
+        try {
+            controller.accessoGitHub()
+        } catch (eccezione: EccezioneCollegamentoSocialNonRiuscito) {
             controller.rimuoviMessaggioErrore(layout)
             erroreAccessoSocial()
         }
     }
 
     private fun clickX() {
-        val accessoRiuscito = controller.accessoConX()
-
-        if (accessoRiuscito) controller.apriHome()
-        else {
+        try {
+            controller.accessoConX()
+        } catch (eccezione: EccezioneCollegamentoSocialNonRiuscito) {
             controller.rimuoviMessaggioErrore(layout)
             erroreAccessoSocial()
-        }
-    }
-
-    private fun impostaEventiDiCambiamentoCampi() {
-        email.addTextChangedListener {
-            controller.rimuoviErroreCampo(campoEmail)
-        }
-
-        password.addTextChangedListener {
-            controller.rimuoviErroreCampo(campoPassword)
         }
     }
 
@@ -164,5 +152,15 @@ class FrameAccesso(private val controller: ControllerAccesso) {
 
     private fun erroreAccessoSocial() {
         controller.creaMessaggioErroreSocial(layout)
+    }
+
+    private fun impostaEventiDiCambiamentoCampi() {
+        email.addTextChangedListener {
+            controller.rimuoviErroreCampo(campoEmail)
+        }
+
+        password.addTextChangedListener {
+            controller.rimuoviErroreCampo(campoPassword)
+        }
     }
 }

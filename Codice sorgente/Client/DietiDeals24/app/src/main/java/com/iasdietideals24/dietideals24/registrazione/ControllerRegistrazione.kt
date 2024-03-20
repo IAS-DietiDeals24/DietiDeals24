@@ -8,6 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.eccezioni.EccezioneCampiNonCompilati
+import com.iasdietideals24.dietideals24.eccezioni.EccezioneCollegamentoSocialNonRiuscito
+import com.iasdietideals24.dietideals24.eccezioni.EccezioneEmailNonValida
+import com.iasdietideals24.dietideals24.eccezioni.EccezioneEmailUsata
+import com.iasdietideals24.dietideals24.eccezioni.EccezionePasswordNonSicura
 import com.iasdietideals24.dietideals24.model.Profilo
 import com.iasdietideals24.dietideals24.model.account.Account
 import com.iasdietideals24.dietideals24.model.account.AccountCompratore
@@ -17,8 +22,8 @@ import java.sql.Date
 
 
 class ControllerRegistrazione : AppCompatActivity() {
-    private var _tipoAccountDaRegistrare: String = ""
-    private var _accountDaRegistrare: Account? = null
+    private lateinit var _tipoAccountDaRegistrare: String
+    private lateinit var _accountDaRegistrare: Account
 
     var tipoAccountDaRegistrare: String
         get() = _tipoAccountDaRegistrare
@@ -26,7 +31,7 @@ class ControllerRegistrazione : AppCompatActivity() {
             _tipoAccountDaRegistrare = valore
         }
 
-    private var accountDaRegistrare: Account?
+    private var accountDaRegistrare: Account
         get() = _accountDaRegistrare
         set(valore) {
             _accountDaRegistrare = valore
@@ -53,140 +58,153 @@ class ControllerRegistrazione : AppCompatActivity() {
         FrameRegistrazione(this)
     }
 
-    fun isCampiCompilati(email: String, password: String): Boolean {
-        return verificaCampiCompilati(email, password)
+    fun mostraInfoPassword() {
+        FrameInfoPassword(this)
     }
 
-    private fun verificaCampiCompilati(email: String, password: String): Boolean {
-        return email.isNotEmpty() && password.isNotEmpty()
+    fun apriSelezioneAccessoRegistrazione() {
+        val nuovaAttivita = Intent(this, ControllerScelteIniziali::class.java)
+        nuovaAttivita.putExtra("tipoAccount", tipoAccountDaRegistrare)
+        nuovaAttivita.putExtra("attivitaChiamante", "ControllerRegistrazione")
+        startActivity(nuovaAttivita)
     }
 
-    fun isEmailFormatoCorretto(email: String): Boolean {
-        return verificaEmailFormatoCorretto(email)
+    @Throws(EccezioneCampiNonCompilati::class)
+    fun verificaCampiCompilati(email: String, password: String) {
+        if (email.isEmpty() || password.isEmpty())
+            throw EccezioneCampiNonCompilati("Mandatory fields not filled in.")
     }
 
-    private fun verificaEmailFormatoCorretto(email: String): Boolean {
-        return email.contains(Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"))
+    @Throws(EccezioneEmailNonValida::class)
+    fun verificaEmailFormatoCorretto(email: String) {
+        if (!email.contains(Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")))
+            throw EccezioneEmailNonValida("The email format is not valid.")
     }
 
-    fun isEmailUsataAccountStessoTipo(email: String, tipoAccount: String): Boolean {
-        return verificaEmailUsataAccountStessoTipo(email, tipoAccount)
-    }
-
-    private fun verificaEmailUsataAccountStessoTipo(email: String, tipoAccount: String): Boolean {
+    @Throws(EccezioneEmailUsata::class)
+    fun verificaEmailUsataAccountStessoTipo(email: String, tipoAccount: String) {
         val registrazioneDB = RegistrazioneDB()
 
-        return registrazioneDB.verificaEmailUsataAccountStessoTipo(email, tipoAccount)
+        registrazioneDB.verificaEmailUsataAccountStessoTipo(email, tipoAccount)
     }
 
-    fun isPasswordSicura(password: String): Boolean {
-        return verificaPasswordSicura(password)
-    }
-
-    private fun verificaPasswordSicura(password: String): Boolean {
-        return password.length >= 8 &&
-                password.contains(Regex("[A-Z]")) &&
-                password.contains(Regex("[0-9]")) &&
-                password.contains(Regex("[!@#\$%^{}&*]"))
+    @Throws(EccezionePasswordNonSicura::class)
+    fun verificaPasswordSicura(password: String) {
+        if (password.length < 8 ||
+            !password.contains(Regex("[A-Z]")) ||
+            !password.contains(Regex("[0-9]")) ||
+            !password.contains(Regex("[!@#\$%^{}&*]"))
+        )
+            throw EccezionePasswordNonSicura("The password is not secure.")
     }
 
     fun scegliAssociaCreaProfilo(email: String, password: String) {
-        recuperaAccountRegistrato(email)
+        val accountGiaRegistrato = recuperaAccountRegistrato(email)
 
-        if (accountDaRegistrare != null)
+        // Un account di altro tipo con la stessa email è stato trovato
+        if (accountGiaRegistrato != null) {
+            associaAccount(accountGiaRegistrato, email, password)
             apriAssociaProfilo()
+        }
+        // Un account di altro tipo con la stessa email non è stato trovato
         else {
             creaAccount(email, password)
             apriCreaProfilo()
         }
     }
 
-    private fun recuperaAccountRegistrato(email: String) {
+    private fun recuperaAccountRegistrato(email: String): Account? {
         val controlloreScambioDati = RegistrazioneDB()
 
-        accountDaRegistrare =
-            controlloreScambioDati.recuperaAccountTipoDiverso(email, tipoAccountDaRegistrare)
+        return controlloreScambioDati.recuperaAccountTipoDiverso(email, tipoAccountDaRegistrare)
+    }
+
+    private fun associaAccount(
+        accountGiaRegistrato: Account,
+        emailRegistrazione: String,
+        passwordRegistrazione: String
+    ) {
+        // Recupera il profilo dell'account già esistente
+        val profilo = accountGiaRegistrato.getProfilo()
+
+        // Crea l'account e inserisci profilo in account
+        accountDaRegistrare = when (tipoAccountDaRegistrare) {
+            "compratore" -> AccountCompratore(
+                emailRegistrazione, passwordRegistrazione, profilo,
+                mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf()
+            )
+
+            else -> AccountVenditore(
+                emailRegistrazione, passwordRegistrazione, profilo,
+                mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf()
+            )
+        }
+
+        // Inserisci account nel profilo
+        profilo.addAccount(accountDaRegistrare)
+    }
+
+    private fun apriAssociaProfilo() {
+        TODO()
     }
 
     private fun creaAccount(email: String, password: String) {
+        // Crea il profilo
         val profilo = Profilo(
             "", "", "", "",
             Date.valueOf(""), "", "", "", "",
             "", "", "", "", mutableListOf()
         )
 
-        when (tipoAccountDaRegistrare) {
-            "Compratore" -> accountDaRegistrare = AccountCompratore(
+        // Crea l'account e inserisci profilo in account
+        accountDaRegistrare = when (tipoAccountDaRegistrare) {
+            "Compratore" -> AccountCompratore(
                 email, password, profilo,
                 mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf()
             )
 
-            "Venditore" -> accountDaRegistrare = AccountVenditore(
+            else -> AccountVenditore(
                 email, password, profilo,
                 mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf()
             )
         }
-    }
 
-    private fun apriAssociaProfilo() {
-        //TODO
-    }
+        // Inserisci account nel profilo
+        profilo.addAccount(accountDaRegistrare)
 
-    fun mostraInfoPassword() {
-        FrameInfoPassword(this)
-    }
-
-    fun apriSelezioneAccessoRegistrazione() {
-        cambiaAttivita(ControllerScelteIniziali::class.java)
-    }
-
-    private fun cambiaAttivita(controllerAttivita: Class<*>) {
-        val nuovaAttivita = Intent(this, controllerAttivita)
-        nuovaAttivita.putExtra("tipoAccount", tipoAccountDaRegistrare)
-        nuovaAttivita.putExtra("attivitaChiamante", "ControllerRegistrazione")
-        startActivity(nuovaAttivita)
     }
 
     fun apriCreaProfilo() {
-        //TODO
+        TODO()
     }
 
+    @Throws(EccezioneCollegamentoSocialNonRiuscito::class)
     fun registrazioneGoogle(): Boolean {
-        //TODO
-
-        return false
+        TODO()
     }
 
+    @Throws(EccezioneCollegamentoSocialNonRiuscito::class)
     fun registrazioneFacebook(): Boolean {
-        //TODO
-
-        return false
+        TODO()
     }
 
+    @Throws(EccezioneCollegamentoSocialNonRiuscito::class)
     fun registrazioneGitHub(): Boolean {
-        //TODO
-
-        return false
+        TODO()
     }
 
+    @Throws(EccezioneCollegamentoSocialNonRiuscito::class)
     fun registrazioneX(): Boolean {
-        //TODO
+        TODO()
+    }
 
-        return false
+    fun rimuoviMessaggioErrore(layoutDoveEliminareMessaggio: LinearLayout) {
+        layoutDoveEliminareMessaggio.removeViewAt(2)
     }
 
     fun evidenziaCampiErrore(vararg campiDaEvidenziare: TextInputLayout) {
         for (campo in campiDaEvidenziare)
             campo.error = getString(R.string.accesso_erroreCampi)
-    }
-
-    fun rimuoviErroreCampo(vararg campiEvidenziati: TextInputLayout) {
-        for (campo in campiEvidenziati)
-            campo.error = null
-    }
-
-    fun rimuoviMessaggioErrore(layoutDoveEliminareMessaggio: LinearLayout) {
-        layoutDoveEliminareMessaggio.removeViewAt(2)
     }
 
     fun creaMessaggioErroreEmailGiaUsata(layoutDoveInserireErrore: LinearLayout) {
@@ -250,5 +268,10 @@ class ControllerRegistrazione : AppCompatActivity() {
         messaggio.setPadding(60, 0, 0, 0)
 
         return messaggio
+    }
+
+    fun rimuoviErroreCampo(vararg campiEvidenziati: TextInputLayout) {
+        for (campo in campiEvidenziati)
+            campo.error = null
     }
 }

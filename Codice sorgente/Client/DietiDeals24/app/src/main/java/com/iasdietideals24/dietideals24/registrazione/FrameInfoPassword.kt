@@ -23,7 +23,7 @@ class FrameInfoPassword(private val controller: ControllerRegistrazione) {
 
         // Al fine di rendere il popup di info password più visibile, il frame di registrazione ha
         // una cortina nera come foreground.
-        // Viene resa invisibile quando la pagina di registrazione è creata e quando è aperto il
+        // Viene resa visibile quando la pagina di registrazione è creata e quando è aperto il
         // popup.
         // Viene resa invisibile quando il popup è chiuso.
         impostaTrasparenzaCortina(150)

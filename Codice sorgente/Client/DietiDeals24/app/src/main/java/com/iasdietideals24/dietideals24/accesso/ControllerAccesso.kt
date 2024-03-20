@@ -9,13 +9,15 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.eccezioni.EccezioneAccountNonEsistente
+import com.iasdietideals24.dietideals24.eccezioni.EccezioneCollegamentoSocialNonRiuscito
 import com.iasdietideals24.dietideals24.model.account.Account
 import com.iasdietideals24.dietideals24.scelteIniziali.ControllerScelteIniziali
 
 
 class ControllerAccesso : AppCompatActivity() {
-    private var _tipoAccountDaLoggare: String = ""
-    private var _accountDaLoggare: Account? = null
+    private lateinit var _tipoAccountDaLoggare: String
+    private lateinit var _accountDaLoggare: Account
 
     var tipoAccountDaLoggare: String
         get() = _tipoAccountDaLoggare
@@ -23,7 +25,7 @@ class ControllerAccesso : AppCompatActivity() {
             _tipoAccountDaLoggare = valore
         }
 
-    private var accountDaLoggare: Account?
+    private var accountDaLoggare: Account
         get() = _accountDaLoggare
         set(valore) {
             _accountDaLoggare = valore
@@ -50,69 +52,58 @@ class ControllerAccesso : AppCompatActivity() {
         FrameAccesso(this)
     }
 
-    fun isAccountDaLoggareRegistrato(email: String, password: String): Boolean {
-        recuperaAccount(email, password)
-
-        return accountDaLoggare != null
+    fun apriSelezioneAccessoRegistrazione() {
+        val nuovaAttivita = Intent(this, ControllerScelteIniziali::class.java)
+        nuovaAttivita.putExtra("tipoAccount", tipoAccountDaLoggare)
+        nuovaAttivita.putExtra("attivitaChiamante", "ControllerAccesso")
+        startActivity(nuovaAttivita)
     }
 
+    @Throws(EccezioneAccountNonEsistente::class)
+    fun accedi(email: String, password: String) {
+        recuperaAccount(email, password)
+
+        apriHome()
+    }
+
+    @Throws(EccezioneAccountNonEsistente::class)
     private fun recuperaAccount(email: String, password: String) {
         val controlloreScambioDati = AccessoDB()
 
         accountDaLoggare = controlloreScambioDati.recuperaAccount(email, password)
     }
 
-    fun apriHome() {
-        //TODO
+    private fun apriHome() {
+        TODO()
     }
 
-    fun apriSelezioneAccessoRegistrazione() {
-        cambiaAttivita(ControllerScelteIniziali::class.java)
+    @Throws(EccezioneCollegamentoSocialNonRiuscito::class)
+    fun accessoGoogle() {
+        TODO()
     }
 
-    private fun cambiaAttivita(controllerAttivita: Class<*>) {
-        val nuovaAttivita = Intent(this, controllerAttivita)
-        nuovaAttivita.putExtra("tipoAccount", tipoAccountDaLoggare)
-        nuovaAttivita.putExtra("attivitaChiamante", "ControllerAccesso")
-        startActivity(nuovaAttivita)
+    @Throws(EccezioneCollegamentoSocialNonRiuscito::class)
+    fun accessoFacebook() {
+        TODO()
     }
 
-    fun accessoGoogle(): Boolean {
-        //TODO
-
-        return false
+    @Throws(EccezioneCollegamentoSocialNonRiuscito::class)
+    fun accessoGitHub() {
+        TODO()
     }
 
-    fun accessoFacebook(): Boolean {
-        //TODO
-
-        return false
+    @Throws(EccezioneCollegamentoSocialNonRiuscito::class)
+    fun accessoConX() {
+        TODO()
     }
 
-    fun accessoGitHub(): Boolean {
-        //TODO
-
-        return false
-    }
-
-    fun accessoConX(): Boolean {
-        //TODO
-
-        return false
+    fun rimuoviMessaggioErrore(layoutDoveEliminareMessaggio: LinearLayout) {
+        layoutDoveEliminareMessaggio.removeViewAt(2)
     }
 
     fun evidenziaCampiErrore(vararg campiDaEvidenziare: TextInputLayout) {
         for (campo in campiDaEvidenziare)
             campo.error = getString(R.string.accesso_erroreCampi)
-    }
-
-    fun rimuoviErroreCampo(vararg campiEvidenziati: TextInputLayout) {
-        for (campo in campiEvidenziati)
-            campo.error = null
-    }
-
-    fun rimuoviMessaggioErrore(layoutDoveEliminareMessaggio: LinearLayout) {
-        layoutDoveEliminareMessaggio.removeViewAt(2)
     }
 
     fun creaMessaggioErroreCredenzialiNonCorrette(layoutDoveInserireErrore: LinearLayout) {
@@ -151,5 +142,10 @@ class ControllerAccesso : AppCompatActivity() {
         messaggio.setPadding(60, 0, 0, 0)
 
         return messaggio
+    }
+
+    fun rimuoviErroreCampo(vararg campiEvidenziati: TextInputLayout) {
+        for (campo in campiEvidenziati)
+            campo.error = null
     }
 }

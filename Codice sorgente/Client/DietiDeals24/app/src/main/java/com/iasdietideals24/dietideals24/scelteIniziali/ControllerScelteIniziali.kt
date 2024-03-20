@@ -8,7 +8,7 @@ import com.iasdietideals24.dietideals24.registrazione.ControllerRegistrazione
 
 
 class ControllerScelteIniziali : AppCompatActivity() {
-    private var _tipoAccount: String = ""
+    private lateinit var _tipoAccount: String
 
     var tipoAccount: String
         get() = _tipoAccount
@@ -48,29 +48,27 @@ class ControllerScelteIniziali : AppCompatActivity() {
             mostraSelezioneTipoAccount()
     }
 
-    fun mostraSelezioneTipoAccount() {
-        FrameSelezioneTipoAccount(this)
-    }
-
     fun mostraSelezioneAccessoRegistrazione() {
         FrameSelezioneAccessoRegistrazione(this)
     }
 
-    fun apriAccesso() {
-        cambiaAttivita(ControllerAccesso::class.java)
+    fun mostraSelezioneTipoAccount() {
+        FrameSelezioneTipoAccount(this)
     }
 
-    private fun cambiaAttivita(controllerAttivita: Class<*>) {
-        val nuovaAttivita = Intent(this, controllerAttivita)
+    fun apriAccesso() {
+        val nuovaAttivita = Intent(this, ControllerAccesso::class.java)
         nuovaAttivita.putExtra("tipoAccount", tipoAccount)
         startActivity(nuovaAttivita)
     }
 
     fun apriRegistrazione() {
-        cambiaAttivita(ControllerRegistrazione::class.java)
+        val nuovaAttivita = Intent(this, ControllerRegistrazione::class.java)
+        nuovaAttivita.putExtra("tipoAccount", tipoAccount)
+        startActivity(nuovaAttivita)
     }
 
     fun apriHome() {
-        //TODO
+        TODO()
     }
 }

@@ -9,12 +9,12 @@ junit = "1.1.5"
 espresso-core = "3.5.1"
 
 # Dipendenze livello progetto
-gradle = "8.3.0"
+gradle = "8.3.1"
 google-services = "4.4.1"
 firebase-crashlytics-gradle = "2.9.9"
 
 # Plugin livello progetto
-android-application = "8.3.0"
+android-application = "8.3.1"
 jetbrains-kotlin-android = "1.9.23"
 sonarqube = "4.4.1.3373"
 
