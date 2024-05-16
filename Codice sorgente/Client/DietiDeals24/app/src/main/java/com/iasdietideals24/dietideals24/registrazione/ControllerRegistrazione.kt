@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.associazioneProfilo.ControllerAssociazioneProfilo
 import com.iasdietideals24.dietideals24.eccezioni.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.eccezioni.EccezioneCollegamentoSocialNonRiuscito
 import com.iasdietideals24.dietideals24.eccezioni.EccezioneEmailNonValida
@@ -145,7 +146,8 @@ class ControllerRegistrazione : AppCompatActivity() {
     }
 
     private fun apriAssociaProfilo() {
-        TODO()
+        val nuovaAttivita = Intent(this, ControllerAssociazioneProfilo::class.java)
+        startActivity(nuovaAttivita)
     }
 
     private fun creaAccount(email: String, password: String) {

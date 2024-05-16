@@ -43,6 +43,15 @@
             android:fitsSystemWindows="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.DietiDeals24" />
+        <activity
+            android:name=".associazioneProfilo.ControllerAssociazioneProfilo"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.DietiDeals24" />
+        <activity android:name=".creazioneProfilo.ControllerCreazioneProfilo"
+            android:fitsSystemWindows="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.DietiDeals24" />
 
         <meta-data
             android:name="preloaded_fonts"
