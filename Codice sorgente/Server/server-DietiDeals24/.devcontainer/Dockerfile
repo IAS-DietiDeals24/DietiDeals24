@@ -1,0 +1,6 @@
+FROM mcr.microsoft.com/devcontainers/base:jammy
+
+# Installa la OpenJDK di Eclipse Temurin (https://hub.docker.com/_/eclipse-temurin)
+ENV JAVA_HOME=/opt/java/openjdk
+COPY --from=eclipse-temurin:21 $JAVA_HOME $JAVA_HOME
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
