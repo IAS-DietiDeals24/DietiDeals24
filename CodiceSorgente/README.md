@@ -26,7 +26,7 @@ Per configurare il Development Environment con IntelliJ IDEA è necessario avere
 5. Selezionare il `Git Branch` da clonare.
 6. In `Detection for devcontainer.json file:` clicchiamo su `Specify Path` e incolliamo questo path:
     ```
-    'Codice sorgente'/Server/server-DietiDeals24/.devcontainer/devcontainer.json
+    CodiceSorgente/Server/server-DietiDeals24/.devcontainer/devcontainer.json
     ```
 7. Clicchiamo su `Build Container and Continue`.
 8. Una volta creato il devcontainer, dovremo scegliere l'IDE da utilizzare. Scegliamo `IntelliJ IDEA 2024.1.4` (la versione non EAP) e clicchiamo su `Continue`.
