@@ -22,10 +22,9 @@
         android:usesCleartextTraffic="false"
         tools:targetApi="34">
         <activity
-            android:name=".scelteIniziali.ControllerScelteIniziali"
+            android:name=".controller.ControllerSelezioneTipoAccount"
             android:exported="true"
             android:fitsSystemWindows="true"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.DietiDeals24">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,23 +33,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".accesso.ControllerAccesso"
+            android:name=".controller.ControllerSelezioneAccessoRegistrazione"
             android:fitsSystemWindows="true"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.DietiDeals24" />
         <activity
-            android:name=".registrazione.ControllerRegistrazione"
+            android:name=".controller.ControllerAccesso"
             android:fitsSystemWindows="true"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.DietiDeals24" />
         <activity
-            android:name=".associazioneProfilo.ControllerAssociazioneProfilo"
+            android:name=".controller.ControllerRegistrazione"
             android:fitsSystemWindows="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.DietiDeals24" />
-        <activity android:name=".creazioneProfilo.ControllerCreazioneProfilo"
-            android:fitsSystemWindows="true"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.DietiDeals24" />
 
         <meta-data

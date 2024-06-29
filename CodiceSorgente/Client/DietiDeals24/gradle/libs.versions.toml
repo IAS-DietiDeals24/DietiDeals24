@@ -3,15 +3,17 @@
 core-ktx = "1.13.1"
 appcompat = "1.7.0"
 material = "1.12.0"
-firebase-crashlytics = "19.0.1"
+firebase-crashlytics = "19.0.2"
 junit-jupiter-api = "5.10.2"
-junit = "1.1.5"
-espresso-core = "3.5.1"
+junit = "1.2.1"
+espresso-core = "3.6.1"
+retrofit = "2.11.0"
+converter-gson = "2.11.0"
 
 # Dipendenze livello progetto
 gradle = "8.5.0"
 google-services = "4.4.2"
-firebase-crashlytics-gradle = "3.0.1"
+firebase-crashlytics-gradle = "3.0.2"
 
 # Plugin livello progetto
 android-application = "8.5.0"
@@ -27,6 +29,8 @@ firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashly
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter-api" }
 junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "converter-gson"}
 
 # Dipendenze livello progetto
 gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle" }
