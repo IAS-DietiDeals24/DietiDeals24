@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grigio">
@@ -79,52 +80,89 @@
         app:layout_constraintBottom_toBottomOf="@+id/selezioneAccessoRegistrazione_nomeApp1"
         app:layout_constraintStart_toEndOf="@+id/selezioneAccessoRegistrazione_nomeApp1" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/selezioneAccessoRegistrazione_saluto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginTop="32dp"
-        android:fontFamily="@font/fira_sans_medium"
-        android:text="@string/selezioneAccessoRegistrazione_saluto"
-        android:textColor="@color/blu"
-        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.509"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selezioneAccessoRegistrazione_nomeApp1" />
+        app:layout_constraintTop_toBottomOf="@+id/selezioneAccessoRegistrazione_nomeApp1">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/selezioneAccessoRegistrazione_pulsanteAccedi"
-        style="@style/BottoneArancioneGrande"
-        android:layout_marginTop="32dp"
-        android:text="@string/selezioneAccessoRegistrazione_pulsanteAccedi"
-        app:layout_constraintEnd_toEndOf="@+id/selezioneAccessoRegistrazione_saluto"
-        app:layout_constraintStart_toStartOf="@+id/selezioneAccessoRegistrazione_saluto"
-        app:layout_constraintTop_toBottomOf="@+id/selezioneAccessoRegistrazione_saluto" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/selezioneAccessoRegistrazione_separatore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/fira_sans"
-        android:text="@string/selezioneAccessoRegistrazione_separatore"
-        android:textColor="@color/blu"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="@+id/selezioneAccessoRegistrazione_pulsanteAccedi"
-        app:layout_constraintHorizontal_bias="0.509"
-        app:layout_constraintStart_toStartOf="@+id/selezioneAccessoRegistrazione_pulsanteAccedi"
-        app:layout_constraintTop_toBottomOf="@+id/selezioneAccessoRegistrazione_pulsanteAccedi" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/selezioneAccessoRegistrazione_pulsanteRegistrati"
-        style="@style/BottoneBluGrande"
-        android:layout_marginTop="32dp"
-        android:text="@string/selezioneAccessoRegistrazione_pulsanteRegistrati"
-        app:layout_constraintEnd_toEndOf="@+id/selezioneAccessoRegistrazione_separatore"
-        app:layout_constraintHorizontal_bias="0.506"
-        app:layout_constraintStart_toStartOf="@+id/selezioneAccessoRegistrazione_separatore"
-        app:layout_constraintTop_toBottomOf="@+id/selezioneAccessoRegistrazione_separatore" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/selezioneAccessoRegistrazione_saluto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/selezioneAccessoRegistrazione_saluto"
+                    android:textColor="@color/blu"
+                    android:textSize="30sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/selezioneAccessoRegistrazione_pulsanteAccedi"
+                    style="@style/BottoneArancioneGrande"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/selezioneAccessoRegistrazione_pulsanteAccedi"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/selezioneAccessoRegistrazione_separatore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans"
+                    android:text="@string/selezioneAccessoRegistrazione_separatore"
+                    android:textColor="@color/blu"
+                    android:textSize="30sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/selezioneAccessoRegistrazione_pulsanteRegistrati"
+                    style="@style/BottoneBluGrande"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/selezioneAccessoRegistrazione_pulsanteRegistrati"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <ImageButton
         android:id="@+id/selezioneAccessoRegistrazione_pulsanteIndietro"

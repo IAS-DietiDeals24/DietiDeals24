@@ -2,10 +2,14 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.PopupWindow
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
@@ -32,6 +36,7 @@ import retrofit2.http.Path
 
 
 class ControllerRegistrazione : AppCompatActivity() {
+    //region FrameRegistrazione
     private var viewModel: ModelControllerRegistrazione = ModelControllerRegistrazione()
 
     private lateinit var tipoAccount: MaterialTextView
@@ -131,7 +136,7 @@ class ControllerRegistrazione : AppCompatActivity() {
 
     @ErrorHandler
     private fun clickInfoPassword() {
-        TODO()
+        mostraPopupInfoPassword()
     }
 
     @EventHandler
@@ -221,7 +226,7 @@ class ControllerRegistrazione : AppCompatActivity() {
 
     @GET("account?email={email}")
     private fun recuperaAccountRegistrato(@Path("email") email: String): Call<Any>? {
-        TODO()
+        TODO("Cambiare anche il ritorno da Call<Any> a Call<Acccount>")
     }
 
     @POST("account/update")
@@ -230,7 +235,7 @@ class ControllerRegistrazione : AppCompatActivity() {
         emailRegistrazione: String,
         passwordRegistrazione: String
     ) {
-        TODO()
+        TODO("Cambiare anche il tipo del parametro da Call<Any> a Call<Acccount>")
     }
 
     @POST("account/new")
@@ -377,4 +382,70 @@ class ControllerRegistrazione : AppCompatActivity() {
 
         layoutDoveInserireErrore.addView(messaggioDiErrore, 2)
     }
+    //endregion
+
+
+    //region PopupInfoPassword
+    private lateinit var constraintLayoutPopup: ConstraintLayout
+    private lateinit var pulsanteChiudi: ImageButton
+
+    @UIBuilder
+    private fun mostraPopupInfoPassword() {
+        val layoutPopup = gonfiaLayout()
+
+        val finestraPopup = creaFinestraPopup(layoutPopup)
+
+        trovaElementiInterfaccia(layoutPopup)
+
+        /* Al fine di rendere il popup di info password più visibile, il frame di registrazione ha
+        una cortina nera come foreground. Viene resa visibile quando la pagina di registrazione è
+        creata e quando è aperto il popup. Viene resa invisibile quando il popup è chiuso. */
+        impostaTrasparenzaCortina(150)
+
+        impostaEventiClick(finestraPopup)
+
+        finestraPopup.showAtLocation(layoutPopup, Gravity.CENTER, 0, 0)
+    }
+
+    @UIBuilder
+    private fun gonfiaLayout(): View {
+        val servizioInflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val radiceLayout = findViewById<ConstraintLayout>(R.id.infoPassword_constraintLayout)
+
+        return servizioInflater.inflate(R.layout.infopassword, radiceLayout)
+    }
+
+    @UIBuilder
+    private fun creaFinestraPopup(popupDaCreare: View): PopupWindow {
+        val larghezzaFinestra = LinearLayout.LayoutParams.WRAP_CONTENT
+        val altezzaFinestra = LinearLayout.LayoutParams.WRAP_CONTENT
+        val chiusuraConTapEsterno = false
+
+        return PopupWindow(popupDaCreare, larghezzaFinestra, altezzaFinestra, chiusuraConTapEsterno)
+    }
+
+    @UIBuilder
+    private fun trovaElementiInterfaccia(layoutPopupCreato: View) {
+        constraintLayoutPopup = findViewById(R.id.registrazione_constraintLayout)
+        pulsanteChiudi = layoutPopupCreato.findViewById(R.id.infoPassword_pulsanteChiudi)
+    }
+
+    @UIBuilder
+    private fun impostaTrasparenzaCortina(alpha: Int) {
+        constraintLayoutPopup.foreground.alpha = alpha
+    }
+
+    @UIBuilder
+    private fun impostaEventiClick(finestraPopupCreata: PopupWindow) {
+        pulsanteChiudi.setOnClickListener { clickChiudi(finestraPopupCreata) }
+    }
+
+
+    @EventHandler
+    private fun clickChiudi(finestraPopupCreata: PopupWindow) {
+        finestraPopupCreata.dismiss()
+
+        impostaTrasparenzaCortina(0)
+    }
+    //endregion
 }

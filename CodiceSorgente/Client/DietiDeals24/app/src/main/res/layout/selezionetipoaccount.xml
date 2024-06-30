@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grigio">
@@ -78,52 +79,96 @@
         app:layout_constraintBottom_toBottomOf="@+id/selezioneTipoAccount_nomeApp1"
         app:layout_constraintStart_toEndOf="@+id/selezioneTipoAccount_nomeApp1" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/selezioneTipoAccount_messaggioCorpo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:fontFamily="@font/fira_sans_medium"
-        android:text="@string/selezioneTipoAccount_messaggioCorpo"
-        android:textColor="@color/blu"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="@+id/selezioneTipoAccount_logo"
-        app:layout_constraintStart_toStartOf="@+id/selezioneTipoAccount_logo"
-        app:layout_constraintTop_toBottomOf="@+id/selezioneTipoAccount_nomeApp1" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/selezioneTipoAccount_pulsanteCompratore"
-        style="@style/BottoneArancioneGrande"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginTop="32dp"
-        android:text="@string/selezioneTipoAccount_pulsanteCompratore"
-        app:layout_constraintEnd_toEndOf="@+id/selezioneTipoAccount_messaggioCorpo"
-        app:layout_constraintStart_toStartOf="@+id/selezioneTipoAccount_messaggioCorpo"
-        app:layout_constraintTop_toBottomOf="@+id/selezioneTipoAccount_messaggioCorpo" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selezioneTipoAccount_nomeApp1">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/selezioneTipoAccount_pulsanteVenditore"
-        style="@style/BottoneBluGrande"
-        android:layout_marginTop="32dp"
-        android:text="@string/selezioneTipoAccount_pulsanteVenditore"
-        app:layout_constraintEnd_toEndOf="@+id/selezioneTipoAccount_pulsanteCompratore"
-        app:layout_constraintStart_toStartOf="@+id/selezioneTipoAccount_pulsanteCompratore"
-        app:layout_constraintTop_toBottomOf="@+id/selezioneTipoAccount_pulsanteCompratore" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/selezioneTipoAccount_pulsanteOspite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:clickable="true"
-        android:fontFamily="@font/fira_sans"
-        android:gravity="center_vertical"
-        android:minHeight="48dp"
-        android:text="@string/selezioneTipoAccount_pulsanteOspite"
-        android:textColor="@color/bluLink"
-        android:textSize="20sp"
-        app:backgroundTint="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="@+id/selezioneTipoAccount_pulsanteVenditore"
-        app:layout_constraintStart_toStartOf="@+id/selezioneTipoAccount_pulsanteVenditore"
-        app:layout_constraintTop_toBottomOf="@+id/selezioneTipoAccount_pulsanteVenditore" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/selezioneTipoAccount_messaggioCorpo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/selezioneTipoAccount_messaggioCorpo"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/selezioneTipoAccount_pulsanteCompratore"
+                    style="@style/BottoneArancioneGrande"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/selezioneTipoAccount_pulsanteCompratore"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/selezioneTipoAccount_pulsanteVenditore"
+                    style="@style/BottoneBluGrande"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="@string/selezioneTipoAccount_pulsanteVenditore"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/selezioneTipoAccount_pulsanteOspite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:clickable="true"
+                    android:fontFamily="@font/fira_sans"
+                    android:gravity="center_vertical"
+                    android:minHeight="48dp"
+                    android:text="@string/selezioneTipoAccount_pulsanteOspite"
+                    android:textColor="@color/bluLink"
+                    android:textSize="20sp"
+                    app:backgroundTint="@android:color/transparent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
