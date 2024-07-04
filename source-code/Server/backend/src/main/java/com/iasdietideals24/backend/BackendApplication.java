@@ -1,13 +1,13 @@
-package com.ias.serverdietideals24;
+package com.iasdietideals24.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ServerDietiDeals24Application {
+public class BackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ServerDietiDeals24Application.class, args);
+		SpringApplication.run(BackendApplication.class, args);
 	}
 
 }

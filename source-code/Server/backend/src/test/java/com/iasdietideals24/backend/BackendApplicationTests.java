@@ -1,10 +1,10 @@
-package com.ias.serverdietideals24;
+package com.iasdietideals24.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ServerDietiDeals24ApplicationTests {
+class BackendApplicationTests {
 
 	@Test
 	void contextLoads() {

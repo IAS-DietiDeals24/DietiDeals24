@@ -8,11 +8,11 @@
 		<version>3.3.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.ias</groupId>
-	<artifactId>server-DietiDeals24</artifactId>
+	<groupId>com.iasdietideals24</groupId>
+	<artifactId>backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>server-DietiDeals24</name>
-	<description>server-DietiDeals24</description>
+	<name>backend</name>
+	<description>backend</description>
 	<url/>
 	<licenses>
 		<license/>
