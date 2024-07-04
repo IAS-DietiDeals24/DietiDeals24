@@ -1,6 +1,6 @@
 # Production Dockerfile for backend
 
-FROM eclipse-temurin:17-alpine
+FROM eclipse-temurin:21-alpine
 
 # Create user to run app as (instead of root)
 RUN addgroup -S app && adduser -S app -G app
