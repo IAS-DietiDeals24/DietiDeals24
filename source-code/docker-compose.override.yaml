@@ -1,11 +1,13 @@
-# Development Docker Compose file for backend
+# Development Docker Compose file
 
 version: '3.8'
+
+name: dietideals24-devcompose
 
 services:
 
     # Update this to the name of the service you want to work with in your docker-compose.yml file
-    backend: # Note: we only override the backend service, we will let frontend pull from  a production-ready image. You can always override this if you prefer to keep frontend deployed from your local Dockerfile
+    backend: # Note: we only override the backend service
         container_name: dietideals24-backend-dev
 
         # Uncomment if you want to override the service's Dockerfile to one in the .devcontainer 
@@ -15,6 +17,9 @@ services:
         build: # override the backend configs to build from our src code folder's Dockerfile
             context: ./Server/backend/
             dockerfile: .dockerfiles/dev-Dockerfile
+
+        ports:
+            - 54321:8080 # Mappa la porta 8080 del container con 54321 nell'host (http://localhost:54321/ ci farà accedere all'app)
 
         # Update this to wherever you want VS Code to mount the folder of your project
         volumes:
@@ -28,3 +33,9 @@ services:
         
         # Overrides default command so things don't shut down after the process ends.
         command: /bin/sh -c "while sleep 1000; do :; done"
+
+    database:
+        container_name: dietideals24-postgresDB-dev
+        
+        ports:
+            - 54322:5432

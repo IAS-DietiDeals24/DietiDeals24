@@ -1,0 +1,23 @@
+# Production Docker Compose file
+
+version: '3.8'
+
+name: dietideals24-prodcompose
+
+services:
+ 
+    backend:
+        container_name: dietideals24-backend-prod
+
+        build:
+            context: ./Server/backend/
+            dockerfile: .dockerfiles/prod-Dockerfile
+        
+        ports:
+            - 54311:8080 # Mappa la porta 8080 del container con 54321 nell'host (http://localhost:54321/ ci farà accedere all'app)
+
+    database:
+        container_name: dietideals24-postgresDB-prod
+        
+        ports:
+            - 54312:5432

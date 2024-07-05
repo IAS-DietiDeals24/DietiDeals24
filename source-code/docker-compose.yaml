@@ -1,0 +1,43 @@
+# Base Docker Compose file
+
+version: '3.8'
+
+name: dietideals24-basecompose
+
+services:
+ 
+    backend:
+        container_name: dietideals24-backend
+        build:
+            context: ./Server/backend/
+            dockerfile: .dockerfiles/dev-Dockerfile
+        depends_on:
+            database:
+                condition: service_healthy # In questo modo, il backend non sarà avviato finché non sarà verificata la condizione di definita da "healthcheck"
+        restart: unless-stopped
+        networks:
+            - backendNetwork
+
+    database:
+        container_name: dietideals24-postgresDB
+        image: postgres:16.3 # Immagine di Postgres già pronta
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: exampleDB
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: admin
+        healthcheck: # Definisce la condizione di "healthcheck"
+            test: ["CMD", "pg_isready", "-U", "postgres", "-d", "exampleDB"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+        volumes:
+            - databaseData:/var/lib/postgresql/data
+        networks:
+            - backendNetwork
+
+volumes:
+    databaseData:
+
+networks:
+    backendNetwork:

@@ -1,0 +1,32 @@
+# Production Dockerfile for backend
+
+
+# Container needed to compile my app
+# Pulling base image
+FROM eclipse-temurin:21-alpine AS builder
+
+# Copy the source code in the container
+COPY .. /source-code/
+
+# Moving to new directory in the container
+WORKDIR /source-code/
+
+# Compile the source code
+RUN ["./mvnw", "clean", "install"]
+
+
+# Container needed to run my app
+# Pulling base image
+FROM eclipse-temurin:21-alpine
+
+# Create user to run app as (instead of root)
+RUN addgroup -S app && adduser -S app -G app
+
+# Use user "app"
+USER app
+
+# Copy the jar file into the docker image
+COPY --from=builder /source-code/target/*.jar app.jar
+
+# Run the jar file
+ENTRYPOINT ["java", "-jar", "/app.jar"]

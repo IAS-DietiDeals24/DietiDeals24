@@ -26,7 +26,7 @@ Per configurare il Development Environment con IntelliJ IDEA è necessario avere
 5. Selezionare il `Git Branch` da clonare.
 6. In `Detection for devcontainer.json file:` clicchiamo su `Specify Path` e incolliamo questo path:
     ```
-    Source-Code-DietiDeals24/Server/backend/.devcontainer/devcontainer.json
+    source-code/Server/backend/.devcontainer/devcontainer.json
     ```
 7. Clicchiamo su `Build Container and Continue`.
 8. Una volta creato il devcontainer, dovremo scegliere l'IDE da utilizzare. Scegliamo `IntelliJ IDEA 2024.1.4` (la versione non EAP) e clicchiamo su `Continue`.
@@ -44,3 +44,66 @@ Per configurare il Development Environment con Visual Studio Code è necessaria 
 2. Selezioniamo la repository e il branch da clonare nel devcontainer
 3. Scegliamo il nome da dare al nuovo volume (o utilizziamone uno esistente) e confermiamo
 
+#### Command Line Interface
+
+E' possibile interagire con lo stesso Development Environment anche da CLI. Per fare ciò:
+
+1. Andiamo nella directory `source-code`
+2. Eseguiamo il comando:
+    
+    ```bash
+    docker compose up -d
+    ```
+
+    in automatico, verrà esteso il file `docker-compose.yaml` con le informazioni contenute in `docker-compose.override.yaml`.
+
+E' possibile fermare/rimuovere il docker compose del Production Environment con:
+
+```bash
+docker compose down
+```
+
+### Configurare il Production Environment
+
+Per eseguire i docker containers utilizzati in Production Environment:
+
+1. Andiamo nella directory `source-code`
+2. Eseguiamo il comando:
+    
+    ```bash
+    docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up -d 
+    ```
+
+    il flag `-f` specifica i percorsi dei docker compose files (dove il primo è il docker compose file principale) e `-d` esegue i containers in background
+
+E' possibile fermare/rimuovere il docker compose del Production Environment con:
+
+```bash
+docker compose -f .\docker-compose.yaml -f .\docker-compose.prod.yaml down
+```
+
+### Accedere ai containers
+
+#### REST API
+
+Una volta eseguiti i containers, possiamo accedere alla REST API come `localhost`, alla porta specificata dal docker compose file (development: `54321` | production: `54311`).
+
+#### Postgres
+
+Possiamo accedere al database Postgres allo stesso modo della REST API e tramite pgAdmin. In particolare, per connettere un database a pgAdmin:
+
+1. Accedere a pgAdmin
+2. `Right Click` su `Servers`
+3. `Register -> Server...`
+
+In `General`:
+
+- In `Name` inseriamo il nome da dare al server a cui ci stiamo connettendo
+
+In `Connection`:
+
+- In `Hostname/address` inseriamo `localhost`
+- In `Port` inseriamo la porta specificata dal docker compose file (development: `54322` | production: `54312`)
+- In `Maintenance database` inseriamo il nome del database a cui vogliamo collegarci, specificato in `docker-compose.yaml` (`exampleDB`)
+- In `Username` inseriamo lo username con cui collegarci, come quello specificato in `docker-compose.yaml` (`postgres`)
+- In `Password` inseriamo la password per quell'username (`admin`)
