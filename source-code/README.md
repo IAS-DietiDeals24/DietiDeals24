@@ -86,24 +86,8 @@ docker compose -f docker-compose.yaml -f docker-compose.prod.yaml down
 
 #### REST API
 
-Una volta eseguiti i containers, possiamo accedere alla REST API come `localhost`, alla porta specificata dal docker compose file (development: `54321` | production: `54311`).
+Una volta eseguiti i containers, possiamo accedere alla REST API come `localhost`, alla porta specificata dal docker compose file (development: `55511` | production: `55501`).
 
 #### Postgres
 
-Possiamo accedere al database Postgres allo stesso modo della REST API e tramite pgAdmin. In particolare, per connettere un database a pgAdmin:
-
-1. Accedere a pgAdmin
-2. `Right Click` su `Servers`
-3. `Register -> Server...`
-
-In `General`:
-
-- In `Name` inseriamo il nome da dare al server a cui ci stiamo connettendo
-
-In `Connection`:
-
-- In `Hostname/address` inseriamo `localhost`
-- In `Port` inseriamo la porta specificata dal docker compose file (development: `54322` | production: `54312`)
-- In `Maintenance database` inseriamo il nome del database a cui vogliamo collegarci, specificato in `docker-compose.yaml` (`exampleDB`)
-- In `Username` inseriamo lo username con cui collegarci, come quello specificato in `docker-compose.yaml` (`postgres`)
-- In `Password` inseriamo la password per quell'username (`admin`)
+Possiamo accedere al database Postgres tramite pgAdmin allo stesso modo della REST API, alla porta specificata dal docker compose file (development: `55512` | production: `55502`). pgAdmin verrà automaticamente configurato con la connessione corretta al database.
