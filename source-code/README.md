@@ -79,7 +79,7 @@ Per eseguire i docker containers utilizzati in Production Environment:
 E' possibile fermare/rimuovere il docker compose del Production Environment con:
 
 ```bash
-docker compose -f .\docker-compose.yaml -f .\docker-compose.prod.yaml down
+docker compose -f docker-compose.yaml -f docker-compose.prod.yaml down
 ```
 
 ### Accedere ai containers

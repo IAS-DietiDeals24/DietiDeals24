@@ -1,0 +1,28 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "Minimally Defined Server",
+            "Group": "DietiDeals24's Servers",
+            "Port": 54322,
+            "Username": "postgres",
+            "Host": "localhost",
+            "SSLMode": "prefer",
+            "MaintenanceDB": "exampleDB"
+        },
+
+        "2": {
+            "Name": "dietiDeals24-dev",
+            "Group": "DietiDeals24's Servers",
+            "Host": "localhost",
+            "Port": 54322,
+            "MaintenanceDB": "exampleDB",
+            "Username": "postgres",
+            "SSLMode": "prefer",
+            "SSLCompression": 0,
+            "Timeout": 10,
+            "UseSSHTunnel": 0,
+            "TunnelPort": "22",
+            "TunnelAuthentication": 0
+        }
+    }
+}

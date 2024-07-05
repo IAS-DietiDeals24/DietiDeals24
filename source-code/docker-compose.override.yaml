@@ -36,6 +36,20 @@ services:
 
     database:
         container_name: dietideals24-postgresDB-dev
-        
+
+    pgadmin:
+        container_name: dietideals24-pgAdmin4-dev
+        image: dpage/pgadmin4:8.9
+        depends_on:
+            database:
+                condition: service_healthy
+        restart: unless-stopped
+        environment:
+            PGADMIN_DEFAULT_EMAIL: simo@dietideals24.ias
+            PGADMIN_DEFAULT_PASSWORD: admin
         ports:
-            - 54322:5432
+            - 54323:80
+        volumes:
+            - ./Server/database/servers.json:/pgadmin4/servers.json
+        networks:
+            - backendNetwork

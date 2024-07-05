@@ -8,9 +8,9 @@ services:
  
     backend:
         container_name: dietideals24-backend
-        build:
-            context: ./Server/backend/
-            dockerfile: .dockerfiles/dev-Dockerfile
+        #build: # Uncomment this if you have only one docker-compose file
+        #    context: ./Server/backend/ # Set the context (what is visible from the dockerfile)
+        #    dockerfile: .dockerfiles/dev-Dockerfile # Choose the Dockerfile
         depends_on:
             database:
                 condition: service_healthy # In questo modo, il backend non sarà avviato finché non sarà verificata la condizione di definita da "healthcheck"
