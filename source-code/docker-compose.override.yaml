@@ -19,7 +19,7 @@ services:
             dockerfile: .dockerfiles/dev-Dockerfile
 
         ports:
-            - 54321:8080 # Mappa la porta 8080 del container con 54321 nell'host (http://localhost:54321/ ci farà accedere all'app)
+            - 55511:8080 # Mappa la porta 8080 del container con 55511 nell'host (http://localhost:55511/ ci farà accedere all'app)
 
         # Update this to wherever you want VS Code to mount the folder of your project
         volumes:
@@ -39,17 +39,5 @@ services:
 
     pgadmin:
         container_name: dietideals24-pgAdmin4-dev
-        image: dpage/pgadmin4:8.9
-        depends_on:
-            database:
-                condition: service_healthy
-        restart: unless-stopped
-        environment:
-            PGADMIN_DEFAULT_EMAIL: simo@dietideals24.ias
-            PGADMIN_DEFAULT_PASSWORD: admin
         ports:
-            - 54323:80
-        volumes:
-            - ./Server/database/servers.json:/pgadmin4/servers.json
-        networks:
-            - backendNetwork
+            - 55512:80 # Mappa la porta 80 del container con 55512 nell'host (http://localhost:55512/ ci farà accedere all'app)

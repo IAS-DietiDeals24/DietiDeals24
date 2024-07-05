@@ -8,16 +8,16 @@ services:
  
     backend:
         container_name: dietideals24-backend-prod
-
         build:
             context: ./Server/backend/
             dockerfile: .dockerfiles/prod-Dockerfile
-        
         ports:
-            - 54311:8080 # Mappa la porta 8080 del container con 54321 nell'host (http://localhost:54321/ ci farà accedere all'app)
+            - 55501:8080 # Mappa la porta 8080 del container con 55501 nell'host (http://localhost:55501/ ci farà accedere all'app)
 
     database:
         container_name: dietideals24-postgresDB-prod
-        
+
+    pgadmin:
+        container_name: dietideals24-pgAdmin4-prod
         ports:
-            - 54312:5432
+            - 55502:80 # Mappa la porta 80 del container con 55502 nell'host (http://localhost:55502/ ci farà accedere all'app)
