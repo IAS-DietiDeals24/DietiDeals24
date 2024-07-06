@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "DietiDeals24"
+rootProject.name = "frontendandroid"
 include(":app")
