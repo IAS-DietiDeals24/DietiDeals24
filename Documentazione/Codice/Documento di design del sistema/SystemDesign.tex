@@ -31,7 +31,7 @@
             \item Una base di dati relazionale \textbf{PostgreSQL}, al cui interno sono conservati tutti i dati dell'applicazione, eseguita anch'essa come immagine Docker sulla stessa macchina virtuale AWS EC2.
         \end{itemize}
         Le immagini sono archiviate nella macchina virtuale AWS EC2. \\
-        Per lo scambio di messaggi tra client e server (attraverso le \textbf{REST API}), si utilizza \textbf{Spring Framework}. \\
+        Per lo scambio di messaggi tra client e server (attraverso le \textbf{REST API}), si utilizzano \textbf{Retrofit} su client e \textbf{Spring Framework} su server. \\
 
         \subsection{Android}
             \subsubsection{Cos'è Android? \cite{Wikipedia1}}
@@ -42,7 +42,7 @@
                 \caption{Logo di Android}
             \end{figure}
             \subsubsection{Perché Android?}
-                Essendo un sistema operativo così diffuso (conta circa il 69.94\% del mercato dei sistemi operativi per dispositivi mobili \cite{Statcounter1}) e disponibile su una grande varietà di dispositivi, Android è la scelta giusta per rendere l'applicazione disponibile quasi ovunque.
+                Quasi tutti ormai posseggono uno smartphone. Ed essendo un sistema operativo così diffuso (conta circa il 69.94\% del mercato dei sistemi operativi per dispositivi mobili \cite{Statcounter1}) e disponibile su una grande varietà di dispositivi, Android è la scelta giusta per rendere l'applicazione disponibile quasi ovunque ed accessibile a chiunque.
                 
         \subsection{Kotlin}
             \subsubsection{Cos'è Kotlin? \cite{Wikipedia2}}
@@ -97,7 +97,7 @@
                 \end{itemize}
                 Il linguaggio è anche open source e ampiamente utilizzato da milioni di sviluppatori nel mondo, e possiede una ricca libreria standard di funzioni per la realizzazione delle applicazioni. Infine, molti framework, tra i quali il selezionato Spring, si basano proprio su questo linguaggio.
                 
-        \subsection{Docker(Compose)}
+        \subsection{Docker (Compose)}
             \subsubsection{Cos'è Docker (Compose)?}
                 Docker è un insieme di servizi Platform as a Service (PaaS) che utilizza la virtualizzazione a livello di sistema operativo del kernel per eseguire programmi in ambienti isolati e distribuibili chiamati container, i quali sono gestiti dal Docker Engine \cite{Wikipedia5}. I container sono leggeri e al loro interno conterranno tutto il necessario per l'esecuzione del software, senza preoccuparsi di quale macchina sta eseguendo il Docker Engine. Questi container sono configurabili attraverso l'uso di file di configurazione appositi. Compose, inizialmente un add-on per la piattaforma Docker, è stato successivamente incluso al suo interno, e consente attraverso un singolo file YAML la gestione e la comunicazione reciproca di più container. I container sono un'istanza di un'immagine Docker, ossia un template di sola lettura che istruisce su come il container debba essere creato \cite{Docker1}.
             \begin{figure}[htbp!]
@@ -110,7 +110,7 @@
                 
         \subsection{AWS EC2}
             \subsubsection{Cos'è AWS? \cite{AWS1}}
-                Amazon Web Services è la soluzione cloud fornita da Amazon più ricca e ampiamente adottata al mondo, con circa 200 servizi forniti dai numerosi centri di dati sparsi in tutto il globo. Attualmente tasso di adozione dei servizi AWS globalmente è al 71\% \cite{CNN1}. AWS offre anche un Free Tier, ossia permette di sfruttare alcuni dei suoi servizi gratuitamente (a tempo limitato, illimitato, a soglia). Inoltre, ogni servizio fornisce delle API per poter richiedere al server la dispensa del servizio affittato.
+                Amazon Web Services è la soluzione cloud, fornita da Amazon, più ricca e ampiamente adottata al mondo: conta circa 200 servizi forniti dai numerosi centri di dati sparsi in tutto il globo. Attualmente il tasso di adozione dei servizi AWS globalmente è al 71\% \cite{CNN1}. AWS offre anche un Free Tier, ossia permette di sfruttare alcuni dei suoi servizi gratuitamente (a tempo limitato, illimitato, a soglia). Inoltre, ogni servizio fornisce delle API per poter richiedere al server la dispensa del servizio affittato.
             \begin{figure}[htbp!]
                 \centering
                 \includegraphics[width=0.2\linewidth]{Immagini/System Design/AWS.png}
@@ -130,7 +130,7 @@
 
         \subsection{PostgreSQL}
             \subsubsection{Cos'è PostgreSQL? \cite{PostgreSQL1}}
-                PostgreSQL è una potente base di dati relazionale gratuita ed open source che usa il linguaggio SQL standard ma non disdegnando delle aggiunte utili per conservare e scalare i carichi di dati più complessi. PostgreSQL ha una forte reputazione di RDBMS robusto, affidabile, estensibile. Esso è eseguibile su tutti i principali sistemi operative e garantisce le proprietà ACID per la consistenza di dati e transazioni. Inoltre fornisce anche utili add-on per estendere le capacità della base di dati. È disponibile sia attraverso riga di comando che GUI.
+                PostgreSQL è una potente base di dati relazionale gratuita ed open source che usa il linguaggio SQL standard ma non disdegnando delle aggiunte utili per conservare e scalare i carichi di dati più complessi (è gergalmente definito un "dialetto"). PostgreSQL ha una forte reputazione di RDBMS robusto, affidabile, estensibile. Esso è eseguibile su tutti i principali sistemi operativi e garantisce le proprietà ACID (atomicità, consistenza, isolamento, durabilità) per dati e transazioni. Inoltre fornisce anche utili add-on per estendere le capacità della base di dati. È disponibile sia attraverso riga di comando che GUI.
             \begin{figure}[htbp!]
                 \centering
                 \includegraphics[width=0.2\linewidth]{Immagini/System Design/PostgreSQL.png}
@@ -152,10 +152,19 @@
 
         \subsection{REST API}
             \subsubsection{Cosa sono le REST API? \cite{IBM1}}
-                Le REST API (REpresentational State Transfer Application Programming Interface) sono un'interfaccia di programmazione dell'applicazione che segue i princìpi REST, utilizzata per connettere tra loro componenti e applicazioni in un'architettura di microservizi. Le REST API sfruttano l'impalcatura del protocollo HTTP per poter permettere di effettuare tutte le principali operazioni sui dati attraverso i metodi HTTP, e i messaggi sono scambiati attraverso file JSON.
+                Le REST API (REpresentational State Transfer Application Programming Interface) sono un'interfaccia di programmazione dell'applicazione che segue i princìpi REST, utilizzata per connettere tra loro componenti e applicazioni in un'architettura di microservizi. Le REST API sfruttano l'impalcatura del protocollo HTTP per poter permettere di effettuare tutte le principali operazioni sui dati attraverso i metodi HTTP, e i messaggi sono scambiati attraverso file JSON (ma anche XML o HTML).
             \subsubsection{Perché le REST API?}
                 I sei princìpi REST sono un'interfaccia uniforme, il disaccoppiamento client-server, servizio senza stato, possibilità di utilizzo del meccanismo di cache, organizzazione del sistema a più livelli, ed esecuzione di codice su richiesta \cite{IBM1}. La realizzazione di applicazioni che comunicano attraverso REST API permette di spingere al massimo l'indipendenza tra i vari servizi, non rinunciando però ad una semplicità di fondo nella comunicazione, essendo il protocollo HTTP un protocollo maturo, quindi testato e funzionante, e strutturalmente semplice. Inoltre, la comunicazione attraverso file JSON (un formato comodo nella lettura sia per esseri umani che per calcolatori e uno dei formati di scambio dei dati più diffuso al mondo), ne permette la lettura da parte di moltissimi linguaggi di programmazione, ciascuno dei quali in possesso di strumenti di parsing di tale formato.
-                
+
+        \subsection{Retrofit}
+            \subsubsection{Cos'è Retrofit?}
+                Retrofit è un client HTTP type-safe per Android e Java sviluppato da Square. Semplifica il processo di interazione con i servizi web, consentendo agli sviluppatori di definire gli endpoint delle API mediante annotazioni e di eseguire le richieste di rete attraverso queste interfacce. Retrofit gestisce i dettagli delle richieste web, delle risposte e del parsing dei dati, facilitando l'integrazione delle API REST nelle applicazioni Android e Java.
+            \begin{figure}[htbp!]
+                \centering
+                \includegraphics[width=0.5\linewidth]{Immagini/System Design/Retrofit.png}
+                \caption{Logo di Retrofit}
+            \end{figure}
+            
         \subsection{Spring Framework}
             \subsubsection{Cos'è Spring Framework?}
                 Spring è un framework gratuito ed open source per applicazioni web scritte in Java. Inizialmente nato come alternativa al modello Enterprise JavaBeans di Java Enterprise Edition (ora Jakarta Enterprise Edition), le sue funzioni possono essere utilizzate da qualsiasi applicazione Java, e fornisce anche numerosi servizi aggiuntivi, che prendono il nome di Spring Boot, Spring Security, Spring Data, eccetera \cite{Wikipedia4}. Grazie a Spring, si possono realizzare delle REST API per la propria applicazione.
