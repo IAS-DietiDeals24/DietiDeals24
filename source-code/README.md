@@ -34,7 +34,9 @@ Per configurare il Development Environment con IntelliJ IDEA è necessario avere
 
 #### Visual Studio Code
 
-Per configurare il Development Environment con Visual Studio Code è necessaria l'estensione [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) di Microsoft. Una volta installata l'estensione:
+Per configurare il Development Environment con Visual Studio Code è necessaria l'estensione [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) di Microsoft. Una volta installata l'estensione possiamo scegliere uno dei seguenti modi costruire il Dev Container.
+
+##### Clonando il repository in cloud nel dev container
 
 1. Creiamo un container Volume andando in `View -> Command Palette...` (o semplicemente digitiamo `CTRL+SHIT+P`) e usiamo il comando:
 
@@ -44,6 +46,19 @@ Per configurare il Development Environment con Visual Studio Code è necessaria 
 
 2. Selezioniamo la repository e il branch da clonare nel devcontainer
 3. Scegliamo il nome da dare al nuovo volume (o utilizziamone uno esistente) e confermiamo
+
+##### Facendo il bind del repository locale dell'host nel Dev container
+
+1. Cloniamo il repository nell'host tramite git
+2. Andiamo in `View -> Command Palette...` (o semplicemente digitiamo `CTRL+SHIT+P`) e usiamo il comando:
+
+    ```
+    Dev Containers: Open Folder in Container...
+    ```
+
+##### Recuperare un Dev Container già configurato
+
+Possiamo riaprire facilmente un devcontainer già configurato andando in `Remote Explorer` e scegliendo il devcontainer da aprire.
 
 #### Command Line Interface
 
