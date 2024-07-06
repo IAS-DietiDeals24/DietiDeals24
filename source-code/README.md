@@ -7,6 +7,7 @@
 ### Software necessari
 
 - [Docker](https://www.docker.com/get-started/): utilizzato per il setup dell'ambiente di sviluppo dell'applicativo. Inoltre, Docker è utilizzato per astrarre sia la REST API che il database dalla macchina del singolo sviluppatore. Attraverso Docker, vengono installate in automatico tutte le dependency necessarie.
+- [IntelliJ IDEA](https://www.jetbrains.com/idea/download) o [Visual Studio Code](https://code.visualstudio.com/Download) per utilizzare il Development Environment.
 
 **ATTENZIONE!** Per utilizzare Docker su sistemi operativi Windows, è necessario installare il [WSL](https://learn.microsoft.com/it-it/windows/wsl/install).
 
@@ -86,8 +87,31 @@ docker compose -f docker-compose.yaml -f docker-compose.prod.yaml down
 
 #### REST API
 
-Una volta eseguiti i containers, possiamo accedere alla REST API come `localhost`, alla porta specificata dal docker compose file (development: `55511` | production: `55501`).
+Una volta eseguiti i containers, possiamo accedere alla REST API come `localhost`, alla porta specificata dal compose file (development: `55511` | production: `55501`).
 
 #### Postgres
 
-Possiamo accedere al database Postgres tramite pgAdmin allo stesso modo della REST API, alla porta specificata dal docker compose file (development: `55512` | production: `55502`). pgAdmin verrà automaticamente configurato con la connessione corretta al database.
+Possiamo accedere al database Postgres tramite pgAdmin allo stesso modo della REST API, alla porta specificata dal compose file (development: `55512` | production: `55502`). pgAdmin verrà automaticamente configurato con la connessione corretta al database.
+
+Credenziali di accesso a pgAdmin:
+
+- Email: `admin@dietideals24.ias`
+- Password: `admin`
+
+**ATTENZIONE!** Utilizzando il Dev container tramite IntelliJ IDEA è possibile che, per un problema con il binding dei file di configurazione, pgAdmin non si connetta automaticamente a postgres. In tal caso, è possibile collegarsi in questo modo:
+
+1. `Right Click` su `Servers`
+2. `Register -> Server...`
+
+    In `General`:
+
+    - In `Name` inseriamo il nome da dare al server a cui ci stiamo connettendo
+
+    In `Connection`:
+
+    - In `Hostname/address` inseriamo `database`
+    - In `Port` inseriamo `5432`
+    - In `Maintenance database` inseriamo il nome del database a cui vogliamo collegarci, cioé `dietiDeals24`
+    - In `Username` inseriamo `postgres`
+    - In `Password` inseriamo `admin`
+3. `Save`
