@@ -2,7 +2,7 @@
 
 ## Client
 
-## Server
+## Server (Backend e Database)
 
 ### Software necessari
 
@@ -15,7 +15,9 @@
 
 #### IntelliJ IDEA
 
-Per configurare il Development Environment con IntelliJ IDEA è necessario avere almeno la versione 2023.2. E' disponibile la [documentazione ufficiale](https://www.jetbrains.com/help/idea/connect-to-devcontainer.html), ma qui di seguito vengono riportati i passaggi da fare:
+Per configurare il Development Environment per il backend con IntelliJ IDEA è necessario avere almeno la versione 2023.2. E' disponibile la [documentazione ufficiale](https://www.jetbrains.com/help/idea/connect-to-devcontainer.html). Possiamo scegliere uno dei seguenti modi per costruire il Dev Container.
+
+##### Clonando la repository del cloud nel Dev container
 
 1. Nella `Welcome page` andare in `Remote Development -> Dev Containers` e creiamo un nuovo devcontainer cliccando su `New Dev Container`.
 2. Per clonare una repository, andare nella sezione `From VSC Project`.
@@ -32,11 +34,17 @@ Per configurare il Development Environment con IntelliJ IDEA è necessario avere
 7. Clicchiamo su `Build Container and Continue`.
 8. Una volta creato il devcontainer, dovremo scegliere l'IDE da utilizzare. Scegliamo `IntelliJ IDEA 2024.1.4` (la versione non EAP) e clicchiamo su `Continue`.
 
+In questo modo, cloneremo l'intera repository nel dev container e, in particolare, apriremo il progetto `backend`.
+
+##### Aprendo la repository locale dell'host nel Dev container
+
+Il procedimento è il medesimo di [Clonando la repository del cloud nel Dev container](#clonando-la-repository-del-cloud-nel-dev-container), eccetto che al punto 2 dovremo scegliere `From Local Project` e in `Path to devcontainer.json` dovremo usare il path del punto 6 a partire dalla main directory del repository.
+
 #### Visual Studio Code
 
-Per configurare il Development Environment con Visual Studio Code è necessaria l'estensione [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) di Microsoft. Una volta installata l'estensione possiamo scegliere uno dei seguenti modi costruire il Dev Container.
+Per configurare il Development Environment per il backend con Visual Studio Code è necessaria l'estensione [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) di Microsoft. E' disponibile la [documentazione ufficiale](https://code.visualstudio.com/docs/devcontainers/containers). Una volta installata l'estensione possiamo scegliere uno dei seguenti modi per costruire il Dev Container.
 
-##### Clonando il repository in cloud nel dev container
+##### Clonando la repository del cloud nel Dev container
 
 1. Creiamo un container Volume andando in `View -> Command Palette...` (o semplicemente digitiamo `CTRL+SHIT+P`) e usiamo il comando:
 
@@ -45,9 +53,9 @@ Per configurare il Development Environment con Visual Studio Code è necessaria 
     ```
 
 2. Selezioniamo la repository e il branch da clonare nel devcontainer
-3. Scegliamo il nome da dare al nuovo volume (o utilizziamone uno esistente) e confermiamo
+3. Scegliamo il nome da dare al nuovo volume (o utilizziamone uno esistente) e confermiamo.
 
-##### Facendo il bind del repository locale dell'host nel Dev container
+##### Aprendo la repository locale dell'host nel Dev container
 
 1. Cloniamo il repository nell'host tramite git
 2. Andiamo in `View -> Command Palette...` (o semplicemente digitiamo `CTRL+SHIT+P`) e usiamo il comando:
@@ -55,6 +63,7 @@ Per configurare il Development Environment con Visual Studio Code è necessaria 
     ```
     Dev Containers: Open Folder in Container...
     ```
+3. Apriamo la main direcotory della repository, `DietiDeals24`, e confermiamo.
 
 ##### Recuperare un Dev Container già configurato
 
@@ -64,7 +73,7 @@ Possiamo riaprire facilmente un devcontainer già configurato andando in `Remote
 
 E' possibile interagire con lo stesso Development Environment anche da CLI. Per fare ciò:
 
-1. Andiamo nella directory `source-code`
+1. Dalla main directory del repository andiamo nella directory `source-code`
 2. Eseguiamo il comando:
     
     ```bash
@@ -73,7 +82,7 @@ E' possibile interagire con lo stesso Development Environment anche da CLI. Per 
 
     in automatico, verrà esteso il file `docker-compose.yaml` con le informazioni contenute in `docker-compose.override.yaml`.
 
-E' possibile fermare/rimuovere il docker compose del Production Environment con:
+E' possibile fermare/rimuovere il docker compose del Development Environment con:
 
 ```bash
 docker compose down
@@ -113,7 +122,7 @@ Credenziali di accesso a pgAdmin:
 - Email: `admin@dietideals24.ias`
 - Password: `admin`
 
-**ATTENZIONE!** Utilizzando il Dev container tramite IntelliJ IDEA è possibile che, per un problema con il binding dei file di configurazione, pgAdmin non si connetta automaticamente a postgres. In tal caso, è possibile collegarsi in questo modo:
+**ATTENZIONE!** Utilizzando il Dev container tramite IntelliJ IDEA è possibile che, per un problema con il binding dei file di configurazione, pgAdmin non si connetta automaticamente a postgres. In tal caso, dopo aver fatto l'accesso a pgAdmin, è possibile collegarsi in questo modo:
 
 1. `Right Click` su `Servers`
 2. `Register -> Server...`
