@@ -38,13 +38,20 @@ In questo modo, cloneremo l'intera repository nel dev container e, in particolar
 
 ##### Aprendo la repository locale dell'host nel Dev container
 
-Il procedimento è il medesimo di [Clonando la repository del cloud nel Dev container](#clonando-la-repository-del-cloud-nel-dev-container), eccetto che al punto 2 dovremo scegliere `From Local Project` e in `Path to devcontainer.json` dovremo usare il path del punto 6 a partire dalla main directory del repository.
+Il procedimento è il medesimo di [Clonando la repository del cloud nel Dev container](#clonando-la-repository-del-cloud-nel-dev-container), eccetto che, una volta clonato il repository nell'host tramite git, al punto 2 dovremo scegliere `From Local Project` e in `Path to devcontainer.json` dovremo usare il path del punto 6 a partire dalla main directory del repository.
 
 #### Visual Studio Code
 
 Per configurare il Development Environment per il backend con Visual Studio Code è necessaria l'estensione [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) di Microsoft. E' disponibile la [documentazione ufficiale](https://code.visualstudio.com/docs/devcontainers/containers). Una volta installata l'estensione possiamo scegliere uno dei seguenti modi per costruire il Dev Container.
 
 ##### Clonando la repository del cloud nel Dev container
+
+Affinché tutto funzioni correttamente è necessario rimuovere:
+
+- La proprietà `volumes: - ..:/workspaces/DietiDeals24:cached` da `source-code/docker-compose.override.yaml`
+- La proprietà `"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"` da `.devcontainer/devcontainer.json`
+
+Dopodiché:
 
 1. Creiamo un container Volume andando in `View -> Command Palette...` (o semplicemente digitiamo `CTRL+SHIT+P`) e usiamo il comando:
 
@@ -58,12 +65,15 @@ Per configurare il Development Environment per il backend con Visual Studio Code
 ##### Aprendo la repository locale dell'host nel Dev container
 
 1. Cloniamo il repository nell'host tramite git
-2. Andiamo in `View -> Command Palette...` (o semplicemente digitiamo `CTRL+SHIT+P`) e usiamo il comando:
+2. Affinché tutto funzioni correttamente è necessario aggiungere:
+    - La proprietà `volumes: - ..:/workspaces/DietiDeals24:cached` a `source-code/docker-compose.override.yaml`
+    - La proprietà `"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"` a `.devcontainer/devcontainer.json`
+3. Andiamo in `View -> Command Palette...` (o semplicemente digitiamo `CTRL+SHIT+P`) e usiamo il comando:
 
     ```
     Dev Containers: Open Folder in Container...
     ```
-3. Apriamo la main direcotory della repository, `DietiDeals24`, e confermiamo.
+4. Apriamo la main direcotory della repository, `DietiDeals24`, e confermiamo.
 
 ##### Recuperare un Dev Container già configurato
 
