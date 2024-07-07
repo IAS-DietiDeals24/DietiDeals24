@@ -27,7 +27,7 @@ Per configurare il Development Environment per il backend con IntelliJ IDEA è n
         - Generiamo una SSH key (se non ce l'abbiamo già) e aggiungiamo quella pubblica a GitHub.
         - Aggiungiamo `github.com` agli host conosciuti.
 5. Selezionare il `Git Branch` da clonare.
-6. In `Detection for devcontainer.json file:` clicchiamo su `Specify Path` e incolliamo questo path:
+6. In `Detection for devcontainer.json file:` clicchiamo su `Specify Path` e incolliamo il seguente path:
     ```
     source-code/Server/backend/.devcontainer/devcontainer.json
     ```
@@ -38,7 +38,7 @@ In questo modo, cloneremo l'intera repository nel dev container e, in particolar
 
 ##### Aprendo la repository locale dell'host nel Dev container
 
-Il procedimento è il medesimo di [Clonando la repository del cloud nel Dev container](#clonando-la-repository-del-cloud-nel-dev-container), eccetto che, una volta clonato il repository nell'host tramite git, al punto 2 dovremo scegliere `From Local Project` e in `Path to devcontainer.json` dovremo usare il path del punto 6 a partire dalla main directory del repository.
+Il procedimento è il medesimo di [Clonando la repository del cloud nel Dev container](#clonando-la-repository-del-cloud-nel-dev-container), eccetto che, una volta clonato il repository nell'host tramite git, al punto 2 dovremo scegliere `From Local Project` e in `Path to devcontainer.json` dovremo usare il path del punto 6 a partire dalla main directory del repository. Dopodiché passiamo al punto 7 e 8.
 
 #### Visual Studio Code
 
@@ -48,8 +48,8 @@ Per configurare il Development Environment per il backend con Visual Studio Code
 
 Affinché tutto funzioni correttamente è necessario rimuovere:
 
-- La proprietà `volumes: - ..:/workspaces/DietiDeals24:cached` da `source-code/docker-compose.override.yaml`
-- La proprietà `"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"` da `.devcontainer/devcontainer.json`
+- La proprietà `volumes: - ..:/myHostDir/DietiDeals24:cached` da `source-code/docker-compose.override.yaml`
+- La proprietà `"workspaceFolder": "/myHostDir/${localWorkspaceFolderBasename}"` da `.devcontainer/devcontainer.json`
 
 Dopodiché:
 
@@ -66,8 +66,8 @@ Dopodiché:
 
 1. Cloniamo il repository nell'host tramite git
 2. Affinché tutto funzioni correttamente è necessario aggiungere:
-    - La proprietà `volumes: - ..:/workspaces/DietiDeals24:cached` a `source-code/docker-compose.override.yaml`
-    - La proprietà `"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"` a `.devcontainer/devcontainer.json`
+    - La proprietà `volumes: - ..:/myHostDir/DietiDeals24:cached` a `source-code/docker-compose.override.yaml`
+    - La proprietà `"workspaceFolder": "/myHostDir/${localWorkspaceFolderBasename}"` a `.devcontainer/devcontainer.json`
 3. Andiamo in `View -> Command Palette...` (o semplicemente digitiamo `CTRL+SHIT+P`) e usiamo il comando:
 
     ```
