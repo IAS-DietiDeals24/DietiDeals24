@@ -28,9 +28,11 @@ Per configurare il Development Environment per il backend con IntelliJ IDEA è n
         - Aggiungiamo `github.com` agli host conosciuti.
 5. Selezionare il `Git Branch` da clonare.
 6. In `Detection for devcontainer.json file:` clicchiamo su `Specify Path` e incolliamo il seguente path:
+
     ```
     source-code/Server/backend/.devcontainer/devcontainer.json
     ```
+
 7. Clicchiamo su `Build Container and Continue`.
 8. Una volta creato il devcontainer, dovremo scegliere l'IDE da utilizzare. Scegliamo `IntelliJ IDEA 2024.1.4` (la versione non EAP) e clicchiamo su `Continue`.
 
@@ -85,7 +87,7 @@ E' possibile interagire con lo stesso Development Environment anche da CLI. Per 
 
 1. Dalla main directory del repository andiamo nella directory `source-code`
 2. Eseguiamo il comando:
-    
+
     ```bash
     docker compose up -d
     ```
@@ -96,6 +98,24 @@ E' possibile fermare/rimuovere il docker compose del Development Environment con
 
 ```bash
 docker compose down
+```
+
+### Avviare il backend
+
+#### Building con Maven
+
+Per compilare la REST API, è necessario fare il building dell'applicazione tramite il Maven Wrapper. Per questo è sufficiente recarsi alla source folder del backend (`source-code/Server/backend`) e usare il comando:
+
+```bash
+./mvnw clean install
+```
+
+#### Avviare il file .jar
+
+Una volta fatto il building dell'applicazione, è sufficiente eseguire il `file.jar` con appena creato. E' possibile fare ciò con il comando:
+
+```bash
+java -jar target/backend-<Versione Jar>.jar
 ```
 
 ### Configurare il Production Environment
@@ -130,6 +150,11 @@ Possiamo accedere al database Postgres tramite pgAdmin allo stesso modo della RE
 Credenziali di accesso a pgAdmin:
 
 - Email: `admin@dietideals24.ias`
+- Password: `admin`
+
+Credenziali di accesso a Postgres:
+
+- User: `postgres`
 - Password: `admin`
 
 **ATTENZIONE!** Utilizzando il Dev container tramite IntelliJ IDEA è possibile che, per un problema con il binding dei file di configurazione, pgAdmin non si connetta automaticamente a postgres. In tal caso, dopo aver fatto l'accesso a pgAdmin, è possibile collegarsi in questo modo:
