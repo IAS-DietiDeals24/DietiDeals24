@@ -2,6 +2,7 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.ImageButton
@@ -15,6 +16,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.model.ModelControllerAccesso
+import com.iasdietideals24.dietideals24.utilities.APIController
 import com.iasdietideals24.dietideals24.utilities.EccezioneAccountNonEsistente
 import com.iasdietideals24.dietideals24.utilities.EccezioneCollegamentoSocialNonRiuscito
 import com.iasdietideals24.dietideals24.utilities.ErrorHandler
@@ -22,8 +24,8 @@ import com.iasdietideals24.dietideals24.utilities.EventHandler
 import com.iasdietideals24.dietideals24.utilities.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.Utility
 import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class ControllerAccesso : AppCompatActivity() {
@@ -131,7 +133,22 @@ class ControllerAccesso : AppCompatActivity() {
         try {
             viewModel.validate()
 
-            accedi(viewModel.email, viewModel.password)
+            val call = APIController.instance.accedi(viewModel.email, viewModel.password)
+
+            call.enqueue(object : Callback<User> {
+                override fun onResponse(call: Call<User>, response: Response<User>) {
+                    if (response.code() == 200) {
+                        val user : User? = response.body()
+
+                    } else {
+
+                    }
+                }
+
+                override fun onFailure(call: Call<User>, t: Throwable) {
+
+                }
+            })
         } catch (eccezione: EccezioneAccountNonEsistente) {
             rimuoviMessaggioErrore(layout)
             erroreCredenzialiNonCorrette()
@@ -197,12 +214,6 @@ class ControllerAccesso : AppCompatActivity() {
     @Throws(EccezioneCollegamentoSocialNonRiuscito::class)
     private fun accessoConX() {
         TODO()
-    }
-
-    @GET("account?email={email}&password={password}")
-    @Throws(EccezioneAccountNonEsistente::class)
-    private fun accedi(@Path("email") email: String, @Path("password") password: String): Call<Any>? {
-        TODO("Cambiare anche il ritorno da Call<Any> a Call<Acccount>")
     }
 
 
@@ -280,5 +291,16 @@ class ControllerAccesso : AppCompatActivity() {
         val messaggioDiErrore = creaMessaggioErrore(testoMessaggio)
 
         layoutDoveInserireErrore.addView(messaggioDiErrore, 2)
+    }
+
+    public class User
+        (numero: Int, stringa: String) {
+        public var numero: Int = 0
+        public var stringa: String = ""
+
+        init {
+            this.numero = numero
+            this.stringa = stringa
+        }
     }
 }

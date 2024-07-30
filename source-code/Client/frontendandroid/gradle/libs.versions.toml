@@ -3,7 +3,7 @@
 core-ktx = "1.13.1"
 appcompat = "1.7.0"
 material = "1.12.0"
-firebase-crashlytics = "19.0.2"
+firebase-crashlytics = "19.0.3"
 junit-jupiter-api = "5.10.2"
 junit = "1.2.1"
 espresso-core = "3.6.1"
@@ -11,12 +11,12 @@ retrofit = "2.11.0"
 converter-gson = "2.11.0"
 
 # Dipendenze livello progetto
-gradle = "8.5.0"
+gradle = "8.5.1"
 google-services = "4.4.2"
 firebase-crashlytics-gradle = "3.0.2"
 
 # Plugin livello progetto
-android-application = "8.5.0"
+android-application = "8.5.1"
 jetbrains-kotlin-android = "2.0.0"
 sonarqube = "4.4.1.3373"
 
