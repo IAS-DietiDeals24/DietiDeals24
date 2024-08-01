@@ -6,7 +6,7 @@
 FROM eclipse-temurin:21-alpine AS builder
 
 # Copy the source code in the container
-COPY .. /source-code/
+COPY . /source-code/
 
 # Moving to new directory in the container
 WORKDIR /source-code/

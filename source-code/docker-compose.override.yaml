@@ -16,7 +16,7 @@ services:
         # array). The sample below assumes your primary file is in the root of your project.
         build: # override the backend configs to build from our src code folder's Dockerfile
             context: ./Server/backend/
-            dockerfile: .dockerfiles/dev-Dockerfile
+            dockerfile: dev-Dockerfile
 
         ports:
             - 55511:8080 # Mappa la porta 8080 del container con 55511 nell'host (http://localhost:55511/ ci farà accedere all'app)
