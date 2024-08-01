@@ -12,6 +12,7 @@ COPY . /source-code/
 WORKDIR /source-code/
 
 # Compile the source code
+RUN chmod 755 ./mvnw
 RUN ["./mvnw", "clean", "install"]
 
 
