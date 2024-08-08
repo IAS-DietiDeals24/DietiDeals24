@@ -1,40 +1,56 @@
 package com.iasdietideals24.dietideals24.controller
 
-import android.content.Intent
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
+import com.facebook.AccessToken
+import com.facebook.LoginStatusCallback
+import com.facebook.login.LoginManager.Companion.getInstance
 import com.google.android.material.button.MaterialButton
 import com.iasdietideals24.dietideals24.R
-import com.iasdietideals24.dietideals24.utilities.EventHandler
-import com.iasdietideals24.dietideals24.utilities.UIBuilder
+import com.iasdietideals24.dietideals24.model.ModelControllerAccesso
+import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
+import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 
-
-class ControllerSelezioneTipoAccount : AppCompatActivity() {
+class ControllerSelezioneTipoAccount : Controller(R.layout.selezionetipoaccount) {
+    private var viewModel: ModelControllerAccesso = ModelControllerAccesso()
 
     private lateinit var pulsanteCompratore: MaterialButton
     private lateinit var pulsanteVenditore: MaterialButton
     private lateinit var pulsanteOspite: MaterialButton
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun elaborazioneAggiuntiva() {
+        // Controlla l'accesso automatico con Facebook
+        getInstance()
+            .retrieveLoginStatus(
+                this,
+                object : LoginStatusCallback {
+                    override fun onCompleted(accessToken: AccessToken) {
+                        // Non fare nulla
+                    }
 
-        setContentView(R.layout.selezionetipoaccount)
+                    override fun onFailure() {
+                        // Non fare nulla
+                    }
 
-        trovaElementiInterfaccia()
-
-        impostaEventiClick()
+                    override fun onError(exception: Exception) {
+                        Toast.makeText(
+                            applicationContext,
+                            "Errore durante l'accesso con Facebook",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                })
     }
 
 
     @UIBuilder
-    private fun trovaElementiInterfaccia() {
+    override fun trovaElementiInterfaccia() {
         pulsanteCompratore = findViewById(R.id.selezioneTipoAccount_pulsanteCompratore)
         pulsanteVenditore = findViewById(R.id.selezioneTipoAccount_pulsanteVenditore)
         pulsanteOspite = findViewById(R.id.selezioneTipoAccount_pulsanteOspite)
     }
 
     @UIBuilder
-    private fun impostaEventiClick() {
+    override fun impostaEventiClick() {
         pulsanteCompratore.setOnClickListener {
             clickCompratore()
         }
@@ -51,20 +67,22 @@ class ControllerSelezioneTipoAccount : AppCompatActivity() {
 
     @EventHandler
     private fun clickCompratore() {
-        val nuovaAttivita = Intent(this, ControllerSelezioneAccessoRegistrazione::class.java)
-        nuovaAttivita.putExtra("tipoAccount", "compratore")
-        startActivity(nuovaAttivita)
+        cambiaAttivita(
+            ControllerSelezioneAccessoRegistrazione::class.java,
+            Pair("tipoAccount", "compratore")
+        )
     }
 
     @EventHandler
     private fun clickVenditore() {
-        val nuovaAttivita = Intent(this, ControllerSelezioneAccessoRegistrazione::class.java)
-        nuovaAttivita.putExtra("tipoAccount", "venditore")
-        startActivity(nuovaAttivita)
+        cambiaAttivita(
+            ControllerSelezioneAccessoRegistrazione::class.java,
+            Pair("tipoAccount", "venditore")
+        )
     }
 
     @EventHandler
     private fun clickOspite() {
-        TODO()
+        TODO("Vai alla home")
     }
 }

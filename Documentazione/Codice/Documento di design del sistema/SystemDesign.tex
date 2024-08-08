@@ -108,25 +108,16 @@
             \subsubsection{Perché Docker (Compose)?}
                 Il successo di Docker è dovuto al rivoluzionario approccio allo sviluppo che esso promuove. Grazie a Docker, si può impacchettare all'interno di un'immagine Docker l'applicazione e tutto l'ambiente necessario alla sua esecuzione. L'immagine può essere caricata sulla repository centrale di Docker affinché chiunque possa accedervi, o comunque essere distribuita. Non bisogna quindi preoccuparsi di nulla: ogni container è isolato e contiene tutto ciò che è necessario, e non c'è bisogno di installare applicazioni oltre al Docker Engine, né gestire le librerie o le versioni dei linguaggi installati. Aggiornamenti dei software possono essere sempre rilasciati attraverso le immagini, e basta scaricarne la nuova versione e metterla in esecuzione sull'Engine per poter disporre degli ultimi strumenti. Permette anche di avere sulla stessa macchina più istanze in esecuzione di una stessa applicazione o servizio per favorire il bilanciamento del carico, la tolleranza al guasto e l'isolamento in caso di compromissione.
                 
-        \subsection{AWS EC2}
-            \subsubsection{Cos'è AWS? \cite{AWS1}}
-                Amazon Web Services è la soluzione cloud, fornita da Amazon, più ricca e ampiamente adottata al mondo: conta circa 200 servizi forniti dai numerosi centri di dati sparsi in tutto il globo. Attualmente il tasso di adozione dei servizi AWS globalmente è al 71\% \cite{CNN1}. AWS offre anche un Free Tier, ossia permette di sfruttare alcuni dei suoi servizi gratuitamente (a tempo limitato, illimitato, a soglia). Inoltre, ogni servizio fornisce delle API per poter richiedere al server la dispensa del servizio affittato.
+        \subsection{Google Cloud}
+            \subsubsection{Cos'è Google Cloud?}
+                Google Cloud Platform (GCP) è una suite di servizi di cloud computing offerta da Google che fornisce una enorme quantità di servizi cloud modulari, tra cui l'elaborazione, l'archiviazione dei dati, l'analisi dei dati e l'apprendimento automatico, insieme a una serie di strumenti di gestione. Esso è gestito con la stessa infrastruttura che Google utilizza internamente per i suoi prodotti per gli utenti finali. \cite{Wikipedia7} Nel contesto dell'applicazione DietiDeals24, sono stati utilizzati i servizi Artifact Registry per la conservazione delle immagini Docker, Cloud Build per la costruzione dei container a partire dalle immagini e Cloud Run per il deploy serverless del backend, Firebase per log e statistiche di utilizzo.
             \begin{figure}[htbp!]
                 \centering
-                \includegraphics[width=0.2\linewidth]{Immagini/System Design/AWS.png}
-                \caption{Logo di AWS}
+                \includegraphics[width=0.5\linewidth]{Immagini/System Design/Google Cloud.png}
+                \caption{Logo di Google Cloud}
             \end{figure}
-            \subsubsection{Perché AWS? \cite{AWS1}}
-                L'utilizzo di AWS permette di tagliare i costi, seguire un approccio più agile, e innovare più in fretta. AWS offre nettamente più servizi rispetto ai concorrenti e le funzionalità all'interno dei singoli servizi sono più ricche. Inoltre, la maturità, l'esperienza, l'affidabilità e la sicurezza che offre sono senza eguali. Il Free Tier è anche un'ottima opportunità per piccole aziende che richiedono modesti strumenti per il rilascio della propria applicazione. Le API estremamente semplici permettono di richiedere il servizio direttamente nel codice astraendo tutte le fasi intermedie più complesse.
-            \subsubsection{Cos'è EC2?}
-                Amazon Elastic Compute Cloud è uno dei servizi di AWS che consente l'affitto di computer virtuali in cloud sui quali eseguire le proprie applicazioni \cite{Wikipedia6}. Offre la più ampia e profonda piattaforma di computazione, permettendo di scegliere oltre 750 istanze e personalizzare processore, archiviazione, rete, sistema operativo \cite{AWS2}.
-            \begin{figure}[htbp!]
-                \centering
-                \includegraphics[width=0.2\linewidth]{Immagini/System Design/AWS EC2.png}
-                \caption{Logo di EC2}
-            \end{figure}
-            \subsubsection{Perché EC2?}
-                A causa della sua ampia personalizzazione sulla base delle necessità dell'applicazione e grazie alla possibilità di creare, lanciare, e fermare le istanze delle macchine virtuali sul server su richiesta, pagando solo il tempo di computazione sfruttato, l'elasticità del servizio è indubbia \cite{Wikipedia6}. Il Free Tier di EC2 garantisce 750 ore di computazione in 12 mesi su una istanza di tipo "micro" \cite{AWS3}. 
+            \subsubsection{Perché Google Cloud?}
+                Google Cloud offre un'infrastruttura altamente scalabile, che consente alle aziende di crescere in modo efficiente. Possiede centri dati in tutto il mondo, garantendo bassa latenza ed alta disponibilità. Offre solide misure di sicurezza, tra cui crittografia dei dati, certificazioni di conformità e rilevamento avanzato delle minacce. Dispone di potenti strumenti di machine learning e AI che consentono analisi avanzate dei dati. Infine, con la tariffazione "pay-as-you-go", le aziende possono gestire i costi in modo efficace e pagare solo per ciò che utilizzano.
 
         \subsection{PostgreSQL}
             \subsubsection{Cos'è PostgreSQL? \cite{PostgreSQL1}}

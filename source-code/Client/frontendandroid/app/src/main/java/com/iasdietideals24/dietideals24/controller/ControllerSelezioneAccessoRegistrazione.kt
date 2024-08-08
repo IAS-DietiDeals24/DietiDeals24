@@ -1,37 +1,21 @@
 package com.iasdietideals24.dietideals24.controller
 
-import android.content.Intent
-import android.os.Bundle
 import android.widget.ImageButton
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
-import com.iasdietideals24.dietideals24.utilities.EventHandler
-import com.iasdietideals24.dietideals24.utilities.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
+import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 
-class ControllerSelezioneAccessoRegistrazione : AppCompatActivity() {
-
+class ControllerSelezioneAccessoRegistrazione : Controller(R.layout.selezioneaccessoregistrazione) {
     private lateinit var pulsanteAccedi: MaterialButton
     private lateinit var pulsanteRegistrati: MaterialButton
     private lateinit var pulsanteIndietro: ImageButton
     private lateinit var saluto: MaterialTextView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.selezioneaccessoregistrazione)
-
-        trovaElementiInterfaccia()
-
-        impostaMessaggioCorpo()
-
-        impostaEventiClick()
-    }
-
 
     @UIBuilder
-    private fun trovaElementiInterfaccia() {
+    override fun trovaElementiInterfaccia() {
         pulsanteAccedi = findViewById(R.id.selezioneAccessoRegistrazione_pulsanteAccedi)
         pulsanteRegistrati = findViewById(R.id.selezioneAccessoRegistrazione_pulsanteRegistrati)
         pulsanteIndietro = findViewById(R.id.selezioneAccessoRegistrazione_pulsanteIndietro)
@@ -39,7 +23,7 @@ class ControllerSelezioneAccessoRegistrazione : AppCompatActivity() {
     }
 
     @UIBuilder
-    private fun impostaMessaggioCorpo() {
+    override fun impostaMessaggiCorpo() {
         when (intent.extras?.getString("tipoAccount")) {
             "compratore" -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_compratore)
@@ -60,7 +44,7 @@ class ControllerSelezioneAccessoRegistrazione : AppCompatActivity() {
     }
 
     @UIBuilder
-    private fun impostaEventiClick() {
+    override fun impostaEventiClick() {
         pulsanteAccedi.setOnClickListener {
             clickAccedi()
         }
@@ -77,21 +61,22 @@ class ControllerSelezioneAccessoRegistrazione : AppCompatActivity() {
 
     @EventHandler
     private fun clickAccedi() {
-        val nuovaAttivita = Intent(this, ControllerAccesso::class.java)
-        nuovaAttivita.putExtra("tipoAccount", intent.extras?.getString("tipoAccount"))
-        startActivity(nuovaAttivita)
+        cambiaAttivita(
+            ControllerAccesso::class.java,
+            Pair("tipoAccount", intent.extras?.getString("tipoAccount")!!)
+        )
     }
 
     @EventHandler
     private fun clickRegistrati() {
-        val nuovaAttivita = Intent(this, ControllerRegistrazione::class.java)
-        nuovaAttivita.putExtra("tipoAccount", intent.extras?.getString("tipoAccount"))
-        startActivity(nuovaAttivita)
+        cambiaAttivita(
+            ControllerRegistrazione::class.java,
+            Pair("tipoAccount", intent.extras?.getString("tipoAccount")!!)
+        )
     }
 
     @EventHandler
     private fun clickIndietro() {
-        val nuovaAttivita = Intent(this, ControllerSelezioneTipoAccount::class.java)
-        startActivity(nuovaAttivita)
+        cambiaAttivita(ControllerSelezioneTipoAccount::class.java)
     }
 }

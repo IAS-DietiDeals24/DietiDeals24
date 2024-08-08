@@ -235,51 +235,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/accesso_pulsanteGoogle"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/cerchio"
-                    android:contentDescription="@string/selezioneAccessoRegistrazione_accessibilitàPulsanteGoogle"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/accesso_pulsanteFacebook"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/google_logo" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/accesso_pulsanteGitHub"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:background="@drawable/cerchio"
-                    android:contentDescription="@string/selezioneAccessoRegistrazione_accessibilitàPulsanteGitHub"
-                    app:layout_constraintEnd_toStartOf="@+id/accesso_pulsanteX"
-                    app:layout_constraintStart_toEndOf="@+id/accesso_pulsanteFacebook"
-                    app:layout_constraintTop_toTopOf="@+id/accesso_pulsanteFacebook"
-                    app:srcCompat="@drawable/github_logo" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/accesso_pulsanteX"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:background="@drawable/cerchio"
-                    android:contentDescription="@string/selezioneAccessoRegistrazione_accessibilitàPulsanteX"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/accesso_pulsanteGitHub"
-                    app:layout_constraintTop_toTopOf="@+id/accesso_pulsanteGitHub"
-                    app:srcCompat="@drawable/x_logo" />
-
-                <com.google.android.material.imageview.ShapeableImageView
+                <com.facebook.login.widget.LoginButton
                     android:id="@+id/accesso_pulsanteFacebook"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="24dp"
                     android:contentDescription="@string/selezioneAccessoRegistrazione_accessibilitàPulsanteFacebook"
-                    app:layout_constraintEnd_toStartOf="@+id/accesso_pulsanteGitHub"
-                    app:layout_constraintStart_toEndOf="@+id/accesso_pulsanteGoogle"
-                    app:layout_constraintTop_toTopOf="@+id/accesso_pulsanteGoogle"
-                    app:srcCompat="@drawable/facebook_logo" />
+                    android:scaleX="1.5"
+                    android:scaleY="1.5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

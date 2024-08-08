@@ -1,35 +1,30 @@
 package com.iasdietideals24.dietideals24.controller
 
 import android.content.Intent
-import android.os.Bundle
-import android.util.Log
-import android.view.ViewGroup.LayoutParams
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
+import com.facebook.CallbackManager.Factory.create
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginResult
+import com.facebook.login.widget.LoginButton
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.model.ModelControllerAccesso
-import com.iasdietideals24.dietideals24.utilities.APIController
-import com.iasdietideals24.dietideals24.utilities.EccezioneAccountNonEsistente
-import com.iasdietideals24.dietideals24.utilities.EccezioneCollegamentoSocialNonRiuscito
-import com.iasdietideals24.dietideals24.utilities.ErrorHandler
-import com.iasdietideals24.dietideals24.utilities.EventHandler
-import com.iasdietideals24.dietideals24.utilities.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.Utility
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
+import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAccountNonEsistente
 
-
-class ControllerAccesso : AppCompatActivity() {
+class ControllerAccesso : Controller(R.layout.accesso) {
     private var viewModel: ModelControllerAccesso = ModelControllerAccesso()
+
+    private var callbackManager = create()
 
     private lateinit var tipoAccount: MaterialTextView
     private lateinit var campoEmail: TextInputLayout
@@ -38,29 +33,18 @@ class ControllerAccesso : AppCompatActivity() {
     private lateinit var password: TextInputEditText
     private lateinit var pulsanteIndietro: ImageButton
     private lateinit var pulsanteAccedi: MaterialButton
-    private lateinit var pulsanteGoogle: ShapeableImageView
-    private lateinit var pulsanteFacebook: ShapeableImageView
-    private lateinit var pulsanteGitHub: ShapeableImageView
-    private lateinit var pulsanteX: ShapeableImageView
+    private lateinit var pulsanteFacebook: LoginButton
     private lateinit var layout: LinearLayout
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+        super.onActivityResult(requestCode, resultCode, data)
 
-        setContentView(R.layout.accesso)
-
-        trovaElementiInterfaccia()
-
-        impostaMessaggioCorpo()
-
-        impostaEventiClick()
-
-        impostaEventiDiCambiamentoCampi()
+        callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
 
     @UIBuilder
-    private fun trovaElementiInterfaccia() {
+    override fun trovaElementiInterfaccia() {
         tipoAccount = findViewById(R.id.accesso_tipoAccount)
         campoEmail = findViewById(R.id.accesso_campoEmail)
         email = findViewById(R.id.accesso_email)
@@ -68,15 +52,12 @@ class ControllerAccesso : AppCompatActivity() {
         password = findViewById(R.id.accesso_password)
         pulsanteIndietro = findViewById(R.id.accesso_pulsanteIndietro)
         pulsanteAccedi = findViewById(R.id.accesso_pulsanteAccedi)
-        pulsanteGoogle = findViewById(R.id.accesso_pulsanteGoogle)
         pulsanteFacebook = findViewById(R.id.accesso_pulsanteFacebook)
-        pulsanteGitHub = findViewById(R.id.accesso_pulsanteGitHub)
-        pulsanteX = findViewById(R.id.accesso_pulsanteX)
         layout = findViewById(R.id.accesso_linearLayout)
     }
 
     @UIBuilder
-    private fun impostaMessaggioCorpo() {
+    override fun impostaMessaggiCorpo() {
         when (intent.extras?.getString("tipoAccount")) {
             "compratore" -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_compratore)
@@ -97,17 +78,51 @@ class ControllerAccesso : AppCompatActivity() {
     }
 
     @UIBuilder
-    private fun impostaEventiClick() {
+    override fun impostaEventiClick() {
         pulsanteIndietro.setOnClickListener { clickIndietro() }
         pulsanteAccedi.setOnClickListener { clickAccedi() }
-        pulsanteGoogle.setOnClickListener { clickGoogle() }
-        pulsanteFacebook.setOnClickListener { clickFacebook() }
-        pulsanteGitHub.setOnClickListener { clickGitHub() }
-        pulsanteX.setOnClickListener { clickX() }
+
+        pulsanteFacebook.permissions = listOf(
+            "email", "public_profile", "user_birthday",
+            "user_gender", "user_link", "user_location"
+        )
+        pulsanteFacebook.authType = "rerequest"
+        pulsanteFacebook.registerCallback(
+            callbackManager,
+            object : FacebookCallback<LoginResult> {
+                override fun onSuccess(result: LoginResult) {
+                    Toast.makeText(
+                        applicationContext,
+                        "Login effettuato con successo.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    TODO("Se l'account Facebook non è associato a nessun account DietiDeals24, crea un nuovo account, altrimenti vai alla home")
+                }
+
+                override fun onCancel() {
+                    // Non fare nulla
+                }
+
+                override fun onError(error: FacebookException) {
+                    Toast.makeText(
+                        applicationContext,
+                        "Errore durante l'accesso con Facebook.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    rimuoviMessaggioErrore(layout, 2)
+                    erroreCampo(
+                        layout,
+                        getString(R.string.accesso_erroreSocial),
+                        2
+                    )
+                }
+            })
     }
 
     @UIBuilder
-    private fun impostaEventiDiCambiamentoCampi() {
+    override fun impostaEventiDiCambiamentoCampi() {
         email.addTextChangedListener {
             rimuoviErroreCampo(campoEmail)
         }
@@ -120,187 +135,44 @@ class ControllerAccesso : AppCompatActivity() {
 
     @EventHandler
     private fun clickIndietro() {
-        val nuovaAttivita = Intent(this, ControllerSelezioneAccessoRegistrazione::class.java)
-        nuovaAttivita.putExtra("tipoAccount", intent.extras?.getString("tipoAccount"))
-        startActivity(nuovaAttivita)
+        cambiaAttivita(
+            ControllerSelezioneAccessoRegistrazione::class.java,
+            Pair("tipoAccount", intent.extras?.getString("tipoAccount")!!)
+        )
     }
 
     @EventHandler
     private fun clickAccedi() {
         viewModel.email = estraiTestoDaElemento(email)
         viewModel.password = estraiTestoDaElemento(password)
+        viewModel.tipoAccount = estraiTestoDaElemento(tipoAccount)
 
         try {
             viewModel.validate()
 
-            val call = APIController.instance.accedi(viewModel.email, viewModel.password)
-
-            call.enqueue(object : Callback<User> {
-                override fun onResponse(call: Call<User>, response: Response<User>) {
-                    if (response.code() == 200) {
-                        val user : User? = response.body()
-
-                    } else {
-
-                    }
-                }
-
-                override fun onFailure(call: Call<User>, t: Throwable) {
-
-                }
-            })
+            val returned: Int? = eseguiChiamataREST<Int>(
+                "accedi",
+                viewModel.email,
+                viewModel.password,
+                viewModel.tipoAccount
+            )
+            if (returned == null) throw EccezioneAPI("Errore di comunicazione con il server.")
+            else if (returned == 0) throw EccezioneAccountNonEsistente("Email non associata.")
+            else TODO("Vai alla home")
         } catch (eccezione: EccezioneAccountNonEsistente) {
-            rimuoviMessaggioErrore(layout)
-            erroreCredenzialiNonCorrette()
-        }
-    }
-
-    @EventHandler
-    private fun clickGoogle() {
-        try {
-            accessoGoogle()
-        } catch (eccezione: EccezioneCollegamentoSocialNonRiuscito) {
-            rimuoviMessaggioErrore(layout)
-            erroreAccessoSocial()
-        }
-    }
-
-    @EventHandler
-    private fun clickFacebook() {
-        try {
-            accessoFacebook()
-        } catch (eccezione: EccezioneCollegamentoSocialNonRiuscito) {
-            rimuoviMessaggioErrore(layout)
-            erroreAccessoSocial()
-        }
-    }
-
-    @EventHandler
-    private fun clickGitHub() {
-        try {
-            accessoGitHub()
-        } catch (eccezione: EccezioneCollegamentoSocialNonRiuscito) {
-            rimuoviMessaggioErrore(layout)
-            erroreAccessoSocial()
-        }
-    }
-
-    @EventHandler
-    private fun clickX() {
-        try {
-            accessoConX()
-        } catch (eccezione: EccezioneCollegamentoSocialNonRiuscito) {
-            rimuoviMessaggioErrore(layout)
-            erroreAccessoSocial()
-        }
-    }
-
-
-    @Throws(EccezioneCollegamentoSocialNonRiuscito::class)
-    private fun accessoGoogle() {
-        TODO()
-    }
-
-    @Throws(EccezioneCollegamentoSocialNonRiuscito::class)
-    private fun accessoFacebook() {
-        TODO()
-    }
-
-    @Throws(EccezioneCollegamentoSocialNonRiuscito::class)
-    private fun accessoGitHub() {
-        TODO()
-    }
-
-    @Throws(EccezioneCollegamentoSocialNonRiuscito::class)
-    private fun accessoConX() {
-        TODO()
-    }
-
-
-    @Utility
-    private fun estraiTestoDaElemento(elemento: TextInputEditText): String {
-        val testoElemento = elemento.text
-        return testoElemento.toString()
-    }
-
-    @Utility
-    private fun rimuoviErroreCampo(vararg campiEvidenziati: TextInputLayout) {
-        for (campo in campiEvidenziati)
-            campo.error = null
-    }
-
-    @Utility
-    private fun rimuoviMessaggioErrore(layoutDoveEliminareMessaggio: LinearLayout) {
-        layoutDoveEliminareMessaggio.removeViewAt(2)
-    }
-
-    @Utility
-    private fun evidenziaCampiErrore(vararg campiDaEvidenziare: TextInputLayout) {
-        for (campo in campiDaEvidenziare)
-            campo.error = getString(R.string.accesso_erroreCampi)
-    }
-
-    @Utility
-    private fun creaMessaggioErrore(testoMessaggio: String): MaterialTextView {
-        val messaggio = MaterialTextView(this)
-
-        messaggio.text = testoMessaggio
-
-        messaggio.textSize = 20f
-
-        val grigio = resources.getColor(R.color.grigio, theme)
-        messaggio.setBackgroundColor(grigio)
-
-        val rosso = resources.getColor(R.color.rosso, theme)
-        messaggio.setTextColor(rosso)
-
-        val parametriLayoutTextView =
-            LayoutParams(420 * resources.displayMetrics.density.toInt(), MATCH_PARENT)
-        messaggio.layoutParams = parametriLayoutTextView
-
-        messaggio.setBackgroundResource(R.drawable.errore)
-
-        messaggio.setPadding(60, 0, 0, 0)
-
-        return messaggio
-    }
-
-
-    @ErrorHandler
-    private fun erroreCredenzialiNonCorrette() {
-        creaMessaggioErroreCredenzialiNonCorrette(layout)
-        evidenziaCampiErrore(campoEmail, campoPassword)
-    }
-
-    @ErrorHandler
-    private fun erroreAccessoSocial() {
-        creaMessaggioErroreSocial(layout)
-    }
-
-    @ErrorHandler
-    private fun creaMessaggioErroreCredenzialiNonCorrette(layoutDoveInserireErrore: LinearLayout) {
-        val testoMessaggio = getString(R.string.accesso_erroreCredenzialiNonCorrette)
-        val messaggioDiErrore = creaMessaggioErrore(testoMessaggio)
-
-        layoutDoveInserireErrore.addView(messaggioDiErrore, 2)
-    }
-
-    @ErrorHandler
-    private fun creaMessaggioErroreSocial(layoutDoveInserireErrore: LinearLayout) {
-        val testoMessaggio = getString(R.string.accesso_erroreSocial)
-        val messaggioDiErrore = creaMessaggioErrore(testoMessaggio)
-
-        layoutDoveInserireErrore.addView(messaggioDiErrore, 2)
-    }
-
-    public class User
-        (numero: Int, stringa: String) {
-        public var numero: Int = 0
-        public var stringa: String = ""
-
-        init {
-            this.numero = numero
-            this.stringa = stringa
+            rimuoviMessaggioErrore(layout, 2)
+            erroreCampo(
+                layout,
+                getString(R.string.accesso_erroreCredenzialiNonCorrette),
+                2,
+                campoEmail, campoPassword
+            )
+        } catch (eccezione: EccezioneAPI) {
+            Toast.makeText(
+                applicationContext,
+                "Errore di comunicazione con il server.",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }

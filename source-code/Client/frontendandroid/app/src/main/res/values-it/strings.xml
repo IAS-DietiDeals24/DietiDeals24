@@ -20,12 +20,9 @@
     <string name="selezioneAccessoRegistrazione_etichettaPassword">Password</string>
     <string name="selezioneAccessoRegistrazione_suggerimentoPassword">La tua password</string>
     <string name="accesso_pulsanteAccedi">Accedi</string>
-    <string name="selezioneAccessoRegistrazione_accessibilitàPulsanteGoogle">Accesso Google</string>
     <string name="selezioneAccessoRegistrazione_accessibilitàPulsanteFacebook">Accesso Facebook</string>
-    <string name="selezioneAccessoRegistrazione_accessibilitàPulsanteGitHub">Accesso GitHub</string>
-    <string name="selezioneAccessoRegistrazione_accessibilitàPulsanteX">Accesso X</string>
     <string name="accesso_erroreCredenzialiNonCorrette">Le credenziali d\'accesso sono errate o non esiste un account associato ad esse.</string>
-    <string name="accesso_erroreCampi">C\'è un problema con questo campo.</string>
+    <string name="erroreCampi">C\'è un problema con questo campo.</string>
     <string name="accesso_erroreSocial">Si è verificato un errore con l’accesso attraverso l’account social.</string>
     <string name="registrazione_pulsanteAvanti">Avanti</string>
     <string name="registrazione_messaggioCorpo">Registrati</string>

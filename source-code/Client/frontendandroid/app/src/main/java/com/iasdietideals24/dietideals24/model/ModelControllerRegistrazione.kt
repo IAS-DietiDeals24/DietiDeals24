@@ -1,18 +1,23 @@
 package com.iasdietideals24.dietideals24.model
 
-import com.iasdietideals24.dietideals24.utilities.EccezioneCampiNonCompilati
-import com.iasdietideals24.dietideals24.utilities.EccezioneEmailNonValida
-import com.iasdietideals24.dietideals24.utilities.EccezioneEmailUsata
-import com.iasdietideals24.dietideals24.utilities.EccezionePasswordNonSicura
-import com.iasdietideals24.dietideals24.utilities.Validation
-import retrofit2.http.GET
-import retrofit2.http.Path
+import com.iasdietideals24.dietideals24.utilities.APIController
+import com.iasdietideals24.dietideals24.utilities.annotations.Validation
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezionePasswordNonSicura
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ModelControllerRegistrazione {
 
     private var _email: String = ""
 
     private var _password: String = ""
+
+    private var _tipoAccount: String = ""
 
     var email: String
         get() = _email
@@ -26,6 +31,11 @@ class ModelControllerRegistrazione {
             _password = valore
         }
 
+    var tipoAccount: String
+        get() = _tipoAccount
+        set(valore) {
+            _tipoAccount = valore
+        }
 
     @Validation
     @Throws(
@@ -46,7 +56,10 @@ class ModelControllerRegistrazione {
         if (email.isEmpty()) throw EccezioneCampiNonCompilati("Email non compilata.")
         if (!email.contains(Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")))
             throw EccezioneEmailNonValida("Email non valida.")
-        if (existsEmail(email)) throw EccezioneEmailUsata("Email già usata.")
+
+        val returned = esisteEmail()
+        if (returned == null) throw EccezioneAPI("Errore durante la chiamata API.")
+        else if (returned == true) throw EccezioneEmailUsata("Email già usata.")
     }
 
     @Validation
@@ -61,9 +74,23 @@ class ModelControllerRegistrazione {
             throw EccezionePasswordNonSicura("Password non sicura.")
     }
 
+    private fun esisteEmail(): Boolean? {
+        var returned: Boolean? = null
 
-    @GET("account?email={email}")
-    private fun existsEmail(@Path("email") email: String): Boolean {
-        TODO()
+        val call = APIController.instance.esisteEmail(email, tipoAccount)
+
+        call.enqueue(object : Callback<Boolean> {
+            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                if (response.isSuccessful) {
+                    returned = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                throw t;
+            }
+        })
+
+        return returned
     }
 }

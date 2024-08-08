@@ -1,7 +1,7 @@
 package com.iasdietideals24.dietideals24.model
 
-import com.iasdietideals24.dietideals24.utilities.EccezioneAccountNonEsistente
-import com.iasdietideals24.dietideals24.utilities.Validation
+import com.iasdietideals24.dietideals24.utilities.annotations.Validation
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAccountNonEsistente
 
 
 class ModelControllerAccesso {
@@ -9,6 +9,8 @@ class ModelControllerAccesso {
     private var _email: String = ""
 
     private var _password: String = ""
+
+    private var _tipoAccount: String = ""
 
     var email: String
         get() = _email
@@ -22,6 +24,11 @@ class ModelControllerAccesso {
             _password = valore
         }
 
+    var tipoAccount: String
+        get() = _tipoAccount
+        set(valore) {
+            _tipoAccount = valore
+        }
 
     @Validation
     @Throws(EccezioneAccountNonEsistente::class)

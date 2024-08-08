@@ -260,51 +260,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/registrazione_pulsanteGoogle"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/cerchio"
-                    android:contentDescription="@string/selezioneAccessoRegistrazione_accessibilitàPulsanteGoogle"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/registrazione_pulsanteFacebook"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/google_logo" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/registrazione_pulsanteGitHub"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:background="@drawable/cerchio"
-                    android:contentDescription="@string/selezioneAccessoRegistrazione_accessibilitàPulsanteGitHub"
-                    app:layout_constraintEnd_toStartOf="@+id/registrazione_pulsanteX"
-                    app:layout_constraintStart_toEndOf="@+id/registrazione_pulsanteFacebook"
-                    app:layout_constraintTop_toTopOf="@+id/registrazione_pulsanteFacebook"
-                    app:srcCompat="@drawable/github_logo" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/registrazione_pulsanteX"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:background="@drawable/cerchio"
-                    android:contentDescription="@string/selezioneAccessoRegistrazione_accessibilitàPulsanteX"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/registrazione_pulsanteGitHub"
-                    app:layout_constraintTop_toTopOf="@+id/registrazione_pulsanteGitHub"
-                    app:srcCompat="@drawable/x_logo" />
-
-                <com.google.android.material.imageview.ShapeableImageView
+                <com.facebook.login.widget.LoginButton
                     android:id="@+id/registrazione_pulsanteFacebook"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="24dp"
                     android:contentDescription="@string/selezioneAccessoRegistrazione_accessibilitàPulsanteFacebook"
-                    app:layout_constraintEnd_toStartOf="@+id/registrazione_pulsanteGitHub"
-                    app:layout_constraintStart_toEndOf="@+id/registrazione_pulsanteGoogle"
-                    app:layout_constraintTop_toTopOf="@+id/registrazione_pulsanteGoogle"
-                    app:srcCompat="@drawable/facebook_logo" />
+                    android:scaleX="1.5"
+                    android:scaleY="1.5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
