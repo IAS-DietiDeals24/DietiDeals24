@@ -27,26 +27,30 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "21"
+        jvmTarget = "17"
     }
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+    buildToolsVersion = "34.0.0"
 }
 
 dependencies {
 
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
+    implementation(libs.activity.ktx)
     implementation(libs.material)
     implementation(libs.firebase.crashlytics)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
-    implementation(libs.googleid)
-    implementation(libs.credentials)
-    implementation(libs.credentials.play.services.auth)
     implementation(libs.facebook.login)
+    implementation(libs.coil)
 
     testImplementation(libs.junit.jupiter.api)
 

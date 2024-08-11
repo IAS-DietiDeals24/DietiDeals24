@@ -1,6 +1,5 @@
 package com.iasdietideals24.dietideals24.controller
 
-import android.content.Intent
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -36,12 +35,6 @@ class ControllerAccesso : Controller(R.layout.accesso) {
     private lateinit var pulsanteFacebook: LoginButton
     private lateinit var layout: LinearLayout
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        callbackManager.onActivityResult(requestCode, resultCode, data)
-    }
-
 
     @UIBuilder
     override fun trovaElementiInterfaccia() {
@@ -58,7 +51,7 @@ class ControllerAccesso : Controller(R.layout.accesso) {
 
     @UIBuilder
     override fun impostaMessaggiCorpo() {
-        when (intent.extras?.getString("tipoAccount")) {
+        when (caricaPreferenzaStringa("tipoAccount")) {
             "compratore" -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_compratore)
                 tipoAccount.text = getString(
@@ -135,10 +128,7 @@ class ControllerAccesso : Controller(R.layout.accesso) {
 
     @EventHandler
     private fun clickIndietro() {
-        cambiaAttivita(
-            ControllerSelezioneAccessoRegistrazione::class.java,
-            Pair("tipoAccount", intent.extras?.getString("tipoAccount")!!)
-        )
+        cambiaAttivita(ControllerSelezioneAccessoRegistrazione::class.java)
     }
 
     @EventHandler
@@ -158,7 +148,7 @@ class ControllerAccesso : Controller(R.layout.accesso) {
             )
             if (returned == null) throw EccezioneAPI("Errore di comunicazione con il server.")
             else if (returned == 0) throw EccezioneAccountNonEsistente("Email non associata.")
-            else TODO("Vai alla home")
+            else TODO("Se è stata completata la registrazione, vai alla home, se non è stata completata, vai alla registrazione")
         } catch (eccezione: EccezioneAccountNonEsistente) {
             rimuoviMessaggioErrore(layout, 2)
             erroreCampo(

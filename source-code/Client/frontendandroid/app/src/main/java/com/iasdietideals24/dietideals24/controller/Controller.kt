@@ -1,16 +1,20 @@
 package com.iasdietideals24.dietideals24.controller
 
-import android.app.Activity
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.icu.text.DateFormat
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModel
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
+import com.google.gson.Gson
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.utilities.APIController
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
@@ -19,12 +23,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.reflect.Method
+import java.sql.Date
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 abstract class Controller(
     private val layout: Int = 0
-) : Activity() {
-
-    private val userId: Int = 0
+) : FragmentActivity() {
 
     @UIBuilder
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,38 +71,38 @@ abstract class Controller(
     }
 
     @Utility
-    protected fun <model> eseguiChiamataREST(methodName: String, vararg args: Any?): model? {
-        var returned: model? = null
+    protected fun <Model> eseguiChiamataREST(methodName: String, vararg args: Any?): Model? {
+        var returned: Model? = null
 
         val argTypes: Array<Class<Any>?> = args.map { it?.javaClass }.toTypedArray()
         val method: Method = APIController.instance.javaClass.getMethod(methodName, *argTypes)
 
         @Suppress("UNCHECKED_CAST")
-        val call: Call<model> = method.invoke(APIController.instance, *args) as Call<model>
+        val call: Call<Model> = method.invoke(APIController.instance, *args) as Call<Model>
 
-        call.enqueue(object : Callback<model> {
-            override fun onResponse(call: Call<model>, response: Response<model>) {
+        call.enqueue(object : Callback<Model> {
+            override fun onResponse(call: Call<Model>, response: Response<Model>) {
                 if (response.isSuccessful) {
                     returned = response.body()
-                    onRESTSuccess<model>(call, response)
+                    onRESTSuccess<Model>(call, response)
                 }
             }
 
-            override fun onFailure(call: Call<model>, t: Throwable) {
-                onRESTFailure<model>(call, t)
+            override fun onFailure(call: Call<Model>, t: Throwable) {
+                onRESTFailure<Model>(call, t)
             }
         })
 
-        return returned;
+        return returned
     }
 
     @Utility
-    protected open fun <model> onRESTSuccess(call: Call<model>, response: Response<model>) {
+    protected open fun <Model> onRESTSuccess(call: Call<Model>, response: Response<Model>) {
         // Non fare nulla
     }
 
     @Utility
-    protected open fun <model> onRESTFailure(call: Call<model>, t: Throwable) {
+    protected open fun <Model> onRESTFailure(call: Call<Model>, t: Throwable) {
         // Non fare nulla
     }
 
@@ -104,6 +110,25 @@ abstract class Controller(
     protected fun estraiTestoDaElemento(elemento: TextInputEditText): String {
         val testoElemento = elemento.text
         return testoElemento.toString()
+    }
+
+    @Utility
+    protected fun estraiDataDaElemento(elemento: TextInputEditText): Date? {
+        val testoElemento = elemento.text
+        val stringaData = testoElemento.toString()
+
+        return try {
+            val inFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault())
+            inFormat.isLenient = false
+            val date = inFormat.parse(stringaData)
+
+            @SuppressLint("SimpleDateFormat")
+            val outFormat = SimpleDateFormat("yyyy-MM-dd")
+            val formattedDate = outFormat.format(date)
+            Date.valueOf(formattedDate)
+        } catch (e: ParseException) {
+            null
+        }
     }
 
     @Utility
@@ -181,16 +206,43 @@ abstract class Controller(
     }
 
     @Utility
-    protected fun cambiaAttivita(controller: Class<*>) {
+    protected fun <controllerClass : Controller> cambiaAttivita(controller: Class<controllerClass>) {
         val nuovaAttivita = Intent(this, controller)
         startActivity(nuovaAttivita)
     }
 
     @Utility
-    protected fun cambiaAttivita(controller: Class<*>, vararg extras: Pair<String, String>) {
+    protected fun <controllerClass : Controller> cambiaAttivita(
+        controller: Class<controllerClass>,
+        viewModel: Any
+    ) {
+        val gson = Gson()
+        val json = gson.toJson(viewModel)
         val nuovaAttivita = Intent(this, controller)
-        for (extra in extras)
-            nuovaAttivita.putExtra(extra.first, extra.second)
+        nuovaAttivita.putExtra("viewModel", json)
         startActivity(nuovaAttivita)
+    }
+
+    @Utility
+    protected inline fun <reified ViewModel> recuperaViewModel(): ViewModel {
+        val gson = Gson()
+        val json = intent.getStringExtra("viewModel").toString()
+        return gson.fromJson(json, ViewModel::class.java)
+    }
+
+    @Utility
+    protected fun salvaPreferenzaStringa(name: String, value: String) {
+        val sharedPreferences =
+            getSharedPreferences("com.iasdietideals24.dietideals24.preferences", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString(name, value)
+        editor.apply()
+    }
+
+    @Utility
+    protected fun caricaPreferenzaStringa(name: String): String? {
+        val sharedPreferences =
+            getSharedPreferences("com.iasdietideals24.dietideals24.preferences", MODE_PRIVATE)
+        return sharedPreferences.getString(name, "")
     }
 }

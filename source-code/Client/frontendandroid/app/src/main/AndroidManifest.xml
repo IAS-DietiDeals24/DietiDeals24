@@ -7,7 +7,7 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission
-        android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED"
+        android:name="android.permission.READ_MEDIA_IMAGES"
         android:minSdkVersion="33" />
     <uses-permission
         android:name="com.google.android.gms.permission.AD_ID"
@@ -22,7 +22,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DietiDeals24"
-        android:usesCleartextTraffic="true"
+        android:usesCleartextTraffic="false"
         tools:targetApi="34">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -52,6 +52,22 @@
             android:theme="@style/Theme.DietiDeals24" />
         <activity
             android:name=".controller.ControllerRegistrazione"
+            android:fitsSystemWindows="true"
+            android:theme="@style/Theme.DietiDeals24" />
+        <activity
+            android:name=".controller.ControllerAssociazioneProfilo"
+            android:fitsSystemWindows="true"
+            android:theme="@style/Theme.DietiDeals24" />
+        <activity
+            android:name=".controller.ControllerCreazioneProfiloFase1"
+            android:fitsSystemWindows="true"
+            android:theme="@style/Theme.DietiDeals24" />
+        <activity
+            android:name=".controller.ControllerCreazioneProfiloFase2"
+            android:fitsSystemWindows="true"
+            android:theme="@style/Theme.DietiDeals24" />
+        <activity
+            android:name=".controller.ControllerCreazioneProfiloFase3"
             android:fitsSystemWindows="true"
             android:theme="@style/Theme.DietiDeals24" />
 

@@ -24,7 +24,7 @@ class ControllerSelezioneAccessoRegistrazione : Controller(R.layout.selezioneacc
 
     @UIBuilder
     override fun impostaMessaggiCorpo() {
-        when (intent.extras?.getString("tipoAccount")) {
+        when (caricaPreferenzaStringa("tipoAccount")) {
             "compratore" -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_compratore)
                 saluto.text = getString(
@@ -61,18 +61,12 @@ class ControllerSelezioneAccessoRegistrazione : Controller(R.layout.selezioneacc
 
     @EventHandler
     private fun clickAccedi() {
-        cambiaAttivita(
-            ControllerAccesso::class.java,
-            Pair("tipoAccount", intent.extras?.getString("tipoAccount")!!)
-        )
+        cambiaAttivita(ControllerAccesso::class.java)
     }
 
     @EventHandler
     private fun clickRegistrati() {
-        cambiaAttivita(
-            ControllerRegistrazione::class.java,
-            Pair("tipoAccount", intent.extras?.getString("tipoAccount")!!)
-        )
+        cambiaAttivita(ControllerRegistrazione::class.java)
     }
 
     @EventHandler

@@ -67,18 +67,14 @@ class ControllerSelezioneTipoAccount : Controller(R.layout.selezionetipoaccount)
 
     @EventHandler
     private fun clickCompratore() {
-        cambiaAttivita(
-            ControllerSelezioneAccessoRegistrazione::class.java,
-            Pair("tipoAccount", "compratore")
-        )
+        salvaPreferenzaStringa("tipoAccount", "compratore")
+        cambiaAttivita(ControllerSelezioneAccessoRegistrazione::class.java)
     }
 
     @EventHandler
     private fun clickVenditore() {
-        cambiaAttivita(
-            ControllerSelezioneAccessoRegistrazione::class.java,
-            Pair("tipoAccount", "venditore")
-        )
+        salvaPreferenzaStringa("tipoAccount", "venditore")
+        cambiaAttivita(ControllerSelezioneAccessoRegistrazione::class.java)
     }
 
     @EventHandler

@@ -1,9 +1,12 @@
 package com.iasdietideals24.dietideals24.controller
 
-import android.content.Intent
+import android.graphics.Point
+import android.os.Build
+import android.view.Display
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowMetrics
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.PopupWindow
@@ -69,7 +72,7 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
 
     @UIBuilder
     override fun impostaMessaggiCorpo() {
-        when (intent.extras?.getString("tipoAccount")) {
+        when (caricaPreferenzaStringa("tipoAccount")) {
             "compratore" -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_compratore)
                 tipoAccount.text = getString(
@@ -156,10 +159,7 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
 
     @EventHandler
     private fun clickIndietro() {
-        cambiaAttivita(
-            ControllerSelezioneAccessoRegistrazione::class.java,
-            Pair("tipoAccount", intent.extras?.getString("tipoAccount")!!)
-        )
+        cambiaAttivita(ControllerSelezioneAccessoRegistrazione::class.java)
     }
 
     @EventHandler
@@ -218,14 +218,15 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
         val returned: Pair<Boolean, Int>? =
             eseguiChiamataREST<Pair<Boolean, Int>>("registra", email, password, tipoAccount)
 
-        if (returned == null) throw EccezioneAPI("Errore di comunicazione con il server.")
-        // Un account di altro tipo con la stessa email è stato trovato
-        else if (returned.first == true) {
-            val nuovaAttivita = Intent(this, ControllerAssociazioneProfilo::class.java)
-            startActivity(nuovaAttivita)
+        when {
+            returned == null -> throw EccezioneAPI("Errore di comunicazione con il server.")
+
+            // Un account di altro tipo con la stessa email è stato trovato
+            returned.first == true -> cambiaAttivita(ControllerAssociazioneProfilo::class.java)
+
+            // Un account di altro tipo con la stessa email non è stato trovato
+            returned.first == false -> cambiaAttivita(ControllerCreazioneProfiloFase1::class.java)
         }
-        // Un account di altro tipo con la stessa email non è stato trovato
-        else TODO("Crea account")
     }
     //endregion
 
@@ -262,11 +263,29 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
 
     @UIBuilder
     private fun creaFinestraPopup(popupDaCreare: View): PopupWindow {
-        val larghezzaFinestra = LinearLayout.LayoutParams.WRAP_CONTENT
-        val altezzaFinestra = LinearLayout.LayoutParams.WRAP_CONTENT
+        val display: Display?
+        val windowMetrics: WindowMetrics
+        val size = Point()
+        val width: Int
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            windowMetrics = windowManager.currentWindowMetrics
+            width = windowMetrics.bounds.width()
+        } else {
+            display = windowManager.defaultDisplay
+            display?.getSize(size)
+            width = size.x
+        }
+
+        val larghezzaFinestra = width
         val chiusuraConTapEsterno = false
 
-        return PopupWindow(popupDaCreare, larghezzaFinestra, altezzaFinestra, chiusuraConTapEsterno)
+        return PopupWindow(
+            popupDaCreare,
+            (larghezzaFinestra / 1.5).toInt(),
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            chiusuraConTapEsterno
+        )
     }
 
     @UIBuilder

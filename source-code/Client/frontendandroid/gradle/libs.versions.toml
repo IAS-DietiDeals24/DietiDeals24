@@ -2,6 +2,7 @@
 # Dipendenze livello app
 core-ktx = "1.13.1"
 appcompat = "1.7.0"
+activity-ktx = "1.9.1"
 material = "1.12.0"
 firebase-crashlytics = "19.0.3"
 junit-jupiter-api = "5.10.3"
@@ -9,25 +10,24 @@ junit = "1.2.1"
 espresso-core = "3.6.1"
 retrofit = "2.11.0"
 converter-gson = "2.11.0"
-credentials = "1.2.2"
-credentials-play-services-auth = "1.2.2"
-googleid = "1.1.1"
-facebook-login = "17.0.0"
+facebook-login = "17.0.1"
+coil = "2.7.0"
 
 # Dipendenze livello progetto
-gradle = "8.5.1"
+gradle = "8.5.2"
 google-services = "4.4.2"
 firebase-crashlytics-gradle = "3.0.2"
 
 # Plugin livello progetto
-android-application = "8.5.1"
-jetbrains-kotlin-android = "2.0.0"
+android-application = "8.5.2"
+jetbrains-kotlin-android = "2.0.10"
 sonarqube = "5.1.0.4882"
 
 [libraries]
 # Dipendenze livello app
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebase-crashlytics" }
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter-api" }
@@ -35,10 +35,8 @@ junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "converter-gson" }
-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
-credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentials-play-services-auth" }
-googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version = "1.1.1" }
-facebook-login = { group = "com.facebook.android", name = "facebook-login", version = "17.0.0" }
+facebook-login = { group = "com.facebook.android", name = "facebook-login", version.ref = "facebook-login" }
+coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 
 # Dipendenze livello progetto
 gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle" }
