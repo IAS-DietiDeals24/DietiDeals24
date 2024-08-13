@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scelteIniziali"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grigio"
+    tools:context=".activities.ScelteIniziali">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/scelteIniziali_logo"
+        android:layout_width="205dp"
+        android:layout_height="203dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/scelteIniziali_accessibilitàLogo"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.15"
+        app:srcCompat="@drawable/logo" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/scelteIniziali_motto1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="203dp"
+        android:fontFamily="@font/fira_sans"
+        android:text="@string/scelteIniziali_motto1"
+        android:textColor="@color/blu"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/scelteIniziali_logo"
+        app:layout_constraintStart_toStartOf="@+id/scelteIniziali_logo" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/scelteIniziali_motto2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/fira_sans_bold"
+        android:text="@string/scelteIniziali_motto2"
+        android:textColor="@color/arancione"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/scelteIniziali_motto1"
+        app:layout_constraintStart_toEndOf="@+id/scelteIniziali_motto1" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/scelteIniziali_motto3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/fira_sans"
+        android:text="@string/scelteIniziali_motto3"
+        android:textColor="@color/blu"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/scelteIniziali_motto2"
+        app:layout_constraintStart_toEndOf="@+id/scelteIniziali_motto2" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/scelteIniziali_nomeApp1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:fontFamily="@font/fira_sans_medium"
+        android:text="@string/scelteIniziali_nomeApp1"
+        android:textColor="@color/blu"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="@+id/scelteIniziali_logo"
+        app:layout_constraintTop_toBottomOf="@+id/scelteIniziali_logo" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/scelteIniziali_nomeApp2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/fira_sans_medium"
+        android:text="@string/scelteIniziali_nomeApp2"
+        android:textColor="@color/arancione"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/scelteIniziali_nomeApp1"
+        app:layout_constraintStart_toEndOf="@+id/scelteIniziali_nomeApp1" />
+
+    <ImageButton
+        android:id="@+id/scelteIniziali_pulsanteIndietro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:contentDescription="@string/accessibilitàIndietro"
+        android:src="@drawable/indietro_blu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.050000012" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/scelteIniziali_fragmentContainerView"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:defaultNavHost="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scelteIniziali_nomeApp2"
+        app:layout_constraintVertical_bias="0.0"
+        app:navGraph="@navigation/navigation_scelteiniziali"
+        tools:layout="@layout/selezionetipoaccount" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

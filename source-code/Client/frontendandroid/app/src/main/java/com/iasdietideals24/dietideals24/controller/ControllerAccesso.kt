@@ -1,5 +1,6 @@
 package com.iasdietideals24.dietideals24.controller
 
+import android.content.Context
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -14,16 +15,19 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
-import com.iasdietideals24.dietideals24.model.ModelControllerAccesso
+import com.iasdietideals24.dietideals24.activities.Home
+import com.iasdietideals24.dietideals24.model.ModelAccesso
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAccountNonEsistente
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
+import kotlinx.coroutines.runBlocking
 
 class ControllerAccesso : Controller(R.layout.accesso) {
-    private var viewModel: ModelControllerAccesso = ModelControllerAccesso()
 
-    private var callbackManager = create()
+    private var viewModel: ModelAccesso = ModelAccesso()
 
     private lateinit var tipoAccount: MaterialTextView
     private lateinit var campoEmail: TextInputLayout
@@ -35,23 +39,45 @@ class ControllerAccesso : Controller(R.layout.accesso) {
     private lateinit var pulsanteFacebook: LoginButton
     private lateinit var layout: LinearLayout
 
+    private var facebookCallbackManager = create()
+
+    private var listenerBackButton: OnFragmentBackButton? = null
+    private var listenerChangeActivity: OnFragmentChangeActivity? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        if (requireContext() is OnFragmentBackButton) {
+            listenerBackButton = requireContext() as OnFragmentBackButton
+        }
+        if (requireContext() is OnFragmentChangeActivity) {
+            listenerChangeActivity = requireContext() as OnFragmentChangeActivity
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+
+        listenerBackButton = null
+        listenerChangeActivity = null
+    }
 
     @UIBuilder
     override fun trovaElementiInterfaccia() {
-        tipoAccount = findViewById(R.id.accesso_tipoAccount)
-        campoEmail = findViewById(R.id.accesso_campoEmail)
-        email = findViewById(R.id.accesso_email)
-        campoPassword = findViewById(R.id.accesso_campoPassword)
-        password = findViewById(R.id.accesso_password)
-        pulsanteIndietro = findViewById(R.id.accesso_pulsanteIndietro)
-        pulsanteAccedi = findViewById(R.id.accesso_pulsanteAccedi)
-        pulsanteFacebook = findViewById(R.id.accesso_pulsanteFacebook)
-        layout = findViewById(R.id.accesso_linearLayout)
+        tipoAccount = fragmentView.findViewById(R.id.accesso_tipoAccount)
+        campoEmail = fragmentView.findViewById(R.id.accesso_campoEmail)
+        email = fragmentView.findViewById(R.id.accesso_email)
+        campoPassword = fragmentView.findViewById(R.id.accesso_campoPassword)
+        password = fragmentView.findViewById(R.id.accesso_password)
+        pulsanteIndietro = fragmentView.findViewById(R.id.accesso_pulsanteIndietro)
+        pulsanteAccedi = fragmentView.findViewById(R.id.accesso_pulsanteAccedi)
+        pulsanteFacebook = fragmentView.findViewById(R.id.accesso_pulsanteFacebook)
+        layout = fragmentView.findViewById(R.id.accesso_linearLayout)
     }
 
     @UIBuilder
     override fun impostaMessaggiCorpo() {
-        when (caricaPreferenzaStringa("tipoAccount")) {
+        when (runBlocking { caricaPreferenzaStringa("tipoAccount") }) {
             "compratore" -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_compratore)
                 tipoAccount.text = getString(
@@ -81,12 +107,12 @@ class ControllerAccesso : Controller(R.layout.accesso) {
         )
         pulsanteFacebook.authType = "rerequest"
         pulsanteFacebook.registerCallback(
-            callbackManager,
+            facebookCallbackManager,
             object : FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
                     Toast.makeText(
-                        applicationContext,
-                        "Login effettuato con successo.",
+                        fragmentContext,
+                        getString(R.string.accesso_loginSocialOK),
                         Toast.LENGTH_SHORT
                     ).show()
 
@@ -99,17 +125,10 @@ class ControllerAccesso : Controller(R.layout.accesso) {
 
                 override fun onError(error: FacebookException) {
                     Toast.makeText(
-                        applicationContext,
-                        "Errore durante l'accesso con Facebook.",
+                        fragmentContext,
+                        getString(R.string.accesso_erroreSocial),
                         Toast.LENGTH_SHORT
                     ).show()
-
-                    rimuoviMessaggioErrore(layout, 2)
-                    erroreCampo(
-                        layout,
-                        getString(R.string.accesso_erroreSocial),
-                        2
-                    )
                 }
             })
     }
@@ -118,49 +137,47 @@ class ControllerAccesso : Controller(R.layout.accesso) {
     override fun impostaEventiDiCambiamentoCampi() {
         email.addTextChangedListener {
             rimuoviErroreCampo(campoEmail)
+            rimuoviErroreCampo(campoPassword)
         }
 
         password.addTextChangedListener {
+            rimuoviErroreCampo(campoEmail)
             rimuoviErroreCampo(campoPassword)
         }
     }
 
-
     @EventHandler
     private fun clickIndietro() {
-        cambiaAttivita(ControllerSelezioneAccessoRegistrazione::class.java)
+        listenerBackButton?.onFragmentBackButton()
     }
 
     @EventHandler
     private fun clickAccedi() {
-        viewModel.email = estraiTestoDaElemento(email)
-        viewModel.password = estraiTestoDaElemento(password)
-        viewModel.tipoAccount = estraiTestoDaElemento(tipoAccount)
+        viewModel.email.value = estraiTestoDaElemento(email)
+        viewModel.password.value = estraiTestoDaElemento(password)
+        viewModel.tipoAccount.value = estraiTestoDaElemento(tipoAccount)
 
         try {
             viewModel.validate()
 
             val returned: Int? = eseguiChiamataREST<Int>(
                 "accedi",
-                viewModel.email,
-                viewModel.password,
-                viewModel.tipoAccount
+                viewModel.email.value,
+                viewModel.password.value,
+                viewModel.tipoAccount.value
             )
-            if (returned == null) throw EccezioneAPI("Errore di comunicazione con il server.")
-            else if (returned == 0) throw EccezioneAccountNonEsistente("Email non associata.")
-            else TODO("Se è stata completata la registrazione, vai alla home, se non è stata completata, vai alla registrazione")
+            if (returned == null)
+                throw EccezioneAPI("Errore di comunicazione con il server.")
+            else if (returned == 0)
+                throw EccezioneAccountNonEsistente("Account non esistente.")
+            else
+                listenerChangeActivity?.onFragmentChangeActivity(Home::class.java)
         } catch (eccezione: EccezioneAccountNonEsistente) {
-            rimuoviMessaggioErrore(layout, 2)
-            erroreCampo(
-                layout,
-                getString(R.string.accesso_erroreCredenzialiNonCorrette),
-                2,
-                campoEmail, campoPassword
-            )
+            erroreCampo(R.string.accesso_erroreCredenzialiNonCorrette, campoEmail, campoPassword)
         } catch (eccezione: EccezioneAPI) {
             Toast.makeText(
-                applicationContext,
-                "Errore di comunicazione con il server.",
+                fragmentContext,
+                getString(R.string.apiError),
                 Toast.LENGTH_SHORT
             ).show()
         }

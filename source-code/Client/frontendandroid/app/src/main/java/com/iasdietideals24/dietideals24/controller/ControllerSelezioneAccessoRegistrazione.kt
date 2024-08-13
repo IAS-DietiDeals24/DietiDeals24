@@ -1,30 +1,50 @@
 package com.iasdietideals24.dietideals24.controller
 
-import android.widget.ImageButton
+import android.content.Context
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.activities.Accesso
+import com.iasdietideals24.dietideals24.activities.Registrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
+import kotlinx.coroutines.runBlocking
 
 class ControllerSelezioneAccessoRegistrazione : Controller(R.layout.selezioneaccessoregistrazione) {
+
     private lateinit var pulsanteAccedi: MaterialButton
     private lateinit var pulsanteRegistrati: MaterialButton
-    private lateinit var pulsanteIndietro: ImageButton
     private lateinit var saluto: MaterialTextView
 
+    private var listener: OnFragmentChangeActivity? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        if (requireContext() is OnFragmentChangeActivity) {
+            listener = requireContext() as OnFragmentChangeActivity
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+
+        listener = null
+    }
 
     @UIBuilder
     override fun trovaElementiInterfaccia() {
-        pulsanteAccedi = findViewById(R.id.selezioneAccessoRegistrazione_pulsanteAccedi)
-        pulsanteRegistrati = findViewById(R.id.selezioneAccessoRegistrazione_pulsanteRegistrati)
-        pulsanteIndietro = findViewById(R.id.selezioneAccessoRegistrazione_pulsanteIndietro)
-        saluto = findViewById(R.id.selezioneAccessoRegistrazione_saluto)
+        pulsanteAccedi =
+            fragmentView.findViewById(R.id.selezioneAccessoRegistrazione_pulsanteAccedi)
+        pulsanteRegistrati =
+            fragmentView.findViewById(R.id.selezioneAccessoRegistrazione_pulsanteRegistrati)
+        saluto = fragmentView.findViewById(R.id.selezioneAccessoRegistrazione_saluto)
     }
 
     @UIBuilder
     override fun impostaMessaggiCorpo() {
-        when (caricaPreferenzaStringa("tipoAccount")) {
+        when (runBlocking { caricaPreferenzaStringa("tipoAccount") }) {
             "compratore" -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_compratore)
                 saluto.text = getString(
@@ -52,25 +72,15 @@ class ControllerSelezioneAccessoRegistrazione : Controller(R.layout.selezioneacc
         pulsanteRegistrati.setOnClickListener {
             clickRegistrati()
         }
-
-        pulsanteIndietro.setOnClickListener {
-            clickIndietro()
-        }
     }
-
 
     @EventHandler
     private fun clickAccedi() {
-        cambiaAttivita(ControllerAccesso::class.java)
+        listener?.onFragmentChangeActivity(Accesso::class.java)
     }
 
     @EventHandler
     private fun clickRegistrati() {
-        cambiaAttivita(ControllerRegistrazione::class.java)
-    }
-
-    @EventHandler
-    private fun clickIndietro() {
-        cambiaAttivita(ControllerSelezioneTipoAccount::class.java)
+        listener?.onFragmentChangeActivity(Registrazione::class.java)
     }
 }

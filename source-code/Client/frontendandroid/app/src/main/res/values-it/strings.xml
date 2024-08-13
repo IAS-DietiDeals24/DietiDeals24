@@ -54,5 +54,7 @@
     <string name="associaProfilo_messaggioCorpo">Profilo associato!</string>
     <string name="associaProfilo_messaggioCorpo2">Sembra che questa e-mail sia già stata associata ad un account esistente di un altro tipo!\nLe informazioni del profilo di tale account sono state associate anche al nuovo.</string>
     <string name="associaProfilo_pulsanteFine">Fine</string>
+    <string name="accesso_loginSocialOK">Accesso completato.</string>
+    <string name="apiError">Errore di comunicazione con il server.</string>
 
 </resources>

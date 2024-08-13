@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_scelteiniziali"
+    app:startDestination="@id/controllerSelezioneTipoAccount">
+
+    <fragment
+        android:id="@+id/controllerSelezioneTipoAccount"
+        android:name="com.iasdietideals24.dietideals24.controller.ControllerSelezioneTipoAccount"
+        android:label="ControllerSelezioneTipoAccount">
+        <action
+            android:id="@+id/action_controllerSelezioneTipoAccount_to_controllerSelezioneAccessoRegistrazione"
+            app:destination="@id/controllerSelezioneAccessoRegistrazione"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/controllerSelezioneAccessoRegistrazione"
+        android:name="com.iasdietideals24.dietideals24.controller.ControllerSelezioneAccessoRegistrazione"
+        android:label="ControllerSelezioneAccessoRegistrazione"></fragment>
+</navigation>

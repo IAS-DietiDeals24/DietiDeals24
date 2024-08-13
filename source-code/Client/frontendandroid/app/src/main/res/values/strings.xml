@@ -63,5 +63,7 @@
     <string name="associaProfilo_messaggioCorpo">Profile linked!</string>
     <string name="associaProfilo_messaggioCorpo2">Looks like this email is already linked to an existing account of another type!\nThe profile information of this account are now linked to the new one too.</string>
     <string name="associaProfilo_pulsanteFine">End</string>
+    <string name="accesso_loginSocialOK">Login successful.</string>
+    <string name="apiError">Error while communicating with the server.</string>
 
 </resources>

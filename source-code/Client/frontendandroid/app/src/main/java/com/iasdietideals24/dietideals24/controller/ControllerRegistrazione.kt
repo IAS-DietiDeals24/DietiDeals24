@@ -1,11 +1,15 @@
 package com.iasdietideals24.dietideals24.controller
 
+import android.content.Context
+import android.content.Context.LAYOUT_INFLATER_SERVICE
+import android.content.Context.WINDOW_SERVICE
 import android.graphics.Point
 import android.os.Build
 import android.view.Display
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.view.WindowMetrics
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -23,7 +27,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
-import com.iasdietideals24.dietideals24.model.ModelControllerRegistrazione
+import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
@@ -31,11 +35,12 @@ import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCo
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezionePasswordNonSicura
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
+import kotlinx.coroutines.runBlocking
 
 class ControllerRegistrazione : Controller(R.layout.registrazione) {
-    private var viewModel: ModelControllerRegistrazione = ModelControllerRegistrazione()
 
-    private var callbackManager = create()
+    private var viewModel: ModelRegistrazione = ModelRegistrazione()
 
     private lateinit var tipoAccount: MaterialTextView
     private lateinit var campoEmail: TextInputLayout
@@ -48,6 +53,24 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
     private lateinit var linearLayout: LinearLayout
     private lateinit var constraintLayout: ConstraintLayout
 
+    private var facebookCallbackManager = create()
+
+    private var listener: OnFragmentBackButton? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        if (requireContext() is OnFragmentBackButton) {
+            listener = requireContext() as OnFragmentBackButton
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+
+        listener = null
+    }
+
     override fun elaborazioneAggiuntiva() {
         /* Al fine di rendere il popup di info password più visibile, il frame di registrazione ha
         una cortina nera come foreground. Viene resa invisibile quando la pagina di registrazione è
@@ -55,24 +78,23 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
         constraintLayout.foreground.alpha = 0
     }
 
-
     @UIBuilder
     override fun trovaElementiInterfaccia() {
-        tipoAccount = findViewById(R.id.registrazione_tipoAccount)
-        campoEmail = findViewById(R.id.registrazione_campoEmail)
-        email = findViewById(R.id.registrazione_email)
-        campoPassword = findViewById(R.id.registrazione_campoPassword)
-        password = findViewById(R.id.registrazione_password)
-        pulsanteIndietro = findViewById(R.id.registrazione_pulsanteIndietro)
-        pulsanteAvanti = findViewById(R.id.registrazione_pulsanteAvanti)
-        pulsanteFacebook = findViewById(R.id.registrazione_pulsanteFacebook)
-        linearLayout = findViewById(R.id.registrazione_linearLayout)
-        constraintLayout = findViewById(R.id.registrazione_constraintLayout)
+        tipoAccount = fragmentView.findViewById(R.id.registrazione_tipoAccount)
+        campoEmail = fragmentView.findViewById(R.id.registrazione_campoEmail)
+        email = fragmentView.findViewById(R.id.registrazione_email)
+        campoPassword = fragmentView.findViewById(R.id.registrazione_campoPassword)
+        password = fragmentView.findViewById(R.id.registrazione_password)
+        pulsanteIndietro = fragmentView.findViewById(R.id.registrazione_pulsanteIndietro)
+        pulsanteAvanti = fragmentView.findViewById(R.id.registrazione_pulsanteAvanti)
+        pulsanteFacebook = fragmentView.findViewById(R.id.registrazione_pulsanteFacebook)
+        linearLayout = fragmentView.findViewById(R.id.registrazione_linearLayout)
+        constraintLayout = fragmentView.findViewById(R.id.registrazione_constraintLayout)
     }
 
     @UIBuilder
     override fun impostaMessaggiCorpo() {
-        when (caricaPreferenzaStringa("tipoAccount")) {
+        when (runBlocking { caricaPreferenzaStringa("tipoAccount") }) {
             "compratore" -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_compratore)
                 tipoAccount.text = getString(
@@ -103,20 +125,16 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
         )
         pulsanteFacebook.authType = "rerequest"
         pulsanteFacebook.registerCallback(
-            callbackManager,
+            facebookCallbackManager,
             object : FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
                     Toast.makeText(
-                        applicationContext,
-                        "Login effettuato con successo.",
+                        fragmentContext,
+                        getString(R.string.accesso_loginSocialOK),
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    scegliAssociaCreaProfilo(
-                        viewModel.email,
-                        viewModel.password,
-                        viewModel.tipoAccount
-                    )
+                    scegliAssociaCreaProfilo()
                 }
 
                 override fun onCancel() {
@@ -125,17 +143,10 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
 
                 override fun onError(error: FacebookException) {
                     Toast.makeText(
-                        applicationContext,
-                        "Errore durante l'accesso con Facebook.",
+                        fragmentContext,
+                        getString(R.string.registrazione_erroreRegistrazioneSocial),
                         Toast.LENGTH_SHORT
                     ).show()
-
-                    rimuoviMessaggioErrore(linearLayout, 2)
-                    erroreCampo(
-                        linearLayout,
-                        getString(R.string.registrazione_erroreRegistrazioneSocial),
-                        2
-                    )
                 }
             })
     }
@@ -144,13 +155,14 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
     override fun impostaEventiDiCambiamentoCampi() {
         email.addTextChangedListener {
             rimuoviErroreCampo(campoEmail)
+            rimuoviErroreCampo(campoPassword)
         }
 
         password.addTextChangedListener {
+            rimuoviErroreCampo(campoEmail)
             rimuoviErroreCampo(campoPassword)
         }
     }
-
 
     @EventHandler
     private fun clickInfoPassword() {
@@ -159,77 +171,60 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
 
     @EventHandler
     private fun clickIndietro() {
-        cambiaAttivita(ControllerSelezioneAccessoRegistrazione::class.java)
+        listener?.onFragmentBackButton()
     }
 
     @EventHandler
     private fun clickAvanti() {
-        viewModel.email = estraiTestoDaElemento(email)
-        viewModel.password = estraiTestoDaElemento(password)
-        viewModel.tipoAccount = estraiTestoDaElemento(tipoAccount)
+        viewModel.clear()
+        viewModel.email.value = estraiTestoDaElemento(email)
+        viewModel.password.value = estraiTestoDaElemento(password)
+        viewModel.tipoAccount.value = estraiTestoDaElemento(tipoAccount)
 
         try {
-            viewModel.validate()
+            viewModel.validateAccount()
 
-            scegliAssociaCreaProfilo(viewModel.email, viewModel.password, viewModel.tipoAccount)
+            scegliAssociaCreaProfilo()
         } catch (eccezione: EccezioneCampiNonCompilati) {
-            rimuoviMessaggioErrore(linearLayout, 2)
             erroreCampo(
-                linearLayout,
-                getString(R.string.registrazione_erroreCampiObbligatoriNonCompilati),
-                2,
-                campoEmail, campoPassword
-            )
-        } catch (eccezione: EccezioneEmailNonValida) {
-            rimuoviMessaggioErrore(linearLayout, 2)
-            erroreCampo(
-                linearLayout,
-                getString(R.string.registrazione_erroreFormatoEmail),
-                2,
-                campoEmail
-            )
-        } catch (eccezione: EccezioneEmailUsata) {
-            rimuoviMessaggioErrore(linearLayout, 2)
-            erroreCampo(
-                linearLayout,
-                getString(R.string.registrazione_erroreEmailGiàUsata),
-                2,
-                campoEmail
-            )
-        } catch (eccezione: EccezionePasswordNonSicura) {
-            rimuoviMessaggioErrore(linearLayout, 2)
-            erroreCampo(
-                linearLayout,
-                getString(R.string.registrazione_errorePasswordNonSicura),
-                2,
+                R.string.registrazione_erroreCampiObbligatoriNonCompilati,
+                campoEmail,
                 campoPassword
             )
+        } catch (eccezione: EccezioneEmailNonValida) {
+            erroreCampo(R.string.registrazione_erroreFormatoEmail, campoEmail)
+        } catch (eccezione: EccezioneEmailUsata) {
+            erroreCampo(R.string.registrazione_erroreEmailGiàUsata, campoEmail)
+        } catch (eccezione: EccezionePasswordNonSicura) {
+            erroreCampo(R.string.registrazione_errorePasswordNonSicura, campoPassword)
         } catch (eccezione: EccezioneAPI) {
             Toast.makeText(
-                applicationContext,
-                "Errore di comunicazione con il server.",
+                context,
+                getString(R.string.apiError),
                 Toast.LENGTH_SHORT
             ).show()
         }
     }
 
-
-    private fun scegliAssociaCreaProfilo(email: String, password: String, tipoAccount: String) {
-        val returned: Pair<Boolean, Int>? =
-            eseguiChiamataREST<Pair<Boolean, Int>>("registra", email, password, tipoAccount)
+    private fun scegliAssociaCreaProfilo() {
+        val returned: Boolean? = eseguiChiamataREST<Boolean>(
+            "associaCreaProfilo",
+            viewModel.email.value,
+            viewModel.password.value,
+            viewModel.tipoAccount.value
+        )
 
         when {
             returned == null -> throw EccezioneAPI("Errore di comunicazione con il server.")
 
             // Un account di altro tipo con la stessa email è stato trovato
-            returned.first == true -> cambiaAttivita(ControllerAssociazioneProfilo::class.java)
+            returned == true -> navController.navigate(R.id.action_controllerRegistrazione_to_controllerAssociazioneProfilo)
 
             // Un account di altro tipo con la stessa email non è stato trovato
-            returned.first == false -> cambiaAttivita(ControllerCreazioneProfiloFase1::class.java)
+            returned == false -> navController.navigate(R.id.action_controllerRegistrazione_to_controllerCreazioneProfiloFase1)
         }
     }
     //endregion
-
 
     //region PopupInfoPassword
     private lateinit var constraintLayoutPopup: ConstraintLayout
@@ -255,8 +250,10 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
 
     @UIBuilder
     private fun gonfiaLayout(): View {
-        val servizioInflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val radiceLayout = findViewById<ConstraintLayout>(R.id.infoPassword_constraintLayout)
+        val servizioInflater =
+            fragmentContext.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val radiceLayout =
+            fragmentView.findViewById<ConstraintLayout>(R.id.infoPassword_constraintLayout)
 
         return servizioInflater.inflate(R.layout.infopassword, radiceLayout)
     }
@@ -264,6 +261,8 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
     @UIBuilder
     private fun creaFinestraPopup(popupDaCreare: View): PopupWindow {
         val display: Display?
+        val windowManager: WindowManager =
+            fragmentContext.getSystemService(WINDOW_SERVICE) as WindowManager
         val windowMetrics: WindowMetrics
         val size = Point()
         val width: Int
@@ -290,7 +289,7 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
 
     @UIBuilder
     private fun trovaElementiInterfaccia(layoutPopupCreato: View) {
-        constraintLayoutPopup = findViewById(R.id.registrazione_constraintLayout)
+        constraintLayoutPopup = fragmentView.findViewById(R.id.registrazione_constraintLayout)
         pulsanteChiudi = layoutPopupCreato.findViewById(R.id.infoPassword_pulsanteChiudi)
     }
 

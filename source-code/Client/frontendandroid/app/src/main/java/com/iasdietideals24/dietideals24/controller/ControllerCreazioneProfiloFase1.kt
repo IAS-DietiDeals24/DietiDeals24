@@ -2,6 +2,7 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.Context
 import android.icu.text.DateFormat
 import android.icu.util.Calendar
 import android.icu.util.GregorianCalendar
@@ -9,19 +10,26 @@ import android.os.Bundle
 import android.widget.DatePicker
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.iasdietideals24.dietideals24.R
-import com.iasdietideals24.dietideals24.model.ModelControllerCreazioneProfilo
+import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeDate
+import java.sql.Date
 import java.util.Locale
 
 class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase1) {
-    private val viewModel: ModelControllerCreazioneProfilo = ModelControllerCreazioneProfilo()
+
+    private lateinit var viewModel: ModelRegistrazione
 
     private lateinit var layout: LinearLayout
     private lateinit var pulsanteIndietro: ImageButton
@@ -35,19 +43,35 @@ class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase
     private lateinit var dataNascita: TextInputEditText
     private lateinit var pulsanteAvanti: MaterialButton
 
+    private var listener: OnFragmentBackButton? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        if (requireContext() is OnFragmentBackButton) {
+            listener = requireContext() as OnFragmentBackButton
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+
+        listener = null
+    }
+
     @UIBuilder
     override fun trovaElementiInterfaccia() {
-        layout = findViewById(R.id.creazioneProfiloFase1_linearLayout)
-        pulsanteIndietro = findViewById(R.id.creazioneProfiloFase1_pulsanteIndietro)
-        campoNomeUtente = findViewById(R.id.creazioneProfiloFase1_campoNomeUtente)
-        nomeUtente = findViewById(R.id.creazioneProfiloFase1_nomeUtente)
-        campoNome = findViewById(R.id.creazioneProfiloFase1_campoNome)
-        nome = findViewById(R.id.creazioneProfiloFase1_nome)
-        campoCognome = findViewById(R.id.creazioneProfiloFase1_campoCognome)
-        cognome = findViewById(R.id.creazioneProfiloFase1_cognome)
-        campoDataNascita = findViewById(R.id.creazioneProfiloFase1_campoDataNascita)
-        dataNascita = findViewById(R.id.creazioneProfiloFase1_dataNascita)
-        pulsanteAvanti = findViewById(R.id.creazioneProfiloFase1_pulsanteAvanti)
+        layout = fragmentView.findViewById(R.id.creazioneProfiloFase1_linearLayout)
+        pulsanteIndietro = fragmentView.findViewById(R.id.creazioneProfiloFase1_pulsanteIndietro)
+        campoNomeUtente = fragmentView.findViewById(R.id.creazioneProfiloFase1_campoNomeUtente)
+        nomeUtente = fragmentView.findViewById(R.id.creazioneProfiloFase1_nomeUtente)
+        campoNome = fragmentView.findViewById(R.id.creazioneProfiloFase1_campoNome)
+        nome = fragmentView.findViewById(R.id.creazioneProfiloFase1_nome)
+        campoCognome = fragmentView.findViewById(R.id.creazioneProfiloFase1_campoCognome)
+        cognome = fragmentView.findViewById(R.id.creazioneProfiloFase1_cognome)
+        campoDataNascita = fragmentView.findViewById(R.id.creazioneProfiloFase1_campoDataNascita)
+        dataNascita = fragmentView.findViewById(R.id.creazioneProfiloFase1_dataNascita)
+        pulsanteAvanti = fragmentView.findViewById(R.id.creazioneProfiloFase1_pulsanteAvanti)
     }
 
     @UIBuilder
@@ -57,30 +81,78 @@ class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase
         campoDataNascita.setEndIconOnClickListener { clickDataNascita() }
     }
 
+    @UIBuilder
+    override fun impostaEventiDiCambiamentoCampi() {
+        nomeUtente.addTextChangedListener {
+            rimuoviErroreCampo(campoNomeUtente)
+            rimuoviErroreCampo(campoNome)
+            rimuoviErroreCampo(campoCognome)
+        }
+
+        nome.addTextChangedListener {
+            rimuoviErroreCampo(campoNomeUtente)
+            rimuoviErroreCampo(campoNome)
+            rimuoviErroreCampo(campoCognome)
+        }
+
+        cognome.addTextChangedListener {
+            rimuoviErroreCampo(campoNomeUtente)
+            rimuoviErroreCampo(campoNome)
+            rimuoviErroreCampo(campoCognome)
+        }
+    }
+
+    @UIBuilder
+    override fun elaborazioneAggiuntiva() {
+        viewModel = ViewModelProvider(fragmentActivity).get(ModelRegistrazione::class)
+    }
+
+    @UIBuilder
+    override fun impostaOsservatori() {
+        val nomeUtenteObserver = Observer<String> { newNomeUtente ->
+            nomeUtente.setText(newNomeUtente)
+        }
+        viewModel.nomeUtente.observe(viewLifecycleOwner, nomeUtenteObserver)
+
+        val nomeObserver = Observer<String> { newNome ->
+            nome.setText(newNome)
+        }
+        viewModel.nome.observe(viewLifecycleOwner, nomeObserver)
+
+        val cognomeObserver = Observer<String> { newCognome ->
+            cognome.setText(newCognome)
+        }
+        viewModel.cognome.observe(viewLifecycleOwner, cognomeObserver)
+
+        val dataNascitaObserver = Observer<Date> { newData ->
+            dataNascita.setText(formattaData(newData))
+        }
+        viewModel.dataNascita.observe(viewLifecycleOwner, dataNascitaObserver)
+    }
+
 
     @EventHandler
     private fun clickIndietro() {
-        cambiaAttivita(ControllerRegistrazione::class.java)
+        listener?.onFragmentBackButton()
     }
 
     @EventHandler
     private fun clickAvanti() {
-        viewModel.nomeUtente = estraiTestoDaElemento(nomeUtente)
-        viewModel.nome = estraiTestoDaElemento(nome)
-        viewModel.cognome = estraiTestoDaElemento(cognome)
-        viewModel.dataNascita = estraiDataDaElemento(dataNascita)
+        viewModel.nomeUtente.value = estraiTestoDaElemento(nomeUtente)
+        viewModel.nome.value = estraiTestoDaElemento(nome)
+        viewModel.cognome.value = estraiTestoDaElemento(cognome)
+        viewModel.dataNascita.value = estraiDataDaElemento(dataNascita)
 
         try {
-            viewModel.validate()
+            viewModel.validateProfile()
 
-            cambiaAttivita(ControllerCreazioneProfiloFase2::class.java)
+            navController.navigate(R.id.action_controllerCreazioneProfiloFase1_to_controllerCreazioneProfiloFase2)
         } catch (eccezione: EccezioneCampiNonCompilati) {
-            rimuoviMessaggioErrore(layout, 2)
             erroreCampo(
-                layout,
-                getString(R.string.registrazione_erroreCampiObbligatoriNonCompilati),
-                4,
-                campoNomeUtente, campoNome, campoCognome, campoDataNascita
+                R.string.registrazione_erroreCampiObbligatoriNonCompilati,
+                campoNomeUtente,
+                campoNome,
+                campoCognome
             )
         }
     }
@@ -88,11 +160,27 @@ class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase
     @EventHandler
     private fun clickDataNascita() {
         val newFragment = DatePickerFragment()
-        newFragment.show(supportFragmentManager, "datePicker")
+        newFragment.show(requireActivity().supportFragmentManager, "datePicker")
     }
 
     //region Fragment
     class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
+
+        private var listener: OnFragmentChangeDate? = null
+
+        override fun onAttach(context: Context) {
+            super.onAttach(context)
+
+            if (requireContext() is OnFragmentChangeDate) {
+                listener = requireContext() as OnFragmentChangeDate
+            }
+        }
+
+        override fun onDetach() {
+            super.onDetach()
+
+            listener = null
+        }
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
             val c = Calendar.getInstance()
@@ -107,13 +195,10 @@ class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase
         }
 
         override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
-            val activity: ControllerCreazioneProfiloFase1 =
-                activity as ControllerCreazioneProfiloFase1
-
             val date = GregorianCalendar(year, month, day).time
             val formatter = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault())
             val formattedDate = formatter.format(date)
-            activity.dataNascita.setText(formattedDate)
+            listener?.onFragmentChangeDate(formattedDate)
         }
     }
     //endregion Fragment

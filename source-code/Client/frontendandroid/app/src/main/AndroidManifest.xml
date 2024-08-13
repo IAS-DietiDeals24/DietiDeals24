@@ -10,6 +10,9 @@
         android:name="android.permission.READ_MEDIA_IMAGES"
         android:minSdkVersion="33" />
     <uses-permission
+        android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED"
+        android:minSdkVersion="34" />
+    <uses-permission
         android:name="com.google.android.gms.permission.AD_ID"
         tools:node="remove" />
 
@@ -24,17 +27,9 @@
         android:theme="@style/Theme.DietiDeals24"
         android:usesCleartextTraffic="false"
         tools:targetApi="34">
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-        <meta-data
-            android:name="com.facebook.sdk.ClientToken"
-            android:value="@string/facebook_client_token" />
-
         <activity
-            android:name=".controller.ControllerSelezioneTipoAccount"
+            android:name=".activities.ScelteIniziali"
             android:exported="true"
-            android:fitsSystemWindows="true"
             android:theme="@style/Theme.DietiDeals24">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,38 +38,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".controller.ControllerSelezioneAccessoRegistrazione"
-            android:fitsSystemWindows="true"
+            android:name=".activities.Accesso"
             android:theme="@style/Theme.DietiDeals24" />
         <activity
-            android:name=".controller.ControllerAccesso"
-            android:fitsSystemWindows="true"
+            android:name=".activities.Registrazione"
             android:theme="@style/Theme.DietiDeals24" />
         <activity
-            android:name=".controller.ControllerRegistrazione"
-            android:fitsSystemWindows="true"
-            android:theme="@style/Theme.DietiDeals24" />
-        <activity
-            android:name=".controller.ControllerAssociazioneProfilo"
-            android:fitsSystemWindows="true"
-            android:theme="@style/Theme.DietiDeals24" />
-        <activity
-            android:name=".controller.ControllerCreazioneProfiloFase1"
-            android:fitsSystemWindows="true"
-            android:theme="@style/Theme.DietiDeals24" />
-        <activity
-            android:name=".controller.ControllerCreazioneProfiloFase2"
-            android:fitsSystemWindows="true"
-            android:theme="@style/Theme.DietiDeals24" />
-        <activity
-            android:name=".controller.ControllerCreazioneProfiloFase3"
-            android:fitsSystemWindows="true"
+            android:name=".activities.Home"
             android:theme="@style/Theme.DietiDeals24" />
 
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_client_token" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-
 
 </manifest>

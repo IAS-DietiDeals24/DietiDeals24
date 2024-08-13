@@ -311,7 +311,7 @@
                     app:boxStrokeWidth="1.5dp"
                     app:cursorColor="@color/arancione"
                     app:cursorErrorColor="@color/rosso"
-                    app:endIconDrawable="@drawable/icona_aiuto"
+                    app:endIconDrawable="@drawable/icona_calendario"
                     app:endIconMode="custom"
                     app:endIconTint="@null"
                     app:endIconTintMode="multiply"
