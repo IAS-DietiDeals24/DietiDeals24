@@ -63,7 +63,9 @@
     <string name="associaProfilo_messaggioCorpo">Profile linked!</string>
     <string name="associaProfilo_messaggioCorpo2">Looks like this email is already linked to an existing account of another type!\nThe profile information of this account are now linked to the new one too.</string>
     <string name="associaProfilo_pulsanteFine">End</string>
-    <string name="accesso_loginSocialOK">Login successful.</string>
     <string name="apiError">Error while communicating with the server.</string>
+    <string name="accesso_noAccountFacebookCollegato">Your Facebook account is not linked to any DietiDeals24 account of this type. Please, signup.</string>
+    <string name="registrazione_accountFacebookGiàCollegato">Your Facebook account is already linked to a DietiDeals24 account of this type. Please, signin.</string>
+    <string name="accesso_loginSocialOK">Successful linking to Facebook account. Please wait.</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package com.iasdietideals24.dietideals24.utilities
+package com.iasdietideals24.dietideals24.utilities.classes
 
 import android.content.Context
 import androidx.datastore.core.DataStore

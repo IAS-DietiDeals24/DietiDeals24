@@ -1,9 +1,12 @@
 package com.iasdietideals24.dietideals24.utilities.interfaces
 
-import com.iasdietideals24.dietideals24.utilities.classes.APIMode
+import com.iasdietideals24.dietideals24.utilities.classes.AccountInfo
+import com.iasdietideals24.dietideals24.utilities.classes.AccountProfileInfo
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface API {
@@ -52,5 +55,44 @@ interface API {
         @Query("email") accountEmail: String,
         @Query("password") accountPassword: String,
         @Query("tipoAccount") tipoAccount: String
+    ): Call<Boolean>
+
+    /**
+     * Il metodo recupera l'ID dell'account associato all'ID dell'account Facebook, ma solo se
+     * l'utente ha un account dello stesso tipo che ha selezionato.
+     * @param mode Indica se si sta effettuando la chiamata in ambiente di sviluppo o in produzione.
+     * @param facebookId Identificativo dell'account Facebook dell'utente.
+     * @param tipoAccount Indica il tipo di account che sta tentando di accedere o registrarsi.
+     * @return L'identificativo dell'account
+     */
+    @GET("accountFacebook")
+    fun accountFacebook(
+        @Header("MODE") mode: Int,
+        @Query("facebookId") facebookId: String,
+        @Query("tipoAccount") tipoAccount: String
+    ): Call<Int>
+
+    /**
+     * Registra i dati del nuovo account e li associa al profilo già esistente.
+     * @param mode Indica se si sta effettuando la chiamata in ambiente di sviluppo o in produzione.
+     * @param accountInfo Wrapper con le informazioni necessarie a creare il nuovo account.
+     * @return Indica se l'operazione di associazione è andata a buon fine.
+     */
+    @POST("registrazione/associazioneProfilo")
+    fun associazioneProfilo(
+        @Header("MODE") mode: Int,
+        @Body accountInfo: AccountInfo
+    ): Call<Boolean>
+
+    /**
+     * Registra i dati del nuovo account e crea un nuovo profilo da associare a tale account.
+     * @param mode Indica se si sta effettuando la chiamata in ambiente di sviluppo o in produzione.
+     * @param modelRegistrazione Wrapper con le informazioni necessarie a creare il nuovo account e il nuovo profilo.
+     * @return Indica se l'operazione di creazione è andata a buon fine.
+     */
+    @POST("registrazione/creazioneProfilo")
+    fun creazioneProfilo(
+        @Header("MODE") mode: Int,
+        @Body dataClass: AccountProfileInfo
     ): Call<Boolean>
 }

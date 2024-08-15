@@ -5,6 +5,7 @@ import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.Context.WINDOW_SERVICE
 import android.graphics.Point
 import android.os.Build
+import android.os.Bundle
 import android.view.Display
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -16,10 +17,16 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.net.toUri
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProvider
+import com.facebook.AccessToken
 import com.facebook.CallbackManager.Factory.create
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
+import com.facebook.GraphRequest
+import com.facebook.GraphResponse
+import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.google.android.material.button.MaterialButton
@@ -36,11 +43,15 @@ import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonVa
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezionePasswordNonSicura
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
 import kotlinx.coroutines.runBlocking
+import org.apache.commons.lang3.RandomStringUtils
+import org.json.JSONObject
+
 
 class ControllerRegistrazione : Controller(R.layout.registrazione) {
 
-    private var viewModel: ModelRegistrazione = ModelRegistrazione()
+    private lateinit var viewModel: ModelRegistrazione
 
     private lateinit var tipoAccount: MaterialTextView
     private lateinit var campoEmail: TextInputLayout
@@ -55,20 +66,25 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
 
     private var facebookCallbackManager = create()
 
-    private var listener: OnFragmentBackButton? = null
+    private var listenerBackButton: OnFragmentBackButton? = null
+    private var listenerChangeActivity: OnFragmentChangeActivity? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         if (requireContext() is OnFragmentBackButton) {
-            listener = requireContext() as OnFragmentBackButton
+            listenerBackButton = requireContext() as OnFragmentBackButton
+        }
+        if (requireContext() is OnFragmentChangeActivity) {
+            listenerChangeActivity = requireContext() as OnFragmentChangeActivity
         }
     }
 
     override fun onDetach() {
         super.onDetach()
 
-        listener = null
+        listenerBackButton = null
+        listenerChangeActivity = null
     }
 
     override fun elaborazioneAggiuntiva() {
@@ -76,6 +92,8 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
         una cortina nera come foreground. Viene resa invisibile quando la pagina di registrazione è
         creata e quando è chiuso il popup. Viene resa visibile quando il popup è aperto. */
         constraintLayout.foreground.alpha = 0
+
+        viewModel = ViewModelProvider(fragmentActivity).get(ModelRegistrazione::class)
     }
 
     @UIBuilder
@@ -120,7 +138,7 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
         pulsanteAvanti.setOnClickListener { clickAvanti() }
 
         pulsanteFacebook.permissions = listOf(
-            "email", "public_profile", "user_birthday",
+            "openid", "email", "public_profile", "user_birthday",
             "user_gender", "user_link", "user_location"
         )
         pulsanteFacebook.authType = "rerequest"
@@ -134,7 +152,44 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    scegliAssociaCreaProfilo()
+                    val returned: Int? = eseguiChiamataREST(
+                        "accountFacebook",
+                        result.accessToken.userId, tipoAccount.text.toString()
+                    )
+
+                    if (returned == null) { // errore di comunicazione con il backend
+                        Toast.makeText(
+                            fragmentContext,
+                            getString(R.string.apiError),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        LoginManager.getInstance().logOut()
+                    } else if (returned == 0) { // non esiste un account associato a questo account Facebook con questo tipo, registrati
+                        queryFacebookGraph(result.accessToken)
+
+
+                        try {
+                            scegliAssociaCreaProfilo()
+                        } catch (eccezione: EccezioneAPI) {
+                            Toast.makeText(
+                                fragmentContext,
+                                getString(R.string.apiError),
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            viewModel.clear()
+                            LoginManager.getInstance().logOut()
+                        }
+                    } else { // esiste un account associato a questo account Facebook con questo tipo
+                        Toast.makeText(
+                            fragmentContext,
+                            getString(R.string.registrazione_accountFacebookGiàCollegato),
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        LoginManager.getInstance().logOut()
+                    }
                 }
 
                 override fun onCancel() {
@@ -171,7 +226,7 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
 
     @EventHandler
     private fun clickIndietro() {
-        listener?.onFragmentBackButton()
+        listenerBackButton?.onFragmentBackButton()
     }
 
     @EventHandler
@@ -207,7 +262,7 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
     }
 
     private fun scegliAssociaCreaProfilo() {
-        val returned: Boolean? = eseguiChiamataREST<Boolean>(
+        val returned: Boolean? = eseguiChiamataREST(
             "associaCreaProfilo",
             viewModel.email.value,
             viewModel.password.value,
@@ -223,6 +278,44 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
             // Un account di altro tipo con la stessa email non è stato trovato
             returned == false -> navController.navigate(R.id.action_controllerRegistrazione_to_controllerCreazioneProfiloFase1)
         }
+    }
+
+    private fun queryFacebookGraph(accessToken: AccessToken?) {
+        val request: GraphRequest = GraphRequest.newMeRequest(
+            accessToken,
+            object : GraphRequest.GraphJSONObjectCallback {
+                override fun onCompleted(obj: JSONObject?, response: GraphResponse?) {
+                    viewModel.facebookAccountID.postValue(obj?.optString("id"))
+                    viewModel.email.postValue(obj?.optString("email"))
+                    viewModel.password.postValue(RandomStringUtils.randomAlphanumeric(16))
+                    viewModel.nome.postValue(
+                        obj?.optString("name") +
+                                if (obj?.optString("middle_name") != "")
+                                    " " + obj?.optString("middle_name")
+                                else ""
+                    )
+                    viewModel.cognome.postValue(obj?.optString("last_name"))
+                    viewModel.dataNascita.postValue(obj?.optString("birthday")
+                        ?.let { estraiDataDaStringa("MM/dd/yyyy", it) })
+                    viewModel.immagineProfilo.postValue(
+                        obj?.optJSONObject("picture")?.optJSONObject("data")?.optString("url")
+                            ?.toUri()
+                    )
+                    viewModel.biografia.postValue(obj?.optString("about"))
+                    viewModel.areaGeografica.postValue(
+                        obj?.optJSONObject("location")?.optString("name")
+                    )
+                    viewModel.genere.postValue(obj?.optString("gender"))
+                }
+            })
+
+        val parameters = Bundle()
+        parameters.putString(
+            "fields",
+            "email,name,middle_name,last_name,birthday,picture,about,location,gender"
+        )
+        request.parameters = parameters
+        request.executeAsync()
     }
     //endregion
 

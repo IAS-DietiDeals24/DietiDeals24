@@ -116,7 +116,25 @@ class ControllerAccesso : Controller(R.layout.accesso) {
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    TODO("Se l'account Facebook non è associato a nessun account DietiDeals24, crea un nuovo account, altrimenti vai alla home")
+                    val returned: Int? = eseguiChiamataREST(
+                        "accountFacebook",
+                        result.accessToken.userId, tipoAccount.text.toString()
+                    )
+
+                    if (returned == null) // errore comunicazione con il backend
+                        Toast.makeText(
+                            fragmentContext,
+                            getString(R.string.apiError),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    else if (returned == 0) // non esiste un account associato a questo account Facebook con questo tipo
+                        Toast.makeText(
+                            fragmentContext,
+                            getString(R.string.accesso_noAccountFacebookCollegato),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    else // esiste un account associato a questo account Facebook con questo tipo, accedi
+                        listenerChangeActivity?.onFragmentChangeActivity(Home::class.java)
                 }
 
                 override fun onCancel() {
@@ -160,7 +178,7 @@ class ControllerAccesso : Controller(R.layout.accesso) {
         try {
             viewModel.validate()
 
-            val returned: Int? = eseguiChiamataREST<Int>(
+            val returned: Int? = eseguiChiamataREST(
                 "accedi",
                 viewModel.email.value,
                 viewModel.password.value,

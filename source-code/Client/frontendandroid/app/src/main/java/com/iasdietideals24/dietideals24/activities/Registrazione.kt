@@ -8,6 +8,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.facebook.AccessToken
+import com.facebook.login.LoginManager
 import com.google.android.material.textfield.TextInputEditText
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
@@ -30,6 +32,15 @@ class Registrazione : AppCompatActivity(R.layout.activity_registrazione), OnFrag
         }
 
         viewModel = ViewModelProvider(this).get(ModelRegistrazione::class)
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        val accessToken: AccessToken? = AccessToken.getCurrentAccessToken()
+        if (accessToken != null && !accessToken.isExpired) {
+            LoginManager.getInstance().logOut()
+        }
     }
 
     override fun <Activity : AppCompatActivity> onFragmentChangeActivity(activity: Class<Activity>) {

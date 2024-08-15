@@ -3,9 +3,11 @@ package com.iasdietideals24.dietideals24.model
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.iasdietideals24.dietideals24.utilities.APIController
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
+import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.APIMode
+import com.iasdietideals24.dietideals24.utilities.classes.AccountInfo
+import com.iasdietideals24.dietideals24.utilities.classes.AccountProfileInfo
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
@@ -17,6 +19,13 @@ import retrofit2.Response
 import java.sql.Date
 
 class ModelRegistrazione : ViewModel() {
+
+    private val _facebookAccountID: MutableLiveData<String> by lazy {
+        MutableLiveData<String>()
+    }
+
+    val facebookAccountID: MutableLiveData<String>
+        get() = _facebookAccountID
 
     private val _email: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
@@ -133,14 +142,15 @@ class ModelRegistrazione : ViewModel() {
         get() = _linkX
 
     fun clear() {
+        _facebookAccountID.value = ""
         _email.value = ""
         _password.value = ""
         _tipoAccount.value = ""
         _nomeUtente.value = ""
         _nome.value = ""
         _cognome.value = ""
-        _dataNascita.value = null
-        _immagineProfilo.value = null
+        _dataNascita.value = Date(0)
+        _immagineProfilo.value = Uri.EMPTY
         _biografia.value = ""
         _areaGeografica.value = ""
         _genere.value = ""
@@ -149,6 +159,39 @@ class ModelRegistrazione : ViewModel() {
         _linkFacebook.value = ""
         _linkGitHub.value = ""
         _linkX.value = ""
+    }
+
+    fun toAccountInfo(): AccountInfo {
+        return AccountInfo(
+            _facebookAccountID.value,
+            _email.value,
+            _password.value,
+            _tipoAccount.value
+        )
+    }
+
+    fun toAccountProfileInfo(): AccountProfileInfo {
+        return AccountProfileInfo(
+            AccountInfo(
+                _facebookAccountID.value,
+                _email.value,
+                _password.value,
+                _tipoAccount.value
+            ),
+            _nomeUtente.value,
+            _nome.value,
+            _cognome.value,
+            _dataNascita.value,
+            _immagineProfilo.value,
+            _biografia.value,
+            _areaGeografica.value,
+            _genere.value,
+            _linkPersonale.value,
+            _linkInstagram.value,
+            _linkFacebook.value,
+            _linkGitHub.value,
+            _linkX.value
+        )
     }
 
     @Validation
@@ -204,7 +247,11 @@ class ModelRegistrazione : ViewModel() {
         var returned: Boolean? = null
 
         val call =
-            APIController.instance.esisteEmail(APIMode.DEBUG.ordinal, email.value!!, tipoAccount.value!!)
+            APIController.instance.esisteEmail(
+                APIMode.DEBUG.ordinal,
+                email.value!!,
+                tipoAccount.value!!
+            )
 
         call.enqueue(object : Callback<Boolean> {
             override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {

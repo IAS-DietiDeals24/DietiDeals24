@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.navigation.ui.ktx)
     implementation(libs.datastore.preferences)
     implementation(libs.lifecycle.common.jvm)
+    implementation(libs.commons.lang)
 
     testImplementation(libs.junit.jupiter.api)
 

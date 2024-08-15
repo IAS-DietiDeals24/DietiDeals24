@@ -14,6 +14,7 @@ facebook-login = "17.0.1"
 coil = "2.7.0"
 datastore-preferences = "1.1.1"
 navigation-safe-args-gradle-plugin = "2.7.7"
+commons-lang = "3.16.0"
 
 # Dipendenze livello progetto
 gradle = "8.5.2"
@@ -45,6 +46,7 @@ facebook-login = { group = "com.facebook.android", name = "facebook-login", vers
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore-preferences" }
 navigation-safe-args-gradle-plugin = { group = "androidx.navigation", name = "navigation-safe-args-gradle-plugin", version.ref = "navigation-safe-args-gradle-plugin" }
+commons-lang = { group = "org.apache.commons", name = "commons-lang3", version.ref = "commons-lang" }
 
 # Dipendenze livello progetto
 gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle" }

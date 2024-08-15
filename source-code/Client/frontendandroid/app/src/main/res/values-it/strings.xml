@@ -54,7 +54,9 @@
     <string name="associaProfilo_messaggioCorpo">Profilo associato!</string>
     <string name="associaProfilo_messaggioCorpo2">Sembra che questa e-mail sia già stata associata ad un account esistente di un altro tipo!\nLe informazioni del profilo di tale account sono state associate anche al nuovo.</string>
     <string name="associaProfilo_pulsanteFine">Fine</string>
-    <string name="accesso_loginSocialOK">Accesso completato.</string>
+    <string name="accesso_loginSocialOK">Collegamento a Facebook riuscito. Attendi.</string>
     <string name="apiError">Errore di comunicazione con il server.</string>
+    <string name="accesso_noAccountFacebookCollegato">Il tuo account Facebook non è collegato ad alcun account DietiDeals24 di questo tipo. Per favore, registrati.</string>
+    <string name="registrazione_accountFacebookGiàCollegato">Il tuo account Facebook è già collegato ad un account DietiDeals24 di questo tipo. Per favore, accedi.</string>
 
 </resources>

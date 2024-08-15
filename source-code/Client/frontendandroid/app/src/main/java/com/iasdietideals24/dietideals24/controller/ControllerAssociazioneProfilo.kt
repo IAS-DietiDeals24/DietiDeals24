@@ -1,14 +1,19 @@
 package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.Home
+import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
 
 class ControllerAssociazioneProfilo : Controller(R.layout.associaprofilo) {
+
+    private lateinit var viewModel: ModelRegistrazione
 
     private lateinit var pulsanteFine: MaterialButton
 
@@ -38,8 +43,26 @@ class ControllerAssociazioneProfilo : Controller(R.layout.associaprofilo) {
         pulsanteFine.setOnClickListener { clickFine() }
     }
 
+    @UIBuilder
+    override fun elaborazioneAggiuntiva() {
+        viewModel = ViewModelProvider(fragmentActivity).get(ModelRegistrazione::class)
+
+    }
+
     @EventHandler
     private fun clickFine() {
-        listener?.onFragmentChangeActivity(Home::class.java)
+        val returned: Boolean? =
+            eseguiChiamataREST("associazioneProfilo", viewModel.toAccountInfo())
+
+        if (returned != true) {
+            pulsanteFine.isEnabled = false
+
+            Toast.makeText(
+                fragmentContext,
+                R.string.apiError,
+                Toast.LENGTH_SHORT
+            ).show()
+        } else
+            listener?.onFragmentChangeActivity(Home::class.java)
     }
 }

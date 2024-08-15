@@ -79,7 +79,7 @@ class ControllerCreazioneProfiloFase2 : Controller(R.layout.creazioneprofilofase
             }
 
         selectPhoto = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            caricaImmagine(uri)
+            viewModel.immagineProfilo.value = uri
         }
     }
 
@@ -115,28 +115,22 @@ class ControllerCreazioneProfiloFase2 : Controller(R.layout.creazioneprofilofase
         }
     }
 
-    private fun caricaImmagine(uri: Uri?) {
-        when {
-            uri == null -> {
-                campoImmagine.scaleType = ImageView.ScaleType.CENTER_INSIDE
-                campoImmagine.setImageResource(R.drawable.icona_fotocamera)
-                viewModel.immagineProfilo.value = Uri.EMPTY
-            }
-
-            uri != null -> {
-                campoImmagine.load(uri) {
-                    crossfade(true)
-                }
-                viewModel.immagineProfilo.value = uri
-                campoImmagine.scaleType = ImageView.ScaleType.CENTER_CROP
-            }
-        }
-    }
-
     @UIBuilder
     override fun impostaOsservatori() {
         val immagineObserver = Observer<Uri> { newUri: Uri? ->
-            caricaImmagine(newUri)
+            when {
+                newUri == null || newUri.toString() == "" -> {
+                    campoImmagine.scaleType = ImageView.ScaleType.CENTER_INSIDE
+                    campoImmagine.setImageResource(R.drawable.icona_fotocamera)
+                }
+
+                newUri != null -> {
+                    campoImmagine.load(newUri) {
+                        crossfade(true)
+                    }
+                    campoImmagine.scaleType = ImageView.ScaleType.CENTER_CROP
+                }
+            }
         }
         viewModel.immagineProfilo.observe(viewLifecycleOwner, immagineObserver)
 

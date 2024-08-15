@@ -14,6 +14,8 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.facebook.AccessToken
+import com.facebook.login.LoginManager
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -133,6 +135,11 @@ class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase
 
     @EventHandler
     private fun clickIndietro() {
+        val accessToken: AccessToken? = AccessToken.getCurrentAccessToken()
+        if (accessToken != null && !accessToken.isExpired) {
+            LoginManager.getInstance().logOut()
+        }
+
         listener?.onFragmentBackButton()
     }
 

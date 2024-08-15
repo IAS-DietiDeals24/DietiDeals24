@@ -8,13 +8,23 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
+import com.facebook.AccessToken
+import com.facebook.login.LoginManager
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
+
 
 class ScelteIniziali : AppCompatActivity(R.layout.activity_scelte_iniziali),
     OnFragmentChangeActivity {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val accessToken: AccessToken? = AccessToken.getCurrentAccessToken()
+        if (accessToken != null && !accessToken.isExpired) {
+            startActivity(Intent(baseContext, Home::class.java))
+        } else {
+            LoginManager.getInstance().logOut()
+        }
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.scelteIniziali)) { v, insets ->
