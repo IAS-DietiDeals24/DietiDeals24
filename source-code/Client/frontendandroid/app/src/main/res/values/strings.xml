@@ -67,5 +67,12 @@
     <string name="accesso_noAccountFacebookCollegato">Your Facebook account is not linked to any DietiDeals24 account of this type. Please, signup.</string>
     <string name="registrazione_accountFacebookGiàCollegato">Your Facebook account is already linked to a DietiDeals24 account of this type. Please, signin.</string>
     <string name="accesso_loginSocialOK">Successful linking to Facebook account. Please wait.</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_nuovo">New auction</string>
+    <string name="nav_notifiche">Notifications</string>
+    <string name="nav_profilo">Profile</string>
+    <string name="home_cerca">Search…</string>
+    <string name="home_filtra">Filter by category</string>
+    <string name="home_vuota">There are no active auctions.</string>
 
 </resources>

@@ -58,5 +58,12 @@
     <string name="apiError">Errore di comunicazione con il server.</string>
     <string name="accesso_noAccountFacebookCollegato">Il tuo account Facebook non è collegato ad alcun account DietiDeals24 di questo tipo. Per favore, registrati.</string>
     <string name="registrazione_accountFacebookGiàCollegato">Il tuo account Facebook è già collegato ad un account DietiDeals24 di questo tipo. Per favore, accedi.</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_nuovo">Crea asta</string>
+    <string name="nav_notifiche">Notifiche</string>
+    <string name="nav_profilo">Profilo</string>
+    <string name="home_cerca">Cerca…</string>
+    <string name="home_filtra">Filtra per categoria</string>
+    <string name="home_vuota">Non ci sono aste in corso.</string>
 
 </resources>

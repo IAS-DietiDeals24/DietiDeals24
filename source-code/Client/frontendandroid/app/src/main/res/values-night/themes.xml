@@ -1,10 +1,5 @@
 <resources>
 
-    <style name="Theme.DietiDeals24" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-    </style>
-
     <style name="BottoneArancioneGrande">
         <item name="android:layout_width">260.dp</item>
         <item name="android:layout_height">50.dp</item>
@@ -50,5 +45,12 @@
     <style name="ImageViewRotonda" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="BottomNavigationView">
+        <item name="colorOnSecondaryContainer">@color/arancione</item>
+        <item name="colorOnSurface">@color/arancione</item>
+        <item name="colorOnSurfaceVariant">@color/blu</item>
+        <item name="textAppearanceTitleSmall">@font/fira_sans_medium</item>
     </style>
 </resources>

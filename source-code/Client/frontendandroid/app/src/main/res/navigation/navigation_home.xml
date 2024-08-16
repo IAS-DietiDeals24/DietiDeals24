@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_home"
+    app:startDestination="@id/controllerHome">
+    <fragment
+        android:id="@+id/controllerHome"
+        android:name="com.iasdietideals24.dietideals24.controller.ControllerHome"
+        android:label="ControllerHome" />
+    <fragment
+        android:id="@+id/controllerCreaAsta"
+        android:name="com.iasdietideals24.dietideals24.controller.ControllerCreaAsta"
+        android:label="ControllerCreaAsta" />
+    <fragment
+        android:id="@+id/controllerNotifiche"
+        android:name="com.iasdietideals24.dietideals24.controller.ControllerNotifiche"
+        android:label="ControllerNotifiche" />
+    <fragment
+        android:id="@+id/controllerProfilo"
+        android:name="com.iasdietideals24.dietideals24.controller.ControllerProfilo"
+        android:label="ControllerProfilo" />
+</navigation>

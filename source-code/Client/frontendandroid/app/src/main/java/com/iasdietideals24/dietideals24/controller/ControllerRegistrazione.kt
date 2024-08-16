@@ -133,7 +133,7 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
 
     @UIBuilder
     override fun impostaEventiClick() {
-        campoPassword.setEndIconOnClickListener { clickInfoPassword() }
+        campoPassword.setStartIconOnClickListener { clickInfoPassword() }
         pulsanteIndietro.setOnClickListener { clickIndietro() }
         pulsanteAvanti.setOnClickListener { clickAvanti() }
 
@@ -167,7 +167,6 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
                         LoginManager.getInstance().logOut()
                     } else if (returned == 0) { // non esiste un account associato a questo account Facebook con questo tipo, registrati
                         queryFacebookGraph(result.accessToken)
-
 
                         try {
                             scegliAssociaCreaProfilo()

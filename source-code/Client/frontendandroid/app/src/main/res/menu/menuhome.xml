@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/controllerHome"
+        android:icon="@drawable/icona_home"
+        android:title="@string/nav_home" />
+    <item
+        android:id="@+id/controllerCreaAsta"
+        android:icon="@drawable/icona_nuovo"
+        android:title="@string/nav_nuovo" />
+    <item
+        android:id="@+id/controllerNotifiche"
+        android:icon="@drawable/icona_campana"
+        android:title="@string/nav_notifiche" />
+    <item
+        android:id="@+id/controllerProfilo"
+        android:icon="@drawable/icona_profilo"
+        android:title="@string/nav_profilo" />
+</menu>
