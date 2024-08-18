@@ -1,6 +1,466 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/crea_linearLayout1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/grigio"
+    android:gravity="center|top"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/crea_tipoAsta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
+        android:text="@string/crea_tipoAsta"
+        android:textColor="@color/blu"
+        android:textSize="25sp"
+        app:fontFamily="@font/fira_sans_bold" />
+
+    <ScrollView
+        android:id="@+id/crea_scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/crea_linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|top"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/crea_constraintLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/crea_etichettaDataScadenza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/crea_dataScadenza"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@+id/crea_campoDataScadenza"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/crea_campoDataScadenza"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+
+                    app:boxBackgroundColor="@color/bianco"
+                    app:boxCornerRadiusBottomEnd="30dp"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    app:boxCornerRadiusTopEnd="30dp"
+                    app:boxCornerRadiusTopStart="30dp"
+                    app:boxStrokeColor="@color/arancione"
+                    app:boxStrokeErrorColor="@color/rosso"
+                    app:boxStrokeWidth="1.5dp"
+                    app:cursorColor="@color/arancione"
+                    app:cursorErrorColor="@color/rosso"
+                    app:endIconDrawable="@drawable/icona_calendario_blu"
+                    app:endIconMode="custom"
+                    app:endIconTint="@null"
+                    app:errorIconTint="@color/rosso"
+                    app:errorTextColor="@color/arancione"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/crea_etichettaDataScadenza">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/crea_dataScadenza"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:enabled="false"
+                        android:hint="@string/crea_accessibilitàDataScadenza"
+                        android:inputType="date"
+                        android:textColor="@color/nero" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/crea_asteriscoDataScadenza"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/asterisco"
+                    android:textColor="@color/arancione"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toEndOf="@+id/crea_etichettaDataScadenza"
+                    app:layout_constraintTop_toTopOf="@+id/crea_etichettaDataScadenza" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/crea_constraintLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/crea_etichettaOra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/crea_ora"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@+id/crea_campoOra"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/crea_campoOra"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+
+                    app:boxBackgroundColor="@color/bianco"
+                    app:boxCornerRadiusBottomEnd="30dp"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    app:boxCornerRadiusTopEnd="30dp"
+                    app:boxCornerRadiusTopStart="30dp"
+                    app:boxStrokeColor="@color/arancione"
+                    app:boxStrokeErrorColor="@color/rosso"
+                    app:boxStrokeWidth="1.5dp"
+                    app:cursorColor="@color/arancione"
+                    app:cursorErrorColor="@color/rosso"
+                    app:endIconDrawable="@drawable/icona_ora"
+                    app:endIconMode="custom"
+                    app:endIconTint="@null"
+                    app:errorIconTint="@color/rosso"
+                    app:errorTextColor="@color/arancione"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/crea_etichettaOra">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/crea_ora"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:enabled="false"
+                        android:hint="@string/crea_accessibilitàOra"
+                        android:inputType="time"
+                        android:textColor="@color/nero" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/crea_asteriscoOra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/asterisco"
+                    android:textColor="@color/arancione"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toEndOf="@+id/crea_etichettaOra"
+                    app:layout_constraintTop_toTopOf="@+id/crea_etichettaOra" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/crea_constraintLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/crea_etichettaPrezzo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/crea_prezzo"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@+id/crea_campoPrezzo"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/crea_campoPrezzo"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+
+                    app:boxBackgroundColor="@color/bianco"
+                    app:boxCornerRadiusBottomEnd="30dp"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    app:boxCornerRadiusTopEnd="30dp"
+                    app:boxCornerRadiusTopStart="30dp"
+                    app:boxStrokeColor="@color/arancione"
+                    app:boxStrokeErrorColor="@color/rosso"
+                    app:boxStrokeWidth="1.5dp"
+                    app:cursorColor="@color/arancione"
+                    app:cursorErrorColor="@color/rosso"
+                    app:errorIconTint="@color/rosso"
+                    app:errorTextColor="@color/arancione"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/crea_etichettaPrezzo"
+                    app:prefixText="@string/valuta"
+                    app:prefixTextColor="@color/blu">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/crea_prezzo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:hint="@string/crea_accessibilitàPrezzo"
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/nero" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/crea_asteriscoPrezzo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/asterisco"
+                    android:textColor="@color/arancione"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toEndOf="@+id/crea_etichettaPrezzo"
+                    app:layout_constraintTop_toTopOf="@+id/crea_etichettaPrezzo" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/crea_constraintLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/crea_etichettaFoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/crea_foto"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@+id/crea_campoFoto"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/crea_campoFoto"
+                    android:layout_width="320dp"
+                    android:layout_height="255dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/bianco"
+                    android:padding="1dp"
+                    android:scaleType="centerInside"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/crea_etichettaFoto"
+                    app:shapeAppearanceOverlay="@style/ImageViewRettangolare"
+                    app:srcCompat="@drawable/icona_fotocamera"
+                    app:strokeColor="#939393"
+                    app:strokeWidth="2dp" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/crea_constraintLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/crea_etichettaNome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/crea_nome"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@+id/crea_campoNome"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/crea_campoNome"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+
+                    app:boxBackgroundColor="@color/bianco"
+                    app:boxCornerRadiusBottomEnd="30dp"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    app:boxCornerRadiusTopEnd="30dp"
+                    app:boxCornerRadiusTopStart="30dp"
+                    app:boxStrokeColor="@color/arancione"
+                    app:boxStrokeErrorColor="@color/rosso"
+                    app:boxStrokeWidth="1.5dp"
+                    app:cursorColor="@color/arancione"
+                    app:cursorErrorColor="@color/rosso"
+                    app:errorIconTint="@color/rosso"
+                    app:errorTextColor="@color/arancione"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/crea_etichettaNome">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/crea_nome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:hint="@string/crea_accessibilitàNome"
+                        android:inputType="text"
+                        android:textColor="@color/nero" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/crea_asteriscoNome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/asterisco"
+                    android:textColor="@color/arancione"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toEndOf="@+id/crea_etichettaNome"
+                    app:layout_constraintTop_toTopOf="@+id/crea_etichettaNome" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/crea_constraintLayout6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/crea_etichettaCategoria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/crea_categoria"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@+id/crea_campoCategoria"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/crea_campoCategoria"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+
+                    app:boxBackgroundColor="@color/bianco"
+                    app:boxCornerRadiusBottomEnd="30dp"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    app:boxCornerRadiusTopEnd="30dp"
+                    app:boxCornerRadiusTopStart="30dp"
+                    app:boxStrokeColor="@color/arancione"
+                    app:boxStrokeErrorColor="@color/rosso"
+                    app:boxStrokeWidth="1.5dp"
+                    app:cursorColor="@color/arancione"
+                    app:cursorErrorColor="@color/rosso"
+                    app:endIconDrawable="@drawable/icona_dropdown"
+                    app:endIconMode="dropdown_menu"
+                    app:endIconTint="@null"
+                    app:errorIconTint="@color/rosso"
+                    app:errorTextColor="@color/arancione"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/crea_etichettaCategoria">
+
+                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                        android:id="@+id/crea_categoria"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:enabled="false"
+                        android:hint="@string/crea_accessibilitàCategoria"
+                        android:paddingHorizontal="15dp"
+                        android:textColor="@color/nero" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/crea_asteriscoCategoria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/asterisco"
+                    android:textColor="@color/arancione"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toEndOf="@+id/crea_etichettaCategoria"
+                    app:layout_constraintTop_toTopOf="@+id/crea_etichettaCategoria" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/crea_constraintLayout7"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/crea_etichettaDescrizione"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/crea_descrizione"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="@+id/crea_campoDescrizione"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/crea_campoDescrizione"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+
+                    app:boxBackgroundColor="@color/bianco"
+                    app:boxCornerRadiusBottomEnd="30dp"
+                    app:boxCornerRadiusBottomStart="30dp"
+                    app:boxCornerRadiusTopEnd="30dp"
+                    app:boxCornerRadiusTopStart="30dp"
+                    app:boxStrokeColor="@color/arancione"
+                    app:boxStrokeErrorColor="@color/rosso"
+                    app:boxStrokeWidth="1.5dp"
+                    app:cursorColor="@color/arancione"
+                    app:cursorErrorColor="@color/rosso"
+                    app:errorIconTint="@color/rosso"
+                    app:errorTextColor="@color/arancione"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/crea_etichettaDescrizione">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/crea_descrizione"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:hint="@string/crea_accessibilitàDescrizione"
+                        android:inputType="text"
+                        android:textColor="@color/nero" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/crea_asteriscoDescrizione"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/asterisco"
+                    android:textColor="@color/arancione"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toEndOf="@+id/crea_etichettaDescrizione"
+                    app:layout_constraintTop_toTopOf="@+id/crea_etichettaDescrizione" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/accesso_pulsanteCrea"
+                style="@style/BottoneArancionePiccolo"
+                android:text="@string/crea_pulsanteCrea" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

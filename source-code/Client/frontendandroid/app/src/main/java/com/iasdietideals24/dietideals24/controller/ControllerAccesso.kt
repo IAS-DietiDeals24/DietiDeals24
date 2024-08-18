@@ -72,7 +72,7 @@ class ControllerAccesso : Controller(R.layout.accesso) {
         pulsanteIndietro = fragmentView.findViewById(R.id.accesso_pulsanteIndietro)
         pulsanteAccedi = fragmentView.findViewById(R.id.accesso_pulsanteAccedi)
         pulsanteFacebook = fragmentView.findViewById(R.id.accesso_pulsanteFacebook)
-        layout = fragmentView.findViewById(R.id.accesso_linearLayout)
+        layout = fragmentView.findViewById(R.id.accesso_linearLayout1)
     }
 
     @UIBuilder
@@ -81,7 +81,7 @@ class ControllerAccesso : Controller(R.layout.accesso) {
             "compratore" -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_compratore)
                 tipoAccount.text = getString(
-                    R.string.selezioneAccessoRegistrazione_tipoAccount,
+                    R.string.placeholder,
                     stringaTipoAccount
                 )
             }
@@ -89,7 +89,7 @@ class ControllerAccesso : Controller(R.layout.accesso) {
             "venditore" -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_venditore)
                 tipoAccount.text = getString(
-                    R.string.selezioneAccessoRegistrazione_tipoAccount,
+                    R.string.placeholder,
                     stringaTipoAccount
                 )
             }

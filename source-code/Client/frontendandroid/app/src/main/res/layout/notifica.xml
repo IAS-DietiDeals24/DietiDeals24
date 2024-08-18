@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/notifica_materialCardView"
+    android:layout_width="360dp"
+    android:layout_height="125dp"
+    app:cardBackgroundColor="@color/bianco"
+    app:cardUseCompatPadding="true"
+    app:strokeColor="#939393">
+
+    <LinearLayout
+        android:id="@+id/notifica_linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/notifica_immagine"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/grigio"
+            android:padding="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icona_profilo"
+            app:shapeAppearanceOverlay="@style/ImageViewRotonda"
+            app:strokeColor="#939393"
+            app:strokeWidth="2dp" />
+
+        <LinearLayout
+            android:id="@+id/notifica_linearLayout2"
+            android:layout_width="235dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/notifica_linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/notifica_nome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/placeholder"
+                    android:textColor="@color/blu" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/notifica_tempo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:fontFamily="@font/fira_sans"
+                    android:text="@string/notifica_tempoFa"
+                    android:textColor="@color/blu" />
+
+            </LinearLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/notifica_testo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:fontFamily="@font/fira_sans_light"
+                android:text="@string/placeholder"
+                android:textColor="@color/blu" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

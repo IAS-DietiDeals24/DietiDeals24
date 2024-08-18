@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/selezioneAccessoRegistrazione_constraintLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grigio">
 
     <ScrollView
+        android:id="@+id/selezioneAccessoRegistrazione_scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="24dp"
@@ -14,11 +16,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/selezioneAccessoRegistrazione_linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/selezioneAccessoRegistrazione_constraintLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -37,6 +41,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/selezioneAccessoRegistrazione_constraintLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -52,25 +57,38 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
+                android:id="@+id/selezioneAccessoRegistrazione_linearLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/selezioneAccessoRegistrazione_divider1"
+                    android:layout_width="128dp"
+                    android:layout_height="1dp"
+                    app:dividerColor="@color/blu" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/selezioneAccessoRegistrazione_separatore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans"
+                    android:paddingHorizontal="10dp"
                     android:text="@string/selezioneAccessoRegistrazione_separatore"
                     android:textColor="@color/blu"
-                    android:textSize="30sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:textSize="30sp" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/selezioneAccessoRegistrazione_divider2"
+                    android:layout_width="128dp"
+                    android:layout_height="1dp"
+                    app:dividerColor="@color/blu" />
+            </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/selezioneAccessoRegistrazione_constraintLayout5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 

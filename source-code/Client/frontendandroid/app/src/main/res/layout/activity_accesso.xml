@@ -9,7 +9,7 @@
     tools:context=".activities.Accesso">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/accesso_fragmentContainerView"
+        android:id="@+id/activity_accesso_fragmentContainerView"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"

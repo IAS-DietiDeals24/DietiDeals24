@@ -13,10 +13,12 @@ import com.facebook.AccessToken
 import com.facebook.login.LoginManager
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentHideBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentShowBackButton
 
 
 class ScelteIniziali : AppCompatActivity(R.layout.activity_scelte_iniziali),
-    OnFragmentChangeActivity {
+    OnFragmentChangeActivity, OnFragmentHideBackButton, OnFragmentShowBackButton {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val accessToken: AccessToken? = AccessToken.getCurrentAccessToken()
@@ -39,9 +41,9 @@ class ScelteIniziali : AppCompatActivity(R.layout.activity_scelte_iniziali),
             insets
         }
 
-        findViewById<AppCompatImageButton>(R.id.scelteIniziali_pulsanteIndietro)?.setOnClickListener {
+        findViewById<AppCompatImageButton>(R.id.activity_scelteIniziali_pulsanteIndietro)?.setOnClickListener {
             if (supportFragmentManager.fragments[0].childFragmentManager.backStackEntryCount > 0)
-                findNavController(R.id.scelteIniziali_fragmentContainerView).popBackStack()
+                findNavController(R.id.activity_scelteIniziali_fragmentContainerView).popBackStack()
             else
                 finishAndRemoveTask()
         }
@@ -49,5 +51,15 @@ class ScelteIniziali : AppCompatActivity(R.layout.activity_scelte_iniziali),
 
     override fun <Activity : AppCompatActivity> onFragmentChangeActivity(activity: Class<Activity>) {
         startActivity(Intent(baseContext, activity))
+    }
+
+    override fun onFragmentHideBackButton() {
+        findViewById<AppCompatImageButton>(R.id.activity_scelteIniziali_pulsanteIndietro)?.visibility =
+            android.view.View.GONE
+    }
+
+    override fun onFragmentShowBackButton() {
+        findViewById<AppCompatImageButton>(R.id.activity_scelteIniziali_pulsanteIndietro)?.visibility =
+            android.view.View.VISIBLE
     }
 }

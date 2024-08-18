@@ -11,6 +11,8 @@ import com.iasdietideals24.dietideals24.activities.Home
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentHideBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentShowBackButton
 import kotlinx.coroutines.runBlocking
 
 class ControllerSelezioneTipoAccount : Controller(R.layout.selezionetipoaccount) {
@@ -19,23 +21,35 @@ class ControllerSelezioneTipoAccount : Controller(R.layout.selezionetipoaccount)
     private lateinit var pulsanteVenditore: MaterialButton
     private lateinit var pulsanteOspite: MaterialButton
 
-    private var listener: OnFragmentChangeActivity? = null
+    private var changeActivityListener: OnFragmentChangeActivity? = null
+    private var hideBackButtonListener: OnFragmentHideBackButton? = null
+    private var showBackButtonListener: OnFragmentShowBackButton? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         if (requireContext() is OnFragmentChangeActivity) {
-            listener = requireContext() as OnFragmentChangeActivity
+            changeActivityListener = requireContext() as OnFragmentChangeActivity
+        }
+        if (requireContext() is OnFragmentHideBackButton) {
+            hideBackButtonListener = requireContext() as OnFragmentHideBackButton
+        }
+        if (requireContext() is OnFragmentShowBackButton) {
+            showBackButtonListener = requireContext() as OnFragmentShowBackButton
         }
     }
 
     override fun onDetach() {
         super.onDetach()
 
-        listener = null
+        changeActivityListener = null
+        hideBackButtonListener = null
     }
 
+    @UIBuilder
     override fun elaborazioneAggiuntiva() {
+        hideBackButtonListener?.onFragmentHideBackButton()
+
         // Controlla l'accesso automatico con Facebook
         getInstance()
             .retrieveLoginStatus(
@@ -83,18 +97,20 @@ class ControllerSelezioneTipoAccount : Controller(R.layout.selezionetipoaccount)
 
     @EventHandler
     private fun clickCompratore() {
+        showBackButtonListener?.onFragmentShowBackButton()
         runBlocking { salvaPreferenzaStringa("tipoAccount", "compratore") }
         navController.navigate(R.id.action_controllerSelezioneTipoAccount_to_controllerSelezioneAccessoRegistrazione)
     }
 
     @EventHandler
     private fun clickVenditore() {
+        showBackButtonListener?.onFragmentShowBackButton()
         runBlocking { salvaPreferenzaStringa("tipoAccount", "venditore") }
         navController.navigate(R.id.action_controllerSelezioneTipoAccount_to_controllerSelezioneAccessoRegistrazione)
     }
 
     @EventHandler
     private fun clickOspite() {
-        listener?.onFragmentChangeActivity(Home::class.java)
+        changeActivityListener?.onFragmentChangeActivity(Home::class.java)
     }
 }

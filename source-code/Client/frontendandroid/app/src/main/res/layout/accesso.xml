@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/accesso_constraintLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/arancione">
 
     <ImageButton
         android:id="@+id/accesso_pulsanteIndietro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+
+        android:background="@drawable/cerchio"
+        android:backgroundTint="@color/blu"
         android:contentDescription="@string/accessibilitàIndietro"
-        android:src="@drawable/indietro_blu"
+        android:src="@drawable/icona_indietro"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
@@ -74,7 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:fontFamily="@font/fira_sans_light"
-        android:text="@string/selezioneAccessoRegistrazione_tipoAccount"
+        android:text="@string/placeholder"
         android:textColor="@color/grigio"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -95,6 +98,7 @@
         app:layout_constraintTop_toBottomOf="@+id/accesso_tipoAccount" />
 
     <ScrollView
+        android:id="@+id/accesso_scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
@@ -104,13 +108,14 @@
         app:layout_constraintTop_toBottomOf="@+id/accesso_messaggioCorpo">
 
         <LinearLayout
-            android:id="@+id/accesso_linearLayout"
+            android:id="@+id/accesso_linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/accesso_constraintLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -155,7 +160,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
-                        android:importantForAccessibility="no"
+                        android:hint="@string/accessoRegistrazione_accessibilitàEmail"
                         android:inputType="text|textEmailAddress"
                         android:textColor="@color/nero" />
 
@@ -164,6 +169,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/accesso_constraintLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -208,7 +214,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
-                        android:importantForAccessibility="no"
+                        android:hint="@string/accessoRegistrazione_accessibilitàPassword"
                         android:inputType="text|textPassword"
                         android:textColor="@color/nero" />
 
@@ -217,15 +223,17 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
+                android:id="@+id/accesso_linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/accesso_divider1"
                     android:layout_width="128dp"
                     android:layout_height="1dp"
-                    app:dividerColor="@color/bianco" />
+                    app:dividerColor="@color/grigio" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/accesso_separatore"
@@ -238,12 +246,14 @@
                     android:textSize="30sp" />
 
                 <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/accesso_divider2"
                     android:layout_width="128dp"
                     android:layout_height="1dp"
-                    app:dividerColor="@color/bianco" />
+                    app:dividerColor="@color/grigio" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/accesso_constraintLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -254,8 +264,8 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="24dp"
                     android:contentDescription="@string/selezioneAccessoRegistrazione_accessibilitàPulsanteFacebook"
-                    android:scaleX="1.5"
-                    android:scaleY="1.5"
+                    android:scaleX="1.7"
+                    android:scaleY="1.7"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -264,6 +274,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/accesso_constraintLayout5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 

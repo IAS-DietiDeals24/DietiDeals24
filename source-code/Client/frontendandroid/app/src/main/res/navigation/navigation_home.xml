@@ -1,22 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_home"
     app:startDestination="@id/controllerHome">
     <fragment
         android:id="@+id/controllerHome"
         android:name="com.iasdietideals24.dietideals24.controller.ControllerHome"
-        android:label="ControllerHome" />
+        android:label="ControllerHome"
+        tools:layout="@layout/home">
+        <action
+            android:id="@+id/action_controllerHome_to_controllerDettagliAsta"
+            app:destination="@id/controllerDettagliAsta" />
+        <action
+            android:id="@+id/action_controllerHome_to_controllerDettagliProfilo"
+            app:destination="@id/controllerDettagliProfilo" />
+    </fragment>
     <fragment
         android:id="@+id/controllerCreaAsta"
         android:name="com.iasdietideals24.dietideals24.controller.ControllerCreaAsta"
-        android:label="ControllerCreaAsta" />
+        android:label="ControllerCreaAsta"
+        tools:layout="@layout/creaasta" />
     <fragment
         android:id="@+id/controllerNotifiche"
         android:name="com.iasdietideals24.dietideals24.controller.ControllerNotifiche"
-        android:label="ControllerNotifiche" />
+        android:label="ControllerNotifiche"
+        tools:layout="@layout/notifiche">
+        <action
+            android:id="@+id/action_controllerNotifiche_to_controllerDettagliAsta"
+            app:destination="@id/controllerDettagliAsta" />
+        <action
+            android:id="@+id/action_controllerNotifiche_to_controllerDettagliProfilo"
+            app:destination="@id/controllerDettagliProfilo" />
+    </fragment>
     <fragment
         android:id="@+id/controllerProfilo"
         android:name="com.iasdietideals24.dietideals24.controller.ControllerProfilo"
-        android:label="ControllerProfilo" />
+        android:label="ControllerProfilo"
+        tools:layout="@layout/profilo">
+        <action
+            android:id="@+id/action_controllerProfilo_to_controllerDettagliProfilo"
+            app:destination="@id/controllerDettagliProfilo" />
+    </fragment>
+    <fragment
+        android:id="@+id/controllerDettagliAsta"
+        android:name="com.iasdietideals24.dietideals24.controller.ControllerDettagliAsta"
+        android:label="ControllerDettagliAsta"
+        tools:layout="@layout/dettagliasta" />
+    <fragment
+        android:id="@+id/controllerDettagliProfilo"
+        android:name="com.iasdietideals24.dietideals24.controller.ControllerDettagliProfilo"
+        android:label="ControllerDettagliProfilo"
+        tools:layout="@layout/dettagliprofilo" />
 </navigation>

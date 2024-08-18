@@ -2,5 +2,4 @@ package com.iasdietideals24.dietideals24.controller
 
 import com.iasdietideals24.dietideals24.R
 
-class ControllerHome : Controller(R.layout.home) {
-}
+class ControllerHome : Controller(R.layout.home)

@@ -21,12 +21,10 @@
     <string name="tipoAccount_venditore">seller</string>
     <string name="accessibilitàIndietro">Back</string>
     <string name="selezioneAccessoRegistrazione_accessibilitàLogo">DietiDeals24 logo</string>
-    <string name="selezioneAccessoRegistrazione_tipoAccount">%1$s</string>
+    <string name="placeholder" translatable="false">%1$s</string>
     <string name="accesso_messaggioCorpo">Log in</string>
-    <string name="selezioneAccessoRegistrazione_suggerimentoEmail">example@example.example</string>
     <string name="selezioneAccessoRegistrazione_etichettaEmail">Email</string>
     <string name="selezioneAccessoRegistrazione_etichettaPassword">Password</string>
-    <string name="selezioneAccessoRegistrazione_suggerimentoPassword">Your password</string>
     <string name="accesso_pulsanteAccedi">Log in</string>
     <string name="selezioneAccessoRegistrazione_accessibilitàPulsanteFacebook">Facebook access</string>
     <string name="accesso_erroreCredenzialiNonCorrette">Either your credentials are wrong or no account with these credentials exists.</string>
@@ -39,9 +37,8 @@
     <string name="registrazione_errorePasswordNonSicura">The provided password does not follow the minimum security criteria.</string>
     <string name="registrazione_erroreCampiObbligatoriNonCompilati">You did not fill all the mandatory fields.</string>
     <string name="registrazione_erroreRegistrazioneSocial">An error occurred while trying to sign up with the social account.</string>
-    <string name="infoPassword_messaggioCorpo">The password must:\n—Contain at least 8 characters;\n—Contain at least an uppercase character;\n—Contain at least a number;\n—Contain at least a special character included among:\n<b>!@#$%^{}&amp;*</b></string>
+    <string name="infoPassword_messaggioCorpo">The password must:\n— Contain at least 8 characters;\n— Contain at least an uppercase character;\n— Contain at least a number;\n— Contain at least a special character included among:\n<b>!@#$%^{}&amp;*</b></string>
     <string name="infoPassword_titolo">Requirements</string>
-    <string name="infoPassword_accessibilitàChiudi">Close window</string>
     <string name="creazioneProfiloFase1e2_messaggioCorpo">Tell us a bit about you!</string>
     <string name="creazioneProfiloFase1_etichettaNomeUtente">Username</string>
     <string name="creazioneProfiloFase1_etichettaNome">Name</string>
@@ -74,5 +71,66 @@
     <string name="home_cerca">Search…</string>
     <string name="home_filtra">Filter by category</string>
     <string name="home_vuota">There are no active auctions.</string>
-
+    <string name="profilo_saluto">Hi,</string>
+    <string name="profilo_tipoAccount">%1$s account</string>
+    <string name="profilo_pulsante1">User info</string>
+    <string name="profilo_pulsante2">My created auctions</string>
+    <string name="profilo_pulsante3">Participation history</string>
+    <string name="profilo_pulsante4">Help</string>
+    <string name="profilo_pulsante5">Logout</string>
+    <string name="notifiche_titolo">Notifications</string>
+    <string name="crea_tipoAsta">%1$s auction</string>
+    <string name="crea_dataScadenza">End date</string>
+    <string name="crea_ora">End time</string>
+    <string name="crea_prezzo">%1$s price</string>
+    <string name="crea_foto">Add product image</string>
+    <string name="crea_nome">Product name</string>
+    <string name="crea_descrizione">Product description</string>
+    <string name="crea_categoria">Category</string>
+    <string name="crea_pulsanteCrea">Create</string>
+    <string name="accessoRegistrazione_accessibilitàEmail" translatable="false"></string>
+    <string name="accessoRegistrazione_accessibilitàPassword" translatable="false"></string>
+    <string name="crea_accessibilitàPrezzo" translatable="false"></string>
+    <string name="crea_accessibilitàDataScadenza" translatable="false"></string>
+    <string name="crea_accessibilitàOra" translatable="false"></string>
+    <string name="crea_accessibilitàNome" translatable="false"></string>
+    <string name="crea_accessibilitàDescrizione" translatable="false"></string>
+    <string name="crea_accessibilitàCategoria" translatable="false"></string>
+    <string name="creazioneProfiloFase1_accessibilitàNomeUtente" translatable="false"></string>
+    <string name="creazioneProfiloFase1_accessibilitàNome" translatable="false"></string>
+    <string name="creazioneProfiloFase1_accessibilitàCognome" translatable="false"></string>
+    <string name="creazioneProfiloFase1_accessibilitàDataNascita" translatable="false"></string>
+    <string name="creazioneProfiloFase2_accessibilitàBiografia" translatable="false"></string>
+    <string name="creazioneProfiloFase2_accessibilitàAreaGeografica" translatable="false"></string>
+    <string name="creazioneProfiloFase2_accessibilitàGenere" translatable="false"></string>
+    <string name="creazioneProfiloFase3_accessibilitàLinkPersonale" translatable="false"></string>
+    <string name="creazioneProfiloFase3_accessibilitàLinkInstagram" translatable="false"></string>
+    <string name="creazioneProfiloFase3_accessibilitàLinkFacebook" translatable="false"></string>
+    <string name="creazioneProfiloFase3_accessibilitàLinkGitHub" translatable="false"></string>
+    <string name="creazioneProfiloFase3_accessibilitàLinkX" translatable="false"></string>
+    <string name="dettagliAsta_titolo">Auction details</string>
+    <string name="dettagliAsta_accessibilitàAiuto">Auction help</string>
+    <string name="dettagliAsta_scadenza">Expires</string>
+    <string name="notifica_tempoFa">%1$s ago</string>
+    <string name="asta_scadenza">Expires</string>
+    <string name="dettagliAsta_creataDa">Created by</string>
+    <string name="dettagliAsta_titoloDescrizione">Product description</string>
+    <string name="dettagliAsta_testoOfferta">The highest offering is:</string>
+    <string name="dettagliAsta_pulsanteOfferta">Make offering</string>
+    <string name="dettagliProfilo_tipoAccount">%1$s profile</string>
+    <string name="dettagliProfilo_etichettaNome">Name</string>
+    <string name="dettagliProfilo_etichettaCognome">Surname</string>
+    <string name="dettagliProfilo_etichettaEmail">Email</string>
+    <string name="dettagliProfilo_etichettaDataNascita">Birthdate</string>
+    <string name="dettagliProfilo_etichettaGenere">Gender</string>
+    <string name="dettagliProfilo_etichettaAreaGeografica">Geographic area</string>
+    <string name="dettagliProfilo_etichettaBiografia">Biography</string>
+    <string name="dettagliProfilo_etichettaLinkPersonale">Personal link</string>
+    <string name="dettagliProfilo_etichettaSocial">Social links</string>
+    <string name="dettagliProfilo_accessibiltàModifica">Edit profile</string>
+    <string name="valuta">$</string>
+    <string name="modificaProfilo_accessibilitàConferma">Confirm</string>
+    <string name="modificaProfilo_titolo">Edit profile</string>
+    <string name="creazioneProfiloFase1_titoloPopupData">Select your birthdate</string>
+    <string name="ok" translatable="false">OK</string>
 </resources>

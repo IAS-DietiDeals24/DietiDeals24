@@ -9,7 +9,7 @@
     tools:context=".activities.ScelteIniziali">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/scelteIniziali_logo"
+        android:id="@+id/activity_scelteIniziali_logo"
         android:layout_width="205dp"
         android:layout_height="203dp"
         android:adjustViewBounds="true"
@@ -23,7 +23,7 @@
         app:srcCompat="@drawable/logo" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/scelteIniziali_motto1"
+        android:id="@+id/activity_scelteIniziali_motto1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="203dp"
@@ -31,11 +31,11 @@
         android:text="@string/scelteIniziali_motto1"
         android:textColor="@color/blu"
         android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="@+id/scelteIniziali_logo"
-        app:layout_constraintStart_toStartOf="@+id/scelteIniziali_logo" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_scelteIniziali_logo"
+        app:layout_constraintStart_toStartOf="@+id/activity_scelteIniziali_logo" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/scelteIniziali_motto2"
+        android:id="@+id/activity_scelteIniziali_motto2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -43,11 +43,11 @@
         android:text="@string/scelteIniziali_motto2"
         android:textColor="@color/arancione"
         android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="@+id/scelteIniziali_motto1"
-        app:layout_constraintStart_toEndOf="@+id/scelteIniziali_motto1" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_scelteIniziali_motto1"
+        app:layout_constraintStart_toEndOf="@+id/activity_scelteIniziali_motto1" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/scelteIniziali_motto3"
+        android:id="@+id/activity_scelteIniziali_motto3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -55,11 +55,11 @@
         android:text="@string/scelteIniziali_motto3"
         android:textColor="@color/blu"
         android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="@+id/scelteIniziali_motto2"
-        app:layout_constraintStart_toEndOf="@+id/scelteIniziali_motto2" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_scelteIniziali_motto2"
+        app:layout_constraintStart_toEndOf="@+id/activity_scelteIniziali_motto2" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/scelteIniziali_nomeApp1"
+        android:id="@+id/activity_scelteIniziali_nomeApp1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -67,36 +67,38 @@
         android:text="@string/scelteIniziali_nomeApp1"
         android:textColor="@color/blu"
         android:textSize="25sp"
-        app:layout_constraintStart_toStartOf="@+id/scelteIniziali_logo"
-        app:layout_constraintTop_toBottomOf="@+id/scelteIniziali_logo" />
+        app:layout_constraintStart_toStartOf="@+id/activity_scelteIniziali_logo"
+        app:layout_constraintTop_toBottomOf="@+id/activity_scelteIniziali_logo" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/scelteIniziali_nomeApp2"
+        android:id="@+id/activity_scelteIniziali_nomeApp2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/fira_sans_medium"
         android:text="@string/scelteIniziali_nomeApp2"
         android:textColor="@color/arancione"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/scelteIniziali_nomeApp1"
-        app:layout_constraintStart_toEndOf="@+id/scelteIniziali_nomeApp1" />
+        app:layout_constraintBottom_toBottomOf="@+id/activity_scelteIniziali_nomeApp1"
+        app:layout_constraintStart_toEndOf="@+id/activity_scelteIniziali_nomeApp1" />
 
     <ImageButton
-        android:id="@+id/scelteIniziali_pulsanteIndietro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
+        android:id="@+id/activity_scelteIniziali_pulsanteIndietro"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+
+        android:background="@drawable/cerchio"
+        android:backgroundTint="@color/blu"
         android:contentDescription="@string/accessibilitàIndietro"
-        android:src="@drawable/indietro_blu"
+        android:src="@drawable/icona_indietro"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.050000012" />
+        app:layout_constraintVertical_bias="0.05" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/scelteIniziali_fragmentContainerView"
+        android:id="@+id/activity_scelteIniziali_fragmentContainerView"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -104,7 +106,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scelteIniziali_nomeApp2"
+        app:layout_constraintTop_toBottomOf="@+id/activity_scelteIniziali_nomeApp2"
         app:layout_constraintVertical_bias="0.0"
         app:navGraph="@navigation/navigation_scelteiniziali"
         tools:layout="@layout/selezionetipoaccount" />

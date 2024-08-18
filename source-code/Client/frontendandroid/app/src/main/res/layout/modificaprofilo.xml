@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/modificaProfilo_linearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grigio"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/modificaProfilo_linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/modificaProfilo_pulsanteIndietro"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+
+            android:background="@drawable/cerchio"
+            android:backgroundTint="@color/blu"
+            android:contentDescription="@string/accessibilitàIndietro"
+            android:src="@drawable/icona_indietro" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/modificaProfilo_tipoAccount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/modificaProfilo_titolo"
+            android:textAlignment="center"
+            android:textColor="@color/blu"
+            android:textSize="25sp"
+            app:fontFamily="@font/fira_sans_bold" />
+
+        <ImageButton
+            android:id="@+id/modificaProfilo_pulsanteConferma"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+
+            android:background="@drawable/cerchio"
+            android:backgroundTint="@color/blu"
+            android:contentDescription="@string/modificaProfilo_accessibilitàConferma"
+            android:src="@drawable/icona_spunta" />
+    </LinearLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/modificaProfilo_nomeUtente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/placeholder"
+        android:textColor="@color/blu"
+        android:textSize="20sp"
+        app:fontFamily="@font/fira_sans_bold" />
+
+    <LinearLayout
+        android:id="@+id/modificaProfilo_linearLayout3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="bottom|center"
+        android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/modificaProfilo_immagineUtente"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginVertical="15dp"
+            android:background="@color/bianco"
+            android:padding="1dp"
+            android:src="@drawable/icona_profilo"
+            app:shapeAppearanceOverlay="@style/ImageViewRotonda"
+            app:strokeColor="#939393"
+            app:strokeWidth="1dp" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/modificaProfilo_pulsante"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="-35dp"
+            android:src="@drawable/icona_nuovo" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/modificaProfilo_scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp">
+
+        <LinearLayout
+            android:id="@+id/modificaProfilo_linearLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="40dp"
+            android:paddingVertical="20dp">
+
+            <LinearLayout
+                android:id="@+id/modificaProfilo_linearLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/modificaProfilo_iconaNome"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="1dp"
+                    android:src="@drawable/icona_profilo" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/modificaProfilo_etichettaNome"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/dettagliProfilo_etichettaNome"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/fira_sans_medium" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/modificaProfilo_asteriscoNome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/asterisco"
+                    android:textColor="@color/arancione"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/modificaProfilo_campoNome"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="@color/bianco"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:boxStrokeColor="@color/blu"
+                app:boxStrokeErrorColor="@color/rosso"
+                app:boxStrokeWidth="1.5dp"
+                app:cursorColor="@color/blu"
+                app:cursorErrorColor="@color/rosso"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/blu"
+                app:errorIconTint="@color/rosso"
+                app:errorTextColor="@color/blu">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/modificaProfilo_nome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="@color/nero" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/modificaProfilo_linearLayout6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/modificaProfilo_iconaCognome"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="1dp"
+                    android:src="@drawable/icona_profilo" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/modificaProfilo_etichettaCognome"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/dettagliProfilo_etichettaCognome"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/fira_sans_medium" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/modificaProfilo_asteriscoCognome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/asterisco"
+                    android:textColor="@color/arancione"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/modificaProfilo_campoCognome"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="@color/bianco"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:boxStrokeColor="@color/blu"
+                app:boxStrokeErrorColor="@color/rosso"
+                app:boxStrokeWidth="1.5dp"
+                app:cursorColor="@color/blu"
+                app:cursorErrorColor="@color/rosso"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/blu"
+                app:errorIconTint="@color/rosso"
+                app:errorTextColor="@color/blu">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/modificaProfilo_cognome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="@color/nero" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/modificaProfilo_linearLayout7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/modificaProfilo_iconaEmail"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="1dp"
+                    android:src="@drawable/icona_messaggio" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/modificaProfilo_etichettaEmail"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/dettagliProfilo_etichettaEmail"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/fira_sans_medium" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/modificaProfilo_asteriscoEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/asterisco"
+                    android:textColor="@color/arancione"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/modificaProfilo_campoEmail"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="@color/bianco"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:boxStrokeColor="@color/blu"
+                app:boxStrokeErrorColor="@color/rosso"
+                app:boxStrokeWidth="1.5dp"
+                app:cursorColor="@color/blu"
+                app:cursorErrorColor="@color/rosso"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/blu"
+                app:errorIconTint="@color/rosso"
+                app:errorTextColor="@color/blu">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/modificaProfilo_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/accessoRegistrazione_accessibilitàEmail"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/nero" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/modificaProfilo_linearLayout8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/modificaProfilo_iconaDataNascita"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="1dp"
+                    android:src="@drawable/icona_calendario" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/modificaProfilo_etichettaDataNascita"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/dettagliProfilo_etichettaDataNascita"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/fira_sans_medium" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/modificaProfilo_asteriscoDataNascita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/asterisco"
+                    android:textColor="@color/arancione"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/modificaProfilo_campoDataNascita"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="@color/bianco"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:boxStrokeColor="@color/blu"
+                app:boxStrokeErrorColor="@color/rosso"
+                app:boxStrokeWidth="1.5dp"
+                app:cursorColor="@color/blu"
+                app:cursorErrorColor="@color/rosso"
+                app:endIconDrawable="@drawable/icona_calendario_arancione"
+                app:endIconMode="custom"
+                app:endIconTint="@null"
+                app:endIconTintMode="multiply"
+                app:errorIconTint="@color/rosso"
+                app:errorTextColor="@color/blu">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/modificaProfilo_dataNascita"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:hint="@string/creazioneProfiloFase1_accessibilitàDataNascita"
+                    android:inputType="date"
+                    android:textColor="@color/nero" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/modificaProfilo_linearLayout9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/modificaProfilo_iconaGenere"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="1dp"
+                    android:src="@drawable/icona_maglia" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/modificaProfilo_etichettaGenere"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/dettagliProfilo_etichettaGenere"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/fira_sans_medium" />
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/modificaProfilo_campoGenere"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="@color/bianco"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:boxStrokeColor="@color/blu"
+                app:boxStrokeErrorColor="@color/rosso"
+                app:boxStrokeWidth="1.5dp"
+                app:cursorColor="@color/blu"
+                app:cursorErrorColor="@color/rosso"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/blu"
+                app:errorIconTint="@color/rosso"
+                app:errorTextColor="@color/blu">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/modificaProfilo_genere"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/creazioneProfiloFase2_accessibilitàGenere"
+                    android:inputType="text"
+                    android:textColor="@color/nero" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/modificaProfilo_linearLayout10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/modificaProfilo_iconaAreaGeografica"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="1dp"
+                    android:src="@drawable/icona_home" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/modificaProfilo_etichettaAreaGeografica"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/dettagliProfilo_etichettaAreaGeografica"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/fira_sans_medium" />
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/modificaProfilo_campoAreaGeografica"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="@color/bianco"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:boxStrokeColor="@color/blu"
+                app:boxStrokeErrorColor="@color/rosso"
+                app:boxStrokeWidth="1.5dp"
+                app:cursorColor="@color/blu"
+                app:cursorErrorColor="@color/rosso"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/blu"
+                app:errorIconTint="@color/rosso"
+                app:errorTextColor="@color/blu">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/modificaProfilo_areaGeografica"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/creazioneProfiloFase2_accessibilitàAreaGeografica"
+                    android:inputType="text"
+                    android:textColor="@color/nero" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/modificaProfilo_linearLayout11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/modificaProfilo_iconaBiografia"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="1dp"
+                    android:src="@drawable/icona_libro" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/modificaProfilo_etichettaBiografia"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/dettagliProfilo_etichettaBiografia"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/fira_sans_medium" />
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/modificaProfilo_campoBiografia"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="@color/bianco"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:boxStrokeColor="@color/blu"
+                app:boxStrokeErrorColor="@color/rosso"
+                app:boxStrokeWidth="1.5dp"
+                app:cursorColor="@color/blu"
+                app:cursorErrorColor="@color/rosso"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/blu"
+                app:errorIconTint="@color/rosso"
+                app:errorTextColor="@color/blu">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/modificaProfilo_biografia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="@color/nero" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/modificaProfilo_linearLayout12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/modificaProfilo_iconaSocial"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="1dp"
+                    android:src="@drawable/icona_social" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/modificaProfilo_etichettaSocial"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/dettagliProfilo_etichettaSocial"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/fira_sans_medium" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/modificaProfilo_linearLayout13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/modificaProfilo_instagram"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/icona_instagram" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/modificaProfilo_facebook"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/icona_facebook" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/modificaProfilo_github"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/icona_github" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/modificaProfilo_x"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/icona_x" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/modificaProfilo_linearLayout14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/modificaProfilo_iconaLinkPersonale"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="1dp"
+                    android:src="@drawable/icona_catena" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/modificaProfilo_etichettaLinkPersonale"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/dettagliProfilo_etichettaLinkPersonale"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/fira_sans_medium" />
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/modificaProfilo_campoLinkPersonale"
+                android:layout_width="320dp"
+                android:layout_height="wrap_content"
+                app:boxBackgroundColor="@color/bianco"
+                app:boxCornerRadiusBottomEnd="30dp"
+                app:boxCornerRadiusBottomStart="30dp"
+                app:boxCornerRadiusTopEnd="30dp"
+                app:boxCornerRadiusTopStart="30dp"
+                app:boxStrokeColor="@color/blu"
+                app:boxStrokeErrorColor="@color/rosso"
+                app:boxStrokeWidth="1.5dp"
+                app:cursorColor="@color/blu"
+                app:cursorErrorColor="@color/rosso"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/blu"
+                app:errorIconTint="@color/rosso"
+                app:errorTextColor="@color/blu">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/modificaProfilo_linkPersonale"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="@color/nero" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

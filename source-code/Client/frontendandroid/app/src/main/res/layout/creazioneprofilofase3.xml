@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/creazioneProfiloFase3_constraintLayout"
+    android:id="@+id/creazioneProfiloFase3_constraintLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blu">
 
     <ImageButton
         android:id="@+id/creazioneProfiloFase3_pulsanteIndietro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+
+        android:background="@drawable/cerchio"
+        android:backgroundTint="@color/arancione"
         android:contentDescription="@string/accessibilitàIndietro"
-        android:src="@drawable/indietro_arancione"
+        android:src="@drawable/icona_indietro"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.050000012" />
+        app:layout_constraintVertical_bias="0.05" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/creazioneProfiloFase3_messaggioCorpo"
@@ -34,6 +36,7 @@
         app:layout_constraintTop_toTopOf="@+id/creazioneProfiloFase3_pulsanteIndietro" />
 
     <ScrollView
+        android:id="@+id/creazioneProfiloFase2_scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
@@ -51,6 +54,7 @@
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/creazioneProfiloFase3_constraintLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -95,7 +99,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
-                        android:importantForAccessibility="no"
+                        android:hint="@string/creazioneProfiloFase3_accessibilitàLinkPersonale"
                         android:inputType="text"
                         android:textColor="@color/nero" />
 
@@ -104,6 +108,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/creazioneProfiloFase3_constraintLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -148,7 +153,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
-                        android:importantForAccessibility="no"
+                        android:hint="@string/creazioneProfiloFase3_accessibilitàLinkInstagram"
                         android:inputType="text"
                         android:textColor="@color/nero" />
 
@@ -157,6 +162,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/creazioneProfiloFase3_constraintLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -201,7 +207,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
-                        android:importantForAccessibility="no"
+                        android:hint="@string/creazioneProfiloFase3_accessibilitàLinkFacebook"
                         android:inputType="text"
                         android:textColor="@color/nero" />
 
@@ -210,6 +216,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/creazioneProfiloFase3_constraintLayout5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -254,7 +261,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
-                        android:importantForAccessibility="no"
+                        android:hint="@string/creazioneProfiloFase3_accessibilitàLinkGitHub"
                         android:inputType="text"
                         android:textColor="@color/nero" />
 
@@ -263,6 +270,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/creazioneProfiloFase3_constraintLayout6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -307,7 +315,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
-                        android:importantForAccessibility="no"
+                        android:hint="@string/creazioneProfiloFase3_accessibilitàLinkX"
                         android:inputType="text"
                         android:textColor="@color/nero" />
 
@@ -316,6 +324,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/creazioneProfiloFase3_constraintLayout7"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 

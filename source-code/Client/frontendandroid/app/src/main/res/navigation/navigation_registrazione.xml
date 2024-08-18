@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_registrazione"
     app:startDestination="@id/controllerRegistrazione">
 
     <fragment
         android:id="@+id/controllerRegistrazione"
         android:name="com.iasdietideals24.dietideals24.controller.ControllerRegistrazione"
-        android:label="ControllerRegistrazione">
+        android:label="ControllerRegistrazione"
+        tools:layout="@layout/registrazione">
         <action
             android:id="@+id/action_controllerRegistrazione_to_controllerCreazioneProfiloFase1"
             app:destination="@id/controllerCreazioneProfiloFase1"
@@ -26,7 +28,8 @@
     <fragment
         android:id="@+id/controllerCreazioneProfiloFase1"
         android:name="com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFase1"
-        android:label="ControllerCreazioneProfiloFase1">
+        android:label="ControllerCreazioneProfiloFase1"
+        tools:layout="@layout/creazioneprofilofase1">
         <action
             android:id="@+id/action_controllerCreazioneProfiloFase1_to_controllerCreazioneProfiloFase2"
             app:destination="@id/controllerCreazioneProfiloFase2"
@@ -38,7 +41,8 @@
     <fragment
         android:id="@+id/controllerCreazioneProfiloFase2"
         android:name="com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFase2"
-        android:label="ControllerCreazioneProfiloFase2">
+        android:label="ControllerCreazioneProfiloFase2"
+        tools:layout="@layout/creazioneprofilofase2">
         <action
             android:id="@+id/action_controllerCreazioneProfiloFase2_to_controllerCreazioneProfiloFase3"
             app:destination="@id/controllerCreazioneProfiloFase3"
@@ -50,9 +54,11 @@
     <fragment
         android:id="@+id/controllerCreazioneProfiloFase3"
         android:name="com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFase3"
-        android:label="ControllerCreazioneProfiloFase3" />
+        android:label="ControllerCreazioneProfiloFase3"
+        tools:layout="@layout/creazioneprofilofase3" />
     <fragment
         android:id="@+id/controllerAssociazioneProfilo"
         android:name="com.iasdietideals24.dietideals24.controller.ControllerAssociazioneProfilo"
-        android:label="ControllerAssociazioneProfilo" />
+        android:label="ControllerAssociazioneProfilo"
+        tools:layout="@layout/associaprofilo" />
 </navigation>

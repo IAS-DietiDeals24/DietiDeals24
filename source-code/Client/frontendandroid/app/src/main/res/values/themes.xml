@@ -42,15 +42,34 @@
         <item name="android:textSize">20.sp</item>
     </style>
 
-    <style name="ImageViewRotonda" parent="">
+    <style name="ImageViewRotonda">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="BottomNavigationView">
+    <style name="BottomNavigationView" parent="@style/ThemeOverlay.Material3.NavigationView">
         <item name="colorOnSecondaryContainer">@color/arancione</item>
         <item name="colorOnSurface">@color/arancione</item>
         <item name="colorOnSurfaceVariant">@color/blu</item>
         <item name="textAppearanceTitleSmall">@font/fira_sans_medium</item>
+    </style>
+
+    <style name="ImageViewRettangolare">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">15.dp</item>
+    </style>
+
+    <style name="DatePicker" parent="@style/ThemeOverlay.Material3.MaterialCalendar">
+        <item name="colorPrimary">@color/arancione</item>
+        <item name="colorOnPrimary">@color/blu</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">15.dp</item>
+    </style>
+
+    <style name="Dialog" parent="@style/ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorPrimary">@color/arancione</item>
+        <item name="colorOnPrimary">@color/blu</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">15.dp</item>
     </style>
 </resources>

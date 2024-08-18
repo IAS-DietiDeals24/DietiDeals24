@@ -1,22 +1,18 @@
 package com.iasdietideals24.dietideals24.controller
 
-import android.app.DatePickerDialog
-import android.app.Dialog
 import android.content.Context
-import android.icu.text.DateFormat
 import android.icu.util.Calendar
-import android.icu.util.GregorianCalendar
-import android.os.Bundle
-import android.widget.DatePicker
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.facebook.AccessToken
 import com.facebook.login.LoginManager
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.iasdietideals24.dietideals24.R
@@ -25,9 +21,7 @@ import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeDate
 import java.sql.Date
-import java.util.Locale
 
 class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase1) {
 
@@ -148,7 +142,6 @@ class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase
         viewModel.nomeUtente.value = estraiTestoDaElemento(nomeUtente)
         viewModel.nome.value = estraiTestoDaElemento(nome)
         viewModel.cognome.value = estraiTestoDaElemento(cognome)
-        viewModel.dataNascita.value = estraiDataDaElemento(dataNascita)
 
         try {
             viewModel.validateProfile()
@@ -166,47 +159,31 @@ class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase
 
     @EventHandler
     private fun clickDataNascita() {
-        val newFragment = DatePickerFragment()
-        newFragment.show(requireActivity().supportFragmentManager, "datePicker")
-    }
+        val calendarConstraints = CalendarConstraints.Builder()
+            .setValidator(DateValidatorPointBackward.now())
+            .setFirstDayOfWeek(Calendar.MONDAY)
 
-    //region Fragment
-    class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText(R.string.creazioneProfiloFase1_titoloPopupData)
+            .setCalendarConstraints(calendarConstraints.build())
+            .setSelection(
+                if (viewModel.dataNascita.value?.time == (0.toLong()))
+                    MaterialDatePicker.todayInUtcMilliseconds()
+                else
+                    viewModel.dataNascita.value?.time
+            )
+            .setTheme(R.style.DatePicker)
+            .build()
 
-        private var listener: OnFragmentChangeDate? = null
-
-        override fun onAttach(context: Context) {
-            super.onAttach(context)
-
-            if (requireContext() is OnFragmentChangeDate) {
-                listener = requireContext() as OnFragmentChangeDate
+        datePicker.addOnPositiveButtonClickListener {
+            if (datePicker.selection != null) {
+                val data = Date(datePicker.selection!!)
+                val dataFormattata = formattaData(data)
+                viewModel.dataNascita.value = data
+                dataNascita.setText(dataFormattata)
             }
         }
 
-        override fun onDetach() {
-            super.onDetach()
-
-            listener = null
-        }
-
-        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            val c = Calendar.getInstance()
-            val year = c.get(Calendar.YEAR)
-            val month = c.get(Calendar.MONTH)
-            val day = c.get(Calendar.DAY_OF_MONTH)
-
-            val dialog = DatePickerDialog(requireContext(), this, year, month, day)
-            dialog.datePicker.maxDate = c.timeInMillis
-
-            return dialog
-        }
-
-        override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
-            val date = GregorianCalendar(year, month, day).time
-            val formatter = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault())
-            val formattedDate = formatter.format(date)
-            listener?.onFragmentChangeDate(formattedDate)
-        }
+        datePicker.show(requireActivity().supportFragmentManager, "datePicker")
     }
-    //endregion Fragment
 }

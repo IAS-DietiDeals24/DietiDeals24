@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_scelteiniziali"
     app:startDestination="@id/controllerSelezioneTipoAccount">
 
     <fragment
         android:id="@+id/controllerSelezioneTipoAccount"
         android:name="com.iasdietideals24.dietideals24.controller.ControllerSelezioneTipoAccount"
-        android:label="ControllerSelezioneTipoAccount">
+        android:label="ControllerSelezioneTipoAccount"
+        tools:layout="@layout/selezionetipoaccount">
         <action
             android:id="@+id/action_controllerSelezioneTipoAccount_to_controllerSelezioneAccessoRegistrazione"
             app:destination="@id/controllerSelezioneAccessoRegistrazione"
@@ -19,5 +21,6 @@
     <fragment
         android:id="@+id/controllerSelezioneAccessoRegistrazione"
         android:name="com.iasdietideals24.dietideals24.controller.ControllerSelezioneAccessoRegistrazione"
-        android:label="ControllerSelezioneAccessoRegistrazione"></fragment>
+        android:label="ControllerSelezioneAccessoRegistrazione"
+        tools:layout="@layout/selezioneaccessoregistrazione" />
 </navigation>

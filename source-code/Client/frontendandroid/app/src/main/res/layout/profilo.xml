@@ -1,6 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/profilo_linearLayout1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/grigio"
+    android:gravity="center|top"
+    android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/profilo_saluto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/profilo_saluto"
+        android:textColor="@color/blu"
+        android:textSize="25sp"
+        app:fontFamily="@font/fira_sans_bold" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/profilo_nome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="@string/placeholder"
+        android:textColor="@color/blu"
+        android:textSize="25sp"
+        app:fontFamily="@font/fira_sans_bold" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profilo_immagine"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/cerchio"
+        android:backgroundTint="@color/bianco"
+        android:padding="1dp"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/ImageViewRotonda"
+        app:srcCompat="@drawable/icona_profilo"
+        app:strokeWidth="1dp" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/profilo_tipoAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="@string/profilo_tipoAccount"
+        android:textColor="@color/blu"
+        android:textSize="25sp"
+        app:fontFamily="@font/fira_sans_medium" />
+
+    <ScrollView
+        android:id="@+id/profilo_scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/profilo_linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|top"
+            android:orientation="vertical"
+            android:paddingVertical="10dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/profilo_pulsanteUtente"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="320dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/fira_sans_medium"
+                android:gravity="center|start"
+                android:text="@string/profilo_pulsante1"
+                android:textColor="@color/blu"
+                android:textSize="18sp"
+                app:backgroundTint="@color/bianco"
+                app:icon="@drawable/icona_info_blu"
+                app:iconGravity="end"
+                app:iconSize="40dp"
+                app:iconTint="@color/blu" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/profilo_pulsanteAste"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="320dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/fira_sans_medium"
+                android:gravity="center|start"
+                android:text="@string/profilo_pulsante2"
+                android:textColor="@color/blu"
+                android:textSize="18sp"
+                app:backgroundTint="@color/bianco"
+                app:icon="@drawable/icona_asta"
+                app:iconGravity="end"
+                app:iconSize="40dp"
+                app:iconTint="@color/blu" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/profilo_pulsanteStorico"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="320dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/fira_sans_medium"
+                android:gravity="center|start"
+                android:text="@string/profilo_pulsante3"
+                android:textColor="@color/blu"
+                android:textSize="18sp"
+                app:backgroundTint="@color/bianco"
+                app:icon="@drawable/icona_soldi"
+                app:iconGravity="end"
+                app:iconSize="40dp"
+                app:iconTint="@color/blu" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/profilo_pulsanteAiuto"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="320dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/fira_sans_medium"
+                android:gravity="center|start"
+                android:text="@string/profilo_pulsante4"
+                android:textColor="@color/blu"
+                android:textSize="18sp"
+                app:backgroundTint="@color/bianco"
+                app:icon="@drawable/icona_aiuto"
+                app:iconGravity="end"
+                app:iconSize="40dp"
+                app:iconTint="@color/blu" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/profilo_pulsanteEsci"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="320dp"
+                android:layout_height="60dp"
+                android:fontFamily="@font/fira_sans_medium"
+                android:gravity="center|start"
+                android:text="@string/profilo_pulsante5"
+                android:textColor="@color/rosso"
+                android:textSize="18sp"
+                app:backgroundTint="@color/bianco"
+                app:icon="@drawable/icona_chiudi"
+                app:iconGravity="end"
+                app:iconSize="40dp"
+                app:iconTint="@color/rosso" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

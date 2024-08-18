@@ -238,7 +238,7 @@ abstract class Controller(
     }
 
     /**
-     * Usata per estrarre la data da una stringa e formattarla nel formato SQL standard (yyyy-MM-dd).
+     * Usata per estrarre la data da una stringa e trasformarla nel formato SQL standard (yyyy-MM-dd).
      * @param formato Il formato della stringa in ingresso.
      * @param elemento La stringa dalla quale estrarre la data.
      * @return La data estratta dalla stringa.
@@ -260,10 +260,11 @@ abstract class Controller(
     }
 
     /**
-     * Usata per formattare una data nel formato predefinito per la località attuale.
+     * Trasforma una data (nel formato predefinito per la località) in una stringa.
      * @param data La data da formattare.
      * @return La data formattata.
      */
+    @Utility
     protected fun formattaData(data: Date): String {
         val formatter = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault())
         return formatter.format(data)

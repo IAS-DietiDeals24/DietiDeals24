@@ -14,32 +14,38 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:defaultNavHost="true"
+        app:layout_constraintBottom_toTopOf="@id/activity_home_linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/navigation_home"
         tools:layout="@layout/home" />
 
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/activity_home_materialDivider"
+    <LinearLayout
+        android:id="@+id/activity_home_linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:dividerColor="#939393"
-        app:dividerThickness="2dp"
-        app:layout_constraintBottom_toTopOf="@+id/activity_home_bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/activity_home_bottomNavigationView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:theme="@style/BottomNavigationView"
-        app:backgroundTint="@color/grigio"
-        app:itemIconSize="30dp"
-        app:labelVisibilityMode="labeled"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menuhome" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/activity_home_materialDivider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:dividerColor="#939393"
+            app:dividerThickness="2dp" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/activity_home_bottomNavigationView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/BottomNavigationView"
+            app:backgroundTint="@color/grigio"
+            app:itemIconSize="30dp"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/menuhome" />
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,98 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/home_constraintLayout"
+    android:id="@+id/home_linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grigio">
+    android:background="@color/grigio"
+    android:orientation="vertical"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
 
-    <LinearLayout
-        android:id="@+id/home_linearLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/home_constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/grigio"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/home_constraintLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/home_campoRicerca"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/home_campoRicerca"
-                android:layout_width="320dp"
+            android:hint="@string/home_cerca"
+            app:boxBackgroundColor="@color/bianco"
+            app:boxCornerRadiusBottomEnd="30dp"
+            app:boxCornerRadiusBottomStart="30dp"
+            app:boxCornerRadiusTopEnd="30dp"
+            app:boxCornerRadiusTopStart="30dp"
+            app:boxStrokeColor="@color/arancione"
+            app:boxStrokeErrorColor="@color/rosso"
+            app:boxStrokeWidth="1.5dp"
+            app:cursorColor="@color/arancione"
+            app:cursorErrorColor="@color/rosso"
+            app:endIconDrawable="@drawable/icona_lente"
+            app:endIconMode="custom"
+            app:endIconTint="@color/blu"
+            app:errorIconTint="@color/rosso"
+            app:errorTextColor="@color/arancione"
+            app:hintTextColor="@color/arancione"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/home_ricerca"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
 
-                android:hint="@string/home_cerca"
-                app:boxBackgroundColor="@color/bianco"
-                app:boxCornerRadiusBottomEnd="30dp"
-                app:boxCornerRadiusBottomStart="30dp"
-                app:boxCornerRadiusTopEnd="30dp"
-                app:boxCornerRadiusTopStart="30dp"
-                app:boxStrokeColor="@color/arancione"
-                app:boxStrokeErrorColor="@color/rosso"
-                app:boxStrokeWidth="1.5dp"
-                app:cursorColor="@color/arancione"
-                app:cursorErrorColor="@color/rosso"
-                app:endIconDrawable="@drawable/icona_lente"
-                app:endIconMode="custom"
-                app:endIconTint="@color/blu"
-                app:errorIconTint="@color/rosso"
-                app:errorTextColor="@color/arancione"
-                app:hintTextColor="@color/arancione"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:hintTextColor="@color/arancione">
+                android:inputType="text"
+                android:textColor="@color/nero" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/home_ricerca"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+        </com.google.android.material.textfield.TextInputLayout>
 
-                    android:importantForAccessibility="no"
-                    android:inputType="text"
-                    android:textColor="@color/nero" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/home_filtro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/bianco"
+            android:fontFamily="@font/fira_sans_medium"
+            android:text="@string/home_filtra"
+            android:textColor="@color/blu"
+            android:textSize="11sp"
+            app:icon="@drawable/icona_filtro"
+            app:iconGravity="end"
+            app:iconTint="@color/blu"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/home_campoRicerca"
+            app:layout_constraintTop_toBottomOf="@+id/home_campoRicerca"
+            app:strokeColor="#939393"
+            app:strokeWidth="1dp" />
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/home_filtro"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                android:backgroundTint="@color/bianco"
-                android:fontFamily="@font/fira_sans_medium"
-                android:text="@string/home_filtra"
-                android:textColor="@color/blu"
-                android:textSize="11sp"
-                app:icon="@drawable/icona_filtro"
-                app:iconGravity="end"
-                app:iconTint="@color/blu"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/home_campoRicerca"
-                app:layout_constraintTop_toBottomOf="@+id/home_campoRicerca"
-                app:strokeColor="#939393"
-                app:strokeWidth="1dp" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_recyclerView"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_linearLayout"
-        tools:listitem="@layout/card" />
+        app:layout_constraintTop_toBottomOf="@+id/home_constraintLayout"
+        tools:listitem="@layout/asta" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

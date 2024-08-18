@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/creazioneProfiloFase1_constraintLayout"
+    android:id="@+id/creazioneProfiloFase1_constraintLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blu">
 
     <ImageButton
         android:id="@+id/creazioneProfiloFase1_pulsanteIndietro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+
+        android:background="@drawable/cerchio"
+        android:backgroundTint="@color/arancione"
         android:contentDescription="@string/accessibilitàIndietro"
-        android:src="@drawable/indietro_arancione"
+        android:src="@drawable/icona_indietro"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.050000012" />
+        app:layout_constraintVertical_bias="0.05" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/creazioneProfiloFase1_sfondoLogo"
@@ -83,6 +85,7 @@
         app:layout_constraintTop_toBottomOf="@+id/creazioneProfiloFase1_sfondoLogo" />
 
     <ScrollView
+        android:id="@+id/creazioneProfiloFase1_scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
@@ -99,6 +102,7 @@
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/creazioneProfiloFase1_constraintLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -143,7 +147,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
-                        android:importantForAccessibility="no"
+                        android:hint="@string/creazioneProfiloFase1_accessibilitàNomeUtente"
                         android:inputType="text"
                         android:textColor="@color/nero" />
 
@@ -163,6 +167,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/creazioneProfiloFase1_constraintLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -207,7 +212,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
-                        android:importantForAccessibility="no"
+                        android:hint="@string/creazioneProfiloFase1_accessibilitàNome"
                         android:inputType="text"
                         android:textColor="@color/nero" />
 
@@ -226,6 +231,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/creazioneProfiloFase1_constraintLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -270,7 +276,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
-                        android:importantForAccessibility="no"
+                        android:hint="@string/creazioneProfiloFase1_accessibilitàCognome"
                         android:inputType="text"
                         android:textColor="@color/nero" />
 
@@ -289,6 +295,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/creazioneProfiloFase1_constraintLayout5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -319,7 +326,7 @@
                     app:boxStrokeWidth="1.5dp"
                     app:cursorColor="@color/arancione"
                     app:cursorErrorColor="@color/rosso"
-                    app:endIconDrawable="@drawable/icona_calendario"
+                    app:endIconDrawable="@drawable/icona_calendario_arancione"
                     app:endIconMode="custom"
                     app:endIconTint="@null"
                     app:endIconTintMode="multiply"
@@ -336,7 +343,7 @@
                         android:layout_height="wrap_content"
 
                         android:enabled="false"
-                        android:importantForAccessibility="no"
+                        android:hint="@string/creazioneProfiloFase1_accessibilitàDataNascita"
                         android:inputType="date"
                         android:textColor="@color/nero" />
 
@@ -355,6 +362,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/creazioneProfiloFase1_constraintLayout6"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 

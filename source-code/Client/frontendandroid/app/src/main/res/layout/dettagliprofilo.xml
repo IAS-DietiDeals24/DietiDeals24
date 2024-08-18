@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dettagliProfilo_coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grigio">
+
+    <LinearLayout
+        android:id="@+id/dettagliProfilo_linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/dettagliProfilo_linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/dettagliProfilo_pulsanteIndietro"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+
+                android:background="@drawable/cerchio"
+                android:backgroundTint="@color/blu"
+                android:contentDescription="@string/accessibilitàIndietro"
+                android:src="@drawable/icona_indietro" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dettagliProfilo_tipoAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dettagliProfilo_tipoAccount"
+                android:textAlignment="center"
+                android:textColor="@color/blu"
+                android:textSize="25sp"
+                app:fontFamily="@font/fira_sans_bold" />
+
+        </LinearLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dettagliProfilo_nomeUtente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/placeholder"
+            android:textColor="@color/blu"
+            android:textSize="20sp"
+            app:fontFamily="@font/fira_sans_bold" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/dettagliProfilo_immagineUtente"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginVertical="15dp"
+            android:background="@color/bianco"
+            android:padding="1dp"
+            android:src="@drawable/icona_profilo"
+            app:shapeAppearanceOverlay="@style/ImageViewRotonda"
+            app:strokeColor="#939393"
+            app:strokeWidth="1dp" />
+
+        <ScrollView
+            android:id="@+id/dettagliProfilo_scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="50dp">
+
+            <LinearLayout
+                android:id="@+id/dettagliProfilo_linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="40dp"
+                android:paddingVertical="20dp">
+
+                <LinearLayout
+                    android:id="@+id/dettagliProfilo_linearLayout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/dettagliProfilo_iconaNome"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:padding="1dp"
+                        android:src="@drawable/icona_profilo" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/dettagliProfilo_etichettaNome"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/dettagliProfilo_etichettaNome"
+                        android:textColor="@color/blu"
+                        android:textSize="20sp"
+                        app:fontFamily="@font/fira_sans_medium" />
+                </LinearLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/dettagliProfilo_nome"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:text="@string/placeholder"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/fira_sans" />
+
+                <LinearLayout
+                    android:id="@+id/dettagliProfilo_linearLayout5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/dettagliProfilo_iconaCognome"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:padding="1dp"
+                        android:src="@drawable/icona_profilo" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/dettagliProfilo_etichettaCognome"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/dettagliProfilo_etichettaCognome"
+                        android:textColor="@color/blu"
+                        android:textSize="20sp"
+                        app:fontFamily="@font/fira_sans_medium" />
+
+                </LinearLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/dettagliProfilo_cognome"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:text="@string/placeholder"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/fira_sans" />
+
+                <LinearLayout
+                    android:id="@+id/dettagliProfilo_linearLayout6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/dettagliProfilo_iconaEmail"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:padding="1dp"
+                        android:src="@drawable/icona_messaggio" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/dettagliProfilo_etichettaEmail"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/dettagliProfilo_etichettaEmail"
+                        android:textColor="@color/blu"
+                        android:textSize="20sp"
+                        app:fontFamily="@font/fira_sans_medium" />
+
+                </LinearLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/dettagliProfilo_email"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:text="@string/placeholder"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/fira_sans" />
+
+                <LinearLayout
+                    android:id="@+id/dettagliProfilo_linearLayout7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/dettagliProfilo_iconaDataNascita"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:padding="1dp"
+                        android:src="@drawable/icona_calendario" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/dettagliProfilo_etichettaDataNascita"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/dettagliProfilo_etichettaDataNascita"
+                        android:textColor="@color/blu"
+                        android:textSize="20sp"
+                        app:fontFamily="@font/fira_sans_medium" />
+
+                </LinearLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/dettagliProfilo_dataNascita"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:text="@string/placeholder"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/fira_sans" />
+
+                <LinearLayout
+                    android:id="@+id/dettagliProfilo_linearLayout8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/dettagliProfilo_iconaGenere"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:padding="1dp"
+                        android:src="@drawable/icona_maglia" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/dettagliProfilo_etichettaGenere"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/dettagliProfilo_etichettaGenere"
+                        android:textColor="@color/blu"
+                        android:textSize="20sp"
+                        app:fontFamily="@font/fira_sans_medium" />
+
+                </LinearLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/dettagliProfilo_genere"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:text="@string/placeholder"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/fira_sans" />
+
+                <LinearLayout
+                    android:id="@+id/dettagliProfilo_linearLayout9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/dettagliProfilo_iconaAreaGeografica"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:padding="1dp"
+                        android:src="@drawable/icona_home" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/dettagliProfilo_etichettaAreaGeografica"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/dettagliProfilo_etichettaAreaGeografica"
+                        android:textColor="@color/blu"
+                        android:textSize="20sp"
+                        app:fontFamily="@font/fira_sans_medium" />
+
+                </LinearLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/dettagliProfilo_areaGeografica"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:text="@string/placeholder"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/fira_sans" />
+
+                <LinearLayout
+                    android:id="@+id/dettagliProfilo_linearLayout10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/dettagliProfilo_iconaBiografia"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:padding="1dp"
+                        android:src="@drawable/icona_libro" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/dettagliProfilo_etichettaBiografia"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/dettagliProfilo_etichettaBiografia"
+                        android:textColor="@color/blu"
+                        android:textSize="20sp"
+                        app:fontFamily="@font/fira_sans_medium" />
+
+                </LinearLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/dettagliProfilo_biografia"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:text="@string/placeholder"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/fira_sans" />
+
+                <LinearLayout
+                    android:id="@+id/dettagliProfilo_linearLayout11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/dettagliProfilo_iconaSocial"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:padding="1dp"
+                        android:src="@drawable/icona_social" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/dettagliProfilo_etichettaSocial"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/dettagliProfilo_etichettaSocial"
+                        android:textColor="@color/blu"
+                        android:textSize="20sp"
+                        app:fontFamily="@font/fira_sans_medium" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/dettagliProfilo_linearLayout12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/dettagliProfilo_instagram"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/icona_instagram" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/dettagliProfilo_facebook"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/icona_facebook" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/dettagliProfilo_github"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/icona_github" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/dettagliProfilo_x"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/icona_x" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/dettagliProfilo_linearLayout13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/dettagliProfilo_iconaLinkPersonale"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:padding="1dp"
+                        android:src="@drawable/icona_catena" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/dettagliProfilo_etichettaLinkPersonale"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/dettagliProfilo_etichettaLinkPersonale"
+                        android:textColor="@color/blu"
+                        android:textSize="20sp"
+                        app:fontFamily="@font/fira_sans_medium" />
+
+                </LinearLayout>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/dettagliProfilo_linkPersonale"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:text="@string/placeholder"
+                    android:textColor="@color/blu"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/fira_sans" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/dettagliProfilo_accessibiltàModifica"
+        android:src="@drawable/icona_matita"
+        app:backgroundTint="@color/blu"
+        app:layout_anchor="@id/dettagliProfilo_linearLayout1"
+        app:layout_anchorGravity="bottom|right|end"
+        app:shapeAppearance="@style/ImageViewRotonda"
+        app:tint="@color/grigio" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

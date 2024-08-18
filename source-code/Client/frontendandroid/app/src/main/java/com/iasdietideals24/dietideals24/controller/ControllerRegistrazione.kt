@@ -1,20 +1,9 @@
 package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
-import android.content.Context.LAYOUT_INFLATER_SERVICE
-import android.content.Context.WINDOW_SERVICE
-import android.graphics.Point
-import android.os.Build
 import android.os.Bundle
-import android.view.Display
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.WindowManager
-import android.view.WindowMetrics
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.net.toUri
@@ -30,6 +19,7 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
@@ -87,15 +77,6 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
         listenerChangeActivity = null
     }
 
-    override fun elaborazioneAggiuntiva() {
-        /* Al fine di rendere il popup di info password più visibile, il frame di registrazione ha
-        una cortina nera come foreground. Viene resa invisibile quando la pagina di registrazione è
-        creata e quando è chiuso il popup. Viene resa visibile quando il popup è aperto. */
-        constraintLayout.foreground.alpha = 0
-
-        viewModel = ViewModelProvider(fragmentActivity).get(ModelRegistrazione::class)
-    }
-
     @UIBuilder
     override fun trovaElementiInterfaccia() {
         tipoAccount = fragmentView.findViewById(R.id.registrazione_tipoAccount)
@@ -106,8 +87,8 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
         pulsanteIndietro = fragmentView.findViewById(R.id.registrazione_pulsanteIndietro)
         pulsanteAvanti = fragmentView.findViewById(R.id.registrazione_pulsanteAvanti)
         pulsanteFacebook = fragmentView.findViewById(R.id.registrazione_pulsanteFacebook)
-        linearLayout = fragmentView.findViewById(R.id.registrazione_linearLayout)
-        constraintLayout = fragmentView.findViewById(R.id.registrazione_constraintLayout)
+        linearLayout = fragmentView.findViewById(R.id.registrazione_linearLayout1)
+        constraintLayout = fragmentView.findViewById(R.id.registrazione_constraintLayout1)
     }
 
     @UIBuilder
@@ -116,7 +97,7 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
             "compratore" -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_compratore)
                 tipoAccount.text = getString(
-                    R.string.selezioneAccessoRegistrazione_tipoAccount,
+                    R.string.placeholder,
                     stringaTipoAccount
                 )
             }
@@ -124,7 +105,7 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
             "venditore" -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_venditore)
                 tipoAccount.text = getString(
-                    R.string.selezioneAccessoRegistrazione_tipoAccount,
+                    R.string.placeholder,
                     stringaTipoAccount
                 )
             }
@@ -218,9 +199,19 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
         }
     }
 
+    @UIBuilder
+    override fun elaborazioneAggiuntiva() {
+        viewModel = ViewModelProvider(fragmentActivity).get(ModelRegistrazione::class)
+    }
+
     @EventHandler
     private fun clickInfoPassword() {
-        mostraPopupInfoPassword()
+        MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
+            .setTitle(R.string.infoPassword_titolo)
+            .setIcon(R.drawable.icona_info_arancione)
+            .setMessage(R.string.infoPassword_messaggioCorpo)
+            .setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
+            .show()
     }
 
     @EventHandler
@@ -316,91 +307,4 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
         request.parameters = parameters
         request.executeAsync()
     }
-    //endregion
-
-    //region PopupInfoPassword
-    private lateinit var constraintLayoutPopup: ConstraintLayout
-    private lateinit var pulsanteChiudi: ImageButton
-
-    @UIBuilder
-    private fun mostraPopupInfoPassword() {
-        val layoutPopup = gonfiaLayout()
-
-        val finestraPopup = creaFinestraPopup(layoutPopup)
-
-        trovaElementiInterfaccia(layoutPopup)
-
-        /* Al fine di rendere il popup di info password più visibile, il frame di registrazione ha
-        una cortina nera come foreground. Viene resa visibile quando la pagina di registrazione è
-        creata e quando è aperto il popup. Viene resa invisibile quando il popup è chiuso. */
-        impostaTrasparenzaCortina(150)
-
-        impostaEventiClick(finestraPopup)
-
-        finestraPopup.showAtLocation(layoutPopup, Gravity.CENTER, 0, 0)
-    }
-
-    @UIBuilder
-    private fun gonfiaLayout(): View {
-        val servizioInflater =
-            fragmentContext.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val radiceLayout =
-            fragmentView.findViewById<ConstraintLayout>(R.id.infoPassword_constraintLayout)
-
-        return servizioInflater.inflate(R.layout.infopassword, radiceLayout)
-    }
-
-    @UIBuilder
-    private fun creaFinestraPopup(popupDaCreare: View): PopupWindow {
-        val display: Display?
-        val windowManager: WindowManager =
-            fragmentContext.getSystemService(WINDOW_SERVICE) as WindowManager
-        val windowMetrics: WindowMetrics
-        val size = Point()
-        val width: Int
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            windowMetrics = windowManager.currentWindowMetrics
-            width = windowMetrics.bounds.width()
-        } else {
-            display = windowManager.defaultDisplay
-            display?.getSize(size)
-            width = size.x
-        }
-
-        val larghezzaFinestra = width
-        val chiusuraConTapEsterno = false
-
-        return PopupWindow(
-            popupDaCreare,
-            (larghezzaFinestra / 1.5).toInt(),
-            LinearLayout.LayoutParams.WRAP_CONTENT,
-            chiusuraConTapEsterno
-        )
-    }
-
-    @UIBuilder
-    private fun trovaElementiInterfaccia(layoutPopupCreato: View) {
-        constraintLayoutPopup = fragmentView.findViewById(R.id.registrazione_constraintLayout)
-        pulsanteChiudi = layoutPopupCreato.findViewById(R.id.infoPassword_pulsanteChiudi)
-    }
-
-    @UIBuilder
-    private fun impostaTrasparenzaCortina(alpha: Int) {
-        constraintLayoutPopup.foreground.alpha = alpha
-    }
-
-    @UIBuilder
-    private fun impostaEventiClick(finestraPopupCreata: PopupWindow) {
-        pulsanteChiudi.setOnClickListener { clickChiudi(finestraPopupCreata) }
-    }
-
-
-    @EventHandler
-    private fun clickChiudi(finestraPopupCreata: PopupWindow) {
-        finestraPopupCreata.dismiss()
-
-        impostaTrasparenzaCortina(0)
-    }
-    //endregion
 }

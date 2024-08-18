@@ -36,7 +36,7 @@ class Accesso : AppCompatActivity(R.layout.activity_accesso), OnFragmentChangeAc
 
     override fun onFragmentBackButton() {
         if (supportFragmentManager.fragments[0].childFragmentManager.backStackEntryCount > 0)
-            findNavController(R.id.accesso_fragmentContainerView).popBackStack()
+            findNavController(R.id.activity_accesso_fragmentContainerView).popBackStack()
         else
             finishAndRemoveTask()
     }

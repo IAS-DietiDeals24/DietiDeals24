@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dettagliAsta_linearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grigio"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/dettagliAsta_linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/dettagliAsta_pulsanteIndietro"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+
+            android:background="@drawable/cerchio"
+            android:backgroundTint="@color/blu"
+            android:contentDescription="@string/accessibilitàIndietro"
+            android:src="@drawable/icona_indietro" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dettagliAsta_titolo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dettagliAsta_titolo"
+            android:textAlignment="center"
+            android:textColor="@color/blu"
+            android:textSize="25sp"
+            app:fontFamily="@font/fira_sans_bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dettagliAsta_linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dettagliAsta_tipoAsta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="@string/placeholder"
+            android:textColor="@color/blu"
+            android:textSize="20sp"
+            app:fontFamily="@font/fira_sans_bold" />
+
+        <ImageButton
+            android:id="@+id/dettagliAsta_pulsanteAiuto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:contentDescription="@string/dettagliAsta_accessibilitàAiuto"
+            android:scaleX="0.6"
+            android:scaleY="0.6"
+            android:src="@drawable/icona_aiuto" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dettagliAsta_linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dettagliAsta_scadenza"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="@string/dettagliAsta_scadenza"
+            android:textAlignment="center"
+            android:textColor="@color/blu"
+            android:textSize="20sp"
+            app:fontFamily="@font/fira_sans_medium" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dettagliAsta_dataScadenza"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="@string/placeholder"
+            android:textColor="@color/arancione"
+            android:textSize="20sp"
+            app:fontFamily="@font/fira_sans_bold" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dettagliAsta_oraScadenza"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder"
+            android:textColor="@color/arancione"
+            android:textSize="20sp"
+            app:fontFamily="@font/fira_sans_bold" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/dettagliAsta_scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/dettagliAsta_linearLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/dettagliAsta_campoFoto"
+                android:layout_width="320dp"
+                android:layout_height="255dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/bianco"
+                android:padding="1dp"
+                android:scaleType="centerInside"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/crea_etichettaFoto"
+                app:shapeAppearanceOverlay="@style/ImageViewRettangolare"
+                app:srcCompat="@drawable/icona_fotocamera"
+                app:strokeColor="#939393"
+                app:strokeWidth="2dp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dettagliAsta_nome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/placeholder"
+                android:textColor="@color/blu"
+                android:textSize="20sp"
+                app:fontFamily="@font/fira_sans_medium" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dettagliAsta_categoria"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:text="@string/placeholder"
+                android:textColor="@color/blu"
+                android:textSize="20sp"
+                app:fontFamily="@font/fira_sans_medium" />
+
+            <LinearLayout
+                android:id="@+id/dettagliAsta_linearLayout6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/dettagliAsta_creataDa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/dettagliAsta_creataDa"
+                    android:textColor="@color/blu"
+                    android:textSize="16sp"
+                    app:fontFamily="@font/fira_sans_medium" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/dettagliAsta_immagineUtente"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@color/bianco"
+                    android:padding="1dp"
+                    android:src="@drawable/icona_profilo"
+                    app:shapeAppearanceOverlay="@style/ImageViewRotonda"
+                    app:strokeColor="#939393"
+                    app:strokeWidth="1dp" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/dettagliAsta_nomeUtente"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/placeholder"
+                    android:textColor="@color/blu"
+                    android:textSize="18sp"
+                    app:fontFamily="@font/fira_sans_medium" />
+
+            </LinearLayout>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dettagliAsta_titoloDescrizione"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:text="@string/dettagliAsta_titoloDescrizione"
+                android:textColor="@color/blu"
+                android:textSize="20sp"
+                app:fontFamily="@font/fira_sans_medium" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dettagliAsta_descrizione"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:padding="10dp"
+                android:text="@string/placeholder"
+                android:textColor="@color/blu"
+                android:textSize="16sp"
+                app:fontFamily="@font/fira_sans" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/dettagliAsta_divider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dividerColor="#939393"
+        app:dividerThickness="2dp" />
+
+    <LinearLayout
+        android:id="@+id/dettagliAsta_linearLayout7"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/dettagliAsta_linearLayout8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dettagliAsta_testoOfferta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:paddingVertical="10dp"
+                android:text="@string/dettagliAsta_testoOfferta"
+                android:textColor="@color/blu"
+                android:textSize="14sp"
+                app:fontFamily="@font/fira_sans" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dettagliAsta_offerta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder"
+                android:textColor="@color/arancione"
+                android:textSize="24sp"
+                app:fontFamily="@font/fira_sans_medium" />
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/dettagliAsta_pulsanteOfferta"
+            style="@style/BottoneArancionePiccolo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="20dp"
+            android:text="@string/dettagliAsta_pulsanteOfferta"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
+
+</LinearLayout>

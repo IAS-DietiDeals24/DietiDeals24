@@ -115,6 +115,7 @@ class ControllerCreazioneProfiloFase2 : Controller(R.layout.creazioneprofilofase
         }
     }
 
+    @Suppress("SENSELESS_COMPARISON")
     @UIBuilder
     override fun impostaOsservatori() {
         val immagineObserver = Observer<Uri> { newUri: Uri? ->
