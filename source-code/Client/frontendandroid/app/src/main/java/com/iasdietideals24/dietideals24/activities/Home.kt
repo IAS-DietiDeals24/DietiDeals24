@@ -10,8 +10,10 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.controller.ControllerHomeDirections
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
 
-class Home : AppCompatActivity(R.layout.activity_home) {
+class Home : AppCompatActivity(R.layout.activity_home), OnGoToDetails {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,5 +35,13 @@ class Home : AppCompatActivity(R.layout.activity_home) {
         findViewById<BottomNavigationView>(R.id.activity_home_bottomNavigationView).setupWithNavController(
             navController
         )
+    }
+
+    override fun onGoToDetails(id: Long) {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.activity_home_fragmentContainerView) as NavHostFragment
+        val navController = navHostFragment.navController
+        val action = ControllerHomeDirections.actionControllerHomeToControllerDettagliAsta(id)
+        navController.navigate(action)
     }
 }

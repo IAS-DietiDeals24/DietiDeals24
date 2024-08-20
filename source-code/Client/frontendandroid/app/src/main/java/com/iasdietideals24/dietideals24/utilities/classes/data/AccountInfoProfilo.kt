@@ -1,15 +1,14 @@
-package com.iasdietideals24.dietideals24.utilities.classes
+package com.iasdietideals24.dietideals24.utilities.classes.data
 
-import android.net.Uri
 import java.sql.Date
 
-data class AccountProfileInfo(
+data class AccountInfoProfilo(
     private val _accountInfo: AccountInfo? = AccountInfo(),
     private var _nomeUtente: String? = "",
     private var _nome: String? = "",
     private var _cognome: String? = "",
     private var _dataNascita: Date? = Date(0),
-    private var _immagineProfilo: Uri? = Uri.EMPTY,
+    private var _immagineProfilo: ByteArray? = ByteArray(0),
     private var _biografia: String? = "",
     private var _areaGeografica: String? = "",
     private var _genere: String? = "",

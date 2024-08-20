@@ -9,6 +9,7 @@ import com.iasdietideals24.dietideals24.activities.Home
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
 
 class ControllerAssociazioneProfilo : Controller(R.layout.associaprofilo) {
@@ -51,10 +52,10 @@ class ControllerAssociazioneProfilo : Controller(R.layout.associaprofilo) {
 
     @EventHandler
     private fun clickFine() {
-        val returned: Boolean? =
+        val returned: Long? =
             eseguiChiamataREST("associazioneProfilo", viewModel.toAccountInfo())
 
-        if (returned != true) {
+        if (returned == null || returned == 0L) {
             pulsanteFine.isEnabled = false
 
             Toast.makeText(
@@ -62,7 +63,9 @@ class ControllerAssociazioneProfilo : Controller(R.layout.associaprofilo) {
                 R.string.apiError,
                 Toast.LENGTH_SHORT
             ).show()
-        } else
+        } else {
+            CurrentUser.id = returned
             listener?.onFragmentChangeActivity(Home::class.java)
+        }
     }
 }

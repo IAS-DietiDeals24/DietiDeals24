@@ -167,7 +167,7 @@ class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase
             .setTitleText(R.string.creazioneProfiloFase1_titoloPopupData)
             .setCalendarConstraints(calendarConstraints.build())
             .setSelection(
-                if (viewModel.dataNascita.value?.time == (0.toLong()))
+                if (viewModel.dataNascita.value?.time == 0L)
                     MaterialDatePicker.todayInUtcMilliseconds()
                 else
                     viewModel.dataNascita.value?.time

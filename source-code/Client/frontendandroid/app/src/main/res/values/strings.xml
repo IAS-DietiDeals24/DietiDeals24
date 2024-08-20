@@ -88,26 +88,26 @@
     <string name="crea_descrizione">Product description</string>
     <string name="crea_categoria">Category</string>
     <string name="crea_pulsanteCrea">Create</string>
-    <string name="accessoRegistrazione_accessibilitàEmail" translatable="false"></string>
-    <string name="accessoRegistrazione_accessibilitàPassword" translatable="false"></string>
-    <string name="crea_accessibilitàPrezzo" translatable="false"></string>
-    <string name="crea_accessibilitàDataScadenza" translatable="false"></string>
-    <string name="crea_accessibilitàOra" translatable="false"></string>
-    <string name="crea_accessibilitàNome" translatable="false"></string>
-    <string name="crea_accessibilitàDescrizione" translatable="false"></string>
-    <string name="crea_accessibilitàCategoria" translatable="false"></string>
-    <string name="creazioneProfiloFase1_accessibilitàNomeUtente" translatable="false"></string>
-    <string name="creazioneProfiloFase1_accessibilitàNome" translatable="false"></string>
-    <string name="creazioneProfiloFase1_accessibilitàCognome" translatable="false"></string>
-    <string name="creazioneProfiloFase1_accessibilitàDataNascita" translatable="false"></string>
-    <string name="creazioneProfiloFase2_accessibilitàBiografia" translatable="false"></string>
-    <string name="creazioneProfiloFase2_accessibilitàAreaGeografica" translatable="false"></string>
-    <string name="creazioneProfiloFase2_accessibilitàGenere" translatable="false"></string>
-    <string name="creazioneProfiloFase3_accessibilitàLinkPersonale" translatable="false"></string>
-    <string name="creazioneProfiloFase3_accessibilitàLinkInstagram" translatable="false"></string>
-    <string name="creazioneProfiloFase3_accessibilitàLinkFacebook" translatable="false"></string>
-    <string name="creazioneProfiloFase3_accessibilitàLinkGitHub" translatable="false"></string>
-    <string name="creazioneProfiloFase3_accessibilitàLinkX" translatable="false"></string>
+    <string name="accessoRegistrazione_accessibilitàEmail">Email</string>
+    <string name="accessoRegistrazione_accessibilitàPassword">Password</string>
+    <string name="crea_accessibilitàPrezzo">Price</string>
+    <string name="crea_accessibilitàDataScadenza">End date</string>
+    <string name="crea_accessibilitàOraScadenza">End time</string>
+    <string name="crea_accessibilitàNome">Product name</string>
+    <string name="crea_accessibilitàDescrizione">Product description</string>
+    <string name="crea_accessibilitàCategoria">Category</string>
+    <string name="creazioneProfiloFase1_accessibilitàNomeUtente">Username</string>
+    <string name="creazioneProfiloFase1_accessibilitàNome">Name</string>
+    <string name="creazioneProfiloFase1_accessibilitàCognome">Surname</string>
+    <string name="creazioneProfiloFase1_accessibilitàDataNascita">Birthdate</string>
+    <string name="creazioneProfiloFase2_accessibilitàBiografia">Biography</string>
+    <string name="creazioneProfiloFase2_accessibilitàAreaGeografica">Geographic location</string>
+    <string name="creazioneProfiloFase2_accessibilitàGenere">Gender</string>
+    <string name="creazioneProfiloFase3_accessibilitàLinkPersonale">Personal link</string>
+    <string name="creazioneProfiloFase3_accessibilitàLinkInstagram">Instagram link</string>
+    <string name="creazioneProfiloFase3_accessibilitàLinkFacebook">Facebook link</string>
+    <string name="creazioneProfiloFase3_accessibilitàLinkGitHub">GitHub link</string>
+    <string name="creazioneProfiloFase3_accessibilitàLinkX">X link</string>
     <string name="dettagliAsta_titolo">Auction details</string>
     <string name="dettagliAsta_accessibilitàAiuto">Auction help</string>
     <string name="dettagliAsta_scadenza">Expires</string>
@@ -115,7 +115,7 @@
     <string name="asta_scadenza">Expires</string>
     <string name="dettagliAsta_creataDa">Created by</string>
     <string name="dettagliAsta_titoloDescrizione">Product description</string>
-    <string name="dettagliAsta_testoOfferta">The highest offering is:</string>
+    <string name="dettagliAsta_testoOfferta1">The highest offering is:</string>
     <string name="dettagliAsta_pulsanteOfferta">Make offering</string>
     <string name="dettagliProfilo_tipoAccount">%1$s profile</string>
     <string name="dettagliProfilo_etichettaNome">Name</string>
@@ -123,7 +123,7 @@
     <string name="dettagliProfilo_etichettaEmail">Email</string>
     <string name="dettagliProfilo_etichettaDataNascita">Birthdate</string>
     <string name="dettagliProfilo_etichettaGenere">Gender</string>
-    <string name="dettagliProfilo_etichettaAreaGeografica">Geographic area</string>
+    <string name="dettagliProfilo_etichettaAreaGeografica">Geographic location</string>
     <string name="dettagliProfilo_etichettaBiografia">Biography</string>
     <string name="dettagliProfilo_etichettaLinkPersonale">Personal link</string>
     <string name="dettagliProfilo_etichettaSocial">Social links</string>
@@ -132,5 +132,12 @@
     <string name="modificaProfilo_accessibilitàConferma">Confirm</string>
     <string name="modificaProfilo_titolo">Edit profile</string>
     <string name="creazioneProfiloFase1_titoloPopupData">Select your birthdate</string>
-    <string name="ok" translatable="false">OK</string>
+    <string name="ok">OK</string>
+    <string name="tipoAsta_astaInversa">Inverse</string>
+    <string name="tipoAsta_astaSilenziosa">Silent</string>
+    <string name="tipoAsta_astaTempoFisso">Fixed time</string>
+    <string name="card_accessibilitàModificaAsta">Edit auction</string>
+    <string name="card_accesisbilitàEliminaAsta">Delete auction</string>
+    <string name="card_accessibilitàElencoOfferte">Offerings list</string>
+    <string name="dettagliAsta_testoOfferta2">The lowest offering is:</string>
 </resources>

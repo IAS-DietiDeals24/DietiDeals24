@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:text="@string/placeholder"
+            android:text="@string/crea_tipoAsta"
             android:textColor="@color/blu"
             android:textSize="20sp"
             app:fontFamily="@font/fira_sans_bold" />
@@ -252,7 +252,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:paddingVertical="10dp"
-                android:text="@string/dettagliAsta_testoOfferta"
+                android:text="@string/dettagliAsta_testoOfferta1"
                 android:textColor="@color/blu"
                 android:textSize="14sp"
                 app:fontFamily="@font/fira_sans" />

@@ -28,3 +28,13 @@ object APIController {
 object DataStore {
     val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "dietideals24")
 }
+
+object CurrentUser {
+    private var _id: Long = 0
+
+    var id: Long
+        get() = _id
+        set(value) {
+            _id = value
+        }
+}

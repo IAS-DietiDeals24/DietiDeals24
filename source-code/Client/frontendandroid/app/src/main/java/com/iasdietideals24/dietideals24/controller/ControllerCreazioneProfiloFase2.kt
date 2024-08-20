@@ -20,6 +20,7 @@ import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
 
 class ControllerCreazioneProfiloFase2 : Controller(R.layout.creazioneprofilofase2) {
@@ -79,7 +80,7 @@ class ControllerCreazioneProfiloFase2 : Controller(R.layout.creazioneprofilofase
             }
 
         selectPhoto = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            viewModel.immagineProfilo.value = uri
+            viewModel.immagineProfilo.value = ImageHandler().encodeImage(uri, fragmentContext)
         }
     }
 
@@ -118,15 +119,15 @@ class ControllerCreazioneProfiloFase2 : Controller(R.layout.creazioneprofilofase
     @Suppress("SENSELESS_COMPARISON")
     @UIBuilder
     override fun impostaOsservatori() {
-        val immagineObserver = Observer<Uri> { newUri: Uri? ->
+        val immagineObserver = Observer<ByteArray> { newByteArray: ByteArray? ->
             when {
-                newUri == null || newUri.toString() == "" -> {
+                newByteArray == null || newByteArray.isEmpty() -> {
                     campoImmagine.scaleType = ImageView.ScaleType.CENTER_INSIDE
                     campoImmagine.setImageResource(R.drawable.icona_fotocamera)
                 }
 
-                newUri != null -> {
-                    campoImmagine.load(newUri) {
+                newByteArray != null -> {
+                    campoImmagine.load(newByteArray) {
                         crossfade(true)
                     }
                     campoImmagine.scaleType = ImageView.ScaleType.CENTER_CROP

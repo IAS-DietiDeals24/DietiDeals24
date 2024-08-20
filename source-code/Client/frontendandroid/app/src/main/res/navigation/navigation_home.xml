@@ -12,15 +12,16 @@
         <action
             android:id="@+id/action_controllerHome_to_controllerDettagliAsta"
             app:destination="@id/controllerDettagliAsta" />
-        <action
-            android:id="@+id/action_controllerHome_to_controllerDettagliProfilo"
-            app:destination="@id/controllerDettagliProfilo" />
     </fragment>
     <fragment
         android:id="@+id/controllerCreaAsta"
         android:name="com.iasdietideals24.dietideals24.controller.ControllerCreaAsta"
         android:label="ControllerCreaAsta"
-        tools:layout="@layout/creaasta" />
+        tools:layout="@layout/creaasta">
+        <action
+            android:id="@+id/action_controllerCreaAsta_to_controllerHome"
+            app:destination="@id/controllerHome" />
+    </fragment>
     <fragment
         android:id="@+id/controllerNotifiche"
         android:name="com.iasdietideals24.dietideals24.controller.ControllerNotifiche"
@@ -46,10 +47,28 @@
         android:id="@+id/controllerDettagliAsta"
         android:name="com.iasdietideals24.dietideals24.controller.ControllerDettagliAsta"
         android:label="ControllerDettagliAsta"
-        tools:layout="@layout/dettagliasta" />
+        tools:layout="@layout/dettagliasta">
+        <argument
+            android:name="id"
+            android:defaultValue="0L"
+            app:argType="long" />
+    </fragment>
     <fragment
         android:id="@+id/controllerDettagliProfilo"
         android:name="com.iasdietideals24.dietideals24.controller.ControllerDettagliProfilo"
         android:label="ControllerDettagliProfilo"
-        tools:layout="@layout/dettagliprofilo" />
+        tools:layout="@layout/dettagliprofilo">
+        <action
+            android:id="@+id/action_controllerDettagliProfilo_to_controllerModificaProfilo"
+            app:destination="@id/controllerModificaProfilo" />
+    </fragment>
+    <fragment
+        android:id="@+id/controllerModificaProfilo"
+        android:name="com.iasdietideals24.dietideals24.controller.ControllerModificaProfilo"
+        android:label="ControllerModificaProfilo"
+        tools:layout="@layout/modificaprofilo">
+        <action
+            android:id="@+id/action_controllerModificaProfilo_to_controllerDettagliProfilo"
+            app:destination="@id/controllerDettagliProfilo" />
+    </fragment>
 </navigation>

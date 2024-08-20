@@ -72,4 +72,9 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">15.dp</item>
     </style>
+
+    <style name="DropdownText">
+        <item name="android:fontFamily">@font/fira_sans</item>
+        <item name="android:textSize">16.sp</item>
+    </style>
 </resources>

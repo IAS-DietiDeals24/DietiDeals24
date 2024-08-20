@@ -1,4 +1,4 @@
-package com.iasdietideals24.dietideals24.utilities.classes
+package com.iasdietideals24.dietideals24.utilities.classes.data
 
 data class AccountInfo(
     private var _facebookId: String? = "",

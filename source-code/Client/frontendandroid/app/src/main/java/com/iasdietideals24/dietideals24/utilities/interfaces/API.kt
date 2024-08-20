@@ -1,49 +1,45 @@
 package com.iasdietideals24.dietideals24.utilities.interfaces
 
-import com.iasdietideals24.dietideals24.utilities.classes.AccountInfo
-import com.iasdietideals24.dietideals24.utilities.classes.AccountProfileInfo
+import com.iasdietideals24.dietideals24.utilities.classes.data.AccountInfo
+import com.iasdietideals24.dietideals24.utilities.classes.data.AccountInfoProfilo
+import com.iasdietideals24.dietideals24.utilities.classes.data.DatiAnteprimaAsta
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
+import java.lang.Long
 
 interface API {
     /**
      * Il metodo recupera l'identificativo dell'account che ha effettuato l'accesso.
      * La password salvata è in formato hash, quindi dovrebbe essere convertita e confrontata con quella inserita dall'utente.
-     * @param mode Indica se si sta effettuando la chiamata in ambiente di sviluppo o in produzione.
      * @param accountEmail Email dell'account che sta tentando di accedere.
      * @param accountPassword Password dell'account che sta tentando di accedere.
      * @param tipoAccount Indica il tipo di account che sta tentando di accedere.
-     * @return Un intero che rappresenta l'identificativo dell'account che ha effettuato l'accesso. Se l'account non esiste, viene restituito 0.
+     * @return L'identificativo dell'account che ha effettuato l'accesso. Se l'account non esiste, viene restituito 0.
      */
     @GET("accesso/accedi")
     fun accedi(
-        @Header("MODE") mode: Int,
         @Query("email") accountEmail: String,
         @Query("password") accountPassword: String,
         @Query("tipoAccount") tipoAccount: String
-    ): Call<Int>
+    ): Call<Long>
 
     /**
      * Il metodo controlla se l'email è già associata a un account dello stesso tipo.
-     * @param mode Indica se si sta effettuando la chiamata in ambiente di sviluppo o in produzione.
      * @param accountEmail Email dell'account che sta tentando di registrarsi.
      * @param tipoAccount Indica il tipo di account che sta tentando di registrarsi.
      * @return Un booleano che indica se l'email è già associata a un account dello stesso tipo.
      */
     @GET("registrazione/esisteEmail")
     fun esisteEmail(
-        @Header("MODE") mode: Int,
         @Query("email") accountEmail: String,
         @Query("tipoAccount") tipoAccount: String
     ): Call<Boolean>
 
     /**
      * Il metodo controlla se l'email è già associata a un account di tipo diverso.
-     * @param mode Indica se si sta effettuando la chiamata in ambiente di sviluppo o in produzione.
      * @param accountEmail Email dell'account che sta tentando di registrarsi.
      * @param accountPassword Password dell'account che sta tentando di registrarsi.
      * @param tipoAccount Indica il tipo di account che sta tentando di registrarsi.
@@ -51,7 +47,6 @@ interface API {
      */
     @GET("registrazione/associaCreaProfilo")
     fun associaCreaProfilo(
-        @Header("MODE") mode: Int,
         @Query("email") accountEmail: String,
         @Query("password") accountPassword: String,
         @Query("tipoAccount") tipoAccount: String
@@ -60,39 +55,59 @@ interface API {
     /**
      * Il metodo recupera l'ID dell'account associato all'ID dell'account Facebook, ma solo se
      * l'utente ha un account dello stesso tipo che ha selezionato.
-     * @param mode Indica se si sta effettuando la chiamata in ambiente di sviluppo o in produzione.
      * @param facebookId Identificativo dell'account Facebook dell'utente.
      * @param tipoAccount Indica il tipo di account che sta tentando di accedere o registrarsi.
      * @return L'identificativo dell'account
      */
     @GET("accountFacebook")
     fun accountFacebook(
-        @Header("MODE") mode: Int,
         @Query("facebookId") facebookId: String,
         @Query("tipoAccount") tipoAccount: String
-    ): Call<Int>
+    ): Call<Long>
 
     /**
      * Registra i dati del nuovo account e li associa al profilo già esistente.
-     * @param mode Indica se si sta effettuando la chiamata in ambiente di sviluppo o in produzione.
      * @param accountInfo Wrapper con le informazioni necessarie a creare il nuovo account.
-     * @return Indica se l'operazione di associazione è andata a buon fine.
+     * @return L'identificativo dell'account appena creato ed associato.
      */
     @POST("registrazione/associazioneProfilo")
     fun associazioneProfilo(
-        @Header("MODE") mode: Int,
         @Body accountInfo: AccountInfo
-    ): Call<Boolean>
+    ): Call<Long>
 
     /**
      * Registra i dati del nuovo account e crea un nuovo profilo da associare a tale account.
-     * @param mode Indica se si sta effettuando la chiamata in ambiente di sviluppo o in produzione.
      * @param modelRegistrazione Wrapper con le informazioni necessarie a creare il nuovo account e il nuovo profilo.
-     * @return Indica se l'operazione di creazione è andata a buon fine.
+     * @return L'identificativo dell'account appena creato.
      */
     @POST("registrazione/creazioneProfilo")
     fun creazioneProfilo(
-        @Header("MODE") mode: Int,
-        @Body dataClass: AccountProfileInfo
-    ): Call<Boolean>
+        @Body dataClass: AccountInfoProfilo
+    ): Call<Long>
+
+    /**
+     * Recupera l'elenco di tutte le aste con le quali può interagire l'utente che ha attualmente
+     * effettuato il login.
+     * @param idAccount Identificativo dell'account che ha effettuato l'accesso.
+     * @return L'elenco delle aste da mostrare nella home.
+     */
+    @GET("home/recuperaAste")
+    fun recuperaAste(
+        @Query("idAccount") idAccount: Long
+    ): Call<Array<DatiAnteprimaAsta>>
+
+    /**
+     * Recupera l'elenco di tutte le aste con le quali può interagire l'utente che ha attualmente
+     * effettuato il login in base ai filtri di ricerca specificati.
+     * @param idAccount Identificativo dell'account che ha effettuato l'accesso.
+     * @param ricerca Stringa di ricerca specificata dall'utente.
+     * @param filtro Filtro specificato dall'utente.
+     * @return L'elenco delle aste da mostrare nella home dopo la ricerca e/o il filtro.
+     */
+    @GET("home/ricercaAste")
+    fun ricercaAste(
+        @Query("idAccount") idAccount: Long,
+        @Query("ricerca") ricerca: String,
+        @Query("filtro") filtro: String
+    ): Call<Array<DatiAnteprimaAsta>>
 }

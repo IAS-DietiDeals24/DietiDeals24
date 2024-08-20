@@ -1,13 +1,11 @@
 package com.iasdietideals24.dietideals24.model
 
-import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
 import com.iasdietideals24.dietideals24.utilities.classes.APIController
-import com.iasdietideals24.dietideals24.utilities.classes.APIMode
-import com.iasdietideals24.dietideals24.utilities.classes.AccountInfo
-import com.iasdietideals24.dietideals24.utilities.classes.AccountProfileInfo
+import com.iasdietideals24.dietideals24.utilities.classes.data.AccountInfo
+import com.iasdietideals24.dietideals24.utilities.classes.data.AccountInfoProfilo
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
@@ -76,11 +74,11 @@ class ModelRegistrazione : ViewModel() {
     val dataNascita: MutableLiveData<Date>
         get() = _dataNascita
 
-    private val _immagineProfilo: MutableLiveData<Uri> by lazy {
-        MutableLiveData<Uri>()
+    private val _immagineProfilo: MutableLiveData<ByteArray> by lazy {
+        MutableLiveData<ByteArray>()
     }
 
-    val immagineProfilo: MutableLiveData<Uri>
+    val immagineProfilo: MutableLiveData<ByteArray>
         get() = _immagineProfilo
 
 
@@ -150,7 +148,7 @@ class ModelRegistrazione : ViewModel() {
         _nome.value = ""
         _cognome.value = ""
         _dataNascita.value = Date(0)
-        _immagineProfilo.value = Uri.EMPTY
+        _immagineProfilo.value = ByteArray(0)
         _biografia.value = ""
         _areaGeografica.value = ""
         _genere.value = ""
@@ -170,8 +168,8 @@ class ModelRegistrazione : ViewModel() {
         )
     }
 
-    fun toAccountProfileInfo(): AccountProfileInfo {
-        return AccountProfileInfo(
+    fun toAccountProfileInfo(): AccountInfoProfilo {
+        return AccountInfoProfilo(
             AccountInfo(
                 _facebookAccountID.value,
                 _email.value,
@@ -248,7 +246,6 @@ class ModelRegistrazione : ViewModel() {
 
         val call =
             APIController.instance.esisteEmail(
-                APIMode.DEBUG.ordinal,
                 email.value!!,
                 tipoAccount.value!!
             )

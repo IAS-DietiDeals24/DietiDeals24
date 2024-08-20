@@ -6,74 +6,77 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grigio"
-    android:orientation="vertical"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
+    android:gravity="center"
+    android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/home_constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/home_campoRicerca"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="20dp"
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/home_campoRicerca"
-            android:layout_width="320dp"
+        android:hint="@string/home_cerca"
+        app:boxBackgroundColor="@color/bianco"
+        app:boxCornerRadiusBottomEnd="30dp"
+        app:boxCornerRadiusBottomStart="30dp"
+        app:boxCornerRadiusTopEnd="30dp"
+        app:boxCornerRadiusTopStart="30dp"
+        app:boxStrokeColor="@color/arancione"
+        app:boxStrokeErrorColor="@color/rosso"
+        app:boxStrokeWidth="1.5dp"
+        app:cursorColor="@color/arancione"
+        app:cursorErrorColor="@color/rosso"
+        app:endIconDrawable="@drawable/icona_lente"
+        app:endIconMode="custom"
+        app:endIconTint="@color/blu"
+        app:errorIconTint="@color/rosso"
+        app:errorTextColor="@color/arancione"
+        app:hintTextColor="@color/arancione">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/home_ricerca"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
 
-            android:hint="@string/home_cerca"
-            app:boxBackgroundColor="@color/bianco"
-            app:boxCornerRadiusBottomEnd="30dp"
-            app:boxCornerRadiusBottomStart="30dp"
-            app:boxCornerRadiusTopEnd="30dp"
-            app:boxCornerRadiusTopStart="30dp"
-            app:boxStrokeColor="@color/arancione"
-            app:boxStrokeErrorColor="@color/rosso"
-            app:boxStrokeWidth="1.5dp"
-            app:cursorColor="@color/arancione"
-            app:cursorErrorColor="@color/rosso"
-            app:endIconDrawable="@drawable/icona_lente"
-            app:endIconMode="custom"
-            app:endIconTint="@color/blu"
-            app:errorIconTint="@color/rosso"
-            app:errorTextColor="@color/arancione"
-            app:hintTextColor="@color/arancione"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:inputType="text"
+            android:textColor="@color/nero" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/home_ricerca"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+    </com.google.android.material.textfield.TextInputLayout>
 
-                android:inputType="text"
-                android:textColor="@color/nero" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/home_campoFiltro"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
 
-        </com.google.android.material.textfield.TextInputLayout>
+        android:hint="@string/home_filtra"
+        app:boxBackgroundColor="@color/bianco"
+        app:boxCornerRadiusBottomEnd="30dp"
+        app:boxCornerRadiusBottomStart="30dp"
+        app:boxCornerRadiusTopEnd="30dp"
+        app:boxCornerRadiusTopStart="30dp"
+        app:boxStrokeColor="@color/arancione"
+        app:boxStrokeErrorColor="@color/rosso"
+        app:boxStrokeWidth="1.5dp"
+        app:cursorColor="@color/arancione"
+        app:cursorErrorColor="@color/rosso"
+        app:endIconDrawable="@drawable/icona_filtro"
+        app:endIconMode="dropdown_menu"
+        app:endIconTint="@color/blu"
+        app:errorIconTint="@color/rosso"
+        app:errorTextColor="@color/arancione"
+        app:hintTextColor="@color/arancione">
 
-        <com.google.android.material.button.MaterialButton
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
             android:id="@+id/home_filtro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/bianco"
-            android:fontFamily="@font/fira_sans_medium"
-            android:text="@string/home_filtra"
-            android:textColor="@color/blu"
-            android:textSize="11sp"
-            app:icon="@drawable/icona_filtro"
-            app:iconGravity="end"
-            app:iconTint="@color/blu"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/home_campoRicerca"
-            app:layout_constraintTop_toBottomOf="@+id/home_campoRicerca"
-            app:strokeColor="#939393"
-            app:strokeWidth="1dp" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:enabled="false"
+            android:paddingHorizontal="15dp"
+            android:textAppearance="@style/DropdownText"
+            android:textColor="@color/nero" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_recyclerView"
@@ -86,5 +89,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_constraintLayout"
         tools:listitem="@layout/asta" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/home_zoom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:visibility="invisible" />
 
 </LinearLayout>

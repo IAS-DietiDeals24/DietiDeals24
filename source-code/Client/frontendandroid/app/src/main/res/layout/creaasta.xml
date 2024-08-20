@@ -67,6 +67,7 @@
                     app:endIconTint="@null"
                     app:errorIconTint="@color/rosso"
                     app:errorTextColor="@color/arancione"
+                    app:hintTextColor="@color/arancione"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -133,6 +134,7 @@
                     app:endIconTint="@null"
                     app:errorIconTint="@color/rosso"
                     app:errorTextColor="@color/arancione"
+                    app:hintTextColor="@color/arancione"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -144,7 +146,7 @@
                         android:layout_height="wrap_content"
 
                         android:enabled="false"
-                        android:hint="@string/crea_accessibilitàOra"
+                        android:hint="@string/crea_accessibilitàOraScadenza"
                         android:inputType="time"
                         android:textColor="@color/nero" />
 
@@ -196,6 +198,7 @@
                     app:cursorErrorColor="@color/rosso"
                     app:errorIconTint="@color/rosso"
                     app:errorTextColor="@color/arancione"
+                    app:hintTextColor="@color/arancione"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -296,6 +299,7 @@
                     app:cursorErrorColor="@color/rosso"
                     app:errorIconTint="@color/rosso"
                     app:errorTextColor="@color/arancione"
+                    app:hintTextColor="@color/arancione"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -343,7 +347,7 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/crea_campoCategoria"
                     android:layout_width="320dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="60dp"
                     android:layout_margin="20dp"
 
                     app:boxBackgroundColor="@color/bianco"
@@ -361,6 +365,7 @@
                     app:endIconTint="@null"
                     app:errorIconTint="@color/rosso"
                     app:errorTextColor="@color/arancione"
+                    app:hintTextColor="@color/arancione"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -373,6 +378,7 @@
                         android:enabled="false"
                         android:hint="@string/crea_accessibilitàCategoria"
                         android:paddingHorizontal="15dp"
+                        android:textAppearance="@style/DropdownText"
                         android:textColor="@color/nero" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -423,6 +429,7 @@
                     app:cursorErrorColor="@color/rosso"
                     app:errorIconTint="@color/rosso"
                     app:errorTextColor="@color/arancione"
+                    app:hintTextColor="@color/arancione"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

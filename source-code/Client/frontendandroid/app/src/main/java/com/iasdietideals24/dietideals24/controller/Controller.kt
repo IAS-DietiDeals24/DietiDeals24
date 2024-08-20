@@ -17,7 +17,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.annotations.Utility
 import com.iasdietideals24.dietideals24.utilities.classes.APIController
-import com.iasdietideals24.dietideals24.utilities.classes.APIMode
 import com.iasdietideals24.dietideals24.utilities.classes.DataStore.dataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -138,11 +137,11 @@ abstract class Controller(
 
         val argTypes: Array<Class<Any>?> = args.map { it?.javaClass }.toTypedArray()
         val method: Method =
-            APIController.instance.javaClass.getMethod(methodName, Int::class.java, *argTypes)
+            APIController.instance.javaClass.getMethod(methodName, *argTypes)
 
         @Suppress("UNCHECKED_CAST")
         val call: Call<Model> =
-            method.invoke(APIController.instance, APIMode.DEBUG.ordinal, *args) as Call<Model>
+            method.invoke(APIController.instance, *args) as Call<Model>
 
         call.enqueue(object : Callback<Model> {
             override fun onResponse(call: Call<Model>, response: Response<Model>) {
@@ -318,6 +317,7 @@ abstract class Controller(
      * Carica in maniera asincrona una preferenza dal datastore dell'applicazione.
      * @param name La chiave della preferenza da caricare.
      * @param value Il valore della preferenza da caricare.
+     * @return Il valore della preferenza caricata.
      */
     @Utility
     protected suspend fun caricaPreferenzaStringa(name: String): String {

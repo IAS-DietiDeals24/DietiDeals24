@@ -19,10 +19,13 @@ import com.iasdietideals24.dietideals24.activities.Home
 import com.iasdietideals24.dietideals24.model.ModelAccesso
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAccountNonEsistente
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class ControllerAccesso : Controller(R.layout.accesso) {
@@ -116,7 +119,7 @@ class ControllerAccesso : Controller(R.layout.accesso) {
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    val returned: Int? = eseguiChiamataREST(
+                    val returned: Long? = eseguiChiamataREST(
                         "accountFacebook",
                         result.accessToken.userId, tipoAccount.text.toString()
                     )
@@ -127,7 +130,7 @@ class ControllerAccesso : Controller(R.layout.accesso) {
                             getString(R.string.apiError),
                             Toast.LENGTH_SHORT
                         ).show()
-                    else if (returned == 0) // non esiste un account associato a questo account Facebook con questo tipo
+                    else if (returned == 0L) // non esiste un account associato a questo account Facebook con questo tipo
                         Toast.makeText(
                             fragmentContext,
                             getString(R.string.accesso_noAccountFacebookCollegato),
@@ -178,7 +181,7 @@ class ControllerAccesso : Controller(R.layout.accesso) {
         try {
             viewModel.validate()
 
-            val returned: Int? = eseguiChiamataREST(
+            val returned: Long? = eseguiChiamataREST(
                 "accedi",
                 viewModel.email.value,
                 viewModel.password.value,
@@ -186,10 +189,16 @@ class ControllerAccesso : Controller(R.layout.accesso) {
             )
             if (returned == null)
                 throw EccezioneAPI("Errore di comunicazione con il server.")
-            else if (returned == 0)
+            else if (returned == 0L)
                 throw EccezioneAccountNonEsistente("Account non esistente.")
-            else
+            else {
+                GlobalScope.launch {
+                    salvaPreferenzaStringa("email", viewModel.email.value!!)
+                    salvaPreferenzaStringa("password", viewModel.password.value!!)
+                }
+                CurrentUser.id = returned
                 listenerChangeActivity?.onFragmentChangeActivity(Home::class.java)
+            }
         } catch (eccezione: EccezioneAccountNonEsistente) {
             erroreCampo(R.string.accesso_erroreCredenzialiNonCorrette, campoEmail, campoPassword)
         } catch (eccezione: EccezioneAPI) {

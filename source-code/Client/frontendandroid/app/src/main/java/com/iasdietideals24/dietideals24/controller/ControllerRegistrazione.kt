@@ -6,7 +6,6 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.net.toUri
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import com.facebook.AccessToken
@@ -133,7 +132,7 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    val returned: Int? = eseguiChiamataREST(
+                    val returned: Long? = eseguiChiamataREST(
                         "accountFacebook",
                         result.accessToken.userId, tipoAccount.text.toString()
                     )
@@ -146,7 +145,7 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
                         ).show()
 
                         LoginManager.getInstance().logOut()
-                    } else if (returned == 0) { // non esiste un account associato a questo account Facebook con questo tipo, registrati
+                    } else if (returned == 0L) { // non esiste un account associato a questo account Facebook con questo tipo, registrati
                         queryFacebookGraph(result.accessToken)
 
                         try {
@@ -287,10 +286,6 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
                     viewModel.cognome.postValue(obj?.optString("last_name"))
                     viewModel.dataNascita.postValue(obj?.optString("birthday")
                         ?.let { estraiDataDaStringa("MM/dd/yyyy", it) })
-                    viewModel.immagineProfilo.postValue(
-                        obj?.optJSONObject("picture")?.optJSONObject("data")?.optString("url")
-                            ?.toUri()
-                    )
                     viewModel.biografia.postValue(obj?.optString("about"))
                     viewModel.areaGeografica.postValue(
                         obj?.optJSONObject("location")?.optString("name")
@@ -302,7 +297,7 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
         val parameters = Bundle()
         parameters.putString(
             "fields",
-            "email,name,middle_name,last_name,birthday,picture,about,location,gender"
+            "email,name,middle_name,last_name,birthday,about,location,gender"
         )
         request.parameters = parameters
         request.executeAsync()

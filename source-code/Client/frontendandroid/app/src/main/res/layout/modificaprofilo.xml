@@ -145,20 +145,22 @@
                 app:boxCornerRadiusBottomStart="30dp"
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp"
-                app:boxStrokeColor="@color/blu"
+                app:boxStrokeColor="@color/arancione"
                 app:boxStrokeErrorColor="@color/rosso"
                 app:boxStrokeWidth="1.5dp"
-                app:cursorColor="@color/blu"
+                app:cursorColor="@color/arancione"
                 app:cursorErrorColor="@color/rosso"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/blu"
                 app:errorIconTint="@color/rosso"
-                app:errorTextColor="@color/blu">
+                app:errorTextColor="@color/arancione"
+                app:hintTextColor="@color/arancione">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/modificaProfilo_nome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/creazioneProfiloFase1_accessibilitàNome"
                     android:inputType="text"
                     android:textColor="@color/nero" />
 
@@ -209,20 +211,22 @@
                 app:boxCornerRadiusBottomStart="30dp"
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp"
-                app:boxStrokeColor="@color/blu"
+                app:boxStrokeColor="@color/arancione"
                 app:boxStrokeErrorColor="@color/rosso"
                 app:boxStrokeWidth="1.5dp"
-                app:cursorColor="@color/blu"
+                app:cursorColor="@color/arancione"
                 app:cursorErrorColor="@color/rosso"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/blu"
                 app:errorIconTint="@color/rosso"
-                app:errorTextColor="@color/blu">
+                app:errorTextColor="@color/arancione"
+                app:hintTextColor="@color/arancione">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/modificaProfilo_cognome"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/creazioneProfiloFase1_accessibilitàCognome"
                     android:inputType="text"
                     android:textColor="@color/nero" />
 
@@ -273,15 +277,16 @@
                 app:boxCornerRadiusBottomStart="30dp"
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp"
-                app:boxStrokeColor="@color/blu"
+                app:boxStrokeColor="@color/arancione"
                 app:boxStrokeErrorColor="@color/rosso"
                 app:boxStrokeWidth="1.5dp"
-                app:cursorColor="@color/blu"
+                app:cursorColor="@color/arancione"
                 app:cursorErrorColor="@color/rosso"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/blu"
                 app:errorIconTint="@color/rosso"
-                app:errorTextColor="@color/blu">
+                app:errorTextColor="@color/arancione"
+                app:hintTextColor="@color/arancione">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/modificaProfilo_email"
@@ -338,17 +343,18 @@
                 app:boxCornerRadiusBottomStart="30dp"
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp"
-                app:boxStrokeColor="@color/blu"
+                app:boxStrokeColor="@color/arancione"
                 app:boxStrokeErrorColor="@color/rosso"
                 app:boxStrokeWidth="1.5dp"
-                app:cursorColor="@color/blu"
+                app:cursorColor="@color/arancione"
                 app:cursorErrorColor="@color/rosso"
                 app:endIconDrawable="@drawable/icona_calendario_arancione"
                 app:endIconMode="custom"
                 app:endIconTint="@null"
                 app:endIconTintMode="multiply"
                 app:errorIconTint="@color/rosso"
-                app:errorTextColor="@color/blu">
+                app:errorTextColor="@color/arancione"
+                app:hintTextColor="@color/arancione">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/modificaProfilo_dataNascita"
@@ -397,15 +403,16 @@
                 app:boxCornerRadiusBottomStart="30dp"
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp"
-                app:boxStrokeColor="@color/blu"
+                app:boxStrokeColor="@color/arancione"
                 app:boxStrokeErrorColor="@color/rosso"
                 app:boxStrokeWidth="1.5dp"
-                app:cursorColor="@color/blu"
+                app:cursorColor="@color/arancione"
                 app:cursorErrorColor="@color/rosso"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/blu"
                 app:errorIconTint="@color/rosso"
-                app:errorTextColor="@color/blu">
+                app:errorTextColor="@color/arancione"
+                app:hintTextColor="@color/arancione">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/modificaProfilo_genere"
@@ -453,15 +460,16 @@
                 app:boxCornerRadiusBottomStart="30dp"
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp"
-                app:boxStrokeColor="@color/blu"
+                app:boxStrokeColor="@color/arancione"
                 app:boxStrokeErrorColor="@color/rosso"
                 app:boxStrokeWidth="1.5dp"
-                app:cursorColor="@color/blu"
+                app:cursorColor="@color/arancione"
                 app:cursorErrorColor="@color/rosso"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/blu"
                 app:errorIconTint="@color/rosso"
-                app:errorTextColor="@color/blu">
+                app:errorTextColor="@color/arancione"
+                app:hintTextColor="@color/arancione">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/modificaProfilo_areaGeografica"
@@ -509,20 +517,22 @@
                 app:boxCornerRadiusBottomStart="30dp"
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp"
-                app:boxStrokeColor="@color/blu"
+                app:boxStrokeColor="@color/arancione"
                 app:boxStrokeErrorColor="@color/rosso"
                 app:boxStrokeWidth="1.5dp"
-                app:cursorColor="@color/blu"
+                app:cursorColor="@color/arancione"
                 app:cursorErrorColor="@color/rosso"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/blu"
                 app:errorIconTint="@color/rosso"
-                app:errorTextColor="@color/blu">
+                app:errorTextColor="@color/arancione"
+                app:hintTextColor="@color/arancione">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/modificaProfilo_biografia"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/creazioneProfiloFase2_accessibilitàBiografia"
                     android:inputType="text"
                     android:textColor="@color/nero" />
 
@@ -627,20 +637,22 @@
                 app:boxCornerRadiusBottomStart="30dp"
                 app:boxCornerRadiusTopEnd="30dp"
                 app:boxCornerRadiusTopStart="30dp"
-                app:boxStrokeColor="@color/blu"
+                app:boxStrokeColor="@color/arancione"
                 app:boxStrokeErrorColor="@color/rosso"
                 app:boxStrokeWidth="1.5dp"
-                app:cursorColor="@color/blu"
+                app:cursorColor="@color/arancione"
                 app:cursorErrorColor="@color/rosso"
                 app:endIconMode="clear_text"
                 app:endIconTint="@color/blu"
                 app:errorIconTint="@color/rosso"
-                app:errorTextColor="@color/blu">
+                app:errorTextColor="@color/arancione"
+                app:hintTextColor="@color/arancione">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/modificaProfilo_linkPersonale"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/creazioneProfiloFase3_accessibilitàLinkPersonale"
                     android:inputType="text"
                     android:textColor="@color/nero" />
 

@@ -10,6 +10,7 @@ import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.Home
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentHideBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentShowBackButton
@@ -71,6 +72,23 @@ class ControllerSelezioneTipoAccount : Controller(R.layout.selezionetipoaccount)
                         ).show()
                     }
                 })
+
+        var email: String?
+        var password: String?
+        var tipoAccount: String?
+
+        runBlocking { email = caricaPreferenzaStringa("email") }
+        runBlocking { password = caricaPreferenzaStringa("password") }
+        runBlocking { tipoAccount = caricaPreferenzaStringa("tipoAccount") }
+
+        if (email != "" && password != "" && tipoAccount != "") {
+            val returned: Long? = eseguiChiamataREST("accedi", email, password, tipoAccount)
+
+            if (returned != null && returned != 0L) {
+                CurrentUser.id = returned
+                changeActivityListener?.onFragmentChangeActivity(Home::class.java)
+            }
+        }
     }
 
     @UIBuilder
