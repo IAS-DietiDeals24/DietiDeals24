@@ -127,7 +127,7 @@
                 android:textColor="@color/blu"
                 android:textSize="18sp"
                 app:backgroundTint="@color/bianco"
-                app:icon="@drawable/icona_aiuto"
+                app:icon="@drawable/icona_aiuto_blu"
                 app:iconGravity="end"
                 app:iconSize="40dp"
                 app:iconTint="@color/blu" />

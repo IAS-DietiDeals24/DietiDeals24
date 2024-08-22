@@ -130,4 +130,24 @@
     <string name="card_accesisbilitàEliminaAsta">Elimina asta</string>
     <string name="card_accessibilitàElencoOfferte">Elenco offerte</string>
     <string name="dettagliAsta_testoOfferta2">L\'offerta più bassa è:</string>
+    <string name="category_books">Libri</string>
+    <string name="category_comics_and_mangas">Fumetti e manga</string>
+    <string name="category_music">Musica</string>
+    <string name="category_movies_and_tv_shows">Film e serie TV</string>
+    <string name="category_videogames_and_consoles">Videogiochi e console</string>
+    <string name="category_electronics">Elettronica</string>
+    <string name="category_foods_and_drinks">Cibi e bevande</string>
+    <string name="category_pets_supplies">Scorte animali domestici</string>
+    <string name="category_bodycare_and_beauty">Cura del corpo e bellezza</string>
+    <string name="category_sports_and_hobbies">Sport e tempo libero</string>
+    <string name="category_clothings_and_wearables">Abiti ed indossabili</string>
+    <string name="category_home_and_furnitures">Casa e arredamenti</string>
+    <string name="category_vehicles">Veicoli</string>
+    <string name="category_other">Altro</string>
+    <string name="aiuto_titoloAstaSilenziosa">Cos\'è un\'asta silenziosa?</string>
+    <string name="aiuto_titoloAstaInversa">Cos\'è un\'asta inversa?</string>
+    <string name="aiuto_titoloAstaTempoFisso">Cos\'è un\'asta a tempo fisso?</string>
+    <string name="aiuto_astaSilenziosa">Un’asta silenziosa è un’asta creabile da un account di tipo venditore. Essa è caratterizzata da una data di scadenza, entro la quale degli account di tipo compratore possono offirire delle somme segrete (quindi non visualizzabili da altri compratori) al venditore. Il bene o servizio sarà aggiudicato al compratore la cui offerta è stata accettata dal venditore. Il venditore può in qualsiasi momento visualizzare le offerte dei compratori e rifiutarne un numero arbitrario, ma accettarne una sola.</string>
+    <string name="aiuto_astaInversa">Un’asta inversa è un’asta creabile da un account di tipo compratore. Essa è caratterizzata da una data di scadenza, entro la quale degli account di tipo venditore possono offirire delle somme minorative rispetto alla più bassa offerta corrente. Il compratore può anche inserire un prezzo massimo che è disposto a pagare, il quale diventerà il prezzo iniziale dell’asta. Se nessun venditore offre una cifra uguale o inferiore a tale soglia inziale, l’asta è dichiarata fallita al sopraggiungere della scadenza. Al momento della scadenza, il venditore che ha offerto la somma più bassa si aggiudica il bene o servizio.</string>
+    <string name="aiuto_astaTempoFisso">Un’asta a tempo fisso è un’asta creabile da un account di tipo venditore. Essa è caratterizzata da una data di scadenza, entro la quale degli account di tipo compratore possono offirire delle somme maggiorative rispetto alla più alta offerta corrente. Il venditore può anche inserire un prezzo minimo segreto (quindi non visualizzabile ad alcun utente ad eccezione del venditore). Se nessun compratore offre una cifra uguale o superiore a tale soglia minima, l’asta è dichiarata fallita al sopraggiungere della scadenza. Al momento della scadenza, il compratore che ha offerto la somma più alta si aggiudica il bene o servizio.</string>
 </resources>

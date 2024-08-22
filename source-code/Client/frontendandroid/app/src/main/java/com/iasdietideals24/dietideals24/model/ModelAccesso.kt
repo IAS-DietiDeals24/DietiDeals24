@@ -9,21 +9,21 @@ import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAccountNon
 class ModelAccesso : ViewModel() {
 
     private val _email: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val email: MutableLiveData<String>
         get() = _email
 
     private val _password: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val password: MutableLiveData<String>
         get() = _password
 
     private val _tipoAccount: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val tipoAccount: MutableLiveData<String>

@@ -46,6 +46,15 @@
                 android:id="@+id/asta_dataScadenza"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:fontFamily="@font/fira_sans_medium"
+                android:text="@string/placeholder"
+                android:textColor="@color/arancione" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/asta_oraScadenza"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/fira_sans_medium"
                 android:text="@string/placeholder"
                 android:textColor="@color/arancione" />

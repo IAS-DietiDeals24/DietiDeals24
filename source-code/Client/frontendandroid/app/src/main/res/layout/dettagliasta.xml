@@ -65,7 +65,7 @@
             android:contentDescription="@string/dettagliAsta_accessibilitàAiuto"
             android:scaleX="0.6"
             android:scaleY="0.6"
-            android:src="@drawable/icona_aiuto" />
+            android:src="@drawable/icona_aiuto_blu" />
 
     </LinearLayout>
 
@@ -252,7 +252,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:paddingVertical="10dp"
-                android:text="@string/dettagliAsta_testoOfferta1"
+                android:text="@string/placeholder"
                 android:textColor="@color/blu"
                 android:textSize="14sp"
                 app:fontFamily="@font/fira_sans" />

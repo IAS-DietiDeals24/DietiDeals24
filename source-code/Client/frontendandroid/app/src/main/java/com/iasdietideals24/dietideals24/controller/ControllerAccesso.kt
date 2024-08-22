@@ -24,6 +24,7 @@ import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAccountNonEsistente
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -172,6 +173,7 @@ class ControllerAccesso : Controller(R.layout.accesso) {
         listenerBackButton?.onFragmentBackButton()
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     @EventHandler
     private fun clickAccedi() {
         viewModel.email.value = estraiTestoDaElemento(email)

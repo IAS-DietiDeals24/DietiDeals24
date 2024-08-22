@@ -52,6 +52,9 @@
             android:name="id"
             android:defaultValue="0L"
             app:argType="long" />
+        <action
+            android:id="@+id/action_controllerDettagliAsta_to_controllerDettagliProfilo"
+            app:destination="@id/controllerDettagliProfilo" />
     </fragment>
     <fragment
         android:id="@+id/controllerDettagliProfilo"
@@ -61,6 +64,10 @@
         <action
             android:id="@+id/action_controllerDettagliProfilo_to_controllerModificaProfilo"
             app:destination="@id/controllerModificaProfilo" />
+        <argument
+            android:name="id"
+            android:defaultValue="0L"
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/controllerModificaProfilo"

@@ -3,6 +3,8 @@ package com.iasdietideals24.dietideals24.utilities.interfaces
 import com.iasdietideals24.dietideals24.utilities.classes.data.AccountInfo
 import com.iasdietideals24.dietideals24.utilities.classes.data.AccountInfoProfilo
 import com.iasdietideals24.dietideals24.utilities.classes.data.DatiAnteprimaAsta
+import com.iasdietideals24.dietideals24.utilities.classes.data.DatiNotifica
+import com.iasdietideals24.dietideals24.utilities.classes.data.DettagliAsta
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -110,4 +112,24 @@ interface API {
         @Query("ricerca") ricerca: String,
         @Query("filtro") filtro: String
     ): Call<Array<DatiAnteprimaAsta>>
+
+    /**
+     * Recupera i dettagli dell'asta specificata.
+     * @param idAsta Identificativo dell'asta da recuperare.
+     * @return I dettagli dell'asta specificata.
+     */
+    @GET("home/caricaAsta")
+    fun caricaAsta(
+        @Query("idAsta") idAsta: Long
+    ): Call<DettagliAsta>
+
+    /**
+     * Recupera tutte le notifiche che sono state indirizzate all'utente che ha effettuato l'accesso.
+     * @param idAccount Identificativo dell'account che ha effettuato l'accesso.
+     * @return L'elenco delle notifiche da mostrare all'utente.
+     */
+    @GET("home/recuperaNotifiche")
+    fun recuperaNotifiche(
+        @Query("idAccount") idAccount: Long
+    ): Call<Array<DatiNotifica>>
 }

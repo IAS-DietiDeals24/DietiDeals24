@@ -1,8 +1,6 @@
 package com.iasdietideals24.dietideals24.controller
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.icu.text.DateFormat
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -24,10 +22,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.reflect.Method
-import java.sql.Date
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 abstract class Controller(
     private val layout: Int = 0
@@ -188,85 +182,6 @@ abstract class Controller(
     protected fun estraiTestoDaElemento(elemento: TextInputEditText): String {
         val testoElemento = elemento.text
         return testoElemento.toString()
-    }
-
-    /**
-     * Usata per estrarre la data da un campo di testo della vista.
-     * @param elemento Il campo di testo dal quale estrarre la data.
-     * @return La data estratta dal campo di testo.
-     */
-    @SuppressLint("SimpleDateFormat")
-    @Utility
-    protected fun estraiDataDaElemento(elemento: TextInputEditText): Date? {
-        val testoElemento = elemento.text
-        val stringaData = testoElemento.toString()
-
-        return try {
-            val inFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault())
-            inFormat.isLenient = false
-            val date = inFormat.parse(stringaData)
-
-            val outFormat = SimpleDateFormat("yyyy-MM-dd")
-            val formattedDate = outFormat.format(date)
-            Date.valueOf(formattedDate)
-        } catch (e: ParseException) {
-            null
-        }
-    }
-
-    /**
-     * Usata per estrarre la data nel formato locale da una stringa e formattarla nel formato SQL
-     * standard (yyyy-MM-dd).
-     * @param elemento La stringa dalla quale estrarre la data.
-     * @return La data estratta dalla stringa.
-     */
-    @SuppressLint("SimpleDateFormat")
-    @Utility
-    protected fun estraiDataDaStringa(stringa: String): Date? {
-        return try {
-            val inFormat = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault())
-            inFormat.isLenient = false
-            val date = inFormat.parse(stringa)
-
-            val outFormat = SimpleDateFormat("yyyy-MM-dd")
-            val formattedDate = outFormat.format(date)
-            Date.valueOf(formattedDate)
-        } catch (e: ParseException) {
-            null
-        }
-    }
-
-    /**
-     * Usata per estrarre la data da una stringa e trasformarla nel formato SQL standard (yyyy-MM-dd).
-     * @param formato Il formato della stringa in ingresso.
-     * @param elemento La stringa dalla quale estrarre la data.
-     * @return La data estratta dalla stringa.
-     */
-    @SuppressLint("SimpleDateFormat")
-    @Utility
-    protected fun estraiDataDaStringa(formatoIn: String, stringa: String): Date? {
-        return try {
-            val inFormat = SimpleDateFormat(formatoIn)
-            inFormat.isLenient = false
-            val date = inFormat.parse(stringa)
-
-            val outFormat = SimpleDateFormat("yyyy-MM-dd")
-            val formattedDate = outFormat.format(date!!)
-            Date.valueOf(formattedDate)
-        } catch (e: ParseException) {
-            null
-        }
-    }
-
-    /**
-     * Trasforma una data (nel formato predefinito per la località) in una stringa.
-     * @param data La data da formattare.
-     * @return La data formattata.
-     */
-    @Utility
-    protected fun formattaData(data: Date): String {
-        val formatter = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault())
-        return formatter.format(data)
     }
 
     /**

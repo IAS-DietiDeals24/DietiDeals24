@@ -36,6 +36,8 @@ import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeAct
 import kotlinx.coroutines.runBlocking
 import org.apache.commons.lang3.RandomStringUtils
 import org.json.JSONObject
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 class ControllerRegistrazione : Controller(R.layout.registrazione) {
@@ -284,8 +286,12 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
                                 else ""
                     )
                     viewModel.cognome.postValue(obj?.optString("last_name"))
-                    viewModel.dataNascita.postValue(obj?.optString("birthday")
-                        ?.let { estraiDataDaStringa("MM/dd/yyyy", it) })
+                    viewModel.dataNascita.postValue(
+                        LocalDate.parse(
+                            obj?.optString("birthday"),
+                            DateTimeFormatter.ofPattern("MM/dd/yyyy")
+                        )
+                    )
                     viewModel.biografia.postValue(obj?.optString("about"))
                     viewModel.areaGeografica.postValue(
                         obj?.optJSONObject("location")?.optString("name")

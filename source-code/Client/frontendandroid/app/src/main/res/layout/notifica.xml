@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:fontFamily="@font/fira_sans"
-                    android:text="@string/notifica_tempoFa"
+                    android:text="@string/placeholder"
                     android:textColor="@color/blu" />
 
             </LinearLayout>

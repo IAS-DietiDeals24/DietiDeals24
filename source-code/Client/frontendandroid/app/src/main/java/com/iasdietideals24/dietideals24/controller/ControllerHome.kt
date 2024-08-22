@@ -1,7 +1,5 @@
 package com.iasdietideals24.dietideals24.controller
 
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.lifecycle.lifecycleScope
@@ -16,7 +14,12 @@ import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.adapters.AdapterHome
 import com.iasdietideals24.dietideals24.utilities.classes.data.DatiAnteprimaAsta
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
 class ControllerHome : Controller(R.layout.home) {
@@ -27,8 +30,9 @@ class ControllerHome : Controller(R.layout.home) {
     private lateinit var campoFiltro: TextInputLayout
     private lateinit var filtro: MaterialAutoCompleteTextView
 
-    private val handler = Handler(Looper.getMainLooper())
-    private var runnable: Runnable? = null
+    private val mutex: Mutex = Mutex()
+    private var jobRecupero: Job? = null
+    private var jobRicerca: Job? = null
 
     @UIBuilder
     override fun trovaElementiInterfaccia() {
@@ -41,8 +45,8 @@ class ControllerHome : Controller(R.layout.home) {
         filtro = fragmentView.findViewById(R.id.home_filtro)
     }
 
+    @UIBuilder
     override fun impostaEventiDiCambiamentoCampi() {
-
         ricerca.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // Non fare niente
@@ -53,31 +57,62 @@ class ControllerHome : Controller(R.layout.home) {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                runnable?.let { handler.removeCallbacks(it) }
+                jobRicerca?.cancel()
 
-                runnable = Runnable {
-                    eseguiRicerca(s.toString())
+                jobRicerca = lifecycleScope.launch {
+                    delay(500)
+
+                    if (isActive) {
+                        mutex.withLock {
+                            eseguiRicerca(s.toString())
+                        }
+                    }
                 }
-
-                handler.postDelayed(runnable!!, 500)
             }
 
         })
     }
 
-    private fun eseguiRicerca(query: String) {
-        lifecycleScope.launch {
-            val result: Array<DatiAnteprimaAsta>? = withContext(Dispatchers.IO) {
-                eseguiChiamataREST(
-                    "ricercaAste",
-                    CurrentUser.id, query, filtro.text.toString()
-                )
-            }
+    @UIBuilder
+    override fun elaborazioneAggiuntiva() {
+        filtro.setSimpleItems(resources.getStringArray(R.array.home_categorieAsta))
 
-            withContext(Dispatchers.Main) {
-                if (result != null)
-                    recyclerView.adapter = AdapterHome(result, resources)
+        jobRecupero = lifecycleScope.launch {
+            while (isActive) {
+                mutex.withLock {
+                    aggiornaAste()
+                }
+
+                delay(30000)
             }
+        }
+    }
+
+    private suspend fun eseguiRicerca(query: String) {
+        val result: Array<DatiAnteprimaAsta>? = withContext(Dispatchers.IO) {
+            eseguiChiamataREST(
+                "ricercaAste",
+                CurrentUser.id, query, filtro.text.toString()
+            )
+        }
+
+        withContext(Dispatchers.Main) {
+            if (result != null)
+                recyclerView.adapter = AdapterHome(result, resources)
+        }
+    }
+
+    private suspend fun aggiornaAste() {
+        val result: Array<DatiAnteprimaAsta>? = withContext(Dispatchers.IO) {
+            eseguiChiamataREST(
+                "recuperaAste",
+                CurrentUser.id
+            )
+        }
+
+        withContext(Dispatchers.Main) {
+            if (result != null)
+                recyclerView.adapter = AdapterHome(result, resources)
         }
     }
 }

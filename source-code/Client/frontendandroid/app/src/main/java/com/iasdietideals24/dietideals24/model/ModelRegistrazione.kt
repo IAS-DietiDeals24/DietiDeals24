@@ -14,68 +14,68 @@ import com.iasdietideals24.dietideals24.utilities.exceptions.EccezionePasswordNo
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.sql.Date
+import java.time.LocalDate
 
 class ModelRegistrazione : ViewModel() {
 
     private val _facebookAccountID: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val facebookAccountID: MutableLiveData<String>
         get() = _facebookAccountID
 
     private val _email: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val email: MutableLiveData<String>
         get() = _email
 
     private val _password: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val password: MutableLiveData<String>
         get() = _password
 
     private val _tipoAccount: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val tipoAccount: MutableLiveData<String>
         get() = _tipoAccount
 
     private val _nomeUtente: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val nomeUtente: MutableLiveData<String>
         get() = _nomeUtente
 
     private val _nome: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val nome: MutableLiveData<String>
         get() = _nome
 
     private val _cognome: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val cognome: MutableLiveData<String>
         get() = _cognome
 
-    private val _dataNascita: MutableLiveData<Date> by lazy {
-        MutableLiveData<Date>()
+    private val _dataNascita: MutableLiveData<LocalDate> by lazy {
+        MutableLiveData<LocalDate>(LocalDate.MIN)
     }
 
-    val dataNascita: MutableLiveData<Date>
+    val dataNascita: MutableLiveData<LocalDate>
         get() = _dataNascita
 
     private val _immagineProfilo: MutableLiveData<ByteArray> by lazy {
-        MutableLiveData<ByteArray>()
+        MutableLiveData<ByteArray>(ByteArray(0))
     }
 
     val immagineProfilo: MutableLiveData<ByteArray>
@@ -83,7 +83,7 @@ class ModelRegistrazione : ViewModel() {
 
 
     private val _biografia: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val biografia: MutableLiveData<String>
@@ -91,49 +91,49 @@ class ModelRegistrazione : ViewModel() {
 
 
     private val _areaGeografica: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val areaGeografica: MutableLiveData<String>
         get() = _areaGeografica
 
     private val _genere: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val genere: MutableLiveData<String>
         get() = _genere
 
     private val _linkPersonale: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val linkPersonale: MutableLiveData<String>
         get() = _linkPersonale
 
     private val _linkInstagram: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val linkInstagram: MutableLiveData<String>
         get() = _linkInstagram
 
     private val _linkFacebook: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val linkFacebook: MutableLiveData<String>
         get() = _linkFacebook
 
     private val _linkGitHub: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val linkGitHub: MutableLiveData<String>
         get() = _linkGitHub
 
     private val _linkX: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
+        MutableLiveData<String>("")
     }
 
     val linkX: MutableLiveData<String>
@@ -147,7 +147,7 @@ class ModelRegistrazione : ViewModel() {
         _nomeUtente.value = ""
         _nome.value = ""
         _cognome.value = ""
-        _dataNascita.value = Date(0)
+        _dataNascita.value = LocalDate.MIN
         _immagineProfilo.value = ByteArray(0)
         _biografia.value = ""
         _areaGeografica.value = ""
@@ -289,7 +289,7 @@ class ModelRegistrazione : ViewModel() {
     @Validation
     @Throws(EccezioneCampiNonCompilati::class)
     private fun dataNascita() {
-        if (dataNascita.value == null)
+        if (dataNascita.value == LocalDate.MIN)
             throw EccezioneCampiNonCompilati("Data di nascita non compilata.")
     }
 }

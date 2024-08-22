@@ -8,7 +8,6 @@ import android.content.res.Resources
 import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.RectF
-import android.icu.text.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,12 +15,13 @@ import android.view.animation.DecelerateInterpolator
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.utilities.classes.data.DatiAnteprimaAsta
+import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.AnteprimaAsta
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
-import java.util.Locale
 
 class AdapterHome(
-    private val aste: Array<com.iasdietideals24.dietideals24.utilities.classes.data.DatiAnteprimaAsta>,
+    private val aste: Array<DatiAnteprimaAsta>,
     private val resources: Resources
 ) : RecyclerView.Adapter<AnteprimaAsta>() {
 
@@ -74,9 +74,9 @@ class AdapterHome(
             }
         }
 
-        val formatter = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault())
-        val data = formatter.format(currentAsta._dataScadenza)
-        holder.data.text = data
+        holder.data.text =
+            currentAsta._dataScadenza.toLocalStringShort()
+        holder.ora.text = currentAsta._oraScadenza.toString()
 
         holder.foto.load(currentAsta._foto) {
             crossfade(true)
@@ -200,7 +200,7 @@ class AdapterHome(
         }
 
         holder.layout.setOnClickListener {
-            listener?.onGoToDetails(holder.itemId)
+            listener?.onGoToDetails(holder.itemId, this::class)
         }
     }
 

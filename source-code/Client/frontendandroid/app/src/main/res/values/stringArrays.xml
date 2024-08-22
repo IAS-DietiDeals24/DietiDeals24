@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="home_categorieAsta">
+        <item>@string/category_books</item>
+        <item>@string/category_comics_and_mangas</item>
+        <item>@string/category_music</item>
+        <item>@string/category_movies_and_tv_shows</item>
+        <item>@string/category_videogames_and_consoles</item>
+        <item>@string/category_electronics</item>
+        <item>@string/category_foods_and_drinks</item>
+        <item>@string/category_pets_supplies</item>
+        <item>@string/category_bodycare_and_beauty</item>
+        <item>@string/category_sports_and_hobbies</item>
+        <item>@string/category_clothings_and_wearables</item>
+        <item>@string/category_home_and_furnitures</item>
+        <item>@string/category_vehicles</item>
+        <item>@string/category_other</item>
+    </string-array>
+</resources>

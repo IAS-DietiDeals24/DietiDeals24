@@ -48,9 +48,6 @@
     </style>
 
     <style name="BottomNavigationView" parent="@style/ThemeOverlay.Material3.NavigationView">
-        <item name="colorOnSecondaryContainer">@color/arancione</item>
-        <item name="colorOnSurface">@color/arancione</item>
-        <item name="colorOnSurfaceVariant">@color/blu</item>
         <item name="textAppearanceTitleSmall">@font/fira_sans_medium</item>
     </style>
 

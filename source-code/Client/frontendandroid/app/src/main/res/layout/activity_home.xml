@@ -44,6 +44,8 @@
             android:theme="@style/BottomNavigationView"
             app:backgroundTint="@color/grigio"
             app:itemIconSize="30dp"
+            app:itemIconTint="@color/bottomnavigationviewselector"
+            app:itemTextColor="@color/bottomnavigationviewselector"
             app:labelVisibilityMode="labeled"
             app:menu="@menu/menuhome" />
 

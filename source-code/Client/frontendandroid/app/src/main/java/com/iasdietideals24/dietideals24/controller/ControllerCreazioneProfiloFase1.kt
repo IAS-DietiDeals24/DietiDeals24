@@ -19,9 +19,13 @@ import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.toLocalDate
+import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
+import com.iasdietideals24.dietideals24.utilities.classes.toMillis
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
-import java.sql.Date
+import java.time.LocalDate
+
 
 class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase1) {
 
@@ -120,8 +124,11 @@ class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase
         }
         viewModel.cognome.observe(viewLifecycleOwner, cognomeObserver)
 
-        val dataNascitaObserver = Observer<Date> { newData ->
-            dataNascita.setText(formattaData(newData))
+        val dataNascitaObserver = Observer<LocalDate> { newData ->
+            if (newData != LocalDate.MIN)
+                dataNascita.setText(newData.toLocalStringShort())
+            else
+                dataNascita.setText("")
         }
         viewModel.dataNascita.observe(viewLifecycleOwner, dataNascitaObserver)
     }
@@ -152,7 +159,8 @@ class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase
                 R.string.registrazione_erroreCampiObbligatoriNonCompilati,
                 campoNomeUtente,
                 campoNome,
-                campoCognome
+                campoCognome,
+                campoDataNascita
             )
         }
     }
@@ -167,20 +175,21 @@ class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase
             .setTitleText(R.string.creazioneProfiloFase1_titoloPopupData)
             .setCalendarConstraints(calendarConstraints.build())
             .setSelection(
-                if (viewModel.dataNascita.value?.time == 0L)
+                if (viewModel.dataNascita.value == LocalDate.MIN)
                     MaterialDatePicker.todayInUtcMilliseconds()
                 else
-                    viewModel.dataNascita.value?.time
+                    viewModel.dataNascita.value?.toMillis()
             )
             .setTheme(R.style.DatePicker)
             .build()
 
         datePicker.addOnPositiveButtonClickListener {
             if (datePicker.selection != null) {
-                val data = Date(datePicker.selection!!)
-                val dataFormattata = formattaData(data)
-                viewModel.dataNascita.value = data
-                dataNascita.setText(dataFormattata)
+                val localDate = datePicker.selection!!.toLocalDate()
+
+                viewModel.dataNascita.value = localDate
+
+                dataNascita.setText(localDate.toLocalStringShort())
             }
         }
 

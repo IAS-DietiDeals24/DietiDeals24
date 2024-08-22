@@ -1,13 +1,13 @@
 package com.iasdietideals24.dietideals24.utilities.classes.data
 
-import java.sql.Date
+import java.time.LocalDate
 
 data class AccountInfoProfilo(
-    private val _accountInfo: AccountInfo? = AccountInfo(),
+    private val _accountInfo: AccountInfo = AccountInfo(),
     private var _nomeUtente: String? = "",
     private var _nome: String? = "",
     private var _cognome: String? = "",
-    private var _dataNascita: Date? = Date(0),
+    private var _dataNascita: LocalDate? = LocalDate.MIN,
     private var _immagineProfilo: ByteArray? = ByteArray(0),
     private var _biografia: String? = "",
     private var _areaGeografica: String? = "",
