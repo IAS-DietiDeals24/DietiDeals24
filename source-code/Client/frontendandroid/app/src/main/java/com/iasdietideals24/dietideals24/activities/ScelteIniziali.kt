@@ -42,15 +42,13 @@ class ScelteIniziali : AppCompatActivity(R.layout.activity_scelte_iniziali),
         }
 
         findViewById<AppCompatImageButton>(R.id.activity_scelteIniziali_pulsanteIndietro)?.setOnClickListener {
-            if (supportFragmentManager.fragments[0].childFragmentManager.backStackEntryCount > 0)
-                findNavController(R.id.activity_scelteIniziali_fragmentContainerView).popBackStack()
-            else
-                finishAndRemoveTask()
+            findNavController(R.id.activity_scelteIniziali_fragmentContainerView).popBackStack()
         }
     }
 
     override fun <Activity : AppCompatActivity> onFragmentChangeActivity(activity: Class<Activity>) {
-        startActivity(Intent(baseContext, activity))
+        startActivity(Intent(baseContext, Home::class.java))
+        finishAffinity()
     }
 
     override fun onFragmentHideBackButton() {

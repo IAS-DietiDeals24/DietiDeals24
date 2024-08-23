@@ -6,7 +6,7 @@
     android:layout_height="200dp"
     app:cardBackgroundColor="@color/bianco"
     app:cardUseCompatPadding="true"
-    app:strokeColor="#939393">
+    app:strokeColor="@color/grigioScuro">
 
     <LinearLayout
         android:id="@+id/asta_linearLayout1"

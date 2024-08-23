@@ -6,7 +6,7 @@
     android:layout_height="125dp"
     app:cardBackgroundColor="@color/bianco"
     app:cardUseCompatPadding="true"
-    app:strokeColor="#939393">
+    app:strokeColor="@color/grigioScuro">
 
     <LinearLayout
         android:id="@+id/notifica_linearLayout1"
@@ -24,7 +24,7 @@
             android:scaleType="centerCrop"
             android:src="@drawable/icona_profilo"
             app:shapeAppearanceOverlay="@style/ImageViewRotonda"
-            app:strokeColor="#939393"
+            app:strokeColor="@color/grigioScuro"
             app:strokeWidth="2dp" />
 
         <LinearLayout

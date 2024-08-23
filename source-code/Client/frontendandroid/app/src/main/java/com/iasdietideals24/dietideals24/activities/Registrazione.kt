@@ -48,12 +48,10 @@ class Registrazione : AppCompatActivity(R.layout.activity_registrazione), OnFrag
 
     override fun <Activity : AppCompatActivity> onFragmentChangeActivity(activity: Class<Activity>) {
         startActivity(Intent(baseContext, activity))
+        finishAffinity()
     }
 
     override fun onFragmentBackButton() {
-        if (supportFragmentManager.fragments[0].childFragmentManager.backStackEntryCount > 0)
-            findNavController(R.id.activity_registrazione_fragmentContainerView).popBackStack()
-        else
-            finishAndRemoveTask()
+        findNavController(R.id.activity_registrazione_fragmentContainerView).popBackStack()
     }
 }

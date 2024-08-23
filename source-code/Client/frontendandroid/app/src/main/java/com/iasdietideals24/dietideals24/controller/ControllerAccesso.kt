@@ -3,7 +3,6 @@ package com.iasdietideals24.dietideals24.controller
 import android.content.Context
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import com.facebook.CallbackManager.Factory.create
 import com.facebook.FacebookCallback
@@ -11,6 +10,7 @@ import com.facebook.FacebookException
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
@@ -114,11 +114,14 @@ class ControllerAccesso : Controller(R.layout.accesso) {
             facebookCallbackManager,
             object : FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
-                    Toast.makeText(
-                        fragmentContext,
-                        getString(R.string.accesso_loginSocialOK),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Snackbar.make(
+                        fragmentView,
+                        R.string.accesso_loginSocialOK,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .setBackgroundTint(resources.getColor(R.color.blu, null))
+                        .setTextColor(resources.getColor(R.color.grigio, null))
+                        .show()
 
                     val returned: Long? = eseguiChiamataREST(
                         "accountFacebook",
@@ -126,17 +129,19 @@ class ControllerAccesso : Controller(R.layout.accesso) {
                     )
 
                     if (returned == null) // errore comunicazione con il backend
-                        Toast.makeText(
-                            fragmentContext,
-                            getString(R.string.apiError),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(resources.getColor(R.color.blu, null))
+                            .setTextColor(resources.getColor(R.color.grigio, null))
+                            .show()
                     else if (returned == 0L) // non esiste un account associato a questo account Facebook con questo tipo
-                        Toast.makeText(
-                            fragmentContext,
-                            getString(R.string.accesso_noAccountFacebookCollegato),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Snackbar.make(
+                            fragmentView,
+                            R.string.accesso_noAccountFacebookCollegato,
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .setBackgroundTint(resources.getColor(R.color.blu, null))
+                            .setTextColor(resources.getColor(R.color.grigio, null))
+                            .show()
                     else // esiste un account associato a questo account Facebook con questo tipo, accedi
                         listenerChangeActivity?.onFragmentChangeActivity(Home::class.java)
                 }
@@ -146,11 +151,14 @@ class ControllerAccesso : Controller(R.layout.accesso) {
                 }
 
                 override fun onError(error: FacebookException) {
-                    Toast.makeText(
-                        fragmentContext,
-                        getString(R.string.accesso_erroreSocial),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Snackbar.make(
+                        fragmentView,
+                        R.string.accesso_erroreSocial,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .setBackgroundTint(resources.getColor(R.color.blu, null))
+                        .setTextColor(resources.getColor(R.color.grigio, null))
+                        .show()
                 }
             })
     }
@@ -204,11 +212,10 @@ class ControllerAccesso : Controller(R.layout.accesso) {
         } catch (eccezione: EccezioneAccountNonEsistente) {
             erroreCampo(R.string.accesso_erroreCredenzialiNonCorrette, campoEmail, campoPassword)
         } catch (eccezione: EccezioneAPI) {
-            Toast.makeText(
-                fragmentContext,
-                getString(R.string.apiError),
-                Toast.LENGTH_SHORT
-            ).show()
+            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.blu, null))
+                .setTextColor(resources.getColor(R.color.grigio, null))
+                .show()
         }
     }
 }

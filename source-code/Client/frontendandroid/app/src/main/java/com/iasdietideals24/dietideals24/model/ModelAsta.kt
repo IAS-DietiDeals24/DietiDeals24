@@ -3,6 +3,8 @@ package com.iasdietideals24.dietideals24.model
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
+import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.classes.data.Asta
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import java.time.LocalDate
 import java.time.LocalTime
@@ -71,6 +73,33 @@ class ModelAsta : ViewModel() {
 
     val descrizione: MutableLiveData<String>
         get() = _descrizione
+
+    fun clear() {
+        _idAsta.value = 0L
+        _tipo.value = ""
+        _dataFine.value = LocalDate.MIN
+        _oraFine.value = null
+        _prezzo.value = 0.0
+        _immagine.value = ByteArray(0)
+        _nome.value = ""
+        _categoria.value = ""
+        _descrizione.value = ""
+    }
+
+    fun toAsta(): Asta {
+        return Asta(
+            idAsta.value!!,
+            CurrentUser.id,
+            tipo.value!!,
+            dataFine.value!!,
+            oraFine.value!!,
+            prezzo.value!!,
+            immagine.value!!,
+            nome.value!!,
+            categoria.value!!,
+            descrizione.value!!
+        )
+    }
 
     @Validation
     @Throws(EccezioneCampiNonCompilati::class)

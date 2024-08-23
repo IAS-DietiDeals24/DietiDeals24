@@ -2,9 +2,11 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -18,8 +20,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 
 class ControllerHome : Controller(R.layout.home) {
@@ -30,9 +30,27 @@ class ControllerHome : Controller(R.layout.home) {
     private lateinit var campoFiltro: TextInputLayout
     private lateinit var filtro: MaterialAutoCompleteTextView
 
-    private val mutex: Mutex = Mutex()
     private var jobRecupero: Job? = null
-    private var jobRicerca: Job? = null
+
+    override fun onPause() {
+        super.onPause()
+
+        jobRecupero?.cancel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (ricerca.text.isNullOrEmpty()) {
+            jobRecupero = lifecycleScope.launch {
+                while (isActive) {
+                    recuperaAste()
+
+                    delay(10000)
+                }
+            }
+        }
+    }
 
     @UIBuilder
     override fun trovaElementiInterfaccia() {
@@ -57,62 +75,70 @@ class ControllerHome : Controller(R.layout.home) {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                jobRicerca?.cancel()
+                if (!s.isNullOrEmpty()) {
+                    jobRecupero?.cancel()
 
-                jobRicerca = lifecycleScope.launch {
-                    delay(500)
+                    jobRecupero = lifecycleScope.launch {
+                        delay(1000)
 
-                    if (isActive) {
-                        mutex.withLock {
-                            eseguiRicerca(s.toString())
+                        while (isActive) {
+                            recuperaAste()
+
+                            delay(10000)
+                        }
+                    }
+                } else if (s.isNullOrEmpty() && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                    jobRecupero = lifecycleScope.launch {
+                        while (isActive) {
+                            recuperaAste()
+
+                            delay(10000)
                         }
                     }
                 }
             }
-
         })
     }
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
+        filtro.setText(R.string.category_no_category)
         filtro.setSimpleItems(resources.getStringArray(R.array.home_categorieAsta))
+        filtro.setOnItemClickListener { _, _, _, _ ->
+            jobRecupero?.cancel()
 
-        jobRecupero = lifecycleScope.launch {
-            while (isActive) {
-                mutex.withLock {
-                    aggiornaAste()
+            jobRecupero = lifecycleScope.launch {
+                while (isActive) {
+                    recuperaAste()
+
+                    delay(10000)
                 }
-
-                delay(30000)
             }
         }
     }
 
-    private suspend fun eseguiRicerca(query: String) {
+    private suspend fun recuperaAste() {
         val result: Array<DatiAnteprimaAsta>? = withContext(Dispatchers.IO) {
-            eseguiChiamataREST(
-                "ricercaAste",
-                CurrentUser.id, query, filtro.text.toString()
-            )
+            if (ricerca.text.isNullOrEmpty() && filtro.text.toString() == getString(R.string.category_no_category))
+                eseguiChiamataREST(
+                    "recuperaAste",
+                    CurrentUser.id
+                )
+            else
+                eseguiChiamataREST(
+                    "ricercaAste",
+                    CurrentUser.id, ricerca.text.toString(), filtro.text.toString()
+                )
         }
 
         withContext(Dispatchers.Main) {
             if (result != null)
                 recyclerView.adapter = AdapterHome(result, resources)
-        }
-    }
-
-    private suspend fun aggiornaAste() {
-        val result: Array<DatiAnteprimaAsta>? = withContext(Dispatchers.IO) {
-            eseguiChiamataREST(
-                "recuperaAste",
-                CurrentUser.id
-            )
-        }
-
-        withContext(Dispatchers.Main) {
-            if (result != null)
-                recyclerView.adapter = AdapterHome(result, resources)
+            else
+                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
         }
     }
 }

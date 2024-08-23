@@ -16,5 +16,4 @@ fun interface OnFragmentHideBackButton {
 
 fun interface OnFragmentShowBackButton {
     fun onFragmentShowBackButton()
-
 }

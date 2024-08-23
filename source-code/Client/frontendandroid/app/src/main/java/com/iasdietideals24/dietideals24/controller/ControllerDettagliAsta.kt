@@ -2,11 +2,11 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
 import android.widget.ImageButton
-import android.widget.Toast
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
@@ -104,11 +104,10 @@ class ControllerDettagliAsta : Controller(R.layout.dettagliasta) {
             }
             offerta.text = asta!!._datiAnteprimaAsta._offerta.toString()
         } else {
-            Toast.makeText(
-                fragmentContext,
-                getString(R.string.apiError),
-                Toast.LENGTH_SHORT
-            ).show()
+            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.blu, null))
+                .setTextColor(resources.getColor(R.color.grigio, null))
+                .show()
         }
     }
 

@@ -2,6 +2,7 @@ package com.iasdietideals24.dietideals24.utilities.interfaces
 
 import com.iasdietideals24.dietideals24.utilities.classes.data.AccountInfo
 import com.iasdietideals24.dietideals24.utilities.classes.data.AccountInfoProfilo
+import com.iasdietideals24.dietideals24.utilities.classes.data.Asta
 import com.iasdietideals24.dietideals24.utilities.classes.data.DatiAnteprimaAsta
 import com.iasdietideals24.dietideals24.utilities.classes.data.DatiNotifica
 import com.iasdietideals24.dietideals24.utilities.classes.data.DettagliAsta
@@ -101,6 +102,11 @@ interface API {
     /**
      * Recupera l'elenco di tutte le aste con le quali può interagire l'utente che ha attualmente
      * effettuato il login in base ai filtri di ricerca specificati.
+     * Il campo del filtro non sarà mai vuoto; il campo della ricerca potrebbe esserlo. In tal caso,
+     * il campo della ricerca viene ignorato e viene restituito l'elenco delle aste che rispettano
+     * solo il filtro.
+     * Se entrambi i campi sono non nulli, invece, verranno recuperate le aste che rispettano
+     * entrambi i criteri.
      * @param idAccount Identificativo dell'account che ha effettuato l'accesso.
      * @param ricerca Stringa di ricerca specificata dall'utente.
      * @param filtro Filtro specificato dall'utente.
@@ -132,4 +138,14 @@ interface API {
     fun recuperaNotifiche(
         @Query("idAccount") idAccount: Long
     ): Call<Array<DatiNotifica>>
+
+    /**
+     * Carica una nuova asta all'interno del database.
+     * @param dataClass Wrapper con le informazioni necessarie a creare l'asta.
+     * @return L'identificativo dell'asta appena creata.
+     */
+    @POST("home/creaAsta")
+    fun creaAsta(
+        @Body asta: Asta
+    ): Call<Long>
 }

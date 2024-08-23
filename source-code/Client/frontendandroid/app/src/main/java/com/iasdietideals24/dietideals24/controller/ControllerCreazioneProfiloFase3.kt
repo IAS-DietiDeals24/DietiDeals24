@@ -2,10 +2,10 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
 import android.widget.ImageButton
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.Home
@@ -112,11 +112,10 @@ class ControllerCreazioneProfiloFase3 : Controller(R.layout.creazioneprofilofase
             eseguiChiamataREST("creazioneProfilo", viewModel.toAccountProfileInfo())
 
         if (returned == null || returned == 0L) {
-            Toast.makeText(
-                fragmentContext,
-                R.string.apiError,
-                Toast.LENGTH_SHORT
-            ).show()
+            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                .setTextColor(resources.getColor(R.color.grigio, null))
+                .show()
         } else {
             CurrentUser.id = returned
             listenerChangeActivity?.onFragmentChangeActivity(Home::class.java)

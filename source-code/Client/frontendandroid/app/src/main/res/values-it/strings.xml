@@ -123,9 +123,9 @@
     <string name="modificaProfilo_titolo">Modifica profilo</string>
     <string name="creazioneProfiloFase1_titoloPopupData">Seleziona la tua data di nascita</string>
     <string name="ok">OK</string>
-    <string name="tipoAsta_astaInversa">inversa</string>
-    <string name="tipoAsta_astaSilenziosa">silenziosa</string>
-    <string name="tipoAsta_astaTempoFisso">a tempo fisso</string>
+    <string name="tipoAsta_astaInversa">Inversa</string>
+    <string name="tipoAsta_astaSilenziosa">Silenziosa</string>
+    <string name="tipoAsta_astaTempoFisso">Tempo fisso</string>
     <string name="card_accessibilitàModificaAsta">Modifica asta</string>
     <string name="card_accesisbilitàEliminaAsta">Elimina asta</string>
     <string name="card_accessibilitàElencoOfferte">Elenco offerte</string>
@@ -150,4 +150,16 @@
     <string name="aiuto_astaSilenziosa">Un’asta silenziosa è un’asta creabile da un account di tipo venditore. Essa è caratterizzata da una data di scadenza, entro la quale degli account di tipo compratore possono offirire delle somme segrete (quindi non visualizzabili da altri compratori) al venditore. Il bene o servizio sarà aggiudicato al compratore la cui offerta è stata accettata dal venditore. Il venditore può in qualsiasi momento visualizzare le offerte dei compratori e rifiutarne un numero arbitrario, ma accettarne una sola.</string>
     <string name="aiuto_astaInversa">Un’asta inversa è un’asta creabile da un account di tipo compratore. Essa è caratterizzata da una data di scadenza, entro la quale degli account di tipo venditore possono offirire delle somme minorative rispetto alla più bassa offerta corrente. Il compratore può anche inserire un prezzo massimo che è disposto a pagare, il quale diventerà il prezzo iniziale dell’asta. Se nessun venditore offre una cifra uguale o inferiore a tale soglia inziale, l’asta è dichiarata fallita al sopraggiungere della scadenza. Al momento della scadenza, il venditore che ha offerto la somma più bassa si aggiudica il bene o servizio.</string>
     <string name="aiuto_astaTempoFisso">Un’asta a tempo fisso è un’asta creabile da un account di tipo venditore. Essa è caratterizzata da una data di scadenza, entro la quale degli account di tipo compratore possono offirire delle somme maggiorative rispetto alla più alta offerta corrente. Il venditore può anche inserire un prezzo minimo segreto (quindi non visualizzabile ad alcun utente ad eccezione del venditore). Se nessun compratore offre una cifra uguale o superiore a tale soglia minima, l’asta è dichiarata fallita al sopraggiungere della scadenza. Al momento della scadenza, il compratore che ha offerto la somma più alta si aggiudica il bene o servizio.</string>
+    <string name="crea_titoloPopupData">Seleziona la data di scadenza</string>
+    <string name="crea_titoloPopupOra">Seleziona l\'ora di scadenza</string>
+    <string name="crea_titoloPopupTipoAsta">Scegli il tipo di asta da creare</string>
+    <string name="crea_prezzoMinimo">minimo</string>
+    <string name="crea_prezzoPartenza">di partenza</string>
+    <string name="noMediaAccess">Non hai concesso l\'accesso ai file multimediali.</string>
+    <string name="crea_astaCreataConSuccesso">L\'asta è stata creata con successo.</string>
+    <string name="crea_astaNonCreata">L\'asta non è stata creata con successo. Riprova.</string>
+    <string name="selezioneTipoAccount_erroreFacebook">Errore durante l\'accesso con Facebook.</string>
+    <string name="category_no_category">Tutto</string>
+    <string name="tipoAccount_ospite">ospite</string>
+    <string name="profilo_pulsante5O">Accedi / registrati</string>
 </resources>

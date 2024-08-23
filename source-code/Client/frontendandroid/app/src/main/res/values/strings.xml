@@ -160,4 +160,16 @@
     <string name="aiuto_astaSilenziosa">A silent auction is an auction that can be created by a seller-type account. It is characterized by an expiration date, by which buyer-type accounts can bid sums that are secret (thus not viewable by other buyers) to the seller. The good or service will be awarded to the buyer whose bid has been accepted by the seller. The seller may at any time view the buyers\' bids and reject an arbitrary number of them, but accept only one.</string>
     <string name="aiuto_astaInversa">An inverse auction is an auction that can be created by a buyer-type account. It is characterized by an expiration date, by which seller-type accounts can offer amounts less than the current lowest bid. The buyer can also enter a maximum price he or she is willing to pay, which will become the starting price of the auction. If no seller bids an amount equal to or less than this intial threshold, the auction is declared to have failed when the deadline arrives. At the time of the deadline, the seller who bid the lowest amount is awarded the good or service.</string>
     <string name="aiuto_astaTempoFisso">A fixed-time auction is an auction that can be created by a seller-type account. It is characterized by an expiration date, by which buyer-type accounts can bid amounts greater than the highest current bid. The seller can also enter a secret minimum price (thus not viewable to any user except the seller). If no buyer bids an amount equal to or greater than this minimum threshold, the auction is declared to have failed when the deadline arrives. At the time of the deadline, the buyer who bid the highest amount is awarded the good or service.</string>
+    <string name="crea_titoloPopupData">Select the end date</string>
+    <string name="crea_titoloPopupOra">Select the end time</string>
+    <string name="crea_titoloPopupTipoAsta">Choose the type of auction to create</string>
+    <string name="crea_prezzoMinimo">Minimum</string>
+    <string name="crea_prezzoPartenza">Starting</string>
+    <string name="noMediaAccess">You didn\'t grant media file access.</string>
+    <string name="crea_astaCreataConSuccesso">The auction has been created successfully.</string>
+    <string name="crea_astaNonCreata">The auction has not been created successfully. Please, retry.</string>
+    <string name="selezioneTipoAccount_erroreFacebook">Error while trying to login with Facebook.</string>
+    <string name="category_no_category">Any</string>
+    <string name="tipoAccount_ospite">guest</string>
+    <string name="profilo_pulsante5O">Signin / signup</string>
 </resources>

@@ -1,9 +1,9 @@
 package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.Home
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
@@ -58,11 +58,10 @@ class ControllerAssociazioneProfilo : Controller(R.layout.associaprofilo) {
         if (returned == null || returned == 0L) {
             pulsanteFine.isEnabled = false
 
-            Toast.makeText(
-                fragmentContext,
-                R.string.apiError,
-                Toast.LENGTH_SHORT
-            ).show()
+            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                .setTextColor(resources.getColor(R.color.grigio, null))
+                .show()
         } else {
             CurrentUser.id = returned
             listener?.onFragmentChangeActivity(Home::class.java)

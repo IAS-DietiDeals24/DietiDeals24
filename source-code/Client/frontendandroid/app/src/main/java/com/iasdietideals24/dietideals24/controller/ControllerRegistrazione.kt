@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +18,7 @@ import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
@@ -128,11 +128,14 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
             facebookCallbackManager,
             object : FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
-                    Toast.makeText(
-                        fragmentContext,
-                        getString(R.string.accesso_loginSocialOK),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Snackbar.make(
+                        fragmentView,
+                        R.string.accesso_loginSocialOK,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                        .setTextColor(resources.getColor(R.color.grigio, null))
+                        .show()
 
                     val returned: Long? = eseguiChiamataREST(
                         "accountFacebook",
@@ -140,11 +143,10 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
                     )
 
                     if (returned == null) { // errore di comunicazione con il backend
-                        Toast.makeText(
-                            fragmentContext,
-                            getString(R.string.apiError),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                            .setTextColor(resources.getColor(R.color.grigio, null))
+                            .show()
 
                         LoginManager.getInstance().logOut()
                     } else if (returned == 0L) { // non esiste un account associato a questo account Facebook con questo tipo, registrati
@@ -153,21 +155,23 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
                         try {
                             scegliAssociaCreaProfilo()
                         } catch (eccezione: EccezioneAPI) {
-                            Toast.makeText(
-                                fragmentContext,
-                                getString(R.string.apiError),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                                .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                                .setTextColor(resources.getColor(R.color.grigio, null))
+                                .show()
 
                             viewModel.clear()
                             LoginManager.getInstance().logOut()
                         }
                     } else { // esiste un account associato a questo account Facebook con questo tipo
-                        Toast.makeText(
-                            fragmentContext,
-                            getString(R.string.registrazione_accountFacebookGiàCollegato),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Snackbar.make(
+                            fragmentView,
+                            R.string.registrazione_accountFacebookGiàCollegato,
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                            .setTextColor(resources.getColor(R.color.grigio, null))
+                            .show()
 
                         LoginManager.getInstance().logOut()
                     }
@@ -178,11 +182,14 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
                 }
 
                 override fun onError(error: FacebookException) {
-                    Toast.makeText(
-                        fragmentContext,
-                        getString(R.string.registrazione_erroreRegistrazioneSocial),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Snackbar.make(
+                        fragmentView,
+                        R.string.registrazione_erroreRegistrazioneSocial,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                        .setTextColor(resources.getColor(R.color.grigio, null))
+                        .show()
                 }
             })
     }
@@ -244,11 +251,10 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
         } catch (eccezione: EccezionePasswordNonSicura) {
             erroreCampo(R.string.registrazione_errorePasswordNonSicura, campoPassword)
         } catch (eccezione: EccezioneAPI) {
-            Toast.makeText(
-                context,
-                getString(R.string.apiError),
-                Toast.LENGTH_SHORT
-            ).show()
+            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                .setTextColor(resources.getColor(R.color.grigio, null))
+                .show()
         }
     }
 

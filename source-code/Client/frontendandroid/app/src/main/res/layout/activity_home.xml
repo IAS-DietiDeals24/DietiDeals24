@@ -34,7 +34,7 @@
             android:id="@+id/activity_home_materialDivider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:dividerColor="#939393"
+            app:dividerColor="@color/grigioScuro"
             app:dividerThickness="2dp" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

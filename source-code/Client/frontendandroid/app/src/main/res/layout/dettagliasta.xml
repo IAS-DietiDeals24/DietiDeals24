@@ -135,7 +135,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/crea_etichettaFoto"
                 app:shapeAppearanceOverlay="@style/ImageViewRettangolare"
                 app:srcCompat="@drawable/icona_fotocamera"
-                app:strokeColor="#939393"
+                app:strokeColor="@color/grigioScuro"
                 app:strokeWidth="2dp" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -187,7 +187,7 @@
                     android:padding="1dp"
                     android:src="@drawable/icona_profilo"
                     app:shapeAppearanceOverlay="@style/ImageViewRotonda"
-                    app:strokeColor="#939393"
+                    app:strokeColor="@color/grigioScuro"
                     app:strokeWidth="1dp" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -229,7 +229,7 @@
         android:id="@+id/dettagliAsta_divider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:dividerColor="#939393"
+        app:dividerColor="@color/grigioScuro"
         app:dividerThickness="2dp" />
 
     <LinearLayout

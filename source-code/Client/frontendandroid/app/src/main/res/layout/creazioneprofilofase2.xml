@@ -85,7 +85,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/creazioneProfiloFase2_etichettaFoto"
                     app:shapeAppearanceOverlay="@style/ImageViewRotonda"
                     app:srcCompat="@drawable/icona_fotocamera"
-                    app:strokeColor="#939393"
+                    app:strokeColor="@color/grigioScuro"
                     app:strokeWidth="2dp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

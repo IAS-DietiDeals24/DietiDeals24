@@ -64,7 +64,7 @@
             android:padding="1dp"
             android:src="@drawable/icona_profilo"
             app:shapeAppearanceOverlay="@style/ImageViewRotonda"
-            app:strokeColor="#939393"
+            app:strokeColor="@color/grigioScuro"
             app:strokeWidth="1dp" />
 
         <ScrollView

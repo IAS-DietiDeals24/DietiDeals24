@@ -25,7 +25,7 @@ navigation-ui-ktx = "2.7.7"
 
 # Plugin livello progetto
 android-application = "8.5.2"
-jetbrains-kotlin-android = "2.0.10"
+jetbrains-kotlin-android = "2.0.20"
 sonarqube = "5.1.0.4882"
 androidx-navigation-safeargs-kotlin = "2.7.7"
 lifecycle-common-jvm = "2.8.4"

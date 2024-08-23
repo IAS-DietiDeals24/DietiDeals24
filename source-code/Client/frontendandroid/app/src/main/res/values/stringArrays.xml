@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="home_categorieAsta">
+        <item>@string/category_no_category</item>
         <item>@string/category_books</item>
         <item>@string/category_comics_and_mangas</item>
         <item>@string/category_music</item>

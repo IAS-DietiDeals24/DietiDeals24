@@ -5,9 +5,12 @@ import android.net.Uri
 
 class ImageHandler {
 
-    fun encodeImage(uri: Uri?, context: Context): ByteArray? {
-        val inputStream = uri?.let { context.contentResolver.openInputStream(it) }
-        val bytes = inputStream.use { it?.readBytes() }
-        return bytes
+    companion object {
+        fun encodeImage(uri: Uri?, context: Context): ByteArray? {
+
+            val inputStream = uri?.let { context.contentResolver.openInputStream(it) }
+            val bytes = inputStream.use { it?.readBytes() }
+            return bytes
+        }
     }
 }

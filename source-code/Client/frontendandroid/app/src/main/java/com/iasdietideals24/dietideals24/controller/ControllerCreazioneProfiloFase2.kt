@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
@@ -15,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
@@ -80,7 +80,7 @@ class ControllerCreazioneProfiloFase2 : Controller(R.layout.creazioneprofilofase
             }
 
         selectPhoto = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            viewModel.immagineProfilo.value = ImageHandler().encodeImage(uri, fragmentContext)
+            viewModel.immagineProfilo.value = ImageHandler.encodeImage(uri, fragmentContext)
         }
     }
 
@@ -92,11 +92,10 @@ class ControllerCreazioneProfiloFase2 : Controller(R.layout.creazioneprofilofase
                         selectPhoto.launch("image/*")
 
                     else ->
-                        Toast.makeText(
-                            fragmentContext,
-                            "Non hai concesso l'autorizzazione di accesso ai media.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Snackbar.make(fragmentView, R.string.noMediaAccess, Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                            .setTextColor(resources.getColor(R.color.grigio, null))
+                            .show()
                 }
             }
 
@@ -106,11 +105,10 @@ class ControllerCreazioneProfiloFase2 : Controller(R.layout.creazioneprofilofase
                         selectPhoto.launch("image/*")
 
                     else ->
-                        Toast.makeText(
-                            fragmentContext,
-                            "Non hai concesso l'autorizzazione di accesso ai media.",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Snackbar.make(fragmentView, R.string.noMediaAccess, Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                            .setTextColor(resources.getColor(R.color.grigio, null))
+                            .show()
                 }
             }
         }

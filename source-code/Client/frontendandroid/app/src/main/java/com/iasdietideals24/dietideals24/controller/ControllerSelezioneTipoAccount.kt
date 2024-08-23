@@ -1,11 +1,11 @@
 package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
-import android.widget.Toast
 import com.facebook.AccessToken
 import com.facebook.LoginStatusCallback
 import com.facebook.login.LoginManager.Companion.getInstance
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.Home
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
@@ -65,11 +65,14 @@ class ControllerSelezioneTipoAccount : Controller(R.layout.selezionetipoaccount)
                     }
 
                     override fun onError(exception: Exception) {
-                        Toast.makeText(
-                            fragmentContext,
-                            "Errore durante l'accesso con Facebook",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        Snackbar.make(
+                            fragmentView,
+                            R.string.selezioneTipoAccount_erroreFacebook,
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .setBackgroundTint(resources.getColor(R.color.blu, null))
+                            .setTextColor(resources.getColor(R.color.grigio, null))
+                            .show()
                     }
                 })
 
