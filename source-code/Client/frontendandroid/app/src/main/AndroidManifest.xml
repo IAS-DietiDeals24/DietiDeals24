@@ -46,6 +46,9 @@
         <activity
             android:name=".activities.Home"
             android:theme="@style/Theme.Material3.DynamicColors.DayNight.NoActionBar" />
+        <activity
+            android:name=".activities.DietiDeals24Activity"
+            android:theme="@style/Theme.Material3.DynamicColors.DayNight.NoActionBar" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

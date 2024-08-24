@@ -1,14 +1,12 @@
 package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
-import android.widget.ImageButton
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.Home
+import com.iasdietideals24.dietideals24.databinding.Creazioneprofilofase3Binding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
@@ -16,17 +14,9 @@ import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
 
-class ControllerCreazioneProfiloFase3 : Controller(R.layout.creazioneprofilofase3) {
+class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>() {
 
     private lateinit var viewModel: ModelRegistrazione
-
-    private lateinit var pulsanteIndietro: ImageButton
-    private lateinit var linkPersonale: TextInputEditText
-    private lateinit var linkInstagram: TextInputEditText
-    private lateinit var linkFacebook: TextInputEditText
-    private lateinit var linkGitHub: TextInputEditText
-    private lateinit var linkX: TextInputEditText
-    private lateinit var pulsanteFine: MaterialButton
 
     private var listenerBackButton: OnFragmentBackButton? = null
     private var listenerChangeActivity: OnFragmentChangeActivity? = null
@@ -50,20 +40,9 @@ class ControllerCreazioneProfiloFase3 : Controller(R.layout.creazioneprofilofase
     }
 
     @UIBuilder
-    override fun trovaElementiInterfaccia() {
-        pulsanteIndietro = fragmentView.findViewById(R.id.creazioneProfiloFase3_pulsanteIndietro)
-        linkPersonale = fragmentView.findViewById(R.id.creazioneProfiloFase3_linkPersonale)
-        linkInstagram = fragmentView.findViewById(R.id.creazioneProfiloFase3_linkInstagram)
-        linkFacebook = fragmentView.findViewById(R.id.creazioneProfiloFase3_linkFacebook)
-        linkGitHub = fragmentView.findViewById(R.id.creazioneProfiloFase3_linkGitHub)
-        linkX = fragmentView.findViewById(R.id.creazioneProfiloFase3_linkX)
-        pulsanteFine = fragmentView.findViewById(R.id.creazioneProfiloFase3_pulsanteFine)
-    }
-
-    @UIBuilder
     override fun impostaEventiClick() {
-        pulsanteIndietro.setOnClickListener { clickIndietro() }
-        pulsanteFine.setOnClickListener { clickFine() }
+        binding.creazioneProfiloFase3PulsanteIndietro.setOnClickListener { clickIndietro() }
+        binding.creazioneProfiloFase3PulsanteFine.setOnClickListener { clickFine() }
     }
 
     @UIBuilder
@@ -74,29 +53,29 @@ class ControllerCreazioneProfiloFase3 : Controller(R.layout.creazioneprofilofase
     @UIBuilder
     override fun impostaOsservatori() {
         val linkPersonaleObserver = Observer<String> { newLinkPersonale ->
-            linkPersonale.setText(newLinkPersonale)
+            binding.creazioneProfiloFase3LinkPersonale.setText(newLinkPersonale)
         }
         viewModel.linkPersonale.observe(viewLifecycleOwner, linkPersonaleObserver)
 
         val linkInstagramObserver = Observer<String> { newLinkInstagram ->
-            linkInstagram.setText(newLinkInstagram)
+            binding.creazioneProfiloFase3LinkInstagram.setText(newLinkInstagram)
         }
         viewModel.linkInstagram.observe(viewLifecycleOwner, linkInstagramObserver)
 
 
         val linkFacebookObserver = Observer<String> { newLinkFacebook ->
-            linkFacebook.setText(newLinkFacebook)
+            binding.creazioneProfiloFase3LinkFacebook.setText(newLinkFacebook)
         }
         viewModel.linkFacebook.observe(viewLifecycleOwner, linkFacebookObserver)
 
 
         val linkGitHubObserver = Observer<String> { newLinkGitHub ->
-            linkGitHub.setText(newLinkGitHub)
+            binding.creazioneProfiloFase3LinkGitHub.setText(newLinkGitHub)
         }
         viewModel.linkGitHub.observe(viewLifecycleOwner, linkGitHubObserver)
 
         val linkXObserver = Observer<String> { newLinkX ->
-            linkX.setText(newLinkX)
+            binding.creazioneProfiloFase3LinkX.setText(newLinkX)
         }
         viewModel.linkX.observe(viewLifecycleOwner, linkXObserver)
     }

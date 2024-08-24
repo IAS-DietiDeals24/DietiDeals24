@@ -5,19 +5,19 @@ import android.os.Bundle
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
 import com.facebook.AccessToken
 import com.facebook.login.LoginManager
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.databinding.ActivityScelteInizialiBinding
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentHideBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentShowBackButton
 
 
-class ScelteIniziali : AppCompatActivity(R.layout.activity_scelte_iniziali),
+class ScelteIniziali : DietiDeals24Activity<ActivityScelteInizialiBinding>(),
     OnFragmentChangeActivity, OnFragmentHideBackButton, OnFragmentShowBackButton {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,13 +35,13 @@ class ScelteIniziali : AppCompatActivity(R.layout.activity_scelte_iniziali),
                 android.graphics.Color.TRANSPARENT
             )
         )
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.scelteIniziali)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.scelteIniziali) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        findViewById<AppCompatImageButton>(R.id.activity_scelteIniziali_pulsanteIndietro)?.setOnClickListener {
+        binding.activityScelteInizialiPulsanteIndietro.setOnClickListener {
             findNavController(R.id.activity_scelteIniziali_fragmentContainerView).popBackStack()
         }
     }
@@ -52,12 +52,12 @@ class ScelteIniziali : AppCompatActivity(R.layout.activity_scelte_iniziali),
     }
 
     override fun onFragmentHideBackButton() {
-        findViewById<AppCompatImageButton>(R.id.activity_scelteIniziali_pulsanteIndietro)?.visibility =
+        binding.activityScelteInizialiPulsanteIndietro.visibility =
             android.view.View.GONE
     }
 
     override fun onFragmentShowBackButton() {
-        findViewById<AppCompatImageButton>(R.id.activity_scelteIniziali_pulsanteIndietro)?.visibility =
+        binding.activityScelteInizialiPulsanteIndietro.visibility =
             android.view.View.VISIBLE
     }
 }

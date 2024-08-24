@@ -1,87 +1,74 @@
 package com.iasdietideals24.dietideals24.utilities.classes.viewHolders
 
+import android.content.Context
+import android.content.res.Resources
 import android.view.View
-import android.widget.ImageButton
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.textview.MaterialTextView
+import coil.load
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.databinding.AstaBinding
+import com.iasdietideals24.dietideals24.utilities.classes.data.DatiAnteprimaAsta
+import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
 
-class AnteprimaAsta(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val _layout: LinearLayout
+class AnteprimaAsta(binding: AstaBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    val layout: LinearLayout
-        get() = _layout
+    private val binding = binding
 
-    private val _tipo: MaterialTextView
+    private var listener: OnGoToDetails? = null
 
-    val tipo: MaterialTextView
-        get() = _tipo
+    fun setListeners(context: Context) {
+        if (context is OnGoToDetails) {
+            listener = context
+        }
+    }
 
-    private val _data: MaterialTextView
+    fun bind(currentAsta: DatiAnteprimaAsta, resources: Resources) {
+        when (currentAsta._tipoAsta) {
+            "Inversa" -> {
+                binding.astaTipo.text = resources.getString(R.string.tipoAsta_astaInversa)
+                binding.astaMessaggio.text =
+                    resources.getString(R.string.dettagliAsta_testoOfferta2)
+            }
 
-    val data: MaterialTextView
-        get() = _data
+            "Silenziosa" -> {
+                binding.astaTipo.text = resources.getString(R.string.tipoAsta_astaSilenziosa)
+                binding.astaMessaggio.text =
+                    resources.getString(R.string.dettagliAsta_testoOfferta1)
+            }
 
-    private val _ora: MaterialTextView
+            "Tempo fisso" -> {
+                binding.astaTipo.text = resources.getString(R.string.tipoAsta_astaTempoFisso)
+                binding.astaMessaggio.text =
+                    resources.getString(R.string.dettagliAsta_testoOfferta1)
+            }
 
-    val ora: MaterialTextView
-        get() = _ora
+            else -> {
+                binding.astaTipo.text = ""
+                binding.astaMessaggio.text = ""
+            }
+        }
 
-    private val _foto: ShapeableImageView
+        binding.astaDataScadenza.text =
+            currentAsta._dataScadenza.toLocalStringShort()
+        binding.astaOraScadenza.text = currentAsta._oraScadenza.toString()
 
-    val foto: ShapeableImageView
-        get() = _foto
+        if (currentAsta._foto.isNotEmpty())
+            binding.astaImmagine.load(currentAsta._foto) {
+                crossfade(true)
+            }
+        binding.astaNome.text = currentAsta._nome
+        binding.astaOfferta.text = currentAsta._offerta.toString()
+        binding.astaModificaAsta.visibility = View.GONE
+        binding.astaEliminaAsta.visibility = View.GONE
+        binding.astaElencoOfferte.visibility = View.GONE
 
-    private val _fotoZoomata: ShapeableImageView
+        binding.astaLinearLayout3.setOnClickListener {
+            listener?.onGoToDetails(itemId, this::class)
+        }
+    }
 
-    val fotoZoomata: ShapeableImageView
-        get() = _fotoZoomata
-
-    private val _nome: MaterialTextView
-
-    val nome: MaterialTextView
-        get() = _nome
-
-    private val _messaggio: MaterialTextView
-
-    val messaggio: MaterialTextView
-        get() = _messaggio
-
-    private val _offerta: MaterialTextView
-
-    val offerta: MaterialTextView
-        get() = _offerta
-
-    private val _modifica: ImageButton
-
-    val modifica: ImageButton
-        get() = _modifica
-
-    private val _elimina: ImageButton
-
-    val elimina: ImageButton
-        get() = _elimina
-
-    private val _offerte: ImageButton
-
-    val offerte: ImageButton
-        get() = _offerte
-
-
-    init {
-        _layout = itemView.findViewById(R.id.asta_linearLayout3)
-        _tipo = itemView.findViewById(R.id.asta_tipo)
-        _data = itemView.findViewById(R.id.asta_dataScadenza)
-        _ora = itemView.findViewById(R.id.asta_oraScadenza)
-        _foto = itemView.findViewById(R.id.asta_immagine)
-        _fotoZoomata = itemView.findViewById(R.id.home_zoom)
-        _nome = itemView.findViewById(R.id.asta_nome)
-        _offerta = itemView.findViewById(R.id.asta_offerta)
-        _messaggio = itemView.findViewById(R.id.asta_messaggio)
-        _modifica = itemView.findViewById(R.id.asta_modificaAsta)
-        _elimina = itemView.findViewById(R.id.asta_eliminaAsta)
-        _offerte = itemView.findViewById(R.id.asta_elencoOfferte)
+    fun cleanListeners() {
+        listener = null
     }
 }

@@ -12,11 +12,13 @@ import androidx.navigation.findNavController
 import com.facebook.AccessToken
 import com.facebook.login.LoginManager
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.databinding.ActivityRegistrazioneBinding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
 
-class Registrazione : AppCompatActivity(R.layout.activity_registrazione), OnFragmentChangeActivity,
+class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(),
+    OnFragmentChangeActivity,
     OnFragmentBackButton {
 
     private lateinit var viewModel: ModelRegistrazione
@@ -28,7 +30,7 @@ class Registrazione : AppCompatActivity(R.layout.activity_registrazione), OnFrag
                 android.graphics.Color.TRANSPARENT
             )
         )
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.registrazione)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.registrazione) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets

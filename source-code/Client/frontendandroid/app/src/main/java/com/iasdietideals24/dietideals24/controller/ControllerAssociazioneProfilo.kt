@@ -2,21 +2,19 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.Home
+import com.iasdietideals24.dietideals24.databinding.AssociaprofiloBinding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
 
-class ControllerAssociazioneProfilo : Controller(R.layout.associaprofilo) {
+class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
 
     private lateinit var viewModel: ModelRegistrazione
-
-    private lateinit var pulsanteFine: MaterialButton
 
     private var listener: OnFragmentChangeActivity? = null
 
@@ -35,13 +33,8 @@ class ControllerAssociazioneProfilo : Controller(R.layout.associaprofilo) {
     }
 
     @UIBuilder
-    override fun trovaElementiInterfaccia() {
-        pulsanteFine = fragmentView.findViewById(R.id.associaProfilo_pulsanteFine)
-    }
-
-    @UIBuilder
     override fun impostaEventiClick() {
-        pulsanteFine.setOnClickListener { clickFine() }
+        binding.associaProfiloPulsanteFine.setOnClickListener { clickFine() }
     }
 
     @UIBuilder
@@ -56,7 +49,7 @@ class ControllerAssociazioneProfilo : Controller(R.layout.associaprofilo) {
             eseguiChiamataREST("associazioneProfilo", viewModel.toAccountInfo())
 
         if (returned == null || returned == 0L) {
-            pulsanteFine.isEnabled = false
+            binding.associaProfiloPulsanteFine.isEnabled = false
 
             Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(resources.getColor(R.color.arancione, null))

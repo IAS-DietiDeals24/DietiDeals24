@@ -5,12 +5,9 @@ import android.text.TextWatcher
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.MaterialAutoCompleteTextView
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.databinding.HomeBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.adapters.AdapterHome
@@ -22,13 +19,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ControllerHome : Controller(R.layout.home) {
-
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var campoRicerca: TextInputLayout
-    private lateinit var ricerca: TextInputEditText
-    private lateinit var campoFiltro: TextInputLayout
-    private lateinit var filtro: MaterialAutoCompleteTextView
+class ControllerHome : Controller<HomeBinding>() {
 
     private var jobRecupero: Job? = null
 
@@ -41,7 +32,7 @@ class ControllerHome : Controller(R.layout.home) {
     override fun onResume() {
         super.onResume()
 
-        if (ricerca.text.isNullOrEmpty()) {
+        if (binding.homeRicerca.text.isNullOrEmpty()) {
             jobRecupero = lifecycleScope.launch {
                 while (isActive) {
                     recuperaAste()
@@ -53,19 +44,8 @@ class ControllerHome : Controller(R.layout.home) {
     }
 
     @UIBuilder
-    override fun trovaElementiInterfaccia() {
-        recyclerView = fragmentView.findViewById(R.id.home_recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(fragmentContext)
-
-        campoRicerca = fragmentView.findViewById(R.id.home_campoRicerca)
-        ricerca = fragmentView.findViewById(R.id.home_ricerca)
-        campoFiltro = fragmentView.findViewById(R.id.home_campoFiltro)
-        filtro = fragmentView.findViewById(R.id.home_filtro)
-    }
-
-    @UIBuilder
     override fun impostaEventiDiCambiamentoCampi() {
-        ricerca.addTextChangedListener(object : TextWatcher {
+        binding.homeRicerca.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // Non fare niente
             }
@@ -75,9 +55,9 @@ class ControllerHome : Controller(R.layout.home) {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if (!s.isNullOrEmpty()) {
-                    jobRecupero?.cancel()
+                jobRecupero?.cancel()
 
+                if (!s.isNullOrEmpty()) {
                     jobRecupero = lifecycleScope.launch {
                         delay(1000)
 
@@ -102,9 +82,10 @@ class ControllerHome : Controller(R.layout.home) {
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        filtro.setText(R.string.category_no_category)
-        filtro.setSimpleItems(resources.getStringArray(R.array.home_categorieAsta))
-        filtro.setOnItemClickListener { _, _, _, _ ->
+        binding.homeRecyclerView.layoutManager = LinearLayoutManager(fragmentContext)
+        binding.homeFiltro.setText(resources.getString(R.string.category_no_category))
+        binding.homeFiltro.setSimpleItems(resources.getStringArray(R.array.home_categorieAsta))
+        binding.homeFiltro.setOnItemClickListener { _, _, _, _ ->
             jobRecupero?.cancel()
 
             jobRecupero = lifecycleScope.launch {
@@ -119,7 +100,10 @@ class ControllerHome : Controller(R.layout.home) {
 
     private suspend fun recuperaAste() {
         val result: Array<DatiAnteprimaAsta>? = withContext(Dispatchers.IO) {
-            if (ricerca.text.isNullOrEmpty() && filtro.text.toString() == getString(R.string.category_no_category))
+            if (binding.homeRicerca.text.isNullOrEmpty() && binding.homeFiltro.text.toString() == getString(
+                    R.string.category_no_category
+                )
+            )
                 eseguiChiamataREST(
                     "recuperaAste",
                     CurrentUser.id
@@ -127,13 +111,15 @@ class ControllerHome : Controller(R.layout.home) {
             else
                 eseguiChiamataREST(
                     "ricercaAste",
-                    CurrentUser.id, ricerca.text.toString(), filtro.text.toString()
+                    CurrentUser.id,
+                    binding.homeRicerca.text.toString(),
+                    binding.homeFiltro.text.toString()
                 )
         }
 
         withContext(Dispatchers.Main) {
             if (result != null)
-                recyclerView.adapter = AdapterHome(result, resources)
+                binding.homeRecyclerView.adapter = AdapterHome(result, resources)
             else
                 Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                     .setBackgroundTint(resources.getColor(R.color.blu, null))

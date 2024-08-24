@@ -1,21 +1,15 @@
 package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
-import android.widget.ImageButton
-import android.widget.LinearLayout
 import androidx.core.widget.addTextChangedListener
 import com.facebook.CallbackManager.Factory.create
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
-import com.facebook.login.widget.LoginButton
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.Home
+import com.iasdietideals24.dietideals24.databinding.AccessoBinding
 import com.iasdietideals24.dietideals24.model.ModelAccesso
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
@@ -29,19 +23,9 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class ControllerAccesso : Controller(R.layout.accesso) {
+class ControllerAccesso : Controller<AccessoBinding>() {
 
     private var viewModel: ModelAccesso = ModelAccesso()
-
-    private lateinit var tipoAccount: MaterialTextView
-    private lateinit var campoEmail: TextInputLayout
-    private lateinit var email: TextInputEditText
-    private lateinit var campoPassword: TextInputLayout
-    private lateinit var password: TextInputEditText
-    private lateinit var pulsanteIndietro: ImageButton
-    private lateinit var pulsanteAccedi: MaterialButton
-    private lateinit var pulsanteFacebook: LoginButton
-    private lateinit var layout: LinearLayout
 
     private var facebookCallbackManager = create()
 
@@ -67,24 +51,11 @@ class ControllerAccesso : Controller(R.layout.accesso) {
     }
 
     @UIBuilder
-    override fun trovaElementiInterfaccia() {
-        tipoAccount = fragmentView.findViewById(R.id.accesso_tipoAccount)
-        campoEmail = fragmentView.findViewById(R.id.accesso_campoEmail)
-        email = fragmentView.findViewById(R.id.accesso_email)
-        campoPassword = fragmentView.findViewById(R.id.accesso_campoPassword)
-        password = fragmentView.findViewById(R.id.accesso_password)
-        pulsanteIndietro = fragmentView.findViewById(R.id.accesso_pulsanteIndietro)
-        pulsanteAccedi = fragmentView.findViewById(R.id.accesso_pulsanteAccedi)
-        pulsanteFacebook = fragmentView.findViewById(R.id.accesso_pulsanteFacebook)
-        layout = fragmentView.findViewById(R.id.accesso_linearLayout1)
-    }
-
-    @UIBuilder
     override fun impostaMessaggiCorpo() {
         when (runBlocking { caricaPreferenzaStringa("tipoAccount") }) {
             "compratore" -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_compratore)
-                tipoAccount.text = getString(
+                binding.accessoTipoAccount.text = getString(
                     R.string.placeholder,
                     stringaTipoAccount
                 )
@@ -92,7 +63,7 @@ class ControllerAccesso : Controller(R.layout.accesso) {
 
             "venditore" -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_venditore)
-                tipoAccount.text = getString(
+                binding.accessoTipoAccount.text = getString(
                     R.string.placeholder,
                     stringaTipoAccount
                 )
@@ -102,15 +73,15 @@ class ControllerAccesso : Controller(R.layout.accesso) {
 
     @UIBuilder
     override fun impostaEventiClick() {
-        pulsanteIndietro.setOnClickListener { clickIndietro() }
-        pulsanteAccedi.setOnClickListener { clickAccedi() }
+        binding.accessoPulsanteIndietro.setOnClickListener { clickIndietro() }
+        binding.accessoPulsanteAccedi.setOnClickListener { clickAccedi() }
 
-        pulsanteFacebook.permissions = listOf(
+        binding.accessoPulsanteFacebook.permissions = listOf(
             "email", "public_profile", "user_birthday",
             "user_gender", "user_link", "user_location"
         )
-        pulsanteFacebook.authType = "rerequest"
-        pulsanteFacebook.registerCallback(
+        binding.accessoPulsanteFacebook.authType = "rerequest"
+        binding.accessoPulsanteFacebook.registerCallback(
             facebookCallbackManager,
             object : FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
@@ -125,7 +96,7 @@ class ControllerAccesso : Controller(R.layout.accesso) {
 
                     val returned: Long? = eseguiChiamataREST(
                         "accountFacebook",
-                        result.accessToken.userId, tipoAccount.text.toString()
+                        result.accessToken.userId, binding.accessoTipoAccount.text.toString()
                     )
 
                     if (returned == null) // errore comunicazione con il backend
@@ -165,14 +136,14 @@ class ControllerAccesso : Controller(R.layout.accesso) {
 
     @UIBuilder
     override fun impostaEventiDiCambiamentoCampi() {
-        email.addTextChangedListener {
-            rimuoviErroreCampo(campoEmail)
-            rimuoviErroreCampo(campoPassword)
+        binding.accessoEmail.addTextChangedListener {
+            rimuoviErroreCampo(binding.accessoCampoEmail)
+            rimuoviErroreCampo(binding.accessoCampoPassword)
         }
 
-        password.addTextChangedListener {
-            rimuoviErroreCampo(campoEmail)
-            rimuoviErroreCampo(campoPassword)
+        binding.accessoPassword.addTextChangedListener {
+            rimuoviErroreCampo(binding.accessoCampoEmail)
+            rimuoviErroreCampo(binding.accessoCampoPassword)
         }
     }
 
@@ -184,9 +155,9 @@ class ControllerAccesso : Controller(R.layout.accesso) {
     @OptIn(DelicateCoroutinesApi::class)
     @EventHandler
     private fun clickAccedi() {
-        viewModel.email.value = estraiTestoDaElemento(email)
-        viewModel.password.value = estraiTestoDaElemento(password)
-        viewModel.tipoAccount.value = estraiTestoDaElemento(tipoAccount)
+        viewModel.email.value = estraiTestoDaElemento(binding.accessoEmail)
+        viewModel.password.value = estraiTestoDaElemento(binding.accessoPassword)
+        viewModel.tipoAccount.value = estraiTestoDaElemento(binding.accessoTipoAccount)
 
         try {
             viewModel.validate()
@@ -210,7 +181,11 @@ class ControllerAccesso : Controller(R.layout.accesso) {
                 listenerChangeActivity?.onFragmentChangeActivity(Home::class.java)
             }
         } catch (eccezione: EccezioneAccountNonEsistente) {
-            erroreCampo(R.string.accesso_erroreCredenzialiNonCorrette, campoEmail, campoPassword)
+            erroreCampo(
+                R.string.accesso_erroreCredenzialiNonCorrette,
+                binding.accessoCampoEmail,
+                binding.accessoCampoPassword
+            )
         } catch (eccezione: EccezioneAPI) {
             Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(resources.getColor(R.color.blu, null))

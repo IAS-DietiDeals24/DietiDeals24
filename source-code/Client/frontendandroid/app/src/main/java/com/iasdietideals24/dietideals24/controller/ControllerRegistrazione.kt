@@ -2,9 +2,6 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
 import android.os.Bundle
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import com.facebook.AccessToken
@@ -15,14 +12,10 @@ import com.facebook.GraphRequest
 import com.facebook.GraphResponse
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.facebook.login.widget.LoginButton
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.databinding.RegistrazioneBinding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
@@ -39,21 +32,9 @@ import org.json.JSONObject
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-
-class ControllerRegistrazione : Controller(R.layout.registrazione) {
+class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
 
     private lateinit var viewModel: ModelRegistrazione
-
-    private lateinit var tipoAccount: MaterialTextView
-    private lateinit var campoEmail: TextInputLayout
-    private lateinit var email: TextInputEditText
-    private lateinit var campoPassword: TextInputLayout
-    private lateinit var password: TextInputEditText
-    private lateinit var pulsanteIndietro: ImageButton
-    private lateinit var pulsanteAvanti: MaterialButton
-    private lateinit var pulsanteFacebook: LoginButton
-    private lateinit var linearLayout: LinearLayout
-    private lateinit var constraintLayout: ConstraintLayout
 
     private var facebookCallbackManager = create()
 
@@ -79,25 +60,11 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
     }
 
     @UIBuilder
-    override fun trovaElementiInterfaccia() {
-        tipoAccount = fragmentView.findViewById(R.id.registrazione_tipoAccount)
-        campoEmail = fragmentView.findViewById(R.id.registrazione_campoEmail)
-        email = fragmentView.findViewById(R.id.registrazione_email)
-        campoPassword = fragmentView.findViewById(R.id.registrazione_campoPassword)
-        password = fragmentView.findViewById(R.id.registrazione_password)
-        pulsanteIndietro = fragmentView.findViewById(R.id.registrazione_pulsanteIndietro)
-        pulsanteAvanti = fragmentView.findViewById(R.id.registrazione_pulsanteAvanti)
-        pulsanteFacebook = fragmentView.findViewById(R.id.registrazione_pulsanteFacebook)
-        linearLayout = fragmentView.findViewById(R.id.registrazione_linearLayout1)
-        constraintLayout = fragmentView.findViewById(R.id.registrazione_constraintLayout1)
-    }
-
-    @UIBuilder
     override fun impostaMessaggiCorpo() {
         when (runBlocking { caricaPreferenzaStringa("tipoAccount") }) {
             "compratore" -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_compratore)
-                tipoAccount.text = getString(
+                binding.registrazioneTipoAccount.text = getString(
                     R.string.placeholder,
                     stringaTipoAccount
                 )
@@ -105,7 +72,7 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
 
             "venditore" -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_venditore)
-                tipoAccount.text = getString(
+                binding.registrazioneTipoAccount.text = getString(
                     R.string.placeholder,
                     stringaTipoAccount
                 )
@@ -115,16 +82,16 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
 
     @UIBuilder
     override fun impostaEventiClick() {
-        campoPassword.setStartIconOnClickListener { clickInfoPassword() }
-        pulsanteIndietro.setOnClickListener { clickIndietro() }
-        pulsanteAvanti.setOnClickListener { clickAvanti() }
+        binding.registrazioneCampoPassword.setStartIconOnClickListener { clickInfoPassword() }
+        binding.registrazionePulsanteIndietro.setOnClickListener { clickIndietro() }
+        binding.registrazionePulsanteAvanti.setOnClickListener { clickAvanti() }
 
-        pulsanteFacebook.permissions = listOf(
+        binding.registrazionePulsanteFacebook.permissions = listOf(
             "openid", "email", "public_profile", "user_birthday",
             "user_gender", "user_link", "user_location"
         )
-        pulsanteFacebook.authType = "rerequest"
-        pulsanteFacebook.registerCallback(
+        binding.registrazionePulsanteFacebook.authType = "rerequest"
+        binding.registrazionePulsanteFacebook.registerCallback(
             facebookCallbackManager,
             object : FacebookCallback<LoginResult> {
                 override fun onSuccess(result: LoginResult) {
@@ -139,7 +106,7 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
 
                     val returned: Long? = eseguiChiamataREST(
                         "accountFacebook",
-                        result.accessToken.userId, tipoAccount.text.toString()
+                        result.accessToken.userId, binding.registrazioneTipoAccount.text.toString()
                     )
 
                     if (returned == null) { // errore di comunicazione con il backend
@@ -196,14 +163,14 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
 
     @UIBuilder
     override fun impostaEventiDiCambiamentoCampi() {
-        email.addTextChangedListener {
-            rimuoviErroreCampo(campoEmail)
-            rimuoviErroreCampo(campoPassword)
+        binding.registrazioneEmail.addTextChangedListener {
+            rimuoviErroreCampo(binding.registrazioneCampoEmail)
+            rimuoviErroreCampo(binding.registrazioneCampoPassword)
         }
 
-        password.addTextChangedListener {
-            rimuoviErroreCampo(campoEmail)
-            rimuoviErroreCampo(campoPassword)
+        binding.registrazionePassword.addTextChangedListener {
+            rimuoviErroreCampo(binding.registrazioneCampoEmail)
+            rimuoviErroreCampo(binding.registrazioneCampoPassword)
         }
     }
 
@@ -230,9 +197,9 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
     @EventHandler
     private fun clickAvanti() {
         viewModel.clear()
-        viewModel.email.value = estraiTestoDaElemento(email)
-        viewModel.password.value = estraiTestoDaElemento(password)
-        viewModel.tipoAccount.value = estraiTestoDaElemento(tipoAccount)
+        viewModel.email.value = estraiTestoDaElemento(binding.registrazioneEmail)
+        viewModel.password.value = estraiTestoDaElemento(binding.registrazionePassword)
+        viewModel.tipoAccount.value = estraiTestoDaElemento(binding.registrazioneTipoAccount)
 
         try {
             viewModel.validateAccount()
@@ -241,15 +208,18 @@ class ControllerRegistrazione : Controller(R.layout.registrazione) {
         } catch (eccezione: EccezioneCampiNonCompilati) {
             erroreCampo(
                 R.string.registrazione_erroreCampiObbligatoriNonCompilati,
-                campoEmail,
-                campoPassword
+                binding.registrazioneCampoEmail,
+                binding.registrazioneCampoPassword
             )
         } catch (eccezione: EccezioneEmailNonValida) {
-            erroreCampo(R.string.registrazione_erroreFormatoEmail, campoEmail)
+            erroreCampo(R.string.registrazione_erroreFormatoEmail, binding.registrazioneCampoEmail)
         } catch (eccezione: EccezioneEmailUsata) {
-            erroreCampo(R.string.registrazione_erroreEmailGiàUsata, campoEmail)
+            erroreCampo(R.string.registrazione_erroreEmailGiàUsata, binding.registrazioneCampoEmail)
         } catch (eccezione: EccezionePasswordNonSicura) {
-            erroreCampo(R.string.registrazione_errorePasswordNonSicura, campoPassword)
+            erroreCampo(
+                R.string.registrazione_errorePasswordNonSicura,
+                binding.registrazioneCampoPassword
+            )
         } catch (eccezione: EccezioneAPI) {
             Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(resources.getColor(R.color.arancione, null))

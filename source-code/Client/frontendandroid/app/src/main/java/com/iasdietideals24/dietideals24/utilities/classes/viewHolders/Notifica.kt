@@ -1,44 +1,59 @@
 package com.iasdietideals24.dietideals24.utilities.classes.viewHolders
 
-import android.view.View
-import android.widget.LinearLayout
+import android.content.Context
+import android.content.res.Resources
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.textview.MaterialTextView
+import coil.load
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.databinding.NotificaBinding
+import com.iasdietideals24.dietideals24.utilities.classes.data.DatiNotifica
+import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
+import java.time.LocalDate
 
-class Notifica(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class Notifica(binding: NotificaBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    private val _layout: LinearLayout
+    private val binding = binding
 
-    val layout: LinearLayout
-        get() = _layout
+    private var layoutListener: OnGoToDetails? = null
+    private var immagineListener: OnGoToProfile? = null
 
-    private val _mittente: MaterialTextView
+    fun setListeners(context: Context) {
+        if (context is OnGoToDetails) {
+            layoutListener = context
+        }
+        if (context is OnGoToProfile) {
+            immagineListener = context
+        }
+    }
 
-    val mittente: MaterialTextView
-        get() = _mittente
+    fun bind(currentNotifica: DatiNotifica, resources: Resources) {
+        binding.notificaNome.text = currentNotifica._mittente
+        if (currentNotifica._immagineMittente.isNotEmpty())
+            binding.notificaImmagine.load(currentNotifica._immagineMittente) {
+                crossfade(true)
+            }
+        binding.notificaTesto.text = currentNotifica._messaggio
 
-    private val _immagineMittente: ShapeableImageView
+        val tempoFa = when {
+            LocalDate.now() == currentNotifica._dataInvio -> currentNotifica._oraInvio.toString()
+            else -> currentNotifica._dataInvio.toLocalStringShort() + " " + currentNotifica._oraInvio.toString()
+        }
 
-    val immagineMittente: ShapeableImageView
-        get() = _immagineMittente
+        binding.notificaTempo.text = resources.getString(R.string.placeholder, tempoFa)
 
-    private val _messaggio: MaterialTextView
+        binding.notificaLinearLayout1.setOnClickListener {
+            layoutListener?.onGoToDetails(currentNotifica._idAsta, this::class)
+        }
 
-    val messaggio: MaterialTextView
-        get() = _messaggio
+        binding.notificaImmagine.setOnClickListener {
+            immagineListener?.onGoToProfile(currentNotifica._idMittente, this::class)
+        }
+    }
 
-    private val _dataInvio: MaterialTextView
-
-    val dataInvio: MaterialTextView
-        get() = _dataInvio
-
-    init {
-        _layout = itemView.findViewById(R.id.notifica_linearLayout1)
-        _mittente = itemView.findViewById(R.id.notifica_nome)
-        _immagineMittente = itemView.findViewById(R.id.notifica_immagine)
-        _messaggio = itemView.findViewById(R.id.notifica_testo)
-        _dataInvio = itemView.findViewById(R.id.notifica_tempo)
+    fun cleanListeners() {
+        layoutListener = null
+        immagineListener = null
     }
 }

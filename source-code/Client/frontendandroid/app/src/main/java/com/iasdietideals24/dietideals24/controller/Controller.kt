@@ -2,7 +2,9 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -10,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.viewbinding.ViewBinding
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
@@ -22,10 +25,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.reflect.Method
+import java.lang.reflect.ParameterizedType
 
-abstract class Controller(
-    private val layout: Int = 0
-) : Fragment(layout) {
+abstract class Controller<bindingType : ViewBinding> : Fragment() {
+
+    private var _binding: bindingType? = null
+
+    /**
+     * Una istanza di una classe generata a tempo di compilazione dai file XML delle viste, che
+     * contiene tutti gli elementi della vista come campi della classe stessa.
+     */
+    protected val binding get() = _binding!!
 
     /**
      * Una proprietà che chiama requireContext() nel fragment.
@@ -52,13 +62,34 @@ abstract class Controller(
         get() = requireActivity()
 
     /**
+     * Effettua il binding delle classi generate dalla build.
+     */
+    @Suppress("UNCHECKED_CAST")
+    @UIBuilder
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val classe =
+            (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<*>
+        val metodo = classe.getMethod(
+            "inflate",
+            LayoutInflater::class.java,
+            ViewGroup::class.java,
+            Boolean::class.java
+        )
+        _binding = metodo.invoke(null, inflater, container, false) as bindingType
+        val view = binding.root
+        return view
+    }
+
+    /**
      * Esegue tutti i compiti principali per la creazione della vista, quali eventi di click, inizializzazione di messaggio, eccetera.
      */
     @UIBuilder
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        trovaElementiInterfaccia()
 
         impostaMessaggiCorpo()
 
@@ -72,11 +103,13 @@ abstract class Controller(
     }
 
     /**
-     * Usato per trovare gli elementi di interfaccia all'interno della vista.
+     * Scollega il binding della vista per aiutare la garbage collection.
      */
     @UIBuilder
-    protected open fun trovaElementiInterfaccia() {
-        // Non fare nulla
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 
     /**

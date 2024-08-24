@@ -40,6 +40,10 @@ android {
         includeInBundle = false
     }
     buildToolsVersion = "34.0.0"
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {

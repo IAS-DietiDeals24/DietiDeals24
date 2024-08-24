@@ -13,19 +13,15 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.load
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import com.google.android.material.textview.MaterialTextView
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.databinding.CreaastaBinding
 import com.iasdietideals24.dietideals24.model.ModelAsta
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
@@ -37,27 +33,9 @@ import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 import java.time.LocalTime
 
-class ControllerCreaAsta : Controller(R.layout.creaasta) {
+class ControllerCreaAsta : Controller<CreaastaBinding>() {
 
     private lateinit var viewModel: ModelAsta
-
-    private lateinit var titolo: MaterialTextView
-    private lateinit var campoData: TextInputLayout
-    private lateinit var data: TextInputEditText
-    private lateinit var campoOra: TextInputLayout
-    private lateinit var ora: TextInputEditText
-    private lateinit var layoutPrezzo: ConstraintLayout
-    private lateinit var etichettaPrezzo: MaterialTextView
-    private lateinit var campoPrezzo: TextInputLayout
-    private lateinit var prezzo: TextInputEditText
-    private lateinit var immagine: ShapeableImageView
-    private lateinit var campoNome: TextInputLayout
-    private lateinit var nome: TextInputEditText
-    private lateinit var campoCategoria: TextInputLayout
-    private lateinit var categoria: TextInputEditText
-    private lateinit var campoDescrizione: TextInputLayout
-    private lateinit var descrizione: TextInputEditText
-    private lateinit var pulsanteCrea: MaterialButton
 
     private lateinit var requestPermissions: ActivityResultLauncher<Array<String>>
     private lateinit var selectPhoto: ActivityResultLauncher<String>
@@ -96,111 +74,90 @@ class ControllerCreaAsta : Controller(R.layout.creaasta) {
     }
 
     @UIBuilder
-    override fun trovaElementiInterfaccia() {
-        titolo = fragmentView.findViewById(R.id.crea_tipoAsta)
-        campoData = fragmentView.findViewById(R.id.crea_campoDataScadenza)
-        data = fragmentView.findViewById(R.id.crea_dataScadenza)
-        campoOra = fragmentView.findViewById(R.id.crea_campoOra)
-        ora = fragmentView.findViewById(R.id.crea_ora)
-        layoutPrezzo = fragmentView.findViewById(R.id.crea_constraintLayout3)
-        etichettaPrezzo = fragmentView.findViewById(R.id.crea_etichettaPrezzo)
-        campoPrezzo = fragmentView.findViewById(R.id.crea_campoPrezzo)
-        prezzo = fragmentView.findViewById(R.id.crea_prezzo)
-        immagine = fragmentView.findViewById(R.id.crea_campoFoto)
-        campoNome = fragmentView.findViewById(R.id.crea_campoNome)
-        nome = fragmentView.findViewById(R.id.crea_nome)
-        campoCategoria = fragmentView.findViewById(R.id.crea_campoCategoria)
-        categoria = fragmentView.findViewById(R.id.crea_categoria)
-        campoDescrizione = fragmentView.findViewById(R.id.crea_campoDescrizione)
-        descrizione = fragmentView.findViewById(R.id.crea_descrizione)
-        pulsanteCrea = fragmentView.findViewById(R.id.crea_pulsanteCrea)
-    }
-
-    @UIBuilder
     override fun impostaMessaggiCorpo() {
         when (viewModel.tipo.value) {
             "Inversa" -> {
-                titolo.text = getString(
+                binding.creaTipoAsta.text = getString(
                     R.string.crea_tipoAsta,
                     getString(R.string.tipoAsta_astaInversa)
                 )
-                etichettaPrezzo.text = getString(
+                binding.creaEtichettaPrezzo.text = getString(
                     R.string.crea_prezzo,
                     getString(R.string.crea_prezzoPartenza)
                 )
             }
 
             "Tempo fisso" -> {
-                titolo.text = getString(
+                binding.creaTipoAsta.text = getString(
                     R.string.crea_tipoAsta,
                     getString(R.string.tipoAsta_astaTempoFisso)
                 )
-                etichettaPrezzo.text = getString(
+                binding.creaEtichettaPrezzo.text = getString(
                     R.string.crea_prezzo,
                     getString(R.string.crea_prezzoMinimo)
                 )
             }
 
             "Silenziosa" -> {
-                titolo.text = getString(
+                binding.creaTipoAsta.text = getString(
                     R.string.crea_tipoAsta,
                     getString(R.string.tipoAsta_astaSilenziosa)
                 )
-                layoutPrezzo.visibility = ConstraintLayout.GONE
+                binding.creaConstraintLayout5.visibility = ConstraintLayout.GONE
             }
         }
     }
 
     @UIBuilder
     override fun impostaEventiClick() {
-        pulsanteCrea.setOnClickListener {
+        binding.creaPulsanteCrea.setOnClickListener {
             clickCrea()
         }
 
-        campoData.setEndIconOnClickListener {
+        binding.creaCampoDataScadenza.setEndIconOnClickListener {
             clickDataScadenza()
         }
 
-        campoOra.setEndIconOnClickListener {
+        binding.creaCampoOra.setEndIconOnClickListener {
             clickOraScadenza()
         }
     }
 
     @UIBuilder
     override fun impostaEventiDiCambiamentoCampi() {
-        data.addTextChangedListener {
+        binding.creaDataScadenza.addTextChangedListener {
             rimuoviErroreCampi()
         }
 
-        ora.addTextChangedListener {
+        binding.creaOra.addTextChangedListener {
             rimuoviErroreCampi()
         }
 
-        prezzo.addTextChangedListener {
+        binding.creaPrezzo.addTextChangedListener {
             rimuoviErroreCampi()
         }
 
-        nome.addTextChangedListener {
+        binding.creaNome.addTextChangedListener {
             rimuoviErroreCampi()
         }
 
-        categoria.addTextChangedListener {
+        binding.creaCategoria.addTextChangedListener {
             rimuoviErroreCampi()
         }
 
-        descrizione.addTextChangedListener {
+        binding.creaDescrizione.addTextChangedListener {
             rimuoviErroreCampi()
         }
     }
 
     private fun rimuoviErroreCampi() {
         rimuoviErroreCampo(
-            campoData,
-            campoOra,
-            campoPrezzo,
-            campoNome,
-            campoCategoria,
-            campoDescrizione
+            binding.creaCampoDataScadenza,
+            binding.creaCampoOra,
+            binding.creaCampoPrezzo,
+            binding.creaCampoNome,
+            binding.creaCampoCategoria,
+            binding.creaCampoDescrizione
         )
     }
 
@@ -253,30 +210,30 @@ class ControllerCreaAsta : Controller(R.layout.creaasta) {
     override fun impostaOsservatori() {
         val dataFineObserver = Observer<LocalDate> { newData ->
             if (newData != LocalDate.MIN)
-                data.setText(newData.toLocalStringShort())
+                binding.creaDataScadenza.setText(newData.toLocalStringShort())
             else
-                data.setText("")
+                binding.creaDataScadenza.setText("")
         }
         viewModel.dataFine.observe(viewLifecycleOwner, dataFineObserver)
 
         val oraFineObserver = Observer<LocalTime> { newOra ->
-            ora.setText(newOra.toString())
+            binding.creaOra.setText(newOra.toString())
         }
         viewModel.oraFine.observe(viewLifecycleOwner, oraFineObserver)
 
         val prezzoObserver = Observer<Double> { newPrezzo ->
-            prezzo.setText(newPrezzo.toString())
+            binding.creaPrezzo.setText(newPrezzo.toString())
         }
         viewModel.prezzo.observe(viewLifecycleOwner, prezzoObserver)
 
         val immagineObserver = Observer<ByteArray> { newByteArray: ByteArray? ->
             when {
                 newByteArray == null || newByteArray.isEmpty() -> {
-                    immagine.setImageResource(R.drawable.icona_fotocamera)
+                    binding.creaCampoFoto.setImageResource(R.drawable.icona_fotocamera)
                 }
 
                 newByteArray != null -> {
-                    immagine.load(newByteArray) {
+                    binding.creaCampoFoto.load(newByteArray) {
                         crossfade(true)
                     }
                 }
@@ -285,17 +242,17 @@ class ControllerCreaAsta : Controller(R.layout.creaasta) {
         viewModel.immagine.observe(viewLifecycleOwner, immagineObserver)
 
         val nomeObserver = Observer<String> { newNome ->
-            nome.setText(newNome)
+            binding.creaNome.setText(newNome)
         }
         viewModel.nome.observe(viewLifecycleOwner, nomeObserver)
 
         val categoriaObserver = Observer<String> { newCategoria ->
-            categoria.setText(newCategoria)
+            binding.creaCategoria.setText(newCategoria)
         }
         viewModel.categoria.observe(viewLifecycleOwner, categoriaObserver)
 
         val descrizioneObserver = Observer<String> { newDescrizione ->
-            descrizione.setText(newDescrizione)
+            binding.creaDescrizione.setText(newDescrizione)
         }
         viewModel.descrizione.observe(viewLifecycleOwner, descrizioneObserver)
     }
@@ -346,7 +303,7 @@ class ControllerCreaAsta : Controller(R.layout.creaasta) {
 
                 viewModel.dataFine.value = localDate
 
-                data.setText(localDate.toLocalStringShort())
+                binding.creaDataScadenza.setText(localDate.toLocalStringShort())
             }
         }
 

@@ -4,10 +4,10 @@ import android.content.Context
 import com.facebook.AccessToken
 import com.facebook.LoginStatusCallback
 import com.facebook.login.LoginManager.Companion.getInstance
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.Home
+import com.iasdietideals24.dietideals24.databinding.SelezionetipoaccountBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
@@ -16,11 +16,7 @@ import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentHideBackB
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentShowBackButton
 import kotlinx.coroutines.runBlocking
 
-class ControllerSelezioneTipoAccount : Controller(R.layout.selezionetipoaccount) {
-
-    private lateinit var pulsanteCompratore: MaterialButton
-    private lateinit var pulsanteVenditore: MaterialButton
-    private lateinit var pulsanteOspite: MaterialButton
+class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>() {
 
     private var changeActivityListener: OnFragmentChangeActivity? = null
     private var hideBackButtonListener: OnFragmentHideBackButton? = null
@@ -95,23 +91,16 @@ class ControllerSelezioneTipoAccount : Controller(R.layout.selezionetipoaccount)
     }
 
     @UIBuilder
-    override fun trovaElementiInterfaccia() {
-        pulsanteCompratore = fragmentView.findViewById(R.id.selezioneTipoAccount_pulsanteCompratore)
-        pulsanteVenditore = fragmentView.findViewById(R.id.selezioneTipoAccount_pulsanteVenditore)
-        pulsanteOspite = fragmentView.findViewById(R.id.selezioneTipoAccount_pulsanteOspite)
-    }
-
-    @UIBuilder
     override fun impostaEventiClick() {
-        pulsanteCompratore.setOnClickListener {
+        binding.selezioneTipoAccountPulsanteCompratore.setOnClickListener {
             clickCompratore()
         }
 
-        pulsanteVenditore.setOnClickListener {
+        binding.selezioneTipoAccountPulsanteVenditore.setOnClickListener {
             clickVenditore()
         }
 
-        pulsanteOspite.setOnClickListener {
+        binding.selezioneTipoAccountPulsanteOspite.setOnClickListener {
             clickOspite()
         }
     }

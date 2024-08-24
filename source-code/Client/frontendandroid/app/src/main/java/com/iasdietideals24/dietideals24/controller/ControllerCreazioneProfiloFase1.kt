@@ -2,20 +2,16 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
 import android.icu.util.Calendar
-import android.widget.ImageButton
-import android.widget.LinearLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.facebook.AccessToken
 import com.facebook.login.LoginManager
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.databinding.Creazioneprofilofase1Binding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
@@ -26,22 +22,9 @@ import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCo
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
 import java.time.LocalDate
 
-
-class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase1) {
+class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>() {
 
     private lateinit var viewModel: ModelRegistrazione
-
-    private lateinit var layout: LinearLayout
-    private lateinit var pulsanteIndietro: ImageButton
-    private lateinit var campoNomeUtente: TextInputLayout
-    private lateinit var nomeUtente: TextInputEditText
-    private lateinit var campoNome: TextInputLayout
-    private lateinit var nome: TextInputEditText
-    private lateinit var campoCognome: TextInputLayout
-    private lateinit var cognome: TextInputEditText
-    private lateinit var campoDataNascita: TextInputLayout
-    private lateinit var dataNascita: TextInputEditText
-    private lateinit var pulsanteAvanti: MaterialButton
 
     private var listener: OnFragmentBackButton? = null
 
@@ -60,45 +43,30 @@ class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase
     }
 
     @UIBuilder
-    override fun trovaElementiInterfaccia() {
-        layout = fragmentView.findViewById(R.id.creazioneProfiloFase1_linearLayout)
-        pulsanteIndietro = fragmentView.findViewById(R.id.creazioneProfiloFase1_pulsanteIndietro)
-        campoNomeUtente = fragmentView.findViewById(R.id.creazioneProfiloFase1_campoNomeUtente)
-        nomeUtente = fragmentView.findViewById(R.id.creazioneProfiloFase1_nomeUtente)
-        campoNome = fragmentView.findViewById(R.id.creazioneProfiloFase1_campoNome)
-        nome = fragmentView.findViewById(R.id.creazioneProfiloFase1_nome)
-        campoCognome = fragmentView.findViewById(R.id.creazioneProfiloFase1_campoCognome)
-        cognome = fragmentView.findViewById(R.id.creazioneProfiloFase1_cognome)
-        campoDataNascita = fragmentView.findViewById(R.id.creazioneProfiloFase1_campoDataNascita)
-        dataNascita = fragmentView.findViewById(R.id.creazioneProfiloFase1_dataNascita)
-        pulsanteAvanti = fragmentView.findViewById(R.id.creazioneProfiloFase1_pulsanteAvanti)
-    }
-
-    @UIBuilder
     override fun impostaEventiClick() {
-        pulsanteIndietro.setOnClickListener { clickIndietro() }
-        pulsanteAvanti.setOnClickListener { clickAvanti() }
-        campoDataNascita.setEndIconOnClickListener { clickDataNascita() }
+        binding.creazioneProfiloFase1PulsanteIndietro.setOnClickListener { clickIndietro() }
+        binding.creazioneProfiloFase1PulsanteAvanti.setOnClickListener { clickAvanti() }
+        binding.creazioneProfiloFase1CampoDataNascita.setEndIconOnClickListener { clickDataNascita() }
     }
 
     @UIBuilder
     override fun impostaEventiDiCambiamentoCampi() {
-        nomeUtente.addTextChangedListener {
-            rimuoviErroreCampo(campoNomeUtente)
-            rimuoviErroreCampo(campoNome)
-            rimuoviErroreCampo(campoCognome)
+        binding.creazioneProfiloFase1NomeUtente.addTextChangedListener {
+            rimuoviErroreCampo(binding.creazioneProfiloFase1CampoNomeUtente)
+            rimuoviErroreCampo(binding.creazioneProfiloFase1CampoNome)
+            rimuoviErroreCampo(binding.creazioneProfiloFase1CampoCognome)
         }
 
-        nome.addTextChangedListener {
-            rimuoviErroreCampo(campoNomeUtente)
-            rimuoviErroreCampo(campoNome)
-            rimuoviErroreCampo(campoCognome)
+        binding.creazioneProfiloFase1Nome.addTextChangedListener {
+            rimuoviErroreCampo(binding.creazioneProfiloFase1CampoNomeUtente)
+            rimuoviErroreCampo(binding.creazioneProfiloFase1CampoNome)
+            rimuoviErroreCampo(binding.creazioneProfiloFase1CampoCognome)
         }
 
-        cognome.addTextChangedListener {
-            rimuoviErroreCampo(campoNomeUtente)
-            rimuoviErroreCampo(campoNome)
-            rimuoviErroreCampo(campoCognome)
+        binding.creazioneProfiloFase1Cognome.addTextChangedListener {
+            rimuoviErroreCampo(binding.creazioneProfiloFase1CampoNomeUtente)
+            rimuoviErroreCampo(binding.creazioneProfiloFase1CampoNome)
+            rimuoviErroreCampo(binding.creazioneProfiloFase1CampoCognome)
         }
     }
 
@@ -110,25 +78,25 @@ class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase
     @UIBuilder
     override fun impostaOsservatori() {
         val nomeUtenteObserver = Observer<String> { newNomeUtente ->
-            nomeUtente.setText(newNomeUtente)
+            binding.creazioneProfiloFase1NomeUtente.setText(newNomeUtente)
         }
         viewModel.nomeUtente.observe(viewLifecycleOwner, nomeUtenteObserver)
 
         val nomeObserver = Observer<String> { newNome ->
-            nome.setText(newNome)
+            binding.creazioneProfiloFase1Nome.setText(newNome)
         }
         viewModel.nome.observe(viewLifecycleOwner, nomeObserver)
 
         val cognomeObserver = Observer<String> { newCognome ->
-            cognome.setText(newCognome)
+            binding.creazioneProfiloFase1Cognome.setText(newCognome)
         }
         viewModel.cognome.observe(viewLifecycleOwner, cognomeObserver)
 
         val dataNascitaObserver = Observer<LocalDate> { newData ->
             if (newData != LocalDate.MIN)
-                dataNascita.setText(newData.toLocalStringShort())
+                binding.creazioneProfiloFase1DataNascita.setText(newData.toLocalStringShort())
             else
-                dataNascita.setText("")
+                binding.creazioneProfiloFase1DataNascita.setText("")
         }
         viewModel.dataNascita.observe(viewLifecycleOwner, dataNascitaObserver)
     }
@@ -146,9 +114,9 @@ class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase
 
     @EventHandler
     private fun clickAvanti() {
-        viewModel.nomeUtente.value = estraiTestoDaElemento(nomeUtente)
-        viewModel.nome.value = estraiTestoDaElemento(nome)
-        viewModel.cognome.value = estraiTestoDaElemento(cognome)
+        viewModel.nomeUtente.value = estraiTestoDaElemento(binding.creazioneProfiloFase1NomeUtente)
+        viewModel.nome.value = estraiTestoDaElemento(binding.creazioneProfiloFase1Nome)
+        viewModel.cognome.value = estraiTestoDaElemento(binding.creazioneProfiloFase1Cognome)
 
         try {
             viewModel.validateProfile()
@@ -157,10 +125,10 @@ class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase
         } catch (eccezione: EccezioneCampiNonCompilati) {
             erroreCampo(
                 R.string.registrazione_erroreCampiObbligatoriNonCompilati,
-                campoNomeUtente,
-                campoNome,
-                campoCognome,
-                campoDataNascita
+                binding.creazioneProfiloFase1CampoNomeUtente,
+                binding.creazioneProfiloFase1CampoNome,
+                binding.creazioneProfiloFase1CampoCognome,
+                binding.creazioneProfiloFase1CampoDataNascita
             )
         }
     }
@@ -189,7 +157,7 @@ class ControllerCreazioneProfiloFase1 : Controller(R.layout.creazioneprofilofase
 
                 viewModel.dataNascita.value = localDate
 
-                dataNascita.setText(localDate.toLocalStringShort())
+                binding.creazioneProfiloFase1DataNascita.setText(localDate.toLocalStringShort())
             }
         }
 
