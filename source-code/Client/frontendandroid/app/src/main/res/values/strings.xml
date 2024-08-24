@@ -172,4 +172,7 @@
     <string name="category_no_category">Any</string>
     <string name="tipoAccount_ospite">guest</string>
     <string name="profilo_pulsante5O">Signin / signup</string>
+    <string name="popupLinkSocial_accessibilitàLink">URL</string>
+    <string name="annulla">Cancel</string>
+    <string name="modificaProfilo_successoModifica">Your profile was updated successfully.</string>
 </resources>

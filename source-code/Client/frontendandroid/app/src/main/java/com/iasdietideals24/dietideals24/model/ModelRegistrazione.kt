@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
 import com.iasdietideals24.dietideals24.utilities.classes.APIController
-import com.iasdietideals24.dietideals24.utilities.classes.data.AccountInfo
-import com.iasdietideals24.dietideals24.utilities.classes.data.AccountInfoProfilo
+import com.iasdietideals24.dietideals24.utilities.classes.data.Account
+import com.iasdietideals24.dietideals24.utilities.classes.data.AccountProfilo
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
@@ -159,8 +159,8 @@ class ModelRegistrazione : ViewModel() {
         _linkX.value = ""
     }
 
-    fun toAccountInfo(): AccountInfo {
-        return AccountInfo(
+    fun toAccount(): Account {
+        return Account(
             _facebookAccountID.value,
             _email.value,
             _password.value,
@@ -168,9 +168,9 @@ class ModelRegistrazione : ViewModel() {
         )
     }
 
-    fun toAccountProfileInfo(): AccountInfoProfilo {
-        return AccountInfoProfilo(
-            AccountInfo(
+    fun toAccountProfilo(): AccountProfilo {
+        return AccountProfilo(
+            Account(
                 _facebookAccountID.value,
                 _email.value,
                 _password.value,

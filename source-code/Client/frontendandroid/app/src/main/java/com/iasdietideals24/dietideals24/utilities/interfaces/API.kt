@@ -1,11 +1,12 @@
 package com.iasdietideals24.dietideals24.utilities.interfaces
 
-import com.iasdietideals24.dietideals24.utilities.classes.data.AccountInfo
-import com.iasdietideals24.dietideals24.utilities.classes.data.AccountInfoProfilo
+import com.iasdietideals24.dietideals24.utilities.classes.data.Account
+import com.iasdietideals24.dietideals24.utilities.classes.data.AccountProfilo
+import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaAsta
 import com.iasdietideals24.dietideals24.utilities.classes.data.Asta
-import com.iasdietideals24.dietideals24.utilities.classes.data.DatiAnteprimaAsta
-import com.iasdietideals24.dietideals24.utilities.classes.data.DatiNotifica
 import com.iasdietideals24.dietideals24.utilities.classes.data.DettagliAsta
+import com.iasdietideals24.dietideals24.utilities.classes.data.Notifica
+import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -70,22 +71,22 @@ interface API {
 
     /**
      * Registra i dati del nuovo account e li associa al profilo già esistente.
-     * @param accountInfo Wrapper con le informazioni necessarie a creare il nuovo account.
+     * @param account Wrapper con le informazioni necessarie a creare il nuovo account.
      * @return L'identificativo dell'account appena creato ed associato.
      */
     @POST("registrazione/associazioneProfilo")
     fun associazioneProfilo(
-        @Body accountInfo: AccountInfo
+        @Body account: Account
     ): Call<Long>
 
     /**
      * Registra i dati del nuovo account e crea un nuovo profilo da associare a tale account.
-     * @param modelRegistrazione Wrapper con le informazioni necessarie a creare il nuovo account e il nuovo profilo.
+     * @param accountProfilo Wrapper con le informazioni necessarie a creare il nuovo account e il nuovo profilo.
      * @return L'identificativo dell'account appena creato.
      */
     @POST("registrazione/creazioneProfilo")
     fun creazioneProfilo(
-        @Body dataClass: AccountInfoProfilo
+        @Body accountProfilo: AccountProfilo
     ): Call<Long>
 
     /**
@@ -97,7 +98,7 @@ interface API {
     @GET("home/recuperaAste")
     fun recuperaAste(
         @Query("idAccount") idAccount: Long
-    ): Call<Array<DatiAnteprimaAsta>>
+    ): Call<Array<AnteprimaAsta>>
 
     /**
      * Recupera l'elenco di tutte le aste con le quali può interagire l'utente che ha attualmente
@@ -117,7 +118,7 @@ interface API {
         @Query("idAccount") idAccount: Long,
         @Query("ricerca") ricerca: String,
         @Query("filtro") filtro: String
-    ): Call<Array<DatiAnteprimaAsta>>
+    ): Call<Array<AnteprimaAsta>>
 
     /**
      * Recupera i dettagli dell'asta specificata.
@@ -137,7 +138,7 @@ interface API {
     @GET("home/recuperaNotifiche")
     fun recuperaNotifiche(
         @Query("idAccount") idAccount: Long
-    ): Call<Array<DatiNotifica>>
+    ): Call<Array<Notifica>>
 
     /**
      * Carica una nuova asta all'interno del database.
@@ -148,4 +149,24 @@ interface API {
     fun creaAsta(
         @Body asta: Asta
     ): Call<Long>
+
+    /**
+     * Carica tutti i dati di un profilo collegato ad un account.
+     * @param idAccount Identificativo dell'account del quale recuperare il profilo.
+     * @return Le informazioni da mostrare sul profilo, con altre informazioni importanti.
+     */
+    @GET("home/caricaProfilo")
+    fun caricaProfilo(
+        @Query("idAccount") idAccount: Long
+    ): Call<Profilo>
+
+    /**
+     * Aggiorna i dati di un profilo.
+     * @param profilo Wrapper con le informazioni necessarie a aggiornare il profilo.
+     * @return Se l'operazione di aggiornamento ha avuto successo.
+     */
+    @POST("home/aggiornaProfilo")
+    fun aggiornaProfilo(
+        @Body profilo: Profilo
+    ): Call<Boolean>
 }

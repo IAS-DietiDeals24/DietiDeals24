@@ -6,13 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.NotificaBinding
-import com.iasdietideals24.dietideals24.utilities.classes.data.DatiNotifica
+import com.iasdietideals24.dietideals24.utilities.classes.data.Notifica
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
 import java.time.LocalDate
 
-class Notifica(binding: NotificaBinding) : RecyclerView.ViewHolder(binding.root) {
+class ViewHolderNotifica(binding: NotificaBinding) : RecyclerView.ViewHolder(binding.root) {
 
     private val binding = binding
 
@@ -28,7 +28,7 @@ class Notifica(binding: NotificaBinding) : RecyclerView.ViewHolder(binding.root)
         }
     }
 
-    fun bind(currentNotifica: DatiNotifica, resources: Resources) {
+    fun bind(currentNotifica: Notifica, resources: Resources) {
         binding.notificaNome.text = currentNotifica._mittente
         if (currentNotifica._immagineMittente.isNotEmpty())
             binding.notificaImmagine.load(currentNotifica._immagineMittente) {

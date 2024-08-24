@@ -2,8 +2,8 @@ package com.iasdietideals24.dietideals24.utilities.classes.data
 
 import java.time.LocalDate
 
-data class AccountInfoProfilo(
-    private val _accountInfo: AccountInfo = AccountInfo(),
+data class AccountProfilo(
+    private val _account: Account = Account(),
     private var _nomeUtente: String? = "",
     private var _nome: String? = "",
     private var _cognome: String? = "",

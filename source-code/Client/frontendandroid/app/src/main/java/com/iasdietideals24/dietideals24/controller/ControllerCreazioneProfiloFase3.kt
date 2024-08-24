@@ -62,12 +62,10 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
         }
         viewModel.linkInstagram.observe(viewLifecycleOwner, linkInstagramObserver)
 
-
         val linkFacebookObserver = Observer<String> { newLinkFacebook ->
             binding.creazioneProfiloFase3LinkFacebook.setText(newLinkFacebook)
         }
         viewModel.linkFacebook.observe(viewLifecycleOwner, linkFacebookObserver)
-
 
         val linkGitHubObserver = Observer<String> { newLinkGitHub ->
             binding.creazioneProfiloFase3LinkGitHub.setText(newLinkGitHub)
@@ -88,7 +86,7 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
     @EventHandler
     private fun clickFine() {
         val returned: Long? =
-            eseguiChiamataREST("creazioneProfilo", viewModel.toAccountProfileInfo())
+            eseguiChiamataREST("creazioneProfilo", viewModel.toAccountProfilo())
 
         if (returned == null || returned == 0L) {
             Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)

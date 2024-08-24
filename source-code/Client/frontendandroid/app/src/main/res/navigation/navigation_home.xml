@@ -11,7 +11,11 @@
         tools:layout="@layout/home">
         <action
             android:id="@+id/action_controllerHome_to_controllerDettagliAsta"
-            app:destination="@id/controllerDettagliAsta" />
+            app:destination="@id/controllerDettagliAsta"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/controllerCreaAsta"
@@ -20,7 +24,11 @@
         tools:layout="@layout/creaasta">
         <action
             android:id="@+id/action_controllerCreaAsta_to_controllerHome"
-            app:destination="@id/controllerHome" />
+            app:destination="@id/controllerHome"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/controllerNotifiche"
@@ -29,10 +37,18 @@
         tools:layout="@layout/notifiche">
         <action
             android:id="@+id/action_controllerNotifiche_to_controllerDettagliAsta"
-            app:destination="@id/controllerDettagliAsta" />
+            app:destination="@id/controllerDettagliAsta"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_controllerNotifiche_to_controllerDettagliProfilo"
-            app:destination="@id/controllerDettagliProfilo" />
+            app:destination="@id/controllerDettagliProfilo"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/controllerProfilo"
@@ -41,7 +57,11 @@
         tools:layout="@layout/profilo">
         <action
             android:id="@+id/action_controllerProfilo_to_controllerDettagliProfilo"
-            app:destination="@id/controllerDettagliProfilo" />
+            app:destination="@id/controllerDettagliProfilo"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/controllerDettagliAsta"
@@ -54,7 +74,11 @@
             app:argType="long" />
         <action
             android:id="@+id/action_controllerDettagliAsta_to_controllerDettagliProfilo"
-            app:destination="@id/controllerDettagliProfilo" />
+            app:destination="@id/controllerDettagliProfilo"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/controllerDettagliProfilo"
@@ -63,7 +87,12 @@
         tools:layout="@layout/dettagliprofilo">
         <action
             android:id="@+id/action_controllerDettagliProfilo_to_controllerModificaProfilo"
-            app:destination="@id/controllerModificaProfilo" />
+            app:destination="@id/controllerModificaProfilo"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/controllerDettagliProfilo" />
         <argument
             android:name="id"
             android:defaultValue="0L"
@@ -76,6 +105,10 @@
         tools:layout="@layout/modificaprofilo">
         <action
             android:id="@+id/action_controllerModificaProfilo_to_controllerDettagliProfilo"
-            app:destination="@id/controllerDettagliProfilo" />
+            app:destination="@id/controllerDettagliProfilo"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 </navigation>

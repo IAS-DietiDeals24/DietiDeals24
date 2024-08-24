@@ -3,7 +3,7 @@ package com.iasdietideals24.dietideals24.utilities.classes.data
 import java.time.LocalDate
 import java.time.LocalTime
 
-data class DatiNotifica(
+data class Notifica(
     val _idAsta: Long = 0L,
     val _idMittente: Long = 0L,
     val _mittente: String = "",

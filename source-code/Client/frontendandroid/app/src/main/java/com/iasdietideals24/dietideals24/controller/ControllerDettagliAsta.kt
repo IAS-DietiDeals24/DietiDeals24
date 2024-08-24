@@ -45,31 +45,31 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         asta = eseguiChiamataREST("caricaAsta", args.id)
 
         if (asta != null) {
-            val stringaTipoAsta: String = when (asta!!._datiAnteprimaAsta._tipoAsta) {
+            val stringaTipoAsta: String = when (asta!!._anteprimaAsta._tipoAsta) {
                 "Silenziosa" -> getString(R.string.tipoAsta_astaSilenziosa)
                 "Tempo fisso" -> getString(R.string.tipoAsta_astaTempoFisso)
                 "Inversa" -> getString(R.string.tipoAsta_astaInversa)
                 else -> ""
             }
             binding.dettagliAstaTipoAsta.text = getString(R.string.crea_tipoAsta, stringaTipoAsta)
-            binding.dettagliAstaDataScadenza.text = asta!!._datiAnteprimaAsta._dataScadenza.format(
+            binding.dettagliAstaDataScadenza.text = asta!!._anteprimaAsta._dataScadenza.format(
                 DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT)
             )
-            binding.dettagliAstaOraScadenza.text = asta!!._datiAnteprimaAsta._oraScadenza.toString()
-            binding.dettagliAstaCampoFoto.load(asta!!._datiAnteprimaAsta._foto) {
+            binding.dettagliAstaOraScadenza.text = asta!!._anteprimaAsta._oraScadenza.toString()
+            binding.dettagliAstaCampoFoto.load(asta!!._anteprimaAsta._foto) {
                 crossfade(true)
             }
-            binding.dettagliAstaNome.text = asta!!._datiAnteprimaAsta._nome
+            binding.dettagliAstaNome.text = asta!!._anteprimaAsta._nome
             binding.dettagliAstaCategoria.text = asta!!._categoria
             binding.dettagliAstaNomeUtente.text = asta!!._nomeCreatore
             binding.dettagliAstaDescrizione.text = asta!!._descrizione
-            binding.dettagliAstaTestoOfferta.text = when (asta!!._datiAnteprimaAsta._tipoAsta) {
+            binding.dettagliAstaTestoOfferta.text = when (asta!!._anteprimaAsta._tipoAsta) {
                 "Silenziosa" -> getString(R.string.dettagliAsta_testoOfferta1)
                 "Tempo fisso" -> getString(R.string.dettagliAsta_testoOfferta1)
                 "Inversa" -> getString(R.string.dettagliAsta_testoOfferta2)
                 else -> ""
             }
-            binding.dettagliAstaOfferta.text = asta!!._datiAnteprimaAsta._offerta.toString()
+            binding.dettagliAstaOfferta.text = asta!!._anteprimaAsta._offerta.toString()
         } else {
             Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(resources.getColor(R.color.blu, null))
@@ -87,7 +87,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         binding.dettagliAstaPulsanteAiuto.setOnClickListener {
             MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
                 .setTitle(
-                    when (asta?._datiAnteprimaAsta?._tipoAsta) {
+                    when (asta?._anteprimaAsta?._tipoAsta) {
                         "Silenziosa" -> getString(R.string.aiuto_titoloAstaSilenziosa)
                         "Tempo fisso" -> getString(R.string.aiuto_titoloAstaTempoFisso)
                         "Inversa" -> getString(R.string.aiuto_titoloAstaInversa)
@@ -96,7 +96,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                 )
                 .setIcon(R.drawable.icona_aiuto_arancione)
                 .setMessage(
-                    when (asta?._datiAnteprimaAsta?._tipoAsta) {
+                    when (asta?._anteprimaAsta?._tipoAsta) {
                         "Silenziosa" -> getString(R.string.aiuto_astaSilenziosa)
                         "Tempo fisso" -> getString(R.string.aiuto_astaTempoFisso)
                         "Inversa" -> getString(R.string.aiuto_astaInversa)

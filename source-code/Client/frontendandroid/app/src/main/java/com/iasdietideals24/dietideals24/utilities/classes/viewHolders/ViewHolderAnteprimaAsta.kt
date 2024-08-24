@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.AstaBinding
-import com.iasdietideals24.dietideals24.utilities.classes.data.DatiAnteprimaAsta
+import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaAsta
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
 
-class AnteprimaAsta(binding: AstaBinding) : RecyclerView.ViewHolder(binding.root) {
+class ViewHolderAnteprimaAsta(binding: AstaBinding) : RecyclerView.ViewHolder(binding.root) {
 
     private val binding = binding
 
@@ -23,7 +23,7 @@ class AnteprimaAsta(binding: AstaBinding) : RecyclerView.ViewHolder(binding.root
         }
     }
 
-    fun bind(currentAsta: DatiAnteprimaAsta, resources: Resources) {
+    fun bind(currentAsta: AnteprimaAsta, resources: Resources) {
         when (currentAsta._tipoAsta) {
             "Inversa" -> {
                 binding.astaTipo.text = resources.getString(R.string.tipoAsta_astaInversa)

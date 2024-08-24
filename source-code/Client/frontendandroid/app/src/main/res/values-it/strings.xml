@@ -162,4 +162,7 @@
     <string name="category_no_category">Tutto</string>
     <string name="tipoAccount_ospite">ospite</string>
     <string name="profilo_pulsante5O">Accedi / registrati</string>
+    <string name="popupLinkSocial_accessibilitàLink">URL</string>
+    <string name="annulla">Annulla</string>
+    <string name="modificaProfilo_successoModifica">Il tuo profilo è stato modificato con successo.</string>
 </resources>

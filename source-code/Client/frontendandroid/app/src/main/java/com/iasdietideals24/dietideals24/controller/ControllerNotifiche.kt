@@ -8,7 +8,7 @@ import com.iasdietideals24.dietideals24.databinding.NotificheBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.adapters.AdapterNotifiche
-import com.iasdietideals24.dietideals24.utilities.classes.data.DatiNotifica
+import com.iasdietideals24.dietideals24.utilities.classes.data.Notifica
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -44,7 +44,7 @@ class ControllerNotifiche : Controller<NotificheBinding>() {
     }
 
     private suspend fun aggiornaNotifiche() {
-        val result: Array<DatiNotifica>? = withContext(Dispatchers.IO) {
+        val result: Array<Notifica>? = withContext(Dispatchers.IO) {
             eseguiChiamataREST(
                 "recuperaNotifiche",
                 CurrentUser.id,

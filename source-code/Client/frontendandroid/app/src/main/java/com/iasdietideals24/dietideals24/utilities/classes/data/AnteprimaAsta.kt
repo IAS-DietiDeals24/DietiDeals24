@@ -3,7 +3,7 @@ package com.iasdietideals24.dietideals24.utilities.classes.data
 import java.time.LocalDate
 import java.time.LocalTime
 
-data class DatiAnteprimaAsta(
+data class AnteprimaAsta(
     val _id: Long = 0L,
     val _tipoAsta: String = "",
     val _dataScadenza: LocalDate = LocalDate.MIN,

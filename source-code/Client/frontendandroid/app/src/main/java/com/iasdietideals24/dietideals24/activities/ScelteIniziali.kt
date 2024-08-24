@@ -47,8 +47,7 @@ class ScelteIniziali : DietiDeals24Activity<ActivityScelteInizialiBinding>(),
     }
 
     override fun <Activity : AppCompatActivity> onFragmentChangeActivity(activity: Class<Activity>) {
-        startActivity(Intent(baseContext, Home::class.java))
-        finishAffinity()
+        startActivity(Intent(baseContext, activity))
     }
 
     override fun onFragmentHideBackButton() {

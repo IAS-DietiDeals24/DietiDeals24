@@ -11,7 +11,7 @@ import com.iasdietideals24.dietideals24.databinding.HomeBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.adapters.AdapterHome
-import com.iasdietideals24.dietideals24.utilities.classes.data.DatiAnteprimaAsta
+import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaAsta
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -83,8 +83,8 @@ class ControllerHome : Controller<HomeBinding>() {
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
         binding.homeRecyclerView.layoutManager = LinearLayoutManager(fragmentContext)
-        binding.homeFiltro.setText(resources.getString(R.string.category_no_category))
         binding.homeFiltro.setSimpleItems(resources.getStringArray(R.array.home_categorieAsta))
+        binding.homeFiltro.setText(resources.getString(R.string.category_no_category), false)
         binding.homeFiltro.setOnItemClickListener { _, _, _, _ ->
             jobRecupero?.cancel()
 
@@ -99,7 +99,7 @@ class ControllerHome : Controller<HomeBinding>() {
     }
 
     private suspend fun recuperaAste() {
-        val result: Array<DatiAnteprimaAsta>? = withContext(Dispatchers.IO) {
+        val result: Array<AnteprimaAsta>? = withContext(Dispatchers.IO) {
             if (binding.homeRicerca.text.isNullOrEmpty() && binding.homeFiltro.text.toString() == getString(
                     R.string.category_no_category
                 )

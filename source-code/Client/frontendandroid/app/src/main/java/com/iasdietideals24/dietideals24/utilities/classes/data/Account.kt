@@ -1,6 +1,6 @@
 package com.iasdietideals24.dietideals24.utilities.classes.data
 
-data class AccountInfo(
+data class Account(
     private var _facebookId: String? = "",
     private var _email: String? = "",
     private var _password: String? = "",

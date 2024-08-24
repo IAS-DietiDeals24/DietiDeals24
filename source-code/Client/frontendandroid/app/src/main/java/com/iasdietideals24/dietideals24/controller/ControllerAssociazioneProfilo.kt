@@ -46,7 +46,7 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
     @EventHandler
     private fun clickFine() {
         val returned: Long? =
-            eseguiChiamataREST("associazioneProfilo", viewModel.toAccountInfo())
+            eseguiChiamataREST("associazioneProfilo", viewModel.toAccount())
 
         if (returned == null || returned == 0L) {
             binding.associaProfiloPulsanteFine.isEnabled = false

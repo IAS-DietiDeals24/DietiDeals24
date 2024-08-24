@@ -121,6 +121,9 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
         binding.creaCampoOra.setEndIconOnClickListener {
             clickOraScadenza()
         }
+        binding.creaCampoFoto.setOnClickListener {
+            clickFoto()
+        }
     }
 
     @UIBuilder
@@ -335,5 +338,14 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
         }
 
         timePicker.show(requireActivity().supportFragmentManager, "timePicker")
+    }
+
+    @EventHandler
+    private fun clickFoto() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions.launch(arrayOf(READ_MEDIA_IMAGES))
+        } else {
+            requestPermissions.launch(arrayOf(READ_EXTERNAL_STORAGE))
+        }
     }
 }
