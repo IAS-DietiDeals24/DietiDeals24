@@ -127,7 +127,7 @@
     <string name="tipoAsta_astaSilenziosa">Silenziosa</string>
     <string name="tipoAsta_astaTempoFisso">Tempo fisso</string>
     <string name="card_accessibilitàModificaAsta">Modifica asta</string>
-    <string name="card_accesisbilitàEliminaAsta">Elimina asta</string>
+    <string name="card_accessibilitàEliminaAsta">Elimina asta</string>
     <string name="card_accessibilitàElencoOfferte">Elenco offerte</string>
     <string name="dettagliAsta_testoOfferta2">L\'offerta più bassa è:</string>
     <string name="category_books">Libri</string>
@@ -157,7 +157,7 @@
     <string name="crea_prezzoPartenza">di partenza</string>
     <string name="noMediaAccess">Non hai concesso l\'accesso ai file multimediali.</string>
     <string name="crea_astaCreataConSuccesso">L\'asta è stata creata con successo.</string>
-    <string name="crea_astaNonCreata">L\'asta non è stata creata con successo. Riprova.</string>
+    <string name="crea_astaNonCreata">L\'asta non è stata creata. Riprova.</string>
     <string name="selezioneTipoAccount_erroreFacebook">Errore durante l\'accesso con Facebook.</string>
     <string name="category_no_category">Tutto</string>
     <string name="tipoAccount_ospite">ospite</string>
@@ -165,4 +165,21 @@
     <string name="popupLinkSocial_accessibilitàLink">URL</string>
     <string name="annulla">Annulla</string>
     <string name="modificaProfilo_successoModifica">Il tuo profilo è stato modificato con successo.</string>
+    <string name="popupOfferta_accessibilitàOfferta">Offerta</string>
+    <string name="dettagliAsta_titoloPopupOfferta">Quanto vuoi offrire?</string>
+    <string name="modificaProfilo_fallimentoModifica">Il tuo profilo non è stato aggiornato. Riprova.</string>
+    <string name="dettagliAsta_successoOfferta">La tua offerta è stata inviata con successo.</string>
+    <string name="dettagliAsta_fallimentoOfferta">La tua offerta non è stata inviata. Riprova.</string>
+    <string name="dettagliAsta_erroreOffertaTempoFisso">L\'offerta non può essere più bassa di zero o più bassa dell\'offerta corrente.</string>
+    <string name="dettagliAsta_erroreOffertaInversa">L\'offerta non può essere più bassa di zero o più alta dell\'offerta corrente.</string>
+    <string name="dettagliAsta_erroreOffertaSilenziosa">L\'offerta non può essere più bassa di zero.</string>
+    <string name="modifica_pulsanteModifica">Modifica</string>
+    <string name="crea_titolo">Crea asta</string>
+    <string name="modifica_titolo">Modifica asta</string>
+    <string name="dettagliAsta_successoEliminazione">L\'asta è stata cancellata con successo.</string>
+    <string name="dettagliAsta_erroreEliminazione">L\'asta non è stata cancellata. Riprova.</string>
+    <string name="crea_astaNonModificata">L\'asta non è stata modificata. Riprova.</string>
+    <string name="crea_astaModificataConSuccesso">L\'asta è stata modificata con successo.</string>
+    <string name="offerte_titolo">Offerte ricevute</string>
+    <string name="offerta_avviso">Non potrai più ritirare la tua offerta dopo l\'invio.</string>
 </resources>

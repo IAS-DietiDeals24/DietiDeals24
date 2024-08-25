@@ -26,6 +26,8 @@ import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezionePasswordNonSicura
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentNextStep
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentSkipStep
 import kotlinx.coroutines.runBlocking
 import org.apache.commons.lang3.RandomStringUtils
 import org.json.JSONObject
@@ -40,6 +42,8 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
 
     private var listenerBackButton: OnFragmentBackButton? = null
     private var listenerChangeActivity: OnFragmentChangeActivity? = null
+    private var listenerNextStep: OnFragmentNextStep? = null
+    private var listenerSkipStep: OnFragmentSkipStep? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -50,6 +54,12 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
         if (requireContext() is OnFragmentChangeActivity) {
             listenerChangeActivity = requireContext() as OnFragmentChangeActivity
         }
+        if (requireContext() is OnFragmentNextStep) {
+            listenerNextStep = requireContext() as OnFragmentNextStep
+        }
+        if (requireContext() is OnFragmentSkipStep) {
+            listenerSkipStep = requireContext() as OnFragmentSkipStep
+        }
     }
 
     override fun onDetach() {
@@ -57,6 +67,8 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
 
         listenerBackButton = null
         listenerChangeActivity = null
+        listenerNextStep = null
+        listenerSkipStep = null
     }
 
     @UIBuilder
@@ -240,10 +252,10 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
             returned == null -> throw EccezioneAPI("Errore di comunicazione con il server.")
 
             // Un account di altro tipo con la stessa email è stato trovato
-            returned == true -> navController.navigate(R.id.action_controllerRegistrazione_to_controllerAssociazioneProfilo)
+            returned == true -> listenerSkipStep?.onFragmentSkipStep(this::class)
 
             // Un account di altro tipo con la stessa email non è stato trovato
-            returned == false -> navController.navigate(R.id.action_controllerRegistrazione_to_controllerCreazioneProfiloFase1)
+            returned == false -> listenerNextStep?.onFragmentNextStep(this::class)
         }
     }
 

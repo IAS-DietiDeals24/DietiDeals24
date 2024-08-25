@@ -1,63 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/crea_linearLayout1"
+    android:id="@+id/modifica_linearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grigio"
     android:gravity="center|top"
     android:orientation="vertical">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/crea_titolo"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/modifica_linearLayout2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/crea_titolo"
-        android:textColor="@color/blu"
-        android:textSize="25sp"
-        app:fontFamily="@font/fira_sans_bold" />
+        android:layout_marginVertical="20dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/crea_tipoAsta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="@string/crea_tipoAsta"
-        android:textColor="@color/blu"
-        android:textSize="20sp"
-        app:fontFamily="@font/fira_sans_bold" />
+        <ImageButton
+            android:id="@+id/modifica_pulsanteIndietro"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+
+            android:background="@drawable/cerchio"
+            android:backgroundTint="@color/blu"
+            android:contentDescription="@string/accessibilitàIndietro"
+            android:src="@drawable/icona_indietro" />
+
+        <LinearLayout
+            android:id="@+id/modifica_linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/modifica_titolo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/modifica_titolo"
+                android:textColor="@color/blu"
+                android:textSize="25sp"
+                app:fontFamily="@font/fira_sans_bold" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/modifica_tipoAsta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/crea_tipoAsta"
+                android:textColor="@color/blu"
+                android:textSize="20sp"
+                app:fontFamily="@font/fira_sans_bold" />
+
+        </LinearLayout>
+    </LinearLayout>
 
     <ScrollView
-        android:id="@+id/crea_scrollView"
+        android:id="@+id/modifica_scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/crea_linearLayout2"
+            android:id="@+id/modifica_linearLayout4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center|top"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/crea_constraintLayout1"
+                android:id="@+id/modifica_constraintLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/crea_etichettaDataScadenza"
+                    android:id="@+id/modifica_etichettaDataScadenza"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans_medium"
                     android:text="@string/crea_dataScadenza"
                     android:textColor="@color/blu"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/crea_campoDataScadenza"
+                    app:layout_constraintStart_toStartOf="@+id/modifica_campoDataScadenza"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/crea_campoDataScadenza"
+                    android:id="@+id/modifica_campoDataScadenza"
                     android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
@@ -81,10 +109,10 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/crea_etichettaDataScadenza">
+                    app:layout_constraintTop_toBottomOf="@+id/modifica_etichettaDataScadenza">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/crea_dataScadenza"
+                        android:id="@+id/modifica_dataScadenza"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
@@ -96,35 +124,35 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/crea_asteriscoDataScadenza"
+                    android:id="@+id/modifica_asteriscoDataScadenza"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans_medium"
                     android:text="@string/asterisco"
                     android:textColor="@color/arancione"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toEndOf="@+id/crea_etichettaDataScadenza"
-                    app:layout_constraintTop_toTopOf="@+id/crea_etichettaDataScadenza" />
+                    app:layout_constraintStart_toEndOf="@+id/modifica_etichettaDataScadenza"
+                    app:layout_constraintTop_toTopOf="@+id/modifica_etichettaDataScadenza" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/crea_constraintLayout2"
+                android:id="@+id/modifica_constraintLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/crea_etichettaOra"
+                    android:id="@+id/modifica_etichettaOra"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans_medium"
                     android:text="@string/crea_ora"
                     android:textColor="@color/blu"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/crea_campoOra"
+                    app:layout_constraintStart_toStartOf="@+id/modifica_campoOra"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/crea_campoOra"
+                    android:id="@+id/modifica_campoOra"
                     android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
@@ -148,10 +176,10 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/crea_etichettaOra">
+                    app:layout_constraintTop_toBottomOf="@+id/modifica_etichettaOra">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/crea_ora"
+                        android:id="@+id/modifica_ora"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
@@ -163,100 +191,78 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/crea_asteriscoOra"
+                    android:id="@+id/modifica_asteriscoOra"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans_medium"
                     android:text="@string/asterisco"
                     android:textColor="@color/arancione"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toEndOf="@+id/crea_etichettaOra"
-                    app:layout_constraintTop_toTopOf="@+id/crea_etichettaOra" />
+                    app:layout_constraintStart_toEndOf="@+id/modifica_etichettaOra"
+                    app:layout_constraintTop_toTopOf="@+id/modifica_etichettaOra" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/crea_constraintLayout3"
+                android:id="@+id/modifica_constraintLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/crea_etichettaPrezzo"
+                    android:id="@+id/modifica_etichettaPrezzo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans_medium"
                     android:text="@string/crea_prezzo"
                     android:textColor="@color/blu"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/crea_campoPrezzo"
+                    app:layout_constraintStart_toStartOf="@+id/textView"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/crea_campoPrezzo"
-                    android:layout_width="320dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-
-                    app:boxBackgroundColor="@color/bianco"
-                    app:boxCornerRadiusBottomEnd="30dp"
-                    app:boxCornerRadiusBottomStart="30dp"
-                    app:boxCornerRadiusTopEnd="30dp"
-                    app:boxCornerRadiusTopStart="30dp"
-                    app:boxStrokeColor="@color/arancione"
-                    app:boxStrokeErrorColor="@color/rosso"
-                    app:boxStrokeWidth="1.5dp"
-                    app:cursorColor="@color/arancione"
-                    app:cursorErrorColor="@color/rosso"
-                    app:errorIconTint="@color/rosso"
-                    app:errorTextColor="@color/arancione"
-                    app:hintTextColor="@color/arancione"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/crea_etichettaPrezzo"
-                    app:prefixText="@string/valuta"
-                    app:prefixTextColor="@color/blu">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/crea_prezzo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:hint="@string/crea_accessibilitàPrezzo"
-                        android:inputType="numberDecimal"
-                        android:textColor="@color/nero" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/crea_asteriscoPrezzo"
+                    android:id="@+id/modifica_asteriscoPrezzo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans_medium"
                     android:text="@string/asterisco"
                     android:textColor="@color/arancione"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toEndOf="@+id/crea_etichettaPrezzo"
-                    app:layout_constraintTop_toTopOf="@+id/crea_etichettaPrezzo" />
+                    app:layout_constraintStart_toEndOf="@+id/modifica_etichettaPrezzo"
+                    app:layout_constraintTop_toTopOf="@+id/modifica_etichettaPrezzo" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/fira_sans"
+                    android:text="@string/placeholder"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/modifica_etichettaPrezzo" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/crea_constraintLayout4"
+                android:id="@+id/modifica_constraintLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/crea_etichettaFoto"
+                    android:id="@+id/modifica_etichettaFoto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans_medium"
                     android:text="@string/crea_foto"
                     android:textColor="@color/blu"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/crea_campoFoto"
+                    app:layout_constraintStart_toStartOf="@+id/modifica_campoFoto"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/crea_campoFoto"
+                    android:id="@+id/modifica_campoFoto"
                     android:layout_width="320dp"
                     android:layout_height="255dp"
                     android:layout_marginTop="20dp"
@@ -267,7 +273,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/crea_etichettaFoto"
+                    app:layout_constraintTop_toBottomOf="@+id/modifica_etichettaFoto"
                     app:shapeAppearanceOverlay="@style/ImageViewRettangolare"
                     app:srcCompat="@drawable/icona_fotocamera"
                     app:strokeColor="@color/grigioScuro"
@@ -276,23 +282,23 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/crea_constraintLayout5"
+                android:id="@+id/modifica_constraintLayout5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/crea_etichettaNome"
+                    android:id="@+id/modifica_etichettaNome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans_medium"
                     android:text="@string/crea_nome"
                     android:textColor="@color/blu"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/crea_campoNome"
+                    app:layout_constraintStart_toStartOf="@+id/modifica_campoNome"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/crea_campoNome"
+                    android:id="@+id/modifica_campoNome"
                     android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
@@ -313,10 +319,10 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/crea_etichettaNome">
+                    app:layout_constraintTop_toBottomOf="@+id/modifica_etichettaNome">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/crea_nome"
+                        android:id="@+id/modifica_nome"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
@@ -327,35 +333,35 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/crea_asteriscoNome"
+                    android:id="@+id/modifica_asteriscoNome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans_medium"
                     android:text="@string/asterisco"
                     android:textColor="@color/arancione"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toEndOf="@+id/crea_etichettaNome"
-                    app:layout_constraintTop_toTopOf="@+id/crea_etichettaNome" />
+                    app:layout_constraintStart_toEndOf="@+id/modifica_etichettaNome"
+                    app:layout_constraintTop_toTopOf="@+id/modifica_etichettaNome" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/crea_constraintLayout6"
+                android:id="@+id/modifica_constraintLayout6"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/crea_etichettaCategoria"
+                    android:id="@+id/modifica_etichettaCategoria"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans_medium"
                     android:text="@string/crea_categoria"
                     android:textColor="@color/blu"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/crea_campoCategoria"
+                    app:layout_constraintStart_toStartOf="@+id/modifica_campoCategoria"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/crea_campoCategoria"
+                    android:id="@+id/modifica_campoCategoria"
                     android:layout_width="320dp"
                     android:layout_height="60dp"
                     android:layout_margin="20dp"
@@ -379,10 +385,10 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/crea_etichettaCategoria">
+                    app:layout_constraintTop_toBottomOf="@+id/modifica_etichettaCategoria">
 
                     <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                        android:id="@+id/crea_categoria"
+                        android:id="@+id/modifica_categoria"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:enabled="false"
@@ -401,28 +407,28 @@
                     android:text="@string/asterisco"
                     android:textColor="@color/arancione"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toEndOf="@+id/crea_etichettaCategoria"
-                    app:layout_constraintTop_toTopOf="@+id/crea_etichettaCategoria" />
+                    app:layout_constraintStart_toEndOf="@+id/modifica_etichettaCategoria"
+                    app:layout_constraintTop_toTopOf="@+id/modifica_etichettaCategoria" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/crea_constraintLayout7"
+                android:id="@+id/modifica_constraintLayout7"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/crea_etichettaDescrizione"
+                    android:id="@+id/modifica_etichettaDescrizione"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans_medium"
                     android:text="@string/crea_descrizione"
                     android:textColor="@color/blu"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/crea_campoDescrizione"
+                    app:layout_constraintStart_toStartOf="@+id/modifica_campoDescrizione"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/crea_campoDescrizione"
+                    android:id="@+id/modifica_campoDescrizione"
                     android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
@@ -443,10 +449,10 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/crea_etichettaDescrizione">
+                    app:layout_constraintTop_toBottomOf="@+id/modifica_etichettaDescrizione">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/crea_descrizione"
+                        android:id="@+id/modifica_descrizione"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
@@ -457,22 +463,22 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/crea_asteriscoDescrizione"
+                    android:id="@+id/modifica_asteriscoDescrizione"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fira_sans_medium"
                     android:text="@string/asterisco"
                     android:textColor="@color/arancione"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toEndOf="@+id/crea_etichettaDescrizione"
-                    app:layout_constraintTop_toTopOf="@+id/crea_etichettaDescrizione" />
+                    app:layout_constraintStart_toEndOf="@+id/modifica_etichettaDescrizione"
+                    app:layout_constraintTop_toTopOf="@+id/modifica_etichettaDescrizione" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/crea_pulsanteCrea"
+                android:id="@+id/modifica_pulsanteModifica"
                 style="@style/BottoneArancionePiccolo"
-                android:text="@string/crea_pulsanteCrea" />
+                android:text="@string/modifica_pulsanteModifica" />
 
 
         </LinearLayout>

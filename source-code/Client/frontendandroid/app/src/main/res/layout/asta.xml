@@ -134,7 +134,7 @@
                         android:layout_marginHorizontal="10dp"
                         android:background="@drawable/cerchio"
                         android:backgroundTint="@color/blu"
-                        android:contentDescription="@string/card_accesisbilitàEliminaAsta"
+                        android:contentDescription="@string/card_accessibilitàEliminaAsta"
                         android:src="@drawable/icona_cestino" />
 
                     <ImageButton

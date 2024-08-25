@@ -79,6 +79,14 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_controllerDettagliAsta_to_controllerModificaAsta"
+            app:destination="@id/controllerModificaAsta"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/controllerDettagliAsta" />
     </fragment>
     <fragment
         android:id="@+id/controllerDettagliProfilo"
@@ -106,6 +114,19 @@
         <action
             android:id="@+id/action_controllerModificaProfilo_to_controllerDettagliProfilo"
             app:destination="@id/controllerDettagliProfilo"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/controllerModificaAsta"
+        android:name="com.iasdietideals24.dietideals24.controller.ControllerModificaAsta"
+        android:label="ControllerModificaAsta"
+        tools:layout="@layout/modificaasta">
+        <action
+            android:id="@+id/action_controllerModificaAsta_to_controllerDettagliAsta"
+            app:destination="@id/controllerDettagliAsta"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"

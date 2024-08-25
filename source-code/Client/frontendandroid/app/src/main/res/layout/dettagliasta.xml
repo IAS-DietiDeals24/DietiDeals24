@@ -236,13 +236,15 @@
         android:id="@+id/dettagliAsta_linearLayout7"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:baselineAligned="false"
         android:gravity="center"
         android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/dettagliAsta_linearLayout8"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -268,18 +270,62 @@
 
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/dettagliAsta_pulsanteOfferta"
-            style="@style/BottoneArancionePiccolo"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/dettagliAsta_linearLayout9"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="20dp"
-            android:text="@string/dettagliAsta_pulsanteOfferta"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/dettagliAsta_pulsanteModifica"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+
+                android:background="@drawable/cerchio"
+                android:backgroundTint="@color/blu"
+                android:contentDescription="@string/card_accessibilitàModificaAsta"
+                android:src="@drawable/icona_matita"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/dettagliAsta_pulsanteElimina"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+
+                android:layout_marginHorizontal="10dp"
+                android:background="@drawable/cerchio"
+                android:backgroundTint="@color/blu"
+                android:contentDescription="@string/card_accessibilitàEliminaAsta"
+                android:src="@drawable/icona_matita"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/dettagliAsta_pulsanteElencoOfferte"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+
+                android:background="@drawable/cerchio"
+                android:backgroundTint="@color/blu"
+                android:contentDescription="@string/card_accessibilitàElencoOfferte"
+                android:src="@drawable/icona_matita"
+                android:visibility="gone" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/dettagliAsta_pulsanteOfferta"
+                style="@style/BottoneArancionePiccolo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="20dp"
+                android:backgroundTint="@color/materialbuttonbackground2"
+                android:text="@string/dettagliAsta_pulsanteOfferta"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </LinearLayout>
     </LinearLayout>
 
 

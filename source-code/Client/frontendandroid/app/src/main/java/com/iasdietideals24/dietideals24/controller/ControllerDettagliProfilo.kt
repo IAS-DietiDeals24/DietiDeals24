@@ -58,21 +58,26 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
 
             listenerBackButton?.onFragmentBackButton()
         }
+
         binding.dettagliProfiloPulsanteModifica.setOnClickListener {
-            listenerEditButton?.onFragmentEditButton(args.id, ControllerDettagliProfilo::class)
+            listenerEditButton?.onFragmentEditButton(ControllerDettagliProfilo::class)
         }
+
         binding.dettagliProfiloFacebook.setOnClickListener {
             if (viewModel.linkFacebook.value != null)
                 listenerOpenUrl?.onFragmentOpenUrl(viewModel.linkFacebook.value!!)
         }
+
         binding.dettagliProfiloInstagram.setOnClickListener {
             if (viewModel.linkInstagram.value != null)
                 listenerOpenUrl?.onFragmentOpenUrl(viewModel.linkInstagram.value!!)
         }
+
         binding.dettagliProfiloGithub.setOnClickListener {
             if (viewModel.linkGitHub.value != null)
                 listenerOpenUrl?.onFragmentOpenUrl(viewModel.linkGitHub.value!!)
         }
+
         binding.dettagliProfiloX.setOnClickListener {
             if (viewModel.linkX.value != null)
                 listenerOpenUrl?.onFragmentOpenUrl(viewModel.linkX.value!!)
@@ -127,7 +132,11 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
         val tipoAccountObserver = Observer<String> { newTipoAccount ->
             binding.dettagliProfiloTipoAccount.text = getString(
                 R.string.dettagliProfilo_tipoAccount,
-                newTipoAccount
+                when (newTipoAccount) {
+                    "compratore" -> getString(R.string.tipoAccount_compratore)
+                    "venditore" -> getString(R.string.tipoAccount_venditore)
+                    else -> ""
+                }
             )
         }
         viewModel.tipoAccount.observe(viewLifecycleOwner, tipoAccountObserver)

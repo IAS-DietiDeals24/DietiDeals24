@@ -7,6 +7,7 @@
     <color name="grigioScuro">#939393</color>
     <color name="bianco">#FFFFFFFF</color>
     <color name="nero">#FF000000</color>
+    <color name="verde">#62B157</color>
     <color name="rosso">#FFF90000</color>
     <color name="sfondoErrore">#33FF0000</color>
     <color name="bluLink">#FF345996</color>

@@ -24,13 +24,29 @@ fun interface OnFragmentShowBackButton {
 }
 
 fun interface OnFragmentEditButton {
-    fun onFragmentEditButton(id: Long, sender: KClass<*>)
+    fun onFragmentEditButton(sender: KClass<*>)
 }
 
-interface OnGoToDetails {
+fun interface OnFragmentGoToHome {
+    fun onFragmentGoToHome()
+}
+
+fun interface OnFragmentGoToAuction {
+    fun onFragmentGoToAuction(id: Long, sender: KClass<*>)
+}
+
+fun interface OnFragmentNextStep {
+    fun onFragmentNextStep(sender: KClass<*>)
+}
+
+fun interface OnFragmentSkipStep {
+    fun onFragmentSkipStep(sender: KClass<*>)
+}
+
+fun interface OnGoToDetails {
     fun onGoToDetails(id: Long, sender: KClass<*>)
 }
 
-interface OnGoToProfile {
+fun interface OnGoToProfile {
     fun onGoToProfile(id: Long, sender: KClass<*>)
 }

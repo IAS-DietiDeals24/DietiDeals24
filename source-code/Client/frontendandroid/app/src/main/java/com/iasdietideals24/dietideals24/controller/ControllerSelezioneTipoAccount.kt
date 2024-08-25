@@ -13,6 +13,7 @@ import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentHideBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentNextStep
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentShowBackButton
 import kotlinx.coroutines.runBlocking
 
@@ -21,6 +22,7 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
     private var changeActivityListener: OnFragmentChangeActivity? = null
     private var hideBackButtonListener: OnFragmentHideBackButton? = null
     private var showBackButtonListener: OnFragmentShowBackButton? = null
+    private var nextStepListener: OnFragmentNextStep? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -34,6 +36,9 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
         if (requireContext() is OnFragmentShowBackButton) {
             showBackButtonListener = requireContext() as OnFragmentShowBackButton
         }
+        if (requireContext() is OnFragmentNextStep) {
+            nextStepListener = requireContext() as OnFragmentNextStep
+        }
     }
 
     override fun onDetach() {
@@ -41,6 +46,8 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
 
         changeActivityListener = null
         hideBackButtonListener = null
+        showBackButtonListener = null
+        nextStepListener = null
     }
 
     @UIBuilder
@@ -109,14 +116,14 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
     private fun clickCompratore() {
         showBackButtonListener?.onFragmentShowBackButton()
         runBlocking { salvaPreferenzaStringa("tipoAccount", "compratore") }
-        navController.navigate(R.id.action_controllerSelezioneTipoAccount_to_controllerSelezioneAccessoRegistrazione)
+        nextStepListener?.onFragmentNextStep(this::class)
     }
 
     @EventHandler
     private fun clickVenditore() {
         showBackButtonListener?.onFragmentShowBackButton()
         runBlocking { salvaPreferenzaStringa("tipoAccount", "venditore") }
-        navController.navigate(R.id.action_controllerSelezioneTipoAccount_to_controllerSelezioneAccessoRegistrazione)
+        nextStepListener?.onFragmentNextStep(this::class)
     }
 
     @EventHandler

@@ -78,27 +78,25 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
             binding.profiloPulsanteEsci.text = getString(R.string.profilo_pulsante5O)
             binding.profiloPulsanteEsci.icon =
                 ResourcesCompat.getDrawable(resources, R.drawable.icona_porta, null)
-
-            binding.profiloPulsanteUtente.setOnClickListener {
-                profileListener?.onGoToProfile(CurrentUser.id, ControllerProfilo::class)
-            }
-            binding.profiloPulsanteAste.setOnClickListener {
-                //TODO
-            }
-            binding.profiloPulsanteStorico.setOnClickListener {
-                //TODO
-            }
-            binding.profiloPulsanteAiuto.setOnClickListener {
-                //TODO
-            }
-            binding.profiloPulsanteEsci.setOnClickListener {
-                startListener?.onFragmentChangeActivity(ScelteIniziali::class.java)
-            }
         }
     }
 
     @UIBuilder
     override fun impostaEventiClick() {
-
+        binding.profiloPulsanteUtente.setOnClickListener {
+            profileListener?.onGoToProfile(CurrentUser.id, ControllerProfilo::class)
+        }
+        binding.profiloPulsanteAste.setOnClickListener {
+            //TODO
+        }
+        binding.profiloPulsanteStorico.setOnClickListener {
+            //TODO
+        }
+        binding.profiloPulsanteAiuto.setOnClickListener {
+            //TODO
+        }
+        binding.profiloPulsanteEsci.setOnClickListener {
+            startListener?.onFragmentChangeActivity(ScelteIniziali::class.java)
+        }
     }
 }

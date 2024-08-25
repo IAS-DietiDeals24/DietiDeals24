@@ -8,7 +8,6 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
@@ -16,10 +15,12 @@ import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.ModificaprofiloBinding
 import com.iasdietideals24.dietideals24.model.ModelProfilo
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
@@ -60,10 +61,16 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
         binding.modificaProfiloPulsanteIndietro.setOnClickListener {
             listenerBackButton?.onFragmentBackButton()
         }
+
         binding.modificaProfiloPulsanteConferma.setOnClickListener {
             var returned: Boolean? = eseguiChiamataREST("aggiornaProfilo", viewModel.toProfilo())
 
-            if (returned != null) {
+            if (returned == null)
+                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+            else if (returned == true) {
                 Snackbar.make(
                     fragmentView,
                     R.string.modificaProfilo_successoModifica,
@@ -73,13 +80,21 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
                     .setTextColor(resources.getColor(R.color.grigio, null))
                     .show()
 
-                listenerConfirmButton?.onGoToProfile(0L, ControllerModificaProfilo::class)
+                listenerConfirmButton?.onGoToProfile(
+                    CurrentUser.id,
+                    ControllerModificaProfilo::class
+                )
             } else
-                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                Snackbar.make(
+                    fragmentView,
+                    R.string.modificaProfilo_fallimentoModifica,
+                    Snackbar.LENGTH_SHORT
+                )
                     .setBackgroundTint(resources.getColor(R.color.blu, null))
                     .setTextColor(resources.getColor(R.color.grigio, null))
                     .show()
         }
+
         binding.modificaProfiloPulsante.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 requestPermissions.launch(arrayOf(READ_MEDIA_IMAGES))
@@ -87,62 +102,66 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
                 requestPermissions.launch(arrayOf(READ_EXTERNAL_STORAGE))
             }
         }
+
         binding.modificaProfiloFacebook.setOnClickListener {
             val viewInflated: View = LayoutInflater.from(context)
                 .inflate(R.layout.popuplinksocial, view as ViewGroup?, false)
-            val input = viewInflated.findViewById<View>(R.id.popupLinkSocial_campoLink) as EditText
+            val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_campoLink)
             input.setText(viewModel.linkFacebook.value)
 
             MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
                 .setTitle(R.string.crea_titoloPopupTipoAsta)
                 .setView(viewInflated)
                 .setPositiveButton(R.string.ok) { _, _ ->
-                    viewModel.linkFacebook.value = input.getText().toString();
+                    viewModel.linkFacebook.value = input.getText().toString()
                 }
                 .setNegativeButton(R.string.annulla) { _, _ -> }
                 .show()
         }
+
         binding.modificaProfiloInstagram.setOnClickListener {
             val viewInflated: View = LayoutInflater.from(context)
                 .inflate(R.layout.popuplinksocial, view as ViewGroup?, false)
-            val input = viewInflated.findViewById<View>(R.id.popupLinkSocial_campoLink) as EditText
+            val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_campoLink)
             input.setText(viewModel.linkInstagram.value)
 
             MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
                 .setTitle(R.string.crea_titoloPopupTipoAsta)
                 .setView(viewInflated)
                 .setPositiveButton(R.string.ok) { _, _ ->
-                    viewModel.linkInstagram.value = input.getText().toString();
+                    viewModel.linkInstagram.value = input.getText().toString()
                 }
                 .setNegativeButton(R.string.annulla) { _, _ -> }
                 .show()
         }
+
         binding.modificaProfiloGithub.setOnClickListener {
             val viewInflated: View = LayoutInflater.from(context)
                 .inflate(R.layout.popuplinksocial, view as ViewGroup?, false)
-            val input = viewInflated.findViewById<View>(R.id.popupLinkSocial_campoLink) as EditText
+            val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_campoLink)
             input.setText(viewModel.linkGitHub.value)
 
             MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
                 .setTitle(R.string.crea_titoloPopupTipoAsta)
                 .setView(viewInflated)
                 .setPositiveButton(R.string.ok) { _, _ ->
-                    viewModel.linkGitHub.value = input.getText().toString();
+                    viewModel.linkGitHub.value = input.getText().toString()
                 }
                 .setNegativeButton(R.string.annulla) { _, _ -> }
                 .show()
         }
+
         binding.modificaProfiloX.setOnClickListener {
             val viewInflated: View = LayoutInflater.from(context)
                 .inflate(R.layout.popuplinksocial, view as ViewGroup?, false)
-            val input = viewInflated.findViewById<View>(R.id.popupLinkSocial_campoLink) as EditText
+            val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_campoLink)
             input.setText(viewModel.linkX.value)
 
             MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
                 .setTitle(R.string.crea_titoloPopupTipoAsta)
                 .setView(viewInflated)
                 .setPositiveButton(R.string.ok) { _, _ ->
-                    viewModel.linkX.value = input.getText().toString();
+                    viewModel.linkX.value = input.getText().toString()
                 }
                 .setNegativeButton(R.string.annulla) { _, _ -> }
                 .show()
@@ -196,7 +215,7 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
     @UIBuilder
     override fun impostaOsservatori() {
         val nomeUtenteObserver = Observer<String> { newNomeUtente ->
-            binding.modificaProfiloNomeUtente.setText(newNomeUtente)
+            binding.modificaProfiloNomeUtente.text = newNomeUtente
         }
         viewModel.nomeUtente.observe(viewLifecycleOwner, nomeUtenteObserver)
 

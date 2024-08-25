@@ -6,11 +6,14 @@ import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaAsta
 import com.iasdietideals24.dietideals24.utilities.classes.data.Asta
 import com.iasdietideals24.dietideals24.utilities.classes.data.DettagliAsta
 import com.iasdietideals24.dietideals24.utilities.classes.data.Notifica
+import com.iasdietideals24.dietideals24.utilities.classes.data.Offerta
 import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Query
 import java.lang.Long
 
@@ -148,7 +151,7 @@ interface API {
     @POST("home/creaAsta")
     fun creaAsta(
         @Body asta: Asta
-    ): Call<Long>
+    ): Call<Boolean>
 
     /**
      * Carica tutti i dati di un profilo collegato ad un account.
@@ -165,8 +168,38 @@ interface API {
      * @param profilo Wrapper con le informazioni necessarie a aggiornare il profilo.
      * @return Se l'operazione di aggiornamento ha avuto successo.
      */
-    @POST("home/aggiornaProfilo")
+    @PUT("home/aggiornaProfilo")
     fun aggiornaProfilo(
         @Body profilo: Profilo
+    ): Call<Boolean>
+
+    /**
+     * Invia un'offerta ad un'asta.
+     * @param offerta Wrapper con le informazioni necessarie ad inviare l'offerta.
+     * @return Se l'operazione di invio ha avuto successo.
+     */
+    @POST("home/inviaOfferta")
+    fun inviaOfferta(
+        @Body offerta: Offerta
+    ): Call<Boolean>
+
+    /**
+     * Elimina un'asta e tutti i suoi dati associati dalla base di dati.
+     * @param idAsta Identificativo dell'asta da eliminare.
+     * @return Se l'operazione di eliminazione ha avuto successo.
+     */
+    @DELETE("home/eliminaAsta")
+    fun eliminaAsta(
+        @Query("idAsta") idAsta: Long
+    ): Call<Boolean>
+
+    /**
+     * Aggiorna i dati di un'asta.
+     * @param asta Wrapper con le informazioni necessarie a aggiornare l'asta.
+     * @return Se l'operazione di aggiotnamento ha avuto successo.
+     */
+    @PUT("home/aggiornaAsta")
+    fun aggiornaAsta(
+        @Body asta: Asta
     ): Call<Boolean>
 }

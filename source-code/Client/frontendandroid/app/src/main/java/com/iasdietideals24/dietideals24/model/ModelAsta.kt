@@ -3,7 +3,6 @@ package com.iasdietideals24.dietideals24.model
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
-import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.data.Asta
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import java.time.LocalDate
@@ -17,6 +16,13 @@ class ModelAsta : ViewModel() {
 
     val idAsta: MutableLiveData<Long>
         get() = _idAsta
+
+    private val _idCreatore: MutableLiveData<Long> by lazy {
+        MutableLiveData<Long>(0L)
+    }
+
+    val idCreatore: MutableLiveData<Long>
+        get() = _idCreatore
 
     private val _tipo: MutableLiveData<String> by lazy {
         MutableLiveData<String>("")
@@ -76,6 +82,7 @@ class ModelAsta : ViewModel() {
 
     fun clear() {
         _idAsta.value = 0L
+        _idCreatore.value = 0L
         _tipo.value = ""
         _dataFine.value = LocalDate.MIN
         _oraFine.value = null
@@ -89,7 +96,7 @@ class ModelAsta : ViewModel() {
     fun toAsta(): Asta {
         return Asta(
             idAsta.value!!,
-            CurrentUser.id,
+            idCreatore.value!!,
             tipo.value!!,
             dataFine.value!!,
             oraFine.value!!,
@@ -159,6 +166,11 @@ class ModelAsta : ViewModel() {
     private fun prezzo() {
         if (prezzo.value == 0.0) {
             throw EccezioneCampiNonCompilati("Prezzo non compilato.")
+        }
+        if (prezzo.toString().toDouble() < 0.0 || !prezzo.toString()
+                .matches(Regex("^\\d+\\.\\d{2}\$"))
+        ) {
+            throw EccezioneCampiNonCompilati("Prezzo non valido")
         }
     }
 }

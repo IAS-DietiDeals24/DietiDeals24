@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/offerta_materialCardView"
+    android:layout_width="360dp"
+    android:layout_height="125dp"
+    app:cardBackgroundColor="@color/bianco"
+    app:cardUseCompatPadding="true"
+    app:strokeColor="@color/grigioScuro">
+
+    <LinearLayout
+        android:id="@+id/offerta_linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/offerta_immagine"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/grigio"
+            android:padding="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icona_profilo"
+            app:shapeAppearanceOverlay="@style/ImageViewRotonda"
+            app:strokeColor="@color/grigioScuro"
+            app:strokeWidth="2dp" />
+
+        <LinearLayout
+            android:id="@+id/offerta_linearLayout2"
+            android:layout_width="235dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/offerta_linearLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/offerta_nome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/placeholder"
+                    android:textColor="@color/blu" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/offerta_tempo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:fontFamily="@font/fira_sans"
+                    android:text="@string/placeholder"
+                    android:textColor="@color/blu" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/offerta_linearLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/offerta_valoreOfferta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/fira_sans_medium"
+                    android:text="@string/placeholder"
+                    android:textColor="@color/arancione"
+                    android:textSize="20sp" />
+
+                <ImageButton
+                    android:id="@+id/offerta_pulsanteAccetta"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+
+                    android:layout_marginHorizontal="10dp"
+                    android:background="@drawable/cerchio"
+                    android:backgroundTint="@color/rosso"
+                    android:contentDescription="@string/accessibilitàIndietro"
+                    android:src="@drawable/icona_croce" />
+
+                <ImageButton
+                    android:id="@+id/offerta_pulsanteRifiuta"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+
+                    android:background="@drawable/cerchio"
+                    android:backgroundTint="@color/verde"
+                    android:contentDescription="@string/accessibilitàIndietro"
+                    android:src="@drawable/icona_spunta" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

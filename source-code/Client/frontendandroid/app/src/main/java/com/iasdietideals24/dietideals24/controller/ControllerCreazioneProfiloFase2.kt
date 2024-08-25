@@ -19,6 +19,7 @@ import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentNextStep
 
 class ControllerCreazioneProfiloFase2 : Controller<Creazioneprofilofase2Binding>() {
 
@@ -27,20 +28,25 @@ class ControllerCreazioneProfiloFase2 : Controller<Creazioneprofilofase2Binding>
     private lateinit var requestPermissions: ActivityResultLauncher<Array<String>>
     private lateinit var selectPhoto: ActivityResultLauncher<String>
 
-    private var listener: OnFragmentBackButton? = null
+    private var listenerBackButton: OnFragmentBackButton? = null
+    private var listenerNextStep: OnFragmentNextStep? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         if (requireContext() is OnFragmentBackButton) {
-            listener = requireContext() as OnFragmentBackButton
+            listenerBackButton = requireContext() as OnFragmentBackButton
+        }
+        if (requireContext() is OnFragmentNextStep) {
+            listenerNextStep = requireContext() as OnFragmentNextStep
         }
     }
 
     override fun onDetach() {
         super.onDetach()
 
-        listener = null
+        listenerBackButton = null
+        listenerNextStep = null
     }
 
     @UIBuilder
@@ -134,7 +140,7 @@ class ControllerCreazioneProfiloFase2 : Controller<Creazioneprofilofase2Binding>
 
     @EventHandler
     private fun clickIndietro() {
-        listener?.onFragmentBackButton()
+        listenerBackButton?.onFragmentBackButton()
     }
 
     @EventHandler
@@ -144,7 +150,7 @@ class ControllerCreazioneProfiloFase2 : Controller<Creazioneprofilofase2Binding>
             estraiTestoDaElemento(binding.creazioneProfiloFase2AreaGeografica)
         viewModel.genere.value = estraiTestoDaElemento(binding.creazioneProfiloFase2Genere)
 
-        navController.navigate(R.id.action_controllerCreazioneProfiloFase2_to_controllerCreazioneProfiloFase3)
+        listenerNextStep?.onFragmentNextStep(this::class)
     }
 
     @EventHandler
