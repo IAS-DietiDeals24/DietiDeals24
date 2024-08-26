@@ -70,14 +70,14 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnGoToDetails, OnGoToP
             supportFragmentManager.findFragmentById(R.id.activity_home_fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
 
-        when {
-            sender == ViewHolderAnteprimaAsta::class -> {
+        when (sender) {
+            ViewHolderAnteprimaAsta::class -> {
                 val action =
                     ControllerHomeDirections.actionControllerHomeToControllerDettagliAsta(id)
                 navController.navigate(action)
             }
 
-            sender == ViewHolderNotifica::class -> {
+            ViewHolderNotifica::class -> {
                 val action =
                     ControllerNotificheDirections.actionControllerNotificheToControllerDettagliAsta(
                         id
@@ -92,8 +92,8 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnGoToDetails, OnGoToP
             supportFragmentManager.findFragmentById(R.id.activity_home_fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
 
-        when {
-            sender == ViewHolderNotifica::class -> {
+        when (sender) {
+            ViewHolderNotifica::class -> {
                 val action =
                     ControllerNotificheDirections.actionControllerNotificheToControllerDettagliProfilo(
                         id
@@ -101,7 +101,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnGoToDetails, OnGoToP
                 navController.navigate(action)
             }
 
-            sender == ControllerDettagliAsta::class -> {
+            ControllerDettagliAsta::class -> {
                 val action =
                     ControllerDettagliAstaDirections.actionControllerDettagliAstaToControllerDettagliProfilo(
                         id
@@ -109,7 +109,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnGoToDetails, OnGoToP
                 navController.navigate(action)
             }
 
-            sender == ControllerDettagliProfilo::class -> {
+            ControllerDettagliProfilo::class -> {
                 val action =
                     ControllerProfiloDirections.actionControllerProfiloToControllerDettagliProfilo(
                         id
@@ -117,7 +117,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnGoToDetails, OnGoToP
                 navController.navigate(action)
             }
 
-            sender == ControllerModificaProfilo::class -> {
+            ControllerModificaProfilo::class -> {
                 val action =
                     ControllerModificaProfiloDirections.actionControllerModificaProfiloToControllerDettagliProfilo(
                         id
@@ -132,14 +132,14 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnGoToDetails, OnGoToP
             supportFragmentManager.findFragmentById(R.id.activity_home_fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
 
-        when {
-            sender == ControllerDettagliProfilo::class -> {
+        when (sender) {
+            ControllerDettagliProfilo::class -> {
                 val action =
                     ControllerDettagliProfiloDirections.actionControllerDettagliProfiloToControllerModificaProfilo()
                 navController.navigate(action)
             }
 
-            sender == ControllerDettagliAsta::class -> {
+            ControllerDettagliAsta::class -> {
                 val action =
                     ControllerDettagliAstaDirections.actionControllerDettagliAstaToControllerModificaAsta()
                 navController.navigate(action)
@@ -155,9 +155,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnGoToDetails, OnGoToP
     override fun onFragmentOpenUrl(externalUrl: String) {
         var url = externalUrl
 
-        if (url.startsWith("http://") == false
-            && url.startsWith("https://") == false
-        ) {
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
             url = "http://$url"
         }
 

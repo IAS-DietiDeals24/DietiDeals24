@@ -28,7 +28,7 @@ class Accesso : DietiDeals24Activity<ActivityAccessoBinding>(), OnFragmentChange
             insets
         }
 
-        viewModel = ViewModelProvider(this).get(ModelAccesso::class)
+        viewModel = ViewModelProvider(this)[ModelAccesso::class]
     }
 
     override fun <Activity : AppCompatActivity> onFragmentChangeActivity(activity: Class<Activity>) {

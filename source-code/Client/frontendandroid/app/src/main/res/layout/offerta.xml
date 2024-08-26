@@ -41,7 +41,7 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/offerta_nome"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
@@ -70,12 +70,12 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/offerta_valoreOfferta"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/fira_sans_medium"
-                    android:text="@string/placeholder"
+                    android:text="@string/placeholder_prezzo"
                     android:textColor="@color/arancione"
                     android:textSize="20sp" />
 

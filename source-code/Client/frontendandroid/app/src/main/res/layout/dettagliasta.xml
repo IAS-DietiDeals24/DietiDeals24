@@ -263,7 +263,7 @@
                 android:id="@+id/dettagliAsta_offerta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/placeholder"
+                android:text="@string/placeholder_prezzo"
                 android:textColor="@color/arancione"
                 android:textSize="24sp"
                 app:fontFamily="@font/fira_sans_medium" />

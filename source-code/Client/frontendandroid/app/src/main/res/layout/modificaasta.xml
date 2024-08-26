@@ -215,7 +215,7 @@
                     android:text="@string/crea_prezzo"
                     android:textColor="@color/blu"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/textView"
+                    app:layout_constraintStart_toStartOf="@+id/modifica_prezzo"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -229,14 +229,14 @@
                     app:layout_constraintStart_toEndOf="@+id/modifica_etichettaPrezzo"
                     app:layout_constraintTop_toTopOf="@+id/modifica_etichettaPrezzo" />
 
-                <TextView
-                    android:id="@+id/textView"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/modifica_prezzo"
                     android:layout_width="320dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/fira_sans"
-                    android:text="@string/placeholder"
+                    android:text="@string/placeholder_prezzo"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -39,7 +39,7 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity).get(ModelRegistrazione::class)
+        viewModel = ViewModelProvider(fragmentActivity)[ModelRegistrazione::class]
 
     }
 

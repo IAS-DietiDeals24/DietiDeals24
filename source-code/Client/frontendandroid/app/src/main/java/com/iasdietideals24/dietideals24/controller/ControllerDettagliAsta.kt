@@ -123,10 +123,13 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
                 else -> ""
             }
-            testoValore.text = if (viewModel.tipo.value != "Silenziosa")
-                viewModel.prezzo.value.toString()
-            else
-                "???"
+            testoValore.text = getString(
+                R.string.placeholder_prezzo,
+                if (viewModel.tipo.value != "Silenziosa")
+                    viewModel.prezzo.value.toString()
+                else
+                    "???"
+            )
 
             MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
                 .setTitle(R.string.dettagliAsta_titoloPopupOfferta)
@@ -144,8 +147,8 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                             Offerta(args.id, CurrentUser.id, input.text.toString().toDouble())
                         )
 
-                        if (returned == null)
-                            Snackbar.make(
+                        when (returned) {
+                            null -> Snackbar.make(
                                 fragmentView,
                                 R.string.apiError,
                                 Snackbar.LENGTH_SHORT
@@ -153,8 +156,8 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                                 .setBackgroundTint(resources.getColor(R.color.blu, null))
                                 .setTextColor(resources.getColor(R.color.grigio, null))
                                 .show()
-                        else if (returned == true)
-                            Snackbar.make(
+
+                            true -> Snackbar.make(
                                 fragmentView,
                                 R.string.dettagliAsta_successoOfferta,
                                 Snackbar.LENGTH_SHORT
@@ -162,8 +165,8 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                                 .setBackgroundTint(resources.getColor(R.color.blu, null))
                                 .setTextColor(resources.getColor(R.color.grigio, null))
                                 .show()
-                        else
-                            Snackbar.make(
+
+                            else -> Snackbar.make(
                                 fragmentView,
                                 R.string.dettagliAsta_fallimentoOfferta,
                                 Snackbar.LENGTH_SHORT
@@ -171,6 +174,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                                 .setBackgroundTint(resources.getColor(R.color.blu, null))
                                 .setTextColor(resources.getColor(R.color.grigio, null))
                                 .show()
+                        }
                     }
                 }
                 .setNegativeButton(R.string.annulla) { _, _ -> }
@@ -184,31 +188,35 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         binding.dettagliAstaPulsanteElimina.setOnClickListener {
             val returned: Boolean? = eseguiChiamataREST("eliminaAsta", viewModel.idAsta.value)
 
-            if (returned == null)
-                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
-            else if (returned == true) {
-                Snackbar.make(
-                    fragmentView,
-                    R.string.dettagliAsta_successoEliminazione,
-                    Snackbar.LENGTH_SHORT
-                )
+            when (returned) {
+                null -> Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                     .setBackgroundTint(resources.getColor(R.color.blu, null))
                     .setTextColor(resources.getColor(R.color.grigio, null))
                     .show()
 
-                listenerBackButton?.onFragmentBackButton()
-            } else if (returned == false) {
-                Snackbar.make(
-                    fragmentView,
-                    R.string.dettagliAsta_erroreEliminazione,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
+                true -> {
+                    Snackbar.make(
+                        fragmentView,
+                        R.string.dettagliAsta_successoEliminazione,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .setBackgroundTint(resources.getColor(R.color.blu, null))
+                        .setTextColor(resources.getColor(R.color.grigio, null))
+                        .show()
+
+                    listenerBackButton?.onFragmentBackButton()
+                }
+
+                false -> {
+                    Snackbar.make(
+                        fragmentView,
+                        R.string.dettagliAsta_erroreEliminazione,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .setBackgroundTint(resources.getColor(R.color.blu, null))
+                        .setTextColor(resources.getColor(R.color.grigio, null))
+                        .show()
+                }
             }
 
         }
@@ -221,18 +229,20 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
     private fun isPriceInvalid(price: String): Boolean {
         val double = price.toDouble()
 
-        when (viewModel.tipo.value) {
+        return when (viewModel.tipo.value) {
             "Tempo fisso" -> {
-                return double <= viewModel.prezzo.value!! || double < 0.0 || !price.matches(Regex("^\\d+\\.\\d{2}\$"))
+                double <= viewModel.prezzo.value!! || double < 0.0 || !price.matches(Regex("^\\d+\\.\\d{2}\$"))
             }
 
             "Inversa" -> {
-                return double >= viewModel.prezzo.value!! || double < 0.0 || !price.matches(Regex("^\\d+\\.\\d{2}\$"))
+                double >= viewModel.prezzo.value!! || double < 0.0 || !price.matches(Regex("^\\d+\\.\\d{2}\$"))
             }
 
             "Silenziosa" -> {
-                return double < 0.0 || !price.matches(Regex("^\\d+\\.\\d{2}\$"))
+                double < 0.0 || !price.matches(Regex("^\\d+\\.\\d{2}\$"))
             }
+
+            else -> true
         }
 
         return true
@@ -240,24 +250,26 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity).get(ModelAsta::class)
+        viewModel = ViewModelProvider(fragmentActivity)[ModelAsta::class]
 
         val asta: DettagliAsta? = eseguiChiamataREST("caricaAsta", args.id)
 
         if (asta != null) {
-            viewModel.idAsta.value = asta._anteprimaAsta._id
-            viewModel.tipo.value = asta._anteprimaAsta._tipoAsta
-            viewModel.dataFine.value = asta._anteprimaAsta._dataScadenza
-            viewModel.oraFine.value = asta._anteprimaAsta._oraScadenza
-            viewModel.prezzo.value = asta._anteprimaAsta._offerta
-            viewModel.immagine.value = asta._anteprimaAsta._foto
-            viewModel.nome.value = asta._anteprimaAsta._nome
-            viewModel.categoria.value = asta._categoria
-            viewModel.descrizione.value = asta._descrizione
+            viewModel.idAsta.value = asta.anteprimaAsta.id
+            viewModel.idCreatore.value = asta.idCreatore
+            viewModel.nomeCreatore.value = asta.nomeCreatore
+            viewModel.tipo.value = asta.anteprimaAsta.tipoAsta
+            viewModel.dataFine.value = asta.anteprimaAsta.dataScadenza
+            viewModel.oraFine.value = asta.anteprimaAsta.oraScadenza
+            viewModel.prezzo.value = asta.anteprimaAsta.offerta
+            viewModel.immagine.value = asta.anteprimaAsta.foto
+            viewModel.nome.value = asta.anteprimaAsta.nome
+            viewModel.categoria.value = asta.categoria
+            viewModel.descrizione.value = asta.descrizione
 
             if (CurrentUser.id == 0L) {
                 binding.dettagliAstaPulsanteOfferta.isEnabled = false
-            } else if (CurrentUser.id == asta._idCreatore) {
+            } else if (CurrentUser.id == asta.idCreatore) {
                 binding.dettagliAstaPulsanteOfferta.visibility = View.GONE
                 binding.dettagliAstaPulsanteModifica.visibility = View.GONE
                 binding.dettagliAstaPulsanteElimina.visibility = View.GONE
@@ -315,13 +327,19 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         }
         viewModel.categoria.observe(viewLifecycleOwner, categoriaObserver)
 
-        val immagineObserver = Observer<ByteArray> { newImmagine ->
-            if (newImmagine.isNotEmpty())
-                binding.dettagliAstaImmagineUtente.load(newImmagine) {
+        val immagineObserver = Observer<ByteArray> { newByteArray ->
+            if (newByteArray.isNotEmpty()) {
+                binding.dettagliAstaCampoFoto.load(newByteArray) {
                     crossfade(true)
                 }
+            }
         }
         viewModel.immagine.observe(viewLifecycleOwner, immagineObserver)
+
+        val nomeCreatoreObserver = Observer<String> { newNomeCreatore ->
+            binding.dettagliAstaNomeUtente.text = newNomeCreatore
+        }
+        viewModel.nomeCreatore.observe(viewLifecycleOwner, nomeCreatoreObserver)
 
         val descrizioneObserver = Observer<String> { newDescrizione ->
             binding.dettagliAstaDescrizione.text = newDescrizione
@@ -329,7 +347,13 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         viewModel.descrizione.observe(viewLifecycleOwner, descrizioneObserver)
 
         val prezzoObserver = Observer<Double> { newPrezzo ->
-            binding.dettagliAstaOfferta.text = newPrezzo.toString()
+            binding.dettagliAstaOfferta.text = getString(
+                R.string.placeholder_prezzo,
+                if (viewModel.tipo.value != "Silenziosa")
+                    newPrezzo.toString()
+                else
+                    "???"
+            )
         }
         viewModel.prezzo.observe(viewLifecycleOwner, prezzoObserver)
     }

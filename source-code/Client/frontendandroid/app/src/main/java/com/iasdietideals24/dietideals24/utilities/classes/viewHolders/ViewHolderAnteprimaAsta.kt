@@ -11,9 +11,8 @@ import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaAsta
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
 
-class ViewHolderAnteprimaAsta(binding: AstaBinding) : RecyclerView.ViewHolder(binding.root) {
-
-    private val binding = binding
+class ViewHolderAnteprimaAsta(private val binding: AstaBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
     private var listener: OnGoToDetails? = null
 
@@ -24,7 +23,7 @@ class ViewHolderAnteprimaAsta(binding: AstaBinding) : RecyclerView.ViewHolder(bi
     }
 
     fun bind(currentAsta: AnteprimaAsta, resources: Resources) {
-        when (currentAsta._tipoAsta) {
+        when (currentAsta.tipoAsta) {
             "Inversa" -> {
                 binding.astaTipo.text = resources.getString(R.string.tipoAsta_astaInversa)
                 binding.astaMessaggio.text =
@@ -50,15 +49,21 @@ class ViewHolderAnteprimaAsta(binding: AstaBinding) : RecyclerView.ViewHolder(bi
         }
 
         binding.astaDataScadenza.text =
-            currentAsta._dataScadenza.toLocalStringShort()
-        binding.astaOraScadenza.text = currentAsta._oraScadenza.toString()
+            currentAsta.dataScadenza.toLocalStringShort()
+        binding.astaOraScadenza.text = currentAsta.oraScadenza.toString()
 
-        if (currentAsta._foto.isNotEmpty())
-            binding.astaImmagine.load(currentAsta._foto) {
+        if (currentAsta.foto.isNotEmpty())
+            binding.astaImmagine.load(currentAsta.foto) {
                 crossfade(true)
             }
-        binding.astaNome.text = currentAsta._nome
-        binding.astaOfferta.text = currentAsta._offerta.toString()
+        binding.astaNome.text = currentAsta.nome
+        binding.astaOfferta.text = resources.getString(
+            R.string.placeholder_prezzo,
+            if (currentAsta.tipoAsta != "Silenziosa")
+                currentAsta.offerta.toString()
+            else
+                "???"
+        )
         binding.astaModificaAsta.visibility = View.GONE
         binding.astaEliminaAsta.visibility = View.GONE
         binding.astaElencoOfferte.visibility = View.GONE

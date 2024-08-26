@@ -192,4 +192,6 @@
     <string name="crea_astaModificataConSuccesso">The auction was edited successfully.</string>
     <string name="offerte_titolo">Received bids</string>
     <string name="offerta_avviso">You won\'t be able to withdraw your bid anymore after sending.</string>
+    <string name="partecipazioni_titolo">Participation history</string>
+    <string name="placeholder_prezzo">$ %1$s</string>
 </resources>

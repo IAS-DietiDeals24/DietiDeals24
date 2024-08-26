@@ -58,7 +58,7 @@ class ControllerCreazioneProfiloFase2 : Controller<Creazioneprofilofase2Binding>
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity).get(ModelRegistrazione::class)
+        viewModel = ViewModelProvider(fragmentActivity)[ModelRegistrazione::class]
 
         requestPermissions =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results: Map<String, Boolean> ->
@@ -100,7 +100,6 @@ class ControllerCreazioneProfiloFase2 : Controller<Creazioneprofilofase2Binding>
         }
     }
 
-    @Suppress("SENSELESS_COMPARISON")
     @UIBuilder
     override fun impostaOsservatori() {
         val immagineObserver = Observer<ByteArray> { newByteArray: ByteArray? ->
@@ -111,7 +110,7 @@ class ControllerCreazioneProfiloFase2 : Controller<Creazioneprofilofase2Binding>
                     binding.creazioneProfiloFase2CampoFoto.setImageResource(R.drawable.icona_fotocamera)
                 }
 
-                newByteArray != null -> {
+                else -> {
                     binding.creazioneProfiloFase2CampoFoto.load(newByteArray) {
                         crossfade(true)
                     }

@@ -29,6 +29,7 @@ import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalDate
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.classes.toMillis
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentGoToAuction
 import java.time.LocalDate
 import java.time.LocalTime
@@ -149,7 +150,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity).get(ModelAsta::class)
+        viewModel = ViewModelProvider(fragmentActivity)[ModelAsta::class]
 
         requestPermissions =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results: Map<String, Boolean> ->
@@ -191,7 +192,6 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
         }
     }
 
-    @Suppress("SENSELESS_COMPARISON")
     @UIBuilder
     override fun impostaOsservatori() {
         val dataFineObserver = Observer<LocalDate> { newData ->
@@ -207,13 +207,19 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
         }
         viewModel.oraFine.observe(viewLifecycleOwner, oraFineObserver)
 
+        val prezzoObserver = Observer<Double> { newPrezzo ->
+            binding.modificaPrezzo.text =
+                getString(R.string.placeholder_prezzo, newPrezzo.toString())
+        }
+        viewModel.prezzo.observe(viewLifecycleOwner, prezzoObserver)
+
         val immagineObserver = Observer<ByteArray> { newByteArray: ByteArray? ->
             when {
                 newByteArray == null || newByteArray.isEmpty() -> {
                     binding.modificaCampoFoto.setImageResource(R.drawable.icona_fotocamera)
                 }
 
-                newByteArray != null -> {
+                else -> {
                     binding.modificaCampoFoto.load(newByteArray) {
                         crossfade(true)
                     }
@@ -245,33 +251,55 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
 
     @EventHandler
     private fun clickModifica() {
-        viewModel.idCreatore.value = CurrentUser.id
+        try {
+            viewModel.validate()
 
-        val returned: Boolean? = eseguiChiamataREST("modificaAsta", viewModel.toAsta())
+            viewModel.idCreatore.value = CurrentUser.id
 
-        if (returned == null)
-            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
-        else if (returned == false)
-            Snackbar.make(fragmentView, R.string.crea_astaNonModificata, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
-        else if (returned == true) {
-            viewModel.clear()
+            val returned: Boolean? = eseguiChiamataREST("modificaAsta", viewModel.toAsta())
 
-            Snackbar.make(
-                fragmentView,
-                R.string.crea_astaModificataConSuccesso,
-                Snackbar.LENGTH_SHORT
+            when (returned) {
+                null -> Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+
+                false -> Snackbar.make(
+                    fragmentView,
+                    R.string.crea_astaNonModificata,
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+
+                true -> {
+                    viewModel.clear()
+
+                    Snackbar.make(
+                        fragmentView,
+                        R.string.crea_astaModificataConSuccesso,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .setBackgroundTint(resources.getColor(R.color.blu, null))
+                        .setTextColor(resources.getColor(R.color.grigio, null))
+                        .show()
+
+                    listenerGoToAuction?.onFragmentGoToAuction(
+                        viewModel.idAsta.value!!,
+                        this::class
+                    )
+                }
+            }
+        } catch (_: EccezioneCampiNonCompilati) {
+            erroreCampo(
+                R.string.registrazione_erroreCampiObbligatoriNonCompilati,
+                binding.modificaCampoDataScadenza,
+                binding.modificaCampoOra,
+                binding.modificaCampoNome,
+                binding.modificaCampoCategoria,
+                binding.modificaCampoDescrizione
             )
-                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
-
-            listenerGoToAuction?.onFragmentGoToAuction(viewModel.idAsta.value!!, this::class)
         }
 
     }

@@ -47,7 +47,7 @@ class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(),
             insets
         }
 
-        viewModel = ViewModelProvider(this).get(ModelRegistrazione::class)
+        viewModel = ViewModelProvider(this)[ModelRegistrazione::class]
     }
 
     override fun onStop() {
@@ -73,26 +73,26 @@ class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(),
             supportFragmentManager.findFragmentById(R.id.activity_registrazione_fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
 
-        when {
-            sender == ControllerSelezioneTipoAccount::class -> {
+        when (sender) {
+            ControllerSelezioneTipoAccount::class -> {
                 val action =
                     ControllerSelezioneTipoAccountDirections.actionControllerSelezioneTipoAccountToControllerSelezioneAccessoRegistrazione()
                 navController.navigate(action)
             }
 
-            sender == ControllerRegistrazione::class -> {
+            ControllerRegistrazione::class -> {
                 val action =
                     ControllerRegistrazioneDirections.actionControllerRegistrazioneToControllerCreazioneProfiloFase1()
                 navController.navigate(action)
             }
 
-            sender == ControllerCreazioneProfiloFase1::class -> {
+            ControllerCreazioneProfiloFase1::class -> {
                 val action =
                     ControllerCreazioneProfiloFase1Directions.actionControllerCreazioneProfiloFase1ToControllerCreazioneProfiloFase2()
                 navController.navigate(action)
             }
 
-            sender == ControllerCreazioneProfiloFase2::class -> {
+            ControllerCreazioneProfiloFase2::class -> {
                 val action =
                     ControllerCreazioneProfiloFase2Directions.actionControllerCreazioneProfiloFase2ToControllerCreazioneProfiloFase3()
                 navController.navigate(action)

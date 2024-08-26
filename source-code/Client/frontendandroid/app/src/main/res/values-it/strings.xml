@@ -182,4 +182,6 @@
     <string name="crea_astaModificataConSuccesso">L\'asta è stata modificata con successo.</string>
     <string name="offerte_titolo">Offerte ricevute</string>
     <string name="offerta_avviso">Non potrai più ritirare la tua offerta dopo l\'invio.</string>
+    <string name="partecipazioni_titolo">Storico partecipazioni</string>
+    <string name="placeholder_prezzo">€ %1$s</string>
 </resources>

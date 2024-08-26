@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20sp"
         android:foregroundTint="#E93939"
-        android:text="@string/placeholder"
+        android:text="@string/placeholder_prezzo"
         android:textColor="@color/arancione"
         android:textSize="24sp"
         app:fontFamily="@font/fira_sans_medium" />

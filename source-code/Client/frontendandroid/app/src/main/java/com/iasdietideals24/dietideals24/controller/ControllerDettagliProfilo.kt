@@ -2,6 +2,7 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
 import android.view.View
+import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -86,7 +87,7 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity).get(ModelProfilo::class)
+        viewModel = ViewModelProvider(fragmentActivity)[ModelProfilo::class]
 
         val returned: Profilo? = eseguiChiamataREST(
             "caricaProfilo",
@@ -94,29 +95,29 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
         )
 
         if (returned != null) {
-            viewModel.idProfilo.value = returned._idProfilo
-            viewModel.tipoAccount.value = when (returned._tipoAccount) {
+            viewModel.idProfilo.value = returned.idProfilo
+            viewModel.tipoAccount.value = when (returned.tipoAccount) {
                 "compratore" -> getString(R.string.tipoAccount_compratore)
                 "venditore" -> getString(R.string.tipoAccount_venditore)
                 else -> ""
             }
-            viewModel.nomeUtente.value = returned._nomeUtente
-            viewModel.immagineProfilo.value = returned._immagineProfilo
-            viewModel.nome.value = returned._nome
-            viewModel.cognome.value = returned._cognome
-            viewModel.email.value = returned._email
-            viewModel.dataNascita.value = returned._dataNascita
-            viewModel.genere.value = returned._genere
-            viewModel.areaGeografica.value = returned._areaGeografica
-            viewModel.biografia.value = returned._biografia
-            viewModel.linkInstagram.value = returned._linkInstagram
-            viewModel.linkFacebook.value = returned._linkFacebook
-            viewModel.linkGitHub.value = returned._linkGitHub
-            viewModel.linkX.value = returned._linkX
-            viewModel.linkPersonale.value = returned._linkPersonale
+            viewModel.nomeUtente.value = returned.nomeUtente
+            viewModel.immagineProfilo.value = returned.immagineProfilo
+            viewModel.nome.value = returned.nome
+            viewModel.cognome.value = returned.cognome
+            viewModel.email.value = returned.email
+            viewModel.dataNascita.value = returned.dataNascita
+            viewModel.genere.value = returned.genere
+            viewModel.areaGeografica.value = returned.areaGeografica
+            viewModel.biografia.value = returned.biografia
+            viewModel.linkInstagram.value = returned.linkInstagram
+            viewModel.linkFacebook.value = returned.linkFacebook
+            viewModel.linkGitHub.value = returned.linkGitHub
+            viewModel.linkX.value = returned.linkX
+            viewModel.linkPersonale.value = returned.linkPersonale
 
-            if (CurrentUser.id != returned._idAccountCollegati.first &&
-                CurrentUser.id != returned._idAccountCollegati.second
+            if (CurrentUser.id != returned.idAccountCollegati.first &&
+                CurrentUser.id != returned.idAccountCollegati.second
             )
                 binding.dettagliProfiloPulsanteModifica.visibility = View.GONE
         } else {
@@ -146,11 +147,13 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
         }
         viewModel.nomeUtente.observe(viewLifecycleOwner, nomeUtenteObserver)
 
-        val immagineObserver = Observer<ByteArray> { newByteArray: ByteArray? ->
-            if (newByteArray?.isNotEmpty() == true)
+        val immagineObserver = Observer<ByteArray> { newByteArray ->
+            if (newByteArray.isNotEmpty()) {
                 binding.dettagliProfiloImmagineUtente.load(newByteArray) {
                     crossfade(true)
                 }
+                binding.dettagliProfiloImmagineUtente.scaleType = ImageView.ScaleType.CENTER_CROP
+            }
         }
         viewModel.immagineProfilo.observe(viewLifecycleOwner, immagineObserver)
 

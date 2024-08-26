@@ -1,6 +1,7 @@
 package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
+import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
 import coil.load
 import com.google.android.material.snackbar.Snackbar
@@ -43,7 +44,7 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
                 eseguiChiamataREST("recuperaNotifiche", CurrentUser.id)
 
             if (result != null) {
-                when (result._tipoAccount) {
+                when (result.tipoAccount) {
                     "compratore" -> binding.profiloTipoAccount.text = getString(
                         R.string.profilo_tipoAccount,
                         getString(R.string.tipoAccount_compratore)
@@ -54,12 +55,14 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
                         getString(R.string.tipoAccount_venditore)
                     )
                 }
-                binding.profiloNome.text = getString(R.string.placeholder, result._nome)
+                binding.profiloNome.text = getString(R.string.placeholder, result.nome)
 
-                if (result._immagineProfilo.isNotEmpty())
-                    binding.profiloImmagine.load(result._immagineProfilo) {
+                if (result.immagineProfilo.isNotEmpty()) {
+                    binding.profiloImmagine.load(result.immagineProfilo) {
                         crossfade(true)
                     }
+                    binding.profiloImmagine.scaleType = ImageView.ScaleType.CENTER_CROP
+                }
             } else
                 Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                     .setBackgroundTint(resources.getColor(R.color.blu, null))

@@ -161,34 +161,34 @@ class ModelRegistrazione : ViewModel() {
 
     fun toAccount(): Account {
         return Account(
-            _facebookAccountID.value,
-            _email.value,
-            _password.value,
-            _tipoAccount.value
+            _facebookAccountID.value!!,
+            _email.value!!,
+            _password.value!!,
+            _tipoAccount.value!!
         )
     }
 
     fun toAccountProfilo(): AccountProfilo {
         return AccountProfilo(
             Account(
-                _facebookAccountID.value,
-                _email.value,
-                _password.value,
-                _tipoAccount.value
+                _facebookAccountID.value!!,
+                _email.value!!,
+                _password.value!!,
+                _tipoAccount.value!!
             ),
-            _nomeUtente.value,
-            _nome.value,
-            _cognome.value,
-            _dataNascita.value,
-            _immagineProfilo.value,
-            _biografia.value,
-            _areaGeografica.value,
-            _genere.value,
-            _linkPersonale.value,
-            _linkInstagram.value,
-            _linkFacebook.value,
-            _linkGitHub.value,
-            _linkX.value
+            _nomeUtente.value!!,
+            _nome.value!!,
+            _cognome.value!!,
+            _dataNascita.value!!,
+            _immagineProfilo.value!!,
+            _biografia.value!!,
+            _areaGeografica.value!!,
+            _genere.value!!,
+            _linkPersonale.value!!,
+            _linkInstagram.value!!,
+            _linkFacebook.value!!,
+            _linkGitHub.value!!,
+            _linkX.value!!
         )
     }
 

@@ -17,6 +17,7 @@ import retrofit2.http.PUT
 import retrofit2.http.Query
 import java.lang.Long
 
+@Suppress("UNUSED")
 interface API {
     /**
      * Il metodo recupera l'identificativo dell'account che ha effettuato l'accesso.
@@ -145,7 +146,7 @@ interface API {
 
     /**
      * Carica una nuova asta all'interno del database.
-     * @param dataClass Wrapper con le informazioni necessarie a creare l'asta.
+     * @param asta Wrapper con le informazioni necessarie a creare l'asta.
      * @return L'identificativo dell'asta appena creata.
      */
     @POST("home/creaAsta")

@@ -10,8 +10,6 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -48,12 +46,6 @@ abstract class Controller<bindingType : ViewBinding> : Fragment() {
      */
     val fragmentView: View
         get() = requireView()
-
-    /**
-     * Una proprietà che chiama findNavController() nel fragment.
-     */
-    val navController: NavController
-        get() = findNavController()
 
     /**
      * Una proprietà che chiama requireActivity() nel fragment.
@@ -174,12 +166,12 @@ abstract class Controller<bindingType : ViewBinding> : Fragment() {
             override fun onResponse(call: Call<Model>, response: Response<Model>) {
                 if (response.isSuccessful) {
                     returned = response.body()
-                    onRESTSuccess<Model>(call, response)
+                    onRESTSuccess(call, response)
                 }
             }
 
             override fun onFailure(call: Call<Model>, t: Throwable) {
-                onRESTFailure<Model>(call, t)
+                onRESTFailure(call, t)
             }
         })
 
@@ -241,7 +233,7 @@ abstract class Controller<bindingType : ViewBinding> : Fragment() {
     /**
      * Usata per impostare il messaggio di errore su un campo di testo della vista.
      * @param messaggioErrore Il messaggio di errore da impostare.
-     * @param campiEvidenziati L'elenco dei campi ai quali impostare lo stato di errore.
+     * @param campoErrore Campi ai quali impostare lo stato di errore.
      */
     @Utility
     protected fun erroreCampo(messaggioErrore: Int, vararg campoErrore: TextInputLayout) {
@@ -264,7 +256,6 @@ abstract class Controller<bindingType : ViewBinding> : Fragment() {
     /**
      * Carica in maniera asincrona una preferenza dal datastore dell'applicazione.
      * @param name La chiave della preferenza da caricare.
-     * @param value Il valore della preferenza da caricare.
      * @return Il valore della preferenza caricata.
      */
     @Utility

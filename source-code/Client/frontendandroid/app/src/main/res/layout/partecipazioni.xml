@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/offerte_linearLayout1"
+    android:id="@+id/partecipazioni_linearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grigio"
@@ -10,7 +10,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/offerte_linearLayout2"
+        android:id="@+id/partecipazioni_linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
@@ -19,7 +19,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/offerte_pulsanteIndietro"
+            android:id="@+id/partecipazioni_pulsanteIndietro"
             android:layout_width="48dp"
             android:layout_height="48dp"
 
@@ -29,11 +29,11 @@
             android:src="@drawable/icona_indietro" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/offerte_titolo"
-            android:layout_width="wrap_content"
+            android:id="@+id/partecipazioni_titolo"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/offerte_titolo"
+            android:text="@string/partecipazioni_titolo"
             android:textAlignment="center"
             android:textColor="@color/blu"
             android:textSize="25sp"
@@ -41,14 +41,14 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/offerte_recyclerView"
+        android:id="@+id/partecipazioni_recyclerView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/offerte_linearLayout"
-        tools:listitem="@layout/offerta" />
+        app:layout_constraintTop_toBottomOf="@+id/partecipazioni_linearLayout"
+        tools:listitem="@layout/asta" />
 
 </LinearLayout>

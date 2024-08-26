@@ -99,13 +99,15 @@ class ControllerAccesso : Controller<AccessoBinding>() {
                         result.accessToken.userId, binding.accessoTipoAccount.text.toString()
                     )
 
-                    if (returned == null) // errore comunicazione con il backend
-                        Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    when (returned) {
+                        null // errore comunicazione con il backend
+                        -> Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                             .setBackgroundTint(resources.getColor(R.color.blu, null))
                             .setTextColor(resources.getColor(R.color.grigio, null))
                             .show()
-                    else if (returned == 0L) // non esiste un account associato a questo account Facebook con questo tipo
-                        Snackbar.make(
+
+                        0L // non esiste un account associato a questo account Facebook con questo tipo
+                        -> Snackbar.make(
                             fragmentView,
                             R.string.accesso_noAccountFacebookCollegato,
                             Snackbar.LENGTH_SHORT
@@ -113,8 +115,10 @@ class ControllerAccesso : Controller<AccessoBinding>() {
                             .setBackgroundTint(resources.getColor(R.color.blu, null))
                             .setTextColor(resources.getColor(R.color.grigio, null))
                             .show()
-                    else // esiste un account associato a questo account Facebook con questo tipo, accedi
-                        listenerChangeActivity?.onFragmentChangeActivity(Home::class.java)
+
+                        else // esiste un account associato a questo account Facebook con questo tipo, accedi
+                        -> listenerChangeActivity?.onFragmentChangeActivity(Home::class.java)
+                    }
                 }
 
                 override fun onCancel() {
@@ -168,25 +172,25 @@ class ControllerAccesso : Controller<AccessoBinding>() {
                 viewModel.password.value,
                 viewModel.tipoAccount.value
             )
-            if (returned == null)
-                throw EccezioneAPI("Errore di comunicazione con il server.")
-            else if (returned == 0L)
-                throw EccezioneAccountNonEsistente("Account non esistente.")
-            else {
-                GlobalScope.launch {
-                    salvaPreferenzaStringa("email", viewModel.email.value!!)
-                    salvaPreferenzaStringa("password", viewModel.password.value!!)
+            when (returned) {
+                null -> throw EccezioneAPI("Errore di comunicazione con il server.")
+                0L -> throw EccezioneAccountNonEsistente("Account non esistente.")
+                else -> {
+                    GlobalScope.launch {
+                        salvaPreferenzaStringa("email", viewModel.email.value!!)
+                        salvaPreferenzaStringa("password", viewModel.password.value!!)
+                    }
+                    CurrentUser.id = returned
+                    listenerChangeActivity?.onFragmentChangeActivity(Home::class.java)
                 }
-                CurrentUser.id = returned
-                listenerChangeActivity?.onFragmentChangeActivity(Home::class.java)
             }
-        } catch (eccezione: EccezioneAccountNonEsistente) {
+        } catch (_: EccezioneAccountNonEsistente) {
             erroreCampo(
                 R.string.accesso_erroreCredenzialiNonCorrette,
                 binding.accessoCampoEmail,
                 binding.accessoCampoPassword
             )
-        } catch (eccezione: EccezioneAPI) {
+        } catch (_: EccezioneAPI) {
             Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(resources.getColor(R.color.blu, null))
                 .setTextColor(resources.getColor(R.color.grigio, null))

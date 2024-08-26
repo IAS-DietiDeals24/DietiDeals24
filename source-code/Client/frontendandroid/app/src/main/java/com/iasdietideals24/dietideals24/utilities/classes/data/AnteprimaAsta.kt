@@ -4,11 +4,11 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 data class AnteprimaAsta(
-    val _id: Long = 0L,
-    val _tipoAsta: String = "",
-    val _dataScadenza: LocalDate = LocalDate.MIN,
-    val _oraScadenza: LocalTime = LocalTime.MIN,
-    val _foto: ByteArray = ByteArray(0),
-    val _nome: String = "",
-    val _offerta: Double = 0.0
+    val id: Long = 0L,
+    val tipoAsta: String = "",
+    val dataScadenza: LocalDate = LocalDate.MIN,
+    val oraScadenza: LocalTime = LocalTime.MIN,
+    val foto: ByteArray = ByteArray(0),
+    val nome: String = "",
+    val offerta: Double = 0.0
 )

@@ -9,7 +9,6 @@ import com.facebook.CallbackManager.Factory.create
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.GraphRequest
-import com.facebook.GraphResponse
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -30,7 +29,6 @@ import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentNextStep
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentSkipStep
 import kotlinx.coroutines.runBlocking
 import org.apache.commons.lang3.RandomStringUtils
-import org.json.JSONObject
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -121,38 +119,48 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
                         result.accessToken.userId, binding.registrazioneTipoAccount.text.toString()
                     )
 
-                    if (returned == null) { // errore di comunicazione con il backend
-                        Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                            .setTextColor(resources.getColor(R.color.grigio, null))
-                            .show()
-
-                        LoginManager.getInstance().logOut()
-                    } else if (returned == 0L) { // non esiste un account associato a questo account Facebook con questo tipo, registrati
-                        queryFacebookGraph(result.accessToken)
-
-                        try {
-                            scegliAssociaCreaProfilo()
-                        } catch (eccezione: EccezioneAPI) {
+                    when (returned) {
+                        null -> { // errore di comunicazione con il backend
                             Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                                 .setBackgroundTint(resources.getColor(R.color.arancione, null))
                                 .setTextColor(resources.getColor(R.color.grigio, null))
                                 .show()
 
-                            viewModel.clear()
                             LoginManager.getInstance().logOut()
                         }
-                    } else { // esiste un account associato a questo account Facebook con questo tipo
-                        Snackbar.make(
-                            fragmentView,
-                            R.string.registrazione_accountFacebookGiàCollegato,
-                            Snackbar.LENGTH_SHORT
-                        )
-                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                            .setTextColor(resources.getColor(R.color.grigio, null))
-                            .show()
 
-                        LoginManager.getInstance().logOut()
+                        0L -> { // non esiste un account associato a questo account Facebook con questo tipo, registrati
+                            queryFacebookGraph(result.accessToken)
+
+                            try {
+                                scegliAssociaCreaProfilo()
+                            } catch (_: EccezioneAPI) {
+                                Snackbar.make(
+                                    fragmentView,
+                                    R.string.apiError,
+                                    Snackbar.LENGTH_SHORT
+                                )
+                                    .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                                    .setTextColor(resources.getColor(R.color.grigio, null))
+                                    .show()
+
+                                viewModel.clear()
+                                LoginManager.getInstance().logOut()
+                            }
+                        }
+
+                        else -> { // esiste un account associato a questo account Facebook con questo tipo
+                            Snackbar.make(
+                                fragmentView,
+                                R.string.registrazione_accountFacebookGiàCollegato,
+                                Snackbar.LENGTH_SHORT
+                            )
+                                .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                                .setTextColor(resources.getColor(R.color.grigio, null))
+                                .show()
+
+                            LoginManager.getInstance().logOut()
+                        }
                     }
                 }
 
@@ -188,7 +196,7 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity).get(ModelRegistrazione::class)
+        viewModel = ViewModelProvider(fragmentActivity)[ModelRegistrazione::class]
     }
 
     @EventHandler
@@ -217,22 +225,22 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
             viewModel.validateAccount()
 
             scegliAssociaCreaProfilo()
-        } catch (eccezione: EccezioneCampiNonCompilati) {
+        } catch (_: EccezioneCampiNonCompilati) {
             erroreCampo(
                 R.string.registrazione_erroreCampiObbligatoriNonCompilati,
                 binding.registrazioneCampoEmail,
                 binding.registrazioneCampoPassword
             )
-        } catch (eccezione: EccezioneEmailNonValida) {
+        } catch (_: EccezioneEmailNonValida) {
             erroreCampo(R.string.registrazione_erroreFormatoEmail, binding.registrazioneCampoEmail)
-        } catch (eccezione: EccezioneEmailUsata) {
+        } catch (_: EccezioneEmailUsata) {
             erroreCampo(R.string.registrazione_erroreEmailGiàUsata, binding.registrazioneCampoEmail)
-        } catch (eccezione: EccezionePasswordNonSicura) {
+        } catch (_: EccezionePasswordNonSicura) {
             erroreCampo(
                 R.string.registrazione_errorePasswordNonSicura,
                 binding.registrazioneCampoPassword
             )
-        } catch (eccezione: EccezioneAPI) {
+        } catch (_: EccezioneAPI) {
             Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(resources.getColor(R.color.arancione, null))
                 .setTextColor(resources.getColor(R.color.grigio, null))
@@ -248,45 +256,43 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
             viewModel.tipoAccount.value
         )
 
-        when {
-            returned == null -> throw EccezioneAPI("Errore di comunicazione con il server.")
+        when (returned) {
+            null -> throw EccezioneAPI("Errore di comunicazione con il server.")
 
             // Un account di altro tipo con la stessa email è stato trovato
-            returned == true -> listenerSkipStep?.onFragmentSkipStep(this::class)
+            true -> listenerSkipStep?.onFragmentSkipStep(this::class)
 
             // Un account di altro tipo con la stessa email non è stato trovato
-            returned == false -> listenerNextStep?.onFragmentNextStep(this::class)
+            false -> listenerNextStep?.onFragmentNextStep(this::class)
         }
     }
 
     private fun queryFacebookGraph(accessToken: AccessToken?) {
         val request: GraphRequest = GraphRequest.newMeRequest(
-            accessToken,
-            object : GraphRequest.GraphJSONObjectCallback {
-                override fun onCompleted(obj: JSONObject?, response: GraphResponse?) {
-                    viewModel.facebookAccountID.postValue(obj?.optString("id"))
-                    viewModel.email.postValue(obj?.optString("email"))
-                    viewModel.password.postValue(RandomStringUtils.randomAlphanumeric(16))
-                    viewModel.nome.postValue(
-                        obj?.optString("name") +
-                                if (obj?.optString("middle_name") != "")
-                                    " " + obj?.optString("middle_name")
-                                else ""
-                    )
-                    viewModel.cognome.postValue(obj?.optString("last_name"))
-                    viewModel.dataNascita.postValue(
-                        LocalDate.parse(
-                            obj?.optString("birthday"),
-                            DateTimeFormatter.ofPattern("MM/dd/yyyy")
-                        )
-                    )
-                    viewModel.biografia.postValue(obj?.optString("about"))
-                    viewModel.areaGeografica.postValue(
-                        obj?.optJSONObject("location")?.optString("name")
-                    )
-                    viewModel.genere.postValue(obj?.optString("gender"))
-                }
-            })
+            accessToken
+        ) { obj, _ ->
+            viewModel.facebookAccountID.postValue(obj?.optString("id"))
+            viewModel.email.postValue(obj?.optString("email"))
+            viewModel.password.postValue(RandomStringUtils.randomAlphanumeric(16))
+            viewModel.nome.postValue(
+                obj?.optString("name") +
+                        if (obj?.optString("middle_name") != "")
+                            " " + obj?.optString("middle_name")
+                        else ""
+            )
+            viewModel.cognome.postValue(obj?.optString("last_name"))
+            viewModel.dataNascita.postValue(
+                LocalDate.parse(
+                    obj?.optString("birthday"),
+                    DateTimeFormatter.ofPattern("MM/dd/yyyy")
+                )
+            )
+            viewModel.biografia.postValue(obj?.optString("about"))
+            viewModel.areaGeografica.postValue(
+                obj?.optJSONObject("location")?.optString("name")
+            )
+            viewModel.genere.postValue(obj?.optString("gender"))
+        }
 
         val parameters = Bundle()
         parameters.putString(

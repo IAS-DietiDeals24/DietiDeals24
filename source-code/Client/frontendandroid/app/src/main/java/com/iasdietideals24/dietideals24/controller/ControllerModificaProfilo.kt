@@ -8,6 +8,7 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
@@ -19,10 +20,14 @@ import com.google.android.material.textfield.TextInputEditText
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.ModificaprofiloBinding
 import com.iasdietideals24.dietideals24.model.ModelProfilo
+import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
 import java.time.LocalDate
@@ -59,118 +64,37 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
     @UIBuilder
     override fun impostaEventiClick() {
         binding.modificaProfiloPulsanteIndietro.setOnClickListener {
-            listenerBackButton?.onFragmentBackButton()
+            clickIndietro()
         }
 
         binding.modificaProfiloPulsanteConferma.setOnClickListener {
-            var returned: Boolean? = eseguiChiamataREST("aggiornaProfilo", viewModel.toProfilo())
-
-            if (returned == null)
-                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
-            else if (returned == true) {
-                Snackbar.make(
-                    fragmentView,
-                    R.string.modificaProfilo_successoModifica,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
-
-                listenerConfirmButton?.onGoToProfile(
-                    CurrentUser.id,
-                    ControllerModificaProfilo::class
-                )
-            } else
-                Snackbar.make(
-                    fragmentView,
-                    R.string.modificaProfilo_fallimentoModifica,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
+            clickConferma()
         }
 
         binding.modificaProfiloPulsante.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                requestPermissions.launch(arrayOf(READ_MEDIA_IMAGES))
-            } else {
-                requestPermissions.launch(arrayOf(READ_EXTERNAL_STORAGE))
-            }
+            clickPulsanteImmagine()
         }
 
         binding.modificaProfiloFacebook.setOnClickListener {
-            val viewInflated: View = LayoutInflater.from(context)
-                .inflate(R.layout.popuplinksocial, view as ViewGroup?, false)
-            val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_campoLink)
-            input.setText(viewModel.linkFacebook.value)
-
-            MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
-                .setTitle(R.string.crea_titoloPopupTipoAsta)
-                .setView(viewInflated)
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    viewModel.linkFacebook.value = input.getText().toString()
-                }
-                .setNegativeButton(R.string.annulla) { _, _ -> }
-                .show()
+            clickFacebook()
         }
 
         binding.modificaProfiloInstagram.setOnClickListener {
-            val viewInflated: View = LayoutInflater.from(context)
-                .inflate(R.layout.popuplinksocial, view as ViewGroup?, false)
-            val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_campoLink)
-            input.setText(viewModel.linkInstagram.value)
-
-            MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
-                .setTitle(R.string.crea_titoloPopupTipoAsta)
-                .setView(viewInflated)
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    viewModel.linkInstagram.value = input.getText().toString()
-                }
-                .setNegativeButton(R.string.annulla) { _, _ -> }
-                .show()
+            clickInstagram()
         }
 
         binding.modificaProfiloGithub.setOnClickListener {
-            val viewInflated: View = LayoutInflater.from(context)
-                .inflate(R.layout.popuplinksocial, view as ViewGroup?, false)
-            val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_campoLink)
-            input.setText(viewModel.linkGitHub.value)
-
-            MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
-                .setTitle(R.string.crea_titoloPopupTipoAsta)
-                .setView(viewInflated)
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    viewModel.linkGitHub.value = input.getText().toString()
-                }
-                .setNegativeButton(R.string.annulla) { _, _ -> }
-                .show()
+            clickGitHub()
         }
 
         binding.modificaProfiloX.setOnClickListener {
-            val viewInflated: View = LayoutInflater.from(context)
-                .inflate(R.layout.popuplinksocial, view as ViewGroup?, false)
-            val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_campoLink)
-            input.setText(viewModel.linkX.value)
-
-            MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
-                .setTitle(R.string.crea_titoloPopupTipoAsta)
-                .setView(viewInflated)
-                .setPositiveButton(R.string.ok) { _, _ ->
-                    viewModel.linkX.value = input.getText().toString()
-                }
-                .setNegativeButton(R.string.annulla) { _, _ -> }
-                .show()
+            clickX()
         }
     }
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity).get(ModelProfilo::class)
+        viewModel = ViewModelProvider(fragmentActivity)[ModelProfilo::class]
 
         requestPermissions =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results: Map<String, Boolean> ->
@@ -182,36 +106,6 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
         }
     }
 
-    private fun apriGalleria(results: Map<String, Boolean>) {
-        when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
-                when {
-                    results.getOrDefault(READ_MEDIA_IMAGES, false) ->
-                        selectPhoto.launch("image/*")
-
-                    else ->
-                        Snackbar.make(fragmentView, R.string.noMediaAccess, Snackbar.LENGTH_SHORT)
-                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                            .setTextColor(resources.getColor(R.color.grigio, null))
-                            .show()
-                }
-            }
-
-            else -> {
-                when {
-                    results.getOrDefault(READ_EXTERNAL_STORAGE, false) ->
-                        selectPhoto.launch("image/*")
-
-                    else ->
-                        Snackbar.make(fragmentView, R.string.noMediaAccess, Snackbar.LENGTH_SHORT)
-                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                            .setTextColor(resources.getColor(R.color.grigio, null))
-                            .show()
-                }
-            }
-        }
-    }
-
     @UIBuilder
     override fun impostaOsservatori() {
         val nomeUtenteObserver = Observer<String> { newNomeUtente ->
@@ -220,10 +114,21 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
         viewModel.nomeUtente.observe(viewLifecycleOwner, nomeUtenteObserver)
 
         val immagineObserver = Observer<ByteArray> { newByteArray: ByteArray? ->
-            if (newByteArray?.isNotEmpty() == true)
-                binding.modificaProfiloImmagineUtente.load(newByteArray) {
-                    crossfade(true)
+            when {
+                newByteArray == null || newByteArray.isEmpty() -> {
+                    binding.modificaProfiloImmagineUtente.scaleType =
+                        ImageView.ScaleType.CENTER_INSIDE
+                    binding.modificaProfiloImmagineUtente.setImageResource(R.drawable.icona_profilo)
                 }
+
+                else -> {
+                    binding.modificaProfiloImmagineUtente.load(newByteArray) {
+                        crossfade(true)
+                    }
+                    binding.modificaProfiloImmagineUtente.scaleType =
+                        ImageView.ScaleType.CENTER_CROP
+                }
+            }
         }
         viewModel.immagineProfilo.observe(viewLifecycleOwner, immagineObserver)
 
@@ -261,5 +166,178 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
             binding.modificaProfiloLinkPersonale.setText(newLinkPersonale)
         }
         viewModel.linkPersonale.observe(viewLifecycleOwner, linkPersonaleObserver)
+    }
+
+    @EventHandler
+    private fun clickIndietro() {
+        listenerBackButton?.onFragmentBackButton()
+    }
+
+    @EventHandler
+    private fun clickConferma() {
+        try {
+            viewModel.validate()
+
+            val returned: Boolean? =
+                eseguiChiamataREST("aggiornaProfilo", viewModel.toProfilo())
+
+            when (returned) {
+                null -> Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+
+                true -> {
+                    Snackbar.make(
+                        fragmentView,
+                        R.string.modificaProfilo_successoModifica,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .setBackgroundTint(resources.getColor(R.color.blu, null))
+                        .setTextColor(resources.getColor(R.color.grigio, null))
+                        .show()
+
+                    listenerConfirmButton?.onGoToProfile(
+                        CurrentUser.id,
+                        ControllerModificaProfilo::class
+                    )
+                }
+
+                else -> Snackbar.make(
+                    fragmentView,
+                    R.string.modificaProfilo_fallimentoModifica,
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+            }
+        } catch (_: EccezioneCampiNonCompilati) {
+            erroreCampo(
+                R.string.registrazione_erroreCampiObbligatoriNonCompilati,
+                binding.modificaProfiloCampoNome,
+                binding.modificaProfiloCampoCognome,
+                binding.modificaProfiloCampoEmail,
+                binding.modificaProfiloCampoDataNascita,
+                binding.modificaProfiloCampoGenere
+            )
+        } catch (_: EccezioneEmailNonValida) {
+            erroreCampo(
+                R.string.registrazione_erroreFormatoEmail,
+                binding.modificaProfiloCampoEmail
+            )
+        } catch (_: EccezioneEmailUsata) {
+            erroreCampo(
+                R.string.registrazione_erroreEmailGiàUsata,
+                binding.modificaProfiloCampoEmail
+            )
+        }
+    }
+
+    @EventHandler
+    private fun clickPulsanteImmagine() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requestPermissions.launch(arrayOf(READ_MEDIA_IMAGES))
+        } else {
+            requestPermissions.launch(arrayOf(READ_EXTERNAL_STORAGE))
+        }
+    }
+
+    @EventHandler
+    private fun clickFacebook() {
+        val viewInflated: View = LayoutInflater.from(context)
+            .inflate(R.layout.popuplinksocial, view as ViewGroup?, false)
+        val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_campoLink)
+        input.setText(viewModel.linkFacebook.value)
+
+        MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
+            .setTitle(R.string.crea_titoloPopupTipoAsta)
+            .setView(viewInflated)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                viewModel.linkFacebook.value = input.getText().toString()
+            }
+            .setNegativeButton(R.string.annulla) { _, _ -> }
+            .show()
+    }
+
+    @EventHandler
+    private fun clickInstagram() {
+        val viewInflated: View = LayoutInflater.from(context)
+            .inflate(R.layout.popuplinksocial, view as ViewGroup?, false)
+        val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_campoLink)
+        input.setText(viewModel.linkInstagram.value)
+
+        MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
+            .setTitle(R.string.crea_titoloPopupTipoAsta)
+            .setView(viewInflated)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                viewModel.linkInstagram.value = input.getText().toString()
+            }
+            .setNegativeButton(R.string.annulla) { _, _ -> }
+            .show()
+    }
+
+    @EventHandler
+    private fun clickGitHub() {
+        val viewInflated: View = LayoutInflater.from(context)
+            .inflate(R.layout.popuplinksocial, view as ViewGroup?, false)
+        val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_campoLink)
+        input.setText(viewModel.linkGitHub.value)
+
+        MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
+            .setTitle(R.string.crea_titoloPopupTipoAsta)
+            .setView(viewInflated)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                viewModel.linkGitHub.value = input.getText().toString()
+            }
+            .setNegativeButton(R.string.annulla) { _, _ -> }
+            .show()
+    }
+
+    @EventHandler
+    private fun clickX() {
+        val viewInflated: View = LayoutInflater.from(context)
+            .inflate(R.layout.popuplinksocial, view as ViewGroup?, false)
+        val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_campoLink)
+        input.setText(viewModel.linkX.value)
+
+        MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
+            .setTitle(R.string.crea_titoloPopupTipoAsta)
+            .setView(viewInflated)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                viewModel.linkX.value = input.getText().toString()
+            }
+            .setNegativeButton(R.string.annulla) { _, _ -> }
+            .show()
+    }
+
+    private fun apriGalleria(results: Map<String, Boolean>) {
+        when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
+                when {
+                    results.getOrDefault(READ_MEDIA_IMAGES, false) ->
+                        selectPhoto.launch("image/*")
+
+                    else ->
+                        Snackbar.make(fragmentView, R.string.noMediaAccess, Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                            .setTextColor(resources.getColor(R.color.grigio, null))
+                            .show()
+                }
+            }
+
+            else -> {
+                when {
+                    results.getOrDefault(READ_EXTERNAL_STORAGE, false) ->
+                        selectPhoto.launch("image/*")
+
+                    else ->
+                        Snackbar.make(fragmentView, R.string.noMediaAccess, Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                            .setTextColor(resources.getColor(R.color.grigio, null))
+                            .show()
+                }
+            }
+        }
     }
 }

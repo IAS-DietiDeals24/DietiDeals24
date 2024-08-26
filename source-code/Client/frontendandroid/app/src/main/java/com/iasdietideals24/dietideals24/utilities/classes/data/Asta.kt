@@ -4,14 +4,14 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 data class Asta(
-    val _idAsta: Long = 0L,
-    val _idCreatore: Long = 0L,
-    val _tipo: String = "",
-    val _dataFine: LocalDate = LocalDate.MIN,
-    val _oraFine: LocalTime? = null,
-    val _prezzo: Double = 0.0,
-    val _immagine: ByteArray = ByteArray(0),
-    val _nome: String = "",
-    val _categoria: String = "",
-    val _descrizione: String = ""
+    private val _idAsta: Long = 0L,
+    private val _idCreatore: Long = 0L,
+    private val _tipo: String = "",
+    private val _dataFine: LocalDate = LocalDate.MIN,
+    private val _oraFine: LocalTime? = LocalTime.MIN,
+    private val _prezzo: Double = 0.0,
+    private val _immagine: ByteArray = ByteArray(0),
+    private val _nome: String = "",
+    private val _categoria: String = "",
+    private val _descrizione: String = ""
 )

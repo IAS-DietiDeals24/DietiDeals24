@@ -31,6 +31,7 @@ import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalDate
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.classes.toMillis
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentGoToHome
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
@@ -78,11 +79,10 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
                     "venditore" -> asteVenditore
                     else -> arrayOf()
                 },
-                selezionato,
-                { _, which ->
-                    selezionato = which
-                }
-            )
+                selezionato
+            ) { _, which ->
+                selezionato = which
+            }
             .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
                 when (tipoAccount) {
                     "compratore" -> viewModel.tipo.value = asteCompratore[selezionato]
@@ -186,7 +186,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity).get(ModelAsta::class)
+        viewModel = ViewModelProvider(fragmentActivity)[ModelAsta::class]
 
         requestPermissions =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results: Map<String, Boolean> ->
@@ -228,7 +228,6 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
         }
     }
 
-    @Suppress("SENSELESS_COMPARISON")
     @UIBuilder
     override fun impostaOsservatori() {
         val dataFineObserver = Observer<LocalDate> { newData ->
@@ -255,7 +254,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
                     binding.creaCampoFoto.setImageResource(R.drawable.icona_fotocamera)
                 }
 
-                newByteArray != null -> {
+                else -> {
                     binding.creaCampoFoto.load(newByteArray) {
                         crossfade(true)
                     }
@@ -282,29 +281,53 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
 
     @EventHandler
     private fun clickCrea() {
-        viewModel.idCreatore.value = CurrentUser.id
+        try {
+            viewModel.validate()
 
-        val returned: Boolean? = eseguiChiamataREST("creaAsta", viewModel.toAsta())
+            viewModel.idCreatore.value = CurrentUser.id
 
-        if (returned == null)
-            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
-        else if (returned == false)
-            Snackbar.make(fragmentView, R.string.crea_astaNonCreata, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
-        else if (returned == true) {
-            viewModel.clear()
+            val returned: Boolean? = eseguiChiamataREST("creaAsta", viewModel.toAsta())
 
-            Snackbar.make(fragmentView, R.string.crea_astaCreataConSuccesso, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
+            when (returned) {
+                null -> Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
 
-            listenerGoToHome?.onFragmentGoToHome()
+                false -> Snackbar.make(
+                    fragmentView,
+                    R.string.crea_astaNonCreata,
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+
+                true -> {
+                    viewModel.clear()
+
+                    Snackbar.make(
+                        fragmentView,
+                        R.string.crea_astaCreataConSuccesso,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .setBackgroundTint(resources.getColor(R.color.blu, null))
+                        .setTextColor(resources.getColor(R.color.grigio, null))
+                        .show()
+
+                    listenerGoToHome?.onFragmentGoToHome()
+                }
+            }
+        } catch (_: EccezioneCampiNonCompilati) {
+            erroreCampo(
+                R.string.registrazione_erroreCampiObbligatoriNonCompilati,
+                binding.creaCampoDataScadenza,
+                binding.creaCampoOra,
+                binding.creaCampoPrezzo,
+                binding.creaCampoNome,
+                binding.creaCampoCategoria,
+                binding.creaCampoDescrizione
+            )
         }
     }
 

@@ -24,6 +24,13 @@ class ModelAsta : ViewModel() {
     val idCreatore: MutableLiveData<Long>
         get() = _idCreatore
 
+    private val _nomeCreatore: MutableLiveData<String> by lazy {
+        MutableLiveData<String>("")
+    }
+
+    val nomeCreatore: MutableLiveData<String>
+        get() = _nomeCreatore
+
     private val _tipo: MutableLiveData<String> by lazy {
         MutableLiveData<String>("")
     }
@@ -39,7 +46,7 @@ class ModelAsta : ViewModel() {
         get() = _dataFine
 
     private val _oraFine: MutableLiveData<LocalTime> by lazy {
-        MutableLiveData<LocalTime>(null)
+        MutableLiveData<LocalTime>(LocalTime.MIN)
     }
 
     val oraFine: MutableLiveData<LocalTime>
@@ -83,9 +90,10 @@ class ModelAsta : ViewModel() {
     fun clear() {
         _idAsta.value = 0L
         _idCreatore.value = 0L
+        _nomeCreatore.value = ""
         _tipo.value = ""
         _dataFine.value = LocalDate.MIN
-        _oraFine.value = null
+        _oraFine.value = LocalTime.MIN
         _prezzo.value = 0.0
         _immagine.value = ByteArray(0)
         _nome.value = ""

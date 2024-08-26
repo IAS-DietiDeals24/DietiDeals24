@@ -2,6 +2,7 @@ package com.iasdietideals24.dietideals24.utilities.classes.viewHolders
 
 import android.content.Context
 import android.content.res.Resources
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.iasdietideals24.dietideals24.R
@@ -12,9 +13,8 @@ import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
 import java.time.LocalDate
 
-class ViewHolderNotifica(binding: NotificaBinding) : RecyclerView.ViewHolder(binding.root) {
-
-    private val binding = binding
+class ViewHolderNotifica(private val binding: NotificaBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
     private var layoutListener: OnGoToDetails? = null
     private var immagineListener: OnGoToProfile? = null
@@ -29,26 +29,28 @@ class ViewHolderNotifica(binding: NotificaBinding) : RecyclerView.ViewHolder(bin
     }
 
     fun bind(currentNotifica: Notifica, resources: Resources) {
-        binding.notificaNome.text = currentNotifica._mittente
-        if (currentNotifica._immagineMittente.isNotEmpty())
-            binding.notificaImmagine.load(currentNotifica._immagineMittente) {
+        binding.notificaNome.text = currentNotifica.mittente
+        if (currentNotifica.immagineMittente.isNotEmpty()) {
+            binding.notificaImmagine.load(currentNotifica.immagineMittente) {
                 crossfade(true)
             }
-        binding.notificaTesto.text = currentNotifica._messaggio
+            binding.notificaImmagine.scaleType = ImageView.ScaleType.CENTER_CROP
+        }
+        binding.notificaTesto.text = currentNotifica.messaggio
 
         val tempoFa = when {
-            LocalDate.now() == currentNotifica._dataInvio -> currentNotifica._oraInvio.toString()
-            else -> currentNotifica._dataInvio.toLocalStringShort() + " " + currentNotifica._oraInvio.toString()
+            LocalDate.now() == currentNotifica.dataInvio -> currentNotifica.oraInvio.toString()
+            else -> currentNotifica.dataInvio.toLocalStringShort() + " " + currentNotifica.oraInvio.toString()
         }
 
         binding.notificaTempo.text = resources.getString(R.string.placeholder, tempoFa)
 
         binding.notificaLinearLayout1.setOnClickListener {
-            layoutListener?.onGoToDetails(currentNotifica._idAsta, this::class)
+            layoutListener?.onGoToDetails(currentNotifica.idAsta, this::class)
         }
 
         binding.notificaImmagine.setOnClickListener {
-            immagineListener?.onGoToProfile(currentNotifica._idMittente, this::class)
+            immagineListener?.onGoToProfile(currentNotifica.idMittente, this::class)
         }
     }
 

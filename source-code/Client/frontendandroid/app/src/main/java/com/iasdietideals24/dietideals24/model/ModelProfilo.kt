@@ -3,8 +3,15 @@ package com.iasdietideals24.dietideals24.model
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
+import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.time.LocalDate
 
 class ModelProfilo : ViewModel() {
@@ -163,10 +170,15 @@ class ModelProfilo : ViewModel() {
     }
 
     @Validation
-    @Throws(EccezioneCampiNonCompilati::class)
-    fun validateProfile() {
+    @Throws(
+        EccezioneCampiNonCompilati::class,
+        EccezioneEmailNonValida::class,
+        EccezioneEmailUsata::class
+    )
+    fun validate() {
         nome()
         cognome()
+        email()
         dataNascita()
     }
 
@@ -182,6 +194,48 @@ class ModelProfilo : ViewModel() {
     private fun cognome() {
         if (cognome.value?.isEmpty() == true)
             throw EccezioneCampiNonCompilati("Cognome non compilato.")
+    }
+
+    @Validation
+    @Throws(
+        EccezioneCampiNonCompilati::class, EccezioneEmailNonValida::class,
+        EccezioneEmailUsata::class
+    )
+    private fun email() {
+        if (email.value?.isEmpty() == true)
+            throw EccezioneCampiNonCompilati("Email non compilata.")
+        if (email.value?.contains(Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) == false)
+            throw EccezioneEmailNonValida("Email non valida.")
+
+        val returned = esisteEmail()
+        if (returned == null)
+            throw EccezioneAPI("Errore durante la chiamata API.")
+        else if (returned == true)
+            throw EccezioneEmailUsata("Email già usata.")
+    }
+
+    private fun esisteEmail(): Boolean? {
+        var returned: Boolean? = null
+
+        val call =
+            APIController.instance.esisteEmail(
+                email.value!!,
+                tipoAccount.value!!
+            )
+
+        call.enqueue(object : Callback<Boolean> {
+            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                if (response.isSuccessful) {
+                    returned = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                throw t
+            }
+        })
+
+        return returned
     }
 
     @Validation

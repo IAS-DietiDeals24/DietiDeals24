@@ -47,7 +47,7 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity).get(ModelRegistrazione::class)
+        viewModel = ViewModelProvider(fragmentActivity)[ModelRegistrazione::class]
     }
 
     @UIBuilder

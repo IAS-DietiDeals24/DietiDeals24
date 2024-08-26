@@ -29,7 +29,7 @@ class AdapterHome(
     }
 
     override fun getItemId(position: Int): Long {
-        return aste[position]._id
+        return aste[position].id
     }
 
     override fun onBindViewHolder(holder: ViewHolderAnteprimaAsta, position: Int) {

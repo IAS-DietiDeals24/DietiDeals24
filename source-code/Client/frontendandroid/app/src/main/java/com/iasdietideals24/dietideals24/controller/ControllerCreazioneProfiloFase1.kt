@@ -78,7 +78,7 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity).get(ModelRegistrazione::class)
+        viewModel = ViewModelProvider(fragmentActivity)[ModelRegistrazione::class]
     }
 
     @UIBuilder
@@ -128,7 +128,7 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
             viewModel.validateProfile()
 
             listenerNextStep?.onFragmentNextStep(this::class)
-        } catch (eccezione: EccezioneCampiNonCompilati) {
+        } catch (_: EccezioneCampiNonCompilati) {
             erroreCampo(
                 R.string.registrazione_erroreCampiObbligatoriNonCompilati,
                 binding.creazioneProfiloFase1CampoNomeUtente,
