@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.iasdietideals24.dietideals24.R
@@ -21,23 +22,28 @@ import com.iasdietideals24.dietideals24.controller.ControllerModificaAstaDirecti
 import com.iasdietideals24.dietideals24.controller.ControllerModificaProfilo
 import com.iasdietideals24.dietideals24.controller.ControllerModificaProfiloDirections
 import com.iasdietideals24.dietideals24.controller.ControllerNotificheDirections
+import com.iasdietideals24.dietideals24.controller.ControllerOfferteDirections
 import com.iasdietideals24.dietideals24.controller.ControllerProfiloDirections
 import com.iasdietideals24.dietideals24.databinding.ActivityHomeBinding
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderAnteprimaAsta
 import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderNotifica
+import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderOfferta
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentEditButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentGoToAuction
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentGoToHome
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentOpenUrl
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToBids
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnRefreshFragment
 import kotlin.reflect.KClass
 
-class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnGoToDetails, OnGoToProfile,
-    OnFragmentEditButton, OnFragmentChangeActivity, OnFragmentOpenUrl, OnFragmentGoToHome,
-    OnFragmentGoToAuction {
+class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnFragmentBackButton, OnGoToDetails,
+    OnGoToProfile, OnFragmentEditButton, OnFragmentChangeActivity, OnFragmentOpenUrl,
+    OnFragmentGoToHome, OnFragmentGoToAuction, OnGoToBids, OnRefreshFragment {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,10 +71,20 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnGoToDetails, OnGoToP
         }
     }
 
-    override fun onGoToDetails(id: Long, sender: KClass<*>) {
+    private fun getNavController(): NavController {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.activity_home_fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
+        return navHostFragment.navController
+    }
+
+    override fun onFragmentBackButton() {
+        val navController = getNavController()
+
+        navController.popBackStack()
+    }
+
+    override fun onGoToDetails(id: Long, sender: KClass<*>) {
+        val navController = getNavController()
 
         when (sender) {
             ViewHolderAnteprimaAsta::class -> {
@@ -88,9 +104,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnGoToDetails, OnGoToP
     }
 
     override fun onGoToProfile(id: Long, sender: KClass<*>) {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.activity_home_fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
+        val navController = getNavController()
 
         when (sender) {
             ViewHolderNotifica::class -> {
@@ -128,9 +142,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnGoToDetails, OnGoToP
     }
 
     override fun onFragmentEditButton(sender: KClass<*>) {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.activity_home_fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
+        val navController = getNavController()
 
         when (sender) {
             ControllerDettagliProfilo::class -> {
@@ -164,24 +176,54 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnGoToDetails, OnGoToP
     }
 
     override fun onFragmentGoToHome() {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.activity_home_fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
+        val navController = getNavController()
 
         navController.navigate(R.id.controllerHome)
     }
 
     override fun onFragmentGoToAuction(id: Long, sender: KClass<*>) {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.activity_home_fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
+        val navController = getNavController()
 
-        when {
-            sender == ControllerModificaAsta::class -> {
+        when (sender) {
+            ControllerModificaAsta::class -> {
                 val action =
                     ControllerModificaAstaDirections.actionControllerModificaAstaToControllerDettagliAsta(
                         id
                     )
+                navController.navigate(action)
+            }
+        }
+    }
+
+    override fun onGoToBids(id: Long, sender: KClass<*>) {
+        val navController = getNavController()
+
+        when (sender) {
+            ControllerDettagliAsta::class -> {
+                val action =
+                    ControllerDettagliAstaDirections.actionControllerDettagliAstaToControllerOfferte(
+                        id
+                    )
+                navController.navigate(action)
+            }
+        }
+    }
+
+    override fun onRefreshFragment(id: Long, sender: KClass<*>) {
+        val navController = getNavController()
+
+        when (sender) {
+            ControllerDettagliAsta::class -> {
+                navController.popBackStack()
+                val action =
+                    ControllerDettagliAstaDirections.actionControllerDettagliAstaSelf(id)
+                navController.navigate(action)
+            }
+
+            ViewHolderOfferta::class -> {
+                navController.popBackStack()
+                val action =
+                    ControllerOfferteDirections.actionControllerOfferteSelf(id)
                 navController.navigate(action)
             }
         }

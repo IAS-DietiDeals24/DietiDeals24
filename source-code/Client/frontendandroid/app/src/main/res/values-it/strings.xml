@@ -184,4 +184,10 @@
     <string name="offerta_avviso">Non potrai più ritirare la tua offerta dopo l\'invio.</string>
     <string name="partecipazioni_titolo">Storico partecipazioni</string>
     <string name="placeholder_prezzo">€ %1$s</string>
+    <string name="offerta_offertaAccettata">L\'offerta è stata accetatta con successo.</string>
+    <string name="offerta_offertaNonAccettata">L\'offerta non è stata accettata. Riprova.</string>
+    <string name="offerta_offertaRifiutata">L\'offerta è stata rifiutata con successo.</string>
+    <string name="offerta_offertaNonRifiutata">L\'asta non è stata rifiutata. Riprova.</string>
+    <string name="offerta_confermaAccetta">Confermi di voler accettare questa offerta? Tutte le altre saranno rifiutate automaticamente.</string>
+    <string name="offerta_confermaRifiuto">Confermi di voler rifiutare questa offerta?</string>
 </resources>

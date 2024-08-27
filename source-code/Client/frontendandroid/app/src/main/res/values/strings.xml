@@ -194,4 +194,10 @@
     <string name="offerta_avviso">You won\'t be able to withdraw your bid anymore after sending.</string>
     <string name="partecipazioni_titolo">Participation history</string>
     <string name="placeholder_prezzo">$ %1$s</string>
+    <string name="offerta_offertaAccettata">The bid has been accepted successfully.</string>
+    <string name="offerta_offertaNonAccettata">"The bid has not been accepted. Please retry. "</string>
+    <string name="offerta_offertaRifiutata">The bid has been rejected succesfully.</string>
+    <string name="offerta_offertaNonRifiutata">The bid has not been rejected. Please retry.</string>
+    <string name="offerta_confermaAccetta">Are you sure you want to accept this bid? All the others will be rejected automatically.</string>
+    <string name="offerta_confermaRifiuto">Are you sure you want to reject this bid?</string>
 </resources>

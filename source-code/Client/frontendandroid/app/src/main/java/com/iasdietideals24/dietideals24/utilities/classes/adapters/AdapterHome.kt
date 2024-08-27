@@ -28,10 +28,6 @@ class AdapterHome(
         return aste.size
     }
 
-    override fun getItemId(position: Int): Long {
-        return aste[position].id
-    }
-
     override fun onBindViewHolder(holder: ViewHolderAnteprimaAsta, position: Int) {
         val currentAsta = aste[position]
 

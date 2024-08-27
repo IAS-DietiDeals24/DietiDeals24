@@ -87,6 +87,16 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/controllerDettagliAsta" />
+        <action
+            android:id="@+id/action_controllerDettagliAsta_to_controllerOfferte"
+            app:destination="@id/controllerOfferte" />
+        <action
+            android:id="@+id/action_controllerDettagliAsta_self"
+            app:destination="@id/controllerDettagliAsta"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/controllerDettagliProfilo"
@@ -127,6 +137,23 @@
         <action
             android:id="@+id/action_controllerModificaAsta_to_controllerDettagliAsta"
             app:destination="@id/controllerDettagliAsta"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/controllerOfferte"
+        android:name="com.iasdietideals24.dietideals24.controller.ControllerOfferte"
+        android:label="ControllerOfferte"
+        tools:layout="@layout/offerte">
+        <argument
+            android:name="id"
+            android:defaultValue="0L"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_controllerOfferte_self"
+            app:destination="@id/controllerOfferte"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"

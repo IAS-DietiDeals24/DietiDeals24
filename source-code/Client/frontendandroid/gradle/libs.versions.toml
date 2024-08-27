@@ -19,6 +19,7 @@ navigation-fragment-ktx = "2.7.7"
 navigation-ui-ktx = "2.7.7"
 lifecycle-common-jvm = "2.8.4"
 firebase-analytics = "22.1.0"
+kotlin-reflect = "1.9.24"
 
 # Plugin
 android-application = "8.5.2"
@@ -48,6 +49,7 @@ navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fr
 navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation-ui-ktx" }
 lifecycle-common-jvm = { group = "androidx.lifecycle", name = "lifecycle-common-jvm", version.ref = "lifecycle-common-jvm" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebase-analytics" }
+kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin-reflect" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-application" }
@@ -55,4 +57,4 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 androidx-navigation-safeargs-kotlin = { id = "androidx.navigation.safeargs.kotlin", version.ref = "androidx-navigation-safeargs-kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "google-firebase-crashlytics" }
-google-firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "google-firebase-perf"}
+google-firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "google-firebase-perf" }

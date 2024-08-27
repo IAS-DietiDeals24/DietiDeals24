@@ -15,7 +15,6 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Query
-import java.lang.Long
 
 @Suppress("UNUSED")
 interface API {
@@ -175,7 +174,8 @@ interface API {
     ): Call<Boolean>
 
     /**
-     * Invia un'offerta ad un'asta.
+     * Invia un'offerta ad un'asta. Manda inoltre una notifica al proprietario dell'asta con le
+     * informazioni dell'offerta.
      * @param offerta Wrapper con le informazioni necessarie ad inviare l'offerta.
      * @return Se l'operazione di invio ha avuto successo.
      */
@@ -185,7 +185,8 @@ interface API {
     ): Call<Boolean>
 
     /**
-     * Elimina un'asta e tutti i suoi dati associati dalla base di dati.
+     * Elimina un'asta e tutti i suoi dati associati dalla base di dati. Manda inoltre una notifica
+     * a coloro che hanno partecipato all'asta per avvisare della cancellazione.
      * @param idAsta Identificativo dell'asta da eliminare.
      * @return Se l'operazione di eliminazione ha avuto successo.
      */
@@ -195,12 +196,36 @@ interface API {
     ): Call<Boolean>
 
     /**
-     * Aggiorna i dati di un'asta.
+     * Aggiorna i dati di un'asta. Manda inoltre una notifica a coloro che hanno partecipato all'asta
+     * per avvisare dell'aggiornamento.
      * @param asta Wrapper con le informazioni necessarie a aggiornare l'asta.
      * @return Se l'operazione di aggiotnamento ha avuto successo.
      */
     @PUT("home/aggiornaAsta")
     fun aggiornaAsta(
         @Body asta: Asta
+    ): Call<Boolean>
+
+    /**
+     * Accetta un'offerta di un'asta silenziosa e, nella stessa transazione, rifiuta tutte le altre
+     * offerte per la stessa asta. Manda inoltre una notifica a chi ha avanzato le offerte per
+     * avvisare dell'esito.
+     * @param idOfferta Identificativo dell'offerta da accettare.
+     * @return Se l'operazione la transazione ha avuto successo.
+     */
+    @PUT("home/accettaOfferta")
+    fun accettaOfferta(
+        @Query("idOfferta") idOfferta: Long
+    ): Call<Boolean>
+
+    /**
+     * Rifiuta un'offerta di un'asta silenziosa. Manda inoltre una notifica a chi ha avanzato l'offerta
+     * per avvisare dell'esito.
+     * @param idOfferta Identificativo dell'offerta da accettare.
+     * @return Se l'operazione di riifuto ha avuto successo.
+     */
+    @PUT("home/rifiutaOfferta")
+    fun rifiutaOfferta(
+        @Query("idOfferta") idOfferta: Long
     ): Call<Boolean>
 }
