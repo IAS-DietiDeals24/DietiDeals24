@@ -31,8 +31,7 @@ fun LocalDate.toMillis(): Long {
  */
 @Throws(IllegalArgumentException::class)
 fun Long.toLocalDate(): LocalDate {
-    if (this < 0)
-        throw IllegalArgumentException("Il valore deve essere maggiore o uguale a zero.")
+    require(this >= 0) { "Il valore deve essere maggiore o uguale a zero." }
 
     return Instant.ofEpochMilli(this).atZone(ZoneId.systemDefault()).toLocalDate()
 }

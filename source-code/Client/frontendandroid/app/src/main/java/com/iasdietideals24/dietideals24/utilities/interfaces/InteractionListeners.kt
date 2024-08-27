@@ -7,7 +7,7 @@ interface OnFragmentChangeActivity {
     fun <Activity : AppCompatActivity> onFragmentChangeActivity(activity: Class<Activity>)
 }
 
-interface OnFragmentOpenUrl {
+fun interface OnFragmentOpenUrl {
     fun onFragmentOpenUrl(externalUrl: String)
 }
 

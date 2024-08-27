@@ -21,6 +21,8 @@ import kotlinx.coroutines.withContext
 
 class ControllerHome : Controller<HomeBinding>() {
 
+    private var mainDispatcher = Dispatchers.Main
+    private var ioDispatcher = Dispatchers.IO
     private var jobRecupero: Job? = null
 
     override fun onPause() {
@@ -99,7 +101,7 @@ class ControllerHome : Controller<HomeBinding>() {
     }
 
     private suspend fun recuperaAste() {
-        val result: Array<AnteprimaAsta>? = withContext(Dispatchers.IO) {
+        val result: Array<AnteprimaAsta>? = withContext(ioDispatcher) {
             if (binding.homeRicerca.text.isNullOrEmpty() && binding.homeFiltro.text.toString() == getString(
                     R.string.category_no_category
                 )
@@ -117,7 +119,7 @@ class ControllerHome : Controller<HomeBinding>() {
                 )
         }
 
-        withContext(Dispatchers.Main) {
+        withContext(mainDispatcher) {
             if (result != null)
                 binding.homeRecyclerView.adapter = AdapterHome(result, resources)
             else

@@ -29,6 +29,10 @@ import java.time.LocalTime
 
 class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
+    private val tempoFisso = "Tempo fisso"
+    private val inversa = "Inversa"
+    private val silenziosa = "Silenziosa"
+
     private val args: ControllerDettagliAstaArgs by navArgs()
     private lateinit var viewModel: ModelAsta
 
@@ -70,18 +74,18 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
             MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
                 .setTitle(
                     when (viewModel.tipo.value) {
-                        "Silenziosa" -> getString(R.string.aiuto_titoloAstaSilenziosa)
-                        "Tempo fisso" -> getString(R.string.aiuto_titoloAstaTempoFisso)
-                        "Inversa" -> getString(R.string.aiuto_titoloAstaInversa)
+                        silenziosa -> getString(R.string.aiuto_titoloAstaSilenziosa)
+                        tempoFisso -> getString(R.string.aiuto_titoloAstaTempoFisso)
+                        inversa -> getString(R.string.aiuto_titoloAstaInversa)
                         else -> ""
                     }
                 )
                 .setIcon(R.drawable.icona_aiuto_arancione)
                 .setMessage(
                     when (viewModel.tipo.value) {
-                        "Silenziosa" -> getString(R.string.aiuto_astaSilenziosa)
-                        "Tempo fisso" -> getString(R.string.aiuto_astaTempoFisso)
-                        "Inversa" -> getString(R.string.aiuto_astaInversa)
+                        silenziosa -> getString(R.string.aiuto_astaSilenziosa)
+                        tempoFisso -> getString(R.string.aiuto_astaTempoFisso)
+                        inversa -> getString(R.string.aiuto_astaInversa)
                         else -> ""
                     }
                 )
@@ -109,15 +113,15 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                 input.error = null
             }
             testoOfferta.text = when (viewModel.tipo.value) {
-                "Silenziosa" -> {
+                silenziosa -> {
                     getString(R.string.dettagliAsta_testoOfferta1)
                 }
 
-                "Tempo fisso" -> {
+                tempoFisso -> {
                     getString(R.string.dettagliAsta_testoOfferta1)
                 }
 
-                "Inversa" -> {
+                inversa -> {
                     getString(R.string.dettagliAsta_testoOfferta2)
                 }
 
@@ -125,7 +129,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
             }
             testoValore.text = getString(
                 R.string.placeholder_prezzo,
-                if (viewModel.tipo.value != "Silenziosa")
+                if (viewModel.tipo.value != silenziosa)
                     viewModel.prezzo.value.toString()
                 else
                     "???"
@@ -135,47 +139,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                 .setTitle(R.string.dettagliAsta_titoloPopupOfferta)
                 .setView(viewInflated)
                 .setPositiveButton(R.string.ok) { _, _ ->
-                    if (isPriceInvalid(input.text.toString()))
-                        input.error = getString(R.string.dettagliAsta_erroreOffertaTempoFisso)
-                    else if (isPriceInvalid(input.text.toString()))
-                        input.error = getString(R.string.dettagliAsta_erroreOffertaInversa)
-                    else if (isPriceInvalid(input.text.toString()))
-                        input.error = getString(R.string.dettagliAsta_erroreOffertaSilenziosa)
-                    else {
-                        val returned: Boolean? = eseguiChiamataREST(
-                            "inviaOfferta",
-                            Offerta(args.id, CurrentUser.id, input.text.toString().toDouble())
-                        )
-
-                        when (returned) {
-                            null -> Snackbar.make(
-                                fragmentView,
-                                R.string.apiError,
-                                Snackbar.LENGTH_SHORT
-                            )
-                                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                                .setTextColor(resources.getColor(R.color.grigio, null))
-                                .show()
-
-                            true -> Snackbar.make(
-                                fragmentView,
-                                R.string.dettagliAsta_successoOfferta,
-                                Snackbar.LENGTH_SHORT
-                            )
-                                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                                .setTextColor(resources.getColor(R.color.grigio, null))
-                                .show()
-
-                            else -> Snackbar.make(
-                                fragmentView,
-                                R.string.dettagliAsta_fallimentoOfferta,
-                                Snackbar.LENGTH_SHORT
-                            )
-                                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                                .setTextColor(resources.getColor(R.color.grigio, null))
-                                .show()
-                        }
-                    }
+                    clickPositiveButton(input)
                 }
                 .setNegativeButton(R.string.annulla) { _, _ -> }
                 .show()
@@ -226,26 +190,69 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         }
     }
 
+    private fun clickPositiveButton(input: TextInputEditText) {
+        if (isPriceInvalid(input.text.toString())) {
+            when (viewModel.tipo.value) {
+                tempoFisso -> input.error = getString(R.string.dettagliAsta_erroreOffertaTempoFisso)
+                inversa -> input.error = getString(R.string.dettagliAsta_erroreOffertaInversa)
+                silenziosa -> input.error = getString(R.string.dettagliAsta_erroreOffertaSilenziosa)
+            }
+        } else {
+            val returned: Boolean? = eseguiChiamataREST(
+                "inviaOfferta",
+                Offerta(args.id, CurrentUser.id, input.text.toString().toDouble())
+            )
+
+            when (returned) {
+                null -> Snackbar.make(
+                    fragmentView,
+                    R.string.apiError,
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+
+                true -> Snackbar.make(
+                    fragmentView,
+                    R.string.dettagliAsta_successoOfferta,
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+
+                else -> Snackbar.make(
+                    fragmentView,
+                    R.string.dettagliAsta_fallimentoOfferta,
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+            }
+        }
+    }
+
     private fun isPriceInvalid(price: String): Boolean {
         val double = price.toDouble()
+        val regex = Regex("^\\d+\\.\\d{2}\$")
 
         return when (viewModel.tipo.value) {
-            "Tempo fisso" -> {
-                double <= viewModel.prezzo.value!! || double < 0.0 || !price.matches(Regex("^\\d+\\.\\d{2}\$"))
+            tempoFisso -> {
+                double <= viewModel.prezzo.value!! || double < 0.0 || !price.matches(regex)
             }
 
-            "Inversa" -> {
-                double >= viewModel.prezzo.value!! || double < 0.0 || !price.matches(Regex("^\\d+\\.\\d{2}\$"))
+            inversa -> {
+                double >= viewModel.prezzo.value!! || double < 0.0 || !price.matches(regex)
             }
 
-            "Silenziosa" -> {
-                double < 0.0 || !price.matches(Regex("^\\d+\\.\\d{2}\$"))
+            silenziosa -> {
+                double < 0.0 || !price.matches(regex)
             }
 
             else -> true
         }
-
-        return true
     }
 
     @UIBuilder
@@ -289,15 +296,15 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
             binding.dettagliAstaTipoAsta.text = getString(
                 R.string.crea_tipoAsta,
                 when (newTipoAsta) {
-                    "Silenziosa" -> {
+                    silenziosa -> {
                         getString(R.string.tipoAsta_astaSilenziosa)
                     }
 
-                    "Tempo fisso" -> {
+                    tempoFisso -> {
                         getString(R.string.tipoAsta_astaTempoFisso)
                     }
 
-                    "Inversa" -> {
+                    inversa -> {
                         getString(R.string.tipoAsta_astaInversa)
                     }
 
@@ -349,7 +356,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         val prezzoObserver = Observer<Double> { newPrezzo ->
             binding.dettagliAstaOfferta.text = getString(
                 R.string.placeholder_prezzo,
-                if (viewModel.tipo.value != "Silenziosa")
+                if (viewModel.tipo.value != silenziosa)
                     newPrezzo.toString()
                 else
                     "???"

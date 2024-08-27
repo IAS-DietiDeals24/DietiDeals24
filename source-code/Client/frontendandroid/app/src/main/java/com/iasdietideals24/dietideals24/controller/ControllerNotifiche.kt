@@ -18,6 +18,8 @@ import kotlinx.coroutines.withContext
 
 class ControllerNotifiche : Controller<NotificheBinding>() {
 
+    private var mainDispatcher = Dispatchers.Main
+    private var ioDispatcher = Dispatchers.IO
     private var jobNotifiche: Job? = null
 
     override fun onPause() {
@@ -44,14 +46,14 @@ class ControllerNotifiche : Controller<NotificheBinding>() {
     }
 
     private suspend fun aggiornaNotifiche() {
-        val result: Array<Notifica>? = withContext(Dispatchers.IO) {
+        val result: Array<Notifica>? = withContext(ioDispatcher) {
             eseguiChiamataREST(
                 "recuperaNotifiche",
                 CurrentUser.id,
             )
         }
 
-        withContext(Dispatchers.Main) {
+        withContext(mainDispatcher) {
             if (result != null)
                 binding.notificheRecyclerView.adapter = AdapterNotifiche(result, resources)
             else

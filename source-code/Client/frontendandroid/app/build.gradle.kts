@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.androidx.navigation.safeargs.kotlin)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.google.firebase.crashlytics)
+    alias(libs.plugins.google.firebase.perf)
 }
 
 android {
@@ -53,6 +56,7 @@ dependencies {
     implementation(libs.activity.ktx)
     implementation(libs.material)
     implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.facebook.login)
