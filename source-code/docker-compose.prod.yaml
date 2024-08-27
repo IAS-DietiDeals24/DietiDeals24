@@ -16,8 +16,3 @@ services:
 
     database:
         container_name: dietideals24-postgresDB-prod
-
-    pgadmin:
-        container_name: dietideals24-pgAdmin4-prod
-        ports:
-            - 55502:80 # Mappa la porta 80 del container con 55502 nell'host (http://localhost:55502/ ci farà accedere all'app)

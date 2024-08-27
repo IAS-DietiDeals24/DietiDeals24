@@ -18,12 +18,12 @@ services:
             context: ./Server/backend/
             dockerfile: dev-Dockerfile
 
-        ports:
-            - 55511:8080 # Mappa la porta 8080 del container con 55511 nell'host (http://localhost:55511/ ci farà accedere all'app)
-
         # Update this to wherever you want VS Code to mount the folder of your project
         # volumes:
         #    - ..:/myHostDir/DietiDeals24:cached  # mount our local backend folder to the dev container as its workspace folder
+
+        ports:
+            - 55511:8080 # Mappa la porta 8080 del container con 55511 nell'host (http://localhost:55511/ ci farà accedere all'app)
 
         # Uncomment the next four lines if you will use a ptrace-based debugger like C++, Go, and Rust.
         # cap_add:
@@ -36,8 +36,48 @@ services:
 
     database:
         container_name: dietideals24-postgresDB-dev
+        volumes:
+            - ./Server/database/init-db.dev.sql:/docker-entrypoint-initdb.d/init-db.dev.sql
 
     pgadmin:
         container_name: dietideals24-pgAdmin4-dev
+        image: dpage/pgadmin4:8.9
+        depends_on:
+            database:
+                condition: service_healthy
+        restart: unless-stopped
+        environment:
+            PGADMIN_DEFAULT_EMAIL: admin@dietideals24.ias
+            PGADMIN_DEFAULT_PASSWORD: dd24
+        volumes:
+            - ./Server/database/servers.json:/pgadmin4/servers.json
+            - pgadminData:/var/lib/pgadmin
         ports:
             - 55512:80 # Mappa la porta 80 del container con 55512 nell'host (http://localhost:55512/ ci farà accedere all'app)
+        networks:
+            - backendNetwork
+
+    sonarqube:
+        image: sonarqube:10.6-community
+        container_name: dietideals24-sonarqube-dev
+        depends_on:
+            database:
+                condition: service_healthy
+        environment:
+            SONAR_JDBC_URL: jdbc:postgresql://database:5432/sonarqube
+            SONAR_JDBC_USERNAME: sonar
+            SONAR_JDBC_PASSWORD: sonar
+        volumes:
+            - sonarqube_data:/opt/sonarqube/data
+            - sonarqube_extensions:/opt/sonarqube/extensions
+            - sonarqube_logs:/opt/sonarqube/logs
+        ports:
+            - 55513:9000 # Mappa la porta 9000 del container con 55513 nell'host (http://localhost:55513/ ci farà accedere all'app)
+        networks:
+            - backendNetwork
+
+volumes:
+    pgadminData:
+    sonarqube_data:
+    sonarqube_extensions:
+    sonarqube_logs:

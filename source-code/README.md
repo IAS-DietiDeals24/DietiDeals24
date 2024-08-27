@@ -143,19 +143,19 @@ docker compose -f docker-compose.yaml -f docker-compose.prod.yaml down
 
 Una volta eseguiti i containers, possiamo accedere alla REST API come `localhost`, alla porta specificata dal compose file (development: `55511` | production: `55501`).
 
-#### Postgres
+#### pgAdmin
 
-Possiamo accedere al database Postgres tramite pgAdmin allo stesso modo della REST API, alla porta specificata dal compose file (development: `55512` | production: `55502`). pgAdmin verrà automaticamente configurato con la connessione corretta al database.
+Possiamo accedere al database Postgres tramite pgAdmin allo stesso modo della REST API, alla porta specificata dal compose file (development: `55512` | production: `Non disponibile`). pgAdmin verrà automaticamente configurato con la connessione corretta al database.
 
 Credenziali di accesso a pgAdmin:
 
 - Email: `admin@dietideals24.ias`
-- Password: `admin`
+- Password: `dd24`
 
 Credenziali di accesso a Postgres:
 
-- User: `postgres`
-- Password: `admin`
+- User: `dd24-admin`
+- Password: `dd24`
 
 **ATTENZIONE!** Utilizzando il Dev container tramite IntelliJ IDEA è possibile che, per un problema con il binding dei file di configurazione, pgAdmin non si connetta automaticamente a postgres. In tal caso, dopo aver fatto l'accesso a pgAdmin, è possibile collegarsi in questo modo:
 
@@ -171,6 +171,21 @@ Credenziali di accesso a Postgres:
     - In `Hostname/address` inseriamo `database`
     - In `Port` inseriamo `5432`
     - In `Maintenance database` inseriamo il nome del database a cui vogliamo collegarci, cioé `dietiDeals24`
-    - In `Username` inseriamo `postgres`
-    - In `Password` inseriamo `admin`
+    - In `Username` inseriamo `dd24-admin`
+    - In `Password` inseriamo `dd24`
+
 3. `Save`
+
+#### SonarQube
+
+Possiamo accedere a SonarQube alla porta specificata dal compose file (development: `55513` | production: `Non disponibile`).
+
+Al primo accesso, useremo le seguenti credenziali:
+
+- Login: `admin`
+- Password: `admin`
+
+Che saranno poi modificate in:
+
+- Login: `admin`
+- Password: `dd24`
