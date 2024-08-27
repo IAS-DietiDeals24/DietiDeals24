@@ -11,6 +11,25 @@
 
 **ATTENZIONE!** Per utilizzare Docker su sistemi operativi Windows, è necessario installare il [WSL](https://learn.microsoft.com/it-it/windows/wsl/install).
 
+### Configurare il Production Environment
+
+Per eseguire i docker containers utilizzati in Production Environment:
+
+1. Andiamo nella directory `source-code`
+2. Eseguiamo il comando:
+    
+    ```bash
+    docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up -d 
+    ```
+
+    il flag `-f` specifica i percorsi dei docker compose files (dove il primo è il docker compose file principale) e `-d` esegue i containers in background
+
+E' possibile fermare/rimuovere il docker compose del Production Environment con:
+
+```bash
+docker compose -f docker-compose.yaml -f docker-compose.prod.yaml down
+```
+
 ### Configurare il Development Environment
 
 #### IntelliJ IDEA
@@ -107,34 +126,15 @@ docker compose down
 Per compilare la REST API, è necessario fare il building dell'applicazione tramite il Maven Wrapper. Per questo è sufficiente recarsi alla source folder del backend (`source-code/Server/backend`) e usare il comando:
 
 ```bash
-./mvnw clean install
+./mvnw clean verify
 ```
 
-#### Avviare il file .jar
+#### Eseguire il file .jar
 
 Una volta fatto il building dell'applicazione, è sufficiente eseguire il `file.jar` con appena creato. E' possibile fare ciò con il comando:
 
 ```bash
 java -jar target/backend-<Versione Jar>.jar
-```
-
-### Configurare il Production Environment
-
-Per eseguire i docker containers utilizzati in Production Environment:
-
-1. Andiamo nella directory `source-code`
-2. Eseguiamo il comando:
-    
-    ```bash
-    docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up -d 
-    ```
-
-    il flag `-f` specifica i percorsi dei docker compose files (dove il primo è il docker compose file principale) e `-d` esegue i containers in background
-
-E' possibile fermare/rimuovere il docker compose del Production Environment con:
-
-```bash
-docker compose -f docker-compose.yaml -f docker-compose.prod.yaml down
 ```
 
 ### Accedere ai containers
@@ -176,7 +176,9 @@ Credenziali di accesso a Postgres:
 
 3. `Save`
 
-#### SonarQube
+## SonarQube
+
+### Accedere al SonarQube Server
 
 Possiamo accedere a SonarQube alla porta specificata dal compose file (development: `55513` | production: `Non disponibile`).
 
@@ -189,3 +191,27 @@ Che saranno poi modificate in:
 
 - Login: `admin`
 - Password: `dd24`
+
+### SonarQube Maven Scan (backend)
+
+Per eseguire la scansione del progetto Maven `backend` è necessario recarsi nella directory `source-code/Server/backend` ed eseguire questo comando:
+
+```Bash
+./mvnw clean verify sonar:sonar \
+  -Dsonar.projectKey=dietideals24-backend \
+  -Dsonar.projectName='dietideals24-backend' \
+  -Dsonar.host.url=http://sonarqube:9000 \
+  -Dsonar.token=<SonarQubeToken>
+```
+
+### SonarQube Gradle Scan (frontedandroid)
+
+Per eseguire la scansione del progetto Gradle `frontendandroid` è necessario recarsi nella directory `source-code/Client/frontendandroid` ed eseguire questo comando:
+
+```Bash
+./gradlew sonar \
+  -Dsonar.projectKey=dietideals24-frontendandroid \
+  -Dsonar.projectName='dietideals24-frontendandroid' \
+  -Dsonar.host.url=http://sonarqube:9000 \
+  -Dsonar.token=<SonarQubeToken>
+```
