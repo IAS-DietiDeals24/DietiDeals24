@@ -23,7 +23,9 @@ import com.iasdietideals24.dietideals24.utilities.classes.data.Offerta
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentEditButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToBids
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnRefreshFragment
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -39,6 +41,8 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
     private var listenerBackButton: OnFragmentBackButton? = null
     private var listenerCreatore: OnGoToProfile? = null
     private var listenerModifica: OnFragmentEditButton? = null
+    private var listenerBids: OnGoToBids? = null
+    private var listenerRefresh: OnRefreshFragment? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -52,6 +56,12 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         if (requireContext() is OnFragmentEditButton) {
             listenerModifica = requireContext() as OnFragmentEditButton
         }
+        if (requireContext() is OnGoToBids) {
+            listenerBids = requireContext() as OnGoToBids
+        }
+        if (requireContext() is OnRefreshFragment) {
+            listenerRefresh = requireContext() as OnRefreshFragment
+        }
     }
 
     override fun onDetach() {
@@ -60,6 +70,8 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         listenerBackButton = null
         listenerCreatore = null
         listenerModifica = null
+        listenerBids = null
+        listenerRefresh = null
     }
 
     @UIBuilder
@@ -186,7 +198,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         }
 
         binding.dettagliAstaPulsanteElencoOfferte.setOnClickListener {
-            //TODO
+            listenerBids?.onGoToBids(viewModel.idAsta.value!!, this::class)
         }
     }
 
@@ -200,7 +212,13 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         } else {
             val returned: Boolean? = eseguiChiamataREST(
                 "inviaOfferta",
-                Offerta(args.id, CurrentUser.id, input.text.toString().toDouble())
+                Offerta(
+                    args.id,
+                    CurrentUser.id,
+                    input.text.toString().toDouble(),
+                    LocalDate.now(),
+                    LocalTime.now()
+                )
             )
 
             when (returned) {
@@ -213,14 +231,18 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                     .setTextColor(resources.getColor(R.color.grigio, null))
                     .show()
 
-                true -> Snackbar.make(
-                    fragmentView,
-                    R.string.dettagliAsta_successoOfferta,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
+                true -> {
+                    Snackbar.make(
+                        fragmentView,
+                        R.string.dettagliAsta_successoOfferta,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .setBackgroundTint(resources.getColor(R.color.blu, null))
+                        .setTextColor(resources.getColor(R.color.grigio, null))
+                        .show()
+
+                    listenerRefresh?.onRefreshFragment(viewModel.idAsta.value!!, this::class)
+                }
 
                 else -> Snackbar.make(
                     fragmentView,

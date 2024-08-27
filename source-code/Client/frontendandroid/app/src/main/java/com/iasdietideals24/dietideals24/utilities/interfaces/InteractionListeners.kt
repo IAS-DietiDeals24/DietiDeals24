@@ -50,3 +50,11 @@ fun interface OnGoToDetails {
 fun interface OnGoToProfile {
     fun onGoToProfile(id: Long, sender: KClass<*>)
 }
+
+fun interface OnGoToBids {
+    fun onGoToBids(id: Long, sender: KClass<*>)
+}
+
+fun interface OnRefreshFragment {
+    fun onRefreshFragment(id: Long, sender: KClass<*>)
+}

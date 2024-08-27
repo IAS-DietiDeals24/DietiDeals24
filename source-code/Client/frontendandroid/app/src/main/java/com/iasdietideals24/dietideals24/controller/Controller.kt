@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.map
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.reflect.Method
 import java.lang.reflect.ParameterizedType
 
 abstract class Controller<bindingType : ViewBinding> : Fragment() {
@@ -150,17 +149,14 @@ abstract class Controller<bindingType : ViewBinding> : Fragment() {
      * @param args Gli argomenti da passare al metodo.
      * @return Una classe generica che contiene il risultato della chiamata REST.
      */
+    @Suppress("UNCHECKED_CAST")
     @Utility
     protected fun <Model> eseguiChiamataREST(methodName: String, vararg args: Any?): Model? {
         var returned: Model? = null
 
-        val argTypes: Array<Class<Any>?> = args.map { it?.javaClass }.toTypedArray()
-        val method: Method =
-            APIController.instance.javaClass.getMethod(methodName, *argTypes)
-
-        @Suppress("UNCHECKED_CAST")
-        val call: Call<Model> =
-            method.invoke(APIController.instance, *args) as Call<Model>
+        val kClass = APIController.instance::class
+        val method = kClass.members.find { it.name == methodName }
+        val call = method?.call(*args) as Call<Model>
 
         call.enqueue(object : Callback<Model> {
             override fun onResponse(call: Call<Model>, response: Response<Model>) {

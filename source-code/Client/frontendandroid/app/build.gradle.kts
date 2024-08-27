@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.datastore.preferences)
     implementation(libs.lifecycle.common.jvm)
     implementation(libs.commons.lang)
+    implementation(libs.kotlin.reflect)
 
     testImplementation(libs.junit.jupiter.api)
 
