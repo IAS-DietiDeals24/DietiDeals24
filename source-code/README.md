@@ -129,6 +129,8 @@ Per compilare la REST API, è necessario fare il building dell'applicazione tram
 ./mvnw clean verify
 ```
 
+**NOTA:** SonarQube è stato configurato in modo da essere parte integrante della build. Riferirsi al [building con SonarQube Maven Scan](#sonarqube-maven-scan-backend).
+
 #### Eseguire il file .jar
 
 Una volta fatto il building dell'applicazione, è sufficiente eseguire il `file.jar` con appena creato. E' possibile fare ciò con il comando:
@@ -139,23 +141,25 @@ java -jar target/backend-<Versione Jar>.jar
 
 ### Accedere ai containers
 
+E' necessario configurare un file `.env`. Per fare ciò, copiare il file `.sample-env`, rinominarlo in `.env` e modificare i campi a proprio piacimento. Di seguito si fa riferimento alle environment variables del file `.env`.
+
 #### REST API
 
-Una volta eseguiti i containers, possiamo accedere alla REST API come `localhost`, alla porta specificata dal compose file (development: `55511` | production: `55501`).
+Una volta eseguiti i containers, possiamo accedere alla REST API come `localhost`, alla porta specificata dal file `.env` (development: `DEV_BACKEND_PORT` | production: `55501`).
 
 #### pgAdmin
 
-Possiamo accedere al database Postgres tramite pgAdmin allo stesso modo della REST API, alla porta specificata dal compose file (development: `55512` | production: `Non disponibile`). pgAdmin verrà automaticamente configurato con la connessione corretta al database.
+Possiamo accedere al database Postgres tramite pgAdmin allo stesso modo della REST API, alla porta specificata dal file `.env` (development: `PGADMIN_PORT` | production: `Non disponibile`). pgAdmin verrà automaticamente configurato con la connessione corretta al database.
 
 Credenziali di accesso a pgAdmin:
 
-- Email: `admin@dietideals24.ias`
-- Password: `dd24`
+- Email: `PGADMIN_DEFAULT_EMAIL`
+- Password: `PGADMIN_DEFAULT_PASSWORD`
 
 Credenziali di accesso a Postgres:
 
 - User: `dd24-admin`
-- Password: `dd24`
+- Password: `POSTGRES_PASSWORD`
 
 **ATTENZIONE!** Utilizzando il Dev container tramite IntelliJ IDEA è possibile che, per un problema con il binding dei file di configurazione, pgAdmin non si connetta automaticamente a postgres. In tal caso, dopo aver fatto l'accesso a pgAdmin, è possibile collegarsi in questo modo:
 
@@ -170,9 +174,9 @@ Credenziali di accesso a Postgres:
 
     - In `Hostname/address` inseriamo `database`
     - In `Port` inseriamo `5432`
-    - In `Maintenance database` inseriamo il nome del database a cui vogliamo collegarci, cioé `dietiDeals24`
+    - In `Maintenance database` inseriamo il nome del database a cui vogliamo collegarci, cioé `dietideals24-backend`
     - In `Username` inseriamo `dd24-admin`
-    - In `Password` inseriamo `dd24`
+    - In `Password` inseriamo quella assegnata a `POSTGRES_PASSWORD`
 
 3. `Save`
 
@@ -187,21 +191,14 @@ Al primo accesso, useremo le seguenti credenziali:
 - Login: `admin`
 - Password: `admin`
 
-Che saranno poi modificate in:
-
-- Login: `admin`
-- Password: `dd24`
+Dopodiché ci verrà chiesto di modificare la password.
 
 ### SonarQube Maven Scan (backend)
 
-Per eseguire la scansione del progetto Maven `backend` è necessario recarsi nella directory `source-code/Server/backend` ed eseguire questo comando:
+Per eseguire la build del progetto Maven `backend` eseguendo anche la scansione con SonarQube è sufficiente recarsi nella directory `source-code/Server/backend` ed eseguire questo comando:
 
 ```Bash
-./mvnw clean verify sonar:sonar \
-  -Dsonar.projectKey=dietideals24-backend \
-  -Dsonar.projectName='dietideals24-backend' \
-  -Dsonar.host.url=http://sonarqube:9000 \
-  -Dsonar.token=<SonarQubeToken>
+./mvnw clean verify -Dsonar.token=${SONAR_TOKEN}
 ```
 
 ### SonarQube Gradle Scan (frontedandroid)
