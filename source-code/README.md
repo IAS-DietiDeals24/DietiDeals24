@@ -193,7 +193,19 @@ Al primo accesso, useremo le seguenti credenziali:
 
 Dopodiché ci verrà chiesto di modificare la password.
 
+Una volta entrati nella dashboard SonarQube, generiamo uno User Token (ci servirà per automatizzare la scansione SonarQube del progetto):
+
+1. Clicchiamo sull'icona del proprio profilo
+2. Clicchiamo su `My Account`
+3. Andiamo in `Security`
+4. In `Generate Tokens` selezioniamo il tipo `User Token`
+5. Inseriamo un `Nome` e scegliamo il periodo di `Expire`
+6. Clicchiamo su `Generate` e usiamo il token come valore della environment variable `SONAR_TOKEN` del file `.env`
+7. Re-buildiamo il docker compose (ad esempio, con `docker compose up`)
+
 ### SonarQube Maven Scan (backend)
+
+**NOTA:** Prima di eseguire questi passaggi, è necessario aver settato la environment variable `SONAR_TOKEN`.
 
 Per eseguire la build del progetto Maven `backend` eseguendo anche la scansione con SonarQube è sufficiente recarsi nella directory `source-code/Server/backend` ed eseguire questo comando:
 
