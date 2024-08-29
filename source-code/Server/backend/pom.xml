@@ -86,16 +86,6 @@
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.11.0.3922</version>
-                <!-- Definiamo in che phase eseguire AUTOMATICAMENTE il goal sonar -->
-                <executions>
-                    <execution>
-                        <id>verify-sonar</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sonar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
 		</plugins>
 	</build>

@@ -1,5 +1,31 @@
 # Note per lo sviluppatore
 
+## Indice
+
+- [Client](#client)
+- [Server (Backend e Database)](#server-backend-e-database)
+   * [Software necessari](#software-necessari)
+   * [Configurare il Production Environment](#configurare-il-production-environment)
+   * [Configurare il Development Environment](#configurare-il-development-environment)
+      + [IntelliJ IDEA](#intellij-idea)
+         - [Clonando la repository del cloud nel Dev container](#clonando-la-repository-del-cloud-nel-dev-container)
+         - [Aprendo la repository locale dell'host nel Dev container](#aprendo-la-repository-locale-dellhost-nel-dev-container)
+      + [Visual Studio Code](#visual-studio-code)
+         - [Clonando la repository del cloud nel Dev container](#clonando-la-repository-del-cloud-nel-dev-container-1)
+         - [Aprendo la repository locale dell'host nel Dev container](#aprendo-la-repository-locale-dellhost-nel-dev-container-1)
+         - [Recuperare un Dev Container già configurato](#recuperare-un-dev-container-già-configurato)
+      + [Command Line Interface](#command-line-interface)
+   * [Avviare il backend](#avviare-il-backend)
+      + [Building con Maven](#building-con-maven)
+      + [Eseguire il file .jar](#eseguire-il-file-jar)
+   * [Accedere ai containers](#accedere-ai-containers)
+      + [REST API](#rest-api)
+      + [pgAdmin](#pgadmin)
+- [SonarQube](#sonarqube)
+   * [Accedere al SonarQube Server](#accedere-al-sonarqube-server)
+   * [SonarQube Maven Scan (backend)](#sonarqube-maven-scan-backend)
+   * [SonarQube Gradle Scan (frontedandroid)](#sonarqube-gradle-scan-frontedandroid)
+
 ## Client
 
 ## Server (Backend e Database)
@@ -94,7 +120,8 @@ Dopodiché:
     ```
     Dev Containers: Open Folder in Container...
     ```
-4. Apriamo la main direcotory della repository, `DietiDeals24`, e confermiamo.
+
+4. Apriamo la main directory della repository, `DietiDeals24`, e confermiamo.
 
 ##### Recuperare un Dev Container già configurato
 
@@ -210,7 +237,7 @@ Una volta entrati nella dashboard SonarQube, generiamo uno User Token (ci servir
 Per eseguire la build del progetto Maven `backend` eseguendo anche la scansione con SonarQube è sufficiente recarsi nella directory `source-code/Server/backend` ed eseguire questo comando:
 
 ```Bash
-./mvnw clean verify -Dsonar.token=${SONAR_TOKEN}
+./mvnw clean verify sonar:sonar -Dsonar.token=${SONAR_TOKEN}
 ```
 
 ### SonarQube Gradle Scan (frontedandroid)
