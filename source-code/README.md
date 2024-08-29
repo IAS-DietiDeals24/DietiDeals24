@@ -180,7 +180,7 @@ Possiamo accedere al database Postgres tramite pgAdmin allo stesso modo della RE
 
 Credenziali di accesso a pgAdmin:
 
-- Email: `PGADMIN_DEFAULT_EMAIL` (default: `admin@dietideals24.ias`)
+- Email: `PGADMIN_DEFAULT_EMAIL` (default: `admin@dd24.com`)
 - Password: `PGADMIN_DEFAULT_PASSWORD` (default: `admin`)
 
 Credenziali di accesso a Postgres:
