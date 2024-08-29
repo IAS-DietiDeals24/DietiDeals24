@@ -7,8 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
-import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.ActivityAccessoBinding
 import com.iasdietideals24.dietideals24.model.ModelAccesso
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
@@ -37,6 +35,6 @@ class Accesso : DietiDeals24Activity<ActivityAccessoBinding>(), OnFragmentChange
     }
 
     override fun onFragmentBackButton() {
-        findNavController(R.id.activity_accesso_fragmentContainerView).popBackStack()
+        finish()
     }
 }

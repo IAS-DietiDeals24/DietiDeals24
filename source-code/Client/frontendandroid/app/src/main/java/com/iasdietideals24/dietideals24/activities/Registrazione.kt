@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.facebook.AccessToken
 import com.facebook.login.LoginManager
@@ -19,8 +18,6 @@ import com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFas
 import com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFase2Directions
 import com.iasdietideals24.dietideals24.controller.ControllerRegistrazione
 import com.iasdietideals24.dietideals24.controller.ControllerRegistrazioneDirections
-import com.iasdietideals24.dietideals24.controller.ControllerSelezioneTipoAccount
-import com.iasdietideals24.dietideals24.controller.ControllerSelezioneTipoAccountDirections
 import com.iasdietideals24.dietideals24.databinding.ActivityRegistrazioneBinding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
@@ -65,7 +62,14 @@ class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(),
     }
 
     override fun onFragmentBackButton() {
-        findNavController(R.id.activity_registrazione_fragmentContainerView).popBackStack()
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.activity_registrazione_fragmentContainerView) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        if (navHostFragment.childFragmentManager.backStackEntryCount > 1)
+            navController.popBackStack()
+        else
+            finish()
     }
 
     override fun onFragmentNextStep(sender: KClass<*>) {
@@ -74,12 +78,6 @@ class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(),
         val navController = navHostFragment.navController
 
         when (sender) {
-            ControllerSelezioneTipoAccount::class -> {
-                val action =
-                    ControllerSelezioneTipoAccountDirections.actionControllerSelezioneTipoAccountToControllerSelezioneAccessoRegistrazione()
-                navController.navigate(action)
-            }
-
             ControllerRegistrazione::class -> {
                 val action =
                     ControllerRegistrazioneDirections.actionControllerRegistrazioneToControllerCreazioneProfiloFase1()

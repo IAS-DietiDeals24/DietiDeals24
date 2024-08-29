@@ -156,7 +156,7 @@ abstract class Controller<bindingType : ViewBinding> : Fragment() {
 
         val kClass = APIController.instance::class
         val method = kClass.members.find { it.name == methodName }
-        val call = method?.call(*args) as Call<Model>
+        val call = method?.call(APIController.instance, *args) as Call<Model>
 
         call.enqueue(object : Callback<Model> {
             override fun onResponse(call: Call<Model>, response: Response<Model>) {

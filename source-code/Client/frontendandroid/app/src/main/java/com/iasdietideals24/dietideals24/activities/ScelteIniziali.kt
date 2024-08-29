@@ -8,17 +8,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.facebook.AccessToken
 import com.facebook.login.LoginManager
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.controller.ControllerSelezioneTipoAccount
+import com.iasdietideals24.dietideals24.controller.ControllerSelezioneTipoAccountDirections
 import com.iasdietideals24.dietideals24.databinding.ActivityScelteInizialiBinding
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentHideBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentNextStep
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentShowBackButton
+import kotlin.reflect.KClass
 
 
 class ScelteIniziali : DietiDeals24Activity<ActivityScelteInizialiBinding>(),
-    OnFragmentChangeActivity, OnFragmentHideBackButton, OnFragmentShowBackButton {
+    OnFragmentChangeActivity, OnFragmentHideBackButton, OnFragmentShowBackButton,
+    OnFragmentNextStep {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val accessToken: AccessToken? = AccessToken.getCurrentAccessToken()
@@ -58,5 +64,19 @@ class ScelteIniziali : DietiDeals24Activity<ActivityScelteInizialiBinding>(),
     override fun onFragmentShowBackButton() {
         binding.activityScelteInizialiPulsanteIndietro.visibility =
             android.view.View.VISIBLE
+    }
+
+    override fun onFragmentNextStep(sender: KClass<*>) {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.activity_scelteIniziali_fragmentContainerView) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        when (sender) {
+            ControllerSelezioneTipoAccount::class -> {
+                val action =
+                    ControllerSelezioneTipoAccountDirections.actionControllerSelezioneTipoAccountToControllerSelezioneAccessoRegistrazione()
+                navController.navigate(action)
+            }
+        }
     }
 }

@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.perf)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.facebook.login)
