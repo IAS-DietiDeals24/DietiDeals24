@@ -168,25 +168,25 @@ java -jar target/backend-<Versione Jar>.jar
 
 ### Accedere ai containers
 
-E' necessario configurare un file `.env`. Per fare ciò, copiare il file `.sample-env`, rinominarlo in `.env` e modificare i campi a proprio piacimento. Di seguito si fa riferimento alle environment variables del file `.env`.
+E' possibile configurare un file `.env` per inserire dati sensibili. Per fare ciò, copiare il file `.sample-env`, rinominarlo in `.env` e popolare i campi a proprio piacimento. Di seguito si fa riferimento alle environment variables del file `.env`, a cui è assegnato un valore di default nel caso in cui non sia stata inizializzata nel file `.env`.
 
 #### REST API
 
-Una volta eseguiti i containers, possiamo accedere alla REST API come `localhost`, alla porta specificata dal file `.env` (development: `DEV_BACKEND_PORT` | production: `55501`).
+Una volta eseguiti i containers, possiamo accedere alla REST API come `localhost`, alla porta specificata dal file `.env` (development: `DEV_BACKEND_PORT` (default: `55511`) | production: `55501`).
 
 #### pgAdmin
 
-Possiamo accedere al database Postgres tramite pgAdmin allo stesso modo della REST API, alla porta specificata dal file `.env` (development: `PGADMIN_PORT` | production: `Non disponibile`). pgAdmin verrà automaticamente configurato con la connessione corretta al database.
+Possiamo accedere al database Postgres tramite pgAdmin allo stesso modo della REST API, alla porta specificata dal file `.env` (development: `PGADMIN_PORT` (default: `55512`) | production: `Non disponibile`). pgAdmin verrà automaticamente configurato con la connessione corretta al database tramite il file `source-code/Server/database/servers.json`.
 
 Credenziali di accesso a pgAdmin:
 
-- Email: `PGADMIN_DEFAULT_EMAIL`
-- Password: `PGADMIN_DEFAULT_PASSWORD`
+- Email: `PGADMIN_DEFAULT_EMAIL` (default: `admin@dietideals24.ias`)
+- Password: `PGADMIN_DEFAULT_PASSWORD` (default: `admin`)
 
 Credenziali di accesso a Postgres:
 
 - User: `dd24-admin`
-- Password: `POSTGRES_PASSWORD`
+- Password: `POSTGRES_PASSWORD` (default: `admin`)
 
 **ATTENZIONE!** Utilizzando il Dev container tramite IntelliJ IDEA è possibile che, per un problema con il binding dei file di configurazione, pgAdmin non si connetta automaticamente a postgres. In tal caso, dopo aver fatto l'accesso a pgAdmin, è possibile collegarsi in questo modo:
 
@@ -211,7 +211,7 @@ Credenziali di accesso a Postgres:
 
 ### Accedere al SonarQube Server
 
-Possiamo accedere a SonarQube alla porta specificata dal compose file (development: `55513` | production: `Non disponibile`).
+Possiamo accedere a SonarQube alla porta specificata dal compose file (development: `SONAR_PORT` (default: `55513`) | production: `Non disponibile`).
 
 Al primo accesso, useremo le seguenti credenziali:
 
