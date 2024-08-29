@@ -28,6 +28,7 @@ androidx-navigation-safeargs-kotlin = "2.7.7"
 google-services = "4.4.2"
 google-firebase-crashlytics = "3.0.2"
 google-firebase-perf = "1.4.2"
+sonarqube = "5.1.0.4882"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -58,3 +59,4 @@ androidx-navigation-safeargs-kotlin = { id = "androidx.navigation.safeargs.kotli
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "google-firebase-crashlytics" }
 google-firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "google-firebase-perf" }
+sonarqube = { id = "org.sonarqube", version.ref = "sonarqube"}
