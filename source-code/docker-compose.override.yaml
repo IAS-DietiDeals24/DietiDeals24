@@ -37,21 +37,16 @@ services:
         # Overrides default command so things don't shut down after the process ends.
         command: /bin/sh -c "while sleep 1000; do :; done"
 
-    database:
-        container_name: dietideals24-postgresDB-dev
-        environment:
-            #Variabili necessarie per creare il database dedicato a SonarQube
-            SONAR_JDBC_USERNAME: ${SONAR_JDBC_USERNAME:-sonar} # default: sonar
-            SONAR_JDBC_PASSWORD: ${SONAR_JDBC_PASSWORD:-sonar} # default: sonar
-            SONAR_JDBC_DB: ${SONAR_JDBC_DB:-sonarqube} # default: sonarqube
-        volumes:
-            - ./Server/database/init-db.dev.sh:/docker-entrypoint-initdb.d/init-db.dev.sh
+    backend-database:
+        container_name: dietideals24-backend-postgresDB-dev
 
     pgadmin:
         container_name: dietideals24-pgAdmin4-dev
         image: dpage/pgadmin4:8.9
         depends_on:
-            database:
+            backend-database:
+                condition: service_healthy
+            sonarqube-database:
                 condition: service_healthy
         restart: unless-stopped
         environment:
@@ -59,7 +54,7 @@ services:
             PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin} # default: admin
         volumes:
             - ./Server/database/servers.json:/pgadmin4/servers.json
-            - pgadminData:/var/lib/pgadmin
+            - pgadmin_data:/var/lib/pgadmin
         ports:
             - ${PGADMIN_PORT:-55512}:80 # Mappa la porta 80 del container con ${PGADMIN_PORT} (default: 55512) nell'host (http://localhost:${PGADMIN_PORT}/ ci farà accedere all'app)
         networks:
@@ -69,10 +64,10 @@ services:
         image: sonarqube:10.6-community
         container_name: dietideals24-sonarqube-dev
         depends_on:
-            database:
+            sonarqube-database:
                 condition: service_healthy
         environment:
-            SONAR_JDBC_URL: jdbc:postgresql://database:5432/${SONAR_JDBC_DB:-sonarqube} # default: sonarqube
+            SONAR_JDBC_URL: jdbc:postgresql://sonarqube-database:5432/${SONAR_JDBC_DB:-sonarqube} # default: sonarqube
             SONAR_JDBC_USERNAME: ${SONAR_JDBC_USERNAME:-sonar} # default: sonar
             SONAR_JDBC_PASSWORD: ${SONAR_JDBC_PASSWORD:-sonar} # default: sonar
         volumes:
@@ -84,8 +79,27 @@ services:
         networks:
             - backendNetwork
 
+    sonarqube-database:
+        container_name: dietideals24-sonarqube-postgresDB-dev
+        image: postgres:16.3 # Immagine di Postgres già pronta
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: ${SONAR_JDBC_DB:-sonarqube} # default: sonarqube
+            POSTGRES_USER: ${SONAR_JDBC_USERNAME:-sonar} # default: sonar
+            POSTGRES_PASSWORD: ${SONAR_JDBC_PASSWORD:-sonar} # default: sonar
+        healthcheck: # Definisce la condizione di "healthcheck"
+            test: ["CMD", "pg_isready", "-U", "${SONAR_JDBC_USERNAME:-sonar}", "-d", "${SONAR_JDBC_DB:-sonarqube}"]
+            interval: 15s
+            timeout: 15s
+            retries: 5
+        volumes:
+            - sonarqube_database_data:/var/lib/postgresql/data
+        networks:
+            - backendNetwork
+
 volumes:
-    pgadminData:
+    pgadmin_data:
     sonarqube_data:
     sonarqube_extensions:
     sonarqube_logs:
+    sonarqube_database_data:

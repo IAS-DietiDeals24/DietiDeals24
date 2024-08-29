@@ -12,14 +12,14 @@ services:
         #    context: ./Server/backend/ # Set the context (what is visible from the dockerfile)
         #    dockerfile: .dockerfiles/dev-Dockerfile # Choose the Dockerfile
         depends_on:
-            database:
+            backend-database:
                 condition: service_healthy # In questo modo, il backend non sarà avviato finché non sarà verificata la condizione di definita da "healthcheck"
         restart: unless-stopped
         networks:
             - backendNetwork
 
-    database:
-        container_name: dietideals24-postgresDB
+    backend-database:
+        container_name: dietideals24-backend-postgresDB
         image: postgres:16.3 # Immagine di Postgres già pronta
         restart: unless-stopped
         environment:
@@ -32,13 +32,13 @@ services:
             timeout: 15s
             retries: 5
         volumes:
-            - databaseData:/var/lib/postgresql/data
+            - backend_database_data:/var/lib/postgresql/data
         networks:
             - backendNetwork
 
 
 volumes:
-    databaseData:
+    backend_database_data:
 
 
 networks:
