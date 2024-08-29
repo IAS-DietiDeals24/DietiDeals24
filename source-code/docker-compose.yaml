@@ -23,11 +23,11 @@ services:
         image: postgres:16.3 # Immagine di Postgres già pronta
         restart: unless-stopped
         environment:
-            POSTGRES_DB: dietideals24-backend
+            POSTGRES_DB: backend
             POSTGRES_USER: dd24-admin
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin} # default: admin
         healthcheck: # Definisce la condizione di "healthcheck"
-            test: ["CMD", "pg_isready", "-U", "dd24-admin", "-d", "dietideals24-backend"]
+            test: ["CMD", "pg_isready", "-U", "dd24-admin", "-d", "backend"]
             interval: 15s
             timeout: 15s
             retries: 5
@@ -36,10 +36,8 @@ services:
         networks:
             - backendNetwork
 
-
 volumes:
     backend_database_data:
-
 
 networks:
     backendNetwork:

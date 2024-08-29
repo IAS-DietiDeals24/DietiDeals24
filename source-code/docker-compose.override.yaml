@@ -67,8 +67,8 @@ services:
             sonarqube-database:
                 condition: service_healthy
         environment:
-            SONAR_JDBC_URL: jdbc:postgresql://sonarqube-database:5432/${SONAR_JDBC_DB:-sonarqube} # default: sonarqube
-            SONAR_JDBC_USERNAME: ${SONAR_JDBC_USERNAME:-sonar} # default: sonar
+            SONAR_JDBC_URL: jdbc:postgresql://sonarqube-database:5432/sonarqube
+            SONAR_JDBC_USERNAME: sonar
             SONAR_JDBC_PASSWORD: ${SONAR_JDBC_PASSWORD:-sonar} # default: sonar
         volumes:
             - sonarqube_data:/opt/sonarqube/data
@@ -84,11 +84,11 @@ services:
         image: postgres:16.3 # Immagine di Postgres già pronta
         restart: unless-stopped
         environment:
-            POSTGRES_DB: ${SONAR_JDBC_DB:-sonarqube} # default: sonarqube
-            POSTGRES_USER: ${SONAR_JDBC_USERNAME:-sonar} # default: sonar
+            POSTGRES_DB: sonarqube
+            POSTGRES_USER: sonar
             POSTGRES_PASSWORD: ${SONAR_JDBC_PASSWORD:-sonar} # default: sonar
         healthcheck: # Definisce la condizione di "healthcheck"
-            test: ["CMD", "pg_isready", "-U", "${SONAR_JDBC_USERNAME:-sonar}", "-d", "${SONAR_JDBC_DB:-sonarqube}"]
+            test: ["CMD", "pg_isready", "-U", "sonar", "-d", "sonarqube"]
             interval: 15s
             timeout: 15s
             retries: 5

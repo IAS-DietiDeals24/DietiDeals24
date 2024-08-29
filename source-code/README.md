@@ -156,7 +156,7 @@ Per compilare la REST API, è necessario fare il building dell'applicazione tram
 ./mvnw clean verify
 ```
 
-**NOTA:** SonarQube è stato configurato in modo da essere parte integrante della build. Riferirsi al [building con SonarQube Maven Scan](#sonarqube-maven-scan-backend).
+**NOTA:** Se si vuole fare la build del progetto eseguendo anche la scansione SonarQube, riferirsi al capitolo [building con SonarQube Maven Scan](#sonarqube-maven-scan-backend).
 
 #### Eseguire il file .jar
 
@@ -188,7 +188,7 @@ Credenziali di accesso a Postgres:
 - User: `dd24-admin`
 - Password: `POSTGRES_PASSWORD` (default: `admin`)
 
-**ATTENZIONE!** Utilizzando il Dev container tramite IntelliJ IDEA è possibile che, per un problema con il binding dei file di configurazione, pgAdmin non si connetta automaticamente a postgres. In tal caso, dopo aver fatto l'accesso a pgAdmin, è possibile collegarsi in questo modo:
+**ATTENZIONE!** Utilizzando il Dev Container tramite IntelliJ IDEA è possibile che, per un problema con il binding dei file di configurazione, pgAdmin non si connetta automaticamente ai database Postgresql. In tal caso, dopo aver fatto l'accesso a pgAdmin, è possibile collegarsi al database di backend in questo modo:
 
 1. `Right Click` su `Servers`
 2. `Register -> Server...`
@@ -199,13 +199,21 @@ Credenziali di accesso a Postgres:
 
     In `Connection`:
 
-    - In `Hostname/address` inseriamo `database`
+    - In `Hostname/address` inseriamo `backend-database`
     - In `Port` inseriamo `5432`
-    - In `Maintenance database` inseriamo il nome del database a cui vogliamo collegarci, cioé `dietideals24-backend`
+    - In `Maintenance database` inseriamo `backend`
     - In `Username` inseriamo `dd24-admin`
     - In `Password` inseriamo quella assegnata a `POSTGRES_PASSWORD`
 
 3. `Save`
+
+Facciamo lo stesso procedimento anche per il database di SonarQube. Inseriamo i seguenti valori:
+
+- In `Hostname/address` inseriamo `sonarqube-database`
+- In `Port` inseriamo `5432`
+- In `Maintenance database` inseriamo `sonarqube`
+- In `Username` inseriamo `sonar`
+- In `Password` inseriamo quella assegnata a `SONAR_JDBC_PASSWORD`
 
 ## SonarQube
 
