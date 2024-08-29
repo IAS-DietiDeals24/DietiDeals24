@@ -2,14 +2,14 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.OfferteBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.classes.adapters.AdapterNotifiche
-import com.iasdietideals24.dietideals24.utilities.classes.data.Notifica
+import com.iasdietideals24.dietideals24.utilities.classes.adapters.AdapterOfferte
+import com.iasdietideals24.dietideals24.utilities.classes.data.OffertaRicevuta
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -19,6 +19,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class ControllerOfferte : Controller<OfferteBinding>() {
+
+    private val args: ControllerOfferteArgs by navArgs()
 
     private var mainDispatcher = Dispatchers.Main
     private var ioDispatcher = Dispatchers.IO
@@ -51,7 +53,7 @@ class ControllerOfferte : Controller<OfferteBinding>() {
 
         jobOfferte = lifecycleScope.launch {
             while (isActive) {
-                aggiornaNotifiche()
+                aggiornaOfferte()
 
                 delay(15000)
             }
@@ -74,17 +76,17 @@ class ControllerOfferte : Controller<OfferteBinding>() {
         binding.offerteRecyclerView.layoutManager = LinearLayoutManager(fragmentContext)
     }
 
-    private suspend fun aggiornaNotifiche() {
-        val result: Array<Notifica>? = withContext(ioDispatcher) {
+    private suspend fun aggiornaOfferte() {
+        val result: Array<OffertaRicevuta>? = withContext(ioDispatcher) {
             eseguiChiamataREST(
-                "recuperaNotifiche",
-                CurrentUser.id,
+                "recuperaOfferte",
+                args.id,
             )
         }
 
         withContext(mainDispatcher) {
             if (result != null)
-                binding.offerteRecyclerView.adapter = AdapterNotifiche(result, resources)
+                binding.offerteRecyclerView.adapter = AdapterOfferte(result, resources)
             else
                 Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                     .setBackgroundTint(resources.getColor(R.color.blu, null))

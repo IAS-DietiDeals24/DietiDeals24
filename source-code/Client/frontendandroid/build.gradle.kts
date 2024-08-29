@@ -15,7 +15,7 @@ plugins {
 
 sonar {
     properties {
-        property("sonar.host.url", "http://localhost:9000")
+        property("sonar.host.url", "http://localhost:55513")
         property("sonar.projectKey", "dietideals24-frontendandroid")
         property("sonar.projectName", "dietideals24-frontendandroid")
     }

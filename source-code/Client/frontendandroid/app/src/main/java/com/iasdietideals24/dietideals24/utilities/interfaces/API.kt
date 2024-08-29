@@ -7,6 +7,7 @@ import com.iasdietideals24.dietideals24.utilities.classes.data.Asta
 import com.iasdietideals24.dietideals24.utilities.classes.data.DettagliAsta
 import com.iasdietideals24.dietideals24.utilities.classes.data.Notifica
 import com.iasdietideals24.dietideals24.utilities.classes.data.Offerta
+import com.iasdietideals24.dietideals24.utilities.classes.data.OffertaRicevuta
 import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo
 import retrofit2.Call
 import retrofit2.http.Body
@@ -205,6 +206,15 @@ interface API {
     fun aggiornaAsta(
         @Body asta: Asta
     ): Call<Boolean>
+
+    /**
+     * Recupera tutte le offerte inviate ad un'asta.
+     * @param idAsta Identificativo dell'asta della recuperare le offerte.
+     * @return L'elenco delle offerte da mostrare all'utente.
+     */
+    fun recuperaOfferte(
+        @Query("idAsta") idAsta: Long
+    ): Call<Array<OffertaRicevuta>>
 
     /**
      * Accetta un'offerta di un'asta silenziosa e, nella stessa transazione, rifiuta tutte le altre
