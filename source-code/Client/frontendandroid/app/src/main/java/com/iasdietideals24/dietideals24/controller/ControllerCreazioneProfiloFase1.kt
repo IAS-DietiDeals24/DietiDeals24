@@ -19,25 +19,25 @@ import com.iasdietideals24.dietideals24.utilities.classes.toLocalDate
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.classes.toMillis
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentNextStep
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnNextStep
 import java.time.LocalDate
 
 class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>() {
 
     private lateinit var viewModel: ModelRegistrazione
 
-    private var listenerBackButton: OnFragmentBackButton? = null
-    private var listenerNextStep: OnFragmentNextStep? = null
+    private var listenerBackButton: OnBackButton? = null
+    private var listenerNextStep: OnNextStep? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (requireContext() is OnFragmentBackButton) {
-            listenerBackButton = requireContext() as OnFragmentBackButton
+        if (requireContext() is OnBackButton) {
+            listenerBackButton = requireContext() as OnBackButton
         }
-        if (requireContext() is OnFragmentNextStep) {
-            listenerNextStep = requireContext() as OnFragmentNextStep
+        if (requireContext() is OnNextStep) {
+            listenerNextStep = requireContext() as OnNextStep
         }
     }
 
@@ -115,7 +115,7 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
             LoginManager.getInstance().logOut()
         }
 
-        listenerBackButton?.onFragmentBackButton()
+        listenerBackButton?.onBackButton()
     }
 
     @EventHandler
@@ -127,7 +127,7 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
         try {
             viewModel.validateProfile()
 
-            listenerNextStep?.onFragmentNextStep(this::class)
+            listenerNextStep?.onNextStep(this::class)
         } catch (_: EccezioneCampiNonCompilati) {
             erroreCampo(
                 R.string.registrazione_erroreCampiObbligatoriNonCompilati,

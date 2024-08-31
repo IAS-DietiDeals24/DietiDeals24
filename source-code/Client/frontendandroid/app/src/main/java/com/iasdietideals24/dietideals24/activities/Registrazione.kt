@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.facebook.AccessToken
 import com.facebook.login.LoginManager
@@ -20,14 +21,14 @@ import com.iasdietideals24.dietideals24.controller.ControllerRegistrazione
 import com.iasdietideals24.dietideals24.controller.ControllerRegistrazioneDirections
 import com.iasdietideals24.dietideals24.databinding.ActivityRegistrazioneBinding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentNextStep
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentSkipStep
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnNextStep
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnSkipStep
 import kotlin.reflect.KClass
 
-class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(),
-    OnFragmentChangeActivity, OnFragmentBackButton, OnFragmentNextStep, OnFragmentSkipStep {
+class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(), OnChangeActivity,
+    OnBackButton, OnNextStep, OnSkipStep {
 
     private lateinit var viewModel: ModelRegistrazione
 
@@ -56,12 +57,18 @@ class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(),
         }
     }
 
-    override fun <Activity : AppCompatActivity> onFragmentChangeActivity(activity: Class<Activity>) {
+    private fun getNavController(): NavController {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.activity_registrazione_fragmentContainerView) as NavHostFragment
+        return navHostFragment.navController
+    }
+
+    override fun <Activity : AppCompatActivity> onChangeActivity(activity: Class<Activity>) {
         startActivity(Intent(baseContext, activity))
         finishAffinity()
     }
 
-    override fun onFragmentBackButton() {
+    override fun onBackButton() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.activity_registrazione_fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
@@ -72,10 +79,8 @@ class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(),
             finish()
     }
 
-    override fun onFragmentNextStep(sender: KClass<*>) {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.activity_registrazione_fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
+    override fun onNextStep(sender: KClass<*>) {
+        val navController = getNavController()
 
         when (sender) {
             ControllerRegistrazione::class -> {
@@ -98,10 +103,8 @@ class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(),
         }
     }
 
-    override fun onFragmentSkipStep(sender: KClass<*>) {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.activity_registrazione_fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
+    override fun onSkipStep(sender: KClass<*>) {
+        val navController = getNavController()
 
         when {
             sender == ControllerRegistrazione::class -> {

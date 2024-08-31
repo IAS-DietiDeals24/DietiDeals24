@@ -11,33 +11,33 @@ import com.iasdietideals24.dietideals24.databinding.SelezionetipoaccountBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentHideBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentNextStep
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentShowBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnHideBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnNextStep
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnShowBackButton
 import kotlinx.coroutines.runBlocking
 
 class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>() {
 
-    private var changeActivityListener: OnFragmentChangeActivity? = null
-    private var hideBackButtonListener: OnFragmentHideBackButton? = null
-    private var showBackButtonListener: OnFragmentShowBackButton? = null
-    private var nextStepListener: OnFragmentNextStep? = null
+    private var changeActivityListener: OnChangeActivity? = null
+    private var hideBackButtonListener: OnHideBackButton? = null
+    private var showBackButtonListener: OnShowBackButton? = null
+    private var nextStepListener: OnNextStep? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (requireContext() is OnFragmentChangeActivity) {
-            changeActivityListener = requireContext() as OnFragmentChangeActivity
+        if (requireContext() is OnChangeActivity) {
+            changeActivityListener = requireContext() as OnChangeActivity
         }
-        if (requireContext() is OnFragmentHideBackButton) {
-            hideBackButtonListener = requireContext() as OnFragmentHideBackButton
+        if (requireContext() is OnHideBackButton) {
+            hideBackButtonListener = requireContext() as OnHideBackButton
         }
-        if (requireContext() is OnFragmentShowBackButton) {
-            showBackButtonListener = requireContext() as OnFragmentShowBackButton
+        if (requireContext() is OnShowBackButton) {
+            showBackButtonListener = requireContext() as OnShowBackButton
         }
-        if (requireContext() is OnFragmentNextStep) {
-            nextStepListener = requireContext() as OnFragmentNextStep
+        if (requireContext() is OnNextStep) {
+            nextStepListener = requireContext() as OnNextStep
         }
     }
 
@@ -52,7 +52,7 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        hideBackButtonListener?.onFragmentHideBackButton()
+        hideBackButtonListener?.onHideBackButton()
 
         // Controlla l'accesso automatico con Facebook
         getInstance()
@@ -92,7 +92,7 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
 
             if (returned != null && returned != 0L) {
                 CurrentUser.id = returned
-                changeActivityListener?.onFragmentChangeActivity(Home::class.java)
+                changeActivityListener?.onChangeActivity(Home::class.java)
             }
         }
     }
@@ -114,20 +114,20 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
 
     @EventHandler
     private fun clickCompratore() {
-        showBackButtonListener?.onFragmentShowBackButton()
+        showBackButtonListener?.onShowBackButton()
         runBlocking { salvaPreferenzaStringa("tipoAccount", "compratore") }
-        nextStepListener?.onFragmentNextStep(this::class)
+        nextStepListener?.onNextStep(this::class)
     }
 
     @EventHandler
     private fun clickVenditore() {
-        showBackButtonListener?.onFragmentShowBackButton()
+        showBackButtonListener?.onShowBackButton()
         runBlocking { salvaPreferenzaStringa("tipoAccount", "venditore") }
-        nextStepListener?.onFragmentNextStep(this::class)
+        nextStepListener?.onNextStep(this::class)
     }
 
     @EventHandler
     private fun clickOspite() {
-        changeActivityListener?.onFragmentChangeActivity(Home::class.java)
+        changeActivityListener?.onChangeActivity(Home::class.java)
     }
 }

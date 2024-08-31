@@ -8,33 +8,40 @@ import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.ScelteIniziali
 import com.iasdietideals24.dietideals24.databinding.ProfiloBinding
+import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaProfilo
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToParticipation
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
 
 class ControllerProfilo : Controller<ProfiloBinding>() {
 
-    private var profileListener: OnGoToProfile? = null
-    private var startListener: OnFragmentChangeActivity? = null
+    private var listenerProfile: OnGoToProfile? = null
+    private var listenerParticipation: OnGoToParticipation? = null
+    private var listenerChangeActivity: OnChangeActivity? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         if (requireContext() is OnGoToProfile) {
-            profileListener = requireContext() as OnGoToProfile
+            listenerProfile = requireContext() as OnGoToProfile
         }
-        if (requireContext() is OnFragmentChangeActivity) {
-            startListener = requireContext() as OnFragmentChangeActivity
+        if (requireContext() is OnGoToParticipation) {
+            listenerParticipation = requireContext() as OnGoToParticipation
+        }
+        if (requireContext() is OnChangeActivity) {
+            listenerChangeActivity = requireContext() as OnChangeActivity
         }
     }
 
     override fun onDetach() {
         super.onDetach()
 
-        profileListener = null
-        startListener = null
+        listenerProfile = null
+        listenerParticipation = null
+        listenerChangeActivity = null
     }
 
     @UIBuilder
@@ -86,20 +93,40 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
 
     @UIBuilder
     override fun impostaEventiClick() {
-        binding.profiloPulsanteUtente.setOnClickListener {
-            profileListener?.onGoToProfile(CurrentUser.id, ControllerProfilo::class)
-        }
-        binding.profiloPulsanteAste.setOnClickListener {
-            //TODO
-        }
-        binding.profiloPulsanteStorico.setOnClickListener {
-            //TODO
-        }
-        binding.profiloPulsanteAiuto.setOnClickListener {
-            //TODO
-        }
-        binding.profiloPulsanteEsci.setOnClickListener {
-            startListener?.onFragmentChangeActivity(ScelteIniziali::class.java)
-        }
+        binding.profiloPulsanteUtente.setOnClickListener { clickUtente() }
+
+        binding.profiloPulsanteAste.setOnClickListener { clickAste() }
+
+        binding.profiloPulsanteStorico.setOnClickListener { clickStorico() }
+
+        binding.profiloPulsanteAiuto.setOnClickListener { clickAiuto() }
+
+        binding.profiloPulsanteEsci.setOnClickListener { clickEsci() }
     }
+
+    @EventHandler
+    private fun clickUtente() {
+        listenerProfile?.onGoToProfile(CurrentUser.id, ControllerProfilo::class)
+    }
+
+    @EventHandler
+    private fun clickAste() {
+        //TODO
+    }
+
+    @EventHandler
+    private fun clickStorico() {
+        listenerParticipation?.onGoToParticipation()
+    }
+
+    @EventHandler
+    private fun clickAiuto() {
+        //TODO
+    }
+
+    @EventHandler
+    private fun clickEsci() {
+        listenerChangeActivity?.onChangeActivity(ScelteIniziali::class.java)
+    }
+
 }

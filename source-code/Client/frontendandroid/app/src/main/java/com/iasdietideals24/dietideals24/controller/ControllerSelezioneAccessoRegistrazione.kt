@@ -7,18 +7,18 @@ import com.iasdietideals24.dietideals24.activities.Registrazione
 import com.iasdietideals24.dietideals24.databinding.SelezioneaccessoregistrazioneBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
 import kotlinx.coroutines.runBlocking
 
 class ControllerSelezioneAccessoRegistrazione : Controller<SelezioneaccessoregistrazioneBinding>() {
 
-    private var listener: OnFragmentChangeActivity? = null
+    private var listener: OnChangeActivity? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (requireContext() is OnFragmentChangeActivity) {
-            listener = requireContext() as OnFragmentChangeActivity
+        if (requireContext() is OnChangeActivity) {
+            listener = requireContext() as OnChangeActivity
         }
     }
 
@@ -62,11 +62,11 @@ class ControllerSelezioneAccessoRegistrazione : Controller<Selezioneaccessoregis
 
     @EventHandler
     private fun clickAccedi() {
-        listener?.onFragmentChangeActivity(Accesso::class.java)
+        listener?.onChangeActivity(Accesso::class.java)
     }
 
     @EventHandler
     private fun clickRegistrati() {
-        listener?.onFragmentChangeActivity(Registrazione::class.java)
+        listener?.onChangeActivity(Registrazione::class.java)
     }
 }

@@ -190,4 +190,5 @@
     <string name="offerta_offertaNonRifiutata">L\'asta non è stata rifiutata. Riprova.</string>
     <string name="offerta_confermaAccetta">Confermi di voler accettare questa offerta? Tutte le altre saranno rifiutate automaticamente.</string>
     <string name="offerta_confermaRifiuto">Confermi di voler rifiutare questa offerta?</string>
+    <string name="asta_messaggioPartecipazione">La tua ultima offerta è stata</string>
 </resources>

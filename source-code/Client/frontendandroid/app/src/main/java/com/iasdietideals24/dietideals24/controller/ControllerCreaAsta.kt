@@ -32,7 +32,7 @@ import com.iasdietideals24.dietideals24.utilities.classes.toLocalDate
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.classes.toMillis
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentGoToHome
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToHome
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 import java.time.LocalTime
@@ -41,7 +41,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
 
     private lateinit var viewModel: ModelAsta
 
-    private var listenerGoToHome: OnFragmentGoToHome? = null
+    private var listenerGoToHome: OnGoToHome? = null
 
     private lateinit var requestPermissions: ActivityResultLauncher<Array<String>>
     private lateinit var selectPhoto: ActivityResultLauncher<String>
@@ -49,8 +49,8 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (requireContext() is OnFragmentGoToHome) {
-            listenerGoToHome = requireContext() as OnFragmentGoToHome
+        if (requireContext() is OnGoToHome) {
+            listenerGoToHome = requireContext() as OnGoToHome
         }
     }
 
@@ -173,6 +173,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
         }
     }
 
+    @EventHandler
     private fun rimuoviErroreCampi() {
         rimuoviErroreCampo(
             binding.creaCampoDataScadenza,
@@ -315,7 +316,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
                         .setTextColor(resources.getColor(R.color.grigio, null))
                         .show()
 
-                    listenerGoToHome?.onFragmentGoToHome()
+                    listenerGoToHome?.onGoToHome()
                 }
             }
         } catch (_: EccezioneCampiNonCompilati) {

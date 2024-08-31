@@ -10,12 +10,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.OffertaBinding
+import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
+import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.data.OffertaRicevuta
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnRefreshFragment
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnRefresh
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,22 +25,20 @@ import java.time.LocalDate
 class ViewHolderOfferta(private val binding: OffertaBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    private var layoutListener: OnGoToDetails? = null
     private var immagineListener: OnGoToProfile? = null
-    private var refreshListener: OnRefreshFragment? = null
+    private var refreshListener: OnRefresh? = null
 
+    @UIBuilder
     fun setListeners(context: Context) {
-        if (context is OnGoToDetails) {
-            layoutListener = context
-        }
         if (context is OnGoToProfile) {
             immagineListener = context
         }
-        if (context is OnRefreshFragment) {
+        if (context is OnRefresh) {
             refreshListener = context
         }
     }
 
+    @UIBuilder
     fun bind(currentOfferta: OffertaRicevuta, resources: Resources) {
         binding.offertaNome.text = currentOfferta.nomeOfferente
         if (currentOfferta.immagineOfferente.isNotEmpty()) {
@@ -59,10 +58,6 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
         binding.offertaTempo.text = resources.getString(R.string.placeholder, tempoFa)
 
         if (currentOfferta.accettata == null) {
-            binding.offertaLinearLayout1.setOnClickListener {
-                layoutListener?.onGoToDetails(currentOfferta.idAsta, this::class)
-            }
-
             binding.offertaImmagine.setOnClickListener {
                 immagineListener?.onGoToProfile(currentOfferta.idOfferente, this::class)
             }
@@ -101,6 +96,7 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
         }
     }
 
+    @EventHandler
     private fun clickAccetta(idAsta: Long, idOfferta: Long, resources: Resources) {
         var returned: Boolean? = null
 
@@ -141,7 +137,7 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
                     .setTextColor(resources.getColor(R.color.grigio, null))
                     .show()
 
-                refreshListener?.onRefreshFragment(idAsta, this::class)
+                refreshListener?.onRefresh(idAsta, this::class)
             }
 
             false -> {
@@ -157,6 +153,7 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
         }
     }
 
+    @EventHandler
     private fun clickRifiuta(idAsta: Long, idOfferta: Long, resources: Resources) {
         var returned: Boolean? = null
 
@@ -197,7 +194,7 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
                     .setTextColor(resources.getColor(R.color.grigio, null))
                     .show()
 
-                refreshListener?.onRefreshFragment(idAsta, this::class)
+                refreshListener?.onRefresh(idAsta, this::class)
             }
 
             false -> {
@@ -214,7 +211,6 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
     }
 
     fun cleanListeners() {
-        layoutListener = null
         immagineListener = null
         refreshListener = null
     }

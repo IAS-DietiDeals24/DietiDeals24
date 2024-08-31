@@ -28,7 +28,6 @@ import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
 import java.time.LocalDate
 
@@ -40,56 +39,37 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
     private lateinit var requestPermissions: ActivityResultLauncher<Array<String>>
     private lateinit var selectPhoto: ActivityResultLauncher<String>
 
-    private var listenerBackButton: OnFragmentBackButton? = null
-    private var listenerConfirmButton: OnGoToProfile? = null
+    private var listenerProfile: OnGoToProfile? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (requireContext() is OnFragmentBackButton) {
-            listenerBackButton = requireContext() as OnFragmentBackButton
-        }
         if (requireContext() is OnGoToProfile) {
-            listenerConfirmButton = requireContext() as OnGoToProfile
+            listenerProfile = requireContext() as OnGoToProfile
         }
     }
 
     override fun onDetach() {
         super.onDetach()
 
-        listenerBackButton = null
-        listenerConfirmButton = null
+        listenerProfile = null
     }
 
     @UIBuilder
     override fun impostaEventiClick() {
-        binding.modificaProfiloPulsanteIndietro.setOnClickListener {
-            clickIndietro()
-        }
+        binding.modificaProfiloPulsanteIndietro.setOnClickListener { clickIndietro() }
 
-        binding.modificaProfiloPulsanteConferma.setOnClickListener {
-            clickConferma()
-        }
+        binding.modificaProfiloPulsanteConferma.setOnClickListener { clickConferma() }
 
-        binding.modificaProfiloPulsante.setOnClickListener {
-            clickPulsanteImmagine()
-        }
+        binding.modificaProfiloPulsante.setOnClickListener { clickPulsanteImmagine() }
 
-        binding.modificaProfiloFacebook.setOnClickListener {
-            clickFacebook()
-        }
+        binding.modificaProfiloFacebook.setOnClickListener { clickFacebook() }
 
-        binding.modificaProfiloInstagram.setOnClickListener {
-            clickInstagram()
-        }
+        binding.modificaProfiloInstagram.setOnClickListener { clickInstagram() }
 
-        binding.modificaProfiloGithub.setOnClickListener {
-            clickGitHub()
-        }
+        binding.modificaProfiloGithub.setOnClickListener { clickGitHub() }
 
-        binding.modificaProfiloX.setOnClickListener {
-            clickX()
-        }
+        binding.modificaProfiloX.setOnClickListener { clickX() }
     }
 
     @UIBuilder
@@ -170,7 +150,9 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
 
     @EventHandler
     private fun clickIndietro() {
-        listenerBackButton?.onFragmentBackButton()
+        viewModel.clear()
+
+        listenerProfile?.onGoToProfile(CurrentUser.id, ControllerModificaProfilo::class)
     }
 
     @EventHandler
@@ -197,7 +179,7 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
                         .setTextColor(resources.getColor(R.color.grigio, null))
                         .show()
 
-                    listenerConfirmButton?.onGoToProfile(
+                    listenerProfile?.onGoToProfile(
                         CurrentUser.id,
                         ControllerModificaProfilo::class
                     )

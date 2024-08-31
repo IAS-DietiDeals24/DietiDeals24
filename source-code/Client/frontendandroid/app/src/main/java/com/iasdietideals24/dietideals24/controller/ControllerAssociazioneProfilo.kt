@@ -10,26 +10,26 @@ import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
 
 class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
 
     private lateinit var viewModel: ModelRegistrazione
 
-    private var listener: OnFragmentChangeActivity? = null
+    private var listenerChangeActivity: OnChangeActivity? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (requireContext() is OnFragmentChangeActivity) {
-            listener = requireContext() as OnFragmentChangeActivity
+        if (requireContext() is OnChangeActivity) {
+            listenerChangeActivity = requireContext() as OnChangeActivity
         }
     }
 
     override fun onDetach() {
         super.onDetach()
 
-        listener = null
+        listenerChangeActivity = null
     }
 
     @UIBuilder
@@ -40,7 +40,6 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
         viewModel = ViewModelProvider(fragmentActivity)[ModelRegistrazione::class]
-
     }
 
     @EventHandler
@@ -57,7 +56,7 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
                 .show()
         } else {
             CurrentUser.id = returned
-            listener?.onFragmentChangeActivity(Home::class.java)
+            listenerChangeActivity?.onChangeActivity(Home::class.java)
         }
     }
 }

@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.facebook.AccessToken
@@ -15,16 +16,15 @@ import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.controller.ControllerSelezioneTipoAccount
 import com.iasdietideals24.dietideals24.controller.ControllerSelezioneTipoAccountDirections
 import com.iasdietideals24.dietideals24.databinding.ActivityScelteInizialiBinding
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentHideBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentNextStep
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentShowBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnHideBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnNextStep
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnShowBackButton
 import kotlin.reflect.KClass
 
 
-class ScelteIniziali : DietiDeals24Activity<ActivityScelteInizialiBinding>(),
-    OnFragmentChangeActivity, OnFragmentHideBackButton, OnFragmentShowBackButton,
-    OnFragmentNextStep {
+class ScelteIniziali : DietiDeals24Activity<ActivityScelteInizialiBinding>(), OnChangeActivity,
+    OnHideBackButton, OnShowBackButton, OnNextStep {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val accessToken: AccessToken? = AccessToken.getCurrentAccessToken()
@@ -52,24 +52,32 @@ class ScelteIniziali : DietiDeals24Activity<ActivityScelteInizialiBinding>(),
         }
     }
 
-    override fun <Activity : AppCompatActivity> onFragmentChangeActivity(activity: Class<Activity>) {
-        startActivity(Intent(baseContext, activity))
+    private fun getNavController(): NavController {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.activity_scelteIniziali_fragmentContainerView) as NavHostFragment
+        return navHostFragment.navController
     }
 
-    override fun onFragmentHideBackButton() {
+    override fun <Activity : AppCompatActivity> onChangeActivity(activity: Class<Activity>) {
+        startActivity(Intent(baseContext, activity))
+
+        if (activity == Home::class.java) {
+            finish()
+        }
+    }
+
+    override fun onHideBackButton() {
         binding.activityScelteInizialiPulsanteIndietro.visibility =
             android.view.View.GONE
     }
 
-    override fun onFragmentShowBackButton() {
+    override fun onShowBackButton() {
         binding.activityScelteInizialiPulsanteIndietro.visibility =
             android.view.View.VISIBLE
     }
 
-    override fun onFragmentNextStep(sender: KClass<*>) {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.activity_scelteIniziali_fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
+    override fun onNextStep(sender: KClass<*>) {
+        val navController = getNavController()
 
         when (sender) {
             ControllerSelezioneTipoAccount::class -> {

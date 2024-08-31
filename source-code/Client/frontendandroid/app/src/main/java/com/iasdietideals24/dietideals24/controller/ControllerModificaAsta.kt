@@ -30,7 +30,7 @@ import com.iasdietideals24.dietideals24.utilities.classes.toLocalDate
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.classes.toMillis
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentGoToAuction
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -38,7 +38,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
 
     private lateinit var viewModel: ModelAsta
 
-    private var listenerGoToAuction: OnFragmentGoToAuction? = null
+    private var listenerDetails: OnGoToDetails? = null
 
     private lateinit var requestPermissions: ActivityResultLauncher<Array<String>>
     private lateinit var selectPhoto: ActivityResultLauncher<String>
@@ -46,15 +46,15 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (requireContext() is OnFragmentGoToAuction) {
-            listenerGoToAuction = requireContext() as OnFragmentGoToAuction
+        if (requireContext() is OnGoToDetails) {
+            listenerDetails = requireContext() as OnGoToDetails
         }
     }
 
     override fun onDetach() {
         super.onDetach()
 
-        listenerGoToAuction = null
+        listenerDetails = null
     }
 
     @UIBuilder
@@ -94,25 +94,15 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
 
     @UIBuilder
     override fun impostaEventiClick() {
-        binding.modificaPulsanteIndietro.setOnClickListener {
-            clickIndietro()
-        }
+        binding.modificaPulsanteIndietro.setOnClickListener { clickIndietro() }
 
-        binding.modificaPulsanteModifica.setOnClickListener {
-            clickModifica()
-        }
+        binding.modificaPulsanteModifica.setOnClickListener { clickModifica() }
 
-        binding.modificaCampoDataScadenza.setEndIconOnClickListener {
-            clickDataScadenza()
-        }
+        binding.modificaCampoDataScadenza.setEndIconOnClickListener { clickDataScadenza() }
 
-        binding.modificaCampoOra.setEndIconOnClickListener {
-            clickOraScadenza()
-        }
+        binding.modificaCampoOra.setEndIconOnClickListener { clickOraScadenza() }
 
-        binding.modificaCampoFoto.setOnClickListener {
-            clickFoto()
-        }
+        binding.modificaCampoFoto.setOnClickListener { clickFoto() }
     }
 
     @UIBuilder
@@ -138,6 +128,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
         }
     }
 
+    @EventHandler
     private fun rimuoviErroreCampi() {
         rimuoviErroreCampo(
             binding.modificaCampoDataScadenza,
@@ -246,7 +237,11 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
 
     @EventHandler
     private fun clickIndietro() {
-        listenerGoToAuction?.onFragmentGoToAuction(viewModel.idAsta.value!!, this::class)
+        val idAsta = viewModel.idAsta.value!!
+
+        viewModel.clear()
+
+        listenerDetails?.onGoToDetails(idAsta, this::class)
     }
 
     @EventHandler
@@ -285,7 +280,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
                         .setTextColor(resources.getColor(R.color.grigio, null))
                         .show()
 
-                    listenerGoToAuction?.onFragmentGoToAuction(
+                    listenerDetails?.onGoToDetails(
                         viewModel.idAsta.value!!,
                         this::class
                     )

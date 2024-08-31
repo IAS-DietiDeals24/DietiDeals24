@@ -11,13 +11,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.DettagliprofiloBinding
 import com.iasdietideals24.dietideals24.model.ModelProfilo
+import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentEditButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentOpenUrl
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnEditButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnOpenUrl
 import java.time.LocalDate
 
 class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
@@ -26,21 +27,21 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
 
     private lateinit var viewModel: ModelProfilo
 
-    private var listenerBackButton: OnFragmentBackButton? = null
-    private var listenerEditButton: OnFragmentEditButton? = null
-    private var listenerOpenUrl: OnFragmentOpenUrl? = null
+    private var listenerBackButton: OnBackButton? = null
+    private var listenerEditButton: OnEditButton? = null
+    private var listenerOpenUrl: OnOpenUrl? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (requireContext() is OnFragmentBackButton) {
-            listenerBackButton = requireContext() as OnFragmentBackButton
+        if (requireContext() is OnBackButton) {
+            listenerBackButton = requireContext() as OnBackButton
         }
-        if (requireContext() is OnFragmentEditButton) {
-            listenerEditButton = requireContext() as OnFragmentEditButton
+        if (requireContext() is OnEditButton) {
+            listenerEditButton = requireContext() as OnEditButton
         }
-        if (requireContext() is OnFragmentOpenUrl) {
-            listenerOpenUrl = requireContext() as OnFragmentOpenUrl
+        if (requireContext() is OnOpenUrl) {
+            listenerOpenUrl = requireContext() as OnOpenUrl
         }
     }
 
@@ -54,35 +55,17 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
 
     @UIBuilder
     override fun impostaEventiClick() {
-        binding.dettagliProfiloPulsanteIndietro.setOnClickListener {
-            viewModel.clear()
+        binding.dettagliProfiloPulsanteIndietro.setOnClickListener { clickIndietro() }
 
-            listenerBackButton?.onFragmentBackButton()
-        }
+        binding.dettagliProfiloPulsanteModifica.setOnClickListener { clickModifica() }
 
-        binding.dettagliProfiloPulsanteModifica.setOnClickListener {
-            listenerEditButton?.onFragmentEditButton(ControllerDettagliProfilo::class)
-        }
+        binding.dettagliProfiloFacebook.setOnClickListener { clickFacebook() }
 
-        binding.dettagliProfiloFacebook.setOnClickListener {
-            if (viewModel.linkFacebook.value != null)
-                listenerOpenUrl?.onFragmentOpenUrl(viewModel.linkFacebook.value!!)
-        }
+        binding.dettagliProfiloInstagram.setOnClickListener { clickInstagram() }
 
-        binding.dettagliProfiloInstagram.setOnClickListener {
-            if (viewModel.linkInstagram.value != null)
-                listenerOpenUrl?.onFragmentOpenUrl(viewModel.linkInstagram.value!!)
-        }
+        binding.dettagliProfiloGithub.setOnClickListener { clickGitHub() }
 
-        binding.dettagliProfiloGithub.setOnClickListener {
-            if (viewModel.linkGitHub.value != null)
-                listenerOpenUrl?.onFragmentOpenUrl(viewModel.linkGitHub.value!!)
-        }
-
-        binding.dettagliProfiloX.setOnClickListener {
-            if (viewModel.linkX.value != null)
-                listenerOpenUrl?.onFragmentOpenUrl(viewModel.linkX.value!!)
-        }
+        binding.dettagliProfiloX.setOnClickListener { clickX() }
     }
 
     @UIBuilder
@@ -192,4 +175,41 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
         }
         viewModel.linkPersonale.observe(viewLifecycleOwner, linkPersonaleObserver)
     }
+
+    @EventHandler
+    private fun clickIndietro() {
+        viewModel.clear()
+
+        listenerBackButton?.onBackButton()
+    }
+
+    @EventHandler
+    private fun clickModifica() {
+        listenerEditButton?.onEditButton(ControllerDettagliProfilo::class)
+    }
+
+    @EventHandler
+    private fun clickFacebook() {
+        if (viewModel.linkFacebook.value != null)
+            listenerOpenUrl?.onOpenUrl(viewModel.linkFacebook.value!!)
+    }
+
+    @EventHandler
+    private fun clickInstagram() {
+        if (viewModel.linkInstagram.value != null)
+            listenerOpenUrl?.onOpenUrl(viewModel.linkInstagram.value!!)
+    }
+
+    @EventHandler
+    private fun clickGitHub() {
+        if (viewModel.linkGitHub.value != null)
+            listenerOpenUrl?.onOpenUrl(viewModel.linkGitHub.value!!)
+    }
+
+    @EventHandler
+    private fun clickX() {
+        if (viewModel.linkX.value != null)
+            listenerOpenUrl?.onOpenUrl(viewModel.linkX.value!!)
+    }
+
 }

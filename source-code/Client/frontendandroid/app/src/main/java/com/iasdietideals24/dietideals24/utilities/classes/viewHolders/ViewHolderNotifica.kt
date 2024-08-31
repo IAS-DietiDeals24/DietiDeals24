@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.NotificaBinding
+import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.data.Notifica
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
@@ -16,18 +17,20 @@ import java.time.LocalDate
 class ViewHolderNotifica(private val binding: NotificaBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    private var layoutListener: OnGoToDetails? = null
-    private var immagineListener: OnGoToProfile? = null
+    private var listenerGoToDetails: OnGoToDetails? = null
+    private var listenerGoToProfile: OnGoToProfile? = null
 
+    @UIBuilder
     fun setListeners(context: Context) {
         if (context is OnGoToDetails) {
-            layoutListener = context
+            listenerGoToDetails = context
         }
         if (context is OnGoToProfile) {
-            immagineListener = context
+            listenerGoToProfile = context
         }
     }
 
+    @UIBuilder
     fun bind(currentNotifica: Notifica, resources: Resources) {
         binding.notificaNome.text = currentNotifica.mittente
         if (currentNotifica.immagineMittente.isNotEmpty()) {
@@ -46,16 +49,16 @@ class ViewHolderNotifica(private val binding: NotificaBinding) :
         binding.notificaTempo.text = resources.getString(R.string.placeholder, tempoFa)
 
         binding.notificaLinearLayout1.setOnClickListener {
-            layoutListener?.onGoToDetails(currentNotifica.idAsta, this::class)
+            listenerGoToDetails?.onGoToDetails(currentNotifica.idAsta, this::class)
         }
 
         binding.notificaImmagine.setOnClickListener {
-            immagineListener?.onGoToProfile(currentNotifica.idMittente, this::class)
+            listenerGoToProfile?.onGoToProfile(currentNotifica.idMittente, this::class)
         }
     }
 
     fun cleanListeners() {
-        layoutListener = null
-        immagineListener = null
+        listenerGoToDetails = null
+        listenerGoToProfile = null
     }
 }

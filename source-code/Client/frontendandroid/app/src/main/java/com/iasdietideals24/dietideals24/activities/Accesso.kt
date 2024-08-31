@@ -9,11 +9,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.iasdietideals24.dietideals24.databinding.ActivityAccessoBinding
 import com.iasdietideals24.dietideals24.model.ModelAccesso
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
 
-class Accesso : DietiDeals24Activity<ActivityAccessoBinding>(), OnFragmentChangeActivity,
-    OnFragmentBackButton {
+class Accesso : DietiDeals24Activity<ActivityAccessoBinding>(), OnChangeActivity, OnBackButton {
 
     private lateinit var viewModel: ModelAccesso
 
@@ -29,12 +28,12 @@ class Accesso : DietiDeals24Activity<ActivityAccessoBinding>(), OnFragmentChange
         viewModel = ViewModelProvider(this)[ModelAccesso::class]
     }
 
-    override fun <Activity : AppCompatActivity> onFragmentChangeActivity(activity: Class<Activity>) {
+    override fun <Activity : AppCompatActivity> onChangeActivity(activity: Class<Activity>) {
         startActivity(Intent(baseContext, activity))
         finishAffinity()
     }
 
-    override fun onFragmentBackButton() {
+    override fun onBackButton() {
         finish()
     }
 }

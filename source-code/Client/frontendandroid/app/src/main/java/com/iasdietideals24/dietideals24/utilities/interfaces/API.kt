@@ -96,6 +96,8 @@ interface API {
     /**
      * Recupera l'elenco di tutte le aste con le quali può interagire l'utente che ha attualmente
      * effettuato il login.
+     * Attenzione: il campo "offerta" deve conservare l'offerta più alta/bassa che è stata
+     * presentata per l'asta.
      * @param idAccount Identificativo dell'account che ha effettuato l'accesso.
      * @return L'elenco delle aste da mostrare nella home.
      */
@@ -112,6 +114,8 @@ interface API {
      * solo il filtro.
      * Se entrambi i campi sono non nulli, invece, verranno recuperate le aste che rispettano
      * entrambi i criteri.
+     * Attenzione: il campo "offerta" deve conservare l'offerta più alta/bassa che è stata
+     * presentata per l'asta.
      * @param idAccount Identificativo dell'account che ha effettuato l'accesso.
      * @param ricerca Stringa di ricerca specificata dall'utente.
      * @param filtro Filtro specificato dall'utente.
@@ -200,7 +204,7 @@ interface API {
      * Aggiorna i dati di un'asta. Manda inoltre una notifica a coloro che hanno partecipato all'asta
      * per avvisare dell'aggiornamento.
      * @param asta Wrapper con le informazioni necessarie a aggiornare l'asta.
-     * @return Se l'operazione di aggiotnamento ha avuto successo.
+     * @return Se l'operazione di aggiornamento ha avuto successo.
      */
     @PUT("home/aggiornaAsta")
     fun aggiornaAsta(
@@ -238,4 +242,17 @@ interface API {
     fun rifiutaOfferta(
         @Query("idOfferta") idOfferta: Long
     ): Call<Boolean>
+
+    /**
+     * Recupera l'elenco di tutte le aste alle quali l'utente che ha attualmente effettuato l'accesso
+     * ha inviato almeno un'offerta.
+     * Attenzione: il campo "offerta" deve conservare l'offerta più alta/bassa che l'utente che ha
+     * attualmente effettuato l'accesso è stata presentata per l'asta.
+     * @param idAccount Identificativo dell'account che ha effettuato l'accesso.
+     * @return L'elenco delle aste alle quali l'utente ha partecipato.
+     */
+    @GET("home/recuperaPartecipazioni")
+    fun recuperaPartecipazioni(
+        @Query("idAccount") idAccount: Long
+    ): Call<Array<AnteprimaAsta>>
 }

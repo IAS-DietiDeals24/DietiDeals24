@@ -16,8 +16,8 @@ import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAccountNonEsistente
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -29,17 +29,17 @@ class ControllerAccesso : Controller<AccessoBinding>() {
 
     private var facebookCallbackManager = create()
 
-    private var listenerBackButton: OnFragmentBackButton? = null
-    private var listenerChangeActivity: OnFragmentChangeActivity? = null
+    private var listenerBackButton: OnBackButton? = null
+    private var listenerChangeActivity: OnChangeActivity? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (requireContext() is OnFragmentBackButton) {
-            listenerBackButton = requireContext() as OnFragmentBackButton
+        if (requireContext() is OnBackButton) {
+            listenerBackButton = requireContext() as OnBackButton
         }
-        if (requireContext() is OnFragmentChangeActivity) {
-            listenerChangeActivity = requireContext() as OnFragmentChangeActivity
+        if (requireContext() is OnChangeActivity) {
+            listenerChangeActivity = requireContext() as OnChangeActivity
         }
     }
 
@@ -117,7 +117,7 @@ class ControllerAccesso : Controller<AccessoBinding>() {
                             .show()
 
                         else // esiste un account associato a questo account Facebook con questo tipo, accedi
-                        -> listenerChangeActivity?.onFragmentChangeActivity(Home::class.java)
+                        -> listenerChangeActivity?.onChangeActivity(Home::class.java)
                     }
                 }
 
@@ -153,7 +153,7 @@ class ControllerAccesso : Controller<AccessoBinding>() {
 
     @EventHandler
     private fun clickIndietro() {
-        listenerBackButton?.onFragmentBackButton()
+        listenerBackButton?.onBackButton()
     }
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -181,7 +181,7 @@ class ControllerAccesso : Controller<AccessoBinding>() {
                         salvaPreferenzaStringa("password", viewModel.password.value!!)
                     }
                     CurrentUser.id = returned
-                    listenerChangeActivity?.onFragmentChangeActivity(Home::class.java)
+                    listenerChangeActivity?.onChangeActivity(Home::class.java)
                 }
             }
         } catch (_: EccezioneAccountNonEsistente) {

@@ -11,24 +11,24 @@ import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
 
 class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>() {
 
     private lateinit var viewModel: ModelRegistrazione
 
-    private var listenerBackButton: OnFragmentBackButton? = null
-    private var listenerChangeActivity: OnFragmentChangeActivity? = null
+    private var listenerBackButton: OnBackButton? = null
+    private var listenerChangeActivity: OnChangeActivity? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (requireContext() is OnFragmentBackButton) {
-            listenerBackButton = requireContext() as OnFragmentBackButton
+        if (requireContext() is OnBackButton) {
+            listenerBackButton = requireContext() as OnBackButton
         }
-        if (requireContext() is OnFragmentChangeActivity) {
-            listenerChangeActivity = requireContext() as OnFragmentChangeActivity
+        if (requireContext() is OnChangeActivity) {
+            listenerChangeActivity = requireContext() as OnChangeActivity
         }
     }
 
@@ -80,7 +80,7 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
 
     @EventHandler
     private fun clickIndietro() {
-        listenerBackButton?.onFragmentBackButton()
+        listenerBackButton?.onBackButton()
     }
 
     @EventHandler
@@ -95,7 +95,7 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
                 .show()
         } else {
             CurrentUser.id = returned
-            listenerChangeActivity?.onFragmentChangeActivity(Home::class.java)
+            listenerChangeActivity?.onChangeActivity(Home::class.java)
         }
     }
 }

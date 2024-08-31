@@ -23,27 +23,30 @@ import com.iasdietideals24.dietideals24.controller.ControllerModificaProfilo
 import com.iasdietideals24.dietideals24.controller.ControllerModificaProfiloDirections
 import com.iasdietideals24.dietideals24.controller.ControllerNotificheDirections
 import com.iasdietideals24.dietideals24.controller.ControllerOfferteDirections
+import com.iasdietideals24.dietideals24.controller.ControllerPartecipazioniDirections
+import com.iasdietideals24.dietideals24.controller.ControllerProfilo
 import com.iasdietideals24.dietideals24.controller.ControllerProfiloDirections
 import com.iasdietideals24.dietideals24.databinding.ActivityHomeBinding
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderAnteprimaAsta
 import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderNotifica
 import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderOfferta
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentEditButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentGoToAuction
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentGoToHome
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentOpenUrl
+import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderPartecipazione
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnEditButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToBids
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToHome
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToParticipation
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnRefreshFragment
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnOpenUrl
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnRefresh
 import kotlin.reflect.KClass
 
-class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnFragmentBackButton, OnGoToDetails,
-    OnGoToProfile, OnFragmentEditButton, OnFragmentChangeActivity, OnFragmentOpenUrl,
-    OnFragmentGoToHome, OnFragmentGoToAuction, OnGoToBids, OnRefreshFragment {
+class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToProfile, OnEditButton,
+    OnGoToBids, OnRefresh, OnOpenUrl, OnGoToDetails, OnGoToParticipation, OnChangeActivity,
+    OnGoToHome {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +80,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnFragmentBackButton, 
         return navHostFragment.navController
     }
 
-    override fun onFragmentBackButton() {
+    override fun onBackButton() {
         val navController = getNavController()
 
         navController.popBackStack()
@@ -96,6 +99,22 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnFragmentBackButton, 
             ViewHolderNotifica::class -> {
                 val action =
                     ControllerNotificheDirections.actionControllerNotificheToControllerDettagliAsta(
+                        id
+                    )
+                navController.navigate(action)
+            }
+
+            ControllerModificaAsta::class -> {
+                val action =
+                    ControllerModificaAstaDirections.actionControllerModificaAstaToControllerDettagliAsta(
+                        id
+                    )
+                navController.navigate(action)
+            }
+
+            ViewHolderPartecipazione::class -> {
+                val action =
+                    ControllerPartecipazioniDirections.actionControllerPartecipazioniToControllerDettagliAsta(
                         id
                     )
                 navController.navigate(action)
@@ -123,7 +142,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnFragmentBackButton, 
                 navController.navigate(action)
             }
 
-            ControllerDettagliProfilo::class -> {
+            ControllerProfilo::class -> {
                 val action =
                     ControllerProfiloDirections.actionControllerProfiloToControllerDettagliProfilo(
                         id
@@ -141,7 +160,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnFragmentBackButton, 
         }
     }
 
-    override fun onFragmentEditButton(sender: KClass<*>) {
+    override fun onEditButton(sender: KClass<*>) {
         val navController = getNavController()
 
         when (sender) {
@@ -159,12 +178,12 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnFragmentBackButton, 
         }
     }
 
-    override fun <Activity : AppCompatActivity> onFragmentChangeActivity(activity: Class<Activity>) {
+    override fun <Activity : AppCompatActivity> onChangeActivity(activity: Class<Activity>) {
         startActivity(Intent(baseContext, activity))
         finishAffinity()
     }
 
-    override fun onFragmentOpenUrl(externalUrl: String) {
+    override fun onOpenUrl(externalUrl: String) {
         var url = externalUrl
 
         if (!url.startsWith("http://") && !url.startsWith("https://")) {
@@ -175,24 +194,10 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnFragmentBackButton, 
         startActivity(browserIntent)
     }
 
-    override fun onFragmentGoToHome() {
+    override fun onGoToHome() {
         val navController = getNavController()
 
         navController.navigate(R.id.controllerHome)
-    }
-
-    override fun onFragmentGoToAuction(id: Long, sender: KClass<*>) {
-        val navController = getNavController()
-
-        when (sender) {
-            ControllerModificaAsta::class -> {
-                val action =
-                    ControllerModificaAstaDirections.actionControllerModificaAstaToControllerDettagliAsta(
-                        id
-                    )
-                navController.navigate(action)
-            }
-        }
     }
 
     override fun onGoToBids(id: Long, sender: KClass<*>) {
@@ -209,7 +214,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnFragmentBackButton, 
         }
     }
 
-    override fun onRefreshFragment(id: Long, sender: KClass<*>) {
+    override fun onRefresh(id: Long, sender: KClass<*>) {
         val navController = getNavController()
 
         when (sender) {
@@ -227,5 +232,9 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnFragmentBackButton, 
                 navController.navigate(action)
             }
         }
+    }
+
+    override fun onGoToParticipation() {
+        TODO("Not yet implemented")
     }
 }

@@ -18,8 +18,8 @@ import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentNextStep
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnNextStep
 
 class ControllerCreazioneProfiloFase2 : Controller<Creazioneprofilofase2Binding>() {
 
@@ -28,17 +28,17 @@ class ControllerCreazioneProfiloFase2 : Controller<Creazioneprofilofase2Binding>
     private lateinit var requestPermissions: ActivityResultLauncher<Array<String>>
     private lateinit var selectPhoto: ActivityResultLauncher<String>
 
-    private var listenerBackButton: OnFragmentBackButton? = null
-    private var listenerNextStep: OnFragmentNextStep? = null
+    private var listenerBackButton: OnBackButton? = null
+    private var listenerNextStep: OnNextStep? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (requireContext() is OnFragmentBackButton) {
-            listenerBackButton = requireContext() as OnFragmentBackButton
+        if (requireContext() is OnBackButton) {
+            listenerBackButton = requireContext() as OnBackButton
         }
-        if (requireContext() is OnFragmentNextStep) {
-            listenerNextStep = requireContext() as OnFragmentNextStep
+        if (requireContext() is OnNextStep) {
+            listenerNextStep = requireContext() as OnNextStep
         }
     }
 
@@ -139,7 +139,7 @@ class ControllerCreazioneProfiloFase2 : Controller<Creazioneprofilofase2Binding>
 
     @EventHandler
     private fun clickIndietro() {
-        listenerBackButton?.onFragmentBackButton()
+        listenerBackButton?.onBackButton()
     }
 
     @EventHandler
@@ -149,7 +149,7 @@ class ControllerCreazioneProfiloFase2 : Controller<Creazioneprofilofase2Binding>
             estraiTestoDaElemento(binding.creazioneProfiloFase2AreaGeografica)
         viewModel.genere.value = estraiTestoDaElemento(binding.creazioneProfiloFase2Genere)
 
-        listenerNextStep?.onFragmentNextStep(this::class)
+        listenerNextStep?.onNextStep(this::class)
     }
 
     @EventHandler

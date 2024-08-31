@@ -23,10 +23,10 @@ import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCo
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezionePasswordNonSicura
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentChangeActivity
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentNextStep
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnFragmentSkipStep
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnNextStep
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnSkipStep
 import kotlinx.coroutines.runBlocking
 import org.apache.commons.lang3.RandomStringUtils
 import java.time.LocalDate
@@ -38,25 +38,25 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
 
     private var facebookCallbackManager = create()
 
-    private var listenerBackButton: OnFragmentBackButton? = null
-    private var listenerChangeActivity: OnFragmentChangeActivity? = null
-    private var listenerNextStep: OnFragmentNextStep? = null
-    private var listenerSkipStep: OnFragmentSkipStep? = null
+    private var listenerBackButton: OnBackButton? = null
+    private var listenerChangeActivity: OnChangeActivity? = null
+    private var listenerNextStep: OnNextStep? = null
+    private var listenerSkipStep: OnSkipStep? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        if (requireContext() is OnFragmentBackButton) {
-            listenerBackButton = requireContext() as OnFragmentBackButton
+        if (requireContext() is OnBackButton) {
+            listenerBackButton = requireContext() as OnBackButton
         }
-        if (requireContext() is OnFragmentChangeActivity) {
-            listenerChangeActivity = requireContext() as OnFragmentChangeActivity
+        if (requireContext() is OnChangeActivity) {
+            listenerChangeActivity = requireContext() as OnChangeActivity
         }
-        if (requireContext() is OnFragmentNextStep) {
-            listenerNextStep = requireContext() as OnFragmentNextStep
+        if (requireContext() is OnNextStep) {
+            listenerNextStep = requireContext() as OnNextStep
         }
-        if (requireContext() is OnFragmentSkipStep) {
-            listenerSkipStep = requireContext() as OnFragmentSkipStep
+        if (requireContext() is OnSkipStep) {
+            listenerSkipStep = requireContext() as OnSkipStep
         }
     }
 
@@ -211,7 +211,7 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
 
     @EventHandler
     private fun clickIndietro() {
-        listenerBackButton?.onFragmentBackButton()
+        listenerBackButton?.onBackButton()
     }
 
     @EventHandler
@@ -260,10 +260,10 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
             null -> throw EccezioneAPI("Errore di comunicazione con il server.")
 
             // Un account di altro tipo con la stessa email è stato trovato
-            true -> listenerSkipStep?.onFragmentSkipStep(this::class)
+            true -> listenerSkipStep?.onSkipStep(this::class)
 
             // Un account di altro tipo con la stessa email non è stato trovato
-            false -> listenerNextStep?.onFragmentNextStep(this::class)
+            false -> listenerNextStep?.onNextStep(this::class)
         }
     }
 
