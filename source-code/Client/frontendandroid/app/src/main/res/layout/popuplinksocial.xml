@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/popupLinkSocial_linearLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"
@@ -8,11 +9,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/popupLinkSocial_campoLink"
-        android:layout_width="320dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
 
         android:layout_margin="20dp"
-        app:boxBackgroundColor="@color/grigio"
+        app:boxBackgroundColor="@color/bianco"
         app:boxCornerRadiusBottomEnd="30dp"
         app:boxCornerRadiusBottomStart="30dp"
         app:boxCornerRadiusTopEnd="30dp"

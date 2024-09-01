@@ -87,7 +87,7 @@
                     android:layout_marginHorizontal="10dp"
                     android:background="@drawable/cerchio"
                     android:backgroundTint="@color/rosso"
-                    android:contentDescription="@string/accessibilitàIndietro"
+                    android:contentDescription="@string/offerta_accessibilitàRifiuta"
                     android:src="@drawable/icona_croce" />
 
                 <ImageButton
@@ -97,7 +97,7 @@
 
                     android:background="@drawable/cerchio"
                     android:backgroundTint="@color/verde"
-                    android:contentDescription="@string/accessibilitàIndietro"
+                    android:contentDescription="@string/modificaProfilo_accessibilitàConferma"
                     android:src="@drawable/icona_spunta" />
             </LinearLayout>
 

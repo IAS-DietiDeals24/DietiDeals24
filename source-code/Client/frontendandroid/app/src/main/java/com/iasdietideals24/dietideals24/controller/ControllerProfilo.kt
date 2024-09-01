@@ -14,6 +14,7 @@ import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaProfilo
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToCreatedAuctions
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToHelp
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToParticipation
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
 
@@ -22,6 +23,7 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
     private var listenerProfile: OnGoToProfile? = null
     private var listenerCreatedAuctions: OnGoToCreatedAuctions? = null
     private var listenerParticipation: OnGoToParticipation? = null
+    private var listenerHelp: OnGoToHelp? = null
     private var listenerChangeActivity: OnChangeActivity? = null
 
     override fun onAttach(context: Context) {
@@ -36,6 +38,9 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
         if (requireContext() is OnGoToParticipation) {
             listenerParticipation = requireContext() as OnGoToParticipation
         }
+        if (requireContext() is OnGoToHelp) {
+            listenerHelp = requireContext() as OnGoToHelp
+        }
         if (requireContext() is OnChangeActivity) {
             listenerChangeActivity = requireContext() as OnChangeActivity
         }
@@ -47,6 +52,7 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
         listenerProfile = null
         listenerCreatedAuctions = null
         listenerParticipation = null
+        listenerHelp = null
         listenerChangeActivity = null
     }
 
@@ -127,7 +133,7 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
 
     @EventHandler
     private fun clickAiuto() {
-        //TODO
+        listenerHelp?.onGoToHelp()
     }
 
     @EventHandler

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/aiuto_linearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grigio"
+    android:gravity="center|top"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/aiuto_linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/aiuto_pulsanteIndietro"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+
+            android:background="@drawable/cerchio"
+            android:backgroundTint="@color/blu"
+            android:contentDescription="@string/accessibilitàIndietro"
+            android:src="@drawable/icona_indietro" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/aiuto_titolo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/aiuto_titolo"
+            android:textAlignment="center"
+            android:textColor="@color/blu"
+            android:textSize="25sp"
+            app:fontFamily="@font/fira_sans_bold" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/aiuto_scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/aiuto_linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="10dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/aiuto_pulsante1"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20sp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/fira_sans_medium"
+                android:gravity="center|start"
+                android:text="@string/aiuto_pulsante1"
+                android:textColor="@color/blu"
+                android:textSize="18sp"
+                app:backgroundTint="@color/materialbuttonbackground"
+                app:icon="@drawable/pulsante_apri"
+                app:iconGravity="end"
+                app:iconSize="40dp"
+                app:iconTint="@null" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/aiuto_pulsante2"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20sp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/fira_sans_medium"
+                android:gravity="center|start"
+                android:text="@string/aiuto_pulsante2"
+                android:textColor="@color/blu"
+                android:textSize="18sp"
+                app:backgroundTint="@color/materialbuttonbackground"
+                app:icon="@drawable/pulsante_apri"
+                app:iconGravity="end"
+                app:iconSize="40dp"
+                app:iconTint="@null" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/aiuto_pulsante3"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20sp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/fira_sans_medium"
+                android:gravity="center|start"
+                android:text="@string/aiuto_pulsante3"
+                android:textColor="@color/blu"
+                android:textSize="18sp"
+                app:backgroundTint="@color/materialbuttonbackground"
+                app:icon="@drawable/pulsante_apri"
+                app:iconGravity="end"
+                app:iconSize="40dp"
+                app:iconTint="@null" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/aiuto_pulsante4"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20sp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/fira_sans_medium"
+                android:gravity="center|start"
+                android:text="@string/aiuto_pulsante4"
+                android:textColor="@color/blu"
+                android:textSize="18sp"
+                app:backgroundTint="@color/materialbuttonbackground"
+                app:icon="@drawable/pulsante_apri"
+                app:iconGravity="end"
+                app:iconSize="40dp"
+                app:iconTint="@null" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/aiuto_pulsante5"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20sp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/fira_sans_medium"
+                android:gravity="center|start"
+                android:text="@string/aiuto_pulsante5"
+                android:textColor="@color/blu"
+                android:textSize="18sp"
+                app:backgroundTint="@color/materialbuttonbackground"
+                app:icon="@drawable/pulsante_apri"
+                app:iconGravity="end"
+                app:iconSize="40dp"
+                app:iconTint="@null" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/aiuto_pulsante6"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20sp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/fira_sans_medium"
+                android:gravity="center|start"
+                android:text="@string/aiuto_pulsante6"
+                android:textColor="@color/blu"
+                android:textSize="18sp"
+                app:backgroundTint="@color/materialbuttonbackground"
+                app:icon="@drawable/pulsante_apri"
+                app:iconGravity="end"
+                app:iconSize="40dp"
+                app:iconTint="@null" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/aiuto_pulsante7"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20sp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/fira_sans_medium"
+                android:gravity="center|start"
+                android:text="@string/aiuto_pulsante7"
+                android:textColor="@color/blu"
+                android:textSize="18sp"
+                app:backgroundTint="@color/materialbuttonbackground"
+                app:icon="@drawable/pulsante_apri"
+                app:iconGravity="end"
+                app:iconSize="40dp"
+                app:iconTint="@null" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/aiuto_pulsante8"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20sp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/fira_sans_medium"
+                android:gravity="center|start"
+                android:text="@string/aiuto_pulsante8"
+                android:textColor="@color/blu"
+                android:textSize="18sp"
+                app:backgroundTint="@color/materialbuttonbackground"
+                app:icon="@drawable/pulsante_apri"
+                app:iconGravity="end"
+                app:iconSize="40dp"
+                app:iconTint="@null" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/aiuto_pulsante9"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20sp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/fira_sans_medium"
+                android:gravity="center|start"
+                android:text="@string/aiuto_pulsante9"
+                android:textColor="@color/blu"
+                android:textSize="18sp"
+                app:backgroundTint="@color/materialbuttonbackground"
+                app:icon="@drawable/pulsante_apri"
+                app:iconGravity="end"
+                app:iconSize="40dp"
+                app:iconTint="@null" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/aiuto_pulsante10"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20sp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/fira_sans_medium"
+                android:gravity="center|start"
+                android:text="@string/aiuto_pulsante10"
+                android:textColor="@color/blu"
+                android:textSize="18sp"
+                app:backgroundTint="@color/materialbuttonbackground"
+                app:icon="@drawable/pulsante_apri"
+                app:iconGravity="end"
+                app:iconSize="40dp"
+                app:iconTint="@null" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/aiuto_pulsante11"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20sp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/fira_sans_medium"
+                android:gravity="center|start"
+                android:text="@string/aiuto_pulsante11"
+                android:textColor="@color/blu"
+                android:textSize="18sp"
+                app:backgroundTint="@color/materialbuttonbackground"
+                app:icon="@drawable/pulsante_apri"
+                app:iconGravity="end"
+                app:iconSize="40dp"
+                app:iconTint="@null" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

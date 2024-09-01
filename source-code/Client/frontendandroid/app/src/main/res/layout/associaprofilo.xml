@@ -69,6 +69,7 @@
         app:layout_constraintTop_toBottomOf="@+id/associaProfilo_sfondoLogo" />
 
     <ScrollView
+        android:id="@+id/associaProfilo_scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
@@ -78,6 +79,7 @@
         app:layout_constraintTop_toBottomOf="@+id/associaProfilo_messaggioCorpo">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/associaProfilo_constraintLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

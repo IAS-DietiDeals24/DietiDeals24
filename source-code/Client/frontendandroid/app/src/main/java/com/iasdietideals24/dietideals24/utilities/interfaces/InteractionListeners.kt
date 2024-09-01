@@ -55,6 +55,10 @@ fun interface OnGoToCreatedAuctions {
     fun onGoToCreatedAuctions()
 }
 
+fun interface OnGoToHelp {
+    fun onGoToHelp()
+}
+
 fun interface OnGoToBids {
     fun onGoToBids(id: Long, sender: KClass<*>)
 }

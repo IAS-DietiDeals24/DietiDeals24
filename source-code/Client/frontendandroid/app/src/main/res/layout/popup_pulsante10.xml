@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/aiuto10_linearLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="280dp"
+    android:background="@color/grigio">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/aiuto10_constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/aiuto10_materialTextView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/aiuto_materialTextView1"
+            android:textAlignment="center"
+            android:textColor="@color/blu"
+            android:textSize="20sp"
+            app:fontFamily="@font/fira_sans"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/aiuto10_shapeableImageView1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/icona_profilo"
+            android:tint="@color/blu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/aiuto10_materialTextView1" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/aiuto10_materialTextView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_profilo"
+            android:textAlignment="center"
+            android:textColor="@color/blu"
+            android:textSize="14sp"
+            app:fontFamily="@font/fira_sans_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/aiuto10_shapeableImageView1" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/aiuto10_materialTextView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/aiuto_materialTextView3"
+            android:textAlignment="center"
+            android:textColor="@color/blu"
+            android:textSize="20sp"
+            app:fontFamily="@font/fira_sans"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/aiuto10_materialTextView2" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/aiuto10_materialButton1"
+            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+            android:layout_width="280dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/fira_sans_medium"
+            android:gravity="center|start"
+            android:text="@string/profilo_pulsante3"
+            android:textColor="@color/blu"
+            android:textSize="18sp"
+            app:backgroundTint="@color/materialbuttonbackground"
+            app:icon="@drawable/icona_soldi"
+            app:iconGravity="end"
+            app:iconSize="40dp"
+            app:iconTint="@color/blu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aiuto10_materialTextView3" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/aiuto10_materialTextView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/aiuto10_materialTextView4"
+            android:textAlignment="center"
+            android:textColor="@color/blu"
+            android:textSize="20sp"
+            app:fontFamily="@font/fira_sans"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/aiuto10_materialButton1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

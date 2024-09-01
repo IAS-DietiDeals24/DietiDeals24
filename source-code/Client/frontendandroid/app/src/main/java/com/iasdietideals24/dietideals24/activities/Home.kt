@@ -40,6 +40,7 @@ import com.iasdietideals24.dietideals24.utilities.interfaces.OnEditButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToBids
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToCreatedAuctions
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToHelp
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToHome
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToParticipation
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
@@ -49,7 +50,7 @@ import kotlin.reflect.KClass
 
 class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToProfile, OnEditButton,
     OnGoToBids, OnRefresh, OnOpenUrl, OnGoToDetails, OnGoToParticipation, OnChangeActivity,
-    OnGoToHome, OnGoToCreatedAuctions {
+    OnGoToHome, OnGoToCreatedAuctions, OnGoToHelp {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,11 +66,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
             insets
         }
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.activity_home_fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
-
-        binding.activityHomeBottomNavigationView.setupWithNavController(navController)
+        binding.activityHomeBottomNavigationView.setupWithNavController(getNavController())
 
         if (CurrentUser.id == 0L) {
             binding.activityHomeBottomNavigationView.menu.getItem(1).isEnabled = false
@@ -276,5 +273,11 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
         val navController = getNavController()
 
         navController.navigate(R.id.controllerAsteCreate)
+    }
+
+    override fun onGoToHelp() {
+        val navController = getNavController()
+
+        navController.navigate(R.id.controllerAiuto)
     }
 }

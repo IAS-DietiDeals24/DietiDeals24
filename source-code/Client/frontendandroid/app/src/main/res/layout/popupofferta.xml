@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/popupOfferta_linearLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/grigio"
     android:gravity="center"
     android:orientation="vertical">
 
@@ -29,11 +31,11 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/popupOfferta_campoOfferta"
-        android:layout_width="320dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
 
         android:layout_margin="20dp"
-        app:boxBackgroundColor="@color/grigio"
+        app:boxBackgroundColor="@color/bianco"
         app:boxCornerRadiusBottomEnd="30dp"
         app:boxCornerRadiusBottomStart="30dp"
         app:boxCornerRadiusTopEnd="30dp"
@@ -68,6 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="@string/offerta_avviso"
+        android:textAlignment="center"
         android:textColor="@color/rosso"
         android:textSize="20sp"
         app:fontFamily="@font/fira_sans_medium" />
