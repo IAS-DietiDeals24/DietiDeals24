@@ -23,8 +23,8 @@ fun interface OnShowBackButton {
     fun onShowBackButton()
 }
 
-fun interface OnEditButton {
-    fun onEditButton(sender: KClass<*>)
+interface OnEditButton {
+    fun onEditButton(id: Long = 0L, sender: KClass<*>)
 }
 
 fun interface OnGoToHome {
@@ -51,10 +51,14 @@ fun interface OnGoToParticipation {
     fun onGoToParticipation()
 }
 
+fun interface OnGoToCreatedAuctions {
+    fun onGoToCreatedAuctions()
+}
+
 fun interface OnGoToBids {
     fun onGoToBids(id: Long, sender: KClass<*>)
 }
 
-fun interface OnRefresh {
-    fun onRefresh(id: Long, sender: KClass<*>)
+interface OnRefresh {
+    fun onRefresh(id: Long = 0L, sender: KClass<*>)
 }

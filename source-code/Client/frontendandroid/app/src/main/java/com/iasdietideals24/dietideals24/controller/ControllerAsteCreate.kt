@@ -4,15 +4,15 @@ import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
-import com.iasdietideals24.dietideals24.databinding.PartecipazioniBinding
+import com.iasdietideals24.dietideals24.databinding.AstecreateBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.classes.adapters.AdapterPartecipazioni
+import com.iasdietideals24.dietideals24.utilities.classes.adapters.AdapterAsteCreate
 import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaAsta
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
 
-class ControllerPartecipazioni : Controller<PartecipazioniBinding>() {
+class ControllerAsteCreate : Controller<AstecreateBinding>() {
 
     private var listenerBackButton: OnBackButton? = null
 
@@ -32,12 +32,12 @@ class ControllerPartecipazioni : Controller<PartecipazioniBinding>() {
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        binding.partecipazioniRecyclerView.layoutManager = LinearLayoutManager(fragmentContext)
+        binding.astecreateRecyclerView.layoutManager = LinearLayoutManager(fragmentContext)
         val result: Array<AnteprimaAsta>? =
-            eseguiChiamataREST("recuperaPartecipazioni", CurrentUser.id)
+            eseguiChiamataREST("recuperaAsteCreate", CurrentUser.id)
 
         if (result != null)
-            binding.partecipazioniRecyclerView.adapter = AdapterPartecipazioni(result, resources)
+            binding.astecreateRecyclerView.adapter = AdapterAsteCreate(result, resources)
         else
             Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(resources.getColor(R.color.blu, null))
@@ -48,7 +48,7 @@ class ControllerPartecipazioni : Controller<PartecipazioniBinding>() {
 
     @UIBuilder
     override fun impostaEventiClick() {
-        binding.partecipazioniPulsanteIndietro.setOnClickListener { clickIndietro() }
+        binding.astecreatePulsanteIndietro.setOnClickListener { clickIndietro() }
     }
 
     @EventHandler

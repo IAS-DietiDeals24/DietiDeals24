@@ -201,4 +201,5 @@
     <string name="offerta_confermaAccetta">Are you sure you want to accept this bid? All the others will be rejected automatically.</string>
     <string name="offerta_confermaRifiuto">Are you sure you want to reject this bid?</string>
     <string name="asta_messaggioPartecipazione">Your last bid was</string>
+    <string name="astecreate_titolo">Created auctions</string>
 </resources>

@@ -255,4 +255,14 @@ interface API {
     fun recuperaPartecipazioni(
         @Query("idAccount") idAccount: Long
     ): Call<Array<AnteprimaAsta>>
+
+    /**
+     * Recupera l'elenco di tutte le aste create dall'utente che ha attualmente effettuato l'accesso.
+     * @param idAccount Identificativo dell'account che ha effettuato l'accesso.
+     * @return L'elenco delle aste create dall'utente.
+     */
+    @GET("home/recuperaAsteCreate")
+    fun recuperaAsteCreate(
+        @Query("idAccount") idAccount: Long
+    ): Call<Array<AnteprimaAsta>>
 }

@@ -69,6 +69,13 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_controllerProfilo_to_controllerAsteCreate"
+            app:destination="@id/controllerAsteCreate"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/controllerDettagliAsta"
@@ -158,6 +165,10 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/controllerModificaAsta"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="id"
+            android:defaultValue="0L"
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/controllerOfferte"
@@ -197,5 +208,38 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/controllerAsteCreate"
+        android:name="com.iasdietideals24.dietideals24.controller.ControllerAsteCreate"
+        android:label="ControllerAsteCreate"
+        tools:layout="@layout/astecreate">
+        <action
+            android:id="@+id/action_controllerAsteCreate_to_controllerDettagliAsta"
+            app:destination="@id/controllerDettagliAsta"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_controllerAsteCreate_to_controllerOfferte"
+            app:destination="@id/controllerOfferte"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_controllerAsteCreate_to_controllerModificaAsta"
+            app:destination="@id/controllerModificaAsta"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/controllerAsteCreate" />
+        <action
+            android:id="@+id/action_controllerAsteCreate_self"
+            app:destination="@id/controllerAsteCreate"
+            app:popUpTo="@id/controllerAsteCreate"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

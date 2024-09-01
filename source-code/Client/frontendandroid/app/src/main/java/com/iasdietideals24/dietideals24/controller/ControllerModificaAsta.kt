@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import coil.load
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
@@ -26,6 +27,7 @@ import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
+import com.iasdietideals24.dietideals24.utilities.classes.data.DettagliAsta
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalDate
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.classes.toMillis
@@ -35,6 +37,8 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 class ControllerModificaAsta : Controller<ModificaastaBinding>() {
+
+    private val args: ControllerModificaAstaArgs by navArgs()
 
     private lateinit var viewModel: ModelAsta
 
@@ -142,6 +146,24 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
         viewModel = ViewModelProvider(fragmentActivity)[ModelAsta::class]
+
+        if (args.id != 0L) {
+            val asta: DettagliAsta? = eseguiChiamataREST("caricaAsta", args.id)
+
+            if (asta != null) {
+                viewModel.idAsta.value = asta.anteprimaAsta.id
+                viewModel.idCreatore.value = asta.idCreatore
+                viewModel.nomeCreatore.value = asta.nomeCreatore
+                viewModel.tipo.value = asta.anteprimaAsta.tipoAsta
+                viewModel.dataFine.value = asta.anteprimaAsta.dataScadenza
+                viewModel.oraFine.value = asta.anteprimaAsta.oraScadenza
+                viewModel.prezzo.value = asta.anteprimaAsta.offerta
+                viewModel.immagine.value = asta.anteprimaAsta.foto
+                viewModel.nome.value = asta.anteprimaAsta.nome
+                viewModel.categoria.value = asta.categoria
+                viewModel.descrizione.value = asta.descrizione
+            }
+        }
 
         requestPermissions =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results: Map<String, Boolean> ->

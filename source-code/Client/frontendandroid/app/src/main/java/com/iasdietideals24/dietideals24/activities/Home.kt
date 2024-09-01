@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.controller.ControllerAsteCreateDirections
 import com.iasdietideals24.dietideals24.controller.ControllerDettagliAsta
 import com.iasdietideals24.dietideals24.controller.ControllerDettagliAstaDirections
 import com.iasdietideals24.dietideals24.controller.ControllerDettagliProfilo
@@ -29,6 +30,7 @@ import com.iasdietideals24.dietideals24.controller.ControllerProfiloDirections
 import com.iasdietideals24.dietideals24.databinding.ActivityHomeBinding
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderAnteprimaAsta
+import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderAstaCreata
 import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderNotifica
 import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderOfferta
 import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderPartecipazione
@@ -36,6 +38,7 @@ import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnEditButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToBids
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToCreatedAuctions
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToHome
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToParticipation
@@ -46,7 +49,7 @@ import kotlin.reflect.KClass
 
 class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToProfile, OnEditButton,
     OnGoToBids, OnRefresh, OnOpenUrl, OnGoToDetails, OnGoToParticipation, OnChangeActivity,
-    OnGoToHome {
+    OnGoToHome, OnGoToCreatedAuctions {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,6 +122,14 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
                     )
                 navController.navigate(action)
             }
+
+            ViewHolderAstaCreata::class -> {
+                val action =
+                    ControllerAsteCreateDirections.actionControllerAsteCreateToControllerDettagliAsta(
+                        id
+                    )
+                navController.navigate(action)
+            }
         }
     }
 
@@ -160,7 +171,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
         }
     }
 
-    override fun onEditButton(sender: KClass<*>) {
+    override fun onEditButton(id: Long, sender: KClass<*>) {
         val navController = getNavController()
 
         when (sender) {
@@ -173,6 +184,14 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
             ControllerDettagliAsta::class -> {
                 val action =
                     ControllerDettagliAstaDirections.actionControllerDettagliAstaToControllerModificaAsta()
+                navController.navigate(action)
+            }
+
+            ViewHolderAstaCreata::class -> {
+                val action =
+                    ControllerAsteCreateDirections.actionControllerAsteCreateToControllerModificaAsta(
+                        id
+                    )
                 navController.navigate(action)
             }
         }
@@ -211,6 +230,12 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
                     )
                 navController.navigate(action)
             }
+
+            ViewHolderAstaCreata::class -> {
+                val action =
+                    ControllerAsteCreateDirections.actionControllerAsteCreateToControllerOfferte(id)
+                navController.navigate(action)
+            }
         }
     }
 
@@ -231,10 +256,25 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
                     ControllerOfferteDirections.actionControllerOfferteSelf(id)
                 navController.navigate(action)
             }
+
+            ViewHolderAstaCreata::class -> {
+                navController.popBackStack()
+                val action =
+                    ControllerAsteCreateDirections.actionControllerAsteCreateSelf()
+                navController.navigate(action)
+            }
         }
     }
 
     override fun onGoToParticipation() {
-        TODO("Not yet implemented")
+        val navController = getNavController()
+
+        navController.navigate(R.id.controllerPartecipazioni)
+    }
+
+    override fun onGoToCreatedAuctions() {
+        val navController = getNavController()
+
+        navController.navigate(R.id.controllerAsteCreate)
     }
 }

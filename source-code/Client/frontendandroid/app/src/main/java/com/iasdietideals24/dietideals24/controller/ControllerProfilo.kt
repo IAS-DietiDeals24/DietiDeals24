@@ -13,12 +13,14 @@ import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaProfilo
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToCreatedAuctions
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToParticipation
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
 
 class ControllerProfilo : Controller<ProfiloBinding>() {
 
     private var listenerProfile: OnGoToProfile? = null
+    private var listenerCreatedAuctions: OnGoToCreatedAuctions? = null
     private var listenerParticipation: OnGoToParticipation? = null
     private var listenerChangeActivity: OnChangeActivity? = null
 
@@ -27,6 +29,9 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
 
         if (requireContext() is OnGoToProfile) {
             listenerProfile = requireContext() as OnGoToProfile
+        }
+        if (requireContext() is OnGoToCreatedAuctions) {
+            listenerCreatedAuctions = requireContext() as OnGoToCreatedAuctions
         }
         if (requireContext() is OnGoToParticipation) {
             listenerParticipation = requireContext() as OnGoToParticipation
@@ -40,6 +45,7 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
         super.onDetach()
 
         listenerProfile = null
+        listenerCreatedAuctions = null
         listenerParticipation = null
         listenerChangeActivity = null
     }
@@ -111,7 +117,7 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
 
     @EventHandler
     private fun clickAste() {
-        //TODO
+        listenerCreatedAuctions?.onGoToCreatedAuctions()
     }
 
     @EventHandler

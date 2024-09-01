@@ -185,7 +185,7 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
 
     @EventHandler
     private fun clickModifica() {
-        listenerEditButton?.onEditButton(ControllerDettagliProfilo::class)
+        listenerEditButton?.onEditButton(sender = ControllerDettagliProfilo::class)
     }
 
     @EventHandler

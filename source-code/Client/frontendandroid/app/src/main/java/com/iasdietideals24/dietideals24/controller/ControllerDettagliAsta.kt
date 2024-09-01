@@ -370,7 +370,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
     @EventHandler
     private fun clickModifica() {
-        listenerEditButton?.onEditButton(this::class)
+        listenerEditButton?.onEditButton(sender = this::class)
     }
 
     @EventHandler
