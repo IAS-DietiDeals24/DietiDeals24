@@ -107,17 +107,6 @@
             \end{figure}
             \subsubsection{Perché Docker (Compose)?}
                 Il successo di Docker è dovuto al rivoluzionario approccio allo sviluppo che esso promuove. Grazie a Docker, si può impacchettare all'interno di un'immagine Docker l'applicazione e tutto l'ambiente necessario alla sua esecuzione. L'immagine può essere caricata sulla repository centrale di Docker affinché chiunque possa accedervi, o comunque essere distribuita. Non bisogna quindi preoccuparsi di nulla: ogni container è isolato e contiene tutto ciò che è necessario, e non c'è bisogno di installare applicazioni oltre al Docker Engine, né gestire le librerie o le versioni dei linguaggi installati. Aggiornamenti dei software possono essere sempre rilasciati attraverso le immagini, e basta scaricarne la nuova versione e metterla in esecuzione sull'Engine per poter disporre degli ultimi strumenti. Permette anche di avere sulla stessa macchina più istanze in esecuzione di una stessa applicazione o servizio per favorire il bilanciamento del carico, la tolleranza al guasto e l'isolamento in caso di compromissione.
-                
-        \subsection{Google Cloud}
-            \subsubsection{Cos'è Google Cloud?}
-                Google Cloud Platform (GCP) è una suite di servizi di cloud computing offerta da Google che fornisce una enorme quantità di servizi cloud modulari, tra cui l'elaborazione, l'archiviazione dei dati, l'analisi dei dati e l'apprendimento automatico, insieme a una serie di strumenti di gestione. Esso è gestito con la stessa infrastruttura che Google utilizza internamente per i suoi prodotti per gli utenti finali. \cite{Wikipedia7} Nel contesto dell'applicazione DietiDeals24, sono stati utilizzati i servizi Artifact Registry per la conservazione delle immagini Docker, Cloud Build per la costruzione dei container a partire dalle immagini e Cloud Run per il deploy serverless del backend, Firebase per log e statistiche di utilizzo.
-            \begin{figure}[htbp!]
-                \centering
-                \includegraphics[width=0.5\linewidth]{Immagini/System Design/Google Cloud.png}
-                \caption{Logo di Google Cloud}
-            \end{figure}
-            \subsubsection{Perché Google Cloud?}
-                Google Cloud offre un'infrastruttura altamente scalabile, che consente alle aziende di crescere in modo efficiente. Possiede centri dati in tutto il mondo, garantendo bassa latenza ed alta disponibilità. Offre solide misure di sicurezza, tra cui crittografia dei dati, certificazioni di conformità e rilevamento avanzato delle minacce. Dispone di potenti strumenti di machine learning e AI che consentono analisi avanzate dei dati. Infine, con la tariffazione "pay-as-you-go", le aziende possono gestire i costi in modo efficace e pagare solo per ciò che utilizzano.
 
         \subsection{PostgreSQL}
             \subsubsection{Cos'è PostgreSQL? \cite{PostgreSQL1}}
