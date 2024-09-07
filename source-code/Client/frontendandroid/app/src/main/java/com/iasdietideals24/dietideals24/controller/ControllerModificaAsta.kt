@@ -33,6 +33,7 @@ import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.classes.toMillis
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
+import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -220,7 +221,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
         }
         viewModel.oraFine.observe(viewLifecycleOwner, oraFineObserver)
 
-        val prezzoObserver = Observer<Double> { newPrezzo ->
+        val prezzoObserver = Observer<BigDecimal> { newPrezzo ->
             binding.modificaPrezzo.text =
                 getString(R.string.placeholder_prezzo, newPrezzo.toString())
         }

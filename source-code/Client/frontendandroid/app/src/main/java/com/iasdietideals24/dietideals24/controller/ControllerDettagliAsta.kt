@@ -27,6 +27,7 @@ import com.iasdietideals24.dietideals24.utilities.interfaces.OnEditButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToBids
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnRefresh
+import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -195,7 +196,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         }
         viewModel.descrizione.observe(viewLifecycleOwner, descrizioneObserver)
 
-        val prezzoObserver = Observer<Double> { newPrezzo ->
+        val prezzoObserver = Observer<BigDecimal> { newPrezzo ->
             binding.dettagliAstaOfferta.text = getString(
                 R.string.placeholder_prezzo,
                 if (viewModel.tipo.value != silenziosa)
@@ -306,7 +307,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                 Offerta(
                     args.id,
                     CurrentUser.id,
-                    input.text.toString().toDouble(),
+                    input.text.toString().toBigDecimal(),
                     LocalDate.now(),
                     LocalTime.now()
                 )
@@ -348,20 +349,24 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
     }
 
     private fun isPriceInvalid(price: String): Boolean {
-        val double = price.toDouble()
+        val bigDecimal = price.toBigDecimal()
         val regex = Regex("^\\d+\\.\\d{2}\$")
 
         return when (viewModel.tipo.value) {
             tempoFisso -> {
-                double <= viewModel.prezzo.value!! || double < 0.0 || !price.matches(regex)
+                bigDecimal <= viewModel.prezzo.value!! || bigDecimal < BigDecimal(0.0) || !price.matches(
+                    regex
+                )
             }
 
             inversa -> {
-                double >= viewModel.prezzo.value!! || double < 0.0 || !price.matches(regex)
+                bigDecimal >= viewModel.prezzo.value!! || bigDecimal < BigDecimal(0.0) || !price.matches(
+                    regex
+                )
             }
 
             silenziosa -> {
-                double < 0.0 || !price.matches(regex)
+                bigDecimal < BigDecimal(0.0) || !price.matches(regex)
             }
 
             else -> true

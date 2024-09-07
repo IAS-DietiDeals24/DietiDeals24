@@ -1,5 +1,6 @@
 package com.iasdietideals24.dietideals24.utilities.classes.data
 
+import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -10,5 +11,5 @@ data class AnteprimaAsta(
     val oraScadenza: LocalTime = LocalTime.MIN,
     val foto: ByteArray = ByteArray(0),
     val nome: String = "",
-    val offerta: Double = 0.0
+    val offerta: BigDecimal = BigDecimal(0.0)
 )

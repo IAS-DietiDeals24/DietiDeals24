@@ -34,6 +34,7 @@ import com.iasdietideals24.dietideals24.utilities.classes.toMillis
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToHome
 import kotlinx.coroutines.runBlocking
+import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -244,8 +245,14 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
         }
         viewModel.oraFine.observe(viewLifecycleOwner, oraFineObserver)
 
-        val prezzoObserver = Observer<Double> { newPrezzo ->
-            binding.creaPrezzo.setText(newPrezzo.toString())
+        val prezzoObserver = Observer<BigDecimal> { newPrezzo ->
+            binding.creaPrezzo.setText(
+                String.format(
+                    resources.configuration.getLocales().get(0),
+                    "%.2f",
+                    newPrezzo.toDouble()
+                )
+            )
         }
         viewModel.prezzo.observe(viewLifecycleOwner, prezzoObserver)
 

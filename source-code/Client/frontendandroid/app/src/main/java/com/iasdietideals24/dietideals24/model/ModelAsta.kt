@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
 import com.iasdietideals24.dietideals24.utilities.classes.data.Asta
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
+import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
 
@@ -52,11 +53,11 @@ class ModelAsta : ViewModel() {
     val oraFine: MutableLiveData<LocalTime>
         get() = _oraFine
 
-    private val _prezzo: MutableLiveData<Double> by lazy {
-        MutableLiveData<Double>(0.0)
+    private val _prezzo: MutableLiveData<BigDecimal> by lazy {
+        MutableLiveData<BigDecimal>(BigDecimal(0.0))
     }
 
-    val prezzo: MutableLiveData<Double>
+    val prezzo: MutableLiveData<BigDecimal>
         get() = _prezzo
 
     private val _immagine: MutableLiveData<ByteArray> by lazy {
@@ -94,7 +95,7 @@ class ModelAsta : ViewModel() {
         _tipo.value = ""
         _dataFine.value = LocalDate.MIN
         _oraFine.value = LocalTime.MIN
-        _prezzo.value = 0.0
+        _prezzo.value = BigDecimal(0.0)
         _immagine.value = ByteArray(0)
         _nome.value = ""
         _categoria.value = ""
@@ -172,7 +173,7 @@ class ModelAsta : ViewModel() {
     @Validation
     @Throws(EccezioneCampiNonCompilati::class)
     private fun prezzo() {
-        if (prezzo.value == 0.0) {
+        if (prezzo.value?.toDouble() == 0.0) {
             throw EccezioneCampiNonCompilati("Prezzo non compilato.")
         }
         if (prezzo.toString().toDouble() < 0.0 || !prezzo.toString()
