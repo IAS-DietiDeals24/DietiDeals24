@@ -140,8 +140,8 @@
             app:popUpTo="@id/controllerDettagliProfilo" />
         <argument
             android:name="id"
-            android:defaultValue="0L"
-            app:argType="long" />
+            android:defaultValue=""
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/controllerModificaProfilo"

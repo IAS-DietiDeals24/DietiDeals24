@@ -166,7 +166,7 @@ class ControllerAccesso : Controller<AccessoBinding>() {
         try {
             viewModel.validate()
 
-            val returned: Long? = eseguiChiamataREST(
+            val returned: String? = eseguiChiamataREST(
                 "accedi",
                 viewModel.email.value,
                 viewModel.password.value,
@@ -174,7 +174,7 @@ class ControllerAccesso : Controller<AccessoBinding>() {
             )
             when (returned) {
                 null -> throw EccezioneAPI("Errore di comunicazione con il server.")
-                0L -> throw EccezioneAccountNonEsistente("Account non esistente.")
+                "" -> throw EccezioneAccountNonEsistente("Account non esistente.")
                 else -> {
                     GlobalScope.launch {
                         salvaPreferenzaStringa("email", viewModel.email.value!!)

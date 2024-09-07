@@ -58,7 +58,7 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
 
     @UIBuilder
     override fun impostaMessaggiCorpo() {
-        if (CurrentUser.id != 0L) {
+        if (CurrentUser.id != "") {
             val result: AnteprimaProfilo? =
                 eseguiChiamataREST("recuperaNotifiche", CurrentUser.id)
 

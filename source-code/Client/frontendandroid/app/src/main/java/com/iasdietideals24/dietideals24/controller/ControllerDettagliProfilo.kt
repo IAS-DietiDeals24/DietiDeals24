@@ -74,11 +74,10 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
 
         val returned: Profilo? = eseguiChiamataREST(
             "caricaProfilo",
-            if (args.id == 0L) CurrentUser.id else args.id
+            if (args.id == "") CurrentUser.id else args.id
         )
 
         if (returned != null) {
-            viewModel.idProfilo.value = returned.idProfilo
             viewModel.tipoAccount.value = when (returned.tipoAccount) {
                 "compratore" -> getString(R.string.tipoAccount_compratore)
                 "venditore" -> getString(R.string.tipoAccount_venditore)
@@ -99,9 +98,7 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
             viewModel.linkX.value = returned.linkX
             viewModel.linkPersonale.value = returned.linkPersonale
 
-            if (CurrentUser.id != returned.idAccountCollegati.first &&
-                CurrentUser.id != returned.idAccountCollegati.second
-            )
+            if (CurrentUser.id != returned.idAccountCollegati)
                 binding.dettagliProfiloPulsanteModifica.visibility = View.GONE
         } else {
             Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)

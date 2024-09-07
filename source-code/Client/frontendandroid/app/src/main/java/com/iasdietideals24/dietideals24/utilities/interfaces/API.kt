@@ -25,14 +25,14 @@ interface API {
      * @param accountEmail Email dell'account che sta tentando di accedere.
      * @param accountPassword Password dell'account che sta tentando di accedere.
      * @param tipoAccount Indica il tipo di account che sta tentando di accedere.
-     * @return L'identificativo dell'account che ha effettuato l'accesso. Se l'account non esiste, viene restituito 0.
+     * @return L'identificativo dell'account che ha effettuato l'accesso. Se l'account non esiste, viene restituita la stringa vuota.
      */
     @GET("accesso/accedi")
     fun accedi(
         @Query("email") accountEmail: String,
         @Query("password") accountPassword: String,
         @Query("tipoAccount") tipoAccount: String
-    ): Call<Long>
+    ): Call<String>
 
     /**
      * Il metodo controlla se l'email è già associata a un account dello stesso tipo.
@@ -44,6 +44,16 @@ interface API {
     fun esisteEmail(
         @Query("email") accountEmail: String,
         @Query("tipoAccount") tipoAccount: String
+    ): Call<Boolean>
+
+    /**
+     * Il metodo controlla se il nome utente è già associata a un profilo.
+     * @param nomeUtente Nome utente del profilo che sta tentando di registrarsi.
+     * @return Un booleano che indica se il nome utente è già associato a un profilo.
+     */
+    @GET("registrazione/esisteNomeUtente")
+    fun esisteNomeUtente(
+        @Query("nomeUtente") nomeUtente: String,
     ): Call<Boolean>
 
     /**
@@ -65,13 +75,13 @@ interface API {
      * l'utente ha un account dello stesso tipo che ha selezionato.
      * @param facebookId Identificativo dell'account Facebook dell'utente.
      * @param tipoAccount Indica il tipo di account che sta tentando di accedere o registrarsi.
-     * @return L'identificativo dell'account
+     * @return L'identificativo dell'account associato a questo account Facebook. Se l'account non esiste, viene restituita la stringa vuota.
      */
     @GET("accountFacebook")
     fun accountFacebook(
         @Query("facebookId") facebookId: String,
         @Query("tipoAccount") tipoAccount: String
-    ): Call<Long>
+    ): Call<String>
 
     /**
      * Registra i dati del nuovo account e li associa al profilo già esistente.
@@ -81,7 +91,7 @@ interface API {
     @POST("registrazione/associazioneProfilo")
     fun associazioneProfilo(
         @Body account: Account
-    ): Call<Long>
+    ): Call<String>
 
     /**
      * Registra i dati del nuovo account e crea un nuovo profilo da associare a tale account.
@@ -91,19 +101,19 @@ interface API {
     @POST("registrazione/creazioneProfilo")
     fun creazioneProfilo(
         @Body accountProfilo: AccountProfilo
-    ): Call<Long>
+    ): Call<String>
 
     /**
      * Recupera l'elenco di tutte le aste con le quali può interagire l'utente che ha attualmente
      * effettuato il login.
      * Attenzione: il campo "offerta" deve conservare l'offerta più alta/bassa che è stata
      * presentata per l'asta.
-     * @param idAccount Identificativo dell'account che ha effettuato l'accesso.
+     * @param nomeUtente Identificativo dell'account che ha effettuato l'accesso.
      * @return L'elenco delle aste da mostrare nella home.
      */
     @GET("home/recuperaAste")
     fun recuperaAste(
-        @Query("idAccount") idAccount: Long
+        @Query("nomeUtente") nomeUtente: String
     ): Call<Array<AnteprimaAsta>>
 
     /**
@@ -116,14 +126,14 @@ interface API {
      * entrambi i criteri.
      * Attenzione: il campo "offerta" deve conservare l'offerta più alta/bassa che è stata
      * presentata per l'asta.
-     * @param idAccount Identificativo dell'account che ha effettuato l'accesso.
+     * @param nomeUtente Identificativo dell'account che ha effettuato l'accesso.
      * @param ricerca Stringa di ricerca specificata dall'utente.
      * @param filtro Filtro specificato dall'utente.
      * @return L'elenco delle aste da mostrare nella home dopo la ricerca e/o il filtro.
      */
     @GET("home/ricercaAste")
     fun ricercaAste(
-        @Query("idAccount") idAccount: Long,
+        @Query("nomeUtente") nomeUtente: String,
         @Query("ricerca") ricerca: String,
         @Query("filtro") filtro: String
     ): Call<Array<AnteprimaAsta>>
@@ -140,12 +150,12 @@ interface API {
 
     /**
      * Recupera tutte le notifiche che sono state indirizzate all'utente che ha effettuato l'accesso.
-     * @param idAccount Identificativo dell'account che ha effettuato l'accesso.
+     * @param nomeUtente Identificativo dell'account che ha effettuato l'accesso.
      * @return L'elenco delle notifiche da mostrare all'utente.
      */
     @GET("home/recuperaNotifiche")
     fun recuperaNotifiche(
-        @Query("idAccount") idAccount: Long
+        @Query("nomeUtente") nomeUtente: String
     ): Call<Array<Notifica>>
 
     /**
@@ -160,12 +170,12 @@ interface API {
 
     /**
      * Carica tutti i dati di un profilo collegato ad un account.
-     * @param idAccount Identificativo dell'account del quale recuperare il profilo.
+     * @param nomeUtente Identificativo dell'account del quale recuperare il profilo.
      * @return Le informazioni da mostrare sul profilo, con altre informazioni importanti.
      */
     @GET("home/caricaProfilo")
     fun caricaProfilo(
-        @Query("idAccount") idAccount: Long
+        @Query("nomeUtente") nomeUtente: String
     ): Call<Profilo>
 
     /**
@@ -248,21 +258,21 @@ interface API {
      * ha inviato almeno un'offerta.
      * Attenzione: il campo "offerta" deve conservare l'offerta più alta/bassa che l'utente che ha
      * attualmente effettuato l'accesso è stata presentata per l'asta.
-     * @param idAccount Identificativo dell'account che ha effettuato l'accesso.
+     * @param nomeUtente Identificativo dell'account che ha effettuato l'accesso.
      * @return L'elenco delle aste alle quali l'utente ha partecipato.
      */
     @GET("home/recuperaPartecipazioni")
     fun recuperaPartecipazioni(
-        @Query("idAccount") idAccount: Long
+        @Query("nomeUtente") nomeUtente: String
     ): Call<Array<AnteprimaAsta>>
 
     /**
      * Recupera l'elenco di tutte le aste create dall'utente che ha attualmente effettuato l'accesso.
-     * @param idAccount Identificativo dell'account che ha effettuato l'accesso.
+     * @param nomeUtente Identificativo dell'account che ha effettuato l'accesso.
      * @return L'elenco delle aste create dall'utente.
      */
     @GET("home/recuperaAsteCreate")
     fun recuperaAsteCreate(
-        @Query("idAccount") idAccount: Long
+        @Query("nomeUtente") nomeUtente: String
     ): Call<Array<AnteprimaAsta>>
 }

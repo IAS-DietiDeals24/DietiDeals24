@@ -7,7 +7,7 @@ import java.time.LocalTime
 data class OffertaRicevuta(
     val idOfferta: Long = 0L,
     val idAsta: Long = 0L,
-    val idOfferente: Long = 0L,
+    val idOfferente: String = "",
     val nomeOfferente: String = "",
     val immagineOfferente: ByteArray = ByteArray(0),
     val offerta: BigDecimal = BigDecimal(0.0),

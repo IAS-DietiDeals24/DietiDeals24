@@ -9,7 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitController {
-    private const val API_URL = "https://dietideals24-ayjozpzy4a-og.a.run.app"
+    private const val API_URL = ""
 
     val instance: Retrofit by lazy {
         Retrofit.Builder()
@@ -30,9 +30,9 @@ object DataStore {
 }
 
 object CurrentUser {
-    private var _id: Long = 0
+    private var _id: String = ""
 
-    var id: Long
+    var id: String
         get() = _id
         set(value) {
             _id = value

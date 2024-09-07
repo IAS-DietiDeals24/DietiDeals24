@@ -18,11 +18,11 @@ class ModelAsta : ViewModel() {
     val idAsta: MutableLiveData<Long>
         get() = _idAsta
 
-    private val _idCreatore: MutableLiveData<Long> by lazy {
-        MutableLiveData<Long>(0L)
+    private val _idCreatore: MutableLiveData<String> by lazy {
+        MutableLiveData<String>("")
     }
 
-    val idCreatore: MutableLiveData<Long>
+    val idCreatore: MutableLiveData<String>
         get() = _idCreatore
 
     private val _nomeCreatore: MutableLiveData<String> by lazy {
@@ -90,7 +90,7 @@ class ModelAsta : ViewModel() {
 
     fun clear() {
         _idAsta.value = 0L
-        _idCreatore.value = 0L
+        _idCreatore.value = ""
         _nomeCreatore.value = ""
         _tipo.value = ""
         _dataFine.value = LocalDate.MIN

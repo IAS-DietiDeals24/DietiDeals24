@@ -227,4 +227,5 @@
     <string name="offerta_accessibilitàConferma">Conferma</string>
     <string name="offerta_accessibilitàRifiuta">Rifiuta</string>
     <string name="aiuto11_materialTextView6">per confermare i cambiamenti. Se cambi idea, puoi annullare tutte le modifiche usando il pulsante in alto a sinistra</string>
+    <string name="registrazione_erroreNomeUtenteGiàUsato">Il nome utente è stato già usato da un altro utente per creare un profilo.</string>
 </resources>

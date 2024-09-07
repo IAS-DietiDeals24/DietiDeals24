@@ -5,7 +5,7 @@ import java.time.LocalTime
 
 data class Notifica(
     val idAsta: Long = 0L,
-    val idMittente: Long = 0L,
+    val idMittente: String = "",
     val mittente: String = "",
     val immagineMittente: ByteArray = ByteArray(0),
     val messaggio: String = "",

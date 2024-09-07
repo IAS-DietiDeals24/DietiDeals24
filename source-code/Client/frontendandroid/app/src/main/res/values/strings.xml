@@ -237,4 +237,5 @@
     <string name="aiuto11_materialTextView5">Now you can edit the information in the individual fields. When you are done, press the button on the top-right of the screen</string>
     <string name="aiuto11_materialTextView4">All your information will be listed. In the bottom-right of the screen, press</string>
     <string name="aiuto11_materialTextView6">to confirm the changes. If you change your mind, you can revert all the modifications by using the button on the top-left of the screen</string>
+    <string name="registrazione_erroreNomeUtenteGiàUsato">The username was already used to create a profile by another user.</string>
 </resources>

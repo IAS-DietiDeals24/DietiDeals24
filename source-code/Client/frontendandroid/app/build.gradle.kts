@@ -50,7 +50,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.activity.ktx)
@@ -68,9 +67,4 @@ dependencies {
     implementation(libs.lifecycle.common.jvm)
     implementation(libs.commons.lang)
     implementation(libs.kotlin.reflect)
-
-    testImplementation(libs.junit.jupiter.api)
-
-    androidTestImplementation(libs.junit)
-    androidTestImplementation(libs.espresso.core)
 }

@@ -268,35 +268,16 @@
 
             </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/modificaProfilo_campoEmail"
-                android:layout_width="320dp"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/modificaProfilo_email"
+                android:layout_width="wrap_content"
+
                 android:layout_height="wrap_content"
-                app:boxBackgroundColor="@color/bianco"
-                app:boxCornerRadiusBottomEnd="30dp"
-                app:boxCornerRadiusBottomStart="30dp"
-                app:boxCornerRadiusTopEnd="30dp"
-                app:boxCornerRadiusTopStart="30dp"
-                app:boxStrokeColor="@color/arancione"
-                app:boxStrokeErrorColor="@color/rosso"
-                app:boxStrokeWidth="1.5dp"
-                app:cursorColor="@color/arancione"
-                app:cursorErrorColor="@color/rosso"
-                app:endIconMode="clear_text"
-                app:endIconTint="@color/blu"
-                app:errorIconTint="@color/rosso"
-                app:errorTextColor="@color/arancione"
-                app:hintTextColor="@color/arancione">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/modificaProfilo_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/accessoRegistrazione_accessibilitàEmail"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/nero" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_weight="1"
+                android:text="@string/placeholder"
+                android:textColor="@color/blu"
+                android:textSize="20sp"
+                app:fontFamily="@font/fira_sans" />
 
             <LinearLayout
                 android:id="@+id/modificaProfilo_linearLayout8"

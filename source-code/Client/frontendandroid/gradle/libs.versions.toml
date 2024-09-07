@@ -5,15 +5,12 @@ appcompat = "1.7.0"
 activity-ktx = "1.9.2"
 material = "1.12.0"
 firebase-crashlytics = "19.0.3"
-junit-jupiter-api = "5.11.0"
-junit = "1.2.1"
-espresso-core = "3.6.1"
 retrofit = "2.11.0"
 converter-gson = "2.11.0"
 facebook-login = "17.0.1"
 coil = "2.7.0"
 datastore-preferences = "1.1.1"
-commons-lang = "3.16.0"
+commons-lang = "3.17.0"
 gradle = "8.6.0"
 navigation-fragment-ktx = "2.8.0"
 navigation-ui-ktx = "2.8.0"
@@ -29,7 +26,6 @@ androidx-navigation-safeargs-kotlin = "2.8.0"
 google-services = "4.4.2"
 google-firebase-crashlytics = "3.0.2"
 google-firebase-perf = "1.4.2"
-sonarqube = "5.1.0.4882"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -37,9 +33,6 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebase-crashlytics" }
-junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter-api" }
-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "converter-gson" }
 facebook-login = { group = "com.facebook.android", name = "facebook-login", version.ref = "facebook-login" }
@@ -61,4 +54,3 @@ androidx-navigation-safeargs-kotlin = { id = "androidx.navigation.safeargs.kotli
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "google-firebase-crashlytics" }
 google-firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "google-firebase-perf" }
-sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }

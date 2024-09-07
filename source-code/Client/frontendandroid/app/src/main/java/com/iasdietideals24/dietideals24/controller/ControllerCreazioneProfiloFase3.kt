@@ -85,10 +85,10 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
 
     @EventHandler
     private fun clickFine() {
-        val returned: Long? =
+        val returned: String? =
             eseguiChiamataREST("creazioneProfilo", viewModel.toAccountProfilo())
 
-        if (returned == null || returned == 0L) {
+        if (returned == null || returned == "") {
             Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(resources.getColor(R.color.arancione, null))
                 .setTextColor(resources.getColor(R.color.grigio, null))

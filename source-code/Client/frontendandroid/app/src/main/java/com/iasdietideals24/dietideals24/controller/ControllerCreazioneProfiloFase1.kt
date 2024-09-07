@@ -19,6 +19,7 @@ import com.iasdietideals24.dietideals24.utilities.classes.toLocalDate
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.classes.toMillis
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneNomeUtenteUsato
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnNextStep
 import java.time.LocalDate
@@ -135,6 +136,11 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
                 binding.creazioneProfiloFase1CampoNome,
                 binding.creazioneProfiloFase1CampoCognome,
                 binding.creazioneProfiloFase1CampoDataNascita
+            )
+        } catch (_: EccezioneNomeUtenteUsato) {
+            erroreCampo(
+                R.string.registrazione_erroreNomeUtenteGiàUsato,
+                binding.creazioneProfiloFase1CampoNomeUtente
             )
         }
     }

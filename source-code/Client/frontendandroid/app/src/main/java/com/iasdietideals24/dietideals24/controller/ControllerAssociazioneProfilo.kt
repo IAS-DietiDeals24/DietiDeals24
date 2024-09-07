@@ -44,10 +44,10 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
 
     @EventHandler
     private fun clickFine() {
-        val returned: Long? =
+        val returned: String? =
             eseguiChiamataREST("associazioneProfilo", viewModel.toAccount())
 
-        if (returned == null || returned == 0L) {
+        if (returned == null || returned == "") {
             binding.associaProfiloPulsanteFine.isEnabled = false
 
             Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)

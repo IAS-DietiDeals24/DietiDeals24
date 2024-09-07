@@ -117,7 +117,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
             viewModel.categoria.value = asta.categoria
             viewModel.descrizione.value = asta.descrizione
 
-            if (CurrentUser.id == 0L) {
+            if (CurrentUser.id == "") {
                 binding.dettagliAstaPulsanteOfferta.isEnabled = false
             } else if (CurrentUser.id == asta.idCreatore) {
                 binding.dettagliAstaPulsanteOfferta.visibility = View.GONE

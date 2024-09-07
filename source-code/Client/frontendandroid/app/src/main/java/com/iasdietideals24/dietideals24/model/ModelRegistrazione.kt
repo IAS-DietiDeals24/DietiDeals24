@@ -10,6 +10,7 @@ import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneNomeUtenteUsato
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezionePasswordNonSicura
 import retrofit2.Call
 import retrofit2.Callback
@@ -270,6 +271,33 @@ class ModelRegistrazione : ViewModel() {
     private fun nomeUtente() {
         if (nomeUtente.value?.isEmpty() == true)
             throw EccezioneCampiNonCompilati("Nome utente non compilato.")
+
+        val returned = esisteNomeUtente()
+        if (returned == null)
+            throw EccezioneAPI("Errore durante la chiamata API.")
+        else if (returned == true)
+            throw EccezioneNomeUtenteUsato("Nome utente già usato.")
+    }
+
+    private fun esisteNomeUtente(): Boolean? {
+        var returned: Boolean? = null
+
+        val call =
+            APIController.instance.esisteNomeUtente(nomeUtente.value!!)
+
+        call.enqueue(object : Callback<Boolean> {
+            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                if (response.isSuccessful) {
+                    returned = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                throw t
+            }
+        })
+
+        return returned
     }
 
     @Validation

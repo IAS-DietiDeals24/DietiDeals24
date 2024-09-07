@@ -3,8 +3,7 @@ package com.iasdietideals24.dietideals24.utilities.classes.data
 import java.time.LocalDate
 
 data class Profilo(
-    val idAccountCollegati: Pair<Long, Long> = Pair(0L, 0L),
-    val idProfilo: Long = 0L,
+    val idAccountCollegati: String = "",
     val tipoAccount: String = "",
     val nomeUtente: String = "",
     val immagineProfilo: ByteArray = ByteArray(0),

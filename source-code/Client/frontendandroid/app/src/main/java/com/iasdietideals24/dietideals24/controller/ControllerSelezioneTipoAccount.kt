@@ -88,9 +88,9 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
         runBlocking { tipoAccount = caricaPreferenzaStringa("tipoAccount") }
 
         if (email != "" && password != "" && tipoAccount != "") {
-            val returned: Long? = eseguiChiamataREST("accedi", email, password, tipoAccount)
+            val returned: String? = eseguiChiamataREST("accedi", email, password, tipoAccount)
 
-            if (returned != null && returned != 0L) {
+            if (returned != null && returned != "") {
                 CurrentUser.id = returned
                 changeActivityListener?.onChangeActivity(Home::class.java)
             }

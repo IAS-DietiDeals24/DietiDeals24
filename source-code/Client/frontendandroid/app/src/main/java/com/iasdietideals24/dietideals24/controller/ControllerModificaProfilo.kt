@@ -26,8 +26,6 @@ import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
-import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
-import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
 import java.time.LocalDate
 
@@ -199,19 +197,8 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
                 R.string.registrazione_erroreCampiObbligatoriNonCompilati,
                 binding.modificaProfiloCampoNome,
                 binding.modificaProfiloCampoCognome,
-                binding.modificaProfiloCampoEmail,
                 binding.modificaProfiloCampoDataNascita,
                 binding.modificaProfiloCampoGenere
-            )
-        } catch (_: EccezioneEmailNonValida) {
-            erroreCampo(
-                R.string.registrazione_erroreFormatoEmail,
-                binding.modificaProfiloCampoEmail
-            )
-        } catch (_: EccezioneEmailUsata) {
-            erroreCampo(
-                R.string.registrazione_erroreEmailGiàUsata,
-                binding.modificaProfiloCampoEmail
             )
         }
     }
