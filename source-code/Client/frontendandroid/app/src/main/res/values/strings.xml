@@ -238,4 +238,8 @@
     <string name="aiuto11_materialTextView4">All your information will be listed. In the bottom-right of the screen, press</string>
     <string name="aiuto11_materialTextView6">to confirm the changes. If you change your mind, you can revert all the modifications by using the button on the top-left of the screen</string>
     <string name="registrazione_erroreNomeUtenteGiàUsato">The username was already used to create a profile by another user.</string>
+    <string name="modifica_titoloConfermaIndietro">Confirm leaving</string>
+    <string name="modifica_testoConfermaIndietro">If you leave this page, the newly inserted data into the fields will be erased. You want to proceed?</string>
+    <string name="elimina_titoloConfermaElimina">Confirm deletion</string>
+    <string name="elimina_testoConfermaElimina">Are you sure you want to delete this auciton? You won\'t be able to recover it.</string>
 </resources>

@@ -228,4 +228,8 @@
     <string name="offerta_accessibilitàRifiuta">Rifiuta</string>
     <string name="aiuto11_materialTextView6">per confermare i cambiamenti. Se cambi idea, puoi annullare tutte le modifiche usando il pulsante in alto a sinistra</string>
     <string name="registrazione_erroreNomeUtenteGiàUsato">Il nome utente è stato già usato da un altro utente per creare un profilo.</string>
+    <string name="modifica_titoloConfermaIndietro">Conferma uscita</string>
+    <string name="modifica_testoConfermaIndietro">Se uscirai da questa schermata, i dati appena inseriti nei campi saranno cancellati. Vuoi proseguire?</string>
+    <string name="elimina_titoloConfermaElimina">Conferma eliminazione</string>
+    <string name="elimina_testoConfermaElimina">Confermi di voler eliminare questa asta? Non sarai più in grado di ripristinarla.</string>
 </resources>

@@ -65,6 +65,6 @@ dependencies {
     implementation(libs.navigation.ui.ktx)
     implementation(libs.datastore.preferences)
     implementation(libs.lifecycle.common.jvm)
-    implementation(libs.commons.lang)
+    implementation(libs.commons.text)
     implementation(libs.kotlin.reflect)
 }

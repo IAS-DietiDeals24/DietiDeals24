@@ -28,7 +28,7 @@ import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnNextStep
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnSkipStep
 import kotlinx.coroutines.runBlocking
-import org.apache.commons.lang3.RandomStringUtils
+import org.apache.commons.text.RandomStringGenerator
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -273,7 +273,9 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
         ) { obj, _ ->
             viewModel.facebookAccountID.postValue(obj?.optString("id"))
             viewModel.email.postValue(obj?.optString("email"))
-            viewModel.password.postValue(RandomStringUtils.randomAlphanumeric(16))
+            viewModel.password.postValue(
+                RandomStringGenerator.Builder().withinRange(33, 122).get().generate(16)
+            )
             viewModel.nome.postValue(
                 obj?.optString("name") +
                         if (obj?.optString("middle_name") != "")

@@ -64,9 +64,17 @@
     </style>
 
     <style name="Dialog" parent="@style/ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="colorSurfaceContainerHigh">@color/grigio</item>
+        <item name="colorOnSurface">@color/blu</item>
+        <item name="colorOnSurfaceVariant">@color/blu</item>
         <item name="colorPrimary">@color/arancione</item>
         <item name="colorOnPrimary">@color/blu</item>
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">15.dp</item>
+    </style>
+
+    <style name="DropdownText">
+        <item name="android:fontFamily">@font/fira_sans</item>
+        <item name="android:textSize">16.sp</item>
     </style>
 </resources>

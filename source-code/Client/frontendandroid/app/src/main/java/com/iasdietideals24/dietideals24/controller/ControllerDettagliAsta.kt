@@ -380,6 +380,15 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
     @EventHandler
     private fun clickElimina() {
+        MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
+            .setTitle(R.string.elimina_titoloConfermaElimina)
+            .setMessage(R.string.elimina_testoConfermaElimina)
+            .setPositiveButton(R.string.ok) { _, _ -> clickConferma() }
+            .setNegativeButton(R.string.annulla) { _, _ -> }
+            .show()
+    }
+
+    private fun clickConferma() {
         val returned: Boolean? = eseguiChiamataREST("eliminaAsta", viewModel.idAsta.value)
 
         when (returned) {

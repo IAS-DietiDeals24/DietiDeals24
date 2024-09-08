@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.AstaBinding
@@ -90,57 +91,66 @@ class ViewHolderAstaCreata(private val binding: AstaBinding) :
         }
 
         binding.astaEliminaAsta.setOnClickListener {
-            var returned: Boolean? = null
-
-            val call =
-                APIController.instance.eliminaAsta(currentAsta.id)
-
-            call.enqueue(object : Callback<Boolean> {
-                override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
-                    if (response.isSuccessful) {
-                        returned = response.body()
-                    }
-                }
-
-                override fun onFailure(call: Call<Boolean>, t: Throwable) {
-                    throw t
-                }
-            })
-
-            when (returned) {
-                null -> Snackbar.make(itemView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
-
-                true -> {
-                    Snackbar.make(
-                        itemView,
-                        R.string.dettagliAsta_successoEliminazione,
-                        Snackbar.LENGTH_SHORT
-                    )
-                        .setBackgroundTint(resources.getColor(R.color.blu, null))
-                        .setTextColor(resources.getColor(R.color.grigio, null))
-                        .show()
-
-                    listenerRefresh?.onRefresh(sender = this::class)
-                }
-
-                false -> {
-                    Snackbar.make(
-                        itemView,
-                        R.string.dettagliAsta_erroreEliminazione,
-                        Snackbar.LENGTH_SHORT
-                    )
-                        .setBackgroundTint(resources.getColor(R.color.blu, null))
-                        .setTextColor(resources.getColor(R.color.grigio, null))
-                        .show()
-                }
-            }
+            MaterialAlertDialogBuilder(itemView.context, R.style.Dialog)
+                .setTitle(R.string.elimina_titoloConfermaElimina)
+                .setMessage(R.string.elimina_testoConfermaElimina)
+                .setPositiveButton(R.string.ok) { _, _ -> clickConferma(currentAsta, resources) }
+                .setNegativeButton(R.string.annulla) { _, _ -> }
+                .show()
         }
 
         binding.astaElencoOfferte.setOnClickListener {
             listenerGoToBids?.onGoToBids(currentAsta.id, this::class)
+        }
+    }
+
+    private fun clickConferma(currentAsta: AnteprimaAsta, resources: Resources) {
+        var returned: Boolean? = null
+
+        val call =
+            APIController.instance.eliminaAsta(currentAsta.id)
+
+        call.enqueue(object : Callback<Boolean> {
+            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                if (response.isSuccessful) {
+                    returned = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                throw t
+            }
+        })
+
+        when (returned) {
+            null -> Snackbar.make(itemView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.blu, null))
+                .setTextColor(resources.getColor(R.color.grigio, null))
+                .show()
+
+            true -> {
+                Snackbar.make(
+                    itemView,
+                    R.string.dettagliAsta_successoEliminazione,
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+
+                listenerRefresh?.onRefresh(sender = this::class)
+            }
+
+            false -> {
+                Snackbar.make(
+                    itemView,
+                    R.string.dettagliAsta_erroreEliminazione,
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+            }
         }
     }
 

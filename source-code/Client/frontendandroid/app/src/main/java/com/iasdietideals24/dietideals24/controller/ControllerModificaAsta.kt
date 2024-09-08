@@ -17,6 +17,7 @@ import coil.load
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -260,11 +261,16 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
 
     @EventHandler
     private fun clickIndietro() {
-        val idAsta = viewModel.idAsta.value!!
-
-        viewModel.clear()
-
-        listenerDetails?.onGoToDetails(idAsta, this::class)
+        MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
+            .setTitle(R.string.modifica_titoloConfermaIndietro)
+            .setMessage(R.string.modifica_testoConfermaIndietro)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                val idAsta = viewModel.idAsta.value!!
+                viewModel.clear()
+                listenerDetails?.onGoToDetails(idAsta, this::class)
+            }
+            .setNegativeButton(R.string.annulla) { _, _ -> }
+            .show()
     }
 
     @EventHandler

@@ -9,7 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitController {
-    private const val API_URL = ""
+    private const val API_URL = "http://localhost:8080"
 
     val instance: Retrofit by lazy {
         Retrofit.Builder()

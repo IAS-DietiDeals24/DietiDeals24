@@ -67,6 +67,7 @@ class ControllerAiuto : Controller<AiutoBinding>() {
 
             MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
                 .setTitle(R.string.aiuto_pulsante4)
+                .setIcon(R.drawable.icona_aiuto_arancione)
                 .setView(viewInflated)
                 .setPositiveButton(R.string.ok) { _, _ -> }
                 .show()
@@ -78,6 +79,7 @@ class ControllerAiuto : Controller<AiutoBinding>() {
 
             MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
                 .setTitle(R.string.aiuto_pulsante5)
+                .setIcon(R.drawable.icona_aiuto_arancione)
                 .setView(viewInflated)
                 .setPositiveButton(R.string.ok) { _, _ -> }
                 .show()
@@ -89,6 +91,7 @@ class ControllerAiuto : Controller<AiutoBinding>() {
 
             MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
                 .setTitle(R.string.aiuto_pulsante6)
+                .setIcon(R.drawable.icona_aiuto_arancione)
                 .setView(viewInflated)
                 .setPositiveButton(R.string.ok) { _, _ -> }
                 .show()
@@ -100,6 +103,7 @@ class ControllerAiuto : Controller<AiutoBinding>() {
 
             MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
                 .setTitle(R.string.aiuto_pulsante7)
+                .setIcon(R.drawable.icona_aiuto_arancione)
                 .setView(viewInflated)
                 .setPositiveButton(R.string.ok) { _, _ -> }
                 .show()
@@ -111,6 +115,7 @@ class ControllerAiuto : Controller<AiutoBinding>() {
 
             MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
                 .setTitle(R.string.aiuto_pulsante8)
+                .setIcon(R.drawable.icona_aiuto_arancione)
                 .setView(viewInflated)
                 .setPositiveButton(R.string.ok) { _, _ -> }
                 .show()
@@ -122,6 +127,7 @@ class ControllerAiuto : Controller<AiutoBinding>() {
 
             MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
                 .setTitle(R.string.aiuto_pulsante9)
+                .setIcon(R.drawable.icona_aiuto_arancione)
                 .setView(viewInflated)
                 .setPositiveButton(R.string.ok) { _, _ -> }
                 .show()
@@ -133,6 +139,7 @@ class ControllerAiuto : Controller<AiutoBinding>() {
 
             MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
                 .setTitle(R.string.aiuto_pulsante10)
+                .setIcon(R.drawable.icona_aiuto_arancione)
                 .setView(viewInflated)
                 .setPositiveButton(R.string.ok) { _, _ -> }
                 .show()
@@ -144,6 +151,7 @@ class ControllerAiuto : Controller<AiutoBinding>() {
 
             MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
                 .setTitle(R.string.aiuto_pulsante11)
+                .setIcon(R.drawable.icona_aiuto_arancione)
                 .setView(viewInflated)
                 .setPositiveButton(R.string.ok) { _, _ -> }
                 .show()

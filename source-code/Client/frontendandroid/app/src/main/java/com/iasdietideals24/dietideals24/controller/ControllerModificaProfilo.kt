@@ -148,9 +148,15 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
 
     @EventHandler
     private fun clickIndietro() {
-        viewModel.clear()
-
-        listenerProfile?.onGoToProfile(CurrentUser.id, ControllerModificaProfilo::class)
+        MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
+            .setTitle(R.string.modifica_titoloConfermaIndietro)
+            .setMessage(R.string.modifica_testoConfermaIndietro)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                viewModel.clear()
+                listenerProfile?.onGoToProfile(CurrentUser.id, ControllerModificaProfilo::class)
+            }
+            .setNegativeButton(R.string.annulla) { _, _ -> }
+            .show()
     }
 
     @EventHandler
