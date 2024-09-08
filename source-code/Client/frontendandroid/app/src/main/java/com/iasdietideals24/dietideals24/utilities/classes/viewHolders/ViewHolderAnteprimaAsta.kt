@@ -8,6 +8,7 @@ import coil.load
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.AstaBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.Logger
 import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaAsta
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
@@ -72,6 +73,8 @@ class ViewHolderAnteprimaAsta(private val binding: AstaBinding) :
         binding.astaElencoOfferte.visibility = View.GONE
 
         binding.astaLinearLayout3.setOnClickListener {
+            Logger.log("Showing auction details")
+
             listenerGoToDetails?.onGoToDetails(currentAsta.id, this::class)
         }
     }

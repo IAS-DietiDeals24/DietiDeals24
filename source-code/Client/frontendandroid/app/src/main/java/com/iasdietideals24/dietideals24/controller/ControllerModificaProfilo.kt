@@ -24,6 +24,7 @@ import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
+import com.iasdietideals24.dietideals24.utilities.classes.Logger
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
@@ -182,6 +183,8 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
                         .setBackgroundTint(resources.getColor(R.color.blu, null))
                         .setTextColor(resources.getColor(R.color.grigio, null))
                         .show()
+
+                    Logger.log("Profile edited successfully")
 
                     listenerProfile?.onGoToProfile(
                         CurrentUser.id,

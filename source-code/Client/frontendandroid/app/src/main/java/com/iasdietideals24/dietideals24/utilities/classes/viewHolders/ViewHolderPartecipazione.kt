@@ -7,6 +7,7 @@ import coil.load
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.AstaBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.Logger
 import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaAsta
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
@@ -56,6 +57,8 @@ class ViewHolderPartecipazione(private val binding: AstaBinding) :
             resources.getString(R.string.placeholder_prezzo, currentAsta.offerta.toString())
 
         binding.astaLinearLayout3.setOnClickListener {
+            Logger.log("Showing auction details")
+
             listenerGoToDetails?.onGoToDetails(currentAsta.id, this::class)
         }
     }

@@ -11,6 +11,7 @@ import com.iasdietideals24.dietideals24.databinding.ProfiloBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.classes.Logger
 import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaProfilo
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToCreatedAuctions
@@ -118,26 +119,36 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
 
     @EventHandler
     private fun clickUtente() {
+        Logger.log("Showing user profile")
+
         listenerProfile?.onGoToProfile(CurrentUser.id, ControllerProfilo::class)
     }
 
     @EventHandler
     private fun clickAste() {
+        Logger.log("Showing created bids")
+
         listenerCreatedAuctions?.onGoToCreatedAuctions()
     }
 
     @EventHandler
     private fun clickStorico() {
+        Logger.log("Showing participations")
+
         listenerParticipation?.onGoToParticipation()
     }
 
     @EventHandler
     private fun clickAiuto() {
+        Logger.log("Showing help section")
+
         listenerHelp?.onGoToHelp()
     }
 
     @EventHandler
     private fun clickEsci() {
+        Logger.log("Logging out")
+
         listenerChangeActivity?.onChangeActivity(ScelteIniziali::class.java)
     }
 

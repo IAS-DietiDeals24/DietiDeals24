@@ -13,6 +13,7 @@ import com.iasdietideals24.dietideals24.databinding.OffertaBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.APIController
+import com.iasdietideals24.dietideals24.utilities.classes.Logger
 import com.iasdietideals24.dietideals24.utilities.classes.data.OffertaRicevuta
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
@@ -59,6 +60,8 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
 
         if (currentOfferta.accettata == null) {
             binding.offertaImmagine.setOnClickListener {
+                Logger.log("Showing user profile")
+
                 immagineListener?.onGoToProfile(currentOfferta.idOfferente, this::class)
             }
 
@@ -66,6 +69,8 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
                 MaterialAlertDialogBuilder(itemView.context, R.style.Dialog)
                     .setTitle(R.string.offerta_confermaAccetta)
                     .setPositiveButton(R.string.ok) { _, _ ->
+                        Logger.log("Accepting auction bid")
+
                         clickAccetta(currentOfferta.idAsta, currentOfferta.idOfferta, resources)
                     }
                     .setNegativeButton(R.string.annulla) { _, _ -> }
@@ -76,6 +81,8 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
                 MaterialAlertDialogBuilder(itemView.context, R.style.Dialog)
                     .setTitle(R.string.offerta_confermaRifiuto)
                     .setPositiveButton(R.string.ok) { _, _ ->
+                        Logger.log("Rejecting auction bid")
+
                         clickRifiuta(currentOfferta.idAsta, currentOfferta.idOfferta, resources)
                     }
                     .setNegativeButton(R.string.annulla) { _, _ -> }

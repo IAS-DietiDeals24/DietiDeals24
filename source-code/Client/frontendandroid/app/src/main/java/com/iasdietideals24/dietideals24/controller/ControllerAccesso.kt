@@ -14,6 +14,7 @@ import com.iasdietideals24.dietideals24.model.ModelAccesso
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.classes.Logger
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAccountNonEsistente
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
@@ -117,7 +118,11 @@ class ControllerAccesso : Controller<AccessoBinding>() {
                             .show()
 
                         else // esiste un account associato a questo account Facebook con questo tipo, accedi
-                        -> listenerChangeActivity?.onChangeActivity(Home::class.java)
+                        -> {
+                            Logger.log("Facebook sign-in successful")
+
+                            listenerChangeActivity?.onChangeActivity(Home::class.java)
+                        }
                     }
                 }
 
@@ -180,6 +185,9 @@ class ControllerAccesso : Controller<AccessoBinding>() {
                         salvaPreferenzaStringa("email", viewModel.email.value!!)
                         salvaPreferenzaStringa("password", viewModel.password.value!!)
                     }
+
+                    Logger.log("Sign-in successful")
+
                     CurrentUser.id = returned
                     listenerChangeActivity?.onChangeActivity(Home::class.java)
                 }

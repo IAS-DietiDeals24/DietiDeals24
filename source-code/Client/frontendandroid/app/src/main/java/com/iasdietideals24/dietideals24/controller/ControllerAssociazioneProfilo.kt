@@ -10,6 +10,7 @@ import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.classes.Logger
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
 
 class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
@@ -55,6 +56,8 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
                 .setTextColor(resources.getColor(R.color.grigio, null))
                 .show()
         } else {
+            Logger.log("Profile linking successful")
+
             CurrentUser.id = returned
             listenerChangeActivity?.onChangeActivity(Home::class.java)
         }

@@ -10,6 +10,7 @@ import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.HomeBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.classes.Logger
 import com.iasdietideals24.dietideals24.utilities.classes.adapters.AdapterHome
 import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaAsta
 import kotlinx.coroutines.Dispatchers
@@ -110,13 +111,16 @@ class ControllerHome : Controller<HomeBinding>() {
                     "recuperaAste",
                     CurrentUser.id
                 )
-            else
+            else {
+                Logger.log("Performing auction research")
+
                 eseguiChiamataREST(
                     "ricercaAste",
                     CurrentUser.id,
                     binding.homeRicerca.text.toString(),
                     binding.homeFiltro.text.toString()
                 )
+            }
         }
 
         withContext(mainDispatcher) {

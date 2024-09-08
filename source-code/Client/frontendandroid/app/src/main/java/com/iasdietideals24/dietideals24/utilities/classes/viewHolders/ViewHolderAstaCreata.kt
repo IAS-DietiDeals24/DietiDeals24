@@ -10,6 +10,7 @@ import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.AstaBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.APIController
+import com.iasdietideals24.dietideals24.utilities.classes.Logger
 import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaAsta
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnEditButton
@@ -83,10 +84,14 @@ class ViewHolderAstaCreata(private val binding: AstaBinding) :
             resources.getString(R.string.placeholder_prezzo, currentAsta.offerta.toString())
 
         binding.astaLinearLayout3.setOnClickListener {
+            Logger.log("Showing auction details")
+
             listenerGoToDetails?.onGoToDetails(currentAsta.id, this::class)
         }
 
         binding.astaModificaAsta.setOnClickListener {
+            Logger.log("Editing acution")
+
             listenerEditButton?.onEditButton(currentAsta.id, this::class)
         }
 
@@ -94,12 +99,18 @@ class ViewHolderAstaCreata(private val binding: AstaBinding) :
             MaterialAlertDialogBuilder(itemView.context, R.style.Dialog)
                 .setTitle(R.string.elimina_titoloConfermaElimina)
                 .setMessage(R.string.elimina_testoConfermaElimina)
-                .setPositiveButton(R.string.ok) { _, _ -> clickConferma(currentAsta, resources) }
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    Logger.log("Deleting auction")
+
+                    clickConferma(currentAsta, resources)
+                }
                 .setNegativeButton(R.string.annulla) { _, _ -> }
                 .show()
         }
 
         binding.astaElencoOfferte.setOnClickListener {
+            Logger.log("Showing auction bids")
+
             listenerGoToBids?.onGoToBids(currentAsta.id, this::class)
         }
     }

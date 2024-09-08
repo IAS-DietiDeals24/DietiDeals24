@@ -28,6 +28,7 @@ import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
+import com.iasdietideals24.dietideals24.utilities.classes.Logger
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalDate
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.classes.toMillis
@@ -322,6 +323,8 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
                         .setBackgroundTint(resources.getColor(R.color.blu, null))
                         .setTextColor(resources.getColor(R.color.grigio, null))
                         .show()
+
+                    Logger.log("Auction created successfully")
 
                     listenerGoToHome?.onGoToHome()
                 }

@@ -19,6 +19,7 @@ import com.iasdietideals24.dietideals24.model.ModelAsta
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.classes.Logger
 import com.iasdietideals24.dietideals24.utilities.classes.data.DettagliAsta
 import com.iasdietideals24.dietideals24.utilities.classes.data.Offerta
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
@@ -241,16 +242,22 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
     @EventHandler
     private fun clickImmagine() {
+        Logger.log("Showing user profile")
+
         listenerProfile?.onGoToProfile(viewModel.idCreatore.value!!, this::class)
     }
 
     @EventHandler
     private fun clickNomeUtente() {
+        Logger.log("Showing user profile")
+
         listenerProfile?.onGoToProfile(viewModel.idCreatore.value!!, this::class)
     }
 
     @EventHandler
     private fun clickOfferta() {
+        Logger.log("Sending a bid")
+
         val viewInflated: View = LayoutInflater.from(context)
             .inflate(R.layout.popupofferta, view as ViewGroup?, false)
         val input: TextInputEditText = viewInflated.findViewById(R.id.popupOfferta_offerta)
@@ -375,6 +382,8 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
     @EventHandler
     private fun clickModifica() {
+        Logger.log("Editing auction")
+
         listenerEditButton?.onEditButton(sender = this::class)
     }
 
@@ -383,7 +392,11 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
             .setTitle(R.string.elimina_titoloConfermaElimina)
             .setMessage(R.string.elimina_testoConfermaElimina)
-            .setPositiveButton(R.string.ok) { _, _ -> clickConferma() }
+            .setPositiveButton(R.string.ok) { _, _ ->
+                Logger.log("Deleting auction")
+
+                clickConferma()
+            }
             .setNegativeButton(R.string.annulla) { _, _ -> }
             .show()
     }
@@ -425,6 +438,8 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
     @EventHandler
     private fun clickOfferte() {
+        Logger.log("Showing auction bids")
+
         listenerBids?.onGoToBids(viewModel.idAsta.value!!, this::class)
     }
 }

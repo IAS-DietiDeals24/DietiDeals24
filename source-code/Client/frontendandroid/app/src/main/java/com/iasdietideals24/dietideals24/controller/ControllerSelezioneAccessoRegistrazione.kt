@@ -7,6 +7,7 @@ import com.iasdietideals24.dietideals24.activities.Registrazione
 import com.iasdietideals24.dietideals24.databinding.SelezioneaccessoregistrazioneBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.Logger
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
 import kotlinx.coroutines.runBlocking
 
@@ -62,11 +63,15 @@ class ControllerSelezioneAccessoRegistrazione : Controller<Selezioneaccessoregis
 
     @EventHandler
     private fun clickAccedi() {
+        Logger.log("Sign-in selected")
+
         listener?.onChangeActivity(Accesso::class.java)
     }
 
     @EventHandler
     private fun clickRegistrati() {
+        Logger.log("Sign-up selected")
+
         listener?.onChangeActivity(Registrazione::class.java)
     }
 }

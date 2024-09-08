@@ -11,6 +11,7 @@ import com.iasdietideals24.dietideals24.databinding.SelezionetipoaccountBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.classes.Logger
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnHideBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnNextStep
@@ -114,6 +115,8 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
 
     @EventHandler
     private fun clickCompratore() {
+        Logger.log("Buyer account selected")
+
         showBackButtonListener?.onShowBackButton()
         runBlocking { salvaPreferenzaStringa("tipoAccount", "compratore") }
         nextStepListener?.onNextStep(this::class)
@@ -121,6 +124,8 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
 
     @EventHandler
     private fun clickVenditore() {
+        Logger.log("Seller account selected")
+
         showBackButtonListener?.onShowBackButton()
         runBlocking { salvaPreferenzaStringa("tipoAccount", "venditore") }
         nextStepListener?.onNextStep(this::class)
@@ -128,6 +133,8 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
 
     @EventHandler
     private fun clickOspite() {
+        Logger.log("Host selected")
+
         changeActivityListener?.onChangeActivity(Home::class.java)
     }
 }

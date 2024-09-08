@@ -18,6 +18,7 @@ import com.iasdietideals24.dietideals24.databinding.RegistrazioneBinding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.Logger
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
@@ -144,6 +145,8 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
                                     .setTextColor(resources.getColor(R.color.grigio, null))
                                     .show()
 
+                                Logger.log("Facebook sign-up successful")
+
                                 viewModel.clear()
                                 LoginManager.getInstance().logOut()
                             }
@@ -255,6 +258,8 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
             viewModel.password.value,
             viewModel.tipoAccount.value
         )
+
+        Logger.log("Sign-up successful")
 
         when (returned) {
             null -> throw EccezioneAPI("Errore di comunicazione con il server.")

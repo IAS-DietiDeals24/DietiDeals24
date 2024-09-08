@@ -14,6 +14,7 @@ import com.iasdietideals24.dietideals24.model.ModelProfilo
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.classes.Logger
 import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
@@ -182,6 +183,8 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
 
     @EventHandler
     private fun clickModifica() {
+        Logger.log("Editing profile")
+
         listenerEditButton?.onEditButton(sender = ControllerDettagliProfilo::class)
     }
 

@@ -8,6 +8,7 @@ import coil.load
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.NotificaBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.Logger
 import com.iasdietideals24.dietideals24.utilities.classes.data.Notifica
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
@@ -49,10 +50,14 @@ class ViewHolderNotifica(private val binding: NotificaBinding) :
         binding.notificaTempo.text = resources.getString(R.string.placeholder, tempoFa)
 
         binding.notificaLinearLayout1.setOnClickListener {
+            Logger.log("Showing auction details")
+
             listenerGoToDetails?.onGoToDetails(currentNotifica.idAsta, this::class)
         }
 
         binding.notificaImmagine.setOnClickListener {
+            Logger.log("Showing user profile")
+
             listenerGoToProfile?.onGoToProfile(currentNotifica.idMittente, this::class)
         }
     }
