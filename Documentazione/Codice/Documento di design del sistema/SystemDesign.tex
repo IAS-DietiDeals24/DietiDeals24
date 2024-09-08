@@ -30,7 +30,6 @@
             \item Un'applicazione \textbf{Java} salvata in un'immagine ed eseguita in un container del programma \textbf{Docker (Compose)}, installato su una macchina virtuale fornita da \textbf{AWS EC2}.
             \item Una base di dati relazionale \textbf{PostgreSQL}, al cui interno sono conservati tutti i dati dell'applicazione, eseguita anch'essa come immagine Docker sulla stessa macchina virtuale AWS EC2.
         \end{itemize}
-        Le immagini sono archiviate nella macchina virtuale AWS EC2. \\
         Per lo scambio di messaggi tra client e server (attraverso le \textbf{REST API}), si utilizzano \textbf{Retrofit} su client e \textbf{Spring Framework} su server. \\
 
         \subsection{Android}
@@ -43,6 +42,26 @@
             \end{figure}
             \subsubsection{Perché Android?}
                 Quasi tutti ormai posseggono uno smartphone. Ed essendo un sistema operativo così diffuso (conta circa il 69.94\% del mercato dei sistemi operativi per dispositivi mobili \cite{Statcounter1}) e disponibile su una grande varietà di dispositivi, Android è la scelta giusta per rendere l'applicazione disponibile quasi ovunque ed accessibile a chiunque.
+
+         \subsection{AWS EC2}
+            \subsubsection{Cos'è AWS? \cite{AWS1}}
+                Amazon Web Services è la soluzione cloud, fornita da Amazon, più ricca e ampiamente adottata al mondo: conta circa 200 servizi forniti dai numerosi centri di dati sparsi in tutto il globo. Attualmente il tasso di adozione dei servizi AWS globalmente è al 71\% \cite{CNN1}. AWS offre anche un Free Tier, ossia permette di sfruttare alcuni dei suoi servizi gratuitamente (a tempo limitato, illimitato, a soglia). Inoltre, ogni servizio fornisce delle API per poter richiedere al server la dispensa del servizio affittato.
+            \begin{figure}[htbp!]
+                \centering
+                \includegraphics[width=0.2\linewidth]{Immagini/System Design/AWS.png}
+                \caption{Logo di AWS}
+            \end{figure}
+            \subsubsection{Perché AWS? \cite{AWS1}}
+                L'utilizzo di AWS permette di tagliare i costi, seguire un approccio più agile, e innovare più in fretta. AWS offre nettamente più servizi rispetto ai concorrenti e le funzionalità all'interno dei singoli servizi sono più ricche. Inoltre, la maturità, l'esperienza, l'affidabilità e la sicurezza che offre sono senza eguali. Il Free Tier è anche un'ottima opportunità per piccole aziende che richiedono modesti strumenti per il rilascio della propria applicazione. Le API estremamente semplici permettono di richiedere il servizio direttamente nel codice astraendo tutte le fasi intermedie più complesse.
+            \subsubsection{Cos'è EC2?}
+                Amazon Elastic Compute Cloud è uno dei servizi di AWS che consente l'affitto di computer virtuali in cloud sui quali eseguire le proprie applicazioni \cite{Wikipedia6}. Offre la più ampia e profonda piattaforma di computazione, permettendo di scegliere oltre 750 istanze e personalizzare processore, archiviazione, rete, sistema operativo \cite{AWS2}.
+            \begin{figure}[htbp!]
+                \centering
+                \includegraphics[width=0.2\linewidth]{Immagini/System Design/AWS EC2.png}
+                \caption{Logo di EC2}
+            \end{figure}
+            \subsubsection{Perché EC2?}
+                A causa della sua ampia personalizzazione sulla base delle necessità dell'applicazione e grazie alla possibilità di creare, lanciare, e fermare le istanze delle macchine virtuali sul server su richiesta, pagando solo il tempo di computazione sfruttato, l'elasticità del servizio è indubbia \cite{Wikipedia6}. Il Free Tier di EC2 garantisce 750 ore di computazione in 12 mesi su una istanza di tipo "micro" \cite{AWS3}.
                 
         \subsection{Kotlin}
             \subsubsection{Cos'è Kotlin? \cite{Wikipedia2}}
@@ -163,3 +182,21 @@
                     \item Il supporto dello sviluppo orientato al test, assieme alla semplicità nella gestione delle dipendenza, contribuisce a migliori pratiche di test;
                     \item Flessibilità nella scelta di specifici componenti e moduli in base alle necessità del progetto.
                 \end{itemize}
+
+    \subsection{SonarQube}
+        \subsubsection{Cos'è SonarQube?}
+            SonarQube è una piattaforma open-source sviluppata da SonarSource per l'ispezione della qualità del codice. Esegue un'analisi statica automatica del codice per identificare bug, "code smells" e vulnerabilità di sicurezza nel codice. SonarQube supporta diversi linguaggi di programmazione e può integrarsi con vari strumenti di compilazione e pipeline di integrazione continua. La piattaforma fornisce report e visualizzazioni dettagliate per aiutare gli sviluppatori a migliorare la manutenibilità e l'affidabilità del codice.
+        \begin{figure}[htbp!]
+                \centering
+                \includegraphics[width=0.5\linewidth]{Immagini/System Design/SonarQube.jpg}
+                \caption{Logo di SonarQube}
+        \end{figure}
+        \subsubsection{Perché SonarQube?}
+            I vantaggi dell'utilizzo di SonarQube sono evidenti:
+            \begin{itemize}
+                \item Migliora la qualità del codice, aiutando a mantenere alta la qualità dello stesso identificando potenziali bug e problemi.
+                \item Identifica il codice che potrebbe funzionare ma che sembra scritto male e difficile da mantenere.
+                \item Rileva le falle di sicurezza che potrebbero essere sfruttate da potenziali aggressori.
+                \item Fornisce il supporto per un'ampia gamma di linguaggi di programmazione.
+                \item Offre dashboard e report completi, ricchi di dettagli ed intuitivi per monitorare lo stato di salute dei progetti nel tempo.
+            \end{itemize}

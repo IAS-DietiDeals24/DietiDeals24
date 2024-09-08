@@ -69,6 +69,7 @@
     Basandosi sull'interfaccia realizzata, è stata effettuata la stesura delle tabelle di Cockburn di due casi d'uso significativi. \\
     Lo scopo delle tabelle è quello di presentare in maniera sequenziale come giungere all'esecuzione di un caso d'uso interagendo con l'interfaccia utente. \\
     Sono stati evidenziati anche possibili metodi alternativi per raggiungere lo stesso scopo o errori che potrebbero sorgere.
+    
         \subsection{Crea un’asta inversa}
             \begin{longtable}{|C{3.0cm}|C{1.3cm}|L{5.2cm}|L{5.2cm}|}
                 \hline
@@ -76,10 +77,10 @@
                     \multicolumn{3}{|l|}{\textbf{Crea un’asta inversa}}\\
                 \hline
                     Goal in Context &
-                    \multicolumn{3}{|l|}{L'utente di tipo "compratore" vuole creare un'asta inversa.}\\
+                    \multicolumn{3}{|l|}{L'utente di tipo "compratore" vuole creare un'asta inversa}\\
                 \hline
                     Preconditions &
-                    \multicolumn{3}{|l|}{L'utente ha effettuato l'accesso con un account di tipo "compratore".}\\
+                    \multicolumn{3}{|l|}{L'utente ha effettuato l'accesso con un account di tipo "compratore"}\\
                 \hline
                     Success End Condition &
                     \multicolumn{3}{|l|}{L'utente di tipo "compratore" ha correttamente creato un'asta "inversa"}\\
@@ -95,7 +96,7 @@
                 \cline{2-4}
                         & 2
                         & 
-                        & Mostra mock-up P0A (Figura 3.9) con testo "Seleziona tipo di asta" dove è possibile scegliere il tipo di asta da creare.\\
+                        & Mostra mock-up P0A (Figura 3.9) con testo "Seleziona tipo di asta" dove è possibile scegliere il tipo di asta da creare\\
                 \cline{2-4}
                         & 3
                         & Seleziona "Inversa" e clicca "Conferma" sul mock-up P0A (Figura 3.9)
@@ -103,7 +104,7 @@
                 \cline{2-4}
                         & 4
                         & 
-                        & Mostra mock-up C4 (Figura 3.10) con tutte le informazioni dell'asta inversa da poter inserire.\\
+                        & Mostra mock-up C4 (Figura 3.10) con tutte le informazioni dell'asta inversa da poter inserire\\
                 \cline{2-4}
                         & 5
                         & Preme sul campo di input "Data di scadenza"
@@ -402,26 +403,26 @@
                 \cline{2-4}
                         & 2
                         & 
-                        & Mostra mock-up V7 (Figura 3.18) con tutte le opzioni per utenti loggati.\\
+                        & Mostra mock-up V7 (Figura 3.18) con tutte le opzioni per utenti loggati\\
                 \cline{2-4}
                         & 3
-                        & Preme sul bottone "Le mie aste create".
+                        & Preme sul bottone "Le mie aste create"
                         & \\
                 \cline{2-4}
                         & 4
                         & 
-                        & Mostra il mock-up V11 (Figura 3.19) con tutte le aste create dal venditore.\\
+                        & Mostra il mock-up V11 (Figura 3.19) con tutte le aste create dal venditore\\
                 \cline{2-4}
                         & 5
-                        & Clicca sull'icona a forma di elenco dell'asta di cui si vogliono visualizzare le offerte ricevute.
+                        & Clicca sull'icona a forma di elenco dell'asta di cui si vogliono visualizzare le offerte ricevute
                         & \\
                 \cline{2-4}
                         & 6
                         & 
-                        & Mostra mock-up V13 (Figura 3.20) con l'elenco di tutte le offerte ricevute.\\
+                        & Mostra mock-up V13 (Figura 3.20) con l'elenco di tutte le offerte ricevute\\
                 \cline{2-4}
                         & 7
-                        & Clicca sulla spunta verde dell'offerta che si vuole accettare.
+                        & Clicca sulla spunta verde dell'offerta che si vuole accettare
                         & \\
                 \cline{2-4}
                         & 8
@@ -434,7 +435,7 @@
                 \cline{2-4}
                         & 10
                         & 
-                        & Mostra mock-up V14 (Figura 3.22) dove vengono elencate tutte le offerte ricevute a questa asta "silenziosa". L'offerta accettata sarà l'unica in bianco, tutte le altre saranno in grigio. Viene inviata una notifica a tutti coloro che hanno partecipato almeno una volta all'asta per indicare la chiusura della stessa.\\
+                        & Mostra mock-up V14 (Figura 3.22) dove vengono elencate tutte le offerte ricevute a questa asta "silenziosa". L'offerta accettata sarà l'unica in bianco, tutte le altre saranno in grigio. Viene inviata una notifica a tutti coloro che hanno partecipato almeno una volta all'asta per indicare la chiusura della stessa\\
                 \hline
                     EXTENSIONS
                     & \textbf{Step n°} 
@@ -465,7 +466,7 @@
                         & Mostra il mock-up V17 (Figura 3.23) con i dettagli dell'asta selezionata\\
                 \cline{2-4}
                         & 7.s1
-                        & Clicca sull'icona a forma di elenco dell'asta di cui si vogliono visualizzare le offerte ricevute.
+                        & Clicca sull'icona a forma di elenco dell'asta di cui si vogliono visualizzare le offerte ricevute
                         & \\
                 \cline{2-4}
                         & 8.s1
@@ -540,6 +541,430 @@
             \end{minipage}\hfill
         \end{figure}
 
+    \clearpage
+
+    \subsection{Visualizza i dettagli di un'asta}
+            \begin{longtable}{|C{3.0cm}|C{1.3cm}|L{5.2cm}|L{5.2cm}|}
+                \hline
+                    \textbf{USE CASE \#3} &
+                    \multicolumn{3}{|l|}{\textbf{Visualizza i dettagli di un'asta}}\\
+                \hline
+                    Goal in Context &
+                    \multicolumn{3}{|l|}{\shortstack[l]{L'utente di un qualsiasi tipo vuole visualizzare i dettagli di un'asta creata da un \\ altro utente}}\\
+                \hline
+                    Preconditions &
+                    \multicolumn{3}{|l|}{\shortstack[l]{L'utente si trova nella home}}\\
+                \hline
+                    Success End Condition &
+                    \multicolumn{3}{|l|}{\shortstack[l]{L'utente visualizza correttamente la pagina con tutti i dettagli dell'asta}}\\
+                \hline
+                    \multirow[|c|]{6}{*}{DESCRIPTION} 
+                    & \textbf{Step n°}
+                    & \textbf{Utente}
+                    & \textbf{Sistema}\\
+                \cline{2-4}
+                        & 1
+                        & Preme sull'area bianca della card di anteprima dell'asta su mock-up C1 (Figura 3.25)
+                        & \\
+                \cline{2-4}
+                        & 2
+                        & 
+                        & Mostra mock-up C7 (Figura 3.26) con tutte le informazioni circa l'asta\\
+                \hline
+                    EXTENSIONS
+                    & \textbf{Step n°} 
+                    & \textbf{Utente} 
+                    & \textbf{Sistema}\\
+                \hline
+                    \multirow[|c|]{2}{*}{\shortstack[c]{Esce dalla pagina \\ di dettagli dell'asta}}
+                        & \textit{In qualunque passo del main scenario}
+                        & Preme qualsiasi tasto di navigazione (della navbar in basso o tasto "indietro" del dispositivo), il tasto indietro dell'app, il nome o l'immagine del creatore dell'asta
+                        & \\
+                \cline{2-4}
+                        & 
+                        & 
+                        & Mostra mock-up corrispondente all'elemento cliccato\\
+                \hline
+                    SUBVARIATIONS
+                    & \textbf{Step n°} 
+                    & \textbf{Utente loggato}
+                    & \textbf{Sistema}\\
+                \hline
+                    \multirow[|c|]{6}{*}{\shortstack[c]{Riceve notifica circa \\ un'offerta, la fine \\ o la vittoria all'asta}}
+                        & 1.s1
+                        & Preme sul bottone "Notifiche"
+                        & \\
+                \cline{2-4}
+                        & 2.s1
+                        & 
+                        & Mostra il mock-up C5 (Figura 3.27) con la notifica relativa all'asta\\
+                \cline{2-4}
+                        & 3.s1
+                        & Clicca sulla notifica
+                        & \\
+                \cline{2-4}
+                        & 4.s1
+                        &
+                        & Passa allo step 2 del main scenario\\
+                \hline
+                     \multirow[|c|]{2}{*}{\shortstack[c]{È nella pagina \\ delle aste alle quali \\ ha partecipato}}
+                            & 1.s2
+                            & Preme sull'area bianca della card di anteprima dell'asta su mock-up C15 (Figura 3.28)
+                            & \\
+                    \cline{2-4}
+                            & 2.s2
+                            & 
+                            & Passa allo step 2 del main scenario\\
+                \hline
+                     \multirow[|c|]{2}{*}{\shortstack[c]{È nella pagina \\ delle aste che ha \\ creato}}
+                            & 1.s2
+                            & Preme sull'area bianca della card di anteprima dell'asta su mock-up C14 (Figura 3.29)
+                            & \\
+                    \cline{2-4}
+                            & 2.s2
+                            & 
+                            & Passa allo step 2 del main scenario\\
+                \hline
+            \end{longtable}
+
+        \begin{figure}[!htb]
+            \begin{minipage}{0.32\textwidth}
+                    \centering
+                    \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C1.pdf}
+                    \caption{Home utente}
+            \end{minipage}\hfill
+            \begin{minipage}{0.32\textwidth}
+                    \centering
+                    \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C7.pdf}
+                    \caption{Dettagli asta}
+            \end{minipage}\hfill
+            \begin{minipage}{0.32\textwidth}
+                    \centering
+                    \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C5.pdf}
+                    \caption{Notifiche}
+            \end{minipage}\hfill
+        \end{figure}
+
+        \begin{figure}[!htb]
+            \begin{minipage}{0.32\textwidth}
+                    \centering
+                    \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C15.pdf}
+                    \caption{Aste partecipate}
+            \end{minipage}\hfill
+            \begin{minipage}{0.32\textwidth}
+                    \centering
+                    \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C14.pdf}
+                    \caption{Aste create}
+            \end{minipage}\hfill
+        \end{figure}
+
+        \clearpage
+        
+        \subsection{Modificare il proprio profilo}
+            \begin{longtable}{|C{3.0cm}|C{1.3cm}|L{5.2cm}|L{5.2cm}|}
+                \hline
+                    \textbf{USE CASE \#4} &
+                    \multicolumn{3}{|l|}{\textbf{Modificare il proprio profilo}}\\
+                \hline
+                    Goal in Context &
+                    \multicolumn{3}{|l|}{\shortstack[l]{L'utente che ha effettuato l'accesso vuole modificare i dettagli salvati nel \\ proprio profilo}}\\
+                \hline
+                    Preconditions &
+                    \multicolumn{3}{|l|}{L'utente ha effettuato l'accesso con un account di tipo qualsiasi}\\
+                \hline
+                    Success End Condition &
+                    \multicolumn{3}{|l|}{L'utente ha modificato con successo le informazioni sul suo profilo personale}\\
+                \hline
+                    \multirow[|c|]{32}{*}{DESCRIPTION} 
+                    & \textbf{Step n°}
+                    & \textbf{Utente loggato}
+                    & \textbf{Sistema}\\
+                \cline{2-4}
+                        & 1
+                        & Preme bottone "Profilo" su mock-up C1 (Figura 3.30)
+                        & \\
+                \cline{2-4}
+                        & 2
+                        & 
+                        & Mostra mock-up C6 (Figura 3.31) con tutte le opzioni per utenti loggati\\
+                \cline{2-4}
+                        & 3
+                        & Preme sul bottone "Informazioni utente"
+                        & \\
+                \cline{2-4}
+                        & 4
+                        & 
+                        & Mostra mock-up C11 (Figura 3.32) con tutte le informazioni del profilo\\
+                \cline{2-4}
+                        & 5
+                        & Preme sul pulsante di modifica a forma di matita in basso a destra
+                        & \\
+                \cline{2-4}
+                        & 6
+                        & 
+                        & Mostra mock-up C12 (Figura 3.33) con i campi aperti per la modifica\\
+                \cline{2-4}
+                        & 7
+                        & Preme sul campo "Nome"
+                        & \\
+                \cline{2-4}
+                        & 8
+                        & 
+                        & Mostra la tastiera\\
+                \cline{2-4}
+                        & 9
+                        & Inserisce il proprio nome nel campo
+                        & \\
+                \cline{2-4}
+                        & 10
+                        & Preme sul campo "Cognome"
+                        & \\
+                \cline{2-4}
+                        & 11
+                        & 
+                        & Mostra la tastiera\\
+                \cline{2-4}
+                        & 12
+                        & Inserisce il proprio cognome nel campo
+                        & \\
+                \cline{2-4}
+                        & 13
+                        & Preme sul campo "Data di nascita"
+                        & \\
+                \cline{2-4}
+                        & 14
+                        & 
+                        & Mostra il calendario per la selezione della data di nascita\\
+                \cline{2-4}
+                        & 15
+                        & Seleziona la data di nascita e preme su OK
+                        & \\
+                \cline{2-4}
+                        & 16
+                        & Preme sul pulsante di conferma in alto a destra
+                        & \\
+                \cline{2-4}
+                        & 17
+                        & 
+                        & Mostra mock-up P22 (Figura 3.34)\\
+                \cline{2-4}
+                        & 18
+                        & Preme su "X" del popup
+                        & \\
+                \cline{2-4}
+                        & 19
+                        & 
+                        & Ritorna al mock-up C11 (Figura 3.32) con le informazioni aggiornate\\
+                \hline
+                    EXTENSIONS
+                    & \textbf{Step n°} 
+                    & \textbf{Utente loggato} 
+                    & \textbf{Sistema}\\
+                \hline
+                    \multirow[|c|]{1}{*}{\shortstack[c]{Alcuni campi \\ obbligatori non \\ compilati}}
+                        & 17.e
+                        & 
+                        & Mostra mock-up E14 (Figura 3.35) dove vengono segnalati in rosso i campi obbligatori non compilati\\
+                \cline{2-4}
+                        & 18.e
+                        & Riparte da step 7 di main scenario, saltando i campi di input già compilati
+                        & \\
+                \hline
+                    \multirow[|c|]{4}{*}{\shortstack[c]{Esce dalla pagina \\ di modifica del \\ profilo}}
+                        & \textit{In qualunque passo del main scenario}
+                        & Preme qualsiasi tasto di navigazione (della navbar in basso o tasto "indietro" del dispositivo)
+                        & \\
+                \cline{2-4}
+                        & 
+                        & 
+                        & Mostra mock-up P6 (Figura 3.36) con testo "Se uscirai da questa schermata, i dati inseriti nei campi saranno cancellati. Vuoi proseguire?" \\
+                \cline{2-4}
+                        & 
+                        & Clicca su Esci sul mock-up P6 (Figura 3.36)
+                        & \\
+                \cline{2-4}
+                        & 
+                        & 
+                        & Mostra mock-up corrispondente al tasto cliccato\\
+                \hline
+                    SUBVARIATIONS
+                    & \textbf{Step n°} 
+                    & \textbf{Utente loggato} 
+                    & \textbf{Sistema}\\
+                \hline
+                    \multirow[|c|]{5}{*}{\shortstack[c]{Inserisce immagine}}
+                        & 7.s1
+                        & Preme sul tasto "+" accanto alla sua immagine di profilo
+                        & \\
+                \cline{2-4}
+                        & 8.s1
+                        & 
+                        & Mostra il sistema per selezionare le immagini\\
+                \cline{2-4}
+                        & 9.s1
+                        & Seleziona un'immagine
+                        & \\
+                \cline{2-4}
+                        & 10.s1
+                        & Clicca su OK
+                        & \\
+                \cline{2-4}
+                        & 11.s1
+                        & 
+                        & Continua da step 7 di main scenario\\
+                \hline
+                    \multirow[|c|]{5}{*}{\shortstack[c]{Inserisce genere}}
+                        & 16.s2
+                        & Preme sul campo di input del genere
+                        & \\
+                \cline{2-4}
+                        & 17.s2
+                        & 
+                        & Mostra la tastiera\\
+                \cline{2-4}
+                        & 18.s2
+                        & Inserisce il proprio genere
+                        & \\
+                \cline{2-4}
+                        & 19.s2
+                        & 
+                        & Continua da step 16 di main scenario\\
+                \hline
+                    \multirow[|c|]{5}{*}{\shortstack[c]{Inserisce area \\ geografica}}
+                        & 16.s3
+                        & Preme sul campo di input dell'area geografica
+                        & \\
+                \cline{2-4}
+                        & 17.s3
+                        & 
+                        & Mostra la tastiera\\
+                \cline{2-4}
+                        & 18.s3
+                        & Inserisce la propria area geografica
+                        & \\
+                \cline{2-4}
+                        & 19.s3
+                        & 
+                        & Continua da step 16 di main scenario\\
+                \hline
+                    \multirow[|c|]{5}{*}{\shortstack[c]{Inserisce biografia}}
+                        & 16.s4
+                        & Preme sul campo di input della biografia
+                        & \\
+                \cline{2-4}
+                        & 17.s4
+                        & 
+                        & Mostra la tastiera\\
+                \cline{2-4}
+                        & 18.s4
+                        & Inserisce la propria biografia
+                        & \\
+                \cline{2-4}
+                        & 19.s4
+                        & 
+                        & Continua da step 16 di main scenario\\
+                \hline
+                    \multirow[|c|]{5}{*}{\shortstack[c]{Inserisce link \\ personale}}
+                        & 16.s5
+                        & Preme sul campo di input del link personale
+                        & \\
+                \cline{2-4}
+                        & 17.s5
+                        & 
+                        & Mostra la tastiera\\
+                \cline{2-4}
+                        & 18.s5
+                        & Inserisce il proprio link personale
+                        & \\
+                \cline{2-4}
+                        & 19.s5
+                        & 
+                        & Continua da step 16 di main scenario\\
+                \hline
+                    \multirow[|c|]{5}{*}{\shortstack[c]{Inserisce link \\ social}}
+                        & 16.s6
+                        & Preme sul pulsante di uno dei social
+                        & \\
+                \cline{2-4}
+                        & 17.s6
+                        & 
+                        & Mostra il popup P4 (Figura 3.37)\\
+                \cline{2-4}
+                        & 18.s6
+                        & Preme sul campo di testo del link social
+                        & \\
+                \cline{2-4}
+                        & 19.s6
+                        & 
+                        & Mostra la tastiera\\
+                \cline{2-4}
+                        & 20.s6
+                        & Inserisce il proprio link social
+                        & \\
+                \cline{2-4}
+                        & 21.s6
+                        & Preme su "Conferma"
+                        & \\
+                \cline{2-4}
+                        & 22.s6
+                        & 
+                        & Torna al mockup C12 (Figura 3.33) \\
+                \cline{2-4}
+                        & 23.s6
+                        & 
+                        & Continua da step 16 del main scenario \\
+                \hline
+            \end{longtable}
+
+        \begin{figure}[!htb]
+            \begin{minipage}{0.32\textwidth}
+                    \centering
+                    \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C1.pdf}
+                    \caption{Home utente}
+            \end{minipage}\hfill
+            \begin{minipage}{0.32\textwidth}
+                    \centering
+                    \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C6.pdf}
+                    \caption{Menu profilo utente}
+            \end{minipage}\hfill
+            \begin{minipage}{0.32\textwidth}
+                    \centering
+                    \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C11.pdf}
+                    \caption{Profilo personale}
+            \end{minipage}\hfill
+        \end{figure}
+
+        \begin{figure}[!htb]
+            \begin{minipage}{0.32\textwidth}
+                    \centering
+                    \includegraphics[width=.7\linewidth]{Immagini/Frames/Compratore/C12.pdf}
+                    \caption{Modifica profilo personale}
+            \end{minipage}\hfill
+            \begin{minipage}{0.32\textwidth}
+                    \centering
+                    \includegraphics[width=.7\linewidth]{Immagini/Frames/Popup/P22.pdf}
+                    \caption{Pop-up di successo}
+            \end{minipage}\hfill
+            \begin{minipage}{0.32\textwidth}
+                    \centering
+                    \includegraphics[width=.7\linewidth]{Immagini/Frames/Errori/E14.pdf}
+                    \caption{Errore campi non compilati}
+            \end{minipage}\hfill
+        \end{figure}
+
+        \begin{figure}
+            \begin{minipage}{0.32\textwidth}
+                    \centering
+                    \includegraphics[width=.7\linewidth]{Immagini/Frames/Popup/P6.pdf}
+                    \caption{Popup di conferma uscita}
+            \end{minipage}\hfill
+            \begin{minipage}{0.32\textwidth}
+                    \centering
+                    \includegraphics[width=.7\linewidth]{Immagini/Frames/Popup/P4.pdf}
+                    \caption{Popup di inserimento link social}
+            \end{minipage}\hfill
+        \end{figure}
+        
     \clearpage
     
     \section{Valutazione dell’usabilità a priori}

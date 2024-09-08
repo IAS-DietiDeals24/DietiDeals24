@@ -191,104 +191,106 @@
     \clearpage
         
     \section{Dizionario delle classi}
-        \begin{tabular}{|C{3.5cm}|L{11.2cm}|}
+        \begin{longtable}{|C{3.5cm}|L{11.2cm}|}
             \hline
             \multicolumn{1}{|c|}{\textbf{Classe}} & \multicolumn{1}{c|}{\textbf{Descrizione}}\\  
             \hline
                 Account &
-                Cosa rappresenta la classe\\
+                L'account raccoglie le informazioni necessarie per permettere ad un utente dell'applicazione di effettuare l'accesso alla stessa. Esso può essere di due tipologie: compratore e venditore.\\
             \hline
                 Venditore &
-                Cosa rappresenta la classe\\
+                Un account di tipo venditore è un account che rappresenta un utente che utilizza l'applicazione per vendere i propri beni o servizi ad altri utenti.\\
             \hline
                 Compratore &
-                Cosa rappresenta la classe\\
+                Un account di tipo compratore è un account che rappresenta un utente che utilizza l'applicazione per acquistare beni o servizi da altri utenti.\\
             \hline
                 Profilo &
-                Cosa rappresenta la classe\\
+                Il profilo concentra le informazioni di natura personale che riguardano l'utente registrato. Esso è condiviso tra l'account compratore e venditore di uno stesso utente.\\
             \hline
                 Notifica &
-                Cosa rappresenta la classe\\
+                Una notifica è un messaggio che viene recepito da un utente; ciò avviene quando un'asta alla quale ha partecipato si è conclusa (ed eventualmente vinta), la sua offerta è stata accettata in un'asta silenziosa, o un'asta creata ha ricevuto un'offerta da un'utente.\\
             \hline
                 Asta &
-                Cosa rappresenta la classe\\
+                Un'asta è un annuncio di compravendita di un bene o un servizio e che raccoglie tutte le informazioni che riguardano l'articolo e chi ha pubblicato questo annuncio. Anche questa può essere di tipo compratore o venditore.\\
             \hline
                 Asta di compratore &
-                Cosa rappresenta la classe\\
+                Un'asta di tipo compratore è un'asta nella quale il compratore richiede a dei venditori di fornirgli un bene o un servizio. Essa è di un'unica tipologia, ossia un'asta inversa.\\
             \hline
                 Asta di venditore &
-                Cosa rappresenta la classe\\
+                Un'asta di tipo venditore è un'asta nella quale il venditore fornisce a dei compratori un bene o un servizio da essi richiesto. Essa può essere di due tipologie, ossia un'asta a tempo fisso o un'asta silenziosa.\\
             \hline
                 Asta a tempo fisso &
-                Cosa rappresenta la classe\\
+                Un'asta a tempo fisso è un'asta nella quale si stabilisce una data di fine, entro la quale i compratori possono fare delle offerte al rialzo, e una soglia minima da raggiungere. Quando sopraggiunge la data stabilita, la persona che ha offerto la cifra più alta si aggiudica l'asta. Se non c'è stata nessuna offerta o non si è raggiunta la soglia minima entro il tempo limite, allora l'asta è dichiarata fallita.\\
             \hline
                 Asta silenziosa &
-                Cosa rappresenta la classe\\
+                Un'asta silenziosa è un'asta nella quale si stabilisce una data di fine, entro la quale i compratori possono fare offerte al rialzo. Gli offerenti non possono però vedere l'offerta attuale più alta, e quindi dovranno offrire alla cieca. Quando sopraggiunge la data stabilita, la persona della quale l'offerta è stata accettata si aggiudica l'asta. Se non c'è stata nessuna offerta o nessuna offerta è stata accettata entro il tempo limite, allora l'asta è dichiarata fallita.\\
             \hline
                 Asta inversa &
-                Cosa rappresenta la classe\\
+                Un'asta inversa è un'asta nella quale si stabilisce una data di fine, entro la quale i venditori possono fare offerte al ribasso, e una soglia massima da cui partire. Quando sopraggiunge la data stabilita, la persona che ha offerto la cifra più bassa si aggiudica l'asta. Se non c'è stata nessuna offerta entro il tempo limite, allora l'asta è dichiarata fallita.\\
             \hline
                 Offerta &
-                Cosa rappresenta la classe\\
+                Un'offerta è una somma di denaro che l'utente può inviare ad un'asta con lo scopo di aggiudicarsela.\\
             \hline
                 Offerta di compratore &
-                Cosa rappresenta la classe\\
+                Un'offerta che viene inviata da un account compratore.\\
             \hline
                 Offerta di venditore &
-                Cosa rappresenta la classe\\
+                Un'offerta che viene inviata da un account venditore.\\
             \hline
-                Offerta a tempo fisso &
-                Cosa rappresenta la classe\\
+                 Offerta a tempo fisso &
+                Un'offerta che viene inviata da un account compratore ad un'asta a tempo fisso.\\
             \hline
                 Offerta silenziosa &
-                Cosa rappresenta la classe\\
+                Un'offerta che viene inviata da un account compratore ad un'asta silenziosa.\\
             \hline
                 Offerta inversa &
-                Cosa rappresenta la classe\\
+                Un'offerta che viene inviata da un account venditore ad un'asta inversa.\\
             \hline
-        \end{tabular}
+        \end{longtable}
         
     \section{Dizionario delle associazioni}
-        \begin{tabular}{|C{3.5cm}|L{11.2cm}|}
+        \begin{longtable}{|C{3.5cm}|L{11.2cm}|}
             \hline
                 \multicolumn{1}{|c|}{\textbf{Associazione}} &
                 \multicolumn{1}{c|}{\textbf{Descrizione}}\\            
             \hline
                 Mittente &
-                Cosa rappresenta l'associazione\\
+                Associazione tra Account e Notifica. Quando viene inviata una notifica, essa conserva l'utente che ha effettuato l'azione che ha innescato l'invio. Una notifica ha un solo mittente, ma un mittente può essere responsabile di più notifiche.\\
             \hline
                 Destinatario &
-                Cosa rappresenta l'associazione\\
+                Associazione tra Account e Notifica. Quando viene inviata una notifica, essa conserva l'utente al quale deve essere mandata per sapere a chi arrivare. Una notifica ha uno o più destinatari, e un destinatario può ricevere più notifiche.\\
             \hline
                 Possiede &
-                Cosa rappresenta l'associazione\\
+                Associazione tra Account e Profilo. Quando viene creato un account, esso viene collegato ad un profilo. Un account è collegato ad un solo profilo, e un profilo è collegato al più a due account, ossia uno di tipo compratore e uno di tipo venditore.\\
             \hline
                 È associata a &
-                Cosa rappresenta l'associazione\\
+                Associazione tra Notifica e Asta. Quando viene inviata una notifica, essa conserva l'asta relativa all'evento che ha causato l'invio, così che l'utente possa raggiungere velocemente l'asta attraverso la notifica. Una notifica è associata ad una sola asta, ma un'asta è associata a più notifiche.\\
             \hline
                 Possiede &
-                Cosa rappresenta l'associazione\\
+                Associazione tra Venditore e Asta di venditore. Un venditore può creare un'asta per la vendita di un bene o servizio e ne diventa il possessore e gestore. Un'asta è quindi associata ad un solo venditore, ma un venditore può creare più aste.\\
             \hline
                 È collegato a &
-                Cosa rappresenta l'associazione\\
+                Associazione tra Venditore e Offerta di venditore. Quando viene inviata un'offerta dal venditore, essa conserva il suo offerente così che si possa risalire ad esso nell'elenco delle offerte dell'asta. Un'offerta è collegata ad un solo venditore, ma un venditore può inviare più offerte.\\
             \hline
                 Possiede &
-                Cosa rappresenta l'associazione\\
+                Associazione tra Compratore e Asta di compratore. Un compratore può creare un'asta per l'acquisto di un bene o servizio e ne diventa il possessore e gestore. Un'asta è quindi associata ad un solo compratore, ma un compratore può creare più aste.\\
             \hline
                 È collegato a &
-                Cosa rappresenta l'associazione\\
+                Associazione tra Compratore e Offerta di compratore. Quando viene inviata un'offerta dal compratore, essa conserva il suo offerente così che si possa risalire ad esso nell'elenco delle offerte dell'asta. Un'offerta è collegata ad un solo compratore, ma un compratore può inviare più offerte.\\
             \hline
                 Si riferisce a &
-                Cosa rappresenta l'associazione\\
+                Associazione tra Offerta a tempo fisso e Asta a tempo fisso. Ogni offerta è collegata alla relativa asta. In particolare, ogni offerta è relativa ad una sola asta e ogni asta è collegata a più offerte.\\
             \hline
                 Si riferisce a &
-                Cosa rappresenta l'associazione\\
+                Associazione tra Offerta silenziosa e Asta silenziosa. Ogni offerta è collegata alla relativa asta. In particolare, ogni offerta è relativa ad una sola asta e ogni asta è collegata a più offerte.\\
             \hline
                 Si riferisce a &
-                Cosa rappresenta l'associazione\\
+                Associazione tra Offerta inversa e Asta inversa. Ogni offerta è collegata alla relativa asta. In particolare, ogni offerta è relativa ad una sola asta e ogni asta è collegata a più offerte.\\
             \hline
-        \end{tabular}
+        \end{longtable}
 
+    \clearpage
+    
     \section{Sequence Diagram}
         Il diagramma di sequenza rappresenta i processi e gli oggetti coinvolti e la sequenza dei messaggi scambiati necessari per adempiere ad una funzionalità. \\
         Le interazioni sono disposte lungo un'asse temporale per dare un'idea dell'ordine di avvicendamento dei messaggi.
