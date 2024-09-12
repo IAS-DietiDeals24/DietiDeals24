@@ -5,21 +5,24 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
+@AllArgsConstructor
 public class Notifica {
-    private LocalDate dataInvio;
+    @NonNull private LocalDate dataInvio;
 
-    private LocalTime oraInvio;
+    @NonNull private LocalTime oraInvio;
 
-    private String messaggio;
+    @NonNull private String messaggio;
 
-    private Account mittente;
+    @NonNull private Account mittente;
 
-    private Set<Account> destinatari;
+    @NonNull private Set<Account> destinatari;
 
-    private Asta astaAssociata;
+    @NonNull private Asta astaAssociata;
 
     // Metodi per destinatari
     public void addDestinatario(Account destinatarioDaAggiungere) {        

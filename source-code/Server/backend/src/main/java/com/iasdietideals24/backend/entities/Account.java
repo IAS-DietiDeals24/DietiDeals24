@@ -3,15 +3,18 @@ package com.iasdietideals24.backend.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
+@AllArgsConstructor
 public abstract class Account {
-    private String email;
+    @NonNull private String email;
     
-    private String password;
+    @NonNull private String password;
     
-    private Profilo profilo;
+    @NonNull private Profilo profilo;
     
     private Set<Notifica> notificheInviate;
 

@@ -4,19 +4,22 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
+@AllArgsConstructor
 public class Profilo {
-    private String nomeUtente;
+    @NonNull private String nomeUtente;
 
-    private byte[] profilePicture;
+    @NonNull private byte[] profilePicture;
 
-    private String nome;
+    @NonNull private String nome;
 
-    private String cognome;
+    @NonNull private String cognome;
 
-    private LocalDate dataNascita;
+    @NonNull private LocalDate dataNascita;
 
     private String areaGeografica;
 
@@ -32,7 +35,7 @@ public class Profilo {
 
     private String linkX;
 
-    private Set<Account> accounts;
+    @NonNull private Set<Account> accounts;
 
     // Metodi per accounts
     public void addAccount(Account accountDaAggiungere) {        

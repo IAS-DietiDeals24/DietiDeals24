@@ -4,14 +4,17 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
+@AllArgsConstructor
 public abstract class Offerta {
-    private LocalDate dataInvio;
+    @NonNull private LocalDate dataInvio;
 
-    private LocalTime oraInvio;
+    @NonNull private LocalTime oraInvio;
 
-    private BigDecimal valore;
+    @NonNull private BigDecimal valore;
     
 }

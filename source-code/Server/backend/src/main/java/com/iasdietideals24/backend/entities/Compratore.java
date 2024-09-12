@@ -13,6 +13,14 @@ public class Compratore extends Account {
     
     private Set<OffertaDiCompratore> offerteCollegate;
 
+    // AllArgsConstructor
+    public Compratore (String email, String password, Profilo profilo, Set<Notifica> notificheInviate, Set<Notifica> notificheRicevute, Set<AstaDiCompratore> astePossedute, Set<OffertaDiCompratore> offerteCollegate) {
+        super(email, password, profilo, notificheInviate, notificheRicevute);
+
+        this.setAstePossedute(astePossedute);
+        this.setOfferteCollegate(offerteCollegate);
+    }
+
     // Metodi per astePossedute
     public void addAstaPosseduta(AstaDiCompratore astaDaAggiungere) {        
         if (this.astePossedute == null)
