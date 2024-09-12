@@ -35,15 +35,16 @@
 	</properties>
 
 	<dependencies>
+        <!-- Build web, including RESTful, applications using Spring MVC. Uses Apache Tomcat as the default embedded container -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-        <!-- Database Connectivity API that defines how a client may connect and query a database -->
+        <!-- Persist data in SQL stores with Java Persistence API using Spring Data and Hibernate -->
         <dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jdbc</artifactId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		
         <!-- A JDBC and R2DBC driver that allows Java programs to connect to a PostgreSQL database using standard, database independent Java code -->
