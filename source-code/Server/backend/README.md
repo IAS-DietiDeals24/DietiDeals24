@@ -17,30 +17,23 @@ All'interno della directory `src/main/java/` abbiamo la seguente struttura:
 
 Gli endpoint esposti dalla DietiDeals24 REST API sono:
 
-- `/aste`
-    - `/di-compratore`
-        - `/inverse`
-            - `/{idAsta}`
-    - `/di-venditore`
-        - `/silenziose`
-            - `/{idAsta}`
-        - `/tempo-fisso`
-            - `/{idAsta}`
-- `/accounts`
-    - `/compratori`
-        - `/{email}`
-    - `/venditori`
-        - `/{email}`
+- `/aste/di-compratore/inverse`
+    - `/{idAsta}`
+- `/aste/di-venditore/silenziose`
+    - `/{idAsta}`
+- `/aste/di-venditore/tempo-fisso`
+    - `/{idAsta}`
+- `/accounts/compratori`
+    - `/{email}`
+- `/accounts/venditori`
+    - `/{email}`
 - `/profili`
     - `{nomeUtente}`
 - `/notifiche`
     - `{idNotifica}`
-- `/offerte`
-    - `/di-compratore`
-        - `/silenziose`
-            - `{idOfferta}`
-        - `/tempo-fisso`
-            - `{idOfferta}`
-    - `/di-venditore`
-        - `/inverse`
-            - `{idOfferta}`
+- `/offerte/di-compratore/silenziose`
+    - `{idOfferta}`
+- `/offerte/di-compratore/tempo-fisso`
+    - `{idOfferta}`
+- `/offerte/di-venditore/inverse`
+    - `{idOfferta}`

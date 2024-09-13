@@ -2,7 +2,7 @@ package com.iasdietideals24.backend.entities;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import lombok.Data;
@@ -23,7 +23,7 @@ public class AstaSilenziosa extends AstaDiVenditore {
     // Metodi per offerteRicevute
     public void addOffertaRicevuta(OffertaSilenziosa offertaDaAggiungere) {        
         if (this.offerteRicevute == null)
-            this.offerteRicevute = new HashSet<OffertaSilenziosa>();
+            this.offerteRicevute = new LinkedHashSet<OffertaSilenziosa>();
         
         this.offerteRicevute.add(offertaDaAggiungere);
     }

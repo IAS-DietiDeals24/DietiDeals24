@@ -3,7 +3,7 @@ package com.iasdietideals24.backend.entities;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import lombok.Data;
@@ -28,7 +28,7 @@ public class AstaInversa extends AstaDiCompratore {
     // Metodi per offerteRicevute
     public void addOffertaRicevuta(OffertaInversa offertaDaAggiungere) {        
         if (this.offerteRicevute == null)
-            this.offerteRicevute = new HashSet<OffertaInversa>();
+            this.offerteRicevute = new LinkedHashSet<OffertaInversa>();
 
         this.offerteRicevute.add(offertaDaAggiungere);
     }

@@ -3,7 +3,7 @@ package com.iasdietideals24.backend.entities;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import lombok.Data;
@@ -28,7 +28,7 @@ public class AstaTempoFisso extends AstaDiVenditore {
     // Metodi per offerteRicevute
     public void addOffertaRicevuta(OffertaTempoFisso offertaDaAggiungere) {        
         if (this.offerteRicevute == null)
-            this.offerteRicevute = new HashSet<OffertaTempoFisso>();
+            this.offerteRicevute = new LinkedHashSet<OffertaTempoFisso>();
         
         this.offerteRicevute.add(offertaDaAggiungere);
     }
