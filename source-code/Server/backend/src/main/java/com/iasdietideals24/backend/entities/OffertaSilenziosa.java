@@ -5,14 +5,23 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@Entity
+@DiscriminatorValue("Silenziosa")
 public class OffertaSilenziosa extends OffertaDiCompratore {
     private Boolean isAccettata = null;
 
+    @ManyToOne
+    @JoinColumn(name = "fk_astasilenziosa")
     @NonNull
     private AstaSilenziosa astaRiferimento;
 

@@ -1,5 +1,6 @@
 package com.iasdietideals24.backend.entities;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -11,7 +12,14 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@Entity
 public class Notifica {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "notifica_id_seq")
+    @NonNull
+    private Long idNotifica;
+
     @NonNull
     private LocalDate dataInvio;
 
@@ -21,13 +29,21 @@ public class Notifica {
     @NonNull
     private String messaggio;
 
+    @ManyToOne
+    @JoinColumn(name = "fk_account")
     @NonNull
     private Account mittente;
 
+    @ManyToMany
+    @JoinTable(name = "destinatari",
+            joinColumns = { @JoinColumn(name = "fk_notifica") },
+            inverseJoinColumns = { @JoinColumn(name = "fk_account") })
     @NonNull
     @Setter(AccessLevel.NONE)
     private Set<Account> destinatari;
 
+    @ManyToOne
+    @JoinColumn(name = "fk_asta")
     @NonNull
     private Asta astaAssociata;
 

@@ -5,12 +5,19 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipoOfferta")
 public abstract class OffertaDiVenditore extends Offerta {
+    @ManyToOne
+    @JoinColumn(name = "fk_venditore")
     @NonNull
     private Venditore venditoreCollegato;
 

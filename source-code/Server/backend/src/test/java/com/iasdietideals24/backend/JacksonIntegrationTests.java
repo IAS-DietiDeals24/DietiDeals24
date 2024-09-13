@@ -11,9 +11,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iasdietideals24.backend.datautil.TestDataAstaInversa;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
 import com.iasdietideals24.backend.exceptions.ParameterNotValidException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-public class JacksonTests {
-    
+@SpringBootTest
+public class JacksonIntegrationTests {
+
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    public JacksonIntegrationTests(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
     @Test
     public void testObjectMapperCreateJsonFromJavaObject() throws JsonProcessingException, ParameterNotValidException {
 
@@ -32,7 +42,6 @@ public class JacksonTests {
         
         // CONVERTIRE ASTA IN DTO PRIMA DI SERIALIZZARE
 
-        ObjectMapper objectMapper = new ObjectMapper(); // Convertiamo il dto in json
         String result = objectMapper.writeValueAsString(asta);
 
 

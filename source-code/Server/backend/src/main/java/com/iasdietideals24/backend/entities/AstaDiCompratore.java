@@ -4,12 +4,19 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipoAsta")
 public abstract class AstaDiCompratore extends Asta {
+    @ManyToOne
+    @JoinColumn(name = "fk_compratore")
     @NonNull
     private Compratore proprietario;
 

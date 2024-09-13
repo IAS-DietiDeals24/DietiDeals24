@@ -7,15 +7,22 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.*;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@Entity
+@DiscriminatorValue("Tempo fisso")
 public class AstaTempoFisso extends AstaDiVenditore {
     @NonNull
     private BigDecimal sogliaMinima;
 
+    @OneToMany(mappedBy = "astaRiferimento")
     @Setter(AccessLevel.NONE)
     private Set<OffertaTempoFisso> offerteRicevute;
 

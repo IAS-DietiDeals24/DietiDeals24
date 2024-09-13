@@ -5,12 +5,21 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@Entity
+@DiscriminatorValue("Tempo fisso")
 public class OffertaTempoFisso extends OffertaDiCompratore {
+    @ManyToOne
+    @JoinColumn(name = "fk_astatempofisso")
     @NonNull
     private AstaTempoFisso astaRiferimento;
 

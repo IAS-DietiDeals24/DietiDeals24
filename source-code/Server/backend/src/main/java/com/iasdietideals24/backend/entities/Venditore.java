@@ -4,15 +4,21 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.*;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@Entity
 public class Venditore extends Account {
+    @OneToMany(mappedBy = "proprietario")
     @Setter(AccessLevel.NONE)
     private Set<AstaDiVenditore> astePossedute;
 
+    @OneToMany(mappedBy = "venditoreCollegato")
     @Setter(AccessLevel.NONE)
     private Set<OffertaDiVenditore> offerteCollegate;
 

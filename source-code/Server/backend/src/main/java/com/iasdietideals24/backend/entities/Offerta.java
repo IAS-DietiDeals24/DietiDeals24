@@ -1,5 +1,6 @@
 package com.iasdietideals24.backend.entities;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -10,7 +11,15 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Offerta {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "offerta_id_seq")
+    @NonNull
+    private Long idOfferta;
+
     @NonNull
     private LocalDate dataInvio;
 

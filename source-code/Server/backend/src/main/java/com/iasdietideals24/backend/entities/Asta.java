@@ -1,5 +1,6 @@
 package com.iasdietideals24.backend.entities;
 
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -11,7 +12,15 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Asta {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "asta_id_seq")
+    @NonNull
+    private Long idAsta;
+
     @NonNull
     private String categoria;
 
@@ -29,6 +38,7 @@ public abstract class Asta {
 
     private byte[] immagine;
 
+    @OneToMany(mappedBy = "astaAssociata")
     @Setter(AccessLevel.NONE)
     private Set<Notifica> notificheAssociate;
 

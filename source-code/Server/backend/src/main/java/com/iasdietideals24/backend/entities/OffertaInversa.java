@@ -5,12 +5,21 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@Entity
+@DiscriminatorValue("Inversa")
 public class OffertaInversa extends OffertaDiVenditore {
+    @ManyToOne
+    @JoinColumn(name = "fk_astainversa")
     @NonNull
     private AstaInversa astaRiferimento;
 

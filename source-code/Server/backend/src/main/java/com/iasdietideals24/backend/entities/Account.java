@@ -1,5 +1,8 @@
 package com.iasdietideals24.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
@@ -9,19 +12,28 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public abstract class Account {
+    @Id
     @NonNull
     private String email;
 
     @NonNull
     private String password;
 
+    @ManyToOne
+    @JoinColumn(name = "fk_profilo")
     @NonNull
     private Profilo profilo;
 
+    @OneToMany(mappedBy = "mittente")
     @Setter(AccessLevel.NONE)
     private Set<Notifica> notificheInviate;
 
+    @ManyToMany(mappedBy="destinatari")
     @Setter(AccessLevel.NONE)
     private Set<Notifica> notificheRicevute;
 
