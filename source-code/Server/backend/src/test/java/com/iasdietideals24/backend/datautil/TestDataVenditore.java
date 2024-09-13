@@ -16,30 +16,18 @@ public class TestDataVenditore {
     public static Venditore createVenditoreA(final Profilo profilo) {
         return new Venditore("scis@gmail.com",
                                 "myCars",
-                                profilo,
-                                null,
-                                null,
-                                null,
-                                null);
+                                profilo);
     }
 
-    public static Venditore createVenditoreB(final Profilo profilo, final Set<Notifica> notificheInviate, final Set<Notifica> notificheRicevute, final Set<AstaDiVenditore> astePossedute, final Set<OffertaDiVenditore> offerteCollegate) {
+    public static Venditore createVenditoreB(final Profilo profilo) {
         return new Venditore("andrex@gmail.com",
                                 "forzaNapoli",
-                                profilo,
-                                notificheInviate,
-                                notificheRicevute,
-                                astePossedute,
-                                offerteCollegate);
+                                profilo);
     }
 
-    public static Venditore createVenditoreC(final Profilo profilo, final Set<Notifica> notificheInviate, final Set<Notifica> notificheRicevute, final Set<AstaDiVenditore> astePossedute, final Set<OffertaDiVenditore> offerteCollegate) {
+    public static Venditore createVenditoreC(final Profilo profilo) {
         return new Venditore("bluelily@gmail.com",
                                 "forzaFedericoII",
-                                profilo,
-                                notificheInviate,
-                                notificheRicevute,
-                                astePossedute,
-                                offerteCollegate);
+                                profilo);
     }
 }

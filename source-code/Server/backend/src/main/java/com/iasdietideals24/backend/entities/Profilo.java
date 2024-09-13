@@ -1,25 +1,31 @@
 package com.iasdietideals24.backend.entities;
 
+import com.iasdietideals24.backend.exceptions.ParameterNotValidException;
+import lombok.*;
+
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-import com.iasdietideals24.backend.exceptions.ParameterNotValidException;
-
-import lombok.Data;
-import lombok.NonNull;
-
-@Data
+@Getter
+@Setter
+@ToString
 public class Profilo {
-    @NonNull private String nomeUtente;
+    @NonNull
+    private String nomeUtente;
 
-    @NonNull private byte[] profilePicture;
+    @NonNull
+    private byte[] profilePicture;
 
-    @NonNull private String nome;
+    @NonNull
+    private String nome;
 
-    @NonNull private String cognome;
+    @NonNull
+    private String cognome;
 
-    @NonNull private LocalDate dataNascita;
+    @NonNull
+    private LocalDate dataNascita;
 
     private String areaGeografica;
 
@@ -35,55 +41,57 @@ public class Profilo {
 
     private String linkX;
 
-    @NonNull private Set<Account> accounts = new HashSet<Account>();
+    @NonNull
+    @Setter(AccessLevel.NONE)
+    private Set<Account> accounts;
 
-    //AllArgsConstructor
-    public Profilo(String nomeUtente, byte[] profilePicture, String nome, String cognome, LocalDate dataNascita, String areaGeografica, String biografia, String linkPersonale, String linkInstagram, String linkFacebook, String linkGitHub, String linkX, Account account){
-        this.setNomeUtente(nomeUtente);
-        this.setProfilePicture(profilePicture);
-        this.setNome(nome);
-        this.setCognome(cognome);
-        this.setDataNascita(dataNascita);
-        this.setAreaGeografica(areaGeografica);
-        this.setBiografia(biografia);
-        this.setLinkPersonale(linkPersonale);
-        this.setLinkInstagram(linkInstagram);
-        this.setLinkFacebook(linkFacebook);
-        this.setLinkGitHub(linkGitHub);
-        this.setLinkX(linkX);
+    // AllArgsConstructor
+    public Profilo(@NonNull String nomeUtente, @NonNull byte[] profilePicture, @NonNull String nome, @NonNull String cognome, @NonNull LocalDate dataNascita, String areaGeografica, String biografia, String linkPersonale, String linkInstagram, String linkFacebook, String linkGitHub, String linkX, @NonNull Account account) {
+        this.nomeUtente = nomeUtente;
+        this.profilePicture = profilePicture;
+        this.nome = nome;
+        this.cognome = cognome;
+        this.dataNascita = dataNascita;
+        this.areaGeografica = areaGeografica;
+        this.biografia = biografia;
+        this.linkPersonale = linkPersonale;
+        this.linkInstagram = linkInstagram;
+        this.linkFacebook = linkFacebook;
+        this.linkGitHub = linkGitHub;
+        this.linkX = linkX;
 
-        this.accounts.add(account);
+        this.addAccount(account);
         account.setProfilo(this);
     }
 
     // Creazione dell'account contestualmente al profilo
-    public Profilo(String nomeUtente, byte[] profilePicture, String nome, String cognome, LocalDate dataNascita, String areaGeografica, String biografia, String linkPersonale, String linkInstagram, String linkFacebook, String linkGitHub, String linkX, String email, String password, String tipoAccount) throws ParameterNotValidException{
-        this.setNomeUtente(nomeUtente);
-        this.setProfilePicture(profilePicture);
-        this.setNome(nome);
-        this.setCognome(cognome);
-        this.setDataNascita(dataNascita);
-        this.setAreaGeografica(areaGeografica);
-        this.setBiografia(biografia);
-        this.setLinkPersonale(linkPersonale);
-        this.setLinkInstagram(linkInstagram);
-        this.setLinkFacebook(linkFacebook);
-        this.setLinkGitHub(linkGitHub);
-        this.setLinkX(linkX);
+    public Profilo(@NonNull String nomeUtente, @NonNull byte[] profilePicture, @NonNull String nome, @NonNull String cognome, @NonNull LocalDate dataNascita, String areaGeografica, String biografia, String linkPersonale, String linkInstagram, String linkFacebook, String linkGitHub, String linkX, @NonNull String email, @NonNull String password, @NonNull String tipoAccount) throws ParameterNotValidException {
+        this.nomeUtente = nomeUtente;
+        this.profilePicture = profilePicture;
+        this.nome = nome;
+        this.cognome = cognome;
+        this.dataNascita = dataNascita;
+        this.areaGeografica = areaGeografica;
+        this.biografia = biografia;
+        this.linkPersonale = linkPersonale;
+        this.linkInstagram = linkInstagram;
+        this.linkFacebook = linkFacebook;
+        this.linkGitHub = linkGitHub;
+        this.linkX = linkX;
 
         if (tipoAccount.equals("Compratore"))
-            this.accounts.add(new Compratore(email, password, this, null, null, null, null));
+            this.addAccount(new Compratore(email, password, this));
         else if (tipoAccount.equals("Venditore"))
-            this.accounts.add(new Venditore(email, password, this, null, null, null, null));
+            this.addAccount(new Venditore(email, password, this));
         else
             throw new ParameterNotValidException();
     }
 
     // Metodi per accounts
-    public void addAccount(Account accountDaAggiungere) {        
+    public void addAccount(Account accountDaAggiungere) {
         if (this.accounts == null)
             this.accounts = new HashSet<Account>();
-        
+
         this.accounts.add(accountDaAggiungere);
     }
 
@@ -92,5 +100,13 @@ public class Profilo {
 
         if (this.accounts.isEmpty())
             this.accounts = null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Profilo)) return false;
+        Profilo profilo = (Profilo) o;
+        return Objects.equals(this.nomeUtente, profilo.getNomeUtente()) && Objects.deepEquals(this.profilePicture, profilo.getProfilePicture()) && Objects.equals(this.nome, profilo.getNome()) && Objects.equals(this.cognome, profilo.getCognome()) && Objects.equals(this.dataNascita, profilo.getDataNascita()) && Objects.equals(this.areaGeografica, profilo.getAreaGeografica()) && Objects.equals(this.biografia, profilo.getBiografia()) && Objects.equals(this.linkPersonale, profilo.getLinkPersonale()) && Objects.equals(this.linkInstagram, profilo.getLinkInstagram()) && Objects.equals(this.linkFacebook, profilo.getLinkFacebook()) && Objects.equals(this.linkGitHub, profilo.getLinkGitHub()) && Objects.equals(this.linkX, profilo.getLinkX()) && Objects.equals(this.accounts, profilo.getAccounts());
     }
 }

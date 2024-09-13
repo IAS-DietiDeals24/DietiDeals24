@@ -4,25 +4,26 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NonNull;
+import lombok.*;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@ToString
 public class AstaInversa extends AstaDiCompratore {
-    @NonNull private BigDecimal sogliaIniziale;
+    @NonNull
+    private BigDecimal sogliaIniziale;
 
+    @Setter(AccessLevel.NONE)
     private Set<OffertaInversa> offerteRicevute;
 
     // AllArgsConstructor
-    public AstaInversa(String categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, Set<byte[]> immagini, Set<Notifica> notificheAssociate, Compratore proprietario, BigDecimal sogliaIniziale, Set<OffertaInversa> offerteRicevute) {
-        super(categoria, nome, descrizione, dataScadenza, oraScadenza, immagini, notificheAssociate, proprietario);
+    public AstaInversa(@NonNull String categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Compratore proprietario, @NonNull BigDecimal sogliaIniziale) {
+        super(categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, proprietario);
 
-        this.setSogliaIniziale(sogliaIniziale);
-        this.setOfferteRicevute(offerteRicevute);
+        this.sogliaIniziale = sogliaIniziale;
     }
 
     // Metodi per offerteRicevute
@@ -38,5 +39,14 @@ public class AstaInversa extends AstaDiCompratore {
 
         if (this.offerteRicevute.isEmpty())
             this.offerteRicevute = null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AstaInversa)) return false;
+        if (!super.equals(o)) return false;
+        AstaInversa asta = (AstaInversa) o;
+        return Objects.equals(this.sogliaIniziale, asta.getSogliaIniziale()) && Objects.equals(this.offerteRicevute, asta.getOfferteRicevute());
     }
 }

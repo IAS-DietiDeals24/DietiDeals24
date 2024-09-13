@@ -3,7 +3,7 @@ package com.iasdietideals24.backend.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashSet;
+import java.util.Set;
 
 import com.iasdietideals24.backend.entities.OffertaInversa;
 
@@ -28,13 +28,13 @@ public class AstaInversaDto {
 
     private LocalTime oraScadenza;
 
-    private HashSet<byte[]> immagini;
+    private Set<byte[]> immagini;
 
-    private HashSet<NotificaDto> notificheAssociate;
+    private Set<NotificaDto> notificheAssociate;
 
     private CompratoreDto proprietario;
 
     private BigDecimal sogliaIniziale;
 
-    private HashSet<OffertaInversa> offerteRicevute;
+    private Set<OffertaInversa> offerteRicevute;
 }

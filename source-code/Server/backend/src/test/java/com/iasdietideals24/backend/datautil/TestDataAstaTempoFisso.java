@@ -23,45 +23,29 @@ public final class TestDataAstaTempoFisso {
                                 LocalDate.of(2024, 6, 19),
                                 LocalTime.of(18, 22),
                                 null,
-                                null,
                                 proprietario,
-                                BigDecimal.valueOf(5),
-                                null);
+                                BigDecimal.valueOf(5));
     }
 
-    public static AstaTempoFisso createAstaTempoFissoB(final Set<Notifica> notificheAssociate, final Venditore proprietario, final Set<OffertaTempoFisso> offerteRicevute) {
-        Set<byte[]> immagini = new LinkedHashSet<byte[]>();
-        immagini.add(new byte[] {-82, -18, 31});
-        immagini.add(new byte[] {12, 14, 83});
-        immagini.add(new byte[] {-91, 60, 83});
-
+    public static AstaTempoFisso createAstaTempoFissoB(final Venditore proprietario) {
         return new AstaTempoFisso("Videogiochi",
                                 "Shadow of the Tomb Raider PS4", 
                                 "Shadow of the Tomb Raider per PS4, come nuovo.",
                                 LocalDate.of(2020, 8, 27),
                                 LocalTime.of(6, 59),
-                                immagini,
-                                notificheAssociate,
+                                new byte[] {-91, 60, 83},
                                 proprietario,
-                                BigDecimal.valueOf(8.30),
-                                offerteRicevute);
+                                BigDecimal.valueOf(8.30));
     }
 
-    public static AstaTempoFisso createAstaTempoFissoC(final Set<Notifica> notificheAssociate, final Venditore proprietario, final Set<OffertaTempoFisso> offerteRicevute) {
-        Set<byte[]> immagini = new LinkedHashSet<byte[]>();
-        immagini.add(new byte[] {-89, 8, 68});
-        immagini.add(new byte[] {-52, 100, 104});
-        immagini.add(new byte[] {-99, -75, 45});
-
+    public static AstaTempoFisso createAstaTempoFissoC(final Venditore proprietario) {
         return new AstaTempoFisso("Moda",
                                 "Parrucca bionda con frangia", 
                                 "Parrucca capelli biondi per aspiranti Raffaella Carrà.",
                                 LocalDate.of(2024, 2, 12),
                                 LocalTime.of(10, 30),
-                                immagini,
-                                notificheAssociate,
+                                new byte[] {-99, -75, 45},
                                 proprietario,
-                                BigDecimal.valueOf(2.30),
-                                offerteRicevute);
+                                BigDecimal.valueOf(2.30));
     }
 }

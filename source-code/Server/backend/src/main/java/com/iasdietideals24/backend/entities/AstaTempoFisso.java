@@ -4,25 +4,26 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NonNull;
+import lombok.*;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@ToString
 public class AstaTempoFisso extends AstaDiVenditore {
-    @NonNull private BigDecimal sogliaMinima;
+    @NonNull
+    private BigDecimal sogliaMinima;
 
+    @Setter(AccessLevel.NONE)
     private Set<OffertaTempoFisso> offerteRicevute;
 
     // AllArgsConstructor
-    public AstaTempoFisso (String categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, Set<byte[]> immagini, Set<Notifica> notificheAssociate, Venditore proprietario, BigDecimal sogliaMinima, Set<OffertaTempoFisso> offerteRicevute) {
-        super(categoria, nome, descrizione, dataScadenza, oraScadenza, immagini, notificheAssociate, proprietario);
+    public AstaTempoFisso(@NonNull String categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Venditore proprietario, @NonNull BigDecimal sogliaMinima) {
+        super(categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, proprietario);
 
         this.setSogliaMinima(sogliaMinima);
-        this.setOfferteRicevute(offerteRicevute);
     }
 
     // Metodi per offerteRicevute
@@ -38,5 +39,14 @@ public class AstaTempoFisso extends AstaDiVenditore {
 
         if (this.offerteRicevute.isEmpty())
             this.offerteRicevute = null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AstaTempoFisso)) return false;
+        if (!super.equals(o)) return false;
+        AstaTempoFisso asta = (AstaTempoFisso) o;
+        return Objects.equals(this.sogliaMinima, asta.getSogliaMinima()) && Objects.equals(this.offerteRicevute, asta.getOfferteRicevute());
     }
 }

@@ -1,24 +1,24 @@
 package com.iasdietideals24.backend.entities;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@ToString
 public class Venditore extends Account {
+    @Setter(AccessLevel.NONE)
     private Set<AstaDiVenditore> astePossedute;
-    
+
+    @Setter(AccessLevel.NONE)
     private Set<OffertaDiVenditore> offerteCollegate;
 
     // AllArgsConstructor
-    public Venditore (String email, String password, Profilo profilo, Set<Notifica> notificheInviate, Set<Notifica> notificheRicevute, Set<AstaDiVenditore> astePossedute, Set<OffertaDiVenditore> offerteCollegate) {
-        super(email, password, profilo, notificheInviate, notificheRicevute);
-
-        this.setAstePossedute(astePossedute);
-        this.setOfferteCollegate(offerteCollegate);
+    public Venditore (String email, String password, Profilo profilo) {
+        super(email, password, profilo);
     }
 
     // Metodi per astePossedute
@@ -49,5 +49,14 @@ public class Venditore extends Account {
 
         if (this.offerteCollegate.isEmpty())
             this.offerteCollegate = null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Venditore)) return false;
+        if (!super.equals(o)) return false;
+        Venditore venditore = (Venditore) o;
+        return Objects.equals(this.astePossedute, venditore.getAstePossedute()) && Objects.equals(this.offerteCollegate, venditore.getOfferteCollegate());
     }
 }

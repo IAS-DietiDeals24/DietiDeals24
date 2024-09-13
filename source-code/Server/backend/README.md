@@ -12,6 +12,7 @@ All'interno della directory `src/main/java/` abbiamo la seguente struttura:
     5. `entities` contiene le classi del dominio, che serviranno anche per configurare le entità della JPA. Possono essere utilizzate solo dal *service layer* e come modello per le repository (costituisce l'entity del BCE pattern).
     6. `repositories` contiene le repository interfaces, che sono usate dalla JPA per implementare le operazioni di CRUD per interagire con il database.
     7. `exceptions` contiene exceptions custom.
+    8. `config` contiene le classi di configurazione, che contengono alcuni Beans iniettati.
 
 ## REST API
 

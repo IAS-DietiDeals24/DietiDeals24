@@ -2,6 +2,7 @@ package com.iasdietideals24.backend;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.iasdietideals24.backend.entities.*;
 import org.junit.jupiter.api.Test;
 import java.util.Iterator;
 
@@ -9,10 +10,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iasdietideals24.backend.datautil.TestDataAstaInversa;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
-import com.iasdietideals24.backend.entities.Account;
-import com.iasdietideals24.backend.entities.AstaInversa;
-import com.iasdietideals24.backend.entities.Compratore;
-import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.exceptions.ParameterNotValidException;
 
 public class JacksonTests {

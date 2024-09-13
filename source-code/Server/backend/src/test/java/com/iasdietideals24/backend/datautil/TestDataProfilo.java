@@ -77,7 +77,7 @@ public class TestDataProfilo {
                             "Compratore");
     }
 
-    public static Profilo createProfiloCompratoreB(final Account account) throws ParameterNotValidException {
+    public static Profilo createProfiloCompratoreB() throws ParameterNotValidException {
         return new Profilo("EleNoire",
                             new byte[] {-125, -52, 69},
                             "Elenoire",
@@ -95,7 +95,7 @@ public class TestDataProfilo {
                             "Compratore");
     }
 
-    public static Profilo createProfiloCompratoreC(final Account account) throws ParameterNotValidException {
+    public static Profilo createProfiloCompratoreC() throws ParameterNotValidException {
         return new Profilo("simone.scisciola03",
                             new byte[] {59, 108, 123},
                             "Simone",
@@ -131,7 +131,7 @@ public class TestDataProfilo {
                             "Venditore");
     }
 
-    public static Profilo createProfiloVenditoreB(final Account account) throws ParameterNotValidException {
+    public static Profilo createProfiloVenditoreB() throws ParameterNotValidException {
         return new Profilo("EleNoire",
                             new byte[] {-125, -52, 69},
                             "Elenoire",
@@ -149,7 +149,7 @@ public class TestDataProfilo {
                             "Venditore");
     }
 
-    public static Profilo createProfiloVenditoreC(final Account account) throws ParameterNotValidException {
+    public static Profilo createProfiloVenditoreC() throws ParameterNotValidException {
         return new Profilo("simone.scisciola03",
                             new byte[] {59, 108, 123},
                             "Simone",

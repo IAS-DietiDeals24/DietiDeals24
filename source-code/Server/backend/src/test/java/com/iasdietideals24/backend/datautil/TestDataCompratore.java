@@ -16,30 +16,18 @@ public class TestDataCompratore {
     public static Compratore createCompratoreA(final Profilo profilo) {
         return new Compratore("elenoire.ferruzzi@gmail.com",
                                 "ciaoMamma",
-                                profilo,
-                                null,
-                                null,
-                                null,
-                                null);
+                                profilo);
     }
 
-    public static Compratore createCompratoreB(final Profilo profilo, final Set<Notifica> notificheInviate, final Set<Notifica> notificheRicevute, final Set<AstaDiCompratore> astePossedute, final Set<OffertaDiCompratore> offerteCollegate) {
+    public static Compratore createCompratoreB(final Profilo profilo) {
         return new Compratore("pippo.baudo@gmail.com",
                                 "buonasera",
-                                profilo,
-                                notificheInviate,
-                                notificheRicevute,
-                                astePossedute,
-                                offerteCollegate);
+                                profilo);
     }
 
-    public static Compratore createCompratoreC(final Profilo profilo, final Set<Notifica> notificheInviate, final Set<Notifica> notificheRicevute, final Set<AstaDiCompratore> astePossedute, final Set<OffertaDiCompratore> offerteCollegate) {
+    public static Compratore createCompratoreC(final Profilo profilo) {
         return new Compratore("alessandro.siani@gmail.com",
                                 "grandeMezzo",
-                                profilo,
-                                notificheInviate,
-                                notificheRicevute,
-                                astePossedute,
-                                offerteCollegate);
+                                profilo);
     }
 }

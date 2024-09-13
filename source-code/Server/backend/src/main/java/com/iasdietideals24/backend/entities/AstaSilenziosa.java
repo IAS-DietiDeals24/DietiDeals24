@@ -3,21 +3,21 @@ package com.iasdietideals24.backend.entities;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
-@Data
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
+@ToString
 public class AstaSilenziosa extends AstaDiVenditore {
+    @Setter(AccessLevel.NONE)
     private Set<OffertaSilenziosa> offerteRicevute;
 
     // AllArgsConstructor
-    public AstaSilenziosa(String categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, Set<byte[]> immagini, Set<Notifica> notificheAssociate, Venditore proprietario, Set<OffertaSilenziosa> offerteRicevute) {
-        super(categoria, nome, descrizione, dataScadenza, oraScadenza, immagini, notificheAssociate, proprietario);
-
-        this.setOfferteRicevute(offerteRicevute);
+    public AstaSilenziosa(@NonNull String categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Venditore proprietario) {
+        super(categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, proprietario);
     }
 
     // Metodi per offerteRicevute
@@ -33,5 +33,14 @@ public class AstaSilenziosa extends AstaDiVenditore {
 
         if (this.offerteRicevute.isEmpty())
             this.offerteRicevute = null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AstaSilenziosa)) return false;
+        if (!super.equals(o)) return false;
+        AstaSilenziosa asta = (AstaSilenziosa) o;
+        return Objects.equals(this.offerteRicevute, asta.getOfferteRicevute());
     }
 }

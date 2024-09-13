@@ -23,45 +23,29 @@ public final class TestDataAstaInversa {
                                 LocalDate.of(2024, 6, 19),
                                 LocalTime.of(18, 44),
                                 null,
-                                null,
                                 proprietario,
-                                BigDecimal.valueOf(1.00),
-                                null);
+                                BigDecimal.valueOf(1.00));
     }
 
-    public static AstaInversa createAstaInversaB(final Set<Notifica> notificheAssociate, final Compratore proprietario, final Set<OffertaInversa> offerteRicevute) {
-        Set<byte[]> immagini = new LinkedHashSet<byte[]>();
-        immagini.add(new byte[] {-76, -73, -54});
-        immagini.add(new byte[] {-3, 33, 88});
-        immagini.add(new byte[] {-126, 19, 27});
-
+    public static AstaInversa createAstaInversaB(final Compratore proprietario) {
         return new AstaInversa("Moda",
                                 "Borsa Carpisa", 
                                 "Borsa Carpisa in trama coccodrillo e metalleria oro.",
                                 LocalDate.of(2023, 6, 19),
                                 LocalTime.of(18, 44),
-                                immagini,
-                                notificheAssociate,
+                                new byte[] {-126, 19, 27},
                                 proprietario,
-                                BigDecimal.valueOf(2.00),
-                                offerteRicevute);
+                                BigDecimal.valueOf(2.00));
     }
 
-    public static AstaInversa createAstaInversaC(final Set<Notifica> notificheAssociate, final Compratore proprietario, final Set<OffertaInversa> offerteRicevute) {
-        Set<byte[]> immagini = new LinkedHashSet<byte[]>();
-        immagini.add(new byte[] {23, 81, 120});
-        immagini.add(new byte[] {24, 29, 85});
-        immagini.add(new byte[] {-100, -20, -14});
-
+    public static AstaInversa createAstaInversaC(final Compratore proprietario) {
         return new AstaInversa("Moda",
                                 "Portafogli Carpisa", 
                                 "Portafogli Carpisa capiente con cerniera.",
                                 LocalDate.of(2022, 9, 10),
                                 LocalTime.of(17, 44),
-                                immagini,
-                                notificheAssociate,
+                                new byte[] {-100, -20, -14},
                                 proprietario,
-                                BigDecimal.valueOf(3.00),
-                                offerteRicevute);
+                                BigDecimal.valueOf(3.00));
     }
 }

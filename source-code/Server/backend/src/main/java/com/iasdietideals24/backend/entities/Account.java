@@ -1,34 +1,46 @@
 package com.iasdietideals24.backend.entities;
 
+import lombok.*;
+
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NonNull;
-
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public abstract class Account {
-    @NonNull private String email;
-    
-    @NonNull private String password;
-    
-    @NonNull private Profilo profilo;
-    
+    @NonNull
+    private String email;
+
+    @NonNull
+    private String password;
+
+    @NonNull
+    private Profilo profilo;
+
+    @Setter(AccessLevel.NONE)
     private Set<Notifica> notificheInviate;
 
+    @Setter(AccessLevel.NONE)
     private Set<Notifica> notificheRicevute;
 
+    // AllArgsConstructor
+    public Account(@NonNull String email, @NonNull String password, @NonNull Profilo profilo) {
+        this.email = email;
+        this.password = password;
+        this.profilo = profilo;
+    }
+
     // Metodi per notificheInviate
-    public void addNotificaInviata(Notifica notificaInviataDaAggiungere) {        
+    public void addNotificaInviata(@NonNull Notifica notificaInviataDaAggiungere) {
         if (this.notificheInviate == null)
             this.notificheInviate = new HashSet<Notifica>();
 
         this.notificheInviate.add(notificaInviataDaAggiungere);
     }
 
-    public void removeNotificaInviata(Notifica notificaInviataDaRimuovere) {
+    public void removeNotificaInviata(@NonNull Notifica notificaInviataDaRimuovere) {
         this.notificheInviate.remove(notificaInviataDaRimuovere);
 
         if (this.notificheInviate.isEmpty())
@@ -36,17 +48,25 @@ public abstract class Account {
     }
 
     // Metodi per notificheRicevute
-    public void addNotificaRicevuta(Notifica notificaRicevutaDaAggiungere) {        
+    public void addNotificaRicevuta(@NonNull Notifica notificaRicevutaDaAggiungere) {
         if (this.notificheRicevute == null)
             this.notificheRicevute = new HashSet<Notifica>();
 
         this.notificheRicevute.add(notificaRicevutaDaAggiungere);
     }
 
-    public void removeNotificaRicevuta(Notifica notificaRicevutaDaRimuovere) {
+    public void removeNotificaRicevuta(@NonNull Notifica notificaRicevutaDaRimuovere) {
         this.notificheRicevute.remove(notificaRicevutaDaRimuovere);
 
         if (this.notificheRicevute.isEmpty())
             this.notificheRicevute = null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Account)) return false;
+        Account account = (Account) o;
+        return Objects.equals(this.email, account.getEmail()) && Objects.equals(this.password, account.getPassword()) && Objects.equals(this.profilo, account.getProfilo()) && Objects.equals(this.notificheInviate, account.getNotificheInviate()) && Objects.equals(this.notificheRicevute, account.getNotificheRicevute());
     }
 }
