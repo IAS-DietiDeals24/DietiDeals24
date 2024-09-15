@@ -207,6 +207,15 @@ Credenziali di accesso a Postgres:
 
 ## SonarQube
 
+**NOTA:** Per abilitare la scansione del progetto dall'interno del DevContainer, bisogna recarsi al file `source-code/docker-compose/docker-compose.dev.yaml` e togliere il commento alle seguenti righe di codice al di sotto dell'attributo top-level `networks:`:
+
+```Yaml
+external:
+    name: sonarqube-compose_sonarqubeNetwork
+```
+
+Una volta fatto questo, è necessario re-buildare il DevContainer **SOLO DOPO AVER CREATO IL CONTAINER PER SONARQUBE**.
+
 Il docker compose file per SonarQube e il file di configurazione `.env` si trovano nella directory `source-code/sonarqube`. Possiamo avviare il docker compose file per SonarQube in due modi:
 
 1. Cliccando sull'apposito script
@@ -257,12 +266,14 @@ Per eseguire la build del progetto Maven `backend` eseguendo anche la scansione 
 
 ### SonarQube Gradle Scan (frontedandroid)
 
-Per eseguire la scansione del progetto Gradle `frontendandroid` è necessario recarsi nella directory `source-code/Client/frontendandroid` ed eseguire questo comando:
+Per eseguire la scansione del progetto Gradle `frontendandroid` (dall'interno del DevContainer) è necessario recarsi nella directory `source-code/Client/frontendandroid` ed eseguire il comando:
 
 ```Bash
 ./gradlew sonar \
   -Dsonar.projectKey=dietideals24-frontendandroid \
   -Dsonar.projectName='dietideals24-frontendandroid' \
-  -Dsonar.host.url=http://localhost:55513 \
+  -Dsonar.host.url=http://sonarqube:9000 \
   -Dsonar.token=<SonarQubeToken>
 ```
+
+Nel caso in cui la scansione avvenga dall'esterno del DevContainer, è necessario usare l'url: `http://localhost:55513`.

@@ -98,7 +98,7 @@
             </activation>
             <properties>
                 <!-- Definiamo le proprietà di SonarQube -->
-                <sonar.host.url> http://localhost:55513 </sonar.host.url> <!-- Optional URL to server. Default value is http://localhost:9000 -->
+                <sonar.host.url> http://sonarqube:9000 </sonar.host.url> <!-- Optional URL to server. Default value is http://localhost:9000 -->
                 <sonar.projectKey> dietideals24-backend-app </sonar.projectKey>
                 <sonar.projectName> dietideals24-backend-app </sonar.projectName>
             </properties>
