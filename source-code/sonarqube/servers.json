@@ -1,12 +1,12 @@
 {
     "Servers": {
-        "1": {
-            "Name": "App",
-            "Group": "IAS-DietiDeals24's Servers",
-            "Host": "backend-database",
+        "2": {
+            "Name": "DevelopmentUtility",
+            "Group": "Servers",
+            "Host": "sonarqube-database",
             "Port": 5432,
-            "MaintenanceDB": "backend",
-            "Username": "dd24-admin",
+            "MaintenanceDB": "sonarqube",
+            "Username": "sonar",
             "SSLMode": "prefer",
             "SSLCompression": 0,
             "Timeout": 10,

@@ -7,7 +7,7 @@ name: dietideals24-basecompose
 services:
  
     backend:
-        container_name: dietideals24-backend
+        container_name: dietideals24-backend-app
         #build: # Uncomment this if you have only one docker-compose file
         #    context: ./Server/backend/ # Set the context (what is visible from the dockerfile)
         #    dockerfile: .dockerfiles/dev-Dockerfile # Choose the Dockerfile

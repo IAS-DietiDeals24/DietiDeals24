@@ -1,0 +1,75 @@
+# Development Docker Compose file
+
+version: '3.8'
+
+name: sonarqube-compose
+
+services:
+    sonarqube:
+        image: sonarqube:10.6-community
+        container_name: sonarqube-app
+        depends_on:
+            sonarqube-database:
+                condition: service_healthy
+        environment:
+            SONAR_JDBC_URL: jdbc:postgresql://sonarqube-database:5432/${SONAR_DB:-sonarqube}
+            SONAR_JDBC_USERNAME: ${SONAR_JDBC_USERNAME:-sonar} # default: sonar
+            SONAR_JDBC_PASSWORD: ${SONAR_JDBC_PASSWORD:-sonar} # default: sonar
+        volumes:
+            - sonarqube_data:/opt/sonarqube/data
+            - sonarqube_extensions:/opt/sonarqube/extensions
+            - sonarqube_logs:/opt/sonarqube/logs
+        ports:
+            - ${SONAR_PORT:-9000}:9000 # Mappa la porta 9000 del container con ${SONAR_PORT} (default: 9000) nell'host (http://localhost:${SONAR_PORT}/ ci farà accedere all'app)
+        networks:
+            - sonarqubeNetwork
+
+    sonarqube-database:
+        container_name: sonarqube-postgresDB
+        image: postgres:16.3 # Immagine di Postgres già pronta
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: ${SONAR_DB:-sonarqube} #default: sonarqube
+            POSTGRES_USER: ${SONAR_JDBC_USERNAME:-sonar} # default: sonar
+            POSTGRES_PASSWORD: ${SONAR_JDBC_PASSWORD:-sonar} # default: sonar
+        healthcheck: # Definisce la condizione di "healthcheck"
+            test: ["CMD", "pg_isready", "-U", "${SONAR_JDBC_USERNAME:-sonar}", "-d", "${SONAR_DB:-sonarqube}"]
+            interval: 15s
+            timeout: 15s
+            retries: 5
+        volumes:
+            - sonarqube_database_data:/var/lib/postgresql/data
+        networks:
+            - sonarqubeNetwork
+
+# Uncomment this if you want to connect pgAdmin to the PostgreSQL database for SonarQube.
+# Instructions: On pgAdmin, click Register -> Server...
+# In "Connection", choose as "Hostname/address -> sonarqube-database", "Port -> 5432", "Maintenance database -> ${SONAR_DB}", "Username -> ${SONAR_JDBC_USERNAME}", "Password -> ${SONAR_JDBC_PASSWORD}"
+#
+#    pgadmin:
+#        container_name: sonarqube-pgAdmin4
+#        image: dpage/pgadmin4:8.9
+#        depends_on:
+#            sonarqube-database:
+#                condition: service_healthy
+#        restart: unless-stopped
+#        environment:
+#            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@dd24.com} # default: admin@dietideals24.ias
+#            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin} # default: admin
+#        volumes:
+#            - servers.json:/pgadmin4/servers.json
+#            - pgadmin_data:/var/lib/pgadmin
+#        ports:
+#            - ${PGADMIN_PORT:-55555}:80 # Mappa la porta 80 del container con ${PGADMIN_PORT} (default: 55555) nell'host (http://localhost:${PGADMIN_PORT}/ ci farà accedere all'app)
+#        networks:
+#            - sonarqubeNetwork
+
+volumes:
+    sonarqube_data:
+    sonarqube_extensions:
+    sonarqube_logs:
+    sonarqube_database_data:
+#    pgadmin_data:
+
+networks:
+    sonarqubeNetwork:

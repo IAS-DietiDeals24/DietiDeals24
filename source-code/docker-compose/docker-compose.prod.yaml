@@ -7,9 +7,9 @@ name: dietideals24-prodcompose
 services:
  
     backend:
-        container_name: dietideals24-backend-prod
+        container_name: dietideals24-backend-app-prod
         build:
-            context: ./Server/backend/
+            context: ../Server/backend/
             dockerfile: prod-Dockerfile
         ports:
             - 55501:8080 # Mappa la porta 8080 del container con 55501 nell'host (http://localhost:55501/ ci farà accedere all'app)

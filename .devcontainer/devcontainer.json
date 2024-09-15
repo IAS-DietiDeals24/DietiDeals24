@@ -6,8 +6,8 @@
 	// Update the 'dockerComposeFile' list if you have more compose files or use different names.
 	// The .devcontainer/docker-compose.dev.yaml file contains any overrides you need/want to make.
 	"dockerComposeFile": [
-		"../source-code/docker-compose.yaml",
-		"../source-code/docker-compose.override.yaml"
+		"../source-code/docker-compose/docker-compose.yaml",
+		"../source-code/docker-compose/docker-compose.dev.yaml"
 	],
 
 	// The 'service' property is the name of the service for the container that VS Code should

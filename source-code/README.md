@@ -41,7 +41,7 @@
 
 Per eseguire i docker containers utilizzati in Production Environment:
 
-1. Andiamo nella directory `source-code`
+1. Andiamo nella directory `source-code/docker-compose`
 2. Eseguiamo il comando:
     
     ```bash
@@ -93,9 +93,9 @@ Per configurare il Development Environment per il backend con Visual Studio Code
 
 ##### Clonando la repository del cloud nel Dev container
 
-Affinché tutto funzioni correttamente è necessario rimuovere:
+Affinché tutto funzioni correttamente è necessario **rimuovere**:
 
-- La proprietà `volumes: - ..:/myHostDir/DietiDeals24:cached` da `source-code/docker-compose.override.yaml`
+- La proprietà `volumes: - ../..:/myHostDir/DietiDeals24:cached` da `source-code/docker-compose/docker-compose.dev.yaml`
 - La proprietà `"workspaceFolder": "/myHostDir/${localWorkspaceFolderBasename}"` da `.devcontainer/devcontainer.json`
 
 Dopodiché:
@@ -112,8 +112,8 @@ Dopodiché:
 ##### Aprendo la repository locale dell'host nel Dev container
 
 1. Cloniamo il repository nell'host tramite git
-2. Affinché tutto funzioni correttamente è necessario aggiungere:
-    - La proprietà `volumes: - ..:/myHostDir/DietiDeals24:cached` a `source-code/docker-compose.override.yaml`
+2. Affinché tutto funzioni correttamente è necessario **aggiungere**:
+    - La proprietà `volumes: - ../..:/myHostDir/DietiDeals24:cached` a `source-code/docker-compose/docker-compose.dev.yaml`
     - La proprietà `"workspaceFolder": "/myHostDir/${localWorkspaceFolderBasename}"` a `.devcontainer/devcontainer.json`
 3. Andiamo in `View -> Command Palette...` (o semplicemente digitiamo `CTRL+SHIT+P`) e usiamo il comando:
 
@@ -131,19 +131,17 @@ Possiamo riaprire facilmente un devcontainer già configurato andando in `Remote
 
 E' possibile interagire con lo stesso Development Environment anche da CLI. Per fare ciò:
 
-1. Dalla main directory del repository andiamo nella directory `source-code`
+1. Dalla main directory del repository andiamo nella directory `source-code/docker-compose`
 2. Eseguiamo il comando:
 
     ```bash
-    docker compose up -d
+    docker compose -f docker-compose.yaml -f docker-compose.dev.yaml up -d 
     ```
-
-    in automatico, verrà esteso il file `docker-compose.yaml` con le informazioni contenute in `docker-compose.override.yaml`.
 
 E' possibile fermare/rimuovere il docker compose del Development Environment con:
 
 ```bash
-docker compose down
+docker compose -f docker-compose.yaml -f docker-compose.dev.yaml down
 ```
 
 ### Avviare il backend
@@ -168,7 +166,7 @@ java -jar target/backend-<Versione Jar>.jar
 
 ### Accedere ai containers
 
-E' possibile configurare un file `.env` per inserire dati sensibili. Per fare ciò, copiare il file `.sample-env`, rinominarlo in `.env` e popolare i campi a proprio piacimento. Di seguito si fa riferimento alle environment variables del file `.env`, a cui è assegnato un valore di default nel caso in cui non sia stata inizializzata nel file `.env`.
+E' possibile configurare un file `.env` per inserire dati sensibili. Per fare ciò, andare in `source-code/docker-compose` copiare il file `.sample-env`, incollarlo nella stessa directory, rinominarlo in `.env` e popolare i campi a proprio piacimento. Di seguito si fa riferimento alle environment variables del file `.env`, a cui è assegnato un valore di default nel caso in cui non sia stata inizializzata nel file `.env`.
 
 #### REST API
 
@@ -207,19 +205,28 @@ Credenziali di accesso a Postgres:
 
 3. `Save`
 
-Facciamo lo stesso procedimento anche per il database di SonarQube. Inseriamo i seguenti valori:
-
-- In `Hostname/address` inseriamo `sonarqube-database`
-- In `Port` inseriamo `5432`
-- In `Maintenance database` inseriamo `sonarqube`
-- In `Username` inseriamo `sonar`
-- In `Password` inseriamo quella assegnata a `SONAR_JDBC_PASSWORD`
-
 ## SonarQube
+
+Il docker compose file per SonarQube e il file di configurazione `.env` si trovano nella directory `source-code/sonarqube`. Possiamo avviare il docker compose file per SonarQube in due modi:
+
+1. Cliccando sull'apposito script
+    1. In Linux, clicchiamo su `run-sonarqube.sh`
+    2. In Windows, clicchiamo su `run-sonarqube.cmd`
+2. Tramite terminale, recandoci nella directory `source-code/sonarqube` e inserendo il comando:
+
+    ```bash
+    docker compose -f docker-compose.sonarqube.yaml up -d
+    ```
+
+In ogni caso, stoppiamo i container con il comando:
+
+```bash
+docker compose -f docker-compose.sonarqube.yaml down
+```
 
 ### Accedere al SonarQube Server
 
-Possiamo accedere a SonarQube alla porta specificata dal compose file (development: `SONAR_PORT` (default: `55513`) | production: `Non disponibile`).
+Possiamo accedere a SonarQube alla porta specificata dal file `.env` (default: `55513`).
 
 Al primo accesso, useremo le seguenti credenziali:
 
@@ -235,8 +242,8 @@ Una volta entrati nella dashboard SonarQube, generiamo uno User Token (ci servir
 3. Andiamo in `Security`
 4. In `Generate Tokens` selezioniamo il tipo `User Token`
 5. Inseriamo un `Nome` e scegliamo il periodo di `Expire`
-6. Clicchiamo su `Generate` e usiamo il token come valore della environment variable `SONAR_TOKEN` del file `.env`
-7. Re-buildiamo il docker compose (ad esempio, con `docker compose up`)
+6. Clicchiamo su `Generate` e usiamo il token come valore della environment variable `SONAR_TOKEN` del file `source-code/docker-compose/.env`
+7. Re-buildiamo il DevContainer dell'ambiente di sviluppo
 
 ### SonarQube Maven Scan (backend)
 
@@ -256,6 +263,6 @@ Per eseguire la scansione del progetto Gradle `frontendandroid` è necessario re
 ./gradlew sonar \
   -Dsonar.projectKey=dietideals24-frontendandroid \
   -Dsonar.projectName='dietideals24-frontendandroid' \
-  -Dsonar.host.url=http://sonarqube:9000 \
+  -Dsonar.host.url=http://localhost:55513 \
   -Dsonar.token=<SonarQubeToken>
 ```
