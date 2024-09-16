@@ -40,7 +40,7 @@ public class Notifica {
             inverseJoinColumns = { @JoinColumn(name = "fk_account_for_notifica") })
     @NonNull
     @Setter(AccessLevel.NONE)
-    private Set<Account> destinatari;
+    private Set<Account> destinatari = new HashSet<Account>();
 
     @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinColumn(name = "fk_asta_for_notifica")
@@ -65,17 +65,11 @@ public class Notifica {
 
     // Metodi per destinatari
     public void addDestinatario(@NonNull Account destinatarioDaAggiungere) {
-        if (this.destinatari == null)
-            this.destinatari = new HashSet<Account>();
-
         this.destinatari.add(destinatarioDaAggiungere);
     }
 
     public void removeDestinatario(@NonNull Account destinatarioDaRimuovere) {
         this.destinatari.remove(destinatarioDaRimuovere);
-
-        if (this.destinatari.isEmpty())
-            this.destinatari = null;
     }
 
     @Override

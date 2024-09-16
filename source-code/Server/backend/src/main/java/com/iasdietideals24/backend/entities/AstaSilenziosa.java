@@ -21,7 +21,7 @@ import lombok.*;
 public class AstaSilenziosa extends AstaDiVenditore {
     @OneToMany(mappedBy = "astaRiferimento", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
-    private Set<OffertaSilenziosa> offerteRicevute;
+    private Set<OffertaSilenziosa> offerteRicevute = new LinkedHashSet<OffertaSilenziosa>();
 
     // AllArgsConstructor
     public AstaSilenziosa(@NonNull String categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Venditore proprietario) {
@@ -30,17 +30,11 @@ public class AstaSilenziosa extends AstaDiVenditore {
 
     // Metodi per offerteRicevute
     public void addOffertaRicevuta(OffertaSilenziosa offertaDaAggiungere) {        
-        if (this.offerteRicevute == null)
-            this.offerteRicevute = new LinkedHashSet<OffertaSilenziosa>();
-        
         this.offerteRicevute.add(offertaDaAggiungere);
     }
 
     public void removeOffertaRicevuta(OffertaSilenziosa offertaDaRimuovere) {
         this.offerteRicevute.remove(offertaDaRimuovere);
-
-        if (this.offerteRicevute.isEmpty())
-            this.offerteRicevute = null;
     }
 
     @Override

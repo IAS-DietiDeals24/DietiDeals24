@@ -38,9 +38,9 @@ public abstract class Asta {
 
     private byte[] immagine;
 
-    @OneToMany(mappedBy = "astaAssociata", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "astaAssociata", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
-    private Set<Notifica> notificheAssociate;
+    private Set<Notifica> notificheAssociate = new HashSet<Notifica>();
 
     // AllArgsConstructor
     public Asta(@NonNull String categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine) {
@@ -54,17 +54,11 @@ public abstract class Asta {
 
     // Metodi per notificheAssociate
     public void addNotificaAssociata(Notifica notificaDaAggiungere) {
-        if (this.notificheAssociate == null)
-            this.notificheAssociate = new HashSet<Notifica>();
-
         this.notificheAssociate.add(notificaDaAggiungere);
     }
 
     public void removeNotificaAssociata(Notifica notificaDaRimuovere) {
         this.notificheAssociate.remove(notificaDaRimuovere);
-
-        if (this.notificheAssociate.isEmpty())
-            this.notificheAssociate = null;
     }
 
     @Override

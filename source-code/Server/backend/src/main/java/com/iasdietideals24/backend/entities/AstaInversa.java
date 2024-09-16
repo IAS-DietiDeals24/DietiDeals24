@@ -7,11 +7,10 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Getter
 @Setter
@@ -25,7 +24,7 @@ public class AstaInversa extends AstaDiCompratore {
 
     @OneToMany(mappedBy = "astaRiferimento", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
-    private Set<OffertaInversa> offerteRicevute;
+    private Set<OffertaInversa> offerteRicevute = new LinkedHashSet<OffertaInversa>();
 
     // AllArgsConstructor
     public AstaInversa(@NonNull String categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Compratore proprietario, @NonNull BigDecimal sogliaIniziale) {
@@ -36,17 +35,11 @@ public class AstaInversa extends AstaDiCompratore {
 
     // Metodi per offerteRicevute
     public void addOffertaRicevuta(OffertaInversa offertaDaAggiungere) {        
-        if (this.offerteRicevute == null)
-            this.offerteRicevute = new LinkedHashSet<OffertaInversa>();
-
         this.offerteRicevute.add(offertaDaAggiungere);
     }
 
     public void removeOffertaRicevuta(OffertaInversa offertaDaRimuovere) {
         this.offerteRicevute.remove(offertaDaRimuovere);
-
-        if (this.offerteRicevute.isEmpty())
-            this.offerteRicevute = null;
     }
 
     @Override

@@ -25,7 +25,7 @@ public class AstaTempoFisso extends AstaDiVenditore {
 
     @OneToMany(mappedBy = "astaRiferimento", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
-    private Set<OffertaTempoFisso> offerteRicevute;
+    private Set<OffertaTempoFisso> offerteRicevute = new LinkedHashSet<OffertaTempoFisso>();
 
     // AllArgsConstructor
     public AstaTempoFisso(@NonNull String categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Venditore proprietario, @NonNull BigDecimal sogliaMinima) {
@@ -36,17 +36,11 @@ public class AstaTempoFisso extends AstaDiVenditore {
 
     // Metodi per offerteRicevute
     public void addOffertaRicevuta(OffertaTempoFisso offertaDaAggiungere) {        
-        if (this.offerteRicevute == null)
-            this.offerteRicevute = new LinkedHashSet<OffertaTempoFisso>();
-        
         this.offerteRicevute.add(offertaDaAggiungere);
     }
 
     public void removeOffertaRicevuta(OffertaTempoFisso offertaDaRimuovere) {
         this.offerteRicevute.remove(offertaDaRimuovere);
-
-        if (this.offerteRicevute.isEmpty())
-            this.offerteRicevute = null;
     }
 
     @Override

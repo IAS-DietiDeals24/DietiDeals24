@@ -17,11 +17,11 @@ import lombok.*;
 public class Compratore extends Account {
     @OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
-    private Set<AstaDiCompratore> astePossedute;
+    private Set<AstaDiCompratore> astePossedute = new HashSet<AstaDiCompratore>();
 
     @OneToMany(mappedBy = "compratoreCollegato", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
-    private Set<OffertaDiCompratore> offerteCollegate;
+    private Set<OffertaDiCompratore> offerteCollegate = new HashSet<OffertaDiCompratore>();
 
     // AllArgsConstructor
     public Compratore (String email, String password, Profilo profilo) {
@@ -29,33 +29,21 @@ public class Compratore extends Account {
     }
 
     // Metodi per astePossedute
-    public void addAstaPosseduta(AstaDiCompratore astaDaAggiungere) {        
-        if (this.astePossedute == null)
-            this.astePossedute = new HashSet<AstaDiCompratore>();
-
-        this.astePossedute.add(astaDaAggiungere);
+    public void addAstaPosseduta(AstaDiCompratore astaDaAggiungere) {
+         this.astePossedute.add(astaDaAggiungere);
     }
 
     public void removeAstaPosseduta(AstaDiCompratore astaDaRimuovere) {
         this.astePossedute.remove(astaDaRimuovere);
-
-        if (this.astePossedute.isEmpty())
-            this.astePossedute = null;
     }
 
     // Metodi per offerteCollegate
     public void addOffertaCollegata(OffertaDiCompratore offertaDaAggiungere) {        
-        if (this.offerteCollegate == null)
-            this.offerteCollegate = new HashSet<OffertaDiCompratore>();
-        
         this.offerteCollegate.add(offertaDaAggiungere);
     }
 
     public void removeOffertaCollegata(OffertaDiCompratore offertaDaRimuovere) {
         this.offerteCollegate.remove(offertaDaRimuovere);
-
-        if (this.offerteCollegate.isEmpty())
-            this.offerteCollegate = null;
     }
 
     @Override

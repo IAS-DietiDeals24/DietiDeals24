@@ -54,7 +54,7 @@ public class Profilo {
     @OneToMany(mappedBy = "profilo", cascade = CascadeType.ALL)
     @NonNull
     @Setter(AccessLevel.NONE)
-    private Set<Account> accounts;
+    private Set<Account> accounts = new HashSet<Account>();
 
     // AllArgsConstructor
     public Profilo(@NonNull String nomeUtente, @NonNull byte[] profilePicture, @NonNull String nome, @NonNull String cognome, @NonNull LocalDate dataNascita, String areaGeografica, String biografia, String linkPersonale, String linkInstagram, String linkFacebook, String linkGitHub, String linkX, @NonNull Account account) {
@@ -100,17 +100,11 @@ public class Profilo {
 
     // Metodi per accounts
     public void addAccount(Account accountDaAggiungere) {
-        if (this.accounts == null)
-            this.accounts = new HashSet<Account>();
-
         this.accounts.add(accountDaAggiungere);
     }
 
     public void removeAccount(Account accountDaRimuovere) {
         this.accounts.remove(accountDaRimuovere);
-
-        if (this.accounts.isEmpty())
-            this.accounts = null;
     }
 
     @Override

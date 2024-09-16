@@ -31,11 +31,11 @@ public abstract class Account {
 
     @OneToMany(mappedBy = "mittente", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
-    private Set<Notifica> notificheInviate;
+    private Set<Notifica> notificheInviate = new HashSet<Notifica>();
 
     @ManyToMany(mappedBy="destinatari", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
-    private Set<Notifica> notificheRicevute;
+    private Set<Notifica> notificheRicevute = new HashSet<Notifica>();
 
     // AllArgsConstructor
     public Account(@NonNull String email, @NonNull String password, @NonNull Profilo profilo) {
@@ -46,32 +46,20 @@ public abstract class Account {
 
     // Metodi per notificheInviate
     public void addNotificaInviata(@NonNull Notifica notificaInviataDaAggiungere) {
-        if (this.notificheInviate == null)
-            this.notificheInviate = new HashSet<Notifica>();
-
         this.notificheInviate.add(notificaInviataDaAggiungere);
     }
 
     public void removeNotificaInviata(@NonNull Notifica notificaInviataDaRimuovere) {
         this.notificheInviate.remove(notificaInviataDaRimuovere);
-
-        if (this.notificheInviate.isEmpty())
-            this.notificheInviate = null;
     }
 
     // Metodi per notificheRicevute
     public void addNotificaRicevuta(@NonNull Notifica notificaRicevutaDaAggiungere) {
-        if (this.notificheRicevute == null)
-            this.notificheRicevute = new HashSet<Notifica>();
-
         this.notificheRicevute.add(notificaRicevutaDaAggiungere);
     }
 
     public void removeNotificaRicevuta(@NonNull Notifica notificaRicevutaDaRimuovere) {
         this.notificheRicevute.remove(notificaRicevutaDaRimuovere);
-
-        if (this.notificheRicevute.isEmpty())
-            this.notificheRicevute = null;
     }
 
     @Override
