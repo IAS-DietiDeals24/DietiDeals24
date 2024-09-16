@@ -5,10 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -20,8 +17,8 @@ import lombok.*;
 public class OffertaSilenziosa extends OffertaDiCompratore {
     private Boolean isAccettata = null;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_astasilenziosa")
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name = "fk_astasilenziosa_for_offertasilenziosa")
     @NonNull
     private AstaSilenziosa astaRiferimento;
 

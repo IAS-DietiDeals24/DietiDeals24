@@ -3,6 +3,7 @@ package com.iasdietideals24.backend.entities;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.iasdietideals24.backend.exceptions.ParameterNotValidException;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -50,7 +51,7 @@ public class Profilo {
 
     private String linkX;
 
-    @OneToMany(mappedBy = "profilo")
+    @OneToMany(mappedBy = "profilo", cascade = CascadeType.ALL)
     @NonNull
     @Setter(AccessLevel.NONE)
     private Set<Account> accounts;

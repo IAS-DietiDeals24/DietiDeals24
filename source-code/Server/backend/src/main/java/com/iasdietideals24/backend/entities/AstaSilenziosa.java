@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -18,7 +19,7 @@ import lombok.*;
 @Entity
 @DiscriminatorValue("Silenziosa")
 public class AstaSilenziosa extends AstaDiVenditore {
-    @OneToMany(mappedBy = "astaRiferimento")
+    @OneToMany(mappedBy = "astaRiferimento", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
     private Set<OffertaSilenziosa> offerteRicevute;
 

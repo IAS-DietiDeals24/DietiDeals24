@@ -5,10 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
@@ -18,8 +15,8 @@ import lombok.*;
 @Entity
 @DiscriminatorValue("Inversa")
 public class OffertaInversa extends OffertaDiVenditore {
-    @ManyToOne
-    @JoinColumn(name = "fk_astainversa")
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name = "fk_astainversa_for_offertainversa")
     @NonNull
     private AstaInversa astaRiferimento;
 

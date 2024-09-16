@@ -29,21 +29,21 @@ public class Notifica {
     @NonNull
     private String messaggio;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_account")
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name = "fk_account_for_notifica")
     @NonNull
     private Account mittente;
 
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "destinatari",
-            joinColumns = { @JoinColumn(name = "fk_notifica") },
-            inverseJoinColumns = { @JoinColumn(name = "fk_account") })
+            joinColumns = { @JoinColumn(name = "fk_notifica_for_account") },
+            inverseJoinColumns = { @JoinColumn(name = "fk_account_for_notifica") })
     @NonNull
     @Setter(AccessLevel.NONE)
     private Set<Account> destinatari;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_asta")
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name = "fk_asta_for_notifica")
     @NonNull
     private Asta astaAssociata;
 

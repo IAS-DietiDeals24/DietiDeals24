@@ -38,7 +38,7 @@ public abstract class Asta {
 
     private byte[] immagine;
 
-    @OneToMany(mappedBy = "astaAssociata")
+    @OneToMany(mappedBy = "astaAssociata", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Setter(AccessLevel.NONE)
     private Set<Notifica> notificheAssociate;
 

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.*;
@@ -14,11 +15,11 @@ import lombok.*;
 @NoArgsConstructor
 @Entity
 public class Compratore extends Account {
-    @OneToMany(mappedBy = "proprietario")
+    @OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
     private Set<AstaDiCompratore> astePossedute;
 
-    @OneToMany(mappedBy = "compratoreCollegato")
+    @OneToMany(mappedBy = "compratoreCollegato", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
     private Set<OffertaDiCompratore> offerteCollegate;
 

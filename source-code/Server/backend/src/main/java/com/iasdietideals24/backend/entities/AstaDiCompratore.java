@@ -15,8 +15,8 @@ import lombok.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipoAsta")
 public abstract class AstaDiCompratore extends Asta {
-    @ManyToOne
-    @JoinColumn(name = "fk_compratore")
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name = "fk_compratore_for_astadicompratore")
     @NonNull
     private Compratore proprietario;
 

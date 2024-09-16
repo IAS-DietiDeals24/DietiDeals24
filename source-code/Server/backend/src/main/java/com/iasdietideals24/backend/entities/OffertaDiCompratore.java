@@ -16,8 +16,8 @@ import lombok.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipoOfferta")
 public abstract class OffertaDiCompratore extends Offerta {
-    @ManyToOne
-    @JoinColumn(name = "fk_compratore")
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name = "fk_compratore_for_offertadicompratore")
     @NonNull
     private Compratore compratoreCollegato;
 

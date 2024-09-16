@@ -24,16 +24,16 @@ public abstract class Account {
     @NonNull
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "fk_profilo")
+    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinColumn(name = "fk_profilo_for_account")
     @NonNull
     private Profilo profilo;
 
-    @OneToMany(mappedBy = "mittente")
+    @OneToMany(mappedBy = "mittente", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
     private Set<Notifica> notificheInviate;
 
-    @ManyToMany(mappedBy="destinatari")
+    @ManyToMany(mappedBy="destinatari", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
     private Set<Notifica> notificheRicevute;
 

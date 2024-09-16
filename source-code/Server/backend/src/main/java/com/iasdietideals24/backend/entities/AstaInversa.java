@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -22,7 +23,7 @@ public class AstaInversa extends AstaDiCompratore {
     @NonNull
     private BigDecimal sogliaIniziale;
 
-    @OneToMany(mappedBy = "astaRiferimento")
+    @OneToMany(mappedBy = "astaRiferimento", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
     private Set<OffertaInversa> offerteRicevute;
 

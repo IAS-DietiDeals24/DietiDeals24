@@ -10,7 +10,7 @@ services:
             sonarqube-database:
                 condition: service_healthy
         environment:
-            SONAR_JDBC_URL: jdbc:postgresql://sonarqube-database:5432/${SONAR_DB:-sonarqube}
+            SONAR_JDBC_URL: jdbc:postgresql://sonarqube-database:5432/${SONAR_DB:-sonarqube} # default: sonarqube
             SONAR_JDBC_USERNAME: ${SONAR_JDBC_USERNAME:-sonar} # default: sonar
             SONAR_JDBC_PASSWORD: ${SONAR_JDBC_PASSWORD:-sonar} # default: sonar
         volumes:
@@ -18,7 +18,7 @@ services:
             - sonarqube_extensions:/opt/sonarqube/extensions
             - sonarqube_logs:/opt/sonarqube/logs
         ports:
-            - ${SONAR_PORT:-9000}:9000 # Mappa la porta 9000 del container con ${SONAR_PORT} (default: 9000) nell'host (http://localhost:${SONAR_PORT}/ ci farà accedere all'app)
+            - ${SONAR_PORT:-55513}:9000 # Mappa la porta 9000 del container con ${SONAR_PORT} (default: 9000) nell'host (http://localhost:${SONAR_PORT}/ ci farà accedere all'app)
         networks:
             - sonarqubeNetwork
 
@@ -40,7 +40,7 @@ services:
         networks:
             - sonarqubeNetwork
 
-# Uncomment this if you want to connect pgAdmin to the PostgreSQL database for SonarQube.
+# Uncomment this (and the volume declaration) if you want to connect pgAdmin to the PostgreSQL database for SonarQube.
 # Instructions: On pgAdmin, click Register -> Server...
 # In "Connection", choose as "Hostname/address -> sonarqube-database", "Port -> 5432", "Maintenance database -> ${SONAR_DB}", "Username -> ${SONAR_JDBC_USERNAME}", "Password -> ${SONAR_JDBC_PASSWORD}"
 #
@@ -67,6 +67,7 @@ volumes:
     sonarqube_extensions:
     sonarqube_logs:
     sonarqube_database_data:
+# Uncomment this if you want to connect pgAdmin to the PostgreSQL database for SonarQube.
 #    pgadmin_data:
 
 networks:
