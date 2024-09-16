@@ -1,7 +1,5 @@
 # Development Docker Compose file
 
-version: '3.8'
-
 name: sonarqube-compose
 
 services:

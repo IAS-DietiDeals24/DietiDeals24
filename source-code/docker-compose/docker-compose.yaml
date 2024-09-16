@@ -1,7 +1,5 @@
 # Base Docker Compose file
 
-version: '3.8'
-
 name: dietideals24-basecompose
 
 services:

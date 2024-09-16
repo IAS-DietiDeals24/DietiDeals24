@@ -1,7 +1,5 @@
 # Development Docker Compose file
 
-version: '3.8'
-
 name: dietideals24-devcompose
 
 services:
@@ -67,5 +65,5 @@ volumes:
 networks:
   sonarqubeNetwork:
 # Uncomment the following two lines if you want to scan the project with SonarQube
-#    external:
-#      name: sonarqube-compose_sonarqubeNetwork
+#    external: true
+#    name: sonarqube-compose_sonarqubeNetwork
