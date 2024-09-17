@@ -53,6 +53,11 @@ public class AstaTempoFisso extends AstaDiVenditore {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), sogliaMinima, offerteRicevute);
+    }
+
+    @Override
     public String toString() {
         Iterator<OffertaTempoFisso> itrOffertaRicevuta = this.getOfferteRicevute().iterator();
         StringBuilder listIdOfferteRicevute = new StringBuilder();

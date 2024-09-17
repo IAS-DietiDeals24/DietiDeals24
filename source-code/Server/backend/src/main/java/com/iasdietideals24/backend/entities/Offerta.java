@@ -47,6 +47,11 @@ public abstract class Offerta {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(idOfferta, dataInvio, oraInvio, valore);
+    }
+
+    @Override
     public String toString() {
         return "Offerta(idOfferta=" + this.getIdOfferta() + ", dataInvio=" + this.getDataInvio() + ", oraInvio=" + this.getOraInvio() + ", valore=" + this.getValore() + ")";
     }

@@ -53,6 +53,11 @@ public class AstaInversa extends AstaDiCompratore {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), sogliaIniziale, offerteRicevute);
+    }
+
+    @Override
     public String toString() {
         Iterator<OffertaInversa> itrOffertaRicevuta = this.getOfferteRicevute().iterator();
         StringBuilder listIdOfferteRicevute = new StringBuilder();

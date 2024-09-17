@@ -44,6 +44,11 @@ public class OffertaSilenziosa extends OffertaDiCompratore {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), isAccettata, astaRiferimento);
+    }
+
+    @Override
     public String toString() {
         return "OffertaSilenziosa(isAccettata=" + this.getIsAccettata() + ", astaRiferimento=" + this.getAstaRiferimento().getIdAsta() + ") is a " + super.toString();
     }

@@ -1,10 +1,7 @@
 package com.iasdietideals24.backend.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -37,6 +34,11 @@ public abstract class AstaDiVenditore extends Asta {
         if (!super.equals(o)) return false;
         AstaDiVenditore asta = (AstaDiVenditore) o;
         return Objects.equals(this.proprietario, asta.getProprietario());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), proprietario);
     }
 
     @Override

@@ -40,6 +40,12 @@ public abstract class OffertaDiCompratore extends Offerta {
         return Objects.equals(this.compratoreCollegato, offerta.getCompratoreCollegato());
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), compratoreCollegato);
+    }
+
+    @Override
     public String toString() {
         return "OffertaDiCompratore(compratoreCollegato=" + this.getCompratoreCollegato().getEmail() + ") is a " + super.toString();
     }

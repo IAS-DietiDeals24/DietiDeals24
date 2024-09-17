@@ -40,6 +40,11 @@ public class OffertaInversa extends OffertaDiVenditore {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), astaRiferimento);
+    }
+
+    @Override
     public String toString() {
         return "OffertaInversa(astaRiferimento=" + this.getAstaRiferimento().getIdAsta() + ") is a " + super.toString();
     }

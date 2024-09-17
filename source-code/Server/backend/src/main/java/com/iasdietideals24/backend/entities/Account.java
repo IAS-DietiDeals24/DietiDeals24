@@ -71,6 +71,11 @@ public abstract class Account {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(email, password, profilo.getNomeUtente(), notificheInviate, notificheRicevute);
+    }
+
+    @Override
     public String toString() {
         Iterator<Notifica> itrNotificaInviata = this.getNotificheInviate().iterator();
         StringBuilder listIdNotificheInviate = new StringBuilder();

@@ -41,6 +41,11 @@ public abstract class OffertaDiVenditore extends Offerta {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), venditoreCollegato);
+    }
+
+    @Override
     public String toString() {
         return "OffertaDiVenditore(venditoreCollegato=" + this.getVenditoreCollegato().getEmail() + ") is a " + super.toString();
     }

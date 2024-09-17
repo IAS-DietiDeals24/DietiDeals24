@@ -40,6 +40,11 @@ public class OffertaTempoFisso extends OffertaDiCompratore {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), astaRiferimento);
+    }
+
+    @Override
     public String toString() {
         return "OffertaTempoFisso(astaRiferimento=" + this.getAstaRiferimento().getIdAsta() + ") is a " + super.toString();
     }

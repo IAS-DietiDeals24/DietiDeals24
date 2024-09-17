@@ -81,6 +81,11 @@ public class Notifica {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(idNotifica, dataInvio, oraInvio, messaggio, mittente, destinatari, astaAssociata);
+    }
+
+    @Override
     public String toString() {
         Iterator<Account> itrDestinatario = this.getDestinatari().iterator();
         StringBuilder listEmailDestinatari = new StringBuilder();

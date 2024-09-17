@@ -4,6 +4,7 @@ import com.iasdietideals24.backend.entities.AstaInversa;
 import com.iasdietideals24.backend.entities.Compratore;
 import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.exceptions.ParameterNotValidException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @RestController
+@Slf4j
 public class AstaInversaController {
 
     public static void main(String[] args) throws ParameterNotValidException {
@@ -43,9 +45,9 @@ public class AstaInversaController {
                 p,
                 BigDecimal.valueOf(1.00));
 
-        System.out.println(pr);
-        System.out.println(p);
-        System.out.println(a);
+        log.info(pr.toString());
+        log.info(p.toString());
+        log.info(a.toString());
     }
-    
+
 }

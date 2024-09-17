@@ -10,10 +10,7 @@ import jakarta.persistence.OneToMany;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -113,6 +110,11 @@ public class Profilo {
         if (!(o instanceof Profilo)) return false;
         Profilo profilo = (Profilo) o;
         return Objects.equals(this.nomeUtente, profilo.getNomeUtente()) && Objects.deepEquals(this.profilePicture, profilo.getProfilePicture()) && Objects.equals(this.nome, profilo.getNome()) && Objects.equals(this.cognome, profilo.getCognome()) && Objects.equals(this.dataNascita, profilo.getDataNascita()) && Objects.equals(this.areaGeografica, profilo.getAreaGeografica()) && Objects.equals(this.biografia, profilo.getBiografia()) && Objects.equals(this.linkPersonale, profilo.getLinkPersonale()) && Objects.equals(this.linkInstagram, profilo.getLinkInstagram()) && Objects.equals(this.linkFacebook, profilo.getLinkFacebook()) && Objects.equals(this.linkGitHub, profilo.getLinkGitHub()) && Objects.equals(this.linkX, profilo.getLinkX()) && Objects.equals(this.accounts, profilo.getAccounts());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nomeUtente, Arrays.hashCode(profilePicture), nome, cognome, dataNascita, areaGeografica, biografia, linkPersonale, linkInstagram, linkFacebook, linkGitHub, linkX, accounts);
     }
 
     @Override

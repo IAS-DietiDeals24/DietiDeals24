@@ -5,10 +5,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -67,6 +64,11 @@ public abstract class Asta {
         if (!(o instanceof Asta)) return false;
         Asta asta = (Asta) o;
         return Objects.equals(this.categoria, asta.getCategoria()) && Objects.equals(this.nome, asta.getNome()) && Objects.equals(this.descrizione, asta.getDescrizione()) && Objects.equals(this.dataScadenza, asta.getDataScadenza()) && Objects.equals(this.oraScadenza, asta.getOraScadenza()) && Objects.equals(this.immagine, asta.getImmagine()) && Objects.equals(this.notificheAssociate, asta.getNotificheAssociate());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idAsta, categoria, nome, descrizione, dataScadenza, oraScadenza, Arrays.hashCode(immagine), notificheAssociate);
     }
 
     @Override

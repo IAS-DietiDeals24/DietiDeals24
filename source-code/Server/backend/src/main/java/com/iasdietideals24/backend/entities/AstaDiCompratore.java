@@ -40,6 +40,11 @@ public abstract class AstaDiCompratore extends Asta {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), proprietario);
+    }
+
+    @Override
     public String toString() {
         return "AstaDiCompratore(proprietario=" + this.getProprietario().getEmail() + ") is a " + super.toString();
     }

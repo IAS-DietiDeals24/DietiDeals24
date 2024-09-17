@@ -47,6 +47,11 @@ public class AstaSilenziosa extends AstaDiVenditore {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), offerteRicevute);
+    }
+
+    @Override
     public String toString() {
         Iterator<OffertaSilenziosa> itrOffertaRicevuta = this.getOfferteRicevute().iterator();
         StringBuilder listIdOfferteRicevute = new StringBuilder();

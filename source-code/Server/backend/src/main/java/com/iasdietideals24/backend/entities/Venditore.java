@@ -59,6 +59,11 @@ public class Venditore extends Account {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), astePossedute, offerteCollegate);
+    }
+
+    @Override
     public String toString() {
         Iterator<AstaDiVenditore> itrAstaPosseduta = this.getAstePossedute().iterator();
         StringBuilder listIdAstePossedute = new StringBuilder();
