@@ -10,8 +10,11 @@ import jakarta.persistence.OneToMany;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
+@EqualsAndHashCode
 @Getter
 @Setter
 @NoArgsConstructor
@@ -51,7 +54,8 @@ public class Profilo {
     @OneToMany(mappedBy = "profilo", cascade = CascadeType.ALL)
     @NonNull
     @Setter(AccessLevel.NONE)
-    private Set<Account> accounts = new HashSet<Account>();
+    @EqualsAndHashCode.Exclude
+    private Set<Account> accounts = new HashSet<>();
 
     // AllArgsConstructor
     public Profilo(@NonNull String nomeUtente, @NonNull byte[] profilePicture, @NonNull String nome, @NonNull String cognome, @NonNull LocalDate dataNascita, String areaGeografica, String biografia, String linkPersonale, String linkInstagram, String linkFacebook, String linkGitHub, String linkX, @NonNull Account account) {
@@ -104,17 +108,31 @@ public class Profilo {
         this.accounts.remove(accountDaRimuovere);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Profilo)) return false;
-        Profilo profilo = (Profilo) o;
-        return Objects.equals(this.nomeUtente, profilo.getNomeUtente()) && Objects.deepEquals(this.profilePicture, profilo.getProfilePicture()) && Objects.equals(this.nome, profilo.getNome()) && Objects.equals(this.cognome, profilo.getCognome()) && Objects.equals(this.dataNascita, profilo.getDataNascita()) && Objects.equals(this.areaGeografica, profilo.getAreaGeografica()) && Objects.equals(this.biografia, profilo.getBiografia()) && Objects.equals(this.linkPersonale, profilo.getLinkPersonale()) && Objects.equals(this.linkInstagram, profilo.getLinkInstagram()) && Objects.equals(this.linkFacebook, profilo.getLinkFacebook()) && Objects.equals(this.linkGitHub, profilo.getLinkGitHub()) && Objects.equals(this.linkX, profilo.getLinkX()) && Objects.equals(this.accounts, profilo.getAccounts());
+    // Metodi per recuperare un tipo di account
+    public Compratore getCompratore() {
+        Iterator<Account> itrAccount = this.getAccounts().iterator();
+        Compratore compratore = null;
+        while (itrAccount.hasNext()) {
+            if (itrAccount instanceof Compratore)
+                compratore = (Compratore) itrAccount.next();
+            else
+                itrAccount.next();
+        }
+
+        return compratore;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(nomeUtente, Arrays.hashCode(profilePicture), nome, cognome, dataNascita, areaGeografica, biografia, linkPersonale, linkInstagram, linkFacebook, linkGitHub, linkX, accounts);
+    public Venditore getVenditore() {
+        Iterator<Account> itrAccount = this.getAccounts().iterator();
+        Venditore venditore = null;
+        while (itrAccount.hasNext()) {
+            if (itrAccount instanceof Venditore)
+                venditore = (Venditore) itrAccount.next();
+            else
+                itrAccount.next();
+        }
+
+        return venditore;
     }
 
     @Override

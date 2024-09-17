@@ -5,8 +5,8 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Objects;
 
+@EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,25 +20,11 @@ public abstract class AstaDiVenditore extends Asta {
     private Venditore proprietario;
 
     // AllArgsConstructor
-    public AstaDiVenditore(@NonNull String categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Venditore proprietario) {
+    protected AstaDiVenditore(@NonNull String categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Venditore proprietario) {
         super(categoria, nome, descrizione, dataScadenza, oraScadenza, immagine);
 
         this.proprietario = proprietario;
         proprietario.addAstaPosseduta(this);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AstaDiVenditore)) return false;
-        if (!super.equals(o)) return false;
-        AstaDiVenditore asta = (AstaDiVenditore) o;
-        return Objects.equals(this.proprietario, asta.getProprietario());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), proprietario);
     }
 
     @Override

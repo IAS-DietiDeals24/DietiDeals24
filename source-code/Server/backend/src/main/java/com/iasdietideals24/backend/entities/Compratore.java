@@ -3,16 +3,13 @@ package com.iasdietideals24.backend.entities;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,11 +17,13 @@ import java.util.Set;
 public class Compratore extends Account {
     @OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
-    private Set<AstaDiCompratore> astePossedute = new HashSet<AstaDiCompratore>();
+    @EqualsAndHashCode.Exclude
+    private Set<AstaDiCompratore> astePossedute = new HashSet<>();
 
     @OneToMany(mappedBy = "compratoreCollegato", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
-    private Set<OffertaDiCompratore> offerteCollegate = new HashSet<OffertaDiCompratore>();
+    @EqualsAndHashCode.Exclude
+    private Set<OffertaDiCompratore> offerteCollegate = new HashSet<>();
 
     // AllArgsConstructor
     public Compratore(String email, String password, Profilo profilo) {
@@ -47,20 +46,6 @@ public class Compratore extends Account {
 
     public void removeOffertaCollegata(OffertaDiCompratore offertaDaRimuovere) {
         this.offerteCollegate.remove(offertaDaRimuovere);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Compratore)) return false;
-        if (!super.equals(o)) return false;
-        Compratore compratore = (Compratore) o;
-        return Objects.equals(this.astePossedute, compratore.getAstePossedute()) && Objects.equals(this.offerteCollegate, compratore.getOfferteCollegate());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), astePossedute, offerteCollegate);
     }
 
     @Override

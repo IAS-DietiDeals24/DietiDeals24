@@ -6,12 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.iasdietideals24.backend.datautil.TestDataAstaInversa;
 import com.iasdietideals24.backend.datautil.TestDataCompratore;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
+import com.iasdietideals24.backend.entities.Account;
 import com.iasdietideals24.backend.entities.AstaDiCompratore;
 import com.iasdietideals24.backend.entities.Compratore;
 import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.exceptions.ParameterNotValidException;
-import com.jayway.jsonpath.Criteria;
-import org.hibernate.FetchMode;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +20,16 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class AstaDiCompratoreRepositoryIntegrationTests {
+class AstaDiCompratoreRepositoryIntegrationTests {
 
-    private AstaDiCompratoreRepository underTest;
+    private final AstaDiCompratoreRepository underTest;
 
     @Autowired
     public AstaDiCompratoreRepositoryIntegrationTests(AstaDiCompratoreRepository underTest) {
@@ -39,10 +38,10 @@ public class AstaDiCompratoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    public void testAstaDiCompratoreCanBeCreatedAndRecalled() throws ParameterNotValidException {
+    void testAstaDiCompratoreCanBeCreatedAndRecalled() throws ParameterNotValidException {
         // Creazione oggetto
         Profilo profilo = TestDataProfilo.createProfiloCompratoreC();
-        Compratore compratore = TestDataCompratore.createCompratoreA(profilo);
+        Compratore compratore = profilo.getCompratore();
         AstaDiCompratore astaDiCompratore = TestDataAstaInversa.createAstaInversaA(compratore);
 
         // Interazione con il database
@@ -55,18 +54,19 @@ public class AstaDiCompratoreRepositoryIntegrationTests {
     }
 
     @Test
-    public void testMultipleAstaDiCompratoreCanBeCreatedAndRecalled() throws ParameterNotValidException {
+    void testMultipleAstaDiCompratoreCanBeCreatedAndRecalled() throws ParameterNotValidException {
         // Creazione oggetti
         Profilo profiloA = TestDataProfilo.createProfiloCompratoreA();
-        Compratore compratoreA = TestDataCompratore.createCompratoreA(profiloA);
+        log.info(profiloA.toString());
+        Compratore compratoreA = profiloA.getCompratore();
         AstaDiCompratore astaDiCompratoreA = TestDataAstaInversa.createAstaInversaA(compratoreA);
 
         Profilo profiloB = TestDataProfilo.createProfiloCompratoreB();
-        Compratore compratoreB = TestDataCompratore.createCompratoreB(profiloB);
+        Compratore compratoreB = profiloB.getCompratore();
         AstaDiCompratore astaDiCompratoreB = TestDataAstaInversa.createAstaInversaB(compratoreB);
 
         Profilo profiloC = TestDataProfilo.createProfiloCompratoreC();
-        Compratore compratoreC = TestDataCompratore.createCompratoreC(profiloC);
+        Compratore compratoreC = profiloC.getCompratore();
         AstaDiCompratore astaDiCompratoreC = TestDataAstaInversa.createAstaInversaC(compratoreC);
 
         // Interazione con il database

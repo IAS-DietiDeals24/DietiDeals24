@@ -7,9 +7,9 @@ import lombok.*;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Set;
 
+@EqualsAndHashCode
 @Getter
 @Setter
 @NoArgsConstructor
@@ -31,14 +31,16 @@ public abstract class Account {
 
     @OneToMany(mappedBy = "mittente", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
-    private Set<Notifica> notificheInviate = new HashSet<Notifica>();
+    @EqualsAndHashCode.Exclude
+    private Set<Notifica> notificheInviate = new HashSet<>();
 
     @ManyToMany(mappedBy = "destinatari", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
-    private Set<Notifica> notificheRicevute = new HashSet<Notifica>();
+    @EqualsAndHashCode.Exclude
+    private Set<Notifica> notificheRicevute = new HashSet<>();
 
     // AllArgsConstructor
-    public Account(@NonNull String email, @NonNull String password, @NonNull Profilo profilo) {
+    protected Account(@NonNull String email, @NonNull String password, @NonNull Profilo profilo) {
         this.email = email;
         this.password = password;
         this.profilo = profilo;
@@ -60,19 +62,6 @@ public abstract class Account {
 
     public void removeNotificaRicevuta(@NonNull Notifica notificaRicevutaDaRimuovere) {
         this.notificheRicevute.remove(notificaRicevutaDaRimuovere);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Account)) return false;
-        Account account = (Account) o;
-        return Objects.equals(this.email, account.getEmail()) && Objects.equals(this.password, account.getPassword()) && Objects.equals(this.profilo, account.getProfilo()) && Objects.equals(this.notificheInviate, account.getNotificheInviate()) && Objects.equals(this.notificheRicevute, account.getNotificheRicevute());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(email, password, profilo.getNomeUtente(), notificheInviate, notificheRicevute);
     }
 
     @Override

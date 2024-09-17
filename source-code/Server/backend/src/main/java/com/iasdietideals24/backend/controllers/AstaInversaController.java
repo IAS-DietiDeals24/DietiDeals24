@@ -11,8 +11,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-@RestController
 @Slf4j
+@RestController
 public class AstaInversaController {
 
     public static void main(String[] args) throws ParameterNotValidException {

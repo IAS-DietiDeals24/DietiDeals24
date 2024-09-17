@@ -11,9 +11,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.Objects;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,7 +25,8 @@ public class AstaInversa extends AstaDiCompratore {
 
     @OneToMany(mappedBy = "astaRiferimento", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
-    private Set<OffertaInversa> offerteRicevute = new LinkedHashSet<OffertaInversa>();
+    @EqualsAndHashCode.Exclude
+    private Set<OffertaInversa> offerteRicevute = new LinkedHashSet<>();
 
     // AllArgsConstructor
     public AstaInversa(@NonNull String categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Compratore proprietario, @NonNull BigDecimal sogliaIniziale) {
@@ -41,20 +42,6 @@ public class AstaInversa extends AstaDiCompratore {
 
     public void removeOffertaRicevuta(OffertaInversa offertaDaRimuovere) {
         this.offerteRicevute.remove(offertaDaRimuovere);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AstaInversa)) return false;
-        if (!super.equals(o)) return false;
-        AstaInversa asta = (AstaInversa) o;
-        return Objects.equals(this.sogliaIniziale, asta.getSogliaIniziale()) && Objects.equals(this.offerteRicevute, asta.getOfferteRicevute());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), sogliaIniziale, offerteRicevute);
     }
 
     @Override

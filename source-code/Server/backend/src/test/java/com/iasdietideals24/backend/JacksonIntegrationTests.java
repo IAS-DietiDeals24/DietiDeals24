@@ -15,9 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class JacksonIntegrationTests {
+class JacksonIntegrationTests {
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     @Autowired
     public JacksonIntegrationTests(ObjectMapper objectMapper) {
@@ -25,7 +25,7 @@ public class JacksonIntegrationTests {
     }
 
     @Test
-    public void testObjectMapperCreateJsonFromJavaObject() throws JsonProcessingException, ParameterNotValidException {
+    void testObjectMapperCreateJsonFromJavaObject() throws JsonProcessingException, ParameterNotValidException {
 
         // Arrange
         Profilo profilo = TestDataProfilo.createProfiloCompratoreA(); // Creiamo l'account per l'asta 

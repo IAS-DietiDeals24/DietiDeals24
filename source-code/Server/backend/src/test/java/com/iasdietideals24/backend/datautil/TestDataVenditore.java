@@ -1,11 +1,6 @@
 package com.iasdietideals24.backend.datautil;
 
-import java.util.Set;
-
-import com.iasdietideals24.backend.entities.AstaDiVenditore;
 import com.iasdietideals24.backend.entities.Venditore;
-import com.iasdietideals24.backend.entities.Notifica;
-import com.iasdietideals24.backend.entities.OffertaDiVenditore;
 import com.iasdietideals24.backend.entities.Profilo;
 
 public class TestDataVenditore {

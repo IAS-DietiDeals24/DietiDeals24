@@ -10,9 +10,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.Objects;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,7 +21,8 @@ import java.util.Set;
 public class AstaSilenziosa extends AstaDiVenditore {
     @OneToMany(mappedBy = "astaRiferimento", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
-    private Set<OffertaSilenziosa> offerteRicevute = new LinkedHashSet<OffertaSilenziosa>();
+    @EqualsAndHashCode.Exclude
+    private Set<OffertaSilenziosa> offerteRicevute = new LinkedHashSet<>();
 
     // AllArgsConstructor
     public AstaSilenziosa(@NonNull String categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Venditore proprietario) {
@@ -35,20 +36,6 @@ public class AstaSilenziosa extends AstaDiVenditore {
 
     public void removeOffertaRicevuta(OffertaSilenziosa offertaDaRimuovere) {
         this.offerteRicevute.remove(offertaDaRimuovere);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AstaSilenziosa)) return false;
-        if (!super.equals(o)) return false;
-        AstaSilenziosa asta = (AstaSilenziosa) o;
-        return Objects.equals(this.offerteRicevute, asta.getOfferteRicevute());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), offerteRicevute);
     }
 
     @Override

@@ -1,16 +1,13 @@
 package com.iasdietideals24.backend.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Objects;
 
+@EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,20 +25,6 @@ public class OffertaInversa extends OffertaDiVenditore {
 
         this.astaRiferimento = astaRiferimento;
         astaRiferimento.addOffertaRicevuta(this);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof OffertaInversa)) return false;
-        if (!super.equals(o)) return false;
-        OffertaInversa offerta = (OffertaInversa) o;
-        return Objects.equals(this.astaRiferimento, offerta.getAstaRiferimento());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), astaRiferimento);
     }
 
     @Override
