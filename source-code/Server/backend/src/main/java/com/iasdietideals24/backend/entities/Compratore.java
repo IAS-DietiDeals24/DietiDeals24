@@ -1,17 +1,20 @@
 package com.iasdietideals24.backend.entities;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 public class Compratore extends Account {
@@ -24,13 +27,13 @@ public class Compratore extends Account {
     private Set<OffertaDiCompratore> offerteCollegate = new HashSet<OffertaDiCompratore>();
 
     // AllArgsConstructor
-    public Compratore (String email, String password, Profilo profilo) {
+    public Compratore(String email, String password, Profilo profilo) {
         super(email, password, profilo);
     }
 
     // Metodi per astePossedute
     public void addAstaPosseduta(AstaDiCompratore astaDaAggiungere) {
-         this.astePossedute.add(astaDaAggiungere);
+        this.astePossedute.add(astaDaAggiungere);
     }
 
     public void removeAstaPosseduta(AstaDiCompratore astaDaRimuovere) {
@@ -38,7 +41,7 @@ public class Compratore extends Account {
     }
 
     // Metodi per offerteCollegate
-    public void addOffertaCollegata(OffertaDiCompratore offertaDaAggiungere) {        
+    public void addOffertaCollegata(OffertaDiCompratore offertaDaAggiungere) {
         this.offerteCollegate.add(offertaDaAggiungere);
     }
 
@@ -53,5 +56,26 @@ public class Compratore extends Account {
         if (!super.equals(o)) return false;
         Compratore compratore = (Compratore) o;
         return Objects.equals(this.astePossedute, compratore.getAstePossedute()) && Objects.equals(this.offerteCollegate, compratore.getOfferteCollegate());
+    }
+
+    @Override
+    public String toString() {
+        Iterator<AstaDiCompratore> itrAstaPosseduta = this.getAstePossedute().iterator();
+        StringBuilder listIdAstePossedute = new StringBuilder();
+        listIdAstePossedute.append("[");
+        while (itrAstaPosseduta.hasNext()) {
+            listIdAstePossedute.append(itrAstaPosseduta.next().getIdAsta()).append(", ");
+        }
+        listIdAstePossedute.append("]");
+
+        Iterator<OffertaDiCompratore> itrOffertaCollegata = this.getOfferteCollegate().iterator();
+        StringBuilder listIdOfferteCollegate = new StringBuilder();
+        listIdOfferteCollegate.append("[");
+        while (itrOffertaCollegata.hasNext()) {
+            listIdOfferteCollegate.append(itrOffertaCollegata.next().getIdOfferta()).append(", ");
+        }
+        listIdOfferteCollegate.append("]");
+
+        return "Compratore(astePossedute=" + listIdAstePossedute + ", offerteCollegate=" + listIdOfferteCollegate + ") is a " + super.toString();
     }
 }

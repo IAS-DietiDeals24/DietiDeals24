@@ -1,21 +1,21 @@
 package com.iasdietideals24.backend.entities;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
+
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @DiscriminatorValue("Tempo fisso")
@@ -35,7 +35,7 @@ public class AstaTempoFisso extends AstaDiVenditore {
     }
 
     // Metodi per offerteRicevute
-    public void addOffertaRicevuta(OffertaTempoFisso offertaDaAggiungere) {        
+    public void addOffertaRicevuta(OffertaTempoFisso offertaDaAggiungere) {
         this.offerteRicevute.add(offertaDaAggiungere);
     }
 
@@ -50,5 +50,18 @@ public class AstaTempoFisso extends AstaDiVenditore {
         if (!super.equals(o)) return false;
         AstaTempoFisso asta = (AstaTempoFisso) o;
         return Objects.equals(this.sogliaMinima, asta.getSogliaMinima()) && Objects.equals(this.offerteRicevute, asta.getOfferteRicevute());
+    }
+
+    @Override
+    public String toString() {
+        Iterator<OffertaTempoFisso> itrOffertaRicevuta = this.getOfferteRicevute().iterator();
+        StringBuilder listIdOfferteRicevute = new StringBuilder();
+        listIdOfferteRicevute.append("[");
+        while (itrOffertaRicevuta.hasNext()) {
+            listIdOfferteRicevute.append(itrOffertaRicevuta.next().getIdOfferta()).append(", ");
+        }
+        listIdOfferteRicevute.append("]");
+
+        return "AstaTempoFisso(sogliaMinima=" + this.getSogliaMinima() + ", offerteRicevute=" + listIdOfferteRicevute + ") is a " + super.toString();
     }
 }

@@ -1,22 +1,24 @@
 package com.iasdietideals24.backend.entities;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
-import jakarta.persistence.*;
-import lombok.*;
-
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @DiscriminatorValue("Tempo fisso")
 public class OffertaTempoFisso extends OffertaDiCompratore {
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "fk_astatempofisso_for_offertatempofisso")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "fk_astatempofisso_idasta")
     @NonNull
     private AstaTempoFisso astaRiferimento;
 
@@ -35,5 +37,10 @@ public class OffertaTempoFisso extends OffertaDiCompratore {
         if (!super.equals(o)) return false;
         OffertaTempoFisso offerta = (OffertaTempoFisso) o;
         return Objects.equals(this.astaRiferimento, offerta.getAstaRiferimento());
+    }
+
+    @Override
+    public String toString() {
+        return "OffertaTempoFisso(astaRiferimento=" + this.getAstaRiferimento().getIdAsta() + ") is a " + super.toString();
     }
 }

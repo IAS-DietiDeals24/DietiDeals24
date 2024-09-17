@@ -6,12 +6,12 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 public class Notifica {
@@ -29,21 +29,21 @@ public class Notifica {
     @NonNull
     private String messaggio;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "fk_account_for_notifica")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "fk_account_email")
     @NonNull
     private Account mittente;
 
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "destinatari",
-            joinColumns = { @JoinColumn(name = "fk_notifica_for_account") },
-            inverseJoinColumns = { @JoinColumn(name = "fk_account_for_notifica") })
+            joinColumns = {@JoinColumn(name = "fk_notifica_idnotifica")},
+            inverseJoinColumns = {@JoinColumn(name = "fk_account_email")})
     @NonNull
     @Setter(AccessLevel.NONE)
     private Set<Account> destinatari = new HashSet<Account>();
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "fk_asta_for_notifica")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "fk_asta_idasta")
     @NonNull
     private Asta astaAssociata;
 
@@ -78,5 +78,18 @@ public class Notifica {
         if (!(o instanceof Notifica)) return false;
         Notifica notifica = (Notifica) o;
         return Objects.equals(this.dataInvio, notifica.getDataInvio()) && Objects.equals(this.oraInvio, notifica.getOraInvio()) && Objects.equals(this.messaggio, notifica.getMessaggio()) && Objects.equals(this.mittente, notifica.getMittente()) && Objects.equals(this.destinatari, notifica.getDestinatari()) && Objects.equals(this.astaAssociata, notifica.getAstaAssociata());
+    }
+
+    @Override
+    public String toString() {
+        Iterator<Account> itrDestinatario = this.getDestinatari().iterator();
+        StringBuilder listEmailDestinatari = new StringBuilder();
+        listEmailDestinatari.append("[");
+        while (itrDestinatario.hasNext()) {
+            listEmailDestinatari.append(itrDestinatario.next().getEmail()).append(", ");
+        }
+        listEmailDestinatari.append("]");
+
+        return "Notifica(idNotifica=" + this.getIdNotifica() + ", dataInvio=" + this.getDataInvio() + ", oraInvio=" + this.getOraInvio() + ", messaggio=" + this.getMessaggio() + ", mittente=" + this.getMittente().getEmail() + ", destinatari=" + listEmailDestinatari + ", astaAssociata=" + this.getAstaAssociata().getIdAsta() + ")";
     }
 }

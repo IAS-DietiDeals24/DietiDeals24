@@ -1,17 +1,20 @@
 package com.iasdietideals24.backend.entities;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 public class Venditore extends Account {
@@ -24,12 +27,12 @@ public class Venditore extends Account {
     private Set<OffertaDiVenditore> offerteCollegate = new HashSet<OffertaDiVenditore>();
 
     // AllArgsConstructor
-    public Venditore (String email, String password, Profilo profilo) {
+    public Venditore(String email, String password, Profilo profilo) {
         super(email, password, profilo);
     }
 
     // Metodi per astePossedute
-    public void addAstaPosseduta(AstaDiVenditore astaDaAggiungere) {        
+    public void addAstaPosseduta(AstaDiVenditore astaDaAggiungere) {
         this.astePossedute.add(astaDaAggiungere);
     }
 
@@ -38,7 +41,7 @@ public class Venditore extends Account {
     }
 
     // Metodi per offerteCollegate
-    public void addOffertaCollegata(OffertaDiVenditore offertaDaAggiungere) {        
+    public void addOffertaCollegata(OffertaDiVenditore offertaDaAggiungere) {
         this.offerteCollegate.add(offertaDaAggiungere);
     }
 
@@ -53,5 +56,22 @@ public class Venditore extends Account {
         if (!super.equals(o)) return false;
         Venditore venditore = (Venditore) o;
         return Objects.equals(this.astePossedute, venditore.getAstePossedute()) && Objects.equals(this.offerteCollegate, venditore.getOfferteCollegate());
+    }
+
+    @Override
+    public String toString() {
+        Iterator<AstaDiVenditore> itrAstaPosseduta = this.getAstePossedute().iterator();
+        StringBuilder listIdAstePossedute = new StringBuilder();
+        while (itrAstaPosseduta.hasNext()) {
+            listIdAstePossedute.append(itrAstaPosseduta.next().getIdAsta()).append(", ");
+        }
+
+        Iterator<OffertaDiVenditore> itrOffertaCollegata = this.getOfferteCollegate().iterator();
+        StringBuilder listIdOfferteCollegate = new StringBuilder();
+        while (itrOffertaCollegata.hasNext()) {
+            listIdOfferteCollegate.append(itrOffertaCollegata.next().getIdOfferta()).append(", ");
+        }
+
+        return "Venditore(astePossedute=" + listIdAstePossedute + ", offerteCollegate=" + listIdOfferteCollegate + ") is a " + super.toString();
     }
 }

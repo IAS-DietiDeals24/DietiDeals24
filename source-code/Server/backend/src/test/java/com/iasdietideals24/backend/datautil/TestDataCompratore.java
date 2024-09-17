@@ -14,14 +14,14 @@ public class TestDataCompratore {
     }
 
     public static Compratore createCompratoreA(final Profilo profilo) {
-        return new Compratore("elenoire.ferruzzi@gmail.com",
-                                "ciaoMamma",
+        return new Compratore("pippo.baudo@gmail.com",
+                                "buonasera",
                                 profilo);
     }
 
     public static Compratore createCompratoreB(final Profilo profilo) {
-        return new Compratore("pippo.baudo@gmail.com",
-                                "buonasera",
+        return new Compratore("elenoire.ferruzzi@gmail.com",
+                                "ciaoMamma",
                                 profilo);
     }
 

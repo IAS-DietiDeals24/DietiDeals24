@@ -11,12 +11,12 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
@@ -113,5 +113,18 @@ public class Profilo {
         if (!(o instanceof Profilo)) return false;
         Profilo profilo = (Profilo) o;
         return Objects.equals(this.nomeUtente, profilo.getNomeUtente()) && Objects.deepEquals(this.profilePicture, profilo.getProfilePicture()) && Objects.equals(this.nome, profilo.getNome()) && Objects.equals(this.cognome, profilo.getCognome()) && Objects.equals(this.dataNascita, profilo.getDataNascita()) && Objects.equals(this.areaGeografica, profilo.getAreaGeografica()) && Objects.equals(this.biografia, profilo.getBiografia()) && Objects.equals(this.linkPersonale, profilo.getLinkPersonale()) && Objects.equals(this.linkInstagram, profilo.getLinkInstagram()) && Objects.equals(this.linkFacebook, profilo.getLinkFacebook()) && Objects.equals(this.linkGitHub, profilo.getLinkGitHub()) && Objects.equals(this.linkX, profilo.getLinkX()) && Objects.equals(this.accounts, profilo.getAccounts());
+    }
+
+    @Override
+    public String toString() {
+        Iterator<Account> itrAccount = this.getAccounts().iterator();
+        StringBuilder listEmailAccounts = new StringBuilder();
+        listEmailAccounts.append("[");
+        while (itrAccount.hasNext()) {
+            listEmailAccounts.append(itrAccount.next().getEmail()).append(", ");
+        }
+        listEmailAccounts.append("]");
+
+        return "Profilo(nomeUtente=" + this.getNomeUtente() + ", profilePicture=" + java.util.Arrays.toString(this.getProfilePicture()) + ", nome=" + this.getNome() + ", cognome=" + this.getCognome() + ", dataNascita=" + this.getDataNascita() + ", areaGeografica=" + this.getAreaGeografica() + ", biografia=" + this.getBiografia() + ", linkPersonale=" + this.getLinkPersonale() + ", linkInstagram=" + this.getLinkInstagram() + ", linkFacebook=" + this.getLinkFacebook() + ", linkGitHub=" + this.getLinkGitHub() + ", linkX=" + this.getLinkX() + ", accounts=" + listEmailAccounts + ")";
     }
 }

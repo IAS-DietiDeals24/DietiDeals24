@@ -1,23 +1,25 @@
 package com.iasdietideals24.backend.entities;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
-import jakarta.persistence.*;
-import lombok.*;
-
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipoOfferta")
 public abstract class OffertaDiCompratore extends Offerta {
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "fk_compratore_for_offertadicompratore")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "fk_compratore_email")
     @NonNull
     private Compratore compratoreCollegato;
 
@@ -36,5 +38,9 @@ public abstract class OffertaDiCompratore extends Offerta {
         if (!super.equals(o)) return false;
         OffertaDiCompratore offerta = (OffertaDiCompratore) o;
         return Objects.equals(this.compratoreCollegato, offerta.getCompratoreCollegato());
+    }
+
+    public String toString() {
+        return "OffertaDiCompratore(compratoreCollegato=" + this.getCompratoreCollegato().getEmail() + ") is a " + super.toString();
     }
 }

@@ -6,12 +6,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -24,8 +24,8 @@ public abstract class Account {
     @NonNull
     private String password;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "fk_profilo_for_account")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "fk_profilo_nomeutente")
     @NonNull
     private Profilo profilo;
 
@@ -33,7 +33,7 @@ public abstract class Account {
     @Setter(AccessLevel.NONE)
     private Set<Notifica> notificheInviate = new HashSet<Notifica>();
 
-    @ManyToMany(mappedBy="destinatari", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "destinatari", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
     private Set<Notifica> notificheRicevute = new HashSet<Notifica>();
 
@@ -68,5 +68,26 @@ public abstract class Account {
         if (!(o instanceof Account)) return false;
         Account account = (Account) o;
         return Objects.equals(this.email, account.getEmail()) && Objects.equals(this.password, account.getPassword()) && Objects.equals(this.profilo, account.getProfilo()) && Objects.equals(this.notificheInviate, account.getNotificheInviate()) && Objects.equals(this.notificheRicevute, account.getNotificheRicevute());
+    }
+
+    @Override
+    public String toString() {
+        Iterator<Notifica> itrNotificaInviata = this.getNotificheInviate().iterator();
+        StringBuilder listIdNotificheInviate = new StringBuilder();
+        listIdNotificheInviate.append("[");
+        while (itrNotificaInviata.hasNext()) {
+            listIdNotificheInviate.append(itrNotificaInviata.next().getIdNotifica()).append(", ");
+        }
+        listIdNotificheInviate.append("]");
+
+        Iterator<Notifica> itrNotificaRicevuta = this.getNotificheRicevute().iterator();
+        StringBuilder listIdNotificheRicevute = new StringBuilder();
+        listIdNotificheRicevute.append("[");
+        while (itrNotificaRicevuta.hasNext()) {
+            listIdNotificheRicevute.append(itrNotificaRicevuta.next().getIdNotifica()).append(", ");
+        }
+        listIdNotificheRicevute.append("]");
+
+        return "Account(email=" + this.getEmail() + ", password=" + this.getPassword() + ", profilo=" + this.getProfilo().getNomeUtente() + ", notificheInviate=" + listIdNotificheInviate + ", notificheRicevute=" + listIdNotificheRicevute + ")";
     }
 }

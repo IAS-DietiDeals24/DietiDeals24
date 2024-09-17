@@ -72,8 +72,8 @@ public class TestDataProfilo {
                             null,
                             null,
                             null,
-                            "elenoire.ferruzzi@gmail.com",
-                            "ciaoMamma",
+                            "pippo.baudo@gmail.com",
+                            "buonasera",
                             "Compratore");
     }
 
@@ -90,8 +90,8 @@ public class TestDataProfilo {
                             "https://www.instagram.com/",
                             "https://github.com/",
                             "https://x.com/",
-                            "pippo.baudo@gmail.com",
-                            "buonasera",
+                            "elenoire.ferruzzi@gmail.com",
+                            "ciaoMamma",
                             "Compratore");
     }
 

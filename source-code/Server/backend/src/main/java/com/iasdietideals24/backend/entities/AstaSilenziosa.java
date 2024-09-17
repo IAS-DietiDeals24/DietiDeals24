@@ -1,20 +1,20 @@
 package com.iasdietideals24.backend.entities;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
+
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @DiscriminatorValue("Silenziosa")
@@ -29,7 +29,7 @@ public class AstaSilenziosa extends AstaDiVenditore {
     }
 
     // Metodi per offerteRicevute
-    public void addOffertaRicevuta(OffertaSilenziosa offertaDaAggiungere) {        
+    public void addOffertaRicevuta(OffertaSilenziosa offertaDaAggiungere) {
         this.offerteRicevute.add(offertaDaAggiungere);
     }
 
@@ -44,5 +44,18 @@ public class AstaSilenziosa extends AstaDiVenditore {
         if (!super.equals(o)) return false;
         AstaSilenziosa asta = (AstaSilenziosa) o;
         return Objects.equals(this.offerteRicevute, asta.getOfferteRicevute());
+    }
+
+    @Override
+    public String toString() {
+        Iterator<OffertaSilenziosa> itrOffertaRicevuta = this.getOfferteRicevute().iterator();
+        StringBuilder listIdOfferteRicevute = new StringBuilder();
+        listIdOfferteRicevute.append("[");
+        while (itrOffertaRicevuta.hasNext()) {
+            listIdOfferteRicevute.append(itrOffertaRicevuta.next().getIdOfferta()).append(", ");
+        }
+        listIdOfferteRicevute.append("]");
+
+        return "AstaSilenziosa(offerteRicevute=" + listIdOfferteRicevute + ") is a " + super.toString();
     }
 }

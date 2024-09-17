@@ -1,7 +1,10 @@
 package com.iasdietideals24.backend.entities;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,7 +13,6 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -42,5 +44,10 @@ public abstract class Offerta {
         if (!(o instanceof Offerta)) return false;
         Offerta offerta = (Offerta) o;
         return Objects.equals(this.dataInvio, offerta.getDataInvio()) && Objects.equals(this.oraInvio, offerta.getOraInvio()) && Objects.equals(this.valore, offerta.getValore());
+    }
+
+    @Override
+    public String toString() {
+        return "Offerta(idOfferta=" + this.getIdOfferta() + ", dataInvio=" + this.getDataInvio() + ", oraInvio=" + this.getOraInvio() + ", valore=" + this.getValore() + ")";
     }
 }

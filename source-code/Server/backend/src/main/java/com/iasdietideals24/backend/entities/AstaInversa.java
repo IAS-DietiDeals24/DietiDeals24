@@ -1,20 +1,21 @@
 package com.iasdietideals24.backend.entities;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import lombok.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @DiscriminatorValue("Inversa")
@@ -34,7 +35,7 @@ public class AstaInversa extends AstaDiCompratore {
     }
 
     // Metodi per offerteRicevute
-    public void addOffertaRicevuta(OffertaInversa offertaDaAggiungere) {        
+    public void addOffertaRicevuta(OffertaInversa offertaDaAggiungere) {
         this.offerteRicevute.add(offertaDaAggiungere);
     }
 
@@ -49,5 +50,18 @@ public class AstaInversa extends AstaDiCompratore {
         if (!super.equals(o)) return false;
         AstaInversa asta = (AstaInversa) o;
         return Objects.equals(this.sogliaIniziale, asta.getSogliaIniziale()) && Objects.equals(this.offerteRicevute, asta.getOfferteRicevute());
+    }
+
+    @Override
+    public String toString() {
+        Iterator<OffertaInversa> itrOffertaRicevuta = this.getOfferteRicevute().iterator();
+        StringBuilder listIdOfferteRicevute = new StringBuilder();
+        listIdOfferteRicevute.append("[");
+        while (itrOffertaRicevuta.hasNext()) {
+            listIdOfferteRicevute.append(itrOffertaRicevuta.next().getIdOfferta()).append(", ");
+        }
+        listIdOfferteRicevute.append("]");
+
+        return "AstaInversa(sogliaIniziale=" + this.getSogliaIniziale() + ", offerteRicevute=" + listIdOfferteRicevute + ") is a " + super.toString();
     }
 }

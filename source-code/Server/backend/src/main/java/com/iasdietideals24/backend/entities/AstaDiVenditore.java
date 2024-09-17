@@ -1,22 +1,24 @@
 package com.iasdietideals24.backend.entities;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
-import jakarta.persistence.*;
-import lombok.*;
-
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipoAsta")
 public abstract class AstaDiVenditore extends Asta {
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "fk_venditore_for_astadivenditore")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "fk_venditore_email")
     @NonNull
     private Venditore proprietario;
 
@@ -35,5 +37,10 @@ public abstract class AstaDiVenditore extends Asta {
         if (!super.equals(o)) return false;
         AstaDiVenditore asta = (AstaDiVenditore) o;
         return Objects.equals(this.proprietario, asta.getProprietario());
+    }
+
+    @Override
+    public String toString() {
+        return "AstaDiVenditore(proprietario=" + this.getProprietario().getEmail() + ") + is a " + super.toString();
     }
 }

@@ -55,7 +55,6 @@ public class AstaDiCompratoreRepositoryIntegrationTests {
     }
 
     @Test
-    @Transactional
     public void testMultipleAstaDiCompratoreCanBeCreatedAndRecalled() throws ParameterNotValidException {
         // Creazione oggetti
         Profilo profiloA = TestDataProfilo.createProfiloCompratoreA();

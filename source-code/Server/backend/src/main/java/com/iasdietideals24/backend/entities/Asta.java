@@ -6,12 +6,12 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -67,5 +67,18 @@ public abstract class Asta {
         if (!(o instanceof Asta)) return false;
         Asta asta = (Asta) o;
         return Objects.equals(this.categoria, asta.getCategoria()) && Objects.equals(this.nome, asta.getNome()) && Objects.equals(this.descrizione, asta.getDescrizione()) && Objects.equals(this.dataScadenza, asta.getDataScadenza()) && Objects.equals(this.oraScadenza, asta.getOraScadenza()) && Objects.equals(this.immagine, asta.getImmagine()) && Objects.equals(this.notificheAssociate, asta.getNotificheAssociate());
+    }
+
+    @Override
+    public String toString() {
+        Iterator<Notifica> itrNotificaAssociata = this.getNotificheAssociate().iterator();
+        StringBuilder listIdNotificheAssociate = new StringBuilder();
+        listIdNotificheAssociate.append("[");
+        while (itrNotificaAssociata.hasNext()) {
+            listIdNotificheAssociate.append(itrNotificaAssociata.next().getIdNotifica()).append(", ");
+        }
+        listIdNotificheAssociate.append("]");
+
+        return "Asta(idAsta=" + this.getIdAsta() + ", categoria=" + this.getCategoria() + ", nome=" + this.getNome() + ", descrizione=" + this.getDescrizione() + ", dataScadenza=" + this.getDataScadenza() + ", oraScadenza=" + this.getOraScadenza() + ", immagine=" + java.util.Arrays.toString(this.getImmagine()) + ", notificheAssociate=" + listIdNotificheAssociate + ")";
     }
 }

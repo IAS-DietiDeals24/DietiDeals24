@@ -1,24 +1,26 @@
 package com.iasdietideals24.backend.entities;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
-import jakarta.persistence.*;
-import lombok.*;
-
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @Entity
 @DiscriminatorValue("Silenziosa")
 public class OffertaSilenziosa extends OffertaDiCompratore {
     private Boolean isAccettata = null;
 
-    @ManyToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinColumn(name = "fk_astasilenziosa_for_offertasilenziosa")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "fk_astasilenziosa_idasta")
     @NonNull
     private AstaSilenziosa astaRiferimento;
 
@@ -39,5 +41,10 @@ public class OffertaSilenziosa extends OffertaDiCompratore {
         if (!super.equals(o)) return false;
         OffertaSilenziosa offerta = (OffertaSilenziosa) o;
         return Objects.equals(this.isAccettata, offerta.getIsAccettata()) && Objects.equals(this.astaRiferimento, offerta.getAstaRiferimento());
+    }
+
+    @Override
+    public String toString() {
+        return "OffertaSilenziosa(isAccettata=" + this.getIsAccettata() + ", astaRiferimento=" + this.getAstaRiferimento().getIdAsta() + ") is a " + super.toString();
     }
 }
