@@ -8,18 +8,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+@Slf4j
 @EqualsAndHashCode
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "nomeUtente")
 public class Profilo {
     @Id
     @NonNull
@@ -111,27 +113,37 @@ public class Profilo {
     // Metodi per recuperare un tipo di account
     public Compratore getCompratore() {
         Iterator<Account> itrAccount = this.getAccounts().iterator();
+        log.trace("Account trovati: {}", this.getAccounts());
+
+        Account account;
         Compratore compratore = null;
-        while (itrAccount.hasNext()) {
-            if (itrAccount instanceof Compratore)
-                compratore = (Compratore) itrAccount.next();
-            else
-                itrAccount.next();
+        while (compratore == null && itrAccount.hasNext()) {
+            account = itrAccount.next();
+            if (account instanceof Compratore c) {
+                log.trace("Compratore trovato");
+                compratore = c;
+            }
         }
 
+        log.trace("Compratore selezionato: {}", compratore);
         return compratore;
     }
 
     public Venditore getVenditore() {
         Iterator<Account> itrAccount = this.getAccounts().iterator();
+        log.trace("Account trovati: {}", this.getAccounts());
+
+        Account account;
         Venditore venditore = null;
-        while (itrAccount.hasNext()) {
-            if (itrAccount instanceof Venditore)
-                venditore = (Venditore) itrAccount.next();
-            else
-                itrAccount.next();
+        while (venditore == null && itrAccount.hasNext()) {
+            account = itrAccount.next();
+            if (account instanceof Venditore v) {
+                log.trace("Venditore trovato");
+                venditore = v;
+            }
         }
 
+        log.trace("Venditore selezionato: {}", venditore);
         return venditore;
     }
 

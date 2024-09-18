@@ -22,21 +22,21 @@ public class TestDataOffertaSilenziosa {
                                     astaRiferimento);
     }
 
-    public static OffertaSilenziosa createOffertaSilenziosaB(final Compratore compratoreCollegato, final Boolean isAccettata, final AstaSilenziosa astaRiferimento) {
+    public static OffertaSilenziosa createOffertaSilenziosaB(final Compratore compratoreCollegato, final AstaSilenziosa astaRiferimento) {
         return new OffertaSilenziosa(LocalDate.of(2022, 1, 15),
                                     LocalTime.of(18, 10),
                                     BigDecimal.valueOf(20.00),
                                     compratoreCollegato,
-                                    isAccettata,
+                                    true,
                                     astaRiferimento);
     }
 
-    public static OffertaSilenziosa createOffertaSilenziosaC(final Compratore compratoreCollegato, final Boolean isAccettata, final AstaSilenziosa astaRiferimento) {
+    public static OffertaSilenziosa createOffertaSilenziosaC(final Compratore compratoreCollegato, final AstaSilenziosa astaRiferimento) {
         return new OffertaSilenziosa(LocalDate.of(2021, 8, 22),
                                     LocalTime.of(23, 10),
                                     BigDecimal.valueOf(18.00),
                                     compratoreCollegato,
-                                    isAccettata,
+                                    false,
                                     astaRiferimento);
     }
 }

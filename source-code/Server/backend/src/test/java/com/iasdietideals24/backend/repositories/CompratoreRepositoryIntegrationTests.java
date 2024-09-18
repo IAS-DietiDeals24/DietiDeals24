@@ -1,11 +1,6 @@
 package com.iasdietideals24.backend.repositories;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import com.iasdietideals24.backend.datautil.TestDataAstaInversa;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
-import com.iasdietideals24.backend.entities.AstaDiCompratore;
 import com.iasdietideals24.backend.entities.Compratore;
 import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.exceptions.ParameterNotValidException;
@@ -22,104 +17,101 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @Slf4j
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class AstaDiCompratoreRepositoryIntegrationTests {
+class CompratoreRepositoryIntegrationTests {
 
-    private final AstaDiCompratoreRepository underTest;
+    private final CompratoreRepository underTest;
 
     @Autowired
-    public AstaDiCompratoreRepositoryIntegrationTests(AstaDiCompratoreRepository underTest) {
+    public CompratoreRepositoryIntegrationTests(CompratoreRepository underTest) {
         this.underTest = underTest;
     }
 
     @Test
     @Transactional
-    void testAstaDiCompratoreCanBeCreatedAndRecalled() throws ParameterNotValidException {
+    void testCompratoreCanBeCreatedAndRecalled() throws ParameterNotValidException {
         // Creazione oggetto
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreC();
         Compratore compratore = profiloCompratore.getCompratore();
-        AstaDiCompratore astaDiCompratore = TestDataAstaInversa.createAstaInversaA(compratore);
 
         // Salvataggio oggetto nel database
-        underTest.save(astaDiCompratore);
+        underTest.save(compratore);
 
         // Recupero oggetto dal database
-        Optional<AstaDiCompratore> result = underTest.findById(astaDiCompratore.getIdAsta());
+        Optional<Compratore> result = underTest.findById(compratore.getEmail());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
         assertTrue(result.isPresent());
-        assertEquals(astaDiCompratore, result.get());
+        assertEquals(compratore, result.get());
     }
 
     @Test
     @Transactional
-    void testMultipleAstaDiCompratoreCanBeCreatedAndRecalled() throws ParameterNotValidException {
+    void testMultipleCompratoreCanBeCreatedAndRecalled() throws ParameterNotValidException {
         // Creazione oggetti
         Profilo profiloCompratoreA = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratoreA = profiloCompratoreA.getCompratore();
-        AstaDiCompratore astaDiCompratoreA = TestDataAstaInversa.createAstaInversaA(compratoreA);
 
         Profilo profiloCompratoreB = TestDataProfilo.createProfiloCompratoreB();
         Compratore compratoreB = profiloCompratoreB.getCompratore();
-        AstaDiCompratore astaDiCompratoreB = TestDataAstaInversa.createAstaInversaB(compratoreB);
 
         Profilo profiloCompratoreC = TestDataProfilo.createProfiloCompratoreC();
         Compratore compratoreC = profiloCompratoreC.getCompratore();
-        AstaDiCompratore astaDiCompratoreC = TestDataAstaInversa.createAstaInversaC(compratoreC);
 
         // Salvataggio oggetti nel database
-        underTest.save(astaDiCompratoreA);
-        underTest.save(astaDiCompratoreB);
-        underTest.save(astaDiCompratoreC);
+        underTest.save(compratoreA);
+        underTest.save(compratoreB);
+        underTest.save(compratoreC);
 
         // Recupero oggetti dal database
-        List<AstaDiCompratore> result = StreamSupport.stream(underTest.findAll().spliterator(), false).toList();
+        List<Compratore> result = StreamSupport.stream(underTest.findAll().spliterator(), false).toList();
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
-        assertTrue(result.size() == 3 && result.contains(astaDiCompratoreA) && result.contains(astaDiCompratoreB) && result.contains(astaDiCompratoreC));
+        assertTrue(result.size() == 3 && result.contains(compratoreA) && result.contains(compratoreB) && result.contains(compratoreC));
     }
 
     @Test
     @Transactional
-    void testAstaDiCompratoreCanBeUpdated() throws ParameterNotValidException {
+    void testCompratoreCanBeUpdated() throws ParameterNotValidException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratore = profiloCompratore.getCompratore();
-        AstaDiCompratore astaDiCompratore = TestDataAstaInversa.createAstaInversaA(compratore);
-        underTest.save(astaDiCompratore);
+        underTest.save(compratore);
 
         // Modifica e salvataggio dell'oggetto nel database
-        astaDiCompratore.setNome("UPDATED");
-        underTest.save(astaDiCompratore);
+        compratore.setEmail("UPDATED");
+        underTest.save(compratore);
 
         // Recupero l'oggetto dal database
-        Optional<AstaDiCompratore> result = underTest.findById(astaDiCompratore.getIdAsta());
+        Optional<Compratore> result = underTest.findById(compratore.getEmail());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
         assertTrue(result.isPresent());
-        assertEquals(astaDiCompratore, result.get());
+        assertEquals(compratore, result.get());
     }
 
     @Test
     @Transactional
-    void testAstaDiCompratoreCanBeDeleted() throws ParameterNotValidException {
+    void testCompratoreCanBeDeleted() throws ParameterNotValidException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratore = profiloCompratore.getCompratore();
-        AstaDiCompratore astaDiCompratore = TestDataAstaInversa.createAstaInversaA(compratore);
-        underTest.save(astaDiCompratore);
+        underTest.save(compratore);
 
         // Rimozione dell'oggetto dal database
-        underTest.deleteById(astaDiCompratore.getIdAsta());
+        underTest.deleteById(compratore.getEmail());
 
         // Recupero l'oggetto dal database
-        Optional<AstaDiCompratore> result = underTest.findById(astaDiCompratore.getIdAsta());
+        Optional<Compratore> result = underTest.findById(compratore.getEmail());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
