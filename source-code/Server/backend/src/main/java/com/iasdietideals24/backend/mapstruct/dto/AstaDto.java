@@ -10,6 +10,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public abstract class AstaDto {
+
     private Long idAsta;
 
     private String categoria;

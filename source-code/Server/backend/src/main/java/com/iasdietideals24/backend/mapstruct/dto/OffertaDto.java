@@ -1,6 +1,5 @@
 package com.iasdietideals24.backend.mapstruct.dto;
 
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;

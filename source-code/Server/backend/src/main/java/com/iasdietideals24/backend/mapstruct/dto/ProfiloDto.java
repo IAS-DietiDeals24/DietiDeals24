@@ -12,6 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "nomeUtente")
 public class ProfiloDto {
+
     private String nomeUtente;
 
     private byte[] profilePicture;
