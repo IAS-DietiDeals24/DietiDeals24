@@ -1,7 +1,5 @@
 package com.iasdietideals24.backend.entities;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.iasdietideals24.backend.exceptions.ParameterNotValidException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -21,7 +19,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "nomeUtente")
 public class Profilo {
     @Id
     @NonNull
