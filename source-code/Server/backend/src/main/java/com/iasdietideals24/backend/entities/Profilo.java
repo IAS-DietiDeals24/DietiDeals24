@@ -1,6 +1,6 @@
 package com.iasdietideals24.backend.entities;
 
-import com.iasdietideals24.backend.exceptions.ParameterNotValidException;
+import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -76,7 +76,7 @@ public class Profilo {
     }
 
     // Creazione dell'account contestualmente al profilo
-    public Profilo(@NonNull String nomeUtente, @NonNull byte[] profilePicture, @NonNull String nome, @NonNull String cognome, @NonNull LocalDate dataNascita, String areaGeografica, String biografia, String linkPersonale, String linkInstagram, String linkFacebook, String linkGitHub, String linkX, @NonNull String email, @NonNull String password, @NonNull String tipoAccount) throws ParameterNotValidException {
+    public Profilo(@NonNull String nomeUtente, @NonNull byte[] profilePicture, @NonNull String nome, @NonNull String cognome, @NonNull LocalDate dataNascita, String areaGeografica, String biografia, String linkPersonale, String linkInstagram, String linkFacebook, String linkGitHub, String linkX, @NonNull String email, @NonNull String password, @NonNull String tipoAccount) throws InvalidParameterException {
         this.nomeUtente = nomeUtente;
         this.profilePicture = profilePicture;
         this.nome = nome;
@@ -95,7 +95,7 @@ public class Profilo {
         else if (tipoAccount.equals("Venditore"))
             this.addAccount(new Venditore(email, password, this));
         else
-            throw new ParameterNotValidException();
+            throw new InvalidParameterException();
     }
 
     // Metodi per accounts

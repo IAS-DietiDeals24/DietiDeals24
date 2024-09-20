@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import com.iasdietideals24.backend.entities.Account;
 import com.iasdietideals24.backend.entities.Profilo;
-import com.iasdietideals24.backend.exceptions.ParameterNotValidException;
+import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 
 public class TestDataProfilo {
     
@@ -59,7 +59,7 @@ public class TestDataProfilo {
                             account);
     }
 
-    public static Profilo createProfiloCompratoreA() throws ParameterNotValidException {
+    public static Profilo createProfiloCompratoreA() throws InvalidParameterException {
         return new Profilo("pip.baud",
                             new byte[] {-99, -29, 54},
                             "Pippo",
@@ -77,7 +77,7 @@ public class TestDataProfilo {
                             "Compratore");
     }
 
-    public static Profilo createProfiloCompratoreB() throws ParameterNotValidException {
+    public static Profilo createProfiloCompratoreB() throws InvalidParameterException {
         return new Profilo("EleNoire",
                             new byte[] {-125, -52, 69},
                             "Elenoire",
@@ -95,7 +95,7 @@ public class TestDataProfilo {
                             "Compratore");
     }
 
-    public static Profilo createProfiloCompratoreC() throws ParameterNotValidException {
+    public static Profilo createProfiloCompratoreC() throws InvalidParameterException {
         return new Profilo("simone.scisciola03",
                             new byte[] {59, 108, 123},
                             "Simone",
@@ -113,7 +113,7 @@ public class TestDataProfilo {
                             "Compratore");
     }
 
-    public static Profilo createProfiloVenditoreA() throws ParameterNotValidException {
+    public static Profilo createProfiloVenditoreA() throws InvalidParameterException {
         return new Profilo("pip.baud",
                             new byte[] {-99, -29, 54},
                             "Pippo",
@@ -131,7 +131,7 @@ public class TestDataProfilo {
                             "Venditore");
     }
 
-    public static Profilo createProfiloVenditoreB() throws ParameterNotValidException {
+    public static Profilo createProfiloVenditoreB() throws InvalidParameterException {
         return new Profilo("EleNoire",
                             new byte[] {-125, -52, 69},
                             "Elenoire",
@@ -149,7 +149,7 @@ public class TestDataProfilo {
                             "Venditore");
     }
 
-    public static Profilo createProfiloVenditoreC() throws ParameterNotValidException {
+    public static Profilo createProfiloVenditoreC() throws InvalidParameterException {
         return new Profilo("simone.scisciola03",
                             new byte[] {59, 108, 123},
                             "Simone",

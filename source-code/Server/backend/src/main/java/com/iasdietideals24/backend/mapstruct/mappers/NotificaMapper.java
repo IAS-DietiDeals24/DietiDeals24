@@ -1,22 +1,32 @@
 package com.iasdietideals24.backend.mapstruct.mappers;
 
+import com.iasdietideals24.backend.entities.Account;
 import com.iasdietideals24.backend.entities.Notifica;
 import com.iasdietideals24.backend.mapstruct.dto.NotificaDto;
-import org.mapstruct.CollectionMappingStrategy;
-import org.mapstruct.InheritConfiguration;
-import org.mapstruct.Mapper;
+import org.mapstruct.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
-@Mapper(componentModel = "spring", collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
+@Mapper(componentModel = "spring")
 public interface NotificaMapper {
 
+    @Mapping(source = "mittente.email", target = "emailMittente")
+    @Mapping(source = "destinatari", target = "emailDestinatari", qualifiedByName = "accountsSetToEmailAccountsSet")
+    @Mapping(source = "astaAssociata.idAsta", target = "idAstaAssociata")
     NotificaDto toDto(Notifica notifica);
 
-    @InheritConfiguration
-    Notifica toEntity(NotificaDto notificaDto);
+//    @InheritInverseConfiguration
+//    Notifica toEntity(NotificaDto notificaDto);
 
-    Set<NotificaDto> toDto(Set<Notifica> notifiche);
+    @Named("accountsSetToEmailAccountsSet")
+    default Set<String> accountsSetToEmailAccountsSet(Set<Account> accounts) {
+        Set<String> emailAccounts = new HashSet<>();
 
-    Set<Notifica> toEntity(Set<NotificaDto> notificheDto);
+        for (Account account : accounts) {
+            emailAccounts.add(account.getEmail());
+        }
+
+        return emailAccounts;
+    }
 }

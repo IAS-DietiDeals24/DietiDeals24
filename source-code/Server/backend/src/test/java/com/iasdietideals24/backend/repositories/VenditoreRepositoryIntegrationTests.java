@@ -3,7 +3,7 @@ package com.iasdietideals24.backend.repositories;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
 import com.iasdietideals24.backend.entities.Venditore;
 import com.iasdietideals24.backend.entities.Profilo;
-import com.iasdietideals24.backend.exceptions.ParameterNotValidException;
+import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +35,7 @@ class VenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testVenditoreCanBeCreatedAndRecalled() throws ParameterNotValidException {
+    void testVenditoreCanBeCreatedAndRecalled() throws InvalidParameterException {
         // Creazione oggetto
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreC();
         Venditore venditore = profiloVenditore.getVenditore();
@@ -54,7 +54,7 @@ class VenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testMultipleVenditoreCanBeCreatedAndRecalled() throws ParameterNotValidException {
+    void testMultipleVenditoreCanBeCreatedAndRecalled() throws InvalidParameterException {
         // Creazione oggetti
         Profilo profiloVenditoreA = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditoreA = profiloVenditoreA.getVenditore();
@@ -80,7 +80,7 @@ class VenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testVenditoreCanBeUpdated() throws ParameterNotValidException {
+    void testVenditoreCanBeUpdated() throws InvalidParameterException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditore = profiloVenditore.getVenditore();
@@ -101,7 +101,7 @@ class VenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testVenditoreCanBeDeleted() throws ParameterNotValidException {
+    void testVenditoreCanBeDeleted() throws InvalidParameterException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditore = profiloVenditore.getVenditore();

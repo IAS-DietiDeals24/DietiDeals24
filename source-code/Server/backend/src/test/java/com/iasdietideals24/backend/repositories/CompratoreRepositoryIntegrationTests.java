@@ -3,7 +3,7 @@ package com.iasdietideals24.backend.repositories;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
 import com.iasdietideals24.backend.entities.Compratore;
 import com.iasdietideals24.backend.entities.Profilo;
-import com.iasdietideals24.backend.exceptions.ParameterNotValidException;
+import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +35,7 @@ class CompratoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testCompratoreCanBeCreatedAndRecalled() throws ParameterNotValidException {
+    void testCompratoreCanBeCreatedAndRecalled() throws InvalidParameterException {
         // Creazione oggetto
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreC();
         Compratore compratore = profiloCompratore.getCompratore();
@@ -54,7 +54,7 @@ class CompratoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testMultipleCompratoreCanBeCreatedAndRecalled() throws ParameterNotValidException {
+    void testMultipleCompratoreCanBeCreatedAndRecalled() throws InvalidParameterException {
         // Creazione oggetti
         Profilo profiloCompratoreA = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratoreA = profiloCompratoreA.getCompratore();
@@ -80,7 +80,7 @@ class CompratoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testCompratoreCanBeUpdated() throws ParameterNotValidException {
+    void testCompratoreCanBeUpdated() throws InvalidParameterException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratore = profiloCompratore.getCompratore();
@@ -101,7 +101,7 @@ class CompratoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testCompratoreCanBeDeleted() throws ParameterNotValidException {
+    void testCompratoreCanBeDeleted() throws InvalidParameterException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratore = profiloCompratore.getCompratore();

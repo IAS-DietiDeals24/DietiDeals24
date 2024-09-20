@@ -8,7 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iasdietideals24.backend.datautil.TestDataAstaInversa;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
-import com.iasdietideals24.backend.exceptions.ParameterNotValidException;
+import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -22,7 +22,7 @@ class JacksonIntegrationTests {
         this.objectMapper = objectMapper;
     }
 
-    void testObjectMapperCreateJsonObjectFromJavaObject() throws JsonProcessingException, ParameterNotValidException {
+    void testObjectMapperCreateJsonObjectFromJavaObject() throws JsonProcessingException, InvalidParameterException {
         // Arrange
         Profilo profilo = TestDataProfilo.createProfiloCompratoreA(); // Creiamo l'account per l'asta 
         Compratore proprietario = profilo.getCompratore(); // Cerchiamo l'account di tipo compratore
@@ -37,7 +37,7 @@ class JacksonIntegrationTests {
         assertEquals(oracolo, result);
     }
 
-    void testObjectMapperCreateJavaObjectFromJsonObject() throws JsonProcessingException, ParameterNotValidException {
+    void testObjectMapperCreateJavaObjectFromJsonObject() throws JsonProcessingException, InvalidParameterException {
         // Arrange
         String json = "{\"idAsta\":null,\"categoria\":\"Videogiochi\",\"nome\":\"Dragon Age: Origins Xbox 360\",\"descrizione\":\"Edizione Xbox 360 del videogioco Dragon Age: Origins. Ci giocava mio marito.\",\"dataScadenza\":[2024,6,19],\"oraScadenza\":[18,44],\"immagine\":null,\"notificheAssociate\":[],\"proprietario\":{\"email\":\"pippo.baudo@gmail.com\",\"password\":\"buonasera\",\"profilo\":{\"nomeUtente\":\"pip.baud\",\"profilePicture\":\"neM2\",\"nome\":\"Pippo\",\"cognome\":\"Baudo\",\"dataNascita\":[1936,6,7],\"areaGeografica\":null,\"biografia\":null,\"linkPersonale\":null,\"linkInstagram\":null,\"linkFacebook\":null,\"linkGitHub\":null,\"linkX\":null,\"accounts\":[\"pippo.baudo@gmail.com\"],\"compratore\":\"pippo.baudo@gmail.com\",\"venditore\":null},\"notificheInviate\":[],\"notificheRicevute\":[],\"astePossedute\":[{\"idAsta\":null,\"categoria\":\"Videogiochi\",\"nome\":\"Dragon Age: Origins Xbox 360\",\"descrizione\":\"Edizione Xbox 360 del videogioco Dragon Age: Origins. Ci giocava mio marito.\",\"dataScadenza\":[2024,6,19],\"oraScadenza\":[18,44],\"immagine\":null,\"notificheAssociate\":[],\"proprietario\":\"pippo.baudo@gmail.com\",\"sogliaIniziale\":1.0,\"offerteRicevute\":[]}],\"offerteCollegate\":[]},\"sogliaIniziale\":1.0,\"offerteRicevute\":[]}";
         // Errore: Jackson non può istanziare Account, essendo una classe astratta. E' necessario utilizzare i DTO

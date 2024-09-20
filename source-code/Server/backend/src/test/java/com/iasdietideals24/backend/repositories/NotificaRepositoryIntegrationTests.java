@@ -2,7 +2,7 @@ package com.iasdietideals24.backend.repositories;
 
 import com.iasdietideals24.backend.datautil.*;
 import com.iasdietideals24.backend.entities.*;
-import com.iasdietideals24.backend.exceptions.ParameterNotValidException;
+import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +34,7 @@ class NotificaRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testNotificaCanBeCreatedAndRecalled() throws ParameterNotValidException {
+    void testNotificaCanBeCreatedAndRecalled() throws InvalidParameterException {
         // Creazione oggetto
         Profilo profiloMittente = TestDataProfilo.createProfiloCompratoreA();
         Compratore mittente = profiloMittente.getCompratore();
@@ -57,7 +57,7 @@ class NotificaRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testMultipleNotificaCanBeCreatedAndRecalled() throws ParameterNotValidException {
+    void testMultipleNotificaCanBeCreatedAndRecalled() throws InvalidParameterException {
         // Creazione oggetti
         Profilo profiloMittenteA = TestDataProfilo.createProfiloCompratoreA();
         Compratore mittenteA = profiloMittenteA.getCompratore();
@@ -92,7 +92,7 @@ class NotificaRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testNotificaCanBeUpdated() throws ParameterNotValidException {
+    void testNotificaCanBeUpdated() throws InvalidParameterException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloMittente = TestDataProfilo.createProfiloCompratoreC();
         Compratore mittente = profiloMittente.getCompratore();
@@ -117,7 +117,7 @@ class NotificaRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testNotificaCanBeDeleted() throws ParameterNotValidException {
+    void testNotificaCanBeDeleted() throws InvalidParameterException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloMittente = TestDataProfilo.createProfiloVenditoreA();
         Venditore mittente = profiloMittente.getVenditore();

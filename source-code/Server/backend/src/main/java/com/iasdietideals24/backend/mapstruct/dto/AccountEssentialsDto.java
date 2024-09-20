@@ -7,7 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public abstract class OffertaDiCompratoreDto extends OffertaDto {
+public class AccountEssentialsDto {
 
-    private CompratoreDto compratoreCollegato;
+    private String email;
+
+    private String tipoAccount;
 }

@@ -2,20 +2,16 @@ package com.iasdietideals24.backend.mapstruct.mappers;
 
 import com.iasdietideals24.backend.entities.OffertaSilenziosa;
 import com.iasdietideals24.backend.mapstruct.dto.OffertaSilenziosaDto;
-import org.mapstruct.InheritConfiguration;
 import org.mapstruct.Mapper;
-
-import java.util.Set;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface OffertaSilenziosaMapper {
 
+    @Mapping(source = "compratoreCollegato.email", target = "emailCompratoreCollegato")
+    @Mapping(source = "astaRiferimento.idAsta", target = "idAstaRiferimento")
     OffertaSilenziosaDto toDto(OffertaSilenziosa offertaSilenziosa);
 
-    @InheritConfiguration
-    OffertaSilenziosa toEntity(OffertaSilenziosaDto offertaSilenziosaDto);
-
-    Set<OffertaSilenziosaDto> toDto(Set<OffertaSilenziosa> offertaSilenziosa);
-
-    Set<OffertaSilenziosa> toEntity(Set<OffertaSilenziosaDto> offertaSilenziosaDto);
+//    @InheritInverseConfiguration
+//    OffertaSilenziosa toEntity(OffertaSilenziosaDto offertaSilenziosaDto);
 }

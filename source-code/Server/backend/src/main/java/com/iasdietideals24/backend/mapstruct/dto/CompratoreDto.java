@@ -9,9 +9,19 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CompratoreDto extends AccountDto {
+public class CompratoreDto {
 
-    private Set<AstaDiCompratoreDto> astePossedute;
+    private String email;
 
-    private Set<OffertaDiCompratoreDto> offerteCollegate;
+    private String password;
+
+    private String nomeUtenteProfilo;
+
+    private Set<Long> idNotificheInviate;
+
+    private Set<Long> idNotificheRicevute;
+
+    private Set<Long> idAstePossedute;
+
+    private Set<Long> idOfferteCollegate;
 }

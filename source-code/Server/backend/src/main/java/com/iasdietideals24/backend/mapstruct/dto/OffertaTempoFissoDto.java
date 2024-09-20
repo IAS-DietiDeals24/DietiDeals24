@@ -4,10 +4,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
-public class OffertaTempoFissoDto extends OffertaDiCompratoreDto {
+public class OffertaTempoFissoDto {
 
-    private AstaTempoFissoDto astaRiferimento;
+    private Long idOfferta;
+
+    private LocalDate dataInvio;
+
+    private LocalTime oraInvio;
+
+    private BigDecimal valore;
+
+    private String emailCompratoreCollegato;
+
+    private Long idAstaRiferimento;
 }

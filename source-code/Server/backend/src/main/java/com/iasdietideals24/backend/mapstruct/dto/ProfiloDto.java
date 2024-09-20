@@ -37,5 +37,5 @@ public class ProfiloDto {
 
     private String linkX;
 
-    private Set<AccountDto> accounts;
+    private Set<AccountEssentialsDto> accountsEssentials;
 }

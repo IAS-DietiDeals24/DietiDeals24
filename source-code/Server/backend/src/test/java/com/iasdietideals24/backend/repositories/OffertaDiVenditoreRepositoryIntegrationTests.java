@@ -2,7 +2,7 @@ package com.iasdietideals24.backend.repositories;
 
 import com.iasdietideals24.backend.datautil.*;
 import com.iasdietideals24.backend.entities.*;
-import com.iasdietideals24.backend.exceptions.ParameterNotValidException;
+import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +35,7 @@ class OffertaDiVenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testOffertaDiVenditoreCanBeCreatedAndRecalled() throws ParameterNotValidException {
+    void testOffertaDiVenditoreCanBeCreatedAndRecalled() throws InvalidParameterException {
         // Creazione oggetto
         Profilo profiloProprietario = TestDataProfilo.createProfiloCompratoreA();
         Compratore proprietario = profiloProprietario.getCompratore();
@@ -58,7 +58,7 @@ class OffertaDiVenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testMultipleOffertaDiVenditoreCanBeCreatedAndRecalled() throws ParameterNotValidException {
+    void testMultipleOffertaDiVenditoreCanBeCreatedAndRecalled() throws InvalidParameterException {
         // Creazione oggetti
         Profilo profiloProprietarioA = TestDataProfilo.createProfiloCompratoreA();
         Compratore proprietarioA = profiloProprietarioA.getCompratore();
@@ -90,7 +90,7 @@ class OffertaDiVenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testOffertaDiVenditoreCanBeUpdated() throws ParameterNotValidException {
+    void testOffertaDiVenditoreCanBeUpdated() throws InvalidParameterException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloCompratoreB();
         Compratore proprietario = profiloProprietario.getCompratore();
@@ -115,7 +115,7 @@ class OffertaDiVenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testOffertaDiVenditoreCanBeDeleted() throws ParameterNotValidException {
+    void testOffertaDiVenditoreCanBeDeleted() throws InvalidParameterException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloCompratoreC();
         Compratore proprietario = profiloProprietario.getCompratore();

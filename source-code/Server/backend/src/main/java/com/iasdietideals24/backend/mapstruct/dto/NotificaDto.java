@@ -19,9 +19,9 @@ public class NotificaDto {
 
     private String messaggio;
 
-    private AccountDto mittente;
+    private String emailMittente;
 
-    private Set<AccountDto> destinatari;
+    private Set<String> emailDestinatari;
 
-    private AstaDto astaAssociata;
+    private Long idAstaAssociata;
 }
