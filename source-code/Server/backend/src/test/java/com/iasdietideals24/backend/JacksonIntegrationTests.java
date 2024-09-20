@@ -33,7 +33,7 @@ class JacksonIntegrationTests {
     @Test
     void testObjectMapperCreateJsonObjectFromJavaObject() throws JsonProcessingException, InvalidParameterException {
         // Arrange
-        Profilo profilo = TestDataProfilo.createProfiloCompratoreA(); // Creiamo l'account per l'asta 
+        Profilo profilo = TestDataProfilo.createProfiloCompratoreA(); // Creiamo l'account per l'asta
         Compratore proprietario = profilo.getCompratore(); // Cerchiamo l'account di tipo compratore
         AstaInversa asta = TestDataAstaInversa.createAstaInversaA(proprietario); // Associamo l'account all'asta
 
@@ -53,7 +53,7 @@ class JacksonIntegrationTests {
         // Arrange
         String json = "{\"idAsta\":null,\"categoria\":\"Videogiochi\",\"nome\":\"Dragon Age: Origins Xbox 360\",\"descrizione\":\"Edizione Xbox 360 del videogioco Dragon Age: Origins. Ci giocava mio marito.\",\"dataScadenza\":[2024,6,19],\"oraScadenza\":[18,44],\"immagine\":null,\"notificheAssociateShallow\":[],\"proprietarioShallow\":{\"email\":\"pippo.baudo@gmail.com\",\"tipoAccount\":\"Compratore\"},\"sogliaIniziale\":1.0,\"offerteRicevuteShallow\":[]}";
         AstaInversaDto astaInversaDto = objectMapper.readValue(json, AstaInversaDto.class); // Serializziamo l'oggetto Java in Json
-        AstaInversa result = astaInversaMapper.toEntity(astaInversaDto);
+        //AstaInversa result = astaInversaMapper.toEntity(astaInversaDto);
 
         // Act
         Profilo profilo = TestDataProfilo.createProfiloCompratoreA(); // Creiamo l'account per l'asta
