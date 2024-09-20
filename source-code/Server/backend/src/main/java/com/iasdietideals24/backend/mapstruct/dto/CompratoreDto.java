@@ -1,5 +1,9 @@
 package com.iasdietideals24.backend.mapstruct.dto;
 
+import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
+import com.iasdietideals24.backend.mapstruct.dto.shallows.NotificaShallowDto;
+import com.iasdietideals24.backend.mapstruct.dto.shallows.OffertaShallowDto;
+import com.iasdietideals24.backend.mapstruct.dto.shallows.ProfiloShallowDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,13 +19,13 @@ public class CompratoreDto {
 
     private String password;
 
-    private String nomeUtenteProfilo;
+    private ProfiloShallowDto profiloShallow;
 
-    private Set<Long> idNotificheInviate;
+    private Set<NotificaShallowDto> notificheInviateShallow;
 
-    private Set<Long> idNotificheRicevute;
+    private Set<NotificaShallowDto> notificheRicevuteShallow;
 
-    private Set<Long> idAstePossedute;
+    private Set<AstaShallowDto> astePosseduteShallow;
 
-    private Set<Long> idOfferteCollegate;
+    private Set<OffertaShallowDto> offerteCollegateShallow;
 }

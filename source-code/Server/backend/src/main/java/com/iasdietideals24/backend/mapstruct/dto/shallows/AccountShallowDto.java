@@ -1,4 +1,4 @@
-package com.iasdietideals24.backend.mapstruct.dto;
+package com.iasdietideals24.backend.mapstruct.dto.shallows;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AccountEssentialsDto {
+public class AccountShallowDto {
 
     private String email;
 

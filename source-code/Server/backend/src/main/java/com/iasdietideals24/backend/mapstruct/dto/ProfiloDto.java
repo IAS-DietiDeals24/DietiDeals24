@@ -2,6 +2,7 @@ package com.iasdietideals24.backend.mapstruct.dto;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -37,5 +38,5 @@ public class ProfiloDto {
 
     private String linkX;
 
-    private Set<AccountEssentialsDto> accountsEssentials;
+    private Set<AccountShallowDto> accountsShallow;
 }

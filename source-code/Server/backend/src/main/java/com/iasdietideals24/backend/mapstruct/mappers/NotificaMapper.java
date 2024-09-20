@@ -1,32 +1,34 @@
 package com.iasdietideals24.backend.mapstruct.mappers;
 
-import com.iasdietideals24.backend.entities.Account;
 import com.iasdietideals24.backend.entities.Notifica;
+import com.iasdietideals24.backend.exceptions.InvalidAccountTypeException;
+import com.iasdietideals24.backend.exceptions.InvalidAstaTypeException;
 import com.iasdietideals24.backend.mapstruct.dto.NotificaDto;
+import com.iasdietideals24.backend.mapstruct.dto.shallows.NotificaShallowDto;
 import org.mapstruct.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {AccountMapper.class, AstaMapper.class}, collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
 public interface NotificaMapper {
 
-    @Mapping(source = "mittente.email", target = "emailMittente")
-    @Mapping(source = "destinatari", target = "emailDestinatari", qualifiedByName = "accountsSetToEmailAccountsSet")
-    @Mapping(source = "astaAssociata.idAsta", target = "idAstaAssociata")
+    @Mapping(source = "mittente", target = "mittenteShallow")
+    @Mapping(source = "destinatari", target = "destinatariShallow")
+    @Mapping(source = "astaAssociata", target = "astaAssociataShallow")
     NotificaDto toDto(Notifica notifica);
 
-//    @InheritInverseConfiguration
-//    Notifica toEntity(NotificaDto notificaDto);
+    @InheritInverseConfiguration
+    Notifica toEntity(NotificaDto notificaDto) throws InvalidAccountTypeException, InvalidAstaTypeException;
 
-    @Named("accountsSetToEmailAccountsSet")
-    default Set<String> accountsSetToEmailAccountsSet(Set<Account> accounts) {
-        Set<String> emailAccounts = new HashSet<>();
+    // Shallow DTO
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(source = "idNotifica", target = "idNotifica")
+    NotificaShallowDto toShallowDto(Notifica notifica);
 
-        for (Account account : accounts) {
-            emailAccounts.add(account.getEmail());
-        }
+    @InheritInverseConfiguration
+    Notifica toEntity(NotificaShallowDto notificaShallowDto);
 
-        return emailAccounts;
-    }
+    Set<NotificaShallowDto> toShallowDto(Set<Notifica> notifiche);
+
+    Set<Notifica> toEntity(Set<NotificaShallowDto> notificheShallowDto);
 }

@@ -1,5 +1,7 @@
 package com.iasdietideals24.backend.mapstruct.dto;
 
+import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
+import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -19,9 +21,9 @@ public class NotificaDto {
 
     private String messaggio;
 
-    private String emailMittente;
+    private AccountShallowDto mittenteShallow;
 
-    private Set<String> emailDestinatari;
+    private Set<AccountShallowDto> destinatariShallow;
 
-    private Long idAstaAssociata;
+    private AstaShallowDto astaAssociataShallow;
 }

@@ -1,5 +1,8 @@
 package com.iasdietideals24.backend.mapstruct.dto;
 
+import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
+import com.iasdietideals24.backend.mapstruct.dto.shallows.NotificaShallowDto;
+import com.iasdietideals24.backend.mapstruct.dto.shallows.OffertaShallowDto;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -25,9 +28,9 @@ public class AstaSilenziosaDto {
 
     private byte[] immagine;
 
-    private Set<Long> idNotificheAssociate;
+    private Set<NotificaShallowDto> notificheAssociateShallow;
 
-    private String emailProprietario;
+    private AccountShallowDto proprietarioShallow;
 
-    private Set<Long> idOfferteRicevute;
+    private Set<OffertaShallowDto> offerteRicevuteShallow;
 }

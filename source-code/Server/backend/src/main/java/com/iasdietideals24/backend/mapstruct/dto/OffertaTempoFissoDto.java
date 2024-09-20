@@ -1,5 +1,7 @@
 package com.iasdietideals24.backend.mapstruct.dto;
 
+import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
+import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +23,7 @@ public class OffertaTempoFissoDto {
 
     private BigDecimal valore;
 
-    private String emailCompratoreCollegato;
+    private AccountShallowDto compratoreCollegatoShallow;
 
-    private Long idAstaRiferimento;
+    private AstaShallowDto astaRiferimentoShallow;
 }

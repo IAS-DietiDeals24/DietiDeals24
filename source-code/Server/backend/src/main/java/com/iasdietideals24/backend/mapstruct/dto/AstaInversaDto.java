@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Set;
 
+import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
+import com.iasdietideals24.backend.mapstruct.dto.shallows.NotificaShallowDto;
+import com.iasdietideals24.backend.mapstruct.dto.shallows.OffertaShallowDto;
 import lombok.*;
 
 @Getter
@@ -26,11 +29,11 @@ public class AstaInversaDto {
 
     private byte[] immagine;
 
-    private Set<Long> idNotificheAssociate;
+    private Set<NotificaShallowDto> notificheAssociateShallow;
 
-    private String emailProprietario;
+    private AccountShallowDto proprietarioShallow;
 
     private BigDecimal sogliaIniziale;
 
-    private Set<Long> idOfferteRicevute;
+    private Set<OffertaShallowDto> offerteRicevuteShallow;
 }
