@@ -5,7 +5,9 @@ import com.iasdietideals24.backend.entities.Compratore;
 import com.iasdietideals24.backend.entities.Venditore;
 import com.iasdietideals24.backend.exceptions.InvalidAccountTypeException;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
-import org.mapstruct.*;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.Set;
 
@@ -13,7 +15,7 @@ import java.util.Set;
 public abstract class AccountMapper {
 
     // Shallow DTO
-    AccountShallowDto toShallowDto(Account account){
+    AccountShallowDto toShallowDto(Account account) {
         if (account == null)
             return null;
 

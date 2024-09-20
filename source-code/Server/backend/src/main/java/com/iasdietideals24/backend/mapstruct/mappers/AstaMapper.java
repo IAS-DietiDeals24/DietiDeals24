@@ -19,18 +19,18 @@ public abstract class AstaMapper {
 
         AstaShallowDto astaShallowDto = new AstaShallowDto();
 
-        if (asta instanceof AstaDiCompratore){
+        if (asta instanceof AstaDiCompratore) {
             astaShallowDto.setTipoAstaPerAccount(AstaDiCompratore.class.getSimpleName());
-            if (asta instanceof AstaInversa){
+            if (asta instanceof AstaInversa) {
                 astaShallowDto.setTipoAstaSpecifica(AstaInversa.class.getSimpleName());
             } else {
                 astaShallowDto.setTipoAstaSpecifica(null);
             }
         } else if (asta instanceof AstaDiVenditore) {
             astaShallowDto.setTipoAstaPerAccount(AstaDiVenditore.class.getSimpleName());
-            if (asta instanceof AstaSilenziosa){
+            if (asta instanceof AstaSilenziosa) {
                 astaShallowDto.setTipoAstaSpecifica(AstaSilenziosa.class.getSimpleName());
-            } else if (asta instanceof AstaTempoFisso){
+            } else if (asta instanceof AstaTempoFisso) {
                 astaShallowDto.setTipoAstaSpecifica(AstaTempoFisso.class.getSimpleName());
             } else {
                 astaShallowDto.setTipoAstaSpecifica(null);

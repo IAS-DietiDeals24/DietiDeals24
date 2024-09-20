@@ -2,7 +2,9 @@ package com.iasdietideals24.backend.mapstruct.dto;
 
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

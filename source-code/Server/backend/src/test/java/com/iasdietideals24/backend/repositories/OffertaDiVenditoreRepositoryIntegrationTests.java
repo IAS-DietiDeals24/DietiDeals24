@@ -1,6 +1,8 @@
 package com.iasdietideals24.backend.repositories;
 
-import com.iasdietideals24.backend.datautil.*;
+import com.iasdietideals24.backend.datautil.TestDataAstaInversa;
+import com.iasdietideals24.backend.datautil.TestDataOffertaInversa;
+import com.iasdietideals24.backend.datautil.TestDataProfilo;
 import com.iasdietideals24.backend.entities.*;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import lombok.extern.slf4j.Slf4j;

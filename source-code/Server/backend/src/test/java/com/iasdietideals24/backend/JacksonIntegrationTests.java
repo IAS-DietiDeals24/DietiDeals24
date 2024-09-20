@@ -1,13 +1,12 @@
 package com.iasdietideals24.backend;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import com.iasdietideals24.backend.entities.*;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iasdietideals24.backend.datautil.TestDataAstaInversa;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
+import com.iasdietideals24.backend.entities.AstaInversa;
+import com.iasdietideals24.backend.entities.Compratore;
+import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.mapstruct.dto.AstaInversaDto;
 import com.iasdietideals24.backend.mapstruct.mappers.AstaInversaMapper;
@@ -15,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
 @SpringBootTest

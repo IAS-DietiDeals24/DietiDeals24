@@ -19,18 +19,18 @@ public abstract class OffertaMapper {
 
         OffertaShallowDto offertaShallowDto = new OffertaShallowDto();
 
-        if (offerta instanceof OffertaDiCompratore){
+        if (offerta instanceof OffertaDiCompratore) {
             offertaShallowDto.setTipoOffertaPerAccount(OffertaDiCompratore.class.getSimpleName());
-            if (offerta instanceof OffertaSilenziosa){
+            if (offerta instanceof OffertaSilenziosa) {
                 offertaShallowDto.setTipoOffertaSpecifica(OffertaSilenziosa.class.getSimpleName());
-            } else if (offerta instanceof OffertaTempoFisso){
+            } else if (offerta instanceof OffertaTempoFisso) {
                 offertaShallowDto.setTipoOffertaSpecifica(OffertaTempoFisso.class.getSimpleName());
             } else {
                 offertaShallowDto.setTipoOffertaSpecifica(null);
             }
         } else if (offerta instanceof OffertaDiVenditore) {
             offertaShallowDto.setTipoOffertaPerAccount(OffertaDiVenditore.class.getSimpleName());
-            if (offerta instanceof OffertaInversa){
+            if (offerta instanceof OffertaInversa) {
                 offertaShallowDto.setTipoOffertaSpecifica(OffertaInversa.class.getSimpleName());
             } else {
                 offertaShallowDto.setTipoOffertaSpecifica(null);

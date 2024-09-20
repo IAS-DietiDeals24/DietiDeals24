@@ -3,7 +3,9 @@ package com.iasdietideals24.backend.mapstruct.dto;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Set;
