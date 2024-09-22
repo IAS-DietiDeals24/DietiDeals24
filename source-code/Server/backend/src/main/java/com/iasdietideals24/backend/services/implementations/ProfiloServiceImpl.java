@@ -1,12 +1,9 @@
 package com.iasdietideals24.backend.services.implementations;
 
-import com.iasdietideals24.backend.entities.Compratore;
 import com.iasdietideals24.backend.entities.Profilo;
-import com.iasdietideals24.backend.entities.Venditore;
 import com.iasdietideals24.backend.entities.utilities.AnagraficaProfilo;
 import com.iasdietideals24.backend.entities.utilities.LinksProfilo;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
-import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import com.iasdietideals24.backend.exceptions.UpdateRuntimeException;
 import com.iasdietideals24.backend.mapstruct.dto.ProfiloDto;
 import com.iasdietideals24.backend.mapstruct.dto.exceptional.PutProfiloDto;
@@ -36,22 +33,16 @@ public class ProfiloServiceImpl implements ProfiloService {
     private final LinksProfiloMapper linksProfiloMapper;
 
     private final ProfiloRepository profiloRepository;
-    private final CompratoreRepository compratoreRepository;
-    private final VenditoreRepository venditoreRepository;
 
     public ProfiloServiceImpl(
             ProfiloMapper profiloMapper,
             AnagraficaProfiloMapper anagraficaProfiloMapper,
             LinksProfiloMapper linksProfiloMapper,
-            ProfiloRepository profiloRepository,
-            CompratoreRepository compratoreRepository,
-            VenditoreRepository venditoreRepository) {
+            ProfiloRepository profiloRepository) {
         this.profiloMapper = profiloMapper;
         this.anagraficaProfiloMapper = anagraficaProfiloMapper;
         this.linksProfiloMapper = linksProfiloMapper;
         this.profiloRepository = profiloRepository;
-        this.compratoreRepository = compratoreRepository;
-        this.venditoreRepository = venditoreRepository;
 
     }
 
@@ -131,10 +122,7 @@ public class ProfiloServiceImpl implements ProfiloService {
                     )
             );
 
-            partialUpdateAccountsProfilo(
-                    existingProfilo,
-                    updatedProfiloDto.getAccountsShallow()
-            );
+            //Non è possibile modificare l'associazione "accounts" tramite la risorsa "profili"
 
             return profiloMapper.toDto(profiloRepository.save(existingProfilo));
         }
@@ -204,35 +192,6 @@ public class ProfiloServiceImpl implements ProfiloService {
         }
 
         return newLinks;
-    }
-
-    private void partialUpdateAccountsProfilo(Profilo existingProfilo, Set<AccountShallowDto> updatedAccounts) throws InvalidParameterException {
-
-        if (updatedAccounts != null) {
-            for (AccountShallowDto updatedAccountDto : updatedAccounts) {
-                if (updatedAccountDto.getTipoAccount() == null) {
-                    throw new InvalidTypeException("Il tipo account non può essere null!");
-                } else if (updatedAccountDto.getTipoAccount().equals(Compratore.class.getSimpleName())) {
-                    Optional<Compratore> existingCompratore = compratoreRepository.findById(updatedAccountDto.getEmail());
-                    if (existingCompratore.isPresent()) {
-                        existingProfilo.removeAccount(existingProfilo.getCompratore());
-                        existingProfilo.addAccount(existingCompratore.get());
-                    }  else {
-                        throw new InvalidParameterException("L'email non corrisponde a nessun account compratore esistente!");
-                    }
-                } else if (updatedAccountDto.getTipoAccount().equals(Venditore.class.getSimpleName())) {
-                    Optional<Venditore> existingVenditore = venditoreRepository.findById(updatedAccountDto.getEmail());
-                    if (existingVenditore.isPresent()) {
-                        existingProfilo.removeAccount(existingProfilo.getVenditore());
-                        existingProfilo.addAccount(existingVenditore.get());
-                    } else {
-                        throw new InvalidParameterException("L'email non corrisponde a nessun account venditore esistente!");
-                    }
-                } else {
-                    throw new InvalidTypeException();
-                }
-            }
-        }
     }
 
     @Override
