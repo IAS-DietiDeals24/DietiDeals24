@@ -19,5 +19,7 @@ public class AnagraficaProfiloDto {
 
     private String areaGeografica;
 
+    private String genere;
+
     private String biografia;
 }
