@@ -1,18 +1,16 @@
-package com.iasdietideals24.backend.mapstruct.dto;
+package com.iasdietideals24.backend.mapstruct.dto.exceptional;
 
-import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
 import com.iasdietideals24.backend.mapstruct.dto.utilities.AnagraficaProfiloDto;
 import com.iasdietideals24.backend.mapstruct.dto.utilities.LinksProfiloDto;
+import com.iasdietideals24.backend.mapstruct.dto.utilities.TokensAccountDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProfiloDto {
+public class PutProfiloDto {
 
     private String nomeUtente;
 
@@ -22,5 +20,11 @@ public class ProfiloDto {
 
     private LinksProfiloDto links;
 
-    private Set<AccountShallowDto> accountsShallow;
+    private String email;
+
+    private String password;
+
+    private TokensAccountDto tokens;
+
+    private String tipoAccount;
 }

@@ -5,7 +5,7 @@ import com.iasdietideals24.backend.datautil.TestDataProfilo;
 import com.iasdietideals24.backend.entities.AstaDiCompratore;
 import com.iasdietideals24.backend.entities.Compratore;
 import com.iasdietideals24.backend.entities.Profilo;
-import com.iasdietideals24.backend.exceptions.InvalidParameterException;
+import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +37,7 @@ class AstaDiCompratoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testAstaDiCompratoreCanBeCreatedAndRecalled() throws InvalidParameterException {
+    void testAstaDiCompratoreCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreC();
         Compratore compratore = profiloCompratore.getCompratore();
@@ -57,7 +57,7 @@ class AstaDiCompratoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testMultipleAstaDiCompratoreCanBeCreatedAndRecalled() throws InvalidParameterException {
+    void testMultipleAstaDiCompratoreCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloCompratoreA = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratoreA = profiloCompratoreA.getCompratore();
@@ -86,7 +86,7 @@ class AstaDiCompratoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testAstaDiCompratoreCanBeUpdated() throws InvalidParameterException {
+    void testAstaDiCompratoreCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratore = profiloCompratore.getCompratore();
@@ -108,7 +108,7 @@ class AstaDiCompratoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testAstaDiCompratoreCanBeDeleted() throws InvalidParameterException {
+    void testAstaDiCompratoreCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratore = profiloCompratore.getCompratore();

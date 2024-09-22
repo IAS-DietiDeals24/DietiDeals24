@@ -1,5 +1,6 @@
 package com.iasdietideals24.backend.entities;
 
+import com.iasdietideals24.backend.entities.utilities.TokensAccount;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -26,8 +27,8 @@ public class Compratore extends Account {
     private Set<OffertaDiCompratore> offerteCollegate = new HashSet<>();
 
     // AllArgsConstructor
-    public Compratore(String email, String password, Profilo profilo) {
-        super(email, password, profilo);
+    public Compratore(String email, String password, TokensAccount tokensAccount, Profilo profilo) {
+        super(email, password, tokensAccount, profilo);
     }
 
     // Metodi per astePossedute

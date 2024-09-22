@@ -7,7 +7,7 @@ import com.iasdietideals24.backend.datautil.TestDataProfilo;
 import com.iasdietideals24.backend.entities.AstaInversa;
 import com.iasdietideals24.backend.entities.Compratore;
 import com.iasdietideals24.backend.entities.Profilo;
-import com.iasdietideals24.backend.exceptions.InvalidParameterException;
+import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import com.iasdietideals24.backend.mapstruct.dto.AstaInversaDto;
 import com.iasdietideals24.backend.mapstruct.mappers.AstaInversaMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ class JacksonIntegrationTests {
     }
 
     @Test
-    void testObjectMapperCreateJsonObjectFromJavaObject() throws JsonProcessingException, InvalidParameterException {
+    void testObjectMapperCreateJsonObjectFromJavaObject() throws JsonProcessingException, InvalidTypeException {
         // Arrange
         Profilo profilo = TestDataProfilo.createProfiloCompratoreA(); // Creiamo l'account per l'asta
         Compratore proprietario = profilo.getCompratore(); // Cerchiamo l'account di tipo compratore
@@ -49,7 +49,7 @@ class JacksonIntegrationTests {
     }
 
 
-    void testObjectMapperCreateJavaObjectFromJsonObject() throws JsonProcessingException, InvalidParameterException {
+    void testObjectMapperCreateJavaObjectFromJsonObject() throws JsonProcessingException, InvalidTypeException {
         // Arrange
         String json = "{\"idAsta\":null,\"categoria\":\"Videogiochi\",\"nome\":\"Dragon Age: Origins Xbox 360\",\"descrizione\":\"Edizione Xbox 360 del videogioco Dragon Age: Origins. Ci giocava mio marito.\",\"dataScadenza\":[2024,6,19],\"oraScadenza\":[18,44],\"immagine\":null,\"notificheAssociateShallow\":[],\"proprietarioShallow\":{\"email\":\"pippo.baudo@gmail.com\",\"tipoAccount\":\"Compratore\"},\"sogliaIniziale\":1.0,\"offerteRicevuteShallow\":[]}";
         AstaInversaDto astaInversaDto = objectMapper.readValue(json, AstaInversaDto.class); // Serializziamo l'oggetto Java in Json

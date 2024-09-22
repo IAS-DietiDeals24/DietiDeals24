@@ -11,18 +11,21 @@ public class TestDataVenditore {
     public static Venditore createVenditoreA(final Profilo profilo) {
         return new Venditore("scis@gmail.com",
                 "myCars",
+                null,
                 profilo);
     }
 
     public static Venditore createVenditoreB(final Profilo profilo) {
         return new Venditore("andrex@gmail.com",
                 "forzaNapoli",
+                null,
                 profilo);
     }
 
     public static Venditore createVenditoreC(final Profilo profilo) {
         return new Venditore("bluelily@gmail.com",
                 "forzaFedericoII",
+                null,
                 profilo);
     }
 }

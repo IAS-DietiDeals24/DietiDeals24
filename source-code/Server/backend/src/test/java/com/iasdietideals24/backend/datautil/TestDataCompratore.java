@@ -11,18 +11,21 @@ public class TestDataCompratore {
     public static Compratore createCompratoreA(final Profilo profilo) {
         return new Compratore("pippo.baudo@gmail.com",
                 "buonasera",
+                null,
                 profilo);
     }
 
     public static Compratore createCompratoreB(final Profilo profilo) {
         return new Compratore("elenoire.ferruzzi@gmail.com",
                 "ciaoMamma",
+                null,
                 profilo);
     }
 
     public static Compratore createCompratoreC(final Profilo profilo) {
         return new Compratore("alessandro.siani@gmail.com",
                 "grandeMezzo",
+                null,
                 profilo);
     }
 }

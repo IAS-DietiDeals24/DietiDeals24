@@ -1,5 +1,6 @@
 package com.iasdietideals24.backend.entities;
 
+import com.iasdietideals24.backend.entities.utilities.TokensAccount;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +22,9 @@ public abstract class Account {
     @NonNull
     private String password;
 
+    @Embedded
+    private TokensAccount tokens;
+
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "fk_profilo_nomeutente")
     @NonNull
@@ -37,10 +41,11 @@ public abstract class Account {
     private Set<Notifica> notificheRicevute = new HashSet<>();
 
     // AllArgsConstructor
-    protected Account(@NonNull String email, @NonNull String password, @NonNull Profilo profilo) {
+    protected Account(@NonNull String email, @NonNull String password, TokensAccount tokensAccount, @NonNull Profilo profilo) {
         this.email = email;
         this.password = password;
         this.profilo = profilo;
+        this.tokens = tokensAccount;
     }
 
     // Metodi per notificheInviate
@@ -79,6 +84,6 @@ public abstract class Account {
         }
         listIdNotificheRicevute.append("]");
 
-        return "Account(email=" + this.getEmail() + ", password=" + this.getPassword() + ", profilo=" + this.getProfilo().getNomeUtente() + ", notificheInviate=" + listIdNotificheInviate + ", notificheRicevute=" + listIdNotificheRicevute + ")";
+        return "Account(email=" + this.getEmail() + ", password=" + this.getPassword() + "tokens=" + this.getTokens() + ", profilo=" + this.getProfilo().getNomeUtente() + ", notificheInviate=" + listIdNotificheInviate + ", notificheRicevute=" + listIdNotificheRicevute + ")";
     }
 }

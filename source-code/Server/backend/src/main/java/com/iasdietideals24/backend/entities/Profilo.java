@@ -1,14 +1,13 @@
 package com.iasdietideals24.backend.entities;
 
-import com.iasdietideals24.backend.exceptions.InvalidParameterException;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import com.iasdietideals24.backend.entities.utilities.AnagraficaProfilo;
+import com.iasdietideals24.backend.entities.utilities.LinksProfilo;
+import com.iasdietideals24.backend.entities.utilities.TokensAccount;
+import com.iasdietideals24.backend.exceptions.InvalidTypeException;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -27,28 +26,12 @@ public class Profilo {
     @NonNull
     private byte[] profilePicture;
 
+    @Embedded
     @NonNull
-    private String nome;
+    private AnagraficaProfilo anagrafica;
 
-    @NonNull
-    private String cognome;
-
-    @NonNull
-    private LocalDate dataNascita;
-
-    private String areaGeografica;
-
-    private String biografia;
-
-    private String linkPersonale;
-
-    private String linkInstagram;
-
-    private String linkFacebook;
-
-    private String linkGitHub;
-
-    private String linkX;
+    @Embedded
+    private LinksProfilo links;
 
     @OneToMany(mappedBy = "profilo", cascade = CascadeType.ALL)
     @NonNull
@@ -57,45 +40,29 @@ public class Profilo {
     private Set<Account> accounts = new HashSet<>();
 
     // AllArgsConstructor
-    public Profilo(@NonNull String nomeUtente, @NonNull byte[] profilePicture, @NonNull String nome, @NonNull String cognome, @NonNull LocalDate dataNascita, String areaGeografica, String biografia, String linkPersonale, String linkInstagram, String linkFacebook, String linkGitHub, String linkX, @NonNull Account account) {
+    public Profilo(@NonNull String nomeUtente, @NonNull byte[] profilePicture, @NonNull AnagraficaProfilo anagraficaProfilo, LinksProfilo linksProfilo, @NonNull Account account) {
         this.nomeUtente = nomeUtente;
         this.profilePicture = profilePicture;
-        this.nome = nome;
-        this.cognome = cognome;
-        this.dataNascita = dataNascita;
-        this.areaGeografica = areaGeografica;
-        this.biografia = biografia;
-        this.linkPersonale = linkPersonale;
-        this.linkInstagram = linkInstagram;
-        this.linkFacebook = linkFacebook;
-        this.linkGitHub = linkGitHub;
-        this.linkX = linkX;
+        this.anagrafica = anagraficaProfilo;
+        this.links = linksProfilo;
 
         this.addAccount(account);
         account.setProfilo(this);
     }
 
     // Creazione dell'account contestualmente al profilo
-    public Profilo(@NonNull String nomeUtente, @NonNull byte[] profilePicture, @NonNull String nome, @NonNull String cognome, @NonNull LocalDate dataNascita, String areaGeografica, String biografia, String linkPersonale, String linkInstagram, String linkFacebook, String linkGitHub, String linkX, @NonNull String email, @NonNull String password, @NonNull String tipoAccount) throws InvalidParameterException {
+    public Profilo(@NonNull String nomeUtente, @NonNull byte[] profilePicture, @NonNull AnagraficaProfilo anagraficaProfilo, LinksProfilo linksProfilo, @NonNull String email, @NonNull String password, TokensAccount tokensAccount, @NonNull String tipoAccount) throws InvalidTypeException {
         this.nomeUtente = nomeUtente;
         this.profilePicture = profilePicture;
-        this.nome = nome;
-        this.cognome = cognome;
-        this.dataNascita = dataNascita;
-        this.areaGeografica = areaGeografica;
-        this.biografia = biografia;
-        this.linkPersonale = linkPersonale;
-        this.linkInstagram = linkInstagram;
-        this.linkFacebook = linkFacebook;
-        this.linkGitHub = linkGitHub;
-        this.linkX = linkX;
+        this.anagrafica = anagraficaProfilo;
+        this.links = linksProfilo;
 
-        if (tipoAccount.equals("Compratore"))
-            this.addAccount(new Compratore(email, password, this));
-        else if (tipoAccount.equals("Venditore"))
-            this.addAccount(new Venditore(email, password, this));
+        if (tipoAccount.equals(Compratore.class.getSimpleName()))
+            this.addAccount(new Compratore(email, password, tokensAccount, this));
+        else if (tipoAccount.equals(Venditore.class.getSimpleName()))
+            this.addAccount(new Venditore(email, password, tokensAccount, this));
         else
-            throw new InvalidParameterException();
+            throw new InvalidTypeException();
     }
 
     // Metodi per accounts
@@ -154,6 +121,6 @@ public class Profilo {
         }
         listEmailAccounts.append("]");
 
-        return "Profilo(nomeUtente=" + this.getNomeUtente() + ", profilePicture=" + java.util.Arrays.toString(this.getProfilePicture()) + ", nome=" + this.getNome() + ", cognome=" + this.getCognome() + ", dataNascita=" + this.getDataNascita() + ", areaGeografica=" + this.getAreaGeografica() + ", biografia=" + this.getBiografia() + ", linkPersonale=" + this.getLinkPersonale() + ", linkInstagram=" + this.getLinkInstagram() + ", linkFacebook=" + this.getLinkFacebook() + ", linkGitHub=" + this.getLinkGitHub() + ", linkX=" + this.getLinkX() + ", accounts=" + listEmailAccounts + ")";
+        return "Profilo(nomeUtente=" + this.getNomeUtente() + ", profilePicture=" + java.util.Arrays.toString(this.getProfilePicture()) + ", anagrafica=" + this.getAnagrafica() + ", links=" + this.getLinks() + ", accounts=" + listEmailAccounts + ")";
     }
 }

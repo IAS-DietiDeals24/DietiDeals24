@@ -3,7 +3,7 @@ package com.iasdietideals24.backend.repositories;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
 import com.iasdietideals24.backend.entities.Compratore;
 import com.iasdietideals24.backend.entities.Profilo;
-import com.iasdietideals24.backend.exceptions.InvalidParameterException;
+import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +35,7 @@ class CompratoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testCompratoreCanBeCreatedAndRecalled() throws InvalidParameterException {
+    void testCompratoreCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreC();
         Compratore compratore = profiloCompratore.getCompratore();
@@ -54,7 +54,7 @@ class CompratoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testMultipleCompratoreCanBeCreatedAndRecalled() throws InvalidParameterException {
+    void testMultipleCompratoreCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloCompratoreA = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratoreA = profiloCompratoreA.getCompratore();
@@ -80,7 +80,7 @@ class CompratoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testCompratoreCanBeUpdated() throws InvalidParameterException {
+    void testCompratoreCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratore = profiloCompratore.getCompratore();
@@ -101,7 +101,7 @@ class CompratoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testCompratoreCanBeDeleted() throws InvalidParameterException {
+    void testCompratoreCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratore = profiloCompratore.getCompratore();

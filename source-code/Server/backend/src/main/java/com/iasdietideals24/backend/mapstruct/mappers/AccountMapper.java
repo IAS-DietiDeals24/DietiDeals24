@@ -3,19 +3,21 @@ package com.iasdietideals24.backend.mapstruct.mappers;
 import com.iasdietideals24.backend.entities.Account;
 import com.iasdietideals24.backend.entities.Compratore;
 import com.iasdietideals24.backend.entities.Venditore;
-import com.iasdietideals24.backend.exceptions.InvalidAccountTypeException;
+import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
 import org.mapstruct.BeanMapping;
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.Set;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",
+        injectionStrategy = InjectionStrategy.SETTER)
 public abstract class AccountMapper {
 
     // Shallow DTO
-    AccountShallowDto toShallowDto(Account account) {
+    public AccountShallowDto toShallowDto(Account account) {
         if (account == null)
             return null;
 
@@ -34,7 +36,7 @@ public abstract class AccountMapper {
         return accountShallowDto;
     }
 
-    Account toEntity(AccountShallowDto accountShallowDto) throws InvalidAccountTypeException {
+    public Account toEntity(AccountShallowDto accountShallowDto) throws InvalidTypeException {
         if (accountShallowDto == null)
             return null;
 
@@ -43,19 +45,19 @@ public abstract class AccountMapper {
         } else if (accountShallowDto.getTipoAccount().equals(Venditore.class.getSimpleName())) {
             return toVenditore(accountShallowDto);
         } else {
-            throw new InvalidAccountTypeException();
+            throw new InvalidTypeException();
         }
     }
 
     @BeanMapping(ignoreByDefault = true)
     @Mapping(source = "email", target = "email")
-    abstract Compratore toCompratore(AccountShallowDto accountShallowDto);
+    public abstract Compratore toCompratore(AccountShallowDto accountShallowDto);
 
     @BeanMapping(ignoreByDefault = true)
     @Mapping(source = "email", target = "email")
-    abstract Venditore toVenditore(AccountShallowDto accountShallowDto);
+    public abstract Venditore toVenditore(AccountShallowDto accountShallowDto);
 
-    abstract Set<AccountShallowDto> toShallowDto(Set<Account> accounts);
+    public abstract Set<AccountShallowDto> toShallowDto(Set<Account> accounts);
 
-    abstract Set<Account> toEntity(Set<AccountShallowDto> accountsShallowDto) throws InvalidAccountTypeException;
+    public abstract Set<Account> toEntity(Set<AccountShallowDto> accountsShallowDto) throws InvalidTypeException;
 }

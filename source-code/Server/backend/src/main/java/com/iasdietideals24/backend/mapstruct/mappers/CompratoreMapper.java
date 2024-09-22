@@ -1,15 +1,16 @@
 package com.iasdietideals24.backend.mapstruct.mappers;
 
 import com.iasdietideals24.backend.entities.Compratore;
-import com.iasdietideals24.backend.exceptions.InvalidAstaTypeException;
-import com.iasdietideals24.backend.exceptions.InvalidOffertaTypeException;
+import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import com.iasdietideals24.backend.mapstruct.dto.CompratoreDto;
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {ProfiloMapper.class, NotificaMapper.class, AstaMapper.class, OffertaMapper.class}, collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
+@Mapper(componentModel = "spring",
+        uses = {ProfiloMapper.class, NotificaMapper.class, AstaMapper.class, OffertaMapper.class, TokensAccountMapper.class},
+        collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
 public interface CompratoreMapper {
 
     @Mapping(source = "profilo", target = "profiloShallow")
@@ -20,5 +21,5 @@ public interface CompratoreMapper {
     CompratoreDto toDto(Compratore compratore);
 
     @InheritInverseConfiguration
-    Compratore toEntity(CompratoreDto compratoreDto) throws InvalidAstaTypeException, InvalidOffertaTypeException;
+    Compratore toEntity(CompratoreDto compratoreDto) throws InvalidTypeException;
 }

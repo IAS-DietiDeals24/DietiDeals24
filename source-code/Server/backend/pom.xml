@@ -169,6 +169,11 @@
 						</path>
 						<!-- Other annotation processors -->
 					</annotationProcessorPaths>
+					<compilerArgs>
+						<arg>
+							-Amapstruct.defaultInjectionStrategy=constructor
+						</arg>
+					</compilerArgs>
 				</configuration>
 			</plugin>
 		</plugins>

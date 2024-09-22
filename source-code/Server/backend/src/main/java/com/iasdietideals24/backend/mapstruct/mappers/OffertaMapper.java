@@ -1,19 +1,21 @@
 package com.iasdietideals24.backend.mapstruct.mappers;
 
 import com.iasdietideals24.backend.entities.*;
-import com.iasdietideals24.backend.exceptions.InvalidOffertaTypeException;
+import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.OffertaShallowDto;
 import org.mapstruct.BeanMapping;
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.Set;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",
+        injectionStrategy = InjectionStrategy.SETTER)
 public abstract class OffertaMapper {
 
     // Shallow DTO
-    OffertaShallowDto toShallowDto(Offerta offerta) {
+    public OffertaShallowDto toShallowDto(Offerta offerta) {
         if (offerta == null)
             return null;
 
@@ -44,7 +46,7 @@ public abstract class OffertaMapper {
         return offertaShallowDto;
     }
 
-    Offerta toEntity(OffertaShallowDto offertaShallowDto) throws InvalidOffertaTypeException {
+    public Offerta toEntity(OffertaShallowDto offertaShallowDto) throws InvalidTypeException {
         if (offertaShallowDto == null)
             return null;
 
@@ -53,22 +55,22 @@ public abstract class OffertaMapper {
         } else if (offertaShallowDto.getTipoOffertaPerAccount().equals(OffertaDiVenditore.class.getSimpleName())) {
             return toOffertaDiVenditore(offertaShallowDto);
         } else {
-            throw new InvalidOffertaTypeException();
+            throw new InvalidTypeException();
         }
     }
 
-    OffertaDiVenditore toOffertaDiVenditore(OffertaShallowDto offertaShallowDto) throws InvalidOffertaTypeException {
+    public OffertaDiVenditore toOffertaDiVenditore(OffertaShallowDto offertaShallowDto) throws InvalidTypeException {
         if (offertaShallowDto == null)
             return null;
 
         if (offertaShallowDto.getTipoOffertaSpecifica().equals(OffertaInversa.class.getSimpleName())) {
             return toOffertaInversa(offertaShallowDto);
         } else {
-            throw new InvalidOffertaTypeException();
+            throw new InvalidTypeException();
         }
     }
 
-    OffertaDiCompratore toOffertaDiCompratore(OffertaShallowDto offertaShallowDto) throws InvalidOffertaTypeException {
+    public OffertaDiCompratore toOffertaDiCompratore(OffertaShallowDto offertaShallowDto) throws InvalidTypeException {
         if (offertaShallowDto == null)
             return null;
 
@@ -77,23 +79,23 @@ public abstract class OffertaMapper {
         } else if (offertaShallowDto.getTipoOffertaSpecifica().equals(OffertaSilenziosa.class.getSimpleName())) {
             return toOffertaSilenziosa(offertaShallowDto);
         } else {
-            throw new InvalidOffertaTypeException();
+            throw new InvalidTypeException();
         }
     }
 
     @BeanMapping(ignoreByDefault = true)
     @Mapping(source = "idOfferta", target = "idOfferta")
-    abstract OffertaInversa toOffertaInversa(OffertaShallowDto offertaShallowDto);
+    public abstract OffertaInversa toOffertaInversa(OffertaShallowDto offertaShallowDto);
 
     @BeanMapping(ignoreByDefault = true)
     @Mapping(source = "idOfferta", target = "idOfferta")
-    abstract OffertaTempoFisso toOffertaTempoFisso(OffertaShallowDto offertaShallowDto);
+    public abstract OffertaTempoFisso toOffertaTempoFisso(OffertaShallowDto offertaShallowDto);
 
     @BeanMapping(ignoreByDefault = true)
     @Mapping(source = "idOfferta", target = "idOfferta")
-    abstract OffertaSilenziosa toOffertaSilenziosa(OffertaShallowDto offertaShallowDto);
+    public abstract OffertaSilenziosa toOffertaSilenziosa(OffertaShallowDto offertaShallowDto);
 
-    abstract Set<OffertaShallowDto> toShallowDto(Set<Offerta> offerta);
+    public abstract Set<OffertaShallowDto> toShallowDto(Set<Offerta> offerta);
 
-    abstract Set<Offerta> toEntity(Set<OffertaShallowDto> offertaShallowDto) throws InvalidOffertaTypeException;
+    public abstract Set<Offerta> toEntity(Set<OffertaShallowDto> offertaShallowDto) throws InvalidTypeException;
 }

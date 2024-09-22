@@ -4,7 +4,7 @@ import com.iasdietideals24.backend.datautil.TestDataAstaInversa;
 import com.iasdietideals24.backend.datautil.TestDataOffertaInversa;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
 import com.iasdietideals24.backend.entities.*;
-import com.iasdietideals24.backend.exceptions.InvalidParameterException;
+import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +37,7 @@ class OffertaDiVenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testOffertaDiVenditoreCanBeCreatedAndRecalled() throws InvalidParameterException {
+    void testOffertaDiVenditoreCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloProprietario = TestDataProfilo.createProfiloCompratoreA();
         Compratore proprietario = profiloProprietario.getCompratore();
@@ -60,7 +60,7 @@ class OffertaDiVenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testMultipleOffertaDiVenditoreCanBeCreatedAndRecalled() throws InvalidParameterException {
+    void testMultipleOffertaDiVenditoreCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloProprietarioA = TestDataProfilo.createProfiloCompratoreA();
         Compratore proprietarioA = profiloProprietarioA.getCompratore();
@@ -92,7 +92,7 @@ class OffertaDiVenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testOffertaDiVenditoreCanBeUpdated() throws InvalidParameterException {
+    void testOffertaDiVenditoreCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloCompratoreB();
         Compratore proprietario = profiloProprietario.getCompratore();
@@ -117,7 +117,7 @@ class OffertaDiVenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testOffertaDiVenditoreCanBeDeleted() throws InvalidParameterException {
+    void testOffertaDiVenditoreCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloCompratoreC();
         Compratore proprietario = profiloProprietario.getCompratore();

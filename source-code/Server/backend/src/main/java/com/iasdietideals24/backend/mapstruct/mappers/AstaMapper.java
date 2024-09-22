@@ -1,19 +1,21 @@
 package com.iasdietideals24.backend.mapstruct.mappers;
 
 import com.iasdietideals24.backend.entities.*;
-import com.iasdietideals24.backend.exceptions.InvalidAstaTypeException;
+import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
 import org.mapstruct.BeanMapping;
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.Set;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",
+        injectionStrategy = InjectionStrategy.SETTER)
 public abstract class AstaMapper {
 
     // Shallow DTO
-    AstaShallowDto toShallowDto(Asta asta) {
+    public AstaShallowDto toShallowDto(Asta asta) {
         if (asta == null)
             return null;
 
@@ -44,7 +46,7 @@ public abstract class AstaMapper {
         return astaShallowDto;
     }
 
-    Asta toEntity(AstaShallowDto astaShallowDto) throws InvalidAstaTypeException {
+    public Asta toEntity(AstaShallowDto astaShallowDto) throws InvalidTypeException {
         if (astaShallowDto == null)
             return null;
 
@@ -53,11 +55,11 @@ public abstract class AstaMapper {
         } else if (astaShallowDto.getTipoAstaPerAccount().equals(AstaDiVenditore.class.getSimpleName())) {
             return toAstaDiVenditore(astaShallowDto);
         } else {
-            throw new InvalidAstaTypeException();
+            throw new InvalidTypeException();
         }
     }
 
-    AstaDiCompratore toAstaDiCompratore(AstaShallowDto astaShallowDto) throws InvalidAstaTypeException {
+    public AstaDiCompratore toAstaDiCompratore(AstaShallowDto astaShallowDto) throws InvalidTypeException {
         if (astaShallowDto == null) {
             return null;
         }
@@ -65,11 +67,11 @@ public abstract class AstaMapper {
         if (astaShallowDto.getTipoAstaSpecifica().equals(AstaInversa.class.getSimpleName())) {
             return toAstaInversa(astaShallowDto);
         } else {
-            throw new InvalidAstaTypeException();
+            throw new InvalidTypeException();
         }
     }
 
-    AstaDiVenditore toAstaDiVenditore(AstaShallowDto astaShallowDto) throws InvalidAstaTypeException {
+    public AstaDiVenditore toAstaDiVenditore(AstaShallowDto astaShallowDto) throws InvalidTypeException {
         if (astaShallowDto == null) {
             return null;
         }
@@ -79,23 +81,23 @@ public abstract class AstaMapper {
         } else if (astaShallowDto.getTipoAstaSpecifica().equals(AstaSilenziosa.class.getSimpleName())) {
             return toAstaSilenziosa(astaShallowDto);
         } else {
-            throw new InvalidAstaTypeException();
+            throw new InvalidTypeException();
         }
     }
 
     @BeanMapping(ignoreByDefault = true)
     @Mapping(source = "idAsta", target = "idAsta")
-    abstract AstaInversa toAstaInversa(AstaShallowDto astaShallowDto);
+    public abstract AstaInversa toAstaInversa(AstaShallowDto astaShallowDto);
 
     @BeanMapping(ignoreByDefault = true)
     @Mapping(source = "idAsta", target = "idAsta")
-    abstract AstaTempoFisso toAstaTempoFisso(AstaShallowDto astaShallowDto);
+    public abstract AstaTempoFisso toAstaTempoFisso(AstaShallowDto astaShallowDto);
 
     @BeanMapping(ignoreByDefault = true)
     @Mapping(source = "idAsta", target = "idAsta")
-    abstract AstaSilenziosa toAstaSilenziosa(AstaShallowDto astaShallowDto);
+    public abstract AstaSilenziosa toAstaSilenziosa(AstaShallowDto astaShallowDto);
 
-    abstract Set<AstaShallowDto> toShallowDto(Set<Asta> aste);
+    public abstract Set<AstaShallowDto> toShallowDto(Set<Asta> aste);
 
-    abstract Set<Asta> toEntity(Set<AstaShallowDto> asteShallowDto) throws InvalidAstaTypeException;
+    public abstract Set<Asta> toEntity(Set<AstaShallowDto> asteShallowDto) throws InvalidTypeException;
 }

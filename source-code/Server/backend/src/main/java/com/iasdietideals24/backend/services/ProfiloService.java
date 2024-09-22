@@ -1,6 +1,8 @@
 package com.iasdietideals24.backend.services;
 
-import com.iasdietideals24.backend.entities.Profilo;
+import com.iasdietideals24.backend.exceptions.InvalidParameterException;
+import com.iasdietideals24.backend.mapstruct.dto.ProfiloDto;
+import com.iasdietideals24.backend.mapstruct.dto.exceptional.PutProfiloDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -8,15 +10,21 @@ import java.util.Optional;
 
 public interface ProfiloService {
 
-    Profilo createOrFullUpdate(Profilo nuovoProfilo);
+    ProfiloDto create(String nomeUtente, PutProfiloDto nuovoProfiloDto) throws InvalidParameterException;
 
-    Page<Profilo> findAll(Pageable pageable);
+    Page<ProfiloDto> findAll(Pageable pageable);
 
-    Optional<Profilo> findOne(String nomeUtente);
+    Optional<ProfiloDto> findOne(String nomeUtente);
 
     boolean isExists(String nomeUtente);
 
-    Profilo partialUpdate(String nomeUtente, Profilo nuovoProfilo);
+    ProfiloDto fullUpdate(String nomeUtente, PutProfiloDto nuovoProfiloDto) throws InvalidParameterException;
+
+    ProfiloDto partialUpdate(String nomeUtente, ProfiloDto nuovoProfiloDto);
 
     void delete(String nomeUtente);
+
+    void validateData(ProfiloDto nuovoProfiloDto) throws InvalidParameterException;
+
+    void validateData(PutProfiloDto nuovoProfiloDto) throws InvalidParameterException;
 }

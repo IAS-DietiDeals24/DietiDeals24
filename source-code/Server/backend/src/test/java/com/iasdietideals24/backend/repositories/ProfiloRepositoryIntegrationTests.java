@@ -2,7 +2,7 @@ package com.iasdietideals24.backend.repositories;
 
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
 import com.iasdietideals24.backend.entities.Profilo;
-import com.iasdietideals24.backend.exceptions.InvalidParameterException;
+import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +34,7 @@ class ProfiloRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testProfiloCanBeCreatedAndRecalled() throws InvalidParameterException {
+    void testProfiloCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profilo = TestDataProfilo.createProfiloVenditoreA();
 
@@ -52,7 +52,7 @@ class ProfiloRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testMultipleProfiloCanBeCreatedAndRecalled() throws InvalidParameterException {
+    void testMultipleProfiloCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloA = TestDataProfilo.createProfiloVenditoreA();
 
@@ -75,7 +75,7 @@ class ProfiloRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testProfiloCanBeUpdated() throws InvalidParameterException {
+    void testProfiloCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profilo = TestDataProfilo.createProfiloVenditoreB();
         underTest.save(profilo);
@@ -95,7 +95,7 @@ class ProfiloRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testProfiloCanBeDeleted() throws InvalidParameterException {
+    void testProfiloCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profilo = TestDataProfilo.createProfiloCompratoreC();
         underTest.save(profilo);

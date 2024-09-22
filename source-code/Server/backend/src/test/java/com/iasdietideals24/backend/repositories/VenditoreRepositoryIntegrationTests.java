@@ -3,7 +3,7 @@ package com.iasdietideals24.backend.repositories;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
 import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.entities.Venditore;
-import com.iasdietideals24.backend.exceptions.InvalidParameterException;
+import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,7 +35,7 @@ class VenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testVenditoreCanBeCreatedAndRecalled() throws InvalidParameterException {
+    void testVenditoreCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreC();
         Venditore venditore = profiloVenditore.getVenditore();
@@ -54,7 +54,7 @@ class VenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testMultipleVenditoreCanBeCreatedAndRecalled() throws InvalidParameterException {
+    void testMultipleVenditoreCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloVenditoreA = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditoreA = profiloVenditoreA.getVenditore();
@@ -80,7 +80,7 @@ class VenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testVenditoreCanBeUpdated() throws InvalidParameterException {
+    void testVenditoreCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditore = profiloVenditore.getVenditore();
@@ -101,7 +101,7 @@ class VenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testVenditoreCanBeDeleted() throws InvalidParameterException {
+    void testVenditoreCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditore = profiloVenditore.getVenditore();

@@ -6,7 +6,7 @@ import com.iasdietideals24.backend.datautil.TestDataProfilo;
 import com.iasdietideals24.backend.entities.AstaDiVenditore;
 import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.entities.Venditore;
-import com.iasdietideals24.backend.exceptions.InvalidParameterException;
+import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +38,7 @@ class AstaDiVenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testAstaDiVenditoreCanBeCreatedAndRecalled() throws InvalidParameterException {
+    void testAstaDiVenditoreCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreC();
         Venditore venditore = profiloVenditore.getVenditore();
@@ -58,7 +58,7 @@ class AstaDiVenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testMultipleAstaDiVenditoreCanBeCreatedAndRecalled() throws InvalidParameterException {
+    void testMultipleAstaDiVenditoreCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloVenditoreA = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditoreA = profiloVenditoreA.getVenditore();
@@ -87,7 +87,7 @@ class AstaDiVenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testAstaDiVenditoreCanBeUpdated() throws InvalidParameterException {
+    void testAstaDiVenditoreCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditore = profiloVenditore.getVenditore();
@@ -109,7 +109,7 @@ class AstaDiVenditoreRepositoryIntegrationTests {
 
     @Test
     @Transactional
-    void testAstaDiVenditoreCanBeDeleted() throws InvalidParameterException {
+    void testAstaDiVenditoreCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditore = profiloVenditore.getVenditore();
