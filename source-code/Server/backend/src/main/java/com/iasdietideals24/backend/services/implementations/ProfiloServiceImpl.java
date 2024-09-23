@@ -32,16 +32,15 @@ public class ProfiloServiceImpl implements ProfiloService {
 
     private final ProfiloRepository profiloRepository;
 
-    public ProfiloServiceImpl(
-            ProfiloMapper profiloMapper,
-            AnagraficaProfiloMapper anagraficaProfiloMapper,
-            LinksProfiloMapper linksProfiloMapper,
-            ProfiloRepository profiloRepository) {
+    public ProfiloServiceImpl(ProfiloMapper profiloMapper,
+                              AnagraficaProfiloMapper anagraficaProfiloMapper,
+                              LinksProfiloMapper linksProfiloMapper,
+                              ProfiloRepository profiloRepository) {
+
         this.profiloMapper = profiloMapper;
         this.anagraficaProfiloMapper = anagraficaProfiloMapper;
         this.linksProfiloMapper = linksProfiloMapper;
         this.profiloRepository = profiloRepository;
-
     }
 
     @Override
@@ -51,8 +50,10 @@ public class ProfiloServiceImpl implements ProfiloService {
         nuovoProfiloDto.setNomeUtente(nomeUtente);
         this.validateData(nuovoProfiloDto);
 
-        // Convertiamo a entità e la registriamo
+        // Convertiamo a entità
         Profilo nuovoProfilo = profiloMapper.toEntity(nuovoProfiloDto);
+
+        // Registriamo l'entità
         Profilo savedProfilo = profiloRepository.save(nuovoProfilo);
 
         return profiloMapper.toDto(savedProfilo);
@@ -241,19 +242,19 @@ public class ProfiloServiceImpl implements ProfiloService {
         isAccountsValid(nuovoProfiloDto.getAccountsShallow());
     }
 
-    private void isNomeUtenteValid(String nomeUtente) throws InvalidParameterException {
+    protected void isNomeUtenteValid(String nomeUtente) throws InvalidParameterException {
         if (nomeUtente == null)
             throw new InvalidParameterException("Il nome utente non può essere null!");
         else if (nomeUtente.isBlank())
             throw new InvalidParameterException("Il nome utente non può essere vuoto!");
     }
 
-    private void isProfilePictureValid(byte[] profilePicture) throws InvalidParameterException {
+    protected void isProfilePictureValid(byte[] profilePicture) throws InvalidParameterException {
         if (profilePicture == null)
             throw new InvalidParameterException("La profile picture non può essere null!");
     }
 
-    private void isAnagraficaValid(AnagraficaProfiloDto anagrafica) throws InvalidParameterException {
+    protected void isAnagraficaValid(AnagraficaProfiloDto anagrafica) throws InvalidParameterException {
         if (anagrafica == null)
             throw new InvalidParameterException("L'anagrafica non può essere null!");
 
@@ -262,21 +263,21 @@ public class ProfiloServiceImpl implements ProfiloService {
         isDataNascitaValid(anagrafica.getDataNascita());
     }
 
-    private void isNomeValid(String nome) throws InvalidParameterException {
+    protected void isNomeValid(String nome) throws InvalidParameterException {
         if (nome == null)
             throw new InvalidParameterException("Il nome non può essere null!");
         else if (nome.isBlank())
             throw new InvalidParameterException("Il nome non può essere vuoto!");
     }
 
-    private void isCognomeValid(String cognome) throws InvalidParameterException {
+    protected void isCognomeValid(String cognome) throws InvalidParameterException {
         if (cognome == null)
             throw new InvalidParameterException("Il cognome non può essere null!");
         else if (cognome.isBlank())
             throw new InvalidParameterException("Il cognome non può essere vuoto!");
     }
 
-    private void isDataNascitaValid(LocalDate dataNascita) throws InvalidParameterException {
+    protected void isDataNascitaValid(LocalDate dataNascita) throws InvalidParameterException {
         if (dataNascita == null)
             throw new InvalidParameterException("La data di nascita non può essere null!");
         else if (dataNascita.isAfter(LocalDate.now()))
@@ -284,7 +285,7 @@ public class ProfiloServiceImpl implements ProfiloService {
     }
 
 
-    private void isAccountsValid(Set<AccountShallowDto> accounts) throws InvalidParameterException {
+    protected void isAccountsValid(Set<AccountShallowDto> accounts) throws InvalidParameterException {
         if (accounts == null)
             throw new InvalidParameterException("La lista di accounts non può essere null!");
         else if (accounts.isEmpty())
@@ -302,7 +303,7 @@ public class ProfiloServiceImpl implements ProfiloService {
         isPasswordValid(nuovoProfiloDto.getPassword());
     }
 
-    private void isEmailValid(String email) throws InvalidParameterException {
+    protected void isEmailValid(String email) throws InvalidParameterException {
         if (email == null)
             throw new InvalidParameterException("L'email non può essere null!");
         else if (email.isBlank())
@@ -311,7 +312,7 @@ public class ProfiloServiceImpl implements ProfiloService {
             throw new InvalidParameterException("Formato email non valido!");
     }
 
-    private void isPasswordValid(String password) throws InvalidParameterException {
+    protected void isPasswordValid(String password) throws InvalidParameterException {
         if (password == null)
             throw new InvalidParameterException("La password non può essere null!");
         else if (password.isBlank())
