@@ -13,9 +13,7 @@ import com.iasdietideals24.backend.mapstruct.dto.utilities.LinksProfiloDto;
 import com.iasdietideals24.backend.mapstruct.mappers.AnagraficaProfiloMapper;
 import com.iasdietideals24.backend.mapstruct.mappers.LinksProfiloMapper;
 import com.iasdietideals24.backend.mapstruct.mappers.ProfiloMapper;
-import com.iasdietideals24.backend.repositories.CompratoreRepository;
 import com.iasdietideals24.backend.repositories.ProfiloRepository;
-import com.iasdietideals24.backend.repositories.VenditoreRepository;
 import com.iasdietideals24.backend.services.ProfiloService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -102,25 +100,13 @@ public class ProfiloServiceImpl implements ProfiloService {
         if (foundProfilo.isEmpty())
             throw new UpdateRuntimeException("Il nome utente non corrisponde a nessun profilo esistente!");
         else {
+            // Recuperiamo l'entità Profilo dal wrapping Optional
             Profilo existingProfilo = foundProfilo.get();
-            if (updatedProfiloDto.getProfilePicture() != null) {
-                isProfilePictureValid(updatedProfiloDto.getProfilePicture());
-                existingProfilo.setProfilePicture(updatedProfiloDto.getProfilePicture());
-            }
 
-            existingProfilo.setAnagrafica(
-                    partialUpdateAnagraficaProfilo(
-                            existingProfilo.getAnagrafica(),
-                            updatedProfiloDto.getAnagrafica()
-                    )
-            );
-
-            existingProfilo.setLinks(
-                    partialUpdateLinksProfilo(
-                            existingProfilo.getLinks(),
-                            updatedProfiloDto.getLinks()
-                    )
-            );
+            // Effettuiamo le modifiche
+            ifPresentUpdateProfilePicture(updatedProfiloDto.getProfilePicture(), existingProfilo);
+            ifPresentUpdateAnagrafica(updatedProfiloDto.getAnagrafica(), existingProfilo);
+            ifPresentUpdateLinks(updatedProfiloDto.getLinks(), existingProfilo);
 
             //Non è possibile modificare l'associazione "accounts" tramite la risorsa "profili"
 
@@ -128,70 +114,116 @@ public class ProfiloServiceImpl implements ProfiloService {
         }
     }
 
-    private AnagraficaProfilo partialUpdateAnagraficaProfilo(AnagraficaProfilo existingAnagrafica, AnagraficaProfiloDto updatedAnagraficaDto) throws InvalidParameterException {
-        AnagraficaProfilo newAnagrafica = null;
+    private void ifPresentUpdateProfilePicture(byte[] updatedProfilePicture, Profilo existingProfilo) throws InvalidParameterException {
+        if (updatedProfilePicture != null) {
+            isProfilePictureValid(updatedProfilePicture);
+            existingProfilo.setProfilePicture(updatedProfilePicture);
+        }
+    }
+
+    private void ifPresentUpdateAnagrafica(AnagraficaProfiloDto updatedAnagraficaDto, Profilo existingProfilo) throws InvalidParameterException {
+        AnagraficaProfilo existingAnagrafica = existingProfilo.getAnagrafica();
 
         if (updatedAnagraficaDto != null) {
             if (existingAnagrafica == null) {
-                newAnagrafica = anagraficaProfiloMapper.toEntity(updatedAnagraficaDto);
+                isAnagraficaValid(updatedAnagraficaDto);
+                existingProfilo.setAnagrafica(anagraficaProfiloMapper.toEntity(updatedAnagraficaDto));
             } else {
-                if (updatedAnagraficaDto.getNome() != null) {
-                    this.isNomeValid(updatedAnagraficaDto.getNome());
-                    existingAnagrafica.setNome(updatedAnagraficaDto.getNome());
-                }
-                if (updatedAnagraficaDto.getCognome() != null) {
-                    this.isCognomeValid(updatedAnagraficaDto.getCognome());
-                    existingAnagrafica.setCognome(updatedAnagraficaDto.getCognome());
-                }
-                if (updatedAnagraficaDto.getDataNascita() != null) {
-                    this.isDataNascitaValid(updatedAnagraficaDto.getDataNascita());
-                    existingAnagrafica.setDataNascita(updatedAnagraficaDto.getDataNascita());
-                }
-                if (updatedAnagraficaDto.getAreaGeografica() != null) {
-                    existingAnagrafica.setAreaGeografica(updatedAnagraficaDto.getAreaGeografica());
-                }
-                if (updatedAnagraficaDto.getGenere() != null) {
-                    existingAnagrafica.setGenere(updatedAnagraficaDto.getGenere());
-                }
-                if (updatedAnagraficaDto.getBiografia() != null) {
-                    existingAnagrafica.setBiografia(updatedAnagraficaDto.getBiografia());
-                }
-
-                newAnagrafica = existingAnagrafica;
+                ifPresentUpdateNome(updatedAnagraficaDto.getNome(), existingAnagrafica);
+                ifPresentUpdateCognome(updatedAnagraficaDto.getCognome(), existingAnagrafica);
+                ifPresentUpdateDataNascita(updatedAnagraficaDto.getDataNascita(), existingAnagrafica);
+                ifPresentUpdateAreaGeografica(updatedAnagraficaDto.getAreaGeografica(), existingAnagrafica);
+                ifPresentUpdateGenere(updatedAnagraficaDto.getGenere(), existingAnagrafica);
+                ifPresentUpdateBiografia(updatedAnagraficaDto.getBiografia(), existingAnagrafica);
             }
         }
-
-        return newAnagrafica;
     }
 
-    private LinksProfilo partialUpdateLinksProfilo(LinksProfilo existingLinks, LinksProfiloDto updatedLinksDto) {
-        LinksProfilo newLinks = null;
+    private void ifPresentUpdateNome(String updatedNome, AnagraficaProfilo existingAnagrafica) throws InvalidParameterException {
+        if (updatedNome != null) {
+            this.isNomeValid(updatedNome);
+            existingAnagrafica.setNome(updatedNome);
+        }
+    }
+
+    private void ifPresentUpdateCognome(String updatedCognome, AnagraficaProfilo existingAnagrafica) throws InvalidParameterException {
+        if (updatedCognome != null) {
+            this.isCognomeValid(updatedCognome);
+            existingAnagrafica.setCognome(updatedCognome);
+        }
+    }
+
+    private void ifPresentUpdateDataNascita(LocalDate updatedDataNascita, AnagraficaProfilo existingAnagrafica) throws InvalidParameterException {
+        if (updatedDataNascita != null) {
+            this.isDataNascitaValid(updatedDataNascita);
+            existingAnagrafica.setDataNascita(updatedDataNascita);
+        }
+    }
+
+    private void ifPresentUpdateAreaGeografica(String updatedAreaGeografica, AnagraficaProfilo existingAnagrafica) {
+        if (updatedAreaGeografica != null) {
+            existingAnagrafica.setAreaGeografica(updatedAreaGeografica);
+        }
+    }
+
+    private void ifPresentUpdateGenere(String updatedGenere, AnagraficaProfilo existingAnagrafica) {
+        if (updatedGenere != null) {
+            existingAnagrafica.setGenere(updatedGenere);
+        }
+    }
+
+    private void ifPresentUpdateBiografia(String updatedBiografia, AnagraficaProfilo existingAnagrafica) {
+        if (updatedBiografia != null) {
+            existingAnagrafica.setBiografia(updatedBiografia);
+        }
+    }
+
+    private void ifPresentUpdateLinks(LinksProfiloDto updatedLinksDto, Profilo existingProfilo) {
+        LinksProfilo existingLinks = existingProfilo.getLinks();
 
         if (updatedLinksDto != null) {
             if (existingLinks == null) {
-                newLinks = linksProfiloMapper.toEntity(updatedLinksDto);
+                //Non ci sono vincoli sui links -> Non c'è un "isLinksValid"
+                existingProfilo.setLinks(linksProfiloMapper.toEntity(updatedLinksDto));
             } else {
-                if (updatedLinksDto.getLinkPersonale() != null) {
-                    existingLinks.setLinkPersonale(updatedLinksDto.getLinkPersonale());
-                }
-                if (updatedLinksDto.getLinkInstagram() != null) {
-                    existingLinks.setLinkInstagram(updatedLinksDto.getLinkInstagram());
-                }
-                if (updatedLinksDto.getLinkFacebook() != null) {
-                    existingLinks.setLinkFacebook(updatedLinksDto.getLinkFacebook());
-                }
-                if (updatedLinksDto.getLinkGitHub() != null) {
-                    existingLinks.setLinkGitHub(updatedLinksDto.getLinkGitHub());
-                }
-                if (updatedLinksDto.getLinkX() != null) {
-                    existingLinks.setLinkX(updatedLinksDto.getLinkX());
-                }
+                ifPresentUpdateLinkPersonale(updatedLinksDto.getLinkPersonale(), existingLinks);
+                ifPresentUpdateLinkInstagram(updatedLinksDto.getLinkInstagram(), existingLinks);
+                ifPresentUpdateLinkFacebook(updatedLinksDto.getLinkFacebook(), existingLinks);
+                ifPresentUpdateLinkGitHub(updatedLinksDto.getLinkGitHub(), existingLinks);
+                ifPresentUpdateLinkX(updatedLinksDto.getLinkX(), existingLinks);
 
-                newLinks = existingLinks;
             }
         }
+    }
 
-        return newLinks;
+    private void ifPresentUpdateLinkPersonale(String updatedLinkPersonale, LinksProfilo existingLinks) {
+        if (updatedLinkPersonale != null) {
+            existingLinks.setLinkPersonale(updatedLinkPersonale);
+        }
+    }
+
+    private void ifPresentUpdateLinkInstagram(String updatedLinkInstagram, LinksProfilo existingLinks) {
+        if (updatedLinkInstagram != null) {
+            existingLinks.setLinkInstagram(updatedLinkInstagram);
+        }
+    }
+
+    private void ifPresentUpdateLinkFacebook(String updatedLinkFacebook, LinksProfilo existingLinks) {
+        if (updatedLinkFacebook != null) {
+            existingLinks.setLinkFacebook(updatedLinkFacebook);
+        }
+    }
+
+    private void ifPresentUpdateLinkGitHub(String updatedLinkGitHub, LinksProfilo existingLinks) {
+        if (updatedLinkGitHub != null) {
+            existingLinks.setLinkGitHub(updatedLinkGitHub);
+        }
+    }
+
+    private void ifPresentUpdateLinkX(String updatedLinkX, LinksProfilo existingLinks) {
+        if (updatedLinkX != null) {
+            existingLinks.setLinkX(updatedLinkX);
+        }
     }
 
     @Override
