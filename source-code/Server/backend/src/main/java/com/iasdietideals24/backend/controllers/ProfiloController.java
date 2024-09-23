@@ -9,7 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @RestController
 public class ProfiloController {
@@ -21,17 +22,13 @@ public class ProfiloController {
     }
 
     @PutMapping(path = "/profili/{nomeUtente}")
-    public ResponseEntity<ProfiloDto> createOrUpdateProfilo(@PathVariable("nomeUtente") String nomeUtente, @RequestBody PutProfiloDto receivedProfiloDto) {
-        try {
-            if (profiloService.isExists(nomeUtente)) {
-                ProfiloDto createdProfiloDto = profiloService.fullUpdate(nomeUtente, receivedProfiloDto);
-                return new ResponseEntity<>(createdProfiloDto, HttpStatus.OK);
-            } else {
-                ProfiloDto updatedProfiloDto = profiloService.create(nomeUtente, receivedProfiloDto);
-                return new ResponseEntity<>(updatedProfiloDto, HttpStatus.CREATED);
-            }
-        } catch (InvalidParameterException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+    public ResponseEntity<ProfiloDto> createOrFullUpdateProfilo(@PathVariable("nomeUtente") String nomeUtente, @RequestBody PutProfiloDto receivedProfiloDto) throws InvalidParameterException {
+        if (profiloService.isExists(nomeUtente)) {
+            ProfiloDto updatedProfiloDto = profiloService.fullUpdate(nomeUtente, receivedProfiloDto);
+            return new ResponseEntity<>(updatedProfiloDto, HttpStatus.OK);
+        } else {
+            ProfiloDto createdProfiloDto = profiloService.create(nomeUtente, receivedProfiloDto);
+            return new ResponseEntity<>(createdProfiloDto, HttpStatus.CREATED);
         }
     }
 
@@ -39,6 +36,26 @@ public class ProfiloController {
     public ResponseEntity<Page<ProfiloDto>> listProfili(Pageable pageable) {
         Page<ProfiloDto> foundProfiliDto = profiloService.findAll(pageable);
         return new ResponseEntity<>(foundProfiliDto, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/profili/{nomeUtente}")
+    public ResponseEntity<ProfiloDto> getProfilo(@PathVariable("nomeUtente") String nomeUtente) {
+        Optional<ProfiloDto> foundProfiloDto = profiloService.findOne(nomeUtente);
+        if (foundProfiloDto.isPresent()) {
+            return new ResponseEntity<>(foundProfiloDto.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PatchMapping(path = "/profili/{nomeUtente}")
+    public ResponseEntity<ProfiloDto> partialUpdateProfilo(@PathVariable("nomeUtente")  String nomeUtente, @RequestBody ProfiloDto receivedProfiloDto) throws InvalidParameterException {
+        if (profiloService.isExists(nomeUtente)) {
+            ProfiloDto updatedProfiloDto = profiloService.partialUpdate(nomeUtente, receivedProfiloDto);
+            return new ResponseEntity<>(updatedProfiloDto, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping(path = "/profili/{nomeUtente}")

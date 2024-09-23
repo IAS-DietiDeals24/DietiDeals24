@@ -18,9 +18,9 @@ public interface ProfiloService {
 
     boolean isExists(String nomeUtente);
 
-    ProfiloDto fullUpdate(String nomeUtente, PutProfiloDto nuovoProfiloDto) throws InvalidParameterException;
+    ProfiloDto fullUpdate(String nomeUtente, PutProfiloDto updatedProfiloDto) throws InvalidParameterException;
 
-    ProfiloDto partialUpdate(String nomeUtente, ProfiloDto nuovoProfiloDto);
+    ProfiloDto partialUpdate(String nomeUtente, ProfiloDto updatedProfiloDto) throws InvalidParameterException;
 
     void delete(String nomeUtente);
 

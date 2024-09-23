@@ -1,13 +1,21 @@
 package com.iasdietideals24.backend.services.implementations;
 
 import com.iasdietideals24.backend.entities.Profilo;
+import com.iasdietideals24.backend.entities.utilities.AnagraficaProfilo;
+import com.iasdietideals24.backend.entities.utilities.LinksProfilo;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
+import com.iasdietideals24.backend.exceptions.UpdateRuntimeException;
 import com.iasdietideals24.backend.mapstruct.dto.ProfiloDto;
 import com.iasdietideals24.backend.mapstruct.dto.exceptional.PutProfiloDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
 import com.iasdietideals24.backend.mapstruct.dto.utilities.AnagraficaProfiloDto;
+import com.iasdietideals24.backend.mapstruct.dto.utilities.LinksProfiloDto;
+import com.iasdietideals24.backend.mapstruct.mappers.AnagraficaProfiloMapper;
+import com.iasdietideals24.backend.mapstruct.mappers.LinksProfiloMapper;
 import com.iasdietideals24.backend.mapstruct.mappers.ProfiloMapper;
+import com.iasdietideals24.backend.repositories.CompratoreRepository;
 import com.iasdietideals24.backend.repositories.ProfiloRepository;
+import com.iasdietideals24.backend.repositories.VenditoreRepository;
 import com.iasdietideals24.backend.services.ProfiloService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,18 +29,31 @@ import java.util.Set;
 public class ProfiloServiceImpl implements ProfiloService {
 
     private final ProfiloMapper profiloMapper;
+    private final AnagraficaProfiloMapper anagraficaProfiloMapper;
+    private final LinksProfiloMapper linksProfiloMapper;
+
     private final ProfiloRepository profiloRepository;
 
-    public ProfiloServiceImpl(ProfiloMapper profiloMapper, ProfiloRepository profiloRepository) {
+    public ProfiloServiceImpl(
+            ProfiloMapper profiloMapper,
+            AnagraficaProfiloMapper anagraficaProfiloMapper,
+            LinksProfiloMapper linksProfiloMapper,
+            ProfiloRepository profiloRepository) {
         this.profiloMapper = profiloMapper;
+        this.anagraficaProfiloMapper = anagraficaProfiloMapper;
+        this.linksProfiloMapper = linksProfiloMapper;
         this.profiloRepository = profiloRepository;
+
     }
 
     @Override
     public ProfiloDto create(String nomeUtente, PutProfiloDto nuovoProfiloDto) throws InvalidParameterException {
+
+        // Verifichiamo l'integrità dei dati
         nuovoProfiloDto.setNomeUtente(nomeUtente);
         this.validateData(nuovoProfiloDto);
 
+        // Convertiamo a entità e la registriamo
         Profilo nuovoProfilo = profiloMapper.toEntity(nuovoProfiloDto);
         Profilo savedProfilo = profiloRepository.save(nuovoProfilo);
 
@@ -41,32 +62,142 @@ public class ProfiloServiceImpl implements ProfiloService {
 
     @Override
     public Page<ProfiloDto> findAll(Pageable pageable) {
-        return profiloRepository.findAll(pageable).map(profiloMapper::toDto);
+
+        // Recuperiamo tutte le entità
+        Page<Profilo> foundProfili = profiloRepository.findAll(pageable);
+
+        return foundProfili.map(profiloMapper::toDto);
     }
 
     @Override
     public Optional<ProfiloDto> findOne(String nomeUtente) {
-        return Optional.empty();
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        Optional<Profilo> foundProfilo = profiloRepository.findById(nomeUtente);
+
+        return foundProfilo.map(profiloMapper::toDto);
     }
 
     @Override
     public boolean isExists(String nomeUtente) {
-        return false;
+
+        // Verifichiamo che esista un'entità con l'id passato per parametro
+        return profiloRepository.existsById(nomeUtente);
     }
 
     @Override
-    public ProfiloDto fullUpdate(String nomeUtente, PutProfiloDto nuovoProfiloDto) throws InvalidParameterException {
+    public ProfiloDto fullUpdate(String nomeUtente, PutProfiloDto updatedProfiloDto) throws InvalidParameterException {
+
         // L'implementazione di fullUpdate e create sono identiche, dato che utilizziamo lo stesso metodo "save" della repository
-        return this.create(nomeUtente, nuovoProfiloDto);
+        return this.create(nomeUtente, updatedProfiloDto);
     }
 
     @Override
-    public ProfiloDto partialUpdate(String nomeUtente, ProfiloDto nuovoProfiloDto) {
-        return null;
+    public ProfiloDto partialUpdate(String nomeUtente, ProfiloDto updatedProfiloDto) throws InvalidParameterException {
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        updatedProfiloDto.setNomeUtente(nomeUtente);
+        Optional<Profilo> foundProfilo = profiloRepository.findById(nomeUtente);
+
+        if (foundProfilo.isEmpty())
+            throw new UpdateRuntimeException("Il nome utente non corrisponde a nessun profilo esistente!");
+        else {
+            Profilo existingProfilo = foundProfilo.get();
+            if (updatedProfiloDto.getProfilePicture() != null) {
+                isProfilePictureValid(updatedProfiloDto.getProfilePicture());
+                existingProfilo.setProfilePicture(updatedProfiloDto.getProfilePicture());
+            }
+
+            existingProfilo.setAnagrafica(
+                    partialUpdateAnagraficaProfilo(
+                            existingProfilo.getAnagrafica(),
+                            updatedProfiloDto.getAnagrafica()
+                    )
+            );
+
+            existingProfilo.setLinks(
+                    partialUpdateLinksProfilo(
+                            existingProfilo.getLinks(),
+                            updatedProfiloDto.getLinks()
+                    )
+            );
+
+            //Non è possibile modificare l'associazione "accounts" tramite la risorsa "profili"
+
+            return profiloMapper.toDto(profiloRepository.save(existingProfilo));
+        }
+    }
+
+    private AnagraficaProfilo partialUpdateAnagraficaProfilo(AnagraficaProfilo existingAnagrafica, AnagraficaProfiloDto updatedAnagraficaDto) throws InvalidParameterException {
+        AnagraficaProfilo newAnagrafica = null;
+
+        if (updatedAnagraficaDto != null) {
+            if (existingAnagrafica == null) {
+                newAnagrafica = anagraficaProfiloMapper.toEntity(updatedAnagraficaDto);
+            } else {
+                if (updatedAnagraficaDto.getNome() != null) {
+                    this.isNomeValid(updatedAnagraficaDto.getNome());
+                    existingAnagrafica.setNome(updatedAnagraficaDto.getNome());
+                }
+                if (updatedAnagraficaDto.getCognome() != null) {
+                    this.isCognomeValid(updatedAnagraficaDto.getCognome());
+                    existingAnagrafica.setCognome(updatedAnagraficaDto.getCognome());
+                }
+                if (updatedAnagraficaDto.getDataNascita() != null) {
+                    this.isDataNascitaValid(updatedAnagraficaDto.getDataNascita());
+                    existingAnagrafica.setDataNascita(updatedAnagraficaDto.getDataNascita());
+                }
+                if (updatedAnagraficaDto.getAreaGeografica() != null) {
+                    existingAnagrafica.setAreaGeografica(updatedAnagraficaDto.getAreaGeografica());
+                }
+                if (updatedAnagraficaDto.getGenere() != null) {
+                    existingAnagrafica.setGenere(updatedAnagraficaDto.getGenere());
+                }
+                if (updatedAnagraficaDto.getBiografia() != null) {
+                    existingAnagrafica.setBiografia(updatedAnagraficaDto.getBiografia());
+                }
+
+                newAnagrafica = existingAnagrafica;
+            }
+        }
+
+        return newAnagrafica;
+    }
+
+    private LinksProfilo partialUpdateLinksProfilo(LinksProfilo existingLinks, LinksProfiloDto updatedLinksDto) {
+        LinksProfilo newLinks = null;
+
+        if (updatedLinksDto != null) {
+            if (existingLinks == null) {
+                newLinks = linksProfiloMapper.toEntity(updatedLinksDto);
+            } else {
+                if (updatedLinksDto.getLinkPersonale() != null) {
+                    existingLinks.setLinkPersonale(updatedLinksDto.getLinkPersonale());
+                }
+                if (updatedLinksDto.getLinkInstagram() != null) {
+                    existingLinks.setLinkInstagram(updatedLinksDto.getLinkInstagram());
+                }
+                if (updatedLinksDto.getLinkFacebook() != null) {
+                    existingLinks.setLinkFacebook(updatedLinksDto.getLinkFacebook());
+                }
+                if (updatedLinksDto.getLinkGitHub() != null) {
+                    existingLinks.setLinkGitHub(updatedLinksDto.getLinkGitHub());
+                }
+                if (updatedLinksDto.getLinkX() != null) {
+                    existingLinks.setLinkX(updatedLinksDto.getLinkX());
+                }
+
+                newLinks = existingLinks;
+            }
+        }
+
+        return newLinks;
     }
 
     @Override
     public void delete(String nomeUtente) {
+
+        // Eliminiamo l'entità con l'id passato per parametro
         profiloRepository.deleteById(nomeUtente);
     }
 
@@ -117,8 +248,9 @@ public class ProfiloServiceImpl implements ProfiloService {
         if (dataNascita == null)
             throw new InvalidParameterException("La data di nascita non può essere null!");
         else if (dataNascita.isAfter(LocalDate.now()))
-            throw new InvalidParameterException("La data di nascita non può essere antecedente alla data odierna!");
+            throw new InvalidParameterException("La data di nascita non può essere successiva alla data odierna!");
     }
+
 
     private void isAccountsValid(Set<AccountShallowDto> accounts) throws InvalidParameterException {
         if (accounts == null)

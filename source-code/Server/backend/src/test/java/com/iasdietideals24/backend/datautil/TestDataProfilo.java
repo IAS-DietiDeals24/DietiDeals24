@@ -18,6 +18,7 @@ public class TestDataProfilo {
                 "Pippo",
                 "Baudo",
                 LocalDate.of(1936, 6, 7),
+                "Maschio",
                 null,
                 null);
 
@@ -34,6 +35,7 @@ public class TestDataProfilo {
                 "Ferruzzi",
                 LocalDate.of(1976, 6, 24),
                 "Firenze (FI)",
+                "Femmina",
                 "Grande amante della moda, sopratutto delle borse di Carpisa.");
 
         LinksProfilo linksProfilo = new LinksProfilo(
@@ -56,6 +58,7 @@ public class TestDataProfilo {
                 "Scisciola",
                 LocalDate.of(1995, 8, 1),
                 "Napoli (NA)",
+                "Maschio",
                 "Venditore principalmente di oggettistica a tema manga.");
 
         LinksProfilo linksProfilo = new LinksProfilo(
@@ -77,6 +80,7 @@ public class TestDataProfilo {
                 "Pippo",
                 "Baudo",
                 LocalDate.of(1936, 6, 7),
+                "Maschio",
                 null,
                 null);
 
@@ -96,6 +100,7 @@ public class TestDataProfilo {
                 "Ferruzzi",
                 LocalDate.of(1976, 6, 24),
                 "Firenze (FI)",
+                "Femmina",
                 "Grande amante della moda, sopratutto delle borse di Carpisa.");
 
         LinksProfilo linksProfilo = new LinksProfilo(
@@ -121,6 +126,7 @@ public class TestDataProfilo {
                 "Scisciola",
                 LocalDate.of(1995, 8, 1),
                 "Napoli (NA)",
+                "Maschio",
                 "Venditore principalmente di oggettistica a tema manga.");
 
         LinksProfilo linksProfilo = new LinksProfilo(
@@ -145,6 +151,7 @@ public class TestDataProfilo {
                 "Pippo",
                 "Baudo",
                 LocalDate.of(1936, 6, 7),
+                "Maschio",
                 null,
                 null);
 
@@ -164,6 +171,7 @@ public class TestDataProfilo {
                 "Ferruzzi",
                 LocalDate.of(1976, 6, 24),
                 "Firenze (FI)",
+                "Femmina",
                 "Grande amante della moda, sopratutto delle borse di Carpisa.");
 
         LinksProfilo linksProfilo = new LinksProfilo(
@@ -189,6 +197,7 @@ public class TestDataProfilo {
                 "Scisciola",
                 LocalDate.of(1995, 8, 1),
                 "Napoli (NA)",
+                "Maschio",
                 "Venditore principalmente di oggettistica a tema manga.");
 
         LinksProfilo linksProfilo = new LinksProfilo(

@@ -23,14 +23,17 @@ public class AnagraficaProfilo {
 
     private String areaGeografica;
 
+    private String genere;
+
     private String biografia;
 
     // AllArgsConstructor
-    public AnagraficaProfilo(@NonNull String nome, @NonNull String cognome, @NonNull LocalDate dataNascita, String areaGeografica, String biografia) {
+    public AnagraficaProfilo(@NonNull String nome, @NonNull String cognome, @NonNull LocalDate dataNascita, String areaGeografica, String genere, String biografia) {
         this.nome = nome;
         this.cognome = cognome;
         this.dataNascita = dataNascita;
         this.areaGeografica = areaGeografica;
+        this.genere = genere;
         this.biografia = biografia;
     }
 
