@@ -3,15 +3,16 @@ package com.iasdietideals24.dietideals24.controller
 import android.content.Context
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
-import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.Home
 import com.iasdietideals24.dietideals24.databinding.Creazioneprofilofase3Binding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.Logger
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.classes.data.Account
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
 
@@ -86,19 +87,29 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
 
     @EventHandler
     private fun clickFine() {
-        val returned: String? =
-            eseguiChiamataREST("creazioneProfilo", viewModel.toAccountProfilo())
+        val account: Account = creazioneAccount()
 
-        if (returned == null || returned == "") {
-            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
-        } else {
+        if (account.email != "") {
             Logger.log("Profile creation successful")
 
-            CurrentUser.id = returned
+            CurrentUser.id = account.email
             listenerChangeActivity?.onChangeActivity(Home::class.java)
+        }
+    }
+
+    private fun creazioneAccount(): Account {
+        return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
+            val call = APIController.instance.creazioneAccountCompratore(
+                viewModel.email.value!!,
+                viewModel.toAccountCompratore()
+            )
+            chiamaAPI(call).toAccount()
+        } else {
+            val call = APIController.instance.creazioneAccountVenditore(
+                viewModel.email.value!!,
+                viewModel.toAccountVenditore()
+            )
+            chiamaAPI(call).toAccount()
         }
     }
 }

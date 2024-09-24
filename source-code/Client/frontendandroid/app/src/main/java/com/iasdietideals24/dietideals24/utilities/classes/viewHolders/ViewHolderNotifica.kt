@@ -8,8 +8,11 @@ import coil.load
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.NotificaBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.Logger
+import com.iasdietideals24.dietideals24.utilities.classes.chiamaAPI
 import com.iasdietideals24.dietideals24.utilities.classes.data.Notifica
+import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
@@ -33,13 +36,17 @@ class ViewHolderNotifica(private val binding: NotificaBinding) :
 
     @UIBuilder
     fun bind(currentNotifica: Notifica, resources: Resources) {
-        binding.notificaNome.text = currentNotifica.mittente
-        if (currentNotifica.immagineMittente.isNotEmpty()) {
-            binding.notificaImmagine.load(currentNotifica.immagineMittente) {
+        val mittente: Profilo = recuperaMittente(currentNotifica)
+
+        binding.notificaNome.text = mittente.nomeUtente
+
+        if (mittente.immagineProfilo.isNotEmpty()) {
+            binding.notificaImmagine.load(mittente.immagineProfilo) {
                 crossfade(true)
             }
             binding.notificaImmagine.scaleType = ImageView.ScaleType.CENTER_CROP
         }
+
         binding.notificaTesto.text = currentNotifica.messaggio
 
         val tempoFa = when {
@@ -52,7 +59,11 @@ class ViewHolderNotifica(private val binding: NotificaBinding) :
         binding.notificaLinearLayout1.setOnClickListener {
             Logger.log("Showing auction details")
 
-            listenerGoToDetails?.onGoToDetails(currentNotifica.idAsta, this::class)
+            listenerGoToDetails?.onGoToDetails(
+                currentNotifica.idAsta,
+                currentNotifica.tipoAsta,
+                this::class
+            )
         }
 
         binding.notificaImmagine.setOnClickListener {
@@ -60,6 +71,12 @@ class ViewHolderNotifica(private val binding: NotificaBinding) :
 
             listenerGoToProfile?.onGoToProfile(currentNotifica.idMittente, this::class)
         }
+    }
+
+    private fun recuperaMittente(currentNotifica: Notifica): Profilo {
+        val call = APIController.instance.caricaProfiloDaAccount(currentNotifica.idMittente)
+
+        return chiamaAPI(call).toProfilo()
     }
 
     fun cleanListeners() {

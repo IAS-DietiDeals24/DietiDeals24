@@ -14,4 +14,10 @@ public class AstaShallowDto {
     private String tipoAstaPerAccount;
 
     private String tipoAstaSpecifica;
+
+    public AstaShallowDto(Long idAsta, String tipoAstaPerAccount, String tipoAstaSpecifica) {
+        this.idAsta = idAsta;
+        this.tipoAstaPerAccount = tipoAstaPerAccount;
+        this.tipoAstaSpecifica = tipoAstaSpecifica;
+    }
 }

@@ -3,7 +3,12 @@ package com.iasdietideals24.dietideals24.model
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
-import com.iasdietideals24.dietideals24.utilities.classes.data.Asta
+import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAsta
+import com.iasdietideals24.dietideals24.utilities.dto.AstaInversaDto
+import com.iasdietideals24.dietideals24.utilities.dto.AstaSilenziosaDto
+import com.iasdietideals24.dietideals24.utilities.dto.AstaTempoFissoDto
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -32,11 +37,11 @@ class ModelAsta : ViewModel() {
     val nomeCreatore: MutableLiveData<String>
         get() = _nomeCreatore
 
-    private val _tipo: MutableLiveData<String> by lazy {
-        MutableLiveData<String>("")
+    private val _tipo: MutableLiveData<TipoAsta> by lazy {
+        MutableLiveData<TipoAsta>(TipoAsta.TEMPO_FISSO)
     }
 
-    val tipo: MutableLiveData<String>
+    val tipo: MutableLiveData<TipoAsta>
         get() = _tipo
 
     private val _dataFine: MutableLiveData<LocalDate> by lazy {
@@ -92,7 +97,7 @@ class ModelAsta : ViewModel() {
         _idAsta.value = 0L
         _idCreatore.value = ""
         _nomeCreatore.value = ""
-        _tipo.value = ""
+        _tipo.value = TipoAsta.TEMPO_FISSO
         _dataFine.value = LocalDate.MIN
         _oraFine.value = LocalTime.MIN
         _prezzo.value = BigDecimal(0.0)
@@ -102,18 +107,56 @@ class ModelAsta : ViewModel() {
         _descrizione.value = ""
     }
 
-    fun toAsta(): Asta {
-        return Asta(
+    fun toAstaInversa(): AstaInversaDto {
+        return AstaInversaDto(
             idAsta.value!!,
-            idCreatore.value!!,
-            tipo.value!!,
+            tipo.value!!.name,
+            nome.value!!,
+            descrizione.value!!,
             dataFine.value!!,
             oraFine.value!!,
-            prezzo.value!!,
             immagine.value!!,
+            setOf(),
+            AccountShallowDto(
+                CurrentUser.id,
+                CurrentUser.tipoAccount.name
+            ),
+            prezzo.value!!
+        )
+    }
+
+    fun toAstaTempoFisso(): AstaTempoFissoDto {
+        return AstaTempoFissoDto(
+            idAsta.value!!,
+            tipo.value!!.name,
             nome.value!!,
-            categoria.value!!,
-            descrizione.value!!
+            descrizione.value!!,
+            dataFine.value!!,
+            oraFine.value!!,
+            immagine.value!!,
+            setOf(),
+            AccountShallowDto(
+                CurrentUser.id,
+                CurrentUser.tipoAccount.name
+            ),
+            prezzo.value!!
+        )
+    }
+
+    fun toAstaSilenziosa(): AstaSilenziosaDto {
+        return AstaSilenziosaDto(
+            idAsta.value!!,
+            tipo.value!!.name,
+            nome.value!!,
+            descrizione.value!!,
+            dataFine.value!!,
+            oraFine.value!!,
+            immagine.value!!,
+            setOf(),
+            AccountShallowDto(
+                CurrentUser.id,
+                CurrentUser.tipoAccount.name
+            )
         )
     }
 
@@ -125,7 +168,7 @@ class ModelAsta : ViewModel() {
         nome()
         categoria()
         descrizione()
-        if (_tipo.value != "Silenziosa")
+        if (_tipo.value != TipoAsta.SILENZIOSA)
             prezzo()
     }
 

@@ -3,6 +3,7 @@ package com.iasdietideals24.dietideals24.model
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAccountNonEsistente
 
 
@@ -22,11 +23,11 @@ class ModelAccesso : ViewModel() {
     val password: MutableLiveData<String>
         get() = _password
 
-    private val _tipoAccount: MutableLiveData<String> by lazy {
-        MutableLiveData<String>("")
+    private val _tipoAccount: MutableLiveData<TipoAccount> by lazy {
+        MutableLiveData<TipoAccount>(TipoAccount.OSPITE)
     }
 
-    val tipoAccount: MutableLiveData<String>
+    val tipoAccount: MutableLiveData<TipoAccount>
         get() = _tipoAccount
 
     @Validation

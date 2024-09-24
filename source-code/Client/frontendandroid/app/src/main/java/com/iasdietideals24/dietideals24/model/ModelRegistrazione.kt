@@ -4,8 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
 import com.iasdietideals24.dietideals24.utilities.classes.APIController
-import com.iasdietideals24.dietideals24.utilities.classes.data.Account
-import com.iasdietideals24.dietideals24.utilities.classes.data.AccountProfilo
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.dto.exceptional.PutProfiloDto
+import com.iasdietideals24.dietideals24.utilities.dto.utilities.AnagraficaProfiloDto
+import com.iasdietideals24.dietideals24.utilities.dto.utilities.LinksProfiloDto
+import com.iasdietideals24.dietideals24.utilities.dto.utilities.TokensAccountDto
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
@@ -40,11 +43,11 @@ class ModelRegistrazione : ViewModel() {
     val password: MutableLiveData<String>
         get() = _password
 
-    private val _tipoAccount: MutableLiveData<String> by lazy {
-        MutableLiveData<String>("")
+    private val _tipoAccount: MutableLiveData<TipoAccount> by lazy {
+        MutableLiveData<TipoAccount>(TipoAccount.OSPITE)
     }
 
-    val tipoAccount: MutableLiveData<String>
+    val tipoAccount: MutableLiveData<TipoAccount>
         get() = _tipoAccount
 
     private val _nomeUtente: MutableLiveData<String> by lazy {
@@ -144,7 +147,7 @@ class ModelRegistrazione : ViewModel() {
         _facebookAccountID.value = ""
         _email.value = ""
         _password.value = ""
-        _tipoAccount.value = ""
+        _tipoAccount.value = TipoAccount.OSPITE
         _nomeUtente.value = ""
         _nome.value = ""
         _cognome.value = ""
@@ -160,36 +163,65 @@ class ModelRegistrazione : ViewModel() {
         _linkX.value = ""
     }
 
-    fun toAccount(): Account {
-        return Account(
-            _facebookAccountID.value!!,
-            _email.value!!,
-            _password.value!!,
-            _tipoAccount.value!!
+    fun toAccountCompratore(): PutProfiloDto {
+        return PutProfiloDto(
+            nomeUtente.value,
+            immagineProfilo.value,
+            AnagraficaProfiloDto(
+                nome.value,
+                cognome.value,
+                dataNascita.value,
+                areaGeografica.value,
+                biografia.value,
+                genere.value
+            ),
+            LinksProfiloDto(
+                linkPersonale.value,
+                linkInstagram.value,
+                linkFacebook.value,
+                linkGitHub.value,
+                linkX.value
+            ),
+            email.value,
+            password.value,
+            TokensAccountDto(
+                facebookAccountID.value,
+                "",
+                "",
+                ""
+            ),
+            TipoAccount.COMPRATORE.toString()
         )
     }
 
-    fun toAccountProfilo(): AccountProfilo {
-        return AccountProfilo(
-            Account(
-                _facebookAccountID.value!!,
-                _email.value!!,
-                _password.value!!,
-                _tipoAccount.value!!
+    fun toAccountVenditore(): PutProfiloDto {
+        return PutProfiloDto(
+            nomeUtente.value,
+            immagineProfilo.value,
+            AnagraficaProfiloDto(
+                nome.value,
+                cognome.value,
+                dataNascita.value,
+                areaGeografica.value,
+                biografia.value,
+                genere.value
             ),
-            _nomeUtente.value!!,
-            _nome.value!!,
-            _cognome.value!!,
-            _dataNascita.value!!,
-            _immagineProfilo.value!!,
-            _biografia.value!!,
-            _areaGeografica.value!!,
-            _genere.value!!,
-            _linkPersonale.value!!,
-            _linkInstagram.value!!,
-            _linkFacebook.value!!,
-            _linkGitHub.value!!,
-            _linkX.value!!
+            LinksProfiloDto(
+                linkPersonale.value,
+                linkInstagram.value,
+                linkFacebook.value,
+                linkGitHub.value,
+                linkX.value
+            ),
+            email.value,
+            password.value,
+            TokensAccountDto(
+                facebookAccountID.value,
+                "",
+                "",
+                ""
+            ),
+            TipoAccount.VENDITORE.toString()
         )
     }
 
@@ -245,11 +277,10 @@ class ModelRegistrazione : ViewModel() {
     private fun esisteEmail(): Boolean? {
         var returned: Boolean? = null
 
-        val call =
-            APIController.instance.esisteEmail(
-                email.value!!,
-                tipoAccount.value!!
-            )
+        val call = if (tipoAccount.value == TipoAccount.COMPRATORE)
+            APIController.instance.esisteEmailCompratore(email.value!!)
+        else
+            APIController.instance.esisteEmailVenditore(email.value!!)
 
         call.enqueue(object : Callback<Boolean> {
             override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {

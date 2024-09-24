@@ -9,7 +9,7 @@ import com.iasdietideals24.dietideals24.utilities.classes.data.OffertaRicevuta
 import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderOfferta
 
 class AdapterOfferte(
-    private val notifiche: Array<OffertaRicevuta>,
+    private val offerte: Array<OffertaRicevuta>,
     private val resources: Resources
 ) : RecyclerView.Adapter<ViewHolderOfferta>() {
 
@@ -25,11 +25,11 @@ class AdapterOfferte(
     }
 
     override fun getItemCount(): Int {
-        return notifiche.size
+        return offerte.size
     }
 
     override fun onBindViewHolder(holder: ViewHolderOfferta, position: Int) {
-        val currentOfferta = notifiche[position]
+        val currentOfferta = offerte[position]
 
         holder.bind(currentOfferta, resources)
     }

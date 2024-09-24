@@ -9,10 +9,13 @@ import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.HomeBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.Logger
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.classes.adapters.AdapterHome
 import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaAsta
+import com.iasdietideals24.dietideals24.utilities.classes.toArrayOfAnteprimaAsta
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -102,29 +105,81 @@ class ControllerHome : Controller<HomeBinding>() {
     }
 
     private suspend fun recuperaAste() {
-        val result: Array<AnteprimaAsta>? = withContext(ioDispatcher) {
+        val result: Array<AnteprimaAsta> = withContext(ioDispatcher) {
             if (binding.homeRicerca.text.isNullOrEmpty() && binding.homeFiltro.text.toString() == getString(
                     R.string.category_no_category
                 )
-            )
-                eseguiChiamataREST(
-                    "recuperaAste",
-                    CurrentUser.id
-                )
-            else {
+            ) {
+                when (CurrentUser.tipoAccount) {
+                    TipoAccount.COMPRATORE -> {
+                        val call1 = APIController.instance.recuperaAsteSilenziose()
+                        val call2 = APIController.instance.recuperaAsteTempoFisso()
+                        chiamaAPI(call1).toArrayOfAnteprimaAsta()
+                            .plus(chiamaAPI(call2).toArrayOfAnteprimaAsta())
+                    }
+
+                    TipoAccount.VENDITORE -> {
+                        val call = APIController.instance.recuperaAsteInverse()
+                        chiamaAPI(call).toArrayOfAnteprimaAsta()
+                    }
+
+                    else -> {
+                        val call1 = APIController.instance.recuperaAsteSilenziose()
+                        val call2 = APIController.instance.recuperaAsteTempoFisso()
+                        val call3 = APIController.instance.recuperaAsteInverse()
+                        chiamaAPI(call1).toArrayOfAnteprimaAsta()
+                            .plus(chiamaAPI(call2).toArrayOfAnteprimaAsta())
+                            .plus(chiamaAPI(call3).toArrayOfAnteprimaAsta())
+                    }
+                }
+            } else {
                 Logger.log("Performing auction research")
 
-                eseguiChiamataREST(
-                    "ricercaAste",
-                    CurrentUser.id,
-                    binding.homeRicerca.text.toString(),
-                    binding.homeFiltro.text.toString()
-                )
+                when (CurrentUser.tipoAccount) {
+                    TipoAccount.COMPRATORE -> {
+                        val call1 = APIController.instance.ricercaAsteSilenziose(
+                            binding.homeRicerca.text.toString(),
+                            binding.homeFiltro.text.toString()
+                        )
+                        val call2 = APIController.instance.ricercaAsteTempoFisso(
+                            binding.homeRicerca.text.toString(),
+                            binding.homeFiltro.text.toString()
+                        )
+                        chiamaAPI(call1).toArrayOfAnteprimaAsta()
+                            .plus(chiamaAPI(call2).toArrayOfAnteprimaAsta())
+                    }
+
+                    TipoAccount.VENDITORE -> {
+                        val call = APIController.instance.ricercaAsteInverse(
+                            binding.homeRicerca.text.toString(),
+                            binding.homeFiltro.text.toString()
+                        )
+                        chiamaAPI(call).toArrayOfAnteprimaAsta()
+                    }
+
+                    else -> {
+                        val call1 = APIController.instance.ricercaAsteSilenziose(
+                            binding.homeRicerca.text.toString(),
+                            binding.homeFiltro.text.toString()
+                        )
+                        val call2 = APIController.instance.ricercaAsteTempoFisso(
+                            binding.homeRicerca.text.toString(),
+                            binding.homeFiltro.text.toString()
+                        )
+                        val call3 = APIController.instance.ricercaAsteInverse(
+                            binding.homeRicerca.text.toString(),
+                            binding.homeFiltro.text.toString()
+                        )
+                        chiamaAPI(call1).toArrayOfAnteprimaAsta()
+                            .plus(chiamaAPI(call2).toArrayOfAnteprimaAsta())
+                            .plus(chiamaAPI(call3).toArrayOfAnteprimaAsta())
+                    }
+                }
             }
         }
 
         withContext(mainDispatcher) {
-            if (result != null)
+            if (result.isNotEmpty())
                 binding.homeRecyclerView.adapter = AdapterHome(result, resources)
             else
                 Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)

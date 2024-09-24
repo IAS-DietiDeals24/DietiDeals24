@@ -3,7 +3,11 @@ package com.iasdietideals24.dietideals24.model
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
-import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
+import com.iasdietideals24.dietideals24.utilities.dto.utilities.AnagraficaProfiloDto
+import com.iasdietideals24.dietideals24.utilities.dto.utilities.LinksProfiloDto
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import java.time.LocalDate
 
@@ -115,24 +119,35 @@ class ModelProfilo : ViewModel() {
     val linkPersonale: MutableLiveData<String>
         get() = _linkPersonale
 
-    fun toProfilo(): Profilo {
-        return Profilo(
-            "",
-            tipoAccount.value!!,
+    fun toProfilo(): ProfiloDto {
+        return ProfiloDto(
             nomeUtente.value!!,
             immagineProfilo.value!!,
-            nome.value!!,
-            cognome.value!!,
-            email.value!!,
-            dataNascita.value!!,
-            genere.value!!,
-            areaGeografica.value!!,
-            biografia.value!!,
-            linkInstagram.value!!,
-            linkFacebook.value!!,
-            linkGitHub.value!!,
-            linkX.value!!,
-            linkPersonale.value!!
+            AnagraficaProfiloDto(
+                nome.value!!,
+                cognome.value!!,
+                dataNascita.value!!,
+                areaGeografica.value!!,
+                biografia.value!!,
+                genere.value!!
+            ),
+            LinksProfiloDto(
+                linkPersonale.value!!,
+                linkInstagram.value!!,
+                linkFacebook.value!!,
+                linkGitHub.value!!,
+                linkX.value!!
+            ),
+            setOf(
+                AccountShallowDto(
+                    email.value!!,
+                    TipoAccount.COMPRATORE.name
+                ),
+                AccountShallowDto(
+                    email.value!!,
+                    TipoAccount.VENDITORE.name
+                )
+            )
         )
     }
 

@@ -10,12 +10,12 @@ import com.iasdietideals24.dietideals24.utilities.dto.OffertaSilenziosaDto
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaTempoFissoDto
 import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
 import com.iasdietideals24.dietideals24.utilities.dto.VenditoreDto
+import com.iasdietideals24.dietideals24.utilities.dto.exceptional.PutProfiloDto
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
-import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -75,25 +75,25 @@ interface API {
      * Crea un nuovo account compratore con le credenziali indicate.
      * @param accountEmail L'email dell'account da creare.
      * @param account Wrapper con le informazioni necessarie a creare il nuovo account.
-     * @return [CompratoreDto] appena creato. Se non è stato creato, viene restituito un account vuoto.
+     * @return [PutProfiloDto] appena creato. Se non è stato creato, viene restituito un account vuoto.
      */
-    @POST("accounts/compratori/{email}")
+    @PUT("accounts/compratori/{email}")
     fun creazioneAccountCompratore(
         @Path("email") accountEmail: String,
-        @Body account: CompratoreDto
-    ): Call<CompratoreDto>
+        @Body account: PutProfiloDto
+    ): Call<PutProfiloDto>
 
     /**
      * Crea un nuovo account venditore con le credenziali indicate.
      * @param accountEmail L'email dell'account da creare.
      * @param account Wrapper con le informazioni necessarie a creare il nuovo account.
-     * @return [VenditoreDto] appena creato. Se non è stato creato, viene restituito un account vuoto.
+     * @return [PutProfiloDto] appena creato. Se non è stato creato, viene restituito un account vuoto.
      */
-    @POST("accounts/venditori/{email}")
+    @PUT("accounts/venditori/{email}")
     fun creazioneAccountVenditore(
         @Path("email") accountEmail: String,
-        @Body account: VenditoreDto
-    ): Call<VenditoreDto>
+        @Body account: PutProfiloDto
+    ): Call<PutProfiloDto>
 
     /**
      * Recupera l'elenco di tutte le aste inverse create dal compratore che ha effettualo l'accesso.
@@ -133,7 +133,7 @@ interface API {
      * @param asta Wrapper con le informazioni necessarie a creare l'asta.
      * @return [AstaInversaDto] appena creata. Se non è stata creata, viene restituita un'asta vuota.
      */
-    @POST("aste/di-compratori/inverse")
+    @PUT("aste/di-compratori/inverse")
     fun creaAstaInversa(
         @Body asta: AstaInversaDto
     ): Call<AstaInversaDto>
@@ -143,7 +143,7 @@ interface API {
      * @param asta Wrapper con le informazioni necessarie a creare l'asta.
      * @return [AstaSilenziosaDto] appena creata. Se non è stata creata, viene restituita un'asta vuota.
      */
-    @POST("aste/di-venditori/silenziose")
+    @PUT("aste/di-venditori/silenziose")
     fun creaAstaSilenziosa(
         @Body asta: AstaSilenziosaDto
     ): Call<AstaSilenziosaDto>
@@ -153,7 +153,7 @@ interface API {
      * @param asta Wrapper con le informazioni necessarie a creare l'asta.
      * @return [AstaTempoFissoDto] appena creata. Se non è stata creata, viene restituita un'asta vuota.
      */
-    @POST("aste/di-venditori/tempo-fisso")
+    @PUT("aste/di-venditori/tempo-fisso")
     fun creaAstaTempoFisso(
         @Body asta: AstaTempoFissoDto
     ): Call<AstaTempoFissoDto>
@@ -164,9 +164,19 @@ interface API {
      * @return [AstaTempoFissoDto] richiesta. Se non esiste, viene restituita un'asta vuota.
      */
     @GET("aste/di-venditori/tempo-fisso/{idAsta}")
-    fun caricaAsteTempoFisso(
+    fun caricaAstaTempoFisso(
         @Path("idAsta") idAsta: Long
     ): Call<AstaTempoFissoDto>
+
+    /**
+     * Recupera i dettagli dell'asta silenziosa specificata.
+     * @param idAsta Identificativo dell'asta da recuperare.
+     * @return [AstaSilenziosaDto] richiesta. Se non esiste, viene restituita un'asta vuota.
+     */
+    @GET("aste/di-venditori/silenziose/{idAsta}")
+    fun caricaAstaSilenziosa(
+        @Path("idAsta") idAsta: Long
+    ): Call<AstaSilenziosaDto>
 
     /**
      * Recupera i dettagli dell'asta inversa specificata.
@@ -174,7 +184,7 @@ interface API {
      * @return [AstaInversaDto] richiesta. Se non esiste, viene restituita un'asta vuota.
      */
     @GET("aste/di-compratori/inverse/{idAsta}")
-    fun caricaAsteInversa(
+    fun caricaAstaInversa(
         @Path("idAsta") idAsta: Long
     ): Call<AstaInversaDto>
 
@@ -199,13 +209,49 @@ interface API {
     ): Call<OffertaTempoFissoDto>
 
     /**
+     * Recupera l'offerta più alta inviata a un'asta a tempo fisso dall'utente.
+     * @param idAsta Identificativo dell'asta della quale recuperare l'offerta.
+     * @param accountEmail Email dell'account dell'utente.
+     * @return [OffertaTempoFissoDto] con il valore più alto. Se non esiste, viene restituita un'offerta vuota.
+     */
+    @GET("offerte/di-venditori/tempo-fisso/recuperaMax")
+    fun recuperaOffertaPersonalePiuAltaTempoFisso(
+        @Query("idAsta") idAsta: Long,
+        @Query("email") accountEmail: String
+    ): Call<OffertaTempoFissoDto>
+
+    /**
+     * Recupera l'offerta più alta inviata a un'asta a silenziosa dall'utente.
+     * @param idAsta Identificativo dell'asta della quale recuperare l'offerta.
+     * @param accountEmail Email dell'account dell'utente.
+     * @return [OffertaSilenziosaDto] con il valore più alto. Se non esiste, viene restituita un'offerta vuota.
+     */
+    @GET("offerte/di-venditori/silenziose/recuperaMax")
+    fun recuperaOffertaPersonalePiuAltaSilenziosa(
+        @Query("idAsta") idAsta: Long,
+        @Query("email") accountEmail: String
+    ): Call<OffertaSilenziosaDto>
+
+    /**
      * Recupera l'offerta più bassa inviata a un'asta inversa.
      * @param idAsta Identificativo dell'asta della quale recuperare l'offerta.
      * @return [OffertaInversaDto] con il valore più basso. Se non esiste, viene restituita un'offerta vuota.
      */
     @GET("offerte/di-compratori/inversa/recuperaMin")
     fun recuperaOffertaPiuBassa(
-        @Path("idAsta") idAsta: Long
+        @Query("idAsta") idAsta: Long
+    ): Call<OffertaInversaDto>
+
+    /**
+     * Recupera l'offerta più bassa inviata a un'asta inversa da un utente.
+     * @param idAsta Identificativo dell'asta della quale recuperare l'offerta.
+     * @param accountEmail Email dell'account dell'utente.
+     * @return [OffertaInversaDto] con il valore più basso. Se non esiste, viene restituita un'offerta vuota.
+     */
+    @GET("offerte/di-compratori/inversa/recuperaMin")
+    fun recuperaOffertaPersonalePiuBassaInversa(
+        @Query("idAsta") idAsta: Long,
+        @Query("email") accountEmail: String
     ): Call<OffertaInversaDto>
 
     /**
@@ -215,7 +261,7 @@ interface API {
      * @param idAsta Identificativo dell'asta alla quale inviare l'offerta.
      * @return [OffertaInversaDto] appena inviata. Se non è stata inviata, viene restituita un'offerta vuota.
      */
-    @POST("offerte/di-compratori/inverse")
+    @PUT("offerte/di-compratori/inverse")
     fun inviaOffertaInversa(
         @Body offerta: OffertaInversaDto,
         @Query("idAsta") idAsta: Long
@@ -228,7 +274,7 @@ interface API {
      * @param idAsta Identificativo dell'asta alla quale inviare l'offerta.
      * @return [OffertaTempoFissoDto] appena inviata. Se non è stata inviata, viene restituita un'offerta vuota.
      */
-    @POST("offerte/di-venditori/tempo-fisso")
+    @PUT("offerte/di-venditori/tempo-fisso")
     fun inviaOffertaTempoFisso(
         @Body offerta: OffertaTempoFissoDto,
         @Query("idAsta") idAsta: Long
@@ -241,7 +287,7 @@ interface API {
      * @param idAsta Identificativo dell'asta alla quale inviare l'offerta.
      * @return [OffertaSilenziosaDto] appena inviata. Se non è stata inviata, viene restituita un'offerta vuota.
      */
-    @POST("offerte/di-venditori/silenziose")
+    @PUT("offerte/di-venditori/silenziose")
     fun inviaOffertaSilenziosa(
         @Body offerta: OffertaSilenziosaDto,
         @Query("idAsta") idAsta: Long
@@ -268,6 +314,16 @@ interface API {
     ): Call<Unit>
 
     /**
+     * Elimina un'asta silenziosa e tutti i suoi dati associati dalla base di dati. Manda inoltre
+     * una notifica a coloro che hanno partecipato all'asta per avvisare della cancellazione.
+     * @param idAsta Identificativo dell'asta da eliminare.
+     */
+    @DELETE("aste/di-venditori/silenziose/{idAsta}")
+    fun eliminaAstaSilenziosa(
+        @Path("idAsta") idAsta: Long
+    ): Call<Unit>
+
+    /**
      * Il metodo recupera l'account venditore specificato.
      * @param accountEmail Email dell'account.
      * @return [VenditoreDto] richiesto. Se non esiste, viene restituito un account vuoto.
@@ -286,18 +342,6 @@ interface API {
     fun caricaAccountCompratore(
         @Path("email") accountEmail: String,
     ): Call<CompratoreDto>
-
-    /**
-     * Crea un nuovo profilo e lo associa all'account che si sta registrando.
-     * @param nomeUtente Il nome utente del profilo che si sta creando.
-     * @param profilo Wrapper con le informazioni necessarie a creare il nuovo profilo.
-     * @return [ProfiloDto] appena creato. Se non è stato creato, viene restituito un profilo vuoto.
-     */
-    @POST("profilo/{nomeUtente}")
-    fun creazioneProfilo(
-        @Path("nomeUtente") nomeUtente: String,
-        @Body profilo: ProfiloDto
-    ): Call<ProfiloDto>
 
     /**
      * Il metodo controlla se l'email è già associata a un account compratore.
@@ -338,7 +382,7 @@ interface API {
     @GET("accounts/venditori/{email}")
     fun associaCreaProfiloCompratore(
         @Path("email") accountEmail: String,
-    ): Call<Boolean>
+    ): Call<VenditoreDto>
 
     /**
      * Il metodo controlla se l'email che si sta usando per creare l'account venditore è già associato
@@ -349,7 +393,7 @@ interface API {
     @GET("accounts/compratori/{email}")
     fun associaCreaProfiloVenditore(
         @Path("email") accountEmail: String,
-    ): Call<Boolean>
+    ): Call<CompratoreDto>
 
     /**
      * Recupera l'elenco di tutte le aste silenziose con le quali può interagire il compratore che ha
@@ -490,9 +534,9 @@ interface API {
      */
     @PATCH("aste/di-venditori/inverse/{idAsta}")
     fun aggiornaAstaInversa(
-        @Body asta: AstaSilenziosaDto,
+        @Body asta: AstaInversaDto,
         @Path("idAsta") idAsta: Long
-    ): Call<AstaSilenziosaDto>
+    ): Call<AstaInversaDto>
 
     /**
      * Recupera tutte le offerte inviate a un'asta inversa.
@@ -552,45 +596,34 @@ interface API {
 
     /**
      * Recupera l'elenco di tutte le aste silenziose alle quali il compratore ha inviato almeno un'offerta.
-     * @param nomeUtente Identificativo dell'account che ha effettuato l'accesso.
+     * @param email Identificativo dell'account che ha effettuato l'accesso.
      * @return [Set] di [AstaSilenziosaDto] con le aste alle quali l'utente ha partecipato. Se non ne esistono,
      * viene restituito un insieme vuoto.
      */
     @GET("aste/di-venditori/silenziose")
     fun recuperaPartecipazioniSilenziose(
-        @Query("nomeUtente") nomeUtente: String
+        @Query("email") email: String
     ): Call<Set<AstaSilenziosaDto>>
 
     /**
      * Recupera l'elenco di tutte le aste a tempo fisso alle quali il compratore ha inviato almeno un'offerta.
-     * @param nomeUtente Identificativo dell'account che ha effettuato l'accesso.
+     * @param email Identificativo dell'account che ha effettuato l'accesso.
      * @return [Set] di [AstaTempoFissoDto] con le aste alle quali l'utente ha partecipato. Se non ne esistono,
      * viene restituito un insieme vuoto.
      */
     @GET("aste/di-venditori/tempo-fisso")
     fun recuperaPartecipazioniTempoFisso(
-        @Query("nomeUtente") nomeUtente: String
+        @Query("email") email: String
     ): Call<Set<AstaTempoFissoDto>>
 
     /**
      * Recupera l'elenco di tutte le aste inverse alle quali il venditore ha inviato almeno un'offerta.
-     * @param nomeUtente Identificativo dell'account che ha effettuato l'accesso.
+     * @param email Identificativo dell'account che ha effettuato l'accesso.
      * @return [Set] di [AstaInversaDto] con le aste alle quali l'utente ha partecipato. Se non ne esistono,
      * viene restituito un insieme vuoto.
      */
     @GET("aste/di-compratori/inverse")
     fun recuperaPartecipazioniInverse(
-        @Query("nomeUtente") nomeUtente: String
+        @Query("email") email: String
     ): Call<Set<AstaInversaDto>>
-
-    /**
-     * Recupera il profilo del mittente associato a una notifica di un compratore dato il suo
-     * identificativo.
-     * @param idMittente Identificativo del mittente della notifica.
-     * @return [ProfiloDto] del mittente della notifica. Se non esiste, restituisce un profilo vuoto.
-     */
-    @GET("profili/{idMittente}")
-    fun recuperaMittenteCompratore(
-        @Path("idMittente") idMittente: String
-    ): Call<ProfiloDto>
 }

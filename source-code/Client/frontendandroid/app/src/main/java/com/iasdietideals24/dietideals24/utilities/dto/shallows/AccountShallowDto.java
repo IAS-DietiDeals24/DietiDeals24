@@ -12,4 +12,9 @@ public class AccountShallowDto {
     private String email;
 
     private String tipoAccount;
+
+    public AccountShallowDto(String email, String tipoAccount) {
+        this.email = email;
+        this.tipoAccount = tipoAccount;
+    }
 }

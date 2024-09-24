@@ -1,8 +1,10 @@
 package com.iasdietideals24.dietideals24.utilities.classes.data
 
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
+
 data class Account(
-    private var _facebookId: String = "",
-    private var _email: String = "",
-    private var _password: String = "",
-    private var _tipoAccount: String = ""
+    val facebookId: String = "",
+    val email: String = "",
+    val password: String = "",
+    val tipoAccount: TipoAccount = TipoAccount.OSPITE
 )

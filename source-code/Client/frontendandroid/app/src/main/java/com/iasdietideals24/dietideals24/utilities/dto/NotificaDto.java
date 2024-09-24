@@ -1,5 +1,7 @@
 package com.iasdietideals24.dietideals24.utilities.dto;
 
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAsta;
+import com.iasdietideals24.dietideals24.utilities.classes.data.Notifica;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto;
 
@@ -29,4 +31,9 @@ public class NotificaDto {
     private Set<AccountShallowDto> destinatariShallow;
 
     private AstaShallowDto astaAssociataShallow;
+
+    public Notifica toNotifica() {
+        return new Notifica(astaAssociataShallow.getIdAsta(), TipoAsta.valueOf(astaAssociataShallow.getTipoAstaSpecifica()),
+                mittenteShallow.getEmail(), "", new byte[]{}, messaggio, dataInvio, oraInvio);
+    }
 }

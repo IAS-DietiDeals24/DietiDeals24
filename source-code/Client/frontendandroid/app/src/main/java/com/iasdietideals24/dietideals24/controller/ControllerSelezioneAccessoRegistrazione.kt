@@ -7,9 +7,10 @@ import com.iasdietideals24.dietideals24.activities.Registrazione
 import com.iasdietideals24.dietideals24.databinding.SelezioneaccessoregistrazioneBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.Logger
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
-import kotlinx.coroutines.runBlocking
 
 class ControllerSelezioneAccessoRegistrazione : Controller<SelezioneaccessoregistrazioneBinding>() {
 
@@ -31,8 +32,8 @@ class ControllerSelezioneAccessoRegistrazione : Controller<Selezioneaccessoregis
 
     @UIBuilder
     override fun impostaMessaggiCorpo() {
-        when (runBlocking { caricaPreferenzaStringa("tipoAccount") }) {
-            "compratore" -> {
+        when (CurrentUser.tipoAccount) {
+            TipoAccount.COMPRATORE -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_compratore)
                 binding.selezioneAccessoRegistrazioneSaluto.text = getString(
                     R.string.selezioneAccessoRegistrazione_saluto,
@@ -40,12 +41,16 @@ class ControllerSelezioneAccessoRegistrazione : Controller<Selezioneaccessoregis
                 )
             }
 
-            "venditore" -> {
+            TipoAccount.VENDITORE -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_venditore)
                 binding.selezioneAccessoRegistrazioneSaluto.text = getString(
                     R.string.selezioneAccessoRegistrazione_saluto,
                     stringaTipoAccount
                 )
+            }
+
+            else -> {
+                // Non fare nulla
             }
         }
     }

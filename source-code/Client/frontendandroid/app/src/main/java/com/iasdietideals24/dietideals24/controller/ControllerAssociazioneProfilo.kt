@@ -2,15 +2,16 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.snackbar.Snackbar
-import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.Home
 import com.iasdietideals24.dietideals24.databinding.AssociaprofiloBinding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.Logger
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.classes.data.Account
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
 
 class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
@@ -45,21 +46,33 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
 
     @EventHandler
     private fun clickFine() {
-        val returned: String? =
-            eseguiChiamataREST("associazioneProfilo", viewModel.toAccount())
+        val returned: Account = associazioneProfilo()
 
-        if (returned == null || returned == "") {
-            binding.associaProfiloPulsanteFine.isEnabled = false
+        when (returned.email) {
+            "" -> binding.associaProfiloPulsanteFine.isEnabled = false
 
-            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
+            else -> {
+                Logger.log("Profile linking successful")
+
+                CurrentUser.id = returned.email
+                listenerChangeActivity?.onChangeActivity(Home::class.java)
+            }
+        }
+    }
+
+    private fun associazioneProfilo(): Account {
+        return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
+            val call = APIController.instance.creazioneAccountCompratore(
+                viewModel.email.value!!,
+                viewModel.toAccountCompratore()
+            )
+            chiamaAPI(call).toAccount()
         } else {
-            Logger.log("Profile linking successful")
-
-            CurrentUser.id = returned
-            listenerChangeActivity?.onChangeActivity(Home::class.java)
+            val call = APIController.instance.creazioneAccountVenditore(
+                viewModel.email.value!!,
+                viewModel.toAccountVenditore()
+            )
+            chiamaAPI(call).toAccount()
         }
     }
 }

@@ -26,10 +26,13 @@ import com.iasdietideals24.dietideals24.databinding.ModificaastaBinding
 import com.iasdietideals24.dietideals24.model.ModelAsta
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
 import com.iasdietideals24.dietideals24.utilities.classes.Logger
-import com.iasdietideals24.dietideals24.utilities.classes.data.DettagliAsta
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAsta
+import com.iasdietideals24.dietideals24.utilities.classes.data.Asta
+import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalDate
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.classes.toMillis
@@ -67,7 +70,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
     @UIBuilder
     override fun impostaMessaggiCorpo() {
         when (viewModel.tipo.value) {
-            "Inversa" -> {
+            TipoAsta.INVERSA -> {
                 binding.modificaTipoAsta.text = getString(
                     R.string.crea_tipoAsta,
                     getString(R.string.tipoAsta_astaInversa)
@@ -78,7 +81,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
                 )
             }
 
-            "Tempo fisso" -> {
+            TipoAsta.TEMPO_FISSO -> {
                 binding.modificaTipoAsta.text = getString(
                     R.string.crea_tipoAsta,
                     getString(R.string.tipoAsta_astaTempoFisso)
@@ -89,12 +92,16 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
                 )
             }
 
-            "Silenziosa" -> {
+            TipoAsta.SILENZIOSA -> {
                 binding.modificaTipoAsta.text = getString(
                     R.string.crea_tipoAsta,
                     getString(R.string.tipoAsta_astaSilenziosa)
                 )
                 binding.modificaConstraintLayout5.visibility = ConstraintLayout.GONE
+            }
+
+            else -> {
+                // Non fare nulla
             }
         }
     }
@@ -151,18 +158,19 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
         viewModel = ViewModelProvider(fragmentActivity)[ModelAsta::class]
 
         if (args.id != 0L) {
-            val asta: DettagliAsta? = eseguiChiamataREST("caricaAsta", args.id)
+            val asta: Asta = caricaAsta()
+            val creatoreAsta: Profilo = caricaProfilo(asta.idCreatore)
 
-            if (asta != null) {
-                viewModel.idAsta.value = asta.anteprimaAsta.id
+            if (asta.idAsta != 0L && creatoreAsta.nomeUtente != "") {
+                viewModel.idAsta.value = asta.idAsta
                 viewModel.idCreatore.value = asta.idCreatore
-                viewModel.nomeCreatore.value = asta.nomeCreatore
-                viewModel.tipo.value = asta.anteprimaAsta.tipoAsta
-                viewModel.dataFine.value = asta.anteprimaAsta.dataScadenza
-                viewModel.oraFine.value = asta.anteprimaAsta.oraScadenza
-                viewModel.prezzo.value = asta.anteprimaAsta.offerta
-                viewModel.immagine.value = asta.anteprimaAsta.foto
-                viewModel.nome.value = asta.anteprimaAsta.nome
+                viewModel.nomeCreatore.value = creatoreAsta.nome
+                viewModel.tipo.value = asta.tipo
+                viewModel.dataFine.value = asta.dataFine
+                viewModel.oraFine.value = asta.oraFine
+                viewModel.prezzo.value = asta.prezzo
+                viewModel.immagine.value = asta.immagine
+                viewModel.nome.value = asta.nome
                 viewModel.categoria.value = asta.categoria
                 viewModel.descrizione.value = asta.descrizione
             }
@@ -176,6 +184,31 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
         selectPhoto = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             viewModel.immagine.value = ImageHandler.encodeImage(uri, fragmentContext)
         }
+    }
+
+    private fun caricaAsta(): Asta {
+        return when (viewModel.tipo.value!!) {
+            TipoAsta.INVERSA -> {
+                val call = APIController.instance.caricaAstaInversa(args.id)
+                chiamaAPI(call).toAsta()
+            }
+
+            TipoAsta.SILENZIOSA -> {
+                val call = APIController.instance.caricaAstaSilenziosa(args.id)
+                chiamaAPI(call).toAsta()
+            }
+
+            TipoAsta.TEMPO_FISSO -> {
+                val call = APIController.instance.caricaAstaTempoFisso(args.id)
+                chiamaAPI(call).toAsta()
+            }
+        }
+    }
+
+    private fun caricaProfilo(idCreatore: String): Profilo {
+        val call = APIController.instance.caricaProfiloDaAccount(idCreatore)
+
+        return chiamaAPI(call).toProfilo()
     }
 
     private fun apriGalleria(results: Map<String, Boolean>) {
@@ -268,7 +301,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
             .setPositiveButton(R.string.ok) { _, _ ->
                 val idAsta = viewModel.idAsta.value!!
                 viewModel.clear()
-                listenerDetails?.onGoToDetails(idAsta, this::class)
+                listenerDetails?.onGoToDetails(idAsta, viewModel.tipo.value!!, this::class)
             }
             .setNegativeButton(R.string.annulla) { _, _ -> }
             .show()
@@ -281,15 +314,10 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
 
             viewModel.idCreatore.value = CurrentUser.id
 
-            val returned: Boolean? = eseguiChiamataREST("modificaAsta", viewModel.toAsta())
+            val returned: Asta = aggiornaAsta()
 
-            when (returned) {
-                null -> Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
-
-                false -> Snackbar.make(
+            when (returned.idAsta) {
+                0L -> Snackbar.make(
                     fragmentView,
                     R.string.crea_astaNonModificata,
                     Snackbar.LENGTH_SHORT
@@ -298,7 +326,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
                     .setTextColor(resources.getColor(R.color.grigio, null))
                     .show()
 
-                true -> {
+                else -> {
                     viewModel.clear()
 
                     Snackbar.make(
@@ -314,6 +342,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
 
                     listenerDetails?.onGoToDetails(
                         viewModel.idAsta.value!!,
+                        viewModel.tipo.value!!,
                         this::class
                     )
                 }
@@ -329,6 +358,32 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
             )
         }
 
+    }
+
+    private fun aggiornaAsta(): Asta {
+        return when (viewModel.tipo.value!!) {
+            TipoAsta.INVERSA -> {
+                val call =
+                    APIController.instance.aggiornaAstaInversa(viewModel.toAstaInversa(), args.id)
+                chiamaAPI(call).toAsta()
+            }
+
+            TipoAsta.TEMPO_FISSO -> {
+                val call = APIController.instance.aggiornaAstaTempoFisso(
+                    viewModel.toAstaTempoFisso(),
+                    args.id
+                )
+                chiamaAPI(call).toAsta()
+            }
+
+            TipoAsta.SILENZIOSA -> {
+                val call = APIController.instance.aggiornaAstaSilenziosa(
+                    viewModel.toAstaSilenziosa(),
+                    args.id
+                )
+                chiamaAPI(call).toAsta()
+            }
+        }
     }
 
     @EventHandler

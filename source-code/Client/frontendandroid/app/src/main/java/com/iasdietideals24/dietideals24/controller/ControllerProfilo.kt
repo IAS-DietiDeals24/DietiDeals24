@@ -10,8 +10,10 @@ import com.iasdietideals24.dietideals24.activities.ScelteIniziali
 import com.iasdietideals24.dietideals24.databinding.ProfiloBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.Logger
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaProfilo
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToCreatedAuctions
@@ -60,19 +62,23 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
     @UIBuilder
     override fun impostaMessaggiCorpo() {
         if (CurrentUser.id != "") {
-            val result: AnteprimaProfilo? =
-                eseguiChiamataREST("recuperaNotifiche", CurrentUser.id)
+            val result: AnteprimaProfilo = recuperaProfilo()
 
-            if (result != null) {
+            if (result.nome != "") {
                 when (result.tipoAccount) {
-                    "compratore" -> binding.profiloTipoAccount.text = getString(
+                    TipoAccount.COMPRATORE -> binding.profiloTipoAccount.text = getString(
                         R.string.profilo_tipoAccount,
                         getString(R.string.tipoAccount_compratore)
                     )
 
-                    "venditore" -> binding.profiloTipoAccount.text = getString(
+                    TipoAccount.VENDITORE -> binding.profiloTipoAccount.text = getString(
                         R.string.profilo_tipoAccount,
                         getString(R.string.tipoAccount_venditore)
+                    )
+
+                    TipoAccount.OSPITE -> binding.profiloTipoAccount.text = getString(
+                        R.string.profilo_tipoAccount,
+                        getString(R.string.tipoAccount_ospite)
                     )
                 }
                 binding.profiloNome.text = getString(R.string.placeholder, result.nome)
@@ -102,6 +108,12 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
             binding.profiloPulsanteEsci.icon =
                 ResourcesCompat.getDrawable(resources, R.drawable.icona_porta, null)
         }
+    }
+
+    private fun recuperaProfilo(): AnteprimaProfilo {
+        val call = APIController.instance.caricaProfiloDaAccount(CurrentUser.id)
+
+        return chiamaAPI(call).toAnteprimaProfilo()
     }
 
     @UIBuilder

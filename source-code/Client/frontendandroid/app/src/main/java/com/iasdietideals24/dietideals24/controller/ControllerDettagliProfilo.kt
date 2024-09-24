@@ -13,8 +13,11 @@ import com.iasdietideals24.dietideals24.databinding.DettagliprofiloBinding
 import com.iasdietideals24.dietideals24.model.ModelProfilo
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.Logger
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.classes.data.Account
 import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
@@ -73,33 +76,27 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
     override fun elaborazioneAggiuntiva() {
         viewModel = ViewModelProvider(fragmentActivity)[ModelProfilo::class]
 
-        val returned: Profilo? = eseguiChiamataREST(
-            "caricaProfilo",
-            if (args.id == "") CurrentUser.id else args.id
-        )
+        val account: Account = caricaAccount()
+        val profilo: Profilo = caricaProfiloDaAccount()
 
-        if (returned != null) {
-            viewModel.tipoAccount.value = when (returned.tipoAccount) {
-                "compratore" -> getString(R.string.tipoAccount_compratore)
-                "venditore" -> getString(R.string.tipoAccount_venditore)
-                else -> ""
-            }
-            viewModel.nomeUtente.value = returned.nomeUtente
-            viewModel.immagineProfilo.value = returned.immagineProfilo
-            viewModel.nome.value = returned.nome
-            viewModel.cognome.value = returned.cognome
-            viewModel.email.value = returned.email
-            viewModel.dataNascita.value = returned.dataNascita
-            viewModel.genere.value = returned.genere
-            viewModel.areaGeografica.value = returned.areaGeografica
-            viewModel.biografia.value = returned.biografia
-            viewModel.linkInstagram.value = returned.linkInstagram
-            viewModel.linkFacebook.value = returned.linkFacebook
-            viewModel.linkGitHub.value = returned.linkGitHub
-            viewModel.linkX.value = returned.linkX
-            viewModel.linkPersonale.value = returned.linkPersonale
+        if (profilo.nomeUtente != "") {
+            viewModel.tipoAccount.value = account.tipoAccount.name
+            viewModel.nomeUtente.value = profilo.nomeUtente
+            viewModel.immagineProfilo.value = profilo.immagineProfilo
+            viewModel.nome.value = profilo.nome
+            viewModel.cognome.value = profilo.cognome
+            viewModel.email.value = account.email
+            viewModel.dataNascita.value = profilo.dataNascita
+            viewModel.genere.value = profilo.genere
+            viewModel.areaGeografica.value = profilo.areaGeografica
+            viewModel.biografia.value = profilo.biografia
+            viewModel.linkInstagram.value = profilo.linkInstagram
+            viewModel.linkFacebook.value = profilo.linkFacebook
+            viewModel.linkGitHub.value = profilo.linkGitHub
+            viewModel.linkX.value = profilo.linkX
+            viewModel.linkPersonale.value = profilo.linkPersonale
 
-            if (CurrentUser.id != returned.idAccountCollegati)
+            if (CurrentUser.id != viewModel.email.value)
                 binding.dettagliProfiloPulsanteModifica.visibility = View.GONE
         } else {
             Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
@@ -107,6 +104,39 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
                 .setTextColor(resources.getColor(R.color.grigio, null))
                 .show()
         }
+    }
+
+    private fun caricaAccount(): Account {
+        return when (CurrentUser.tipoAccount) {
+            TipoAccount.COMPRATORE -> {
+                val call = APIController.instance.caricaAccountCompratore(viewModel.email.value!!)
+                chiamaAPI(call).toAccount()
+            }
+
+            TipoAccount.VENDITORE -> {
+                val call = APIController.instance.caricaAccountVenditore(viewModel.email.value!!)
+                chiamaAPI(call).toAccount()
+            }
+
+            else -> {
+                val call1 = APIController.instance.caricaAccountVenditore(viewModel.email.value!!)
+                val returned = chiamaAPI(call1)
+                if (returned.email != "")
+                    returned.toAccount()
+                else {
+                    val call2 =
+                        APIController.instance.caricaAccountCompratore((viewModel.email.value!!))
+                    chiamaAPI(call2).toAccount()
+                }
+            }
+        }
+    }
+
+    private fun caricaProfiloDaAccount(): Profilo {
+        val call =
+            APIController.instance.caricaProfiloDaAccount(if (args.id == "") CurrentUser.id else args.id)
+
+        return chiamaAPI(call).toProfilo()
     }
 
     @UIBuilder

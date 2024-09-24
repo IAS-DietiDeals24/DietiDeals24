@@ -13,16 +13,17 @@ import com.iasdietideals24.dietideals24.databinding.AccessoBinding
 import com.iasdietideals24.dietideals24.model.ModelAccesso
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.Logger
-import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.classes.data.Account
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAccountNonEsistente
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class ControllerAccesso : Controller<AccessoBinding>() {
 
@@ -53,8 +54,8 @@ class ControllerAccesso : Controller<AccessoBinding>() {
 
     @UIBuilder
     override fun impostaMessaggiCorpo() {
-        when (runBlocking { caricaPreferenzaStringa("tipoAccount") }) {
-            "compratore" -> {
+        when (CurrentUser.tipoAccount) {
+            TipoAccount.COMPRATORE -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_compratore)
                 binding.accessoTipoAccount.text = getString(
                     R.string.placeholder,
@@ -62,12 +63,16 @@ class ControllerAccesso : Controller<AccessoBinding>() {
                 )
             }
 
-            "venditore" -> {
+            TipoAccount.VENDITORE -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_venditore)
                 binding.accessoTipoAccount.text = getString(
                     R.string.placeholder,
                     stringaTipoAccount
                 )
+            }
+
+            else -> {
+                // Non fare nulla
             }
         }
     }
@@ -95,20 +100,11 @@ class ControllerAccesso : Controller<AccessoBinding>() {
                         .setTextColor(resources.getColor(R.color.grigio, null))
                         .show()
 
-                    val returned: Long? = eseguiChiamataREST(
-                        "accountFacebook",
-                        result.accessToken.userId, binding.accessoTipoAccount.text.toString()
-                    )
+                    val returned: Account = accountFacebook(result)
 
-                    when (returned) {
-                        null // errore comunicazione con il backend
-                        -> Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                            .setBackgroundTint(resources.getColor(R.color.blu, null))
-                            .setTextColor(resources.getColor(R.color.grigio, null))
-                            .show()
-
-                        0L // non esiste un account associato a questo account Facebook con questo tipo
-                        -> Snackbar.make(
+                    when (returned.facebookId) {
+                        // non esiste un account associato a questo account Facebook con questo tipo
+                        "" -> Snackbar.make(
                             fragmentView,
                             R.string.accesso_noAccountFacebookCollegato,
                             Snackbar.LENGTH_SHORT
@@ -117,8 +113,8 @@ class ControllerAccesso : Controller<AccessoBinding>() {
                             .setTextColor(resources.getColor(R.color.grigio, null))
                             .show()
 
-                        else // esiste un account associato a questo account Facebook con questo tipo, accedi
-                        -> {
+                        // esiste un account associato a questo account Facebook con questo tipo, accedi
+                        else -> {
                             Logger.log("Facebook sign-in successful")
 
                             listenerChangeActivity?.onChangeActivity(Home::class.java)
@@ -141,6 +137,16 @@ class ControllerAccesso : Controller<AccessoBinding>() {
                         .show()
                 }
             })
+    }
+
+    private fun accountFacebook(result: LoginResult): Account {
+        return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
+            val call = APIController.instance.accountFacebookCompratore(result.accessToken.userId)
+            chiamaAPI(call).toAccount()
+        } else {
+            val call = APIController.instance.accountFacebookVenditore(result.accessToken.userId)
+            chiamaAPI(call).toAccount()
+        }
     }
 
     @UIBuilder
@@ -166,20 +172,16 @@ class ControllerAccesso : Controller<AccessoBinding>() {
     private fun clickAccedi() {
         viewModel.email.value = estraiTestoDaElemento(binding.accessoEmail)
         viewModel.password.value = estraiTestoDaElemento(binding.accessoPassword)
-        viewModel.tipoAccount.value = estraiTestoDaElemento(binding.accessoTipoAccount)
+        viewModel.tipoAccount.value = CurrentUser.tipoAccount
 
         try {
             viewModel.validate()
 
-            val returned: String? = eseguiChiamataREST(
-                "accedi",
-                viewModel.email.value,
-                viewModel.password.value,
-                viewModel.tipoAccount.value
-            )
-            when (returned) {
-                null -> throw EccezioneAPI("Errore di comunicazione con il server.")
+            val returned: Account = accedi()
+
+            when (returned.email) {
                 "" -> throw EccezioneAccountNonEsistente("Account non esistente.")
+
                 else -> {
                     GlobalScope.launch {
                         salvaPreferenzaStringa("email", viewModel.email.value!!)
@@ -188,7 +190,7 @@ class ControllerAccesso : Controller<AccessoBinding>() {
 
                     Logger.log("Sign-in successful")
 
-                    CurrentUser.id = returned
+                    CurrentUser.id = returned.email
                     listenerChangeActivity?.onChangeActivity(Home::class.java)
                 }
             }
@@ -198,11 +200,23 @@ class ControllerAccesso : Controller<AccessoBinding>() {
                 binding.accessoCampoEmail,
                 binding.accessoCampoPassword
             )
-        } catch (_: EccezioneAPI) {
-            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
         }
+    }
+
+    private fun accedi(): Account {
+        return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
+            val call = APIController.instance.accediCompratore(
+                viewModel.email.value!!,
+                viewModel.password.value!!
+            )
+            chiamaAPI(call).toAccount()
+        } else {
+            val call = APIController.instance.accediVenditore(
+                viewModel.email.value!!,
+                viewModel.password.value!!
+            )
+            chiamaAPI(call).toAccount()
+        }
+
     }
 }

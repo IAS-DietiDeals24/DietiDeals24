@@ -26,15 +26,18 @@ import com.iasdietideals24.dietideals24.databinding.CreaastaBinding
 import com.iasdietideals24.dietideals24.model.ModelAsta
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
 import com.iasdietideals24.dietideals24.utilities.classes.Logger
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAsta
+import com.iasdietideals24.dietideals24.utilities.classes.data.Asta
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalDate
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.classes.toMillis
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToHome
-import kotlinx.coroutines.runBlocking
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
@@ -64,7 +67,6 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val tipoAccount = runBlocking { caricaPreferenzaStringa("tipoAccount") }
 
         val asteCompratore = arrayOf(getString(R.string.tipoAsta_astaInversa))
         val asteVenditore = arrayOf(
@@ -76,9 +78,9 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
         MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
             .setTitle(R.string.crea_titoloPopupTipoAsta)
             .setSingleChoiceItems(
-                when (tipoAccount) {
-                    "compratore" -> asteCompratore
-                    "venditore" -> asteVenditore
+                when (CurrentUser.tipoAccount) {
+                    TipoAccount.COMPRATORE -> asteCompratore
+                    TipoAccount.VENDITORE -> asteVenditore
                     else -> arrayOf()
                 },
                 selezionato
@@ -86,9 +88,19 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
                 selezionato = which
             }
             .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
-                when (tipoAccount) {
-                    "compratore" -> viewModel.tipo.value = asteCompratore[selezionato]
-                    "venditore" -> viewModel.tipo.value = asteVenditore[selezionato]
+                when (CurrentUser.tipoAccount) {
+                    TipoAccount.COMPRATORE -> viewModel.tipo.value = TipoAsta.INVERSA
+
+                    TipoAccount.VENDITORE -> viewModel.tipo.value =
+                        when (asteVenditore[selezionato]) {
+                            getString(R.string.tipoAsta_astaTempoFisso) -> TipoAsta.TEMPO_FISSO
+                            getString(R.string.tipoAsta_astaSilenziosa) -> TipoAsta.SILENZIOSA
+                            else -> TipoAsta.TEMPO_FISSO
+                        }
+
+                    else -> {
+                        // Non fare nulla
+                    }
                 }
             }
             .show()
@@ -97,7 +109,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
     @UIBuilder
     override fun impostaMessaggiCorpo() {
         when (viewModel.tipo.value) {
-            "Inversa" -> {
+            TipoAsta.INVERSA -> {
                 binding.creaTipoAsta.text = getString(
                     R.string.crea_tipoAsta,
                     getString(R.string.tipoAsta_astaInversa)
@@ -108,7 +120,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
                 )
             }
 
-            "Tempo fisso" -> {
+            TipoAsta.TEMPO_FISSO -> {
                 binding.creaTipoAsta.text = getString(
                     R.string.crea_tipoAsta,
                     getString(R.string.tipoAsta_astaTempoFisso)
@@ -119,12 +131,16 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
                 )
             }
 
-            "Silenziosa" -> {
+            TipoAsta.SILENZIOSA -> {
                 binding.creaTipoAsta.text = getString(
                     R.string.crea_tipoAsta,
                     getString(R.string.tipoAsta_astaSilenziosa)
                 )
                 binding.creaConstraintLayout5.visibility = ConstraintLayout.GONE
+            }
+
+            else -> {
+                // Non fare niente
             }
         }
     }
@@ -295,15 +311,10 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
 
             viewModel.idCreatore.value = CurrentUser.id
 
-            val returned: Boolean? = eseguiChiamataREST("creaAsta", viewModel.toAsta())
+            val returned: Asta = creaAsta()
 
-            when (returned) {
-                null -> Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
-
-                false -> Snackbar.make(
+            when (returned.idAsta) {
+                0L -> Snackbar.make(
                     fragmentView,
                     R.string.crea_astaNonCreata,
                     Snackbar.LENGTH_SHORT
@@ -312,7 +323,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
                     .setTextColor(resources.getColor(R.color.grigio, null))
                     .show()
 
-                true -> {
+                else -> {
                     viewModel.clear()
 
                     Snackbar.make(
@@ -339,6 +350,25 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
                 binding.creaCampoCategoria,
                 binding.creaCampoDescrizione
             )
+        }
+    }
+
+    private fun creaAsta(): Asta {
+        return when (viewModel.tipo.value!!) {
+            TipoAsta.INVERSA -> {
+                val call = APIController.instance.creaAstaInversa(viewModel.toAstaInversa())
+                chiamaAPI(call).toAsta()
+            }
+
+            TipoAsta.TEMPO_FISSO -> {
+                val call = APIController.instance.creaAstaTempoFisso(viewModel.toAstaTempoFisso())
+                chiamaAPI(call).toAsta()
+            }
+
+            TipoAsta.SILENZIOSA -> {
+                val call = APIController.instance.creaAstaSilenziosa(viewModel.toAstaSilenziosa())
+                chiamaAPI(call).toAsta()
+            }
         }
     }
 
