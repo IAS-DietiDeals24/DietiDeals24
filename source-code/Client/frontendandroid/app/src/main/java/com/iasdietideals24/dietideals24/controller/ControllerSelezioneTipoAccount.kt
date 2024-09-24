@@ -10,8 +10,11 @@ import com.iasdietideals24.dietideals24.activities.Home
 import com.iasdietideals24.dietideals24.databinding.SelezionetipoaccountBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.Logger
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.classes.data.Account
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnHideBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnNextStep
@@ -88,13 +91,37 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
         runBlocking { password = caricaPreferenzaStringa("password") }
         runBlocking { tipoAccount = caricaPreferenzaStringa("tipoAccount") }
 
-        if (email != "" && password != "" && tipoAccount != "") {
-            val returned: String? = eseguiChiamataREST("accedi", email, password, tipoAccount)
+        CurrentUser.tipoAccount = when (tipoAccount) {
+            "COMPRATORE" -> TipoAccount.COMPRATORE
+            "VENDITORE" -> TipoAccount.VENDITORE
+            else -> TipoAccount.OSPITE
+        }
 
-            if (returned != null && returned != "") {
-                CurrentUser.id = returned
+        if (email != "" && password != "" && tipoAccount != "") {
+            val returned: Account = accedi(email!!, password!!)
+
+            if (returned.email != "") {
+                CurrentUser.id = returned.email
                 changeActivityListener?.onChangeActivity(Home::class.java)
             }
+        }
+    }
+
+    private fun accedi(email: String, password: String): Account {
+        return when (CurrentUser.tipoAccount) {
+            TipoAccount.COMPRATORE -> {
+                val call = APIController.instance.accediCompratore(email, password)
+
+                chiamaAPI(call).toAccount()
+            }
+
+            TipoAccount.VENDITORE -> {
+                val call = APIController.instance.accediVenditore(email, password)
+
+                chiamaAPI(call).toAccount()
+            }
+
+            else -> Account()
         }
     }
 
@@ -118,7 +145,8 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
         Logger.log("Buyer account selected")
 
         showBackButtonListener?.onShowBackButton()
-        runBlocking { salvaPreferenzaStringa("tipoAccount", "compratore") }
+        runBlocking { salvaPreferenzaStringa("tipoAccount", "COMPRATORE") }
+        CurrentUser.tipoAccount = TipoAccount.COMPRATORE
         nextStepListener?.onNextStep(this::class)
     }
 
@@ -127,14 +155,16 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
         Logger.log("Seller account selected")
 
         showBackButtonListener?.onShowBackButton()
-        runBlocking { salvaPreferenzaStringa("tipoAccount", "venditore") }
+        runBlocking { salvaPreferenzaStringa("tipoAccount", "VENDITORE") }
+        CurrentUser.tipoAccount = TipoAccount.VENDITORE
         nextStepListener?.onNextStep(this::class)
     }
 
     @EventHandler
     private fun clickOspite() {
-        Logger.log("Host selected")
+        Logger.log("Guest selected")
 
+        CurrentUser.tipoAccount = TipoAccount.OSPITE
         changeActivityListener?.onChangeActivity(Home::class.java)
     }
 }

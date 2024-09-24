@@ -232,4 +232,5 @@
     <string name="modifica_testoConfermaIndietro">Se uscirai da questa schermata, i dati appena inseriti nei campi saranno cancellati. Vuoi proseguire?</string>
     <string name="elimina_titoloConfermaElimina">Conferma eliminazione</string>
     <string name="elimina_testoConfermaElimina">Confermi di voler eliminare questa asta? Non sarai più in grado di ripristinarla.</string>
+    <string name="responseError">Errore</string>
 </resources>

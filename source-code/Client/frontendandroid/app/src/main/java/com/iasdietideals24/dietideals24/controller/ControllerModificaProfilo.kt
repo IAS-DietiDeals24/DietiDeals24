@@ -22,9 +22,11 @@ import com.iasdietideals24.dietideals24.databinding.ModificaprofiloBinding
 import com.iasdietideals24.dietideals24.model.ModelProfilo
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
 import com.iasdietideals24.dietideals24.utilities.classes.Logger
+import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
@@ -165,16 +167,19 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
         try {
             viewModel.validate()
 
-            val returned: Boolean? =
-                eseguiChiamataREST("aggiornaProfilo", viewModel.toProfilo())
+            val returned: Profilo = aggiornaProfilo()
 
-            when (returned) {
-                null -> Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+            when (returned.nomeUtente) {
+                "" -> Snackbar.make(
+                    fragmentView,
+                    R.string.modificaProfilo_fallimentoModifica,
+                    Snackbar.LENGTH_SHORT
+                )
                     .setBackgroundTint(resources.getColor(R.color.blu, null))
                     .setTextColor(resources.getColor(R.color.grigio, null))
                     .show()
 
-                true -> {
+                else -> {
                     Snackbar.make(
                         fragmentView,
                         R.string.modificaProfilo_successoModifica,
@@ -191,15 +196,6 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
                         ControllerModificaProfilo::class
                     )
                 }
-
-                else -> Snackbar.make(
-                    fragmentView,
-                    R.string.modificaProfilo_fallimentoModifica,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
             }
         } catch (_: EccezioneCampiNonCompilati) {
             erroreCampo(
@@ -210,6 +206,15 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
                 binding.modificaProfiloCampoGenere
             )
         }
+    }
+
+    private fun aggiornaProfilo(): Profilo {
+        val call = APIController.instance.aggiornaProfilo(
+            viewModel.toProfilo(),
+            viewModel.nomeUtente.value!!
+        )
+
+        return chiamaAPI(call).toProfilo()
     }
 
     @EventHandler

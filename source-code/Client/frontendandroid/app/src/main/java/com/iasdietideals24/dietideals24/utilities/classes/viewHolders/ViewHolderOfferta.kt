@@ -14,7 +14,9 @@ import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.Logger
+import com.iasdietideals24.dietideals24.utilities.classes.chiamaAPI
 import com.iasdietideals24.dietideals24.utilities.classes.data.OffertaRicevuta
+import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnRefresh
@@ -41,13 +43,17 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
 
     @UIBuilder
     fun bind(currentOfferta: OffertaRicevuta, resources: Resources) {
-        binding.offertaNome.text = currentOfferta.nomeOfferente
-        if (currentOfferta.immagineOfferente.isNotEmpty()) {
-            binding.offertaImmagine.load(currentOfferta.immagineOfferente) {
+        val offerente: Profilo = recuperaOfferente(currentOfferta)
+
+        binding.offertaNome.text = offerente.nomeUtente
+
+        if (offerente.immagineProfilo.isNotEmpty()) {
+            binding.offertaImmagine.load(offerente.immagineProfilo) {
                 crossfade(true)
             }
             binding.offertaImmagine.scaleType = ImageView.ScaleType.CENTER_CROP
         }
+
         binding.offertaValoreOfferta.text =
             resources.getString(R.string.placeholder_prezzo, currentOfferta.offerta.toString())
 
@@ -88,7 +94,6 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
                     .setNegativeButton(R.string.annulla) { _, _ -> }
                     .show()
             }
-
         } else {
             if (currentOfferta.accettata == false)
                 binding.offertaLinearLayout1.setBackgroundColor(
@@ -101,6 +106,12 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
             binding.offertaPulsanteAccetta.visibility = View.GONE
             binding.offertaPulsanteRifiuta.visibility = View.GONE
         }
+    }
+
+    private fun recuperaOfferente(currentOfferta: OffertaRicevuta): Profilo {
+        val call = APIController.instance.caricaProfiloDaAccount(currentOfferta.idOfferente)
+
+        return chiamaAPI(call).toProfilo()
     }
 
     @EventHandler

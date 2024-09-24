@@ -11,11 +11,12 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewbinding.ViewBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.annotations.Utility
-import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.DataStore.dataStore
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -23,6 +24,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.reflect.ParameterizedType
+import kotlin.reflect.full.createInstance
 
 abstract class Controller<bindingType : ViewBinding> : Fragment() {
 
@@ -145,33 +147,40 @@ abstract class Controller<bindingType : ViewBinding> : Fragment() {
 
     /**
      * Effettua una chiamata REST e ne restituisce la risposta JSON deserializzata in un oggetto.
-     * @param methodName Il nome del metodo da chiamare.
-     * @param args Gli argomenti da passare al metodo.
-     * @return Una classe generica che contiene il risultato della chiamata REST.
+     * @param call Wrapper con la funzione da chiamare.
+     * @return Una classe generica [Dto] che contiene il risultato della chiamata REST.
      */
-    @Suppress("UNCHECKED_CAST")
-    @Utility
-    protected fun <Model> eseguiChiamataREST(methodName: String, vararg args: Any?): Model? {
-        var returned: Model? = null
+    protected inline fun <reified Dto : Any> chiamaAPI(call: Call<Dto>): Dto {
+        var ret: Dto? = null
 
-        val kClass = APIController.instance::class
-        val method = kClass.members.find { it.name == methodName }
-        val call = method?.call(APIController.instance, *args) as Call<Model>
-
-        call.enqueue(object : Callback<Model> {
-            override fun onResponse(call: Call<Model>, response: Response<Model>) {
+        call.enqueue(object : Callback<Dto> {
+            override fun onResponse(call: Call<Dto>, response: Response<Dto>) {
                 if (response.isSuccessful) {
-                    returned = response.body()
+                    ret = response.body()
                     onRESTSuccess(call, response)
-                }
+                } else if (!response.isSuccessful)
+                    onRESTUnsuccess(call, response)
             }
 
-            override fun onFailure(call: Call<Model>, t: Throwable) {
+            override fun onFailure(call: Call<Dto>, t: Throwable) {
                 onRESTFailure(call, t)
             }
         })
 
-        return returned
+        return ret ?: createDefaultInstance()
+    }
+
+    /**
+     * Crea una istanza della classe o una istanza di una implementazione concreta della classe [T] nel caso nel quale essa sia non concreta.
+     * @return Una istanza della classe o di una implementazione concreta della classe [T].
+     */
+    inline fun <reified T : Any> createDefaultInstance(): T {
+        return when (T::class) {
+            Set::class -> emptySet<Any>() as T
+            List::class -> emptyList<Any>() as T
+            Map::class -> emptyMap<Any, Any>() as T
+            else -> T::class.createInstance()
+        }
     }
 
     /**
@@ -180,18 +189,38 @@ abstract class Controller<bindingType : ViewBinding> : Fragment() {
      * @param response Un wrapper con i dati della risposta REST.
      */
     @Utility
-    protected open fun <Model> onRESTSuccess(call: Call<Model>, response: Response<Model>) {
+    protected open fun <Dto> onRESTSuccess(call: Call<Dto>, response: Response<Dto>) {
         // Non fare nulla
     }
 
     /**
      * Usata per effettuare una operazione quando la chiamata REST non ha avuto successo.
      * @param call Un wrapper con i dati della richiesta REST.
+     * @param response Un wrapper con i dati della risposta REST.
+     */
+    @Utility
+    protected open fun <Dto> onRESTUnsuccess(call: Call<Dto>, response: Response<Dto>) {
+        Snackbar.make(
+            fragmentView,
+            R.string.responseError.toString() + response.code().toString(),
+            Snackbar.LENGTH_SHORT
+        )
+            .setBackgroundTint(resources.getColor(R.color.blu, null))
+            .setTextColor(resources.getColor(R.color.grigio, null))
+            .show()
+    }
+
+    /**
+     * Usata per effettuare una operazione quando la chiamata REST ha registrato un errore.
+     * @param call Un wrapper con i dati della richiesta REST.
      * @param t L'eccezione o errore che ha causato la fallimento della chiamata REST.
      */
     @Utility
-    protected open fun <Model> onRESTFailure(call: Call<Model>, t: Throwable) {
-        // Non fare nulla
+    protected open fun <Dto> onRESTFailure(call: Call<Dto>, t: Throwable) {
+        Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(resources.getColor(R.color.blu, null))
+            .setTextColor(resources.getColor(R.color.grigio, null))
+            .show()
     }
 
     /**

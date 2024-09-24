@@ -6,9 +6,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.NotificheBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.adapters.AdapterNotifiche
 import com.iasdietideals24.dietideals24.utilities.classes.data.Notifica
+import com.iasdietideals24.dietideals24.utilities.classes.toArrayOfNotifica
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -46,15 +48,14 @@ class ControllerNotifiche : Controller<NotificheBinding>() {
     }
 
     private suspend fun aggiornaNotifiche() {
-        val result: Array<Notifica>? = withContext(ioDispatcher) {
-            eseguiChiamataREST(
-                "recuperaNotifiche",
-                CurrentUser.id,
-            )
+        val result: Array<Notifica> = withContext(ioDispatcher) {
+            val call = APIController.instance.recuperaNotifiche(CurrentUser.id)
+
+            chiamaAPI(call).toArrayOfNotifica()
         }
 
         withContext(mainDispatcher) {
-            if (result != null)
+            if (result.isNotEmpty())
                 binding.notificheRecyclerView.adapter = AdapterNotifiche(result, resources)
             else
                 Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)

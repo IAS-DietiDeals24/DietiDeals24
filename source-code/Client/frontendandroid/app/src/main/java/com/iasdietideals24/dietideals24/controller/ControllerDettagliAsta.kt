@@ -18,25 +18,28 @@ import com.iasdietideals24.dietideals24.databinding.DettagliastaBinding
 import com.iasdietideals24.dietideals24.model.ModelAsta
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.annotations.Utility
+import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.Logger
-import com.iasdietideals24.dietideals24.utilities.classes.data.DettagliAsta
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAsta
+import com.iasdietideals24.dietideals24.utilities.classes.data.Asta
 import com.iasdietideals24.dietideals24.utilities.classes.data.Offerta
+import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnEditButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToBids
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnRefresh
+import retrofit2.Call
+import retrofit2.Response
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
 
 class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
-
-    private val tempoFisso = "Tempo fisso"
-    private val inversa = "Inversa"
-    private val silenziosa = "Silenziosa"
 
     private val args: ControllerDettagliAstaArgs by navArgs()
     private lateinit var viewModel: ModelAsta
@@ -85,7 +88,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
         binding.dettagliAstaImmagineUtente.setOnClickListener { clickImmagine() }
 
-        binding.dettagliAstaNomeUtente.setOnClickListener { clickNomeUtente() }
+        binding.dettagliAstaNomeUtente.setOnClickListener { clickImmagine() }
 
         binding.dettagliAstaPulsanteOfferta.setOnClickListener { clickOfferta() }
 
@@ -100,23 +103,39 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
     override fun elaborazioneAggiuntiva() {
         viewModel = ViewModelProvider(fragmentActivity)[ModelAsta::class]
 
-        val asta: DettagliAsta? = eseguiChiamataREST(
-            "caricaAsta",
-            if (args.id == 0L) viewModel.idAsta.value!! else args.id
-        )
+        val asta: Asta = caricaAsta()
+        val creatoreAsta: Profilo = caricaProfilo(asta.idCreatore)
+        val offerta: Offerta = recuperaOfferta(asta.idAsta, asta.tipo)
 
-        if (asta != null) {
-            viewModel.idAsta.value = asta.anteprimaAsta.id
+        if (asta.idAsta != 0L && creatoreAsta.nomeUtente != "" &&
+            (offerta.offerta != BigDecimal(0.0) && asta.tipo != TipoAsta.SILENZIOSA) ||
+            (asta.tipo == TipoAsta.SILENZIOSA)
+        ) {
+            viewModel.idAsta.value = asta.idAsta
             viewModel.idCreatore.value = asta.idCreatore
-            viewModel.nomeCreatore.value = asta.nomeCreatore
-            viewModel.tipo.value = asta.anteprimaAsta.tipoAsta
-            viewModel.dataFine.value = asta.anteprimaAsta.dataScadenza
-            viewModel.oraFine.value = asta.anteprimaAsta.oraScadenza
-            viewModel.prezzo.value = asta.anteprimaAsta.offerta
-            viewModel.immagine.value = asta.anteprimaAsta.foto
-            viewModel.nome.value = asta.anteprimaAsta.nome
+            viewModel.nomeCreatore.value = creatoreAsta.nome
+            viewModel.tipo.value = asta.tipo
+            viewModel.dataFine.value = asta.dataFine
+            viewModel.oraFine.value = asta.oraFine
+            viewModel.immagine.value = asta.immagine
+            viewModel.nome.value = asta.nome
             viewModel.categoria.value = asta.categoria
             viewModel.descrizione.value = asta.descrizione
+            viewModel.prezzo.value = offerta.offerta
+
+            binding.dettagliAstaOfferta.text = getString(
+                R.string.placeholder_prezzo,
+                if (viewModel.tipo.value != TipoAsta.SILENZIOSA)
+                    offerta.offerta.toString()
+                else
+                    "???"
+            )
+
+            if (creatoreAsta.immagineProfilo.isNotEmpty()) {
+                binding.dettagliAstaCampoFoto.load(creatoreAsta.immagineProfilo) {
+                    crossfade(true)
+                }
+            }
 
             if (CurrentUser.id == "") {
                 binding.dettagliAstaPulsanteOfferta.isEnabled = false
@@ -126,37 +145,75 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                 binding.dettagliAstaPulsanteElimina.visibility = View.GONE
                 binding.dettagliAstaPulsanteElencoOfferte.visibility = View.GONE
             }
-        } else {
+        } else
             Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(resources.getColor(R.color.blu, null))
                 .setTextColor(resources.getColor(R.color.grigio, null))
                 .show()
+    }
+
+    private fun caricaAsta(): Asta {
+        return when (args.tipo) {
+            TipoAsta.INVERSA -> {
+                val call = APIController.instance.caricaAstaInversa(args.id)
+                chiamaAPI(call).toAsta()
+            }
+
+            TipoAsta.SILENZIOSA -> {
+                val call = APIController.instance.caricaAstaSilenziosa(args.id)
+                chiamaAPI(call).toAsta()
+            }
+
+            TipoAsta.TEMPO_FISSO -> {
+                val call = APIController.instance.caricaAstaTempoFisso(args.id)
+                chiamaAPI(call).toAsta()
+            }
+        }
+    }
+
+    private fun caricaProfilo(idCreatore: String): Profilo {
+        val call = APIController.instance.caricaProfiloDaAccount(idCreatore)
+
+        return chiamaAPI(call).toProfilo()
+    }
+
+    private fun recuperaOfferta(idAsta: Long, tipo: TipoAsta): Offerta {
+        return when (tipo) {
+            TipoAsta.TEMPO_FISSO -> {
+                val call = APIController.instance.recuperaOffertaPiuAlta(idAsta)
+                chiamaAPI(call).toOfferta()
+            }
+
+            TipoAsta.INVERSA -> {
+                val call = APIController.instance.recuperaOffertaPiuBassa(idAsta)
+                chiamaAPI(call).toOfferta()
+            }
+
+            TipoAsta.SILENZIOSA -> Offerta()
         }
     }
 
     @UIBuilder
     override fun impostaOsservatori() {
-        val tipoAstaObserver = Observer<String> { newTipoAsta ->
+        val tipoObserver = Observer<TipoAsta> { newTipoAsta ->
             binding.dettagliAstaTipoAsta.text = getString(
                 R.string.crea_tipoAsta,
                 when (newTipoAsta) {
-                    silenziosa -> {
+                    TipoAsta.SILENZIOSA -> {
                         getString(R.string.tipoAsta_astaSilenziosa)
                     }
 
-                    tempoFisso -> {
+                    TipoAsta.TEMPO_FISSO -> {
                         getString(R.string.tipoAsta_astaTempoFisso)
                     }
 
-                    inversa -> {
+                    TipoAsta.INVERSA -> {
                         getString(R.string.tipoAsta_astaInversa)
                     }
-
-                    else -> ""
                 }
             )
         }
-        viewModel.tipo.observe(viewLifecycleOwner, tipoAstaObserver)
+        viewModel.tipo.observe(viewLifecycleOwner, tipoObserver)
 
         val dataObserver = Observer<LocalDate> { newData ->
             binding.dettagliAstaDataScadenza.text = newData.toLocalStringShort()
@@ -169,7 +226,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         viewModel.oraFine.observe(viewLifecycleOwner, oraObserver)
 
         val nomeObserver = Observer<String> { newNomeUtente ->
-            binding.dettagliAstaNomeUtente.text = newNomeUtente
+            binding.dettagliAstaNome.text = newNomeUtente
         }
         viewModel.nome.observe(viewLifecycleOwner, nomeObserver)
 
@@ -200,7 +257,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         val prezzoObserver = Observer<BigDecimal> { newPrezzo ->
             binding.dettagliAstaOfferta.text = getString(
                 R.string.placeholder_prezzo,
-                if (viewModel.tipo.value != silenziosa)
+                if (viewModel.tipo.value != TipoAsta.SILENZIOSA)
                     newPrezzo.toString()
                 else
                     "???"
@@ -220,20 +277,18 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
     private fun clickAiuto() {
         MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
             .setTitle(
-                when (viewModel.tipo.value) {
-                    silenziosa -> getString(R.string.aiuto_titoloAstaSilenziosa)
-                    tempoFisso -> getString(R.string.aiuto_titoloAstaTempoFisso)
-                    inversa -> getString(R.string.aiuto_titoloAstaInversa)
-                    else -> ""
+                when (viewModel.tipo.value!!) {
+                    TipoAsta.SILENZIOSA -> getString(R.string.aiuto_titoloAstaSilenziosa)
+                    TipoAsta.TEMPO_FISSO -> getString(R.string.aiuto_titoloAstaTempoFisso)
+                    TipoAsta.INVERSA -> getString(R.string.aiuto_titoloAstaInversa)
                 }
             )
             .setIcon(R.drawable.icona_aiuto_arancione)
             .setMessage(
-                when (viewModel.tipo.value) {
-                    silenziosa -> getString(R.string.aiuto_astaSilenziosa)
-                    tempoFisso -> getString(R.string.aiuto_astaTempoFisso)
-                    inversa -> getString(R.string.aiuto_astaInversa)
-                    else -> ""
+                when (viewModel.tipo.value!!) {
+                    TipoAsta.SILENZIOSA -> getString(R.string.aiuto_astaSilenziosa)
+                    TipoAsta.TEMPO_FISSO -> getString(R.string.aiuto_astaTempoFisso)
+                    TipoAsta.INVERSA -> getString(R.string.aiuto_astaInversa)
                 }
             )
             .setPositiveButton(resources.getString(R.string.ok)) { _, _ -> }
@@ -242,13 +297,6 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
     @EventHandler
     private fun clickImmagine() {
-        Logger.log("Showing user profile")
-
-        listenerProfile?.onGoToProfile(viewModel.idCreatore.value!!, this::class)
-    }
-
-    @EventHandler
-    private fun clickNomeUtente() {
         Logger.log("Showing user profile")
 
         listenerProfile?.onGoToProfile(viewModel.idCreatore.value!!, this::class)
@@ -268,26 +316,26 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         input.addTextChangedListener {
             input.error = null
         }
-        testoOfferta.text = when (viewModel.tipo.value) {
-            silenziosa -> {
+
+        testoOfferta.text = when (viewModel.tipo.value!!) {
+            TipoAsta.SILENZIOSA -> {
                 getString(R.string.dettagliAsta_testoOfferta1)
             }
 
-            tempoFisso -> {
+            TipoAsta.TEMPO_FISSO -> {
                 getString(R.string.dettagliAsta_testoOfferta1)
             }
 
-            inversa -> {
+            TipoAsta.INVERSA -> {
                 getString(R.string.dettagliAsta_testoOfferta2)
             }
-
-            else -> ""
         }
+
         testoValore.text = getString(
             R.string.placeholder_prezzo,
-            if (viewModel.tipo.value != silenziosa)
+            if (viewModel.tipo.value != TipoAsta.SILENZIOSA) {
                 viewModel.prezzo.value.toString()
-            else
+            } else
                 "???"
         )
 
@@ -303,16 +351,21 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
     private fun clickPositiveButton(input: TextInputEditText) {
         if (isPriceInvalid(input.text.toString())) {
-            when (viewModel.tipo.value) {
-                tempoFisso -> input.error = getString(R.string.dettagliAsta_erroreOffertaTempoFisso)
-                inversa -> input.error = getString(R.string.dettagliAsta_erroreOffertaInversa)
-                silenziosa -> input.error = getString(R.string.dettagliAsta_erroreOffertaSilenziosa)
+            when (viewModel.tipo.value!!) {
+                TipoAsta.TEMPO_FISSO -> input.error =
+                    getString(R.string.dettagliAsta_erroreOffertaTempoFisso)
+
+                TipoAsta.INVERSA -> input.error =
+                    getString(R.string.dettagliAsta_erroreOffertaInversa)
+
+                TipoAsta.SILENZIOSA -> input.error =
+                    getString(R.string.dettagliAsta_erroreOffertaSilenziosa)
             }
         } else {
-            val returned: Boolean? = eseguiChiamataREST(
-                "inviaOfferta",
+            val returned: Offerta = inviaOfferta(
                 Offerta(
-                    args.id,
+                    0L,
+                    0L,
                     CurrentUser.id,
                     input.text.toString().toBigDecimal(),
                     LocalDate.now(),
@@ -320,17 +373,17 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                 )
             )
 
-            when (returned) {
-                null -> Snackbar.make(
+            when (returned.idOfferta) {
+                0L -> Snackbar.make(
                     fragmentView,
-                    R.string.apiError,
+                    R.string.dettagliAsta_fallimentoOfferta,
                     Snackbar.LENGTH_SHORT
                 )
                     .setBackgroundTint(resources.getColor(R.color.blu, null))
                     .setTextColor(resources.getColor(R.color.grigio, null))
                     .show()
 
-                true -> {
+                else -> {
                     Snackbar.make(
                         fragmentView,
                         R.string.dettagliAsta_successoOfferta,
@@ -342,15 +395,34 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
                     listenerRefresh?.onRefresh(viewModel.idAsta.value!!, this::class)
                 }
+            }
+        }
+    }
 
-                else -> Snackbar.make(
-                    fragmentView,
-                    R.string.dettagliAsta_fallimentoOfferta,
-                    Snackbar.LENGTH_SHORT
+    private fun inviaOfferta(offerta: Offerta): Offerta {
+        return when (viewModel.tipo.value!!) {
+            TipoAsta.TEMPO_FISSO -> {
+                val call = APIController.instance.inviaOffertaTempoFisso(
+                    offerta.toOffertaTempoFisso(),
+                    viewModel.idAsta.value!!
                 )
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
+                chiamaAPI(call).toOfferta()
+            }
+
+            TipoAsta.INVERSA -> {
+                val call = APIController.instance.inviaOffertaInversa(
+                    offerta.toOffertaInversa(),
+                    viewModel.idAsta.value!!
+                )
+                chiamaAPI(call).toOfferta()
+            }
+
+            TipoAsta.SILENZIOSA -> {
+                val call = APIController.instance.inviaOffertaSilenziosa(
+                    offerta.toOffertaSilenziosa(),
+                    viewModel.idAsta.value!!
+                )
+                chiamaAPI(call).toOfferta()
             }
         }
     }
@@ -359,24 +431,22 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         val bigDecimal = price.toBigDecimal()
         val regex = Regex("^\\d+\\.\\d{2}\$")
 
-        return when (viewModel.tipo.value) {
-            tempoFisso -> {
+        return when (viewModel.tipo.value!!) {
+            TipoAsta.TEMPO_FISSO -> {
                 bigDecimal <= viewModel.prezzo.value!! || bigDecimal < BigDecimal(0.0) || !price.matches(
                     regex
                 )
             }
 
-            inversa -> {
+            TipoAsta.INVERSA -> {
                 bigDecimal >= viewModel.prezzo.value!! || bigDecimal < BigDecimal(0.0) || !price.matches(
                     regex
                 )
             }
 
-            silenziosa -> {
+            TipoAsta.SILENZIOSA -> {
                 bigDecimal < BigDecimal(0.0) || !price.matches(regex)
             }
-
-            else -> true
         }
     }
 
@@ -402,44 +472,56 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
     }
 
     private fun clickConferma() {
-        val returned: Boolean? = eseguiChiamataREST("eliminaAsta", viewModel.idAsta.value)
+        eliminaAsta()
+    }
 
-        when (returned) {
-            null -> Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
-
-            true -> {
-                Snackbar.make(
-                    fragmentView,
-                    R.string.dettagliAsta_successoEliminazione,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
-
-                listenerBackButton?.onBackButton()
+    private fun eliminaAsta() {
+        val call = when (CurrentUser.tipoAccount) {
+            TipoAccount.COMPRATORE -> {
+                APIController.instance.eliminaAstaInversa(viewModel.idAsta.value!!)
             }
 
-            false -> {
-                Snackbar.make(
-                    fragmentView,
-                    R.string.dettagliAsta_erroreEliminazione,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
+            TipoAccount.VENDITORE -> {
+                APIController.instance.eliminaAstaTempoFisso(viewModel.idAsta.value!!)
+                APIController.instance.eliminaAstaSilenziosa(viewModel.idAsta.value!!)
             }
+
+            else -> return
         }
+
+        chiamaAPI(call)
     }
 
     @EventHandler
     private fun clickOfferte() {
         Logger.log("Showing auction bids")
 
-        listenerBids?.onGoToBids(viewModel.idAsta.value!!, this::class)
+        listenerBids?.onGoToBids(viewModel.idAsta.value!!, viewModel.tipo.value!!, this::class)
+    }
+
+    @Utility
+    override fun <Model> onRESTSuccess(call: Call<Model>, response: Response<Model>) {
+        Snackbar.make(
+            fragmentView,
+            R.string.dettagliAsta_successoEliminazione,
+            Snackbar.LENGTH_SHORT
+        )
+            .setBackgroundTint(resources.getColor(R.color.blu, null))
+            .setTextColor(resources.getColor(R.color.grigio, null))
+            .show()
+
+        listenerBackButton?.onBackButton()
+    }
+
+    @Utility
+    override fun <Model> onRESTUnsuccess(call: Call<Model>, response: Response<Model>) {
+        Snackbar.make(
+            fragmentView,
+            R.string.dettagliAsta_erroreEliminazione,
+            Snackbar.LENGTH_SHORT
+        )
+            .setBackgroundTint(resources.getColor(R.color.blu, null))
+            .setTextColor(resources.getColor(R.color.grigio, null))
+            .show()
     }
 }

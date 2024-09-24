@@ -11,7 +11,10 @@ import com.iasdietideals24.dietideals24.databinding.AstaBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.Logger
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAsta
+import com.iasdietideals24.dietideals24.utilities.classes.chiamaAPI
 import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaAsta
+import com.iasdietideals24.dietideals24.utilities.classes.data.Offerta
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnEditButton
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToBids
@@ -48,27 +51,22 @@ class ViewHolderAstaCreata(private val binding: AstaBinding) :
     @UIBuilder
     fun bind(currentAsta: AnteprimaAsta, resources: Resources) {
         when (currentAsta.tipoAsta) {
-            "Inversa" -> {
+            TipoAsta.INVERSA -> {
                 binding.astaTipo.text = resources.getString(R.string.tipoAsta_astaInversa)
                 binding.astaMessaggio.text =
                     resources.getString(R.string.dettagliAsta_testoOfferta2)
             }
 
-            "Silenziosa" -> {
+            TipoAsta.SILENZIOSA -> {
                 binding.astaTipo.text = resources.getString(R.string.tipoAsta_astaSilenziosa)
                 binding.astaMessaggio.text =
                     resources.getString(R.string.dettagliAsta_testoOfferta1)
             }
 
-            "Tempo fisso" -> {
+            TipoAsta.TEMPO_FISSO -> {
                 binding.astaTipo.text = resources.getString(R.string.tipoAsta_astaTempoFisso)
                 binding.astaMessaggio.text =
                     resources.getString(R.string.dettagliAsta_testoOfferta1)
-            }
-
-            else -> {
-                binding.astaTipo.text = ""
-                binding.astaMessaggio.text = ""
             }
         }
         binding.astaDataScadenza.text =
@@ -79,14 +77,22 @@ class ViewHolderAstaCreata(private val binding: AstaBinding) :
             binding.astaImmagine.load(currentAsta.foto) {
                 crossfade(true)
             }
+
         binding.astaNome.text = currentAsta.nome
-        binding.astaOfferta.text =
-            resources.getString(R.string.placeholder_prezzo, currentAsta.offerta.toString())
+
+        binding.astaOfferta.text = resources.getString(
+            R.string.placeholder_prezzo,
+            {
+                val offerta: Offerta = recuperaOfferta(currentAsta)
+
+                offerta.offerta.toString()
+            }
+        )
 
         binding.astaLinearLayout3.setOnClickListener {
             Logger.log("Showing auction details")
 
-            listenerGoToDetails?.onGoToDetails(currentAsta.id, this::class)
+            listenerGoToDetails?.onGoToDetails(currentAsta.id, currentAsta.tipoAsta, this::class)
         }
 
         binding.astaModificaAsta.setOnClickListener {
@@ -111,57 +117,71 @@ class ViewHolderAstaCreata(private val binding: AstaBinding) :
         binding.astaElencoOfferte.setOnClickListener {
             Logger.log("Showing auction bids")
 
-            listenerGoToBids?.onGoToBids(currentAsta.id, this::class)
+            listenerGoToBids?.onGoToBids(currentAsta.id, currentAsta.tipoAsta, this::class)
         }
     }
 
     private fun clickConferma(currentAsta: AnteprimaAsta, resources: Resources) {
-        var returned: Boolean? = null
+        val call = when (currentAsta.tipoAsta) {
+            TipoAsta.INVERSA -> APIController.instance.eliminaAstaInversa(currentAsta.id)
+            TipoAsta.TEMPO_FISSO -> APIController.instance.eliminaAstaTempoFisso(currentAsta.id)
+            TipoAsta.SILENZIOSA -> APIController.instance.eliminaAstaSilenziosa(currentAsta.id)
+        }
 
-        val call =
-            APIController.instance.eliminaAsta(currentAsta.id)
-
-        call.enqueue(object : Callback<Boolean> {
-            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
-                if (response.isSuccessful) {
-                    returned = response.body()
-                }
+        call.enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful)
+                    onRESTSuccess(resources)
+                else
+                    onRESTUnsuccess(resources)
             }
 
-            override fun onFailure(call: Call<Boolean>, t: Throwable) {
-                throw t
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                onRESTFailure(resources)
             }
         })
+    }
 
-        when (returned) {
-            null -> Snackbar.make(itemView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
+    private fun onRESTSuccess(resources: Resources) {
+        Snackbar.make(
+            itemView,
+            R.string.dettagliAsta_successoEliminazione,
+            Snackbar.LENGTH_SHORT
+        )
+            .setBackgroundTint(resources.getColor(R.color.blu, null))
+            .setTextColor(resources.getColor(R.color.grigio, null))
+            .show()
 
-            true -> {
-                Snackbar.make(
-                    itemView,
-                    R.string.dettagliAsta_successoEliminazione,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
+        listenerRefresh?.onRefresh(sender = this::class)
+    }
 
-                listenerRefresh?.onRefresh(sender = this::class)
-            }
+    private fun onRESTUnsuccess(resources: Resources) {
+        Snackbar.make(
+            itemView,
+            R.string.dettagliAsta_erroreEliminazione,
+            Snackbar.LENGTH_SHORT
+        )
+            .setBackgroundTint(resources.getColor(R.color.blu, null))
+            .setTextColor(resources.getColor(R.color.grigio, null))
+            .show()
+    }
 
-            false -> {
-                Snackbar.make(
-                    itemView,
-                    R.string.dettagliAsta_erroreEliminazione,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
-            }
+    private fun onRESTFailure(resources: Resources) {
+        Snackbar.make(itemView, R.string.apiError, Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(resources.getColor(R.color.blu, null))
+            .setTextColor(resources.getColor(R.color.grigio, null))
+            .show()
+    }
+
+    private fun recuperaOfferta(currentAsta: AnteprimaAsta): Offerta {
+        return if (currentAsta.tipoAsta == TipoAsta.INVERSA) {
+            val call = APIController.instance.recuperaOffertaPiuBassa(currentAsta.id)
+
+            chiamaAPI(call).toOfferta()
+        } else {
+            val call = APIController.instance.recuperaOffertaPiuAlta(currentAsta.id)
+
+            chiamaAPI(call).toOfferta()
         }
     }
 

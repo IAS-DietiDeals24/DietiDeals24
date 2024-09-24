@@ -7,9 +7,12 @@ import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.PartecipazioniBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.classes.adapters.AdapterPartecipazioni
 import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaAsta
+import com.iasdietideals24.dietideals24.utilities.classes.toArrayOfAnteprimaAsta
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
 
 class ControllerPartecipazioni : Controller<PartecipazioniBinding>() {
@@ -33,10 +36,9 @@ class ControllerPartecipazioni : Controller<PartecipazioniBinding>() {
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
         binding.partecipazioniRecyclerView.layoutManager = LinearLayoutManager(fragmentContext)
-        val result: Array<AnteprimaAsta>? =
-            eseguiChiamataREST("recuperaPartecipazioni", CurrentUser.id)
+        val result: Array<AnteprimaAsta> = recuperaPartecipazioni()
 
-        if (result != null)
+        if (result.isNotEmpty())
             binding.partecipazioniRecyclerView.adapter = AdapterPartecipazioni(result, resources)
         else
             Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
@@ -44,6 +46,18 @@ class ControllerPartecipazioni : Controller<PartecipazioniBinding>() {
                 .setTextColor(resources.getColor(R.color.grigio, null))
                 .show()
 
+    }
+
+    private fun recuperaPartecipazioni(): Array<AnteprimaAsta> {
+        return if (CurrentUser.tipoAccount === TipoAccount.COMPRATORE) {
+            val call1 = APIController.instance.recuperaPartecipazioniSilenziose(CurrentUser.id)
+            val call2 = APIController.instance.recuperaPartecipazioniTempoFisso(CurrentUser.id)
+            chiamaAPI(call1).toArrayOfAnteprimaAsta()
+                .plus(chiamaAPI(call2).toArrayOfAnteprimaAsta())
+        } else {
+            val call = APIController.instance.recuperaPartecipazioniInverse(CurrentUser.id)
+            chiamaAPI(call).toArrayOfAnteprimaAsta()
+        }
     }
 
     @UIBuilder

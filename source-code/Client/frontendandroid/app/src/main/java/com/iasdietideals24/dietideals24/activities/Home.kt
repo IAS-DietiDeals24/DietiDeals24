@@ -29,6 +29,7 @@ import com.iasdietideals24.dietideals24.controller.ControllerProfilo
 import com.iasdietideals24.dietideals24.controller.ControllerProfiloDirections
 import com.iasdietideals24.dietideals24.databinding.ActivityHomeBinding
 import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderAnteprimaAsta
 import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderAstaCreata
 import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderNotifica
@@ -86,20 +87,20 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
         navController.popBackStack()
     }
 
-    override fun onGoToDetails(id: Long, sender: KClass<*>) {
+    override fun onGoToDetails(id: Long, tipo: TipoAsta, sender: KClass<*>) {
         val navController = getNavController()
 
         when (sender) {
             ViewHolderAnteprimaAsta::class -> {
                 val action =
-                    ControllerHomeDirections.actionControllerHomeToControllerDettagliAsta(id)
+                    ControllerHomeDirections.actionControllerHomeToControllerDettagliAsta(id, tipo)
                 navController.navigate(action)
             }
 
             ViewHolderNotifica::class -> {
                 val action =
                     ControllerNotificheDirections.actionControllerNotificheToControllerDettagliAsta(
-                        id
+                        id, tipo
                     )
                 navController.navigate(action)
             }
@@ -107,7 +108,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
             ControllerModificaAsta::class -> {
                 val action =
                     ControllerModificaAstaDirections.actionControllerModificaAstaToControllerDettagliAsta(
-                        id
+                        id, tipo
                     )
                 navController.navigate(action)
             }
@@ -115,7 +116,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
             ViewHolderPartecipazione::class -> {
                 val action =
                     ControllerPartecipazioniDirections.actionControllerPartecipazioniToControllerDettagliAsta(
-                        id
+                        id, tipo
                     )
                 navController.navigate(action)
             }
@@ -123,7 +124,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
             ViewHolderAstaCreata::class -> {
                 val action =
                     ControllerAsteCreateDirections.actionControllerAsteCreateToControllerDettagliAsta(
-                        id
+                        id, tipo
                     )
                 navController.navigate(action)
             }
@@ -216,21 +217,23 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
         navController.navigate(R.id.controllerHome)
     }
 
-    override fun onGoToBids(id: Long, sender: KClass<*>) {
+    override fun onGoToBids(id: Long, tipo: TipoAsta, sender: KClass<*>) {
         val navController = getNavController()
 
         when (sender) {
             ControllerDettagliAsta::class -> {
                 val action =
                     ControllerDettagliAstaDirections.actionControllerDettagliAstaToControllerOfferte(
-                        id
+                        id, tipo
                     )
                 navController.navigate(action)
             }
 
             ViewHolderAstaCreata::class -> {
                 val action =
-                    ControllerAsteCreateDirections.actionControllerAsteCreateToControllerOfferte(id)
+                    ControllerAsteCreateDirections.actionControllerAsteCreateToControllerOfferte(
+                        id, tipo
+                    )
                 navController.navigate(action)
             }
         }

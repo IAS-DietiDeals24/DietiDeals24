@@ -37,13 +37,23 @@ object DataStore {
 
 object CurrentUser {
     private var _id: String = ""
+    private var _tipoAccount: TipoAccount = TipoAccount.OSPITE
 
     var id: String
         get() = _id
         set(value) {
             _id = value
         }
+
+    var tipoAccount: TipoAccount
+        get() = _tipoAccount
+        set(value) {
+            _tipoAccount = value
+        }
 }
+
+enum class TipoAccount { COMPRATORE, VENDITORE, OSPITE }
+enum class TipoAsta { INVERSA, TEMPO_FISSO, SILENZIOSA }
 
 object Logger {
     private val LOG_FILE_NAME = "app_log_${Date()}.txt"

@@ -67,4 +67,8 @@ dependencies {
     implementation(libs.lifecycle.common.jvm)
     implementation(libs.commons.text)
     implementation(libs.kotlin.reflect)
+
+    compileOnly(libs.lombok)
+
+    annotationProcessor(libs.lombok)
 }

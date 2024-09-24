@@ -1,6 +1,7 @@
 package com.iasdietideals24.dietideals24.utilities.interfaces
 
 import androidx.appcompat.app.AppCompatActivity
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAsta
 import kotlin.reflect.KClass
 
 interface OnChangeActivity {
@@ -40,7 +41,7 @@ fun interface OnSkipStep {
 }
 
 fun interface OnGoToDetails {
-    fun onGoToDetails(id: Long, sender: KClass<*>)
+    fun onGoToDetails(id: Long, tipo: TipoAsta, sender: KClass<*>)
 }
 
 fun interface OnGoToProfile {
@@ -60,7 +61,7 @@ fun interface OnGoToHelp {
 }
 
 fun interface OnGoToBids {
-    fun onGoToBids(id: Long, sender: KClass<*>)
+    fun onGoToBids(id: Long, tipo: TipoAsta, sender: KClass<*>)
 }
 
 interface OnRefresh {

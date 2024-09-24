@@ -18,7 +18,11 @@ import com.iasdietideals24.dietideals24.databinding.RegistrazioneBinding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.classes.APIController
+import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.classes.Logger
+import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.classes.data.Account
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
@@ -115,22 +119,10 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
                         .setTextColor(resources.getColor(R.color.grigio, null))
                         .show()
 
-                    val returned: Long? = eseguiChiamataREST(
-                        "accountFacebook",
-                        result.accessToken.userId, binding.registrazioneTipoAccount.text.toString()
-                    )
+                    val returned: Account = accountFacebook(result.accessToken.userId)
 
-                    when (returned) {
-                        null -> { // errore di comunicazione con il backend
-                            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                                .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                                .setTextColor(resources.getColor(R.color.grigio, null))
-                                .show()
-
-                            LoginManager.getInstance().logOut()
-                        }
-
-                        0L -> { // non esiste un account associato a questo account Facebook con questo tipo, registrati
+                    when (returned.email) {
+                        "" -> { // non esiste un account associato a questo account Facebook con questo tipo, registrati
                             queryFacebookGraph(result.accessToken)
 
                             try {
@@ -184,6 +176,18 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
             })
     }
 
+    private fun accountFacebook(facebookId: String): Account {
+        return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
+            val call = APIController.instance.accountFacebookCompratore(facebookId)
+
+            chiamaAPI(call).toAccount()
+        } else {
+            val call = APIController.instance.accountFacebookVenditore(facebookId)
+
+            chiamaAPI(call).toAccount()
+        }
+    }
+
     @UIBuilder
     override fun impostaEventiDiCambiamentoCampi() {
         binding.registrazioneEmail.addTextChangedListener {
@@ -222,7 +226,7 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
         viewModel.clear()
         viewModel.email.value = estraiTestoDaElemento(binding.registrazioneEmail)
         viewModel.password.value = estraiTestoDaElemento(binding.registrazionePassword)
-        viewModel.tipoAccount.value = estraiTestoDaElemento(binding.registrazioneTipoAccount)
+        viewModel.tipoAccount.value = CurrentUser.tipoAccount
 
         try {
             viewModel.validateAccount()
@@ -252,23 +256,28 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
     }
 
     private fun scegliAssociaCreaProfilo() {
-        val returned: Boolean? = eseguiChiamataREST(
-            "associaCreaProfilo",
-            viewModel.email.value,
-            viewModel.password.value,
-            viewModel.tipoAccount.value
-        )
+        val returned: Account = associaCreaProfilo()
 
         Logger.log("Sign-up successful")
 
-        when (returned) {
-            null -> throw EccezioneAPI("Errore di comunicazione con il server.")
+        when (returned.email) {
+            // Un account di altro tipo con la stessa email non è stato trovato
+            "" -> listenerNextStep?.onNextStep(this::class)
 
             // Un account di altro tipo con la stessa email è stato trovato
-            true -> listenerSkipStep?.onSkipStep(this::class)
+            else -> listenerSkipStep?.onSkipStep(this::class)
+        }
+    }
 
-            // Un account di altro tipo con la stessa email non è stato trovato
-            false -> listenerNextStep?.onNextStep(this::class)
+    private fun associaCreaProfilo(): Account {
+        return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
+            val call = APIController.instance.associaCreaProfiloCompratore(viewModel.email.value!!)
+
+            chiamaAPI(call).toAccount()
+        } else {
+            val call = APIController.instance.associaCreaProfiloVenditore(viewModel.email.value!!)
+
+            chiamaAPI(call).toAccount()
         }
     }
 
