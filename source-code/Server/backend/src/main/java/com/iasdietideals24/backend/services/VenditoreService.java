@@ -1,5 +1,6 @@
 package com.iasdietideals24.backend.services;
 
+import com.iasdietideals24.backend.exceptions.IllegalDeleteRequestException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.mapstruct.dto.AccountDto;
 import com.iasdietideals24.backend.mapstruct.dto.VenditoreDto;
@@ -23,8 +24,5 @@ public interface VenditoreService extends AccountService {
 
     VenditoreDto partialUpdate(String email, VenditoreDto updatedVenditoreDto) throws InvalidParameterException;
 
-    void delete(String email);
-
-    @Override
-    void validateData(AccountDto nuovoVenditoreDto) throws InvalidParameterException;
+    void delete(String email) throws IllegalDeleteRequestException;
 }

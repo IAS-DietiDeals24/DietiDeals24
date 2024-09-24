@@ -3,6 +3,7 @@ package com.iasdietideals24.backend.services.implementations;
 import com.iasdietideals24.backend.entities.*;
 import com.iasdietideals24.backend.entities.utilities.TokensAccount;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
+import com.iasdietideals24.backend.exceptions.IllegalDeleteRequestException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.exceptions.UpdateRuntimeException;
 import com.iasdietideals24.backend.mapstruct.dto.AccountDto;
@@ -268,14 +269,16 @@ public class VenditoreServiceImpl extends AccountServiceImpl implements Venditor
     }
 
     @Override
-    public void delete(String email) {
+    public void delete(String email) throws IllegalDeleteRequestException {
+
+        Optional<Venditore> existingVenditore = venditoreRepository.findById(email);
+        if (existingVenditore.isPresent()) {
+            Profilo profiloAssociato = existingVenditore.get().getProfilo();
+            if (profiloAssociato.getAccounts().size() == 1)
+                throw new IllegalDeleteRequestException("Non puoi eliminare l'unico account associato al profilo \"" + profiloAssociato.getNomeUtente() + "\"!");
+        }
 
         // Eliminiamo l'entità con l'id passato per parametro
         venditoreRepository.deleteById(email);
-    }
-
-    @Override
-    public void validateData(AccountDto nuovoAccountDto) throws InvalidParameterException {
-        super.validateData(nuovoAccountDto);
     }
 }

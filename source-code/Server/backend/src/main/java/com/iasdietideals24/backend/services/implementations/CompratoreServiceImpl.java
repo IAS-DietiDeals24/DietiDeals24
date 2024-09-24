@@ -275,9 +275,4 @@ public class CompratoreServiceImpl extends AccountServiceImpl implements Comprat
         // Eliminiamo l'entità con l'id passato per parametro
         compratoreRepository.deleteById(email);
     }
-
-    @Override
-    public void validateData(AccountDto nuovoAccountDto) throws InvalidParameterException {
-        super.validateData(nuovoAccountDto);
-    }
 }

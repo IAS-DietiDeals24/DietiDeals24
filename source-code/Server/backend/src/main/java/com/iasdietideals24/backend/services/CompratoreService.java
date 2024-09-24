@@ -24,7 +24,4 @@ public interface CompratoreService extends AccountService {
     CompratoreDto partialUpdate(String email, CompratoreDto updatedCompratoreDto) throws InvalidParameterException;
 
     void delete(String email);
-
-    @Override
-    void validateData(AccountDto nuovoCompratoreDto) throws InvalidParameterException;
 }
