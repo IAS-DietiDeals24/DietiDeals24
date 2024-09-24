@@ -22,7 +22,7 @@ public class OffertaSilenziosaDto extends OffertaDiCompratoreDto {
 
     private Boolean isAccettata = null;
 
-    private AstaShallowDto astaRiferimentoShallow;
+    private AstaShallowDto astaRiferimentoShallow = new AstaShallowDto();
 
     public OffertaSilenziosaDto(Long idOfferta, LocalDate dataInvio, LocalTime oraInvio, BigDecimal valore, AccountShallowDto compratoreCollegatoShallow, Boolean isAccettata, AstaShallowDto astaRiferimentoShallow) {
         super(idOfferta, dataInvio, oraInvio, valore, compratoreCollegatoShallow);

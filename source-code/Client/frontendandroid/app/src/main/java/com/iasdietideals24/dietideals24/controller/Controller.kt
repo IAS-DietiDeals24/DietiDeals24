@@ -167,7 +167,20 @@ abstract class Controller<bindingType : ViewBinding> : Fragment() {
             }
         })
 
-        return ret ?: Dto::class.createInstance()
+        return ret ?: createDefaultInstance()
+    }
+
+    /**
+     * Crea una istanza della classe o una istanza di una implementazione concreta della classe [T] nel caso nel quale essa sia non concreta.
+     * @return Una istanza della classe o di una implementazione concreta della classe [T].
+     */
+    inline fun <reified T : Any> createDefaultInstance(): T {
+        return when (T::class) {
+            Set::class -> emptySet<Any>() as T
+            List::class -> emptyList<Any>() as T
+            Map::class -> emptyMap<Any, Any>() as T
+            else -> T::class.createInstance()
+        }
     }
 
     /**

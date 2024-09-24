@@ -15,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class OffertaDiCompratoreDto extends OffertaDto {
 
-    protected AccountShallowDto compratoreCollegatoShallow;
+    protected AccountShallowDto compratoreCollegatoShallow = new AccountShallowDto();
 
     public OffertaDiCompratoreDto(Long idOfferta, LocalDate dataInvio, LocalTime oraInvio, BigDecimal valore, AccountShallowDto compratoreCollegatoShallow) {
         super(idOfferta, dataInvio, oraInvio, valore);

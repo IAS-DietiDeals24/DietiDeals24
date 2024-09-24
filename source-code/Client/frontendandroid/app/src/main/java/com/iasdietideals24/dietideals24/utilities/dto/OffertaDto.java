@@ -13,13 +13,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class OffertaDto {
 
-    protected Long idOfferta;
+    protected Long idOfferta = 0L;
 
-    protected LocalDate dataInvio;
+    protected LocalDate dataInvio = LocalDate.now();
 
-    protected LocalTime oraInvio;
+    protected LocalTime oraInvio = LocalTime.now();
 
-    protected BigDecimal valore;
+    protected BigDecimal valore = BigDecimal.ZERO;
 
     public OffertaDto(Long idOfferta, LocalDate dataInvio, LocalTime oraInvio, BigDecimal valore) {
         this.idOfferta = idOfferta;

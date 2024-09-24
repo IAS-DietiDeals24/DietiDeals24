@@ -15,21 +15,21 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PutProfiloDto {
 
-    private String nomeUtente;
+    private String nomeUtente = "";
 
-    private byte[] profilePicture;
+    private byte[] profilePicture = new byte[0];
 
-    private AnagraficaProfiloDto anagrafica;
+    private AnagraficaProfiloDto anagrafica = new AnagraficaProfiloDto();
 
-    private LinksProfiloDto links;
+    private LinksProfiloDto links = new LinksProfiloDto();
 
-    private String email;
+    private String email = "";
 
-    private String password;
+    private String password = "";
 
-    private TokensAccountDto tokens;
+    private TokensAccountDto tokens = new TokensAccountDto();
 
-    private String tipoAccount;
+    private String tipoAccount = "";
 
     public PutProfiloDto(String nomeUtente, byte[] profilePicture, AnagraficaProfiloDto anagrafica, LinksProfiloDto links, String email, String password, TokensAccountDto tokens, String tipoAccount) {
         this.nomeUtente = nomeUtente;

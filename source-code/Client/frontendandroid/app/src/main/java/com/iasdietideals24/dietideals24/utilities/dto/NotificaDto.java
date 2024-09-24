@@ -7,6 +7,7 @@ import com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import lombok.Getter;
@@ -18,19 +19,19 @@ import lombok.Setter;
 @NoArgsConstructor
 public class NotificaDto {
 
-    private Long idNotifica;
+    private Long idNotifica = 0L;
 
-    private LocalDate dataInvio;
+    private LocalDate dataInvio = LocalDate.now();
 
-    private LocalTime oraInvio;
+    private LocalTime oraInvio = LocalTime.now();
 
-    private String messaggio;
+    private String messaggio = "";
 
-    private AccountShallowDto mittenteShallow;
+    private AccountShallowDto mittenteShallow = new AccountShallowDto();
 
-    private Set<AccountShallowDto> destinatariShallow;
+    private Set<AccountShallowDto> destinatariShallow = new HashSet<>();
 
-    private AstaShallowDto astaAssociataShallow;
+    private AstaShallowDto astaAssociataShallow = new AstaShallowDto();
 
     public Notifica toNotifica() {
         return new Notifica(astaAssociataShallow.getIdAsta(), TipoAsta.valueOf(astaAssociataShallow.getTipoAstaSpecifica()),

@@ -9,9 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class OffertaShallowDto {
 
-    private Long idOfferta;
+    private Long idOfferta = 0L;
 
-    private String tipoOffertaPerAccount;
+    private String tipoOffertaPerAccount = "";
 
-    private String tipoOffertaSpecifica;
+    private String tipoOffertaSpecifica = "";
 }

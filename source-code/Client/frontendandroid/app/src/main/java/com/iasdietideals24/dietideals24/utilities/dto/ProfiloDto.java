@@ -7,6 +7,7 @@ import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.AnagraficaProfiloDto;
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.LinksProfiloDto;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import lombok.Getter;
@@ -17,11 +18,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ProfiloDto {
-    private String nomeUtente;
-    private byte[] profilePicture;
-    private AnagraficaProfiloDto anagrafica;
-    private LinksProfiloDto links;
-    private Set<AccountShallowDto> accountsShallow;
+    private String nomeUtente = "";
+
+    private byte[] profilePicture = new byte[0];
+
+    private AnagraficaProfiloDto anagrafica = new AnagraficaProfiloDto();
+
+    private LinksProfiloDto links = new LinksProfiloDto();
+
+    private Set<AccountShallowDto> accountsShallow = new HashSet<>();
 
     public ProfiloDto(String nomeUtente, byte[] profilePicture, AnagraficaProfiloDto anagrafica, LinksProfiloDto links, Set<AccountShallowDto> accountsShallow) {
         this.nomeUtente = nomeUtente;

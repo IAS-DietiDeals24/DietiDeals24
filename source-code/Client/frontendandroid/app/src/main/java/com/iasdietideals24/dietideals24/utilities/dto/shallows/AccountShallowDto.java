@@ -9,9 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AccountShallowDto {
 
-    private String email;
+    private String email = "";
 
-    private String tipoAccount;
+    private String tipoAccount = "";
 
     public AccountShallowDto(String email, String tipoAccount) {
         this.email = email;

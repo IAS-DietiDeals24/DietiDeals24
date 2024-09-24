@@ -16,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AstaDiVenditoreDto extends AstaDto {
 
-    protected AccountShallowDto proprietarioShallow;
+    protected AccountShallowDto proprietarioShallow = new AccountShallowDto();
 
     public AstaDiVenditoreDto(Long idAsta, String categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow) {
         super(idAsta, categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, notificheAssociateShallow);

@@ -9,11 +9,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AstaShallowDto {
 
-    private Long idAsta;
+    private Long idAsta = 0L;
 
-    private String tipoAstaPerAccount;
+    private String tipoAstaPerAccount = "";
 
-    private String tipoAstaSpecifica;
+    private String tipoAstaSpecifica = "";
 
     public AstaShallowDto(Long idAsta, String tipoAstaPerAccount, String tipoAstaSpecifica) {
         this.idAsta = idAsta;

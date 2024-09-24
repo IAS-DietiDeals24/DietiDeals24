@@ -9,5 +9,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class NotificaShallowDto {
 
-    private Long idNotifica;
+    private Long idNotifica = 0L;
 }

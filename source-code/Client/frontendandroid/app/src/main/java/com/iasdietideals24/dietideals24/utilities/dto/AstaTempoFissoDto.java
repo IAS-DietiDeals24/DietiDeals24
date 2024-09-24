@@ -20,7 +20,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AstaTempoFissoDto extends AstaDiVenditoreDto {
 
-    private BigDecimal sogliaMinima;
+    private BigDecimal sogliaMinima = BigDecimal.ZERO;
 
     public AstaTempoFissoDto(Long idAsta, String categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow, BigDecimal sogliaMinima) {
         super(idAsta, categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, notificheAssociateShallow, proprietarioShallow);

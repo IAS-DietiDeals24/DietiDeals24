@@ -143,7 +143,7 @@ inline fun <reified T> Set<T>.toArrayOfOffertaRicevuta(): Array<OffertaRicevuta>
  * @param call Wrapper con la funzione da chiamare.
  * @return Una classe generica [Dto] che contiene il risultato della chiamata REST.
  */
-inline fun <reified Dto : Any> RecyclerView.ViewHolder.chiamaAPI(call: Call<Dto>): Dto {
+internal inline fun <reified Dto : Any> RecyclerView.ViewHolder.chiamaAPI(call: Call<Dto>): Dto {
     var ret: Dto? = null
 
     call.enqueue(object : Callback<Dto> {
@@ -158,5 +158,18 @@ inline fun <reified Dto : Any> RecyclerView.ViewHolder.chiamaAPI(call: Call<Dto>
         }
     })
 
-    return ret ?: Dto::class.createInstance()
+    return ret ?: createDefaultInstance()
+}
+
+/**
+ * Crea una istanza della classe o una istanza di una implementazione concreta della classe [T] nel caso nel quale essa sia non concreta.
+ * @return Una istanza della classe o di una implementazione concreta della classe [T].
+ */
+internal inline fun <reified T : Any> createDefaultInstance(): T {
+    return when (T::class) {
+        Set::class -> emptySet<Any>() as T
+        List::class -> emptyList<Any>() as T
+        Map::class -> emptyMap<Any, Any>() as T
+        else -> T::class.createInstance()
+    }
 }

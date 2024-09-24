@@ -145,7 +145,8 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
         Logger.log("Buyer account selected")
 
         showBackButtonListener?.onShowBackButton()
-        runBlocking { salvaPreferenzaStringa("tipoAccount", "compratore") }
+        runBlocking { salvaPreferenzaStringa("tipoAccount", "COMPRATORE") }
+        CurrentUser.tipoAccount = TipoAccount.COMPRATORE
         nextStepListener?.onNextStep(this::class)
     }
 
@@ -154,7 +155,8 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
         Logger.log("Seller account selected")
 
         showBackButtonListener?.onShowBackButton()
-        runBlocking { salvaPreferenzaStringa("tipoAccount", "venditore") }
+        runBlocking { salvaPreferenzaStringa("tipoAccount", "VENDITORE") }
+        CurrentUser.tipoAccount = TipoAccount.VENDITORE
         nextStepListener?.onNextStep(this::class)
     }
 
@@ -162,6 +164,7 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
     private fun clickOspite() {
         Logger.log("Guest selected")
 
+        CurrentUser.tipoAccount = TipoAccount.OSPITE
         changeActivityListener?.onChangeActivity(Home::class.java)
     }
 }

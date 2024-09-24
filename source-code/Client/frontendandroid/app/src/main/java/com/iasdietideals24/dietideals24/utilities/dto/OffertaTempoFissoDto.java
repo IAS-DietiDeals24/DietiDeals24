@@ -20,7 +20,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class OffertaTempoFissoDto extends OffertaDiCompratoreDto {
 
-    private AstaShallowDto astaRiferimentoShallow;
+    private AstaShallowDto astaRiferimentoShallow = new AstaShallowDto();
 
     public OffertaTempoFissoDto(Long idOfferta, LocalDate dataInvio, LocalTime oraInvio, BigDecimal valore, AccountShallowDto compratoreCollegatoShallow, AstaShallowDto astaRiferimentoShallow) {
         super(idOfferta, dataInvio, oraInvio, valore, compratoreCollegatoShallow);

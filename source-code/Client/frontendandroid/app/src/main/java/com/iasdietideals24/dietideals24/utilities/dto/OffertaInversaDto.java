@@ -20,7 +20,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class OffertaInversaDto extends OffertaDiVenditoreDto {
 
-    private AstaShallowDto astaRiferimentoShallow;
+    private AstaShallowDto astaRiferimentoShallow = new AstaShallowDto();
 
     public OffertaInversaDto(Long idOfferta, LocalDate dataInvio, LocalTime oraInvio, BigDecimal valore, AccountShallowDto venditoreCollegatoShallow, AstaShallowDto astaRiferimentoShallow) {
         super(idOfferta, dataInvio, oraInvio, valore, venditoreCollegatoShallow);

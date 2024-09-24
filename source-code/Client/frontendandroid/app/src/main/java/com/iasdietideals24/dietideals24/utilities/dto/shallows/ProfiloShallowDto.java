@@ -9,5 +9,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProfiloShallowDto {
 
-    private String nomeUtente;
+    private String nomeUtente = "";
 }
