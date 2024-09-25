@@ -1,14 +1,14 @@
 package com.iasdietideals24.backend.services;
 
+import com.iasdietideals24.backend.exceptions.IllegalDeleteRequestException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
-import com.iasdietideals24.backend.mapstruct.dto.AccountDto;
 import com.iasdietideals24.backend.mapstruct.dto.CompratoreDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
-public interface CompratoreService extends AccountService {
+public interface CompratoreService {
 
 
     CompratoreDto create(String email, CompratoreDto nuovoCompratoreDto) throws InvalidParameterException;
@@ -23,5 +23,5 @@ public interface CompratoreService extends AccountService {
 
     CompratoreDto partialUpdate(String email, CompratoreDto updatedCompratoreDto) throws InvalidParameterException;
 
-    void delete(String email);
+    void delete(String email) throws IllegalDeleteRequestException;
 }

@@ -48,15 +48,22 @@ public class ProfiloServiceImpl implements ProfiloService {
 
         // Verifichiamo l'integrità dei dati
         nuovoProfiloDto.setNomeUtente(nomeUtente);
-        this.validateData(nuovoProfiloDto);
+        validateData(nuovoProfiloDto);
 
         // Convertiamo a entità
         Profilo nuovoProfilo = profiloMapper.toEntity(nuovoProfiloDto);
+
+        // Recuperiamo le associazioni
+        convertRelations(nuovoProfiloDto, nuovoProfilo);
 
         // Registriamo l'entità
         Profilo savedProfilo = profiloRepository.save(nuovoProfilo);
 
         return profiloMapper.toDto(savedProfilo);
+    }
+
+    public void convertRelations(PutProfiloDto nuovoProfiloDto, Profilo nuovoProfilo) {
+        // Non ci sono relazioni
     }
 
     @Override
@@ -105,9 +112,7 @@ public class ProfiloServiceImpl implements ProfiloService {
             Profilo existingProfilo = foundProfilo.get();
 
             // Effettuiamo le modifiche
-            ifPresentUpdateProfilePicture(updatedProfiloDto.getProfilePicture(), existingProfilo);
-            ifPresentUpdateAnagrafica(updatedProfiloDto.getAnagrafica(), existingProfilo);
-            ifPresentUpdateLinks(updatedProfiloDto.getLinks(), existingProfilo);
+            ifPresentUpdates(updatedProfiloDto, existingProfilo);
 
             //Non è possibile modificare l'associazione "accounts" tramite la risorsa "profili"
 
@@ -115,14 +120,20 @@ public class ProfiloServiceImpl implements ProfiloService {
         }
     }
 
-    private void ifPresentUpdateProfilePicture(byte[] updatedProfilePicture, Profilo existingProfilo) throws InvalidParameterException {
+    public void ifPresentUpdates(ProfiloDto updatedProfiloDto, Profilo existingProfilo) throws InvalidParameterException {
+        ifPresentUpdateProfilePicture(updatedProfiloDto.getProfilePicture(), existingProfilo);
+        ifPresentUpdateAnagrafica(updatedProfiloDto.getAnagrafica(), existingProfilo);
+        ifPresentUpdateLinks(updatedProfiloDto.getLinks(), existingProfilo);
+    }
+
+    void ifPresentUpdateProfilePicture(byte[] updatedProfilePicture, Profilo existingProfilo) throws InvalidParameterException {
         if (updatedProfilePicture != null) {
             isProfilePictureValid(updatedProfilePicture);
             existingProfilo.setProfilePicture(updatedProfilePicture);
         }
     }
 
-    private void ifPresentUpdateAnagrafica(AnagraficaProfiloDto updatedAnagraficaDto, Profilo existingProfilo) throws InvalidParameterException {
+    void ifPresentUpdateAnagrafica(AnagraficaProfiloDto updatedAnagraficaDto, Profilo existingProfilo) throws InvalidParameterException {
         AnagraficaProfilo existingAnagrafica = existingProfilo.getAnagrafica();
 
         if (updatedAnagraficaDto != null) {
@@ -140,46 +151,46 @@ public class ProfiloServiceImpl implements ProfiloService {
         }
     }
 
-    private void ifPresentUpdateNome(String updatedNome, AnagraficaProfilo existingAnagrafica) throws InvalidParameterException {
+    void ifPresentUpdateNome(String updatedNome, AnagraficaProfilo existingAnagrafica) throws InvalidParameterException {
         if (updatedNome != null) {
             this.isNomeValid(updatedNome);
             existingAnagrafica.setNome(updatedNome);
         }
     }
 
-    private void ifPresentUpdateCognome(String updatedCognome, AnagraficaProfilo existingAnagrafica) throws InvalidParameterException {
+    void ifPresentUpdateCognome(String updatedCognome, AnagraficaProfilo existingAnagrafica) throws InvalidParameterException {
         if (updatedCognome != null) {
             this.isCognomeValid(updatedCognome);
             existingAnagrafica.setCognome(updatedCognome);
         }
     }
 
-    private void ifPresentUpdateDataNascita(LocalDate updatedDataNascita, AnagraficaProfilo existingAnagrafica) throws InvalidParameterException {
+    void ifPresentUpdateDataNascita(LocalDate updatedDataNascita, AnagraficaProfilo existingAnagrafica) throws InvalidParameterException {
         if (updatedDataNascita != null) {
             this.isDataNascitaValid(updatedDataNascita);
             existingAnagrafica.setDataNascita(updatedDataNascita);
         }
     }
 
-    private void ifPresentUpdateAreaGeografica(String updatedAreaGeografica, AnagraficaProfilo existingAnagrafica) {
+    void ifPresentUpdateAreaGeografica(String updatedAreaGeografica, AnagraficaProfilo existingAnagrafica) {
         if (updatedAreaGeografica != null) {
             existingAnagrafica.setAreaGeografica(updatedAreaGeografica);
         }
     }
 
-    private void ifPresentUpdateGenere(String updatedGenere, AnagraficaProfilo existingAnagrafica) {
+    void ifPresentUpdateGenere(String updatedGenere, AnagraficaProfilo existingAnagrafica) {
         if (updatedGenere != null) {
             existingAnagrafica.setGenere(updatedGenere);
         }
     }
 
-    private void ifPresentUpdateBiografia(String updatedBiografia, AnagraficaProfilo existingAnagrafica) {
+    void ifPresentUpdateBiografia(String updatedBiografia, AnagraficaProfilo existingAnagrafica) {
         if (updatedBiografia != null) {
             existingAnagrafica.setBiografia(updatedBiografia);
         }
     }
 
-    private void ifPresentUpdateLinks(LinksProfiloDto updatedLinksDto, Profilo existingProfilo) {
+    void ifPresentUpdateLinks(LinksProfiloDto updatedLinksDto, Profilo existingProfilo) {
         LinksProfilo existingLinks = existingProfilo.getLinks();
 
         if (updatedLinksDto != null) {
@@ -197,31 +208,31 @@ public class ProfiloServiceImpl implements ProfiloService {
         }
     }
 
-    private void ifPresentUpdateLinkPersonale(String updatedLinkPersonale, LinksProfilo existingLinks) {
+    void ifPresentUpdateLinkPersonale(String updatedLinkPersonale, LinksProfilo existingLinks) {
         if (updatedLinkPersonale != null) {
             existingLinks.setLinkPersonale(updatedLinkPersonale);
         }
     }
 
-    private void ifPresentUpdateLinkInstagram(String updatedLinkInstagram, LinksProfilo existingLinks) {
+    void ifPresentUpdateLinkInstagram(String updatedLinkInstagram, LinksProfilo existingLinks) {
         if (updatedLinkInstagram != null) {
             existingLinks.setLinkInstagram(updatedLinkInstagram);
         }
     }
 
-    private void ifPresentUpdateLinkFacebook(String updatedLinkFacebook, LinksProfilo existingLinks) {
+    void ifPresentUpdateLinkFacebook(String updatedLinkFacebook, LinksProfilo existingLinks) {
         if (updatedLinkFacebook != null) {
             existingLinks.setLinkFacebook(updatedLinkFacebook);
         }
     }
 
-    private void ifPresentUpdateLinkGitHub(String updatedLinkGitHub, LinksProfilo existingLinks) {
+    void ifPresentUpdateLinkGitHub(String updatedLinkGitHub, LinksProfilo existingLinks) {
         if (updatedLinkGitHub != null) {
             existingLinks.setLinkGitHub(updatedLinkGitHub);
         }
     }
 
-    private void ifPresentUpdateLinkX(String updatedLinkX, LinksProfilo existingLinks) {
+    void ifPresentUpdateLinkX(String updatedLinkX, LinksProfilo existingLinks) {
         if (updatedLinkX != null) {
             existingLinks.setLinkX(updatedLinkX);
         }

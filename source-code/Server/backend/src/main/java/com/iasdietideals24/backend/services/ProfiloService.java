@@ -1,5 +1,6 @@
 package com.iasdietideals24.backend.services;
 
+import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.mapstruct.dto.ProfiloDto;
 import com.iasdietideals24.backend.mapstruct.dto.exceptional.PutProfiloDto;
@@ -27,4 +28,8 @@ public interface ProfiloService {
     void validateData(ProfiloDto nuovoProfiloDto) throws InvalidParameterException;
 
     void validateData(PutProfiloDto nuovoProfiloDto) throws InvalidParameterException;
+
+    void convertRelations(PutProfiloDto nuovoProfiloDto, Profilo nuovoProfilo);
+
+    void ifPresentUpdates(ProfiloDto updatedProfiloDto, Profilo existingProfilo) throws InvalidParameterException;
 }
