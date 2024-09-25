@@ -56,7 +56,7 @@ public class CompratoreServiceImpl implements CompratoreService {
 
         //Verifichiamo l'integrità dei dati
         nuovoCompratoreDto.setEmail(email);
-        validateData(nuovoCompratoreDto);
+        checkFieldsValid(nuovoCompratoreDto);
 
         // Convertiamo a entità
         Compratore nuovoCompratore = compratoreMapper.toEntity(nuovoCompratoreDto);
@@ -70,14 +70,16 @@ public class CompratoreServiceImpl implements CompratoreService {
         return compratoreMapper.toDto(savedCompratore);
     }
 
-    public void validateData(CompratoreDto nuovoCompratoreDto) throws InvalidParameterException {
-        accountService.validateData(nuovoCompratoreDto);
+    @Override
+    public void checkFieldsValid(CompratoreDto compratoreDto) throws InvalidParameterException {
+        accountService.checkFieldsValid(compratoreDto);
     }
 
-    public void convertRelations(CompratoreDto nuovoCompratoreDto, Compratore nuovoCompratore) throws InvalidParameterException {
-        accountService.convertRelations(nuovoCompratoreDto, nuovoCompratore);
-        convertAstePosseduteShallow(nuovoCompratoreDto.getAstePosseduteShallow(), nuovoCompratore);
-        convertOfferteCollegateShallow(nuovoCompratoreDto.getOfferteCollegateShallow(), nuovoCompratore);
+    @Override
+    public void convertRelations(CompratoreDto compratoreDto, Compratore compratore) throws InvalidParameterException {
+        accountService.convertRelations(compratoreDto, compratore);
+        convertAstePosseduteShallow(compratoreDto.getAstePosseduteShallow(), compratore);
+        convertOfferteCollegateShallow(compratoreDto.getOfferteCollegateShallow(), compratore);
     }
 
     void convertAstePosseduteShallow(Set<AstaShallowDto> astePosseduteShallowDto, Compratore nuovoCompratore) throws InvalidParameterException {
@@ -155,7 +157,7 @@ public class CompratoreServiceImpl implements CompratoreService {
             Compratore existingCompratore = foundCompratore.get();
 
             // Effettuiamo le modifiche
-            ifPresentUpdates(updatedCompratoreDto, existingCompratore);
+            updatePresentFields(updatedCompratoreDto, existingCompratore);
 
             // Non è possibile modificare le associazioni "profilo", "notificheInviate", "notificheRicevute", "astePossedute", "offerteCollegate"
 
@@ -163,25 +165,21 @@ public class CompratoreServiceImpl implements CompratoreService {
         }
     }
 
-    void ifPresentUpdates(CompratoreDto updatedCompratoreDto, Compratore existingCompratore) throws InvalidParameterException {
-        accountService.ifPresentUpdates(updatedCompratoreDto, existingCompratore);
+    @Override
+    public void updatePresentFields(CompratoreDto updatedCompratoreDto, Compratore existingCompratore) throws InvalidParameterException {
+        accountService.updatePresentFields(updatedCompratoreDto, existingCompratore);
     }
 
 
     @Override
-    public void delete(String email) throws IllegalDeleteRequestException {
+    public void delete(String email) throws InvalidParameterException {
 
-        Optional<Compratore> existingVenditore = compratoreRepository.findById(email);
-        if (existingVenditore.isPresent()) {
-            checkDeleteLastAccount(existingVenditore.get().getProfilo());
+        Optional<Compratore> existingCompratore = compratoreRepository.findById(email);
+        if (existingCompratore.isPresent() && accountService.isLastProfiloAccount(existingCompratore.get())) {
+            throw new IllegalDeleteRequestException("Non puoi eliminare l'unico account associato al profilo!");
         }
 
         // Eliminiamo l'entità con l'id passato per parametro
         compratoreRepository.deleteById(email);
-    }
-
-    void checkDeleteLastAccount(Profilo profiloAssociato) throws IllegalDeleteRequestException {
-        if (profiloAssociato.getAccounts().size() == 1)
-            throw new IllegalDeleteRequestException("Non puoi eliminare l'unico account associato al profilo \"" + profiloAssociato.getNomeUtente() + "\"!");
     }
 }

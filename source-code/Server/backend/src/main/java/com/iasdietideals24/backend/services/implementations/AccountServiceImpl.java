@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-public abstract class AbstractAccountService implements AccountService {
+public class AccountServiceImpl implements AccountService {
 
     private final ProfiloMapper profiloMapper;
     private final NotificaMapper notificaMapper;
@@ -29,7 +29,7 @@ public abstract class AbstractAccountService implements AccountService {
     private final ProfiloRepository profiloRepository;
     private final NotificaRepository notificaRepository;
 
-    protected AbstractAccountService(ProfiloMapper profiloMapper, NotificaMapper notificaMapper, TokensAccountMapper tokensAccountMapper, ProfiloRepository profiloRepository, NotificaRepository notificaRepository) {
+    protected AccountServiceImpl(ProfiloMapper profiloMapper, NotificaMapper notificaMapper, TokensAccountMapper tokensAccountMapper, ProfiloRepository profiloRepository, NotificaRepository notificaRepository) {
         this.profiloMapper = profiloMapper;
         this.notificaMapper = notificaMapper;
         this.tokensAccountMapper = tokensAccountMapper;
@@ -39,13 +39,13 @@ public abstract class AbstractAccountService implements AccountService {
     }
 
     @Override
-    public void validateData(AccountDto nuovoAccountDto) throws InvalidParameterException {
-        isEmailValid(nuovoAccountDto.getEmail());
-        isPasswordValid(nuovoAccountDto.getPassword());
-        isProfiloShallowValid(nuovoAccountDto.getProfiloShallow());
+    public void checkFieldsValid(AccountDto accountDto) throws InvalidParameterException {
+        checkEmailValid(accountDto.getEmail());
+        checkPasswordValid(accountDto.getPassword());
+        checkProfiloShallowValid(accountDto.getProfiloShallow());
     }
 
-    void isEmailValid(String email) throws InvalidParameterException {
+    void checkEmailValid(String email) throws InvalidParameterException {
         if (email == null)
             throw new InvalidParameterException("L'email non può essere null!");
         else if (email.isBlank())
@@ -54,31 +54,31 @@ public abstract class AbstractAccountService implements AccountService {
             throw new InvalidParameterException("Formato email non valido!");
     }
 
-    void isPasswordValid(String password) throws InvalidParameterException {
+    void checkPasswordValid(String password) throws InvalidParameterException {
         if (password == null)
             throw new InvalidParameterException("La password non può essere null!");
         else if (password.isBlank())
             throw new InvalidParameterException("La password non può essere vuota!");
     }
 
-    void isProfiloShallowValid(ProfiloShallowDto profiloShallow) throws InvalidParameterException {
+    void checkProfiloShallowValid(ProfiloShallowDto profiloShallow) throws InvalidParameterException {
         if (profiloShallow == null)
             throw new InvalidParameterException();
 
-        isNomeUtenteValid(profiloShallow.getNomeUtente());
+        checkNomeUtenteValid(profiloShallow.getNomeUtente());
     }
 
-    void isNomeUtenteValid(String nomeUtente) throws InvalidParameterException {
+    void checkNomeUtenteValid(String nomeUtente) throws InvalidParameterException {
         if (nomeUtente == null)
             throw new InvalidParameterException("Il nome utente non può essere null!");
         else if (nomeUtente.isBlank())
             throw new InvalidParameterException("Il nome utente non può essere vuoto!");
     }
 
-    public void convertRelations(AccountDto nuovoAccountDto, Account nuovoAccount) throws InvalidParameterException {
-        convertProfiloShallow(nuovoAccountDto.getProfiloShallow(), nuovoAccount);
-        convertNotificheInviateShallow(nuovoAccountDto.getNotificheInviateShallow(), nuovoAccount);
-        convertNotificheRicevuteShallow(nuovoAccountDto.getNotificheRicevuteShallow(), nuovoAccount);
+    public void convertRelations(AccountDto accountDto, Account account) throws InvalidParameterException {
+        convertProfiloShallow(accountDto.getProfiloShallow(), account);
+        convertNotificheInviateShallow(accountDto.getNotificheInviateShallow(), account);
+        convertNotificheRicevuteShallow(accountDto.getNotificheRicevuteShallow(), account);
     }
 
     void convertProfiloShallow(ProfiloShallowDto profiloShallowDto, Account nuovoAccount) throws InvalidParameterException {
@@ -128,7 +128,7 @@ public abstract class AbstractAccountService implements AccountService {
         }
     }
 
-    public void ifPresentUpdates(AccountDto updatedAccountDto, Account existingAccount) throws InvalidParameterException {
+    public void updatePresentFields(AccountDto updatedAccountDto, Account existingAccount) throws InvalidParameterException {
         ifPresentUpdateEmail(updatedAccountDto.getEmail(), existingAccount);
         ifPresentUpdatePassword(updatedAccountDto.getPassword(), existingAccount);
         ifPresentUpdateTokens(updatedAccountDto.getTokens(), existingAccount);
@@ -136,14 +136,14 @@ public abstract class AbstractAccountService implements AccountService {
 
     void ifPresentUpdateEmail(String updatedEmail, Account existingAccount) throws InvalidParameterException {
         if (updatedEmail != null) {
-            isEmailValid(updatedEmail);
+            checkEmailValid(updatedEmail);
             existingAccount.setEmail(updatedEmail);
         }
     }
 
     void ifPresentUpdatePassword(String updatedPassword, Account existingAccount) throws InvalidParameterException {
         if (updatedPassword != null) {
-            isPasswordValid(updatedPassword);
+            checkPasswordValid(updatedPassword);
             existingAccount.setPassword(updatedPassword);
         }
     }
@@ -185,5 +185,14 @@ public abstract class AbstractAccountService implements AccountService {
         if (updatedIdGitHub != null) {
             existingTokens.setIdGitHub(updatedIdGitHub);
         }
+    }
+
+    @Override
+    public boolean isLastProfiloAccount(Account account) throws InvalidParameterException {
+        Profilo profiloAssociato = account.getProfilo();
+        if (profiloAssociato == null)
+            throw new InvalidParameterException("Il profilo associato all'account \"" + account.getEmail() + "\" è null!");
+
+        return (profiloAssociato.getAccounts().size() == 1);
     }
 }

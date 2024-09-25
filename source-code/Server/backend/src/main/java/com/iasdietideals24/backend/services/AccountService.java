@@ -6,9 +6,11 @@ import com.iasdietideals24.backend.mapstruct.dto.AccountDto;
 
 public interface AccountService {
 
-    void validateData(AccountDto nuovoAccountDto) throws InvalidParameterException;
+    void checkFieldsValid(AccountDto accountDto) throws InvalidParameterException;
 
-    void convertRelations(AccountDto nuovoAccountDto, Account nuovoAccount) throws InvalidParameterException;
+    void convertRelations(AccountDto accountDto, Account account) throws InvalidParameterException;
 
-    void ifPresentUpdates(AccountDto updatedAccountDto, Account existingAccount) throws InvalidParameterException;
+    void updatePresentFields(AccountDto updatedAccountDto, Account existingAccount) throws InvalidParameterException;
+
+    boolean isLastProfiloAccount(Account account) throws InvalidParameterException;
 }

@@ -25,11 +25,11 @@ public interface ProfiloService {
 
     void delete(String nomeUtente);
 
-    void validateData(ProfiloDto nuovoProfiloDto) throws InvalidParameterException;
+    void checkFieldsValid(ProfiloDto nuovoProfiloDto) throws InvalidParameterException;
 
-    void validateData(PutProfiloDto nuovoProfiloDto) throws InvalidParameterException;
+    void checkFieldsValid(PutProfiloDto profiloDto) throws InvalidParameterException;
 
-    void convertRelations(PutProfiloDto nuovoProfiloDto, Profilo nuovoProfilo);
+    void convertRelations(PutProfiloDto profiloDto, Profilo profilo);
 
-    void ifPresentUpdates(ProfiloDto updatedProfiloDto, Profilo existingProfilo) throws InvalidParameterException;
+    void updatePresentFields(ProfiloDto updatedProfiloDto, Profilo existingProfilo) throws InvalidParameterException;
 }
