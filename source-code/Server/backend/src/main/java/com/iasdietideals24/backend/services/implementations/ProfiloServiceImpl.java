@@ -29,17 +29,11 @@ public class ProfiloServiceImpl implements ProfiloService {
     private final ProfiloMapper profiloMapper;
     private final AnagraficaProfiloMapper anagraficaProfiloMapper;
     private final LinksProfiloMapper linksProfiloMapper;
-
     private final ProfiloRepository profiloRepository;
 
-    public ProfiloServiceImpl(ProfiloMapper profiloMapper,
-                              AnagraficaProfiloMapper anagraficaProfiloMapper,
-                              LinksProfiloMapper linksProfiloMapper,
-                              ProfiloRepository profiloRepository) {
-
+    public ProfiloServiceImpl(ProfiloMapper profiloMapper, AnagraficaProfiloMapper anagraficaProfiloMapper, LinksProfiloMapper linksProfiloMapper, ProfiloRepository profiloRepository) {
         this.profiloMapper = profiloMapper;
         this.anagraficaProfiloMapper = anagraficaProfiloMapper;
-
         this.linksProfiloMapper = linksProfiloMapper;
         this.profiloRepository = profiloRepository;
     }
@@ -61,10 +55,6 @@ public class ProfiloServiceImpl implements ProfiloService {
         Profilo savedProfilo = profiloRepository.save(nuovoProfilo);
 
         return profiloMapper.toDto(savedProfilo);
-    }
-
-    public void convertRelations(PutProfiloDto putProfiloDto, Profilo profilo) {
-        // Non ci sono relazioni
     }
 
     @Override
@@ -121,6 +111,104 @@ public class ProfiloServiceImpl implements ProfiloService {
         }
     }
 
+    @Override
+    public void delete(String nomeUtente) {
+
+        // Eliminiamo l'entità con l'id passato per parametro
+        profiloRepository.deleteById(nomeUtente);
+    }
+
+    @Override
+    public void checkFieldsValid(ProfiloDto nuovoProfiloDto) throws InvalidParameterException {
+        checkNomeUtenteValid(nuovoProfiloDto.getNomeUtente());
+        checkProfilePictureValid(nuovoProfiloDto.getProfilePicture());
+        checkAnagraficaValid(nuovoProfiloDto.getAnagrafica());
+        checkAccountsValid(nuovoProfiloDto.getAccountsShallow());
+    }
+
+    void checkNomeUtenteValid(String nomeUtente) throws InvalidParameterException {
+        if (nomeUtente == null)
+            throw new InvalidParameterException("Il nome utente non può essere null!");
+        else if (nomeUtente.isBlank())
+            throw new InvalidParameterException("Il nome utente non può essere vuoto!");
+    }
+
+    void checkProfilePictureValid(byte[] profilePicture) throws InvalidParameterException {
+        if (profilePicture == null)
+            throw new InvalidParameterException("La profile picture non può essere null!");
+    }
+
+    void checkAnagraficaValid(AnagraficaProfiloDto anagrafica) throws InvalidParameterException {
+        if (anagrafica == null)
+            throw new InvalidParameterException("L'anagrafica non può essere null!");
+
+        checkNomeValid(anagrafica.getNome());
+        checkCognomeValid(anagrafica.getCognome());
+        checkDataNascitaValid(anagrafica.getDataNascita());
+    }
+
+    void checkNomeValid(String nome) throws InvalidParameterException {
+        if (nome == null)
+            throw new InvalidParameterException("Il nome non può essere null!");
+        else if (nome.isBlank())
+            throw new InvalidParameterException("Il nome non può essere vuoto!");
+    }
+
+    void checkCognomeValid(String cognome) throws InvalidParameterException {
+        if (cognome == null)
+            throw new InvalidParameterException("Il cognome non può essere null!");
+        else if (cognome.isBlank())
+            throw new InvalidParameterException("Il cognome non può essere vuoto!");
+    }
+
+    void checkDataNascitaValid(LocalDate dataNascita) throws InvalidParameterException {
+        if (dataNascita == null)
+            throw new InvalidParameterException("La data di nascita non può essere null!");
+        else if (dataNascita.isAfter(LocalDate.now()))
+            throw new InvalidParameterException("La data di nascita non può essere successiva alla data odierna!");
+    }
+
+
+    void checkAccountsValid(Set<AccountShallowDto> accounts) throws InvalidParameterException {
+        if (accounts == null)
+            throw new InvalidParameterException("La lista di accounts non può essere null!");
+        else if (accounts.isEmpty())
+            throw new InvalidParameterException("Ci deve essere almeno un account associato al profilo!");
+        else if (accounts.size() > 2)
+            throw new InvalidParameterException("Non possono esserci più di due account associati al profilo!");
+    }
+
+    @Override
+    public void checkFieldsValid(PutProfiloDto putProfiloDto) throws InvalidParameterException {
+        checkNomeUtenteValid(putProfiloDto.getNomeUtente());
+        checkProfilePictureValid(putProfiloDto.getProfilePicture());
+        checkAnagraficaValid(putProfiloDto.getAnagrafica());
+        checkEmailValid(putProfiloDto.getEmail());
+        checkPasswordValid(putProfiloDto.getPassword());
+    }
+
+    void checkEmailValid(String email) throws InvalidParameterException {
+        if (email == null)
+            throw new InvalidParameterException("L'email non può essere null!");
+        else if (email.isBlank())
+            throw new InvalidParameterException("L'email non può essere vuota!");
+        else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$"))
+            throw new InvalidParameterException("Formato email non valido!");
+    }
+
+    void checkPasswordValid(String password) throws InvalidParameterException {
+        if (password == null)
+            throw new InvalidParameterException("La password non può essere null!");
+        else if (password.isBlank())
+            throw new InvalidParameterException("La password non può essere vuota!");
+    }
+
+    @Override
+    public void convertRelations(PutProfiloDto putProfiloDto, Profilo profilo) {
+        // Non ci sono relazioni
+    }
+
+    @Override
     public void updatePresentFields(ProfiloDto updatedProfiloDto, Profilo existingProfilo) throws InvalidParameterException {
         ifPresentUpdateProfilePicture(updatedProfiloDto.getProfilePicture(), existingProfilo);
         ifPresentUpdateAnagrafica(updatedProfiloDto.getAnagrafica(), existingProfilo);
@@ -237,99 +325,5 @@ public class ProfiloServiceImpl implements ProfiloService {
         if (updatedLinkX != null) {
             existingLinks.setLinkX(updatedLinkX);
         }
-    }
-
-    @Override
-    public void delete(String nomeUtente) {
-
-        // Eliminiamo l'entità con l'id passato per parametro
-        profiloRepository.deleteById(nomeUtente);
-    }
-
-    @Override
-    public void checkFieldsValid(ProfiloDto nuovoProfiloDto) throws InvalidParameterException {
-        checkNomeUtenteValid(nuovoProfiloDto.getNomeUtente());
-        checkProfilePictureValid(nuovoProfiloDto.getProfilePicture());
-        checkAnagraficaValid(nuovoProfiloDto.getAnagrafica());
-        checkAccountsValid(nuovoProfiloDto.getAccountsShallow());
-    }
-
-    void checkNomeUtenteValid(String nomeUtente) throws InvalidParameterException {
-        if (nomeUtente == null)
-            throw new InvalidParameterException("Il nome utente non può essere null!");
-        else if (nomeUtente.isBlank())
-            throw new InvalidParameterException("Il nome utente non può essere vuoto!");
-    }
-
-    void checkProfilePictureValid(byte[] profilePicture) throws InvalidParameterException {
-        if (profilePicture == null)
-            throw new InvalidParameterException("La profile picture non può essere null!");
-    }
-
-    void checkAnagraficaValid(AnagraficaProfiloDto anagrafica) throws InvalidParameterException {
-        boolean valid = false;
-
-        if (anagrafica == null)
-            throw new InvalidParameterException("L'anagrafica non può essere null!");
-
-        checkNomeValid(anagrafica.getNome());
-        checkCognomeValid(anagrafica.getCognome());
-        checkDataNascitaValid(anagrafica.getDataNascita());
-    }
-
-    void checkNomeValid(String nome) throws InvalidParameterException {
-        if (nome == null)
-            throw new InvalidParameterException("Il nome non può essere null!");
-        else if (nome.isBlank())
-            throw new InvalidParameterException("Il nome non può essere vuoto!");
-    }
-
-    void checkCognomeValid(String cognome) throws InvalidParameterException {
-        if (cognome == null)
-            throw new InvalidParameterException("Il cognome non può essere null!");
-        else if (cognome.isBlank())
-            throw new InvalidParameterException("Il cognome non può essere vuoto!");
-    }
-
-    void checkDataNascitaValid(LocalDate dataNascita) throws InvalidParameterException {
-        if (dataNascita == null)
-            throw new InvalidParameterException("La data di nascita non può essere null!");
-        else if (dataNascita.isAfter(LocalDate.now()))
-            throw new InvalidParameterException("La data di nascita non può essere successiva alla data odierna!");
-    }
-
-
-    void checkAccountsValid(Set<AccountShallowDto> accounts) throws InvalidParameterException {
-        if (accounts == null)
-            throw new InvalidParameterException("La lista di accounts non può essere null!");
-        else if (accounts.isEmpty())
-            throw new InvalidParameterException("Ci deve essere almeno un account associato al profilo!");
-        else if (accounts.size() > 2)
-            throw new InvalidParameterException("Non possono esserci più di due account associati al profilo!");
-    }
-
-    @Override
-    public void checkFieldsValid(PutProfiloDto putProfiloDto) throws InvalidParameterException {
-        checkNomeUtenteValid(putProfiloDto.getNomeUtente());
-        checkProfilePictureValid(putProfiloDto.getProfilePicture());
-        checkAnagraficaValid(putProfiloDto.getAnagrafica());
-        checkEmailValid(putProfiloDto.getEmail());
-        checkPasswordValid(putProfiloDto.getPassword());
-    }
-
-    void checkEmailValid(String email) throws InvalidParameterException {
-        if (email == null)
-            throw new InvalidParameterException("L'email non può essere null!");
-        else if (email.isBlank())
-            throw new InvalidParameterException("L'email non può essere vuota!");
-        else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$"))
-            throw new InvalidParameterException("Formato email non valido!");
-    }
-
-    void checkPasswordValid(String password) throws InvalidParameterException {
-        if (password == null)
-            throw new InvalidParameterException("La password non può essere null!");
-        else if (password.isBlank())
-            throw new InvalidParameterException("La password non può essere vuota!");
     }
 }

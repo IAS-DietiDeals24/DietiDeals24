@@ -1,18 +1,27 @@
 package com.iasdietideals24.backend.services.implementations;
 
+import com.iasdietideals24.backend.entities.Account;
+import com.iasdietideals24.backend.entities.Asta;
 import com.iasdietideals24.backend.entities.Notifica;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
+import com.iasdietideals24.backend.exceptions.UpdateRuntimeException;
 import com.iasdietideals24.backend.mapstruct.dto.NotificaDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
+import com.iasdietideals24.backend.mapstruct.dto.shallows.NotificaShallowDto;
 import com.iasdietideals24.backend.mapstruct.mappers.CompratoreMapper;
+import com.iasdietideals24.backend.mapstruct.mappers.NotificaMapper;
 import com.iasdietideals24.backend.mapstruct.mappers.VenditoreMapper;
 import com.iasdietideals24.backend.repositories.CompratoreRepository;
+import com.iasdietideals24.backend.repositories.NotificaRepository;
 import com.iasdietideals24.backend.repositories.VenditoreRepository;
+import com.iasdietideals24.backend.services.AccountService;
 import com.iasdietideals24.backend.services.NotificaService;
+import com.iasdietideals24.backend.utilities.RelationsConverter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,22 +31,16 @@ import java.util.Set;
 @Service
 public class NotificaServiceImpl implements NotificaService {
 
-    private final CompratoreMapper compratoreMapper;
-    private final VenditoreMapper venditoreMapper;
+    private final NotificaMapper notificaMapper;
+    private final NotificaRepository notificaRepository;
+    private final RelationsConverter relationsConverter;
 
-    private final CompratoreRepository compratoreRepository;
-    private final VenditoreRepository venditoreRepository;
-
-    public NotificaServiceImpl(CompratoreMapper compratoreMapper,
-                               VenditoreMapper venditoreMapper,
-                               CompratoreRepository compratoreRepository,
-                               VenditoreRepository venditoreRepository) {
-
-        this.compratoreMapper = compratoreMapper;
-        this.venditoreMapper = venditoreMapper;
-
-        this.compratoreRepository = compratoreRepository;
-        this.venditoreRepository = venditoreRepository;
+    public NotificaServiceImpl(NotificaMapper notificaMapper,
+                               NotificaRepository notificaRepository,
+                               RelationsConverter relationsConverter) {
+        this.notificaMapper = notificaMapper;
+        this.notificaRepository = notificaRepository;
+        this.relationsConverter = relationsConverter;
     }
 
     @Override
@@ -45,37 +48,65 @@ public class NotificaServiceImpl implements NotificaService {
 
         //Verifichiamo l'integrità dei dati
         checkFieldsValid(nuovaNotificaDto);
-        return null;
+
+        // Convertiamo a entità
+        Notifica nuovaNotifica = notificaMapper.toEntity(nuovaNotificaDto);
+
+        // Recuperiamo le associazioni
+        convertRelations(nuovaNotificaDto, nuovaNotifica);
+
+        // Registriamo l'entità
+        Notifica savedNotifica = notificaRepository.save(nuovaNotifica);
+
+        return notificaMapper.toDto(savedNotifica);
     }
 
     @Override
     public Page<NotificaDto> findAll(Pageable pageable) {
-        return null;
+
+        // Recuperiamo tutte le entità
+        Page<Notifica> foundNotifica = notificaRepository.findAll(pageable);
+
+        return foundNotifica.map(notificaMapper::toDto);
     }
 
     @Override
     public Optional<NotificaDto> findOne(Long idNotifica) {
-        return Optional.empty();
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        Optional<Notifica> foundNotifica = notificaRepository.findById(idNotifica);
+
+        return foundNotifica.map(notificaMapper::toDto);
     }
 
     @Override
     public boolean isExists(Long idNotifica) {
-        return false;
+
+        // Verifichiamo che esista un'entità con l'id passato per parametro
+        return notificaRepository.existsById(idNotifica);
     }
 
     @Override
-    public NotificaDto fullUpdate(Long idNotifica, NotificaDto updatedNotificaDto) {
-        return null;
+    public NotificaDto fullUpdate(Long idNotifica, NotificaDto updatedNotificaDto) throws InvalidParameterException {
+
+        if (!notificaRepository.existsById(idNotifica))
+            throw new UpdateRuntimeException("L'id notifica \"" + idNotifica + "\" non corrisponde a nessuna notifica!");
+
+        // L'implementazione di fullUpdate e create sono identiche, dato che utilizziamo lo stesso metodo "save" della repository
+        return this.create(updatedNotificaDto);
     }
 
     @Override
     public NotificaDto partialUpdate(Long idNotifica, NotificaDto updatedNotificaDto) {
+        //TODO
         return null;
     }
 
     @Override
-    public void delete(Long idNotifica) throws InvalidParameterException {
+    public void delete(Long idNotifica) {
 
+        // Eliminiamo l'entità con l'id passato per parametro
+        notificaRepository.deleteById(idNotifica);
     }
 
     @Override
@@ -83,8 +114,8 @@ public class NotificaServiceImpl implements NotificaService {
         checkDataInvioValid(notificaDto.getDataInvio());
         checkOraInvioValid(notificaDto.getOraInvio());
         checkMessaggioValid(notificaDto.getMessaggio());
-        checkAccountShallowValid(notificaDto.getMittenteShallow());
-        checkAccountShallowValid(notificaDto.getDestinatariShallow());
+        checkMittenteDestinatarioValid(notificaDto.getMittenteShallow());
+        checkDestinatariValid(notificaDto.getDestinatariShallow());
         checkAstaAssociataShallow(notificaDto.getAstaAssociataShallow());
     }
 
@@ -109,9 +140,18 @@ public class NotificaServiceImpl implements NotificaService {
             throw new InvalidParameterException("Il messaggio non può essere vuoto!");
     }
 
-    void checkAccountShallowValid(AccountShallowDto accountShallowDto) throws InvalidParameterException {
+    void checkDestinatariValid(Set<AccountShallowDto> accountsShallowDto) throws InvalidParameterException {
+        if (accountsShallowDto == null)
+            throw new InvalidParameterException("La lista di destinatari non può essere null!");
+
+        for (AccountShallowDto destinatarioDto : accountsShallowDto) {
+            checkMittenteDestinatarioValid(destinatarioDto);
+        }
+    }
+
+    void checkMittenteDestinatarioValid(AccountShallowDto accountShallowDto) throws InvalidParameterException {
         if (accountShallowDto == null)
-            throw new InvalidParameterException("L'account non può essere null!");
+            throw new InvalidParameterException("L'account mittente/destinatario non può essere null!");
 
         checkEmailValid(accountShallowDto.getEmail());
     }
@@ -125,15 +165,6 @@ public class NotificaServiceImpl implements NotificaService {
             throw new InvalidParameterException("Formato email non valido!");
     }
 
-    void checkAccountShallowValid(Set<AccountShallowDto> accountsShallowDto) throws InvalidParameterException {
-        if (accountsShallowDto == null)
-            throw new InvalidParameterException("La lista di account non può essere null!");
-
-        for (AccountShallowDto destinatarioDto : accountsShallowDto) {
-            checkAccountShallowValid(destinatarioDto);
-        }
-    }
-
     void checkAstaAssociataShallow(AstaShallowDto astaAssociataShallow) throws InvalidParameterException {
         if (astaAssociataShallow == null)
             throw new InvalidParameterException("L'asta associata non può essere null!");
@@ -141,11 +172,45 @@ public class NotificaServiceImpl implements NotificaService {
 
     @Override
     public void convertRelations(NotificaDto notificaDto, Notifica notifica) throws InvalidParameterException {
+        convertMittenteShallow(notificaDto.getMittenteShallow(), notifica);
+        convertDestinatariShallow(notificaDto.getDestinatariShallow(), notifica);
+        convertAstaAssociataShallow(notificaDto.getAstaAssociataShallow(), notifica);
+    }
 
+    void convertMittenteShallow(AccountShallowDto mittenteShallowDto, Notifica nuovaNotifica) throws InvalidParameterException {
+        Account convertedAccount = relationsConverter.convertAccountShallowRelation(mittenteShallowDto);
+
+        if (convertedAccount != null) {
+            nuovaNotifica.setMittente(convertedAccount);
+            convertedAccount.addNotificaInviata(nuovaNotifica);
+        }
+    }
+
+    void convertDestinatariShallow(Set<AccountShallowDto> destinatariShallowDto, Notifica nuovaNotifica) throws InvalidParameterException {
+        if (destinatariShallowDto != null) {
+            for (AccountShallowDto accountShallowDto : destinatariShallowDto) {
+
+                Account convertedAccount = relationsConverter.convertAccountShallowRelation(accountShallowDto);
+
+                if (convertedAccount != null) {
+                    nuovaNotifica.addDestinatario(convertedAccount);
+                    convertedAccount.addNotificaRicevuta(nuovaNotifica);
+                }
+            }
+        }
+    }
+
+    void convertAstaAssociataShallow(AstaShallowDto astaAssociataShallowDto, Notifica nuovaNotifica) throws InvalidParameterException {
+        Asta convertedAsta = relationsConverter.convertAstaShallowRelation(astaAssociataShallowDto);
+
+        if (convertedAsta != null) {
+            nuovaNotifica.setAstaAssociata(convertedAsta);
+            convertedAsta.addNotificaAssociata(nuovaNotifica);
+        }
     }
 
     @Override
     public void updatePresentFields(NotificaDto updatedNotificaDto, Notifica existingNotifica) throws InvalidParameterException {
-
+        //TODO
     }
 }

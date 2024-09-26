@@ -1,10 +1,7 @@
 package com.iasdietideals24.backend.services.implementations;
 
 import com.iasdietideals24.backend.entities.*;
-import com.iasdietideals24.backend.exceptions.IdNotFoundException;
-import com.iasdietideals24.backend.exceptions.IllegalDeleteRequestException;
-import com.iasdietideals24.backend.exceptions.InvalidParameterException;
-import com.iasdietideals24.backend.exceptions.UpdateRuntimeException;
+import com.iasdietideals24.backend.exceptions.*;
 import com.iasdietideals24.backend.mapstruct.dto.CompratoreDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.OffertaShallowDto;
@@ -12,6 +9,7 @@ import com.iasdietideals24.backend.mapstruct.mappers.*;
 import com.iasdietideals24.backend.repositories.*;
 import com.iasdietideals24.backend.services.AccountService;
 import com.iasdietideals24.backend.services.CompratoreService;
+import com.iasdietideals24.backend.utilities.RelationsConverter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,32 +21,15 @@ import java.util.Set;
 public class CompratoreServiceImpl implements CompratoreService {
 
     private final AccountService accountService;
-
     private final CompratoreMapper compratoreMapper;
-    private final AstaMapper astaMapper;
-    private final OffertaMapper offertaMapper;
-
     private final CompratoreRepository compratoreRepository;
-    private final AstaDiCompratoreRepository astaDiCompratoreRepository;
-    private final OffertaDiCompratoreRepository offertaDiCompratoreRepository;
+    private final RelationsConverter relationsConverter;
 
-    public CompratoreServiceImpl(AccountService accountService,
-                                 CompratoreMapper compratoreMapper,
-                                 AstaMapper astaMapper,
-                                 OffertaMapper offertaMapper,
-                                 CompratoreRepository compratoreRepository,
-                                 AstaDiCompratoreRepository astaDiCompratoreRepository,
-                                 OffertaDiCompratoreRepository offertaDiCompratoreRepository) {
-
+    public CompratoreServiceImpl(AccountService accountService, CompratoreMapper compratoreMapper, CompratoreRepository compratoreRepository, RelationsConverter relationsConverter) {
         this.accountService = accountService;
-
         this.compratoreMapper = compratoreMapper;
-        this.astaMapper = astaMapper;
-        this.offertaMapper = offertaMapper;
         this.compratoreRepository = compratoreRepository;
-
-        this.astaDiCompratoreRepository = astaDiCompratoreRepository;
-        this.offertaDiCompratoreRepository = offertaDiCompratoreRepository;
+        this.relationsConverter = relationsConverter;
     }
 
     @Override
@@ -68,46 +49,6 @@ public class CompratoreServiceImpl implements CompratoreService {
         Compratore savedCompratore = compratoreRepository.save(nuovoCompratore);
 
         return compratoreMapper.toDto(savedCompratore);
-    }
-
-    @Override
-    public void checkFieldsValid(CompratoreDto compratoreDto) throws InvalidParameterException {
-        accountService.checkFieldsValid(compratoreDto);
-    }
-
-    @Override
-    public void convertRelations(CompratoreDto compratoreDto, Compratore compratore) throws InvalidParameterException {
-        accountService.convertRelations(compratoreDto, compratore);
-        convertAstePosseduteShallow(compratoreDto.getAstePosseduteShallow(), compratore);
-        convertOfferteCollegateShallow(compratoreDto.getOfferteCollegateShallow(), compratore);
-    }
-
-    void convertAstePosseduteShallow(Set<AstaShallowDto> astePosseduteShallowDto, Compratore nuovoCompratore) throws InvalidParameterException {
-        if (astePosseduteShallowDto != null) {
-            for (Asta asta : astaMapper.toEntity(astePosseduteShallowDto)) {
-                Optional<AstaDiCompratore> foundAsta = astaDiCompratoreRepository.findById(asta.getIdAsta());
-                if (foundAsta.isEmpty())
-                    throw new IdNotFoundException("L'id asta \"" + asta.getIdAsta() + "\" non corrisponde a nessuna asta esistente!");
-                else {
-                    nuovoCompratore.addAstaPosseduta(foundAsta.get());
-                    foundAsta.get().setProprietario(nuovoCompratore);
-                }
-            }
-        }
-    }
-
-    void convertOfferteCollegateShallow(Set<OffertaShallowDto> offerteCollegateShallowDto, Compratore nuovoCompratore) throws InvalidParameterException {
-        if (offerteCollegateShallowDto != null) {
-            for (Offerta offerta : offertaMapper.toEntity(offerteCollegateShallowDto)) {
-                Optional<OffertaDiCompratore> foundOfferta = offertaDiCompratoreRepository.findById(offerta.getIdOfferta());
-                if (foundOfferta.isEmpty())
-                    throw new IdNotFoundException("L'id offerta \"" + offerta.getIdOfferta() + "\" non corrisponde a nessuna offerta esistente!");
-                else {
-                    nuovoCompratore.addOffertaCollegata(foundOfferta.get());
-                    foundOfferta.get().setCompratoreCollegato(nuovoCompratore);
-                }
-            }
-        }
     }
 
     @Override
@@ -166,12 +107,6 @@ public class CompratoreServiceImpl implements CompratoreService {
     }
 
     @Override
-    public void updatePresentFields(CompratoreDto updatedCompratoreDto, Compratore existingCompratore) throws InvalidParameterException {
-        accountService.updatePresentFields(updatedCompratoreDto, existingCompratore);
-    }
-
-
-    @Override
     public void delete(String email) throws InvalidParameterException {
 
         Optional<Compratore> existingCompratore = compratoreRepository.findById(email);
@@ -181,5 +116,58 @@ public class CompratoreServiceImpl implements CompratoreService {
 
         // Eliminiamo l'entità con l'id passato per parametro
         compratoreRepository.deleteById(email);
+    }
+
+    @Override
+    public void checkFieldsValid(CompratoreDto compratoreDto) throws InvalidParameterException {
+        accountService.checkFieldsValid(compratoreDto);
+    }
+
+    @Override
+    public void convertRelations(CompratoreDto compratoreDto, Compratore compratore) throws InvalidParameterException {
+        accountService.convertRelations(compratoreDto, compratore);
+        convertAstePosseduteShallow(compratoreDto.getAstePosseduteShallow(), compratore);
+        convertOfferteCollegateShallow(compratoreDto.getOfferteCollegateShallow(), compratore);
+    }
+
+    void convertAstePosseduteShallow(Set<AstaShallowDto> astePosseduteShallowDto, Compratore nuovoCompratore) throws InvalidParameterException {
+        if (astePosseduteShallowDto != null) {
+            for (AstaShallowDto astaShallowDto : astePosseduteShallowDto) {
+
+                Asta convertedAsta = relationsConverter.convertAstaShallowRelation(astaShallowDto);
+
+                if (convertedAsta != null) {
+                    if (convertedAsta instanceof AstaDiCompratore convertedAstaDiCompratore) {
+                        nuovoCompratore.addAstaPosseduta(convertedAstaDiCompratore);
+                        convertedAstaDiCompratore.setProprietario(nuovoCompratore);
+                    } else {
+                        throw new InvalidTypeException("Un compratore può possedere solo aste di compratori!");
+                    }
+                }
+            }
+        }
+    }
+
+    void convertOfferteCollegateShallow(Set<OffertaShallowDto> offerteCollegateShallowDto, Compratore nuovoCompratore) throws InvalidParameterException {
+        if (offerteCollegateShallowDto != null) {
+            for (OffertaShallowDto offertaShallowDto : offerteCollegateShallowDto) {
+
+                Offerta convertedOfferta = relationsConverter.convertOffertaShallowRelation(offertaShallowDto);
+
+                if (convertedOfferta != null) {
+                    if (convertedOfferta instanceof OffertaDiCompratore convertedOffertaDiCompratore) {
+                        nuovoCompratore.addOffertaCollegata(convertedOffertaDiCompratore);
+                        convertedOffertaDiCompratore.setCompratoreCollegato(nuovoCompratore);
+                    } else {
+                        throw new InvalidTypeException("Un compratore può essere collegato solo ad offerte di compratori!");
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void updatePresentFields(CompratoreDto updatedCompratoreDto, Compratore existingCompratore) throws InvalidParameterException {
+        accountService.updatePresentFields(updatedCompratoreDto, existingCompratore);
     }
 }

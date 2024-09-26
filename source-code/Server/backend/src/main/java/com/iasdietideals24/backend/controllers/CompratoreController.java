@@ -20,7 +20,18 @@ public class CompratoreController {
         this.compratoreService = compratoreService;
     }
 
-    @PutMapping(path = "/accounts/compratori")
+    @PutMapping(path = "/accounts/compratori/{email}")
+    public ResponseEntity<CompratoreDto> createOrFullUpadateCompratore(@PathVariable("email") String email, @RequestBody CompratoreDto receivedCompratoreDto) throws InvalidParameterException {
+        if (compratoreService.isExists(email)) {
+            CompratoreDto updatedCompratoreDto = compratoreService.fullUpdate(email, receivedCompratoreDto);
+            return new ResponseEntity<>(updatedCompratoreDto, HttpStatus.OK);
+        } else {
+            CompratoreDto createdCompratoreDto = compratoreService.create(email, receivedCompratoreDto);
+            return new ResponseEntity<>(createdCompratoreDto, HttpStatus.CREATED);
+        }
+    }
+
+    @GetMapping(path = "/accounts/compratori")
     public ResponseEntity<Page<CompratoreDto>> listCompratori(Pageable pageable) {
         Page<CompratoreDto> foundCompratoriDto = compratoreService.findAll(pageable);
         return new ResponseEntity<>(foundCompratoriDto, HttpStatus.OK);

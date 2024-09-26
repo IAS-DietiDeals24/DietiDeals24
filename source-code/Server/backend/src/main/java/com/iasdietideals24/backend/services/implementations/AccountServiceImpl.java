@@ -2,40 +2,27 @@ package com.iasdietideals24.backend.services.implementations;
 
 import com.iasdietideals24.backend.entities.*;
 import com.iasdietideals24.backend.entities.utilities.TokensAccount;
-import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.mapstruct.dto.AccountDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.NotificaShallowDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.ProfiloShallowDto;
 import com.iasdietideals24.backend.mapstruct.dto.utilities.TokensAccountDto;
-import com.iasdietideals24.backend.mapstruct.mappers.NotificaMapper;
-import com.iasdietideals24.backend.mapstruct.mappers.ProfiloMapper;
 import com.iasdietideals24.backend.mapstruct.mappers.TokensAccountMapper;
-import com.iasdietideals24.backend.repositories.NotificaRepository;
-import com.iasdietideals24.backend.repositories.ProfiloRepository;
 import com.iasdietideals24.backend.services.AccountService;
+import com.iasdietideals24.backend.utilities.RelationsConverter;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.Set;
 
 @Service
 public class AccountServiceImpl implements AccountService {
 
-    private final ProfiloMapper profiloMapper;
-    private final NotificaMapper notificaMapper;
     private final TokensAccountMapper tokensAccountMapper;
+    private final RelationsConverter relationsConverter;
 
-    private final ProfiloRepository profiloRepository;
-    private final NotificaRepository notificaRepository;
-
-    protected AccountServiceImpl(ProfiloMapper profiloMapper, NotificaMapper notificaMapper, TokensAccountMapper tokensAccountMapper, ProfiloRepository profiloRepository, NotificaRepository notificaRepository) {
-        this.profiloMapper = profiloMapper;
-        this.notificaMapper = notificaMapper;
+    protected AccountServiceImpl(TokensAccountMapper tokensAccountMapper, RelationsConverter relationsConverter) {
         this.tokensAccountMapper = tokensAccountMapper;
-
-        this.profiloRepository = profiloRepository;
-        this.notificaRepository = notificaRepository;
+        this.relationsConverter = relationsConverter;
     }
 
     @Override
@@ -75,6 +62,7 @@ public class AccountServiceImpl implements AccountService {
             throw new InvalidParameterException("Il nome utente non può essere vuoto!");
     }
 
+    @Override
     public void convertRelations(AccountDto accountDto, Account account) throws InvalidParameterException {
         convertProfiloShallow(accountDto.getProfiloShallow(), account);
         convertNotificheInviateShallow(accountDto.getNotificheInviateShallow(), account);
@@ -82,33 +70,30 @@ public class AccountServiceImpl implements AccountService {
     }
 
     void convertProfiloShallow(ProfiloShallowDto profiloShallowDto, Account nuovoAccount) throws InvalidParameterException {
-        if (profiloShallowDto != null) {
-            Profilo profilo = profiloMapper.toEntity(profiloShallowDto);
-            Optional<Profilo> foundProfilo = profiloRepository.findById(profiloShallowDto.getNomeUtente());
-            if (foundProfilo.isEmpty())
-                throw new IdNotFoundException("Il nome utente \"" + profilo.getNomeUtente() + "\" non corrisponde a nessun profilo esistente!");
+
+        Profilo convertedProfilo = relationsConverter.convertProfiloShallowRelation(profiloShallowDto);
+
+        if (convertedProfilo != null) {
+            if (nuovoAccount instanceof Compratore && convertedProfilo.getCompratore() != null)
+                throw new InvalidParameterException("Il profilo \"" + "\" è già associato a un account compratore! Eliminare prima quello precedente.");
+            else if (nuovoAccount instanceof Venditore && convertedProfilo.getVenditore() != null)
+                throw new InvalidParameterException("Il profilo \"" + "\" è già associato a un account venditore! Eliminare prima quello precedente.");
             else {
-                if (nuovoAccount instanceof Compratore && foundProfilo.get().getCompratore() != null)
-                    throw new InvalidParameterException("Il profilo \"" + "\" è già associato a un account compratore! Eliminare prima quello precedente.");
-                else if (nuovoAccount instanceof Venditore && foundProfilo.get().getVenditore() != null)
-                    throw new InvalidParameterException("Il profilo \"" + "\" è già associato a un account venditore! Eliminare prima quello precedente.");
-                else {
-                    nuovoAccount.setProfilo(foundProfilo.get());
-                    foundProfilo.get().addAccount(nuovoAccount);
-                }
+                nuovoAccount.setProfilo(convertedProfilo);
+                convertedProfilo.addAccount(nuovoAccount);
             }
         }
     }
 
     void convertNotificheInviateShallow(Set<NotificaShallowDto> notificheInviateShallowDto, Account nuovoAccount) throws InvalidParameterException {
         if (notificheInviateShallowDto != null) {
-            for (Notifica notifica : notificaMapper.toEntity(notificheInviateShallowDto)) {
-                Optional<Notifica> foundNotifica = notificaRepository.findById(notifica.getIdNotifica());
-                if (foundNotifica.isEmpty())
-                    throw new IdNotFoundException("L'id notifica inviata \"" + notifica.getIdNotifica() + "\" non corrisponde a nessuna notifica esistente!");
-                else {
-                    nuovoAccount.addNotificaInviata(foundNotifica.get());
-                    foundNotifica.get().setMittente(nuovoAccount);
+            for (NotificaShallowDto notificaShallowDto : notificheInviateShallowDto) {
+
+                Notifica convertedNotifica = relationsConverter.convertNotificaShallowRelation(notificaShallowDto);
+
+                if (convertedNotifica != null) {
+                    nuovoAccount.addNotificaInviata(convertedNotifica);
+                    convertedNotifica.setMittente(nuovoAccount);
                 }
             }
         }
@@ -116,18 +101,19 @@ public class AccountServiceImpl implements AccountService {
 
     void convertNotificheRicevuteShallow(Set<NotificaShallowDto> notificheRicevuteShallowDto, Account nuovoAccount) throws InvalidParameterException {
         if (notificheRicevuteShallowDto != null) {
-            for (Notifica notifica : notificaMapper.toEntity(notificheRicevuteShallowDto)) {
-                Optional<Notifica> foundNotifica = notificaRepository.findById(notifica.getIdNotifica());
-                if (foundNotifica.isEmpty())
-                    throw new IdNotFoundException("L'id notifica ricevuta \"" + notifica.getIdNotifica() + "\" non corrisponde a nessuna notifica esistente!");
-                else {
-                    nuovoAccount.addNotificaRicevuta(foundNotifica.get());
-                    foundNotifica.get().addDestinatario(nuovoAccount);
+            for (NotificaShallowDto notificaShallowDto : notificheRicevuteShallowDto) {
+
+                Notifica convertedNotifica = relationsConverter.convertNotificaShallowRelation(notificaShallowDto);
+
+                if (convertedNotifica != null) {
+                    nuovoAccount.addNotificaInviata(convertedNotifica);
+                    convertedNotifica.setMittente(nuovoAccount);
                 }
             }
         }
     }
 
+    @Override
     public void updatePresentFields(AccountDto updatedAccountDto, Account existingAccount) throws InvalidParameterException {
         ifPresentUpdateEmail(updatedAccountDto.getEmail(), existingAccount);
         ifPresentUpdatePassword(updatedAccountDto.getPassword(), existingAccount);

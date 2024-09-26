@@ -1,21 +1,15 @@
 package com.iasdietideals24.backend.services.implementations;
 
 import com.iasdietideals24.backend.entities.*;
-import com.iasdietideals24.backend.exceptions.IdNotFoundException;
-import com.iasdietideals24.backend.exceptions.IllegalDeleteRequestException;
-import com.iasdietideals24.backend.exceptions.InvalidParameterException;
-import com.iasdietideals24.backend.exceptions.UpdateRuntimeException;
+import com.iasdietideals24.backend.exceptions.*;
 import com.iasdietideals24.backend.mapstruct.dto.VenditoreDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.OffertaShallowDto;
-import com.iasdietideals24.backend.mapstruct.mappers.AstaMapper;
 import com.iasdietideals24.backend.mapstruct.mappers.VenditoreMapper;
-import com.iasdietideals24.backend.mapstruct.mappers.OffertaMapper;
-import com.iasdietideals24.backend.repositories.AstaDiVenditoreRepository;
 import com.iasdietideals24.backend.repositories.VenditoreRepository;
-import com.iasdietideals24.backend.repositories.OffertaDiVenditoreRepository;
 import com.iasdietideals24.backend.services.AccountService;
 import com.iasdietideals24.backend.services.VenditoreService;
+import com.iasdietideals24.backend.utilities.RelationsConverter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,32 +21,15 @@ import java.util.Set;
 public class VenditoreServiceImpl implements VenditoreService {
 
     private final AccountService accountService;
-
     private final VenditoreMapper venditoreMapper;
-    private final AstaMapper astaMapper;
-    private final OffertaMapper offertaMapper;
-
     private final VenditoreRepository venditoreRepository;
-    private final AstaDiVenditoreRepository astaDiVenditoreRepository;
-    private final OffertaDiVenditoreRepository offertaDiVenditoreRepository;
+        private final RelationsConverter relationsConverter;
 
-    public VenditoreServiceImpl(AccountService accountService,
-                                VenditoreMapper venditoreMapper,
-                                AstaMapper astaMapper,
-                                OffertaMapper offertaMapper,
-                                VenditoreRepository venditoreRepository,
-                                AstaDiVenditoreRepository astaDiVenditoreRepository,
-                                OffertaDiVenditoreRepository offertaDiVenditoreRepository) {
-
+    public VenditoreServiceImpl(AccountService accountService, VenditoreMapper venditoreMapper, VenditoreRepository venditoreRepository, RelationsConverter relationsConverter) {
         this.accountService = accountService;
-
         this.venditoreMapper = venditoreMapper;
-        this.astaMapper = astaMapper;
-        this.offertaMapper = offertaMapper;
         this.venditoreRepository = venditoreRepository;
-
-        this.astaDiVenditoreRepository = astaDiVenditoreRepository;
-        this.offertaDiVenditoreRepository = offertaDiVenditoreRepository;
+        this.relationsConverter = relationsConverter;
     }
 
     @Override
@@ -72,46 +49,6 @@ public class VenditoreServiceImpl implements VenditoreService {
         Venditore savedVenditore = venditoreRepository.save(nuovoVenditore);
 
         return venditoreMapper.toDto(savedVenditore);
-    }
-
-    @Override
-    public void checkFieldsValid(VenditoreDto venditoreDto) throws InvalidParameterException {
-        accountService.checkFieldsValid(venditoreDto);
-    }
-
-    @Override
-    public void convertRelations(VenditoreDto venditoreDto, Venditore venditore) throws InvalidParameterException {
-        accountService.convertRelations(venditoreDto, venditore);
-        convertAstePosseduteShallow(venditoreDto.getAstePosseduteShallow(), venditore);
-        convertOfferteCollegateShallow(venditoreDto.getOfferteCollegateShallow(), venditore);
-    }
-
-    void convertAstePosseduteShallow(Set<AstaShallowDto> astePosseduteShallowDto, Venditore nuovoVenditore) throws InvalidParameterException {
-        if (astePosseduteShallowDto != null) {
-            for (Asta asta : astaMapper.toEntity(astePosseduteShallowDto)) {
-                Optional<AstaDiVenditore> foundAsta = astaDiVenditoreRepository.findById(asta.getIdAsta());
-                if (foundAsta.isEmpty())
-                    throw new IdNotFoundException("L'id asta \"" + asta.getIdAsta() + "\" non corrisponde a nessuna asta esistente!");
-                else {
-                    nuovoVenditore.addAstaPosseduta(foundAsta.get());
-                    foundAsta.get().setProprietario(nuovoVenditore);
-                }
-            }
-        }
-    }
-
-    void convertOfferteCollegateShallow(Set<OffertaShallowDto> offerteCollegateShallowDto, Venditore nuovoVenditore) throws InvalidParameterException {
-        if (offerteCollegateShallowDto != null) {
-            for (Offerta offerta : offertaMapper.toEntity(offerteCollegateShallowDto)) {
-                Optional<OffertaDiVenditore> foundOfferta = offertaDiVenditoreRepository.findById(offerta.getIdOfferta());
-                if (foundOfferta.isEmpty())
-                    throw new IdNotFoundException("L'id offerta \"" + offerta.getIdOfferta() + "\" non corrisponde a nessuna offerta esistente!");
-                else {
-                    nuovoVenditore.addOffertaCollegata(foundOfferta.get());
-                    foundOfferta.get().setVenditoreCollegato(nuovoVenditore);
-                }
-            }
-        }
     }
 
     @Override
@@ -170,12 +107,6 @@ public class VenditoreServiceImpl implements VenditoreService {
     }
 
     @Override
-    public void updatePresentFields(VenditoreDto updatedVenditoreDto, Venditore existingVenditore) throws InvalidParameterException {
-        accountService.updatePresentFields(updatedVenditoreDto, existingVenditore);
-    }
-
-
-    @Override
     public void delete(String email) throws InvalidParameterException {
 
         Optional<Venditore> existingVenditore = venditoreRepository.findById(email);
@@ -185,5 +116,58 @@ public class VenditoreServiceImpl implements VenditoreService {
 
         // Eliminiamo l'entità con l'id passato per parametro
         venditoreRepository.deleteById(email);
+    }
+
+    @Override
+    public void checkFieldsValid(VenditoreDto venditoreDto) throws InvalidParameterException {
+        accountService.checkFieldsValid(venditoreDto);
+    }
+
+    @Override
+    public void convertRelations(VenditoreDto venditoreDto, Venditore venditore) throws InvalidParameterException {
+        accountService.convertRelations(venditoreDto, venditore);
+        convertAstePosseduteShallow(venditoreDto.getAstePosseduteShallow(), venditore);
+        convertOfferteCollegateShallow(venditoreDto.getOfferteCollegateShallow(), venditore);
+    }
+
+    void convertAstePosseduteShallow(Set<AstaShallowDto> astePosseduteShallowDto, Venditore nuovoVenditore) throws InvalidParameterException {
+        if (astePosseduteShallowDto != null) {
+            for (AstaShallowDto astaShallowDto : astePosseduteShallowDto) {
+
+                Asta convertedAsta = relationsConverter.convertAstaShallowRelation(astaShallowDto);
+
+                if (convertedAsta != null) {
+                    if (convertedAsta instanceof AstaDiVenditore convertedAstaDiVenditore) {
+                        nuovoVenditore.addAstaPosseduta(convertedAstaDiVenditore);
+                        convertedAstaDiVenditore.setProprietario(nuovoVenditore);
+                    } else {
+                        throw new InvalidTypeException("Un venditore può possedere solo aste di venditori!");
+                    }
+                }
+            }
+        }
+    }
+
+    void convertOfferteCollegateShallow(Set<OffertaShallowDto> offerteCollegateShallowDto, Venditore nuovoVenditore) throws InvalidParameterException {
+        if (offerteCollegateShallowDto != null) {
+            for (OffertaShallowDto offertaShallowDto : offerteCollegateShallowDto) {
+
+                Offerta convertedOfferta = relationsConverter.convertOffertaShallowRelation(offertaShallowDto);
+
+                if (convertedOfferta != null) {
+                    if (convertedOfferta instanceof OffertaDiVenditore convertedOffertaDiVenditore) {
+                        nuovoVenditore.addOffertaCollegata(convertedOffertaDiVenditore);
+                        convertedOffertaDiVenditore.setVenditoreCollegato(nuovoVenditore);
+                    } else {
+                        throw new InvalidTypeException("Un venditore può essere collegato solo ad offerte di venditori!");
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void updatePresentFields(VenditoreDto updatedVenditoreDto, Venditore existingVenditore) throws InvalidParameterException {
+        accountService.updatePresentFields(updatedVenditoreDto, existingVenditore);
     }
 }

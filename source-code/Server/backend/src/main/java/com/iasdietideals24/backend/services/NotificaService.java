@@ -18,11 +18,11 @@ public interface NotificaService {
 
     boolean isExists(Long idNotifica);
 
-    NotificaDto fullUpdate(Long idNotifica, NotificaDto updatedNotificaDto);
+    NotificaDto fullUpdate(Long idNotifica, NotificaDto updatedNotificaDto) throws InvalidParameterException;
 
-    NotificaDto partialUpdate(Long idNotifica, NotificaDto updatedNotificaDto);
+    NotificaDto partialUpdate(Long idNotifica, NotificaDto updatedNotificaDto) throws InvalidParameterException;
 
-    void delete(Long idNotifica) throws InvalidParameterException;
+    void delete(Long idNotifica);
 
     void checkFieldsValid(NotificaDto notificaDto) throws InvalidParameterException;
 

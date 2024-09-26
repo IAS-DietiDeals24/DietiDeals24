@@ -25,7 +25,7 @@ public interface ProfiloService {
 
     void delete(String nomeUtente);
 
-    void checkFieldsValid(ProfiloDto nuovoProfiloDto) throws InvalidParameterException;
+    void checkFieldsValid(ProfiloDto profiloDto) throws InvalidParameterException;
 
     void checkFieldsValid(PutProfiloDto profiloDto) throws InvalidParameterException;
 
