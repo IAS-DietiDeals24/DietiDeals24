@@ -19,7 +19,7 @@ public class NotificaController {
     public NotificaController(NotificaService notificaService) {
         this.notificaService = notificaService;
     }
-    
+
     @PostMapping(path = "/notifiche")
     public ResponseEntity<NotificaDto> createNotifica(@RequestBody NotificaDto receivedNotificaDto) throws InvalidParameterException {
         NotificaDto createdNotificaDto = notificaService.create(receivedNotificaDto);
@@ -53,7 +53,7 @@ public class NotificaController {
     }
 
     @PatchMapping(path = "/notifiche/{idNotifica}")
-    public ResponseEntity<NotificaDto> partialUpdateNotifica(@PathVariable("idNotifica")  Long idNotifica, @RequestBody NotificaDto receivedNotificaDto) throws InvalidParameterException {
+    public ResponseEntity<NotificaDto> partialUpdateNotifica(@PathVariable("idNotifica") Long idNotifica, @RequestBody NotificaDto receivedNotificaDto) throws InvalidParameterException {
         if (notificaService.isExists(idNotifica)) {
             NotificaDto updatedNotificaDto = notificaService.partialUpdate(idNotifica, receivedNotificaDto);
             return new ResponseEntity<>(updatedNotificaDto, HttpStatus.OK);

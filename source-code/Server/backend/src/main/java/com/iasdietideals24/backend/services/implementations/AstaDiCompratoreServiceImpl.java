@@ -32,7 +32,7 @@ public class AstaDiCompratoreServiceImpl implements AstaDiCompratoreService {
     }
 
     private void checkProprietarioValid(AccountShallowDto proprietarioShallow) {
-        if (proprietarioShallow == null)  {
+        if (proprietarioShallow == null) {
             throw new UpdateRuntimeException("Il proprietario non può essere null!");
         }
     }

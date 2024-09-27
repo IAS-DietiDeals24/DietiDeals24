@@ -53,7 +53,7 @@ public class AstaTempoFissoController {
     }
 
     @PatchMapping(path = "/aste/di-venditori/tempo-fisso/{idAsta}")
-    public ResponseEntity<AstaTempoFissoDto> partialUpdateAstaTempoFisso(@PathVariable("idAsta")  Long idAsta, @RequestBody AstaTempoFissoDto receivedAstaTempoFissoDto) throws InvalidParameterException {
+    public ResponseEntity<AstaTempoFissoDto> partialUpdateAstaTempoFisso(@PathVariable("idAsta") Long idAsta, @RequestBody AstaTempoFissoDto receivedAstaTempoFissoDto) throws InvalidParameterException {
         if (astaTempoFissoService.isExists(idAsta)) {
             AstaTempoFissoDto updatedAstaTempoFissoDto = astaTempoFissoService.partialUpdate(idAsta, receivedAstaTempoFissoDto);
             return new ResponseEntity<>(updatedAstaTempoFissoDto, HttpStatus.OK);

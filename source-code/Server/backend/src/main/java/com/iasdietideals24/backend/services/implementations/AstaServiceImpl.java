@@ -77,7 +77,7 @@ public class AstaServiceImpl implements AstaService {
             for (NotificaShallowDto notificaShallowDto : notificheAssociateShallow) {
 
                 Notifica convertedNotifica = relationsConverter.convertNotificaShallowRelation(notificaShallowDto);
-                
+
                 if (convertedNotifica != null) {
                     asta.addNotificaAssociata(convertedNotifica);
                     convertedNotifica.setAstaAssociata(asta);

@@ -48,7 +48,7 @@ public class CompratoreController {
     }
 
     @PatchMapping(path = "/accounts/compratori/{email}")
-    public ResponseEntity<CompratoreDto> partialUpdateCompratore(@PathVariable("email")  String email, @RequestBody CompratoreDto receivedCompratoreDto) throws InvalidParameterException {
+    public ResponseEntity<CompratoreDto> partialUpdateCompratore(@PathVariable("email") String email, @RequestBody CompratoreDto receivedCompratoreDto) throws InvalidParameterException {
         if (compratoreService.isExists(email)) {
             CompratoreDto updatedCompratoreDto = compratoreService.partialUpdate(email, receivedCompratoreDto);
             return new ResponseEntity<>(updatedCompratoreDto, HttpStatus.OK);

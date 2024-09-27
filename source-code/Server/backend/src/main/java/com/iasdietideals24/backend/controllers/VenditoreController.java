@@ -48,7 +48,7 @@ public class VenditoreController {
     }
 
     @PatchMapping(path = "/accounts/venditori/{email}")
-    public ResponseEntity<VenditoreDto> partialUpdateVenditore(@PathVariable("email")  String email, @RequestBody VenditoreDto receivedVenditoreDto) throws InvalidParameterException {
+    public ResponseEntity<VenditoreDto> partialUpdateVenditore(@PathVariable("email") String email, @RequestBody VenditoreDto receivedVenditoreDto) throws InvalidParameterException {
         if (venditoreService.isExists(email)) {
             VenditoreDto updatedVenditoreDto = venditoreService.partialUpdate(email, receivedVenditoreDto);
             return new ResponseEntity<>(updatedVenditoreDto, HttpStatus.OK);

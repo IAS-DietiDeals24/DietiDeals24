@@ -49,7 +49,7 @@ public class ProfiloController {
     }
 
     @PatchMapping(path = "/profili/{nomeUtente}")
-    public ResponseEntity<ProfiloDto> partialUpdateProfilo(@PathVariable("nomeUtente")  String nomeUtente, @RequestBody ProfiloDto receivedProfiloDto) throws InvalidParameterException {
+    public ResponseEntity<ProfiloDto> partialUpdateProfilo(@PathVariable("nomeUtente") String nomeUtente, @RequestBody ProfiloDto receivedProfiloDto) throws InvalidParameterException {
         if (profiloService.isExists(nomeUtente)) {
             ProfiloDto updatedProfiloDto = profiloService.partialUpdate(nomeUtente, receivedProfiloDto);
             return new ResponseEntity<>(updatedProfiloDto, HttpStatus.OK);

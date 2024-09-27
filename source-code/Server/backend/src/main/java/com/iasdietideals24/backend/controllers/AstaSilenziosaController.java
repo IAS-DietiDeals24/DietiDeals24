@@ -53,7 +53,7 @@ public class AstaSilenziosaController {
     }
 
     @PatchMapping(path = "/aste/di-venditori/silenziose/{idAsta}")
-    public ResponseEntity<AstaSilenziosaDto> partialUpdateAstaSilenziosa(@PathVariable("idAsta")  Long idAsta, @RequestBody AstaSilenziosaDto receivedAstaSilenziosaDto) throws InvalidParameterException {
+    public ResponseEntity<AstaSilenziosaDto> partialUpdateAstaSilenziosa(@PathVariable("idAsta") Long idAsta, @RequestBody AstaSilenziosaDto receivedAstaSilenziosaDto) throws InvalidParameterException {
         if (astaSilenziosaService.isExists(idAsta)) {
             AstaSilenziosaDto updatedAstaSilenziosaDto = astaSilenziosaService.partialUpdate(idAsta, receivedAstaSilenziosaDto);
             return new ResponseEntity<>(updatedAstaSilenziosaDto, HttpStatus.OK);

@@ -4,7 +4,6 @@ import com.iasdietideals24.backend.entities.Account;
 import com.iasdietideals24.backend.entities.Compratore;
 import com.iasdietideals24.backend.entities.OffertaDiCompratore;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
-import com.iasdietideals24.backend.exceptions.IllegalDeleteRequestException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import com.iasdietideals24.backend.mapstruct.dto.OffertaDiCompratoreDto;

@@ -53,7 +53,7 @@ public class AstaInversaController {
     }
 
     @PatchMapping(path = "/aste/di-compratori/inverse/{idAsta}")
-    public ResponseEntity<AstaInversaDto> partialUpdateAstaInversa(@PathVariable("idAsta")  Long idAsta, @RequestBody AstaInversaDto receivedAstaInversaDto) throws InvalidParameterException {
+    public ResponseEntity<AstaInversaDto> partialUpdateAstaInversa(@PathVariable("idAsta") Long idAsta, @RequestBody AstaInversaDto receivedAstaInversaDto) throws InvalidParameterException {
         if (astaInversaService.isExists(idAsta)) {
             AstaInversaDto updatedAstaInversaDto = astaInversaService.partialUpdate(idAsta, receivedAstaInversaDto);
             return new ResponseEntity<>(updatedAstaInversaDto, HttpStatus.OK);

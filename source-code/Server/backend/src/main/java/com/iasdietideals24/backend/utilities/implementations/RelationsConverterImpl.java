@@ -3,12 +3,7 @@ package com.iasdietideals24.backend.utilities.implementations;
 import com.iasdietideals24.backend.entities.*;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
-import com.iasdietideals24.backend.exceptions.UpdateRuntimeException;
-import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
-import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
-import com.iasdietideals24.backend.mapstruct.dto.shallows.NotificaShallowDto;
-import com.iasdietideals24.backend.mapstruct.dto.shallows.OffertaShallowDto;
-import com.iasdietideals24.backend.mapstruct.dto.shallows.ProfiloShallowDto;
+import com.iasdietideals24.backend.mapstruct.dto.shallows.*;
 import com.iasdietideals24.backend.repositories.*;
 import com.iasdietideals24.backend.utilities.RelationsConverter;
 import org.springframework.stereotype.Component;
@@ -29,7 +24,7 @@ public class RelationsConverterImpl implements RelationsConverter {
 
     private static final String INIZIO_MESSAGGIO_ERRORE_EMAIL = "L'email \"";
     private static final String FINE_MESSAGGIO_ERRORE_EMAIL = "\" non corrisponde a nessun account di tipo ";
-    
+
     private final ProfiloRepository profiloRepository;
     private final NotificaRepository notificaRepository;
     private final AstaInversaRepository astaInversaRepository;
