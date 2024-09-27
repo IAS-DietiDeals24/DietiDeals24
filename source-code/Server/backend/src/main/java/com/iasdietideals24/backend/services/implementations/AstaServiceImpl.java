@@ -8,11 +8,13 @@ import com.iasdietideals24.backend.mapstruct.dto.AstaDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.NotificaShallowDto;
 import com.iasdietideals24.backend.services.AstaService;
 import com.iasdietideals24.backend.utilities.RelationsConverter;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Set;
 
+@Service
 public class AstaServiceImpl implements AstaService {
 
     private final RelationsConverter relationsConverter;

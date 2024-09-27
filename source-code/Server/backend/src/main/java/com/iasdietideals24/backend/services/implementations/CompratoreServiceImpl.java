@@ -35,7 +35,7 @@ public class CompratoreServiceImpl implements CompratoreService {
     @Override
     public CompratoreDto create(String email, CompratoreDto nuovoCompratoreDto) throws InvalidParameterException {
 
-        //Verifichiamo l'integrità dei dati
+        // Verifichiamo l'integrità dei dati
         nuovoCompratoreDto.setEmail(email);
         checkFieldsValid(nuovoCompratoreDto);
 
@@ -94,7 +94,7 @@ public class CompratoreServiceImpl implements CompratoreService {
             throw new UpdateRuntimeException("L'email non corrisponde a nessun compratore esistente!");
         else {
 
-            // Recuperiamo l'entità Profilo dal wrapping Optional
+            // Recuperiamo l'entità dal wrapping Optional
             Compratore existingCompratore = foundCompratore.get();
 
             // Effettuiamo le modifiche

@@ -67,5 +67,4 @@ public class NotificaController {
         notificaService.delete(idNotifica);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }

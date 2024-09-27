@@ -26,112 +26,112 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class OffertaDiVenditoreRepositoryIntegrationTests {
+class OffertaInversaRepositoryIntegrationTests {
 
-    private final OffertaDiVenditoreRepository underTest;
+    private final OffertaInversaRepository underTest;
 
     @Autowired
-    public OffertaDiVenditoreRepositoryIntegrationTests(OffertaDiVenditoreRepository underTest) {
+    public OffertaInversaRepositoryIntegrationTests(OffertaInversaRepository underTest) {
         this.underTest = underTest;
     }
 
     @Test
     @Transactional
-    void testOffertaDiVenditoreCanBeCreatedAndRecalled() throws InvalidTypeException {
+    void testOffertaInversaCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloProprietario = TestDataProfilo.createProfiloCompratoreA();
         Compratore proprietario = profiloProprietario.getCompratore();
         AstaInversa astaRiferimento = TestDataAstaInversa.createAstaInversaA(proprietario);
         Profilo profiloVenditoreCollegato = TestDataProfilo.createProfiloVenditoreB();
         Venditore venditoreCollegato = profiloVenditoreCollegato.getVenditore();
-        OffertaDiVenditore offertaDiVenditore = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegato, astaRiferimento);
+        OffertaInversa offertaInversa = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegato, astaRiferimento);
 
         // Salvataggio oggetto nel database
-        underTest.save(offertaDiVenditore);
+        underTest.save(offertaInversa);
 
         // Recupero oggetto dal database
-        Optional<OffertaDiVenditore> result = underTest.findById(offertaDiVenditore.getIdOfferta());
+        Optional<OffertaInversa> result = underTest.findById(offertaInversa.getIdOfferta());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
         assertTrue(result.isPresent());
-        assertEquals(offertaDiVenditore, result.get());
+        assertEquals(offertaInversa, result.get());
     }
 
     @Test
     @Transactional
-    void testMultipleOffertaDiVenditoreCanBeCreatedAndRecalled() throws InvalidTypeException {
+    void testMultipleOffertaInversaCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloProprietarioA = TestDataProfilo.createProfiloCompratoreA();
         Compratore proprietarioA = profiloProprietarioA.getCompratore();
         AstaInversa astaRiferimentoA = TestDataAstaInversa.createAstaInversaA(proprietarioA);
         Profilo profiloVenditoreCollegatoB = TestDataProfilo.createProfiloVenditoreB();
         Venditore venditoreCollegatoB = profiloVenditoreCollegatoB.getVenditore();
-        OffertaDiVenditore offertaDiVenditoreA = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegatoB, astaRiferimentoA);
+        OffertaInversa offertaInversaA = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegatoB, astaRiferimentoA);
 
         Profilo profiloProprietarioC = TestDataProfilo.createProfiloCompratoreC();
         Compratore proprietarioC = profiloProprietarioC.getCompratore();
         AstaInversa astaRiferimentoB = TestDataAstaInversa.createAstaInversaB(proprietarioC);
-        OffertaDiVenditore offertaDiVenditoreB = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegatoB, astaRiferimentoB);
+        OffertaInversa offertaInversaB = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegatoB, astaRiferimentoB);
 
         AstaInversa astaRiferimentoC = TestDataAstaInversa.createAstaInversaC(proprietarioC);
-        OffertaDiVenditore offertaDiVenditoreC = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegatoB, astaRiferimentoC);
+        OffertaInversa offertaInversaC = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegatoB, astaRiferimentoC);
 
         // Salvataggio oggetti nel database
-        underTest.save(offertaDiVenditoreA);
-        underTest.save(offertaDiVenditoreB);
-        underTest.save(offertaDiVenditoreC);
+        underTest.save(offertaInversaA);
+        underTest.save(offertaInversaB);
+        underTest.save(offertaInversaC);
 
         // Recupero oggetti dal database
-        List<OffertaDiVenditore> result = StreamSupport.stream(underTest.findAll().spliterator(), false).toList();
+        List<OffertaInversa> result = StreamSupport.stream(underTest.findAll().spliterator(), false).toList();
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
-        assertTrue(result.size() == 3 && result.contains(offertaDiVenditoreA) && result.contains(offertaDiVenditoreB) && result.contains(offertaDiVenditoreC));
+        assertTrue(result.size() == 3 && result.contains(offertaInversaA) && result.contains(offertaInversaB) && result.contains(offertaInversaC));
     }
 
     @Test
     @Transactional
-    void testOffertaDiVenditoreCanBeUpdated() throws InvalidTypeException {
+    void testOffertaInversaCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloCompratoreB();
         Compratore proprietario = profiloProprietario.getCompratore();
         AstaInversa astaRiferimento = TestDataAstaInversa.createAstaInversaB(proprietario);
         Profilo profiloVenditoreCollegato = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditoreCollegato = profiloVenditoreCollegato.getVenditore();
-        OffertaDiVenditore offertaDiVenditore = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegato, astaRiferimento);
-        underTest.save(offertaDiVenditore);
+        OffertaInversa offertaInversa = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegato, astaRiferimento);
+        underTest.save(offertaInversa);
 
         // Modifica e salvataggio dell'oggetto nel database
-        offertaDiVenditore.setOraInvio(LocalTime.of(0, 0));
-        underTest.save(offertaDiVenditore);
+        offertaInversa.setOraInvio(LocalTime.of(0, 0));
+        underTest.save(offertaInversa);
 
         // Recupero l'oggetto dal database
-        Optional<OffertaDiVenditore> result = underTest.findById(offertaDiVenditore.getIdOfferta());
+        Optional<OffertaInversa> result = underTest.findById(offertaInversa.getIdOfferta());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
         assertTrue(result.isPresent());
-        assertEquals(offertaDiVenditore, result.get());
+        assertEquals(offertaInversa, result.get());
     }
 
     @Test
     @Transactional
-    void testOffertaDiVenditoreCanBeDeleted() throws InvalidTypeException {
+    void testOffertaInversaCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloCompratoreC();
         Compratore proprietario = profiloProprietario.getCompratore();
         AstaInversa astaRiferimento = TestDataAstaInversa.createAstaInversaC(proprietario);
         Profilo profiloVenditoreCollegato = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditoreCollegato = profiloVenditoreCollegato.getVenditore();
-        OffertaDiVenditore offertaDiVenditore = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegato, astaRiferimento);
-        underTest.save(offertaDiVenditore);
+        OffertaInversa offertaInversa = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegato, astaRiferimento);
+        underTest.save(offertaInversa);
 
         // Rimozione dell'oggetto dal database
-        underTest.deleteById(offertaDiVenditore.getIdOfferta());
+        underTest.deleteById(offertaInversa.getIdOfferta());
 
         // Recupero l'oggetto dal database
-        Optional<OffertaDiVenditore> result = underTest.findById(offertaDiVenditore.getIdOfferta());
+        Optional<OffertaInversa> result = underTest.findById(offertaInversa.getIdOfferta());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions

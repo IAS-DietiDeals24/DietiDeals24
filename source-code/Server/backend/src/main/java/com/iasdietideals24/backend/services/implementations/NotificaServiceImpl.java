@@ -39,7 +39,7 @@ public class NotificaServiceImpl implements NotificaService {
     @Override
     public NotificaDto create(NotificaDto nuovaNotificaDto) throws InvalidParameterException {
 
-        //Verifichiamo l'integrità dei dati
+        // Verifichiamo l'integrità dei dati
         checkFieldsValid(nuovaNotificaDto);
 
         // Convertiamo a entità
@@ -58,9 +58,9 @@ public class NotificaServiceImpl implements NotificaService {
     public Page<NotificaDto> findAll(Pageable pageable) {
 
         // Recuperiamo tutte le entità
-        Page<Notifica> foundNotifica = notificaRepository.findAll(pageable);
+        Page<Notifica> foundNotifiche = notificaRepository.findAll(pageable);
 
-        return foundNotifica.map(notificaMapper::toDto);
+        return foundNotifiche.map(notificaMapper::toDto);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class NotificaServiceImpl implements NotificaService {
         if (foundNotifica.isEmpty())
             throw new UpdateRuntimeException("L'id notifica non corrsiponde a nessuna notifica esistente!");
         else {
-            // Recuperiamo l'entità Profilo dal wrapping Optional
+            // Recuperiamo l'entità dal wrapping Optional
             Notifica existingNotifica = foundNotifica.get();
 
             // Effettuiamo le modifiche

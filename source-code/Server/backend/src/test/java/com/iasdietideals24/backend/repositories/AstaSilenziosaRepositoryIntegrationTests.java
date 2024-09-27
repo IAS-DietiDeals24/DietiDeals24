@@ -1,9 +1,8 @@
 package com.iasdietideals24.backend.repositories;
 
 import com.iasdietideals24.backend.datautil.TestDataAstaSilenziosa;
-import com.iasdietideals24.backend.datautil.TestDataAstaTempoFisso;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
-import com.iasdietideals24.backend.entities.AstaDiVenditore;
+import com.iasdietideals24.backend.entities.AstaSilenziosa;
 import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.entities.Venditore;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
@@ -27,100 +26,100 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class AstaDiVenditoreRepositoryIntegrationTests {
+class AstaSilenziosaRepositoryIntegrationTests {
 
-    private final AstaDiVenditoreRepository underTest;
+    private final AstaSilenziosaRepository underTest;
 
     @Autowired
-    public AstaDiVenditoreRepositoryIntegrationTests(AstaDiVenditoreRepository underTest) {
+    public AstaSilenziosaRepositoryIntegrationTests(AstaSilenziosaRepository underTest) {
         this.underTest = underTest;
     }
 
     @Test
     @Transactional
-    void testAstaDiVenditoreCanBeCreatedAndRecalled() throws InvalidTypeException {
+    void testAstaSilenziosaCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreC();
         Venditore venditore = profiloVenditore.getVenditore();
-        AstaDiVenditore astaDiVenditore = TestDataAstaSilenziosa.createAstaSilenziosaA(venditore);
+        AstaSilenziosa astaSilenziosa = TestDataAstaSilenziosa.createAstaSilenziosaA(venditore);
 
         // Salvataggio oggetto nel database
-        underTest.save(astaDiVenditore);
+        underTest.save(astaSilenziosa);
 
         // Recupero oggetto dal database
-        Optional<AstaDiVenditore> result = underTest.findById(astaDiVenditore.getIdAsta());
+        Optional<AstaSilenziosa> result = underTest.findById(astaSilenziosa.getIdAsta());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
         assertTrue(result.isPresent());
-        assertEquals(astaDiVenditore, result.get());
+        assertEquals(astaSilenziosa, result.get());
     }
 
     @Test
     @Transactional
-    void testMultipleAstaDiVenditoreCanBeCreatedAndRecalled() throws InvalidTypeException {
+    void testMultipleAstaSilenziosaCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloVenditoreA = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditoreA = profiloVenditoreA.getVenditore();
-        AstaDiVenditore astaDiVenditoreA = TestDataAstaSilenziosa.createAstaSilenziosaA(venditoreA);
+        AstaSilenziosa astaSilenziosaA = TestDataAstaSilenziosa.createAstaSilenziosaA(venditoreA);
 
         Profilo profiloVenditoreB = TestDataProfilo.createProfiloVenditoreB();
         Venditore venditoreB = profiloVenditoreB.getVenditore();
-        AstaDiVenditore astaDiVenditoreB = TestDataAstaTempoFisso.createAstaTempoFissoB(venditoreB);
+        AstaSilenziosa astaSilenziosaB = TestDataAstaSilenziosa.createAstaSilenziosaB(venditoreB);
 
         Profilo profiloVenditoreC = TestDataProfilo.createProfiloVenditoreC();
         Venditore venditoreC = profiloVenditoreC.getVenditore();
-        AstaDiVenditore astaDiVenditoreC = TestDataAstaSilenziosa.createAstaSilenziosaC(venditoreC);
+        AstaSilenziosa astaSilenziosaC = TestDataAstaSilenziosa.createAstaSilenziosaC(venditoreC);
 
         // Salvataggio oggetti nel database
-        underTest.save(astaDiVenditoreA);
-        underTest.save(astaDiVenditoreB);
-        underTest.save(astaDiVenditoreC);
+        underTest.save(astaSilenziosaA);
+        underTest.save(astaSilenziosaB);
+        underTest.save(astaSilenziosaC);
 
         // Recupero oggetti dal database
-        List<AstaDiVenditore> result = StreamSupport.stream(underTest.findAll().spliterator(), false).toList();
+        List<AstaSilenziosa> result = StreamSupport.stream(underTest.findAll().spliterator(), false).toList();
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
-        assertTrue(result.size() == 3 && result.contains(astaDiVenditoreA) && result.contains(astaDiVenditoreB) && result.contains(astaDiVenditoreC));
+        assertTrue(result.size() == 3 && result.contains(astaSilenziosaA) && result.contains(astaSilenziosaB) && result.contains(astaSilenziosaC));
     }
 
     @Test
     @Transactional
-    void testAstaDiVenditoreCanBeUpdated() throws InvalidTypeException {
+    void testAstaSilenziosaCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditore = profiloVenditore.getVenditore();
-        AstaDiVenditore astaDiVenditore = TestDataAstaTempoFisso.createAstaTempoFissoC(venditore);
-        underTest.save(astaDiVenditore);
+        AstaSilenziosa astaSilenziosa = TestDataAstaSilenziosa.createAstaSilenziosaC(venditore);
+        underTest.save(astaSilenziosa);
 
         // Modifica e salvataggio dell'oggetto nel database
-        astaDiVenditore.setNome("UPDATED");
-        underTest.save(astaDiVenditore);
+        astaSilenziosa.setNome("UPDATED");
+        underTest.save(astaSilenziosa);
 
         // Recupero l'oggetto dal database
-        Optional<AstaDiVenditore> result = underTest.findById(astaDiVenditore.getIdAsta());
+        Optional<AstaSilenziosa> result = underTest.findById(astaSilenziosa.getIdAsta());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
         assertTrue(result.isPresent());
-        assertEquals(astaDiVenditore, result.get());
+        assertEquals(astaSilenziosa, result.get());
     }
 
     @Test
     @Transactional
-    void testAstaDiVenditoreCanBeDeleted() throws InvalidTypeException {
+    void testAstaSilenziosaCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditore = profiloVenditore.getVenditore();
-        AstaDiVenditore astaDiVenditore = TestDataAstaSilenziosa.createAstaSilenziosaB(venditore);
-        underTest.save(astaDiVenditore);
+        AstaSilenziosa astaSilenziosa = TestDataAstaSilenziosa.createAstaSilenziosaB(venditore);
+        underTest.save(astaSilenziosa);
 
         // Rimozione dell'oggetto dal database
-        underTest.deleteById(astaDiVenditore.getIdAsta());
+        underTest.deleteById(astaSilenziosa.getIdAsta());
 
         // Recupero l'oggetto dal database
-        Optional<AstaDiVenditore> result = underTest.findById(astaDiVenditore.getIdAsta());
+        Optional<AstaSilenziosa> result = underTest.findById(astaSilenziosa.getIdAsta());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions

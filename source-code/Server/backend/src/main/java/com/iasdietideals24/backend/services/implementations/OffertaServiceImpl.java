@@ -4,11 +4,13 @@ import com.iasdietideals24.backend.entities.Offerta;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.mapstruct.dto.OffertaDto;
 import com.iasdietideals24.backend.services.OffertaService;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@Service
 public class OffertaServiceImpl implements OffertaService {
     @Override
     public void checkFieldsValid(OffertaDto offertaDto) throws InvalidParameterException {

@@ -24,112 +24,112 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class OffertaDiCompratoreRepositoryIntegrationTests {
+class OffertaSilenziosaRepositoryIntegrationTests {
 
-    private final OffertaDiCompratoreRepository underTest;
+    private final OffertaSilenziosaRepository underTest;
 
     @Autowired
-    public OffertaDiCompratoreRepositoryIntegrationTests(OffertaDiCompratoreRepository underTest) {
+    public OffertaSilenziosaRepositoryIntegrationTests(OffertaSilenziosaRepository underTest) {
         this.underTest = underTest;
     }
 
     @Test
     @Transactional
-    void testOffertaDiCompratoreCanBeCreatedAndRecalled() throws InvalidTypeException {
+    void testOffertaSilenziosaCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloProprietario = TestDataProfilo.createProfiloVenditoreA();
         Venditore proprietario = profiloProprietario.getVenditore();
         AstaSilenziosa astaRiferimento = TestDataAstaSilenziosa.createAstaSilenziosaA(proprietario);
         Profilo profiloCompratoreCollegato = TestDataProfilo.createProfiloCompratoreB();
         Compratore compratoreCollegato = profiloCompratoreCollegato.getCompratore();
-        OffertaDiCompratore offertaDiCompratore = TestDataOffertaSilenziosa.createOffertaSilenziosaA(compratoreCollegato, astaRiferimento);
+        OffertaSilenziosa offertaSilenziosa = TestDataOffertaSilenziosa.createOffertaSilenziosaA(compratoreCollegato, astaRiferimento);
 
         // Salvataggio oggetto nel database
-        underTest.save(offertaDiCompratore);
+        underTest.save(offertaSilenziosa);
 
         // Recupero oggetto dal database
-        Optional<OffertaDiCompratore> result = underTest.findById(offertaDiCompratore.getIdOfferta());
+        Optional<OffertaSilenziosa> result = underTest.findById(offertaSilenziosa.getIdOfferta());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
         assertTrue(result.isPresent());
-        assertEquals(offertaDiCompratore, result.get());
+        assertEquals(offertaSilenziosa, result.get());
     }
 
     @Test
     @Transactional
-    void testMultipleOffertaDiCompratoreCanBeCreatedAndRecalled() throws InvalidTypeException {
+    void testMultipleOffertaSilenziosaCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloProprietarioA = TestDataProfilo.createProfiloVenditoreA();
         Venditore proprietarioA = profiloProprietarioA.getVenditore();
         AstaSilenziosa astaRiferimentoA = TestDataAstaSilenziosa.createAstaSilenziosaA(proprietarioA);
         Profilo profiloCompratoreCollegatoB = TestDataProfilo.createProfiloCompratoreB();
         Compratore compratoreCollegatoB = profiloCompratoreCollegatoB.getCompratore();
-        OffertaDiCompratore offertaDiCompratoreA = TestDataOffertaSilenziosa.createOffertaSilenziosaA(compratoreCollegatoB, astaRiferimentoA);
+        OffertaSilenziosa offertaSilenziosaA = TestDataOffertaSilenziosa.createOffertaSilenziosaA(compratoreCollegatoB, astaRiferimentoA);
 
         Profilo profiloProprietarioC = TestDataProfilo.createProfiloVenditoreC();
         Venditore proprietarioC = profiloProprietarioC.getVenditore();
-        AstaTempoFisso astaRiferimentoB = TestDataAstaTempoFisso.createAstaTempoFissoB(proprietarioC);
-        OffertaDiCompratore offertaDiCompratoreB = TestDataOffertaTempoFisso.createOffertaTempoFissoB(compratoreCollegatoB, astaRiferimentoB);
+        AstaSilenziosa astaRiferimentoB = TestDataAstaSilenziosa.createAstaSilenziosaB(proprietarioC);
+        OffertaSilenziosa offertaSilenziosaB = TestDataOffertaSilenziosa.createOffertaSilenziosaB(compratoreCollegatoB, astaRiferimentoB);
 
         AstaSilenziosa astaRiferimentoC = TestDataAstaSilenziosa.createAstaSilenziosaC(proprietarioC);
-        OffertaDiCompratore offertaDiCompratoreC = TestDataOffertaSilenziosa.createOffertaSilenziosaC(compratoreCollegatoB, astaRiferimentoC);
+        OffertaSilenziosa offertaSilenziosaC = TestDataOffertaSilenziosa.createOffertaSilenziosaC(compratoreCollegatoB, astaRiferimentoC);
 
         // Salvataggio oggetti nel database
-        underTest.save(offertaDiCompratoreA);
-        underTest.save(offertaDiCompratoreB);
-        underTest.save(offertaDiCompratoreC);
+        underTest.save(offertaSilenziosaA);
+        underTest.save(offertaSilenziosaB);
+        underTest.save(offertaSilenziosaC);
 
         // Recupero oggetti dal database
-        List<OffertaDiCompratore> result = StreamSupport.stream(underTest.findAll().spliterator(), false).toList();
+        List<OffertaSilenziosa> result = StreamSupport.stream(underTest.findAll().spliterator(), false).toList();
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
-        assertTrue(result.size() == 3 && result.contains(offertaDiCompratoreA) && result.contains(offertaDiCompratoreB) && result.contains(offertaDiCompratoreC));
+        assertTrue(result.size() == 3 && result.contains(offertaSilenziosaA) && result.contains(offertaSilenziosaB) && result.contains(offertaSilenziosaC));
     }
 
     @Test
     @Transactional
-    void testOffertaDiCompratoreCanBeUpdated() throws InvalidTypeException {
+    void testOffertaSilenziosaCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloVenditoreB();
         Venditore proprietario = profiloProprietario.getVenditore();
-        AstaTempoFisso astaRiferimento = TestDataAstaTempoFisso.createAstaTempoFissoB(proprietario);
+        AstaSilenziosa astaRiferimento = TestDataAstaSilenziosa.createAstaSilenziosaB(proprietario);
         Profilo profiloCompratoreCollegato = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratoreCollegato = profiloCompratoreCollegato.getCompratore();
-        OffertaDiCompratore offertaDiCompratore = TestDataOffertaTempoFisso.createOffertaTempoFissoC(compratoreCollegato, astaRiferimento);
-        underTest.save(offertaDiCompratore);
+        OffertaSilenziosa offertaSilenziosa = TestDataOffertaSilenziosa.createOffertaSilenziosaC(compratoreCollegato, astaRiferimento);
+        underTest.save(offertaSilenziosa);
 
         // Modifica e salvataggio dell'oggetto nel database
-        offertaDiCompratore.setOraInvio(LocalTime.of(0, 0));
-        underTest.save(offertaDiCompratore);
+        offertaSilenziosa.setOraInvio(LocalTime.of(0, 0));
+        underTest.save(offertaSilenziosa);
 
         // Recupero l'oggetto dal database
-        Optional<OffertaDiCompratore> result = underTest.findById(offertaDiCompratore.getIdOfferta());
+        Optional<OffertaSilenziosa> result = underTest.findById(offertaSilenziosa.getIdOfferta());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
         assertTrue(result.isPresent());
-        assertEquals(offertaDiCompratore, result.get());
+        assertEquals(offertaSilenziosa, result.get());
     }
 
     @Test
     @Transactional
-    void testOffertaDiCompratoreCanBeDeleted() throws InvalidTypeException {
+    void testOffertaSilenziosaCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloVenditoreC();
         Venditore proprietario = profiloProprietario.getVenditore();
         AstaSilenziosa astaRiferimento = TestDataAstaSilenziosa.createAstaSilenziosaC(proprietario);
         Profilo profiloCompratoreCollegato = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratoreCollegato = profiloCompratoreCollegato.getCompratore();
-        OffertaDiCompratore offertaDiCompratore = TestDataOffertaSilenziosa.createOffertaSilenziosaA(compratoreCollegato, astaRiferimento);
-        underTest.save(offertaDiCompratore);
+        OffertaSilenziosa offertaSilenziosa = TestDataOffertaSilenziosa.createOffertaSilenziosaA(compratoreCollegato, astaRiferimento);
+        underTest.save(offertaSilenziosa);
 
         // Rimozione dell'oggetto dal database
-        underTest.deleteById(offertaDiCompratore.getIdOfferta());
+        underTest.deleteById(offertaSilenziosa.getIdOfferta());
 
         // Recupero l'oggetto dal database
-        Optional<OffertaDiCompratore> result = underTest.findById(offertaDiCompratore.getIdOfferta());
+        Optional<OffertaSilenziosa> result = underTest.findById(offertaSilenziosa.getIdOfferta());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions

@@ -35,7 +35,7 @@ public class VenditoreServiceImpl implements VenditoreService {
     @Override
     public VenditoreDto create(String email, VenditoreDto nuovoVenditoreDto) throws InvalidParameterException {
 
-        //Verifichiamo l'integrità dei dati
+        // Verifichiamo l'integrità dei dati
         nuovoVenditoreDto.setEmail(email);
         checkFieldsValid(nuovoVenditoreDto);
 
@@ -94,7 +94,7 @@ public class VenditoreServiceImpl implements VenditoreService {
             throw new UpdateRuntimeException("L'email non corrisponde a nessun venditore esistente!");
         else {
 
-            // Recuperiamo l'entità Profilo dal wrapping Optional
+            // Recuperiamo l'entità dal wrapping Optional
             Venditore existingVenditore = foundVenditore.get();
 
             // Effettuiamo le modifiche

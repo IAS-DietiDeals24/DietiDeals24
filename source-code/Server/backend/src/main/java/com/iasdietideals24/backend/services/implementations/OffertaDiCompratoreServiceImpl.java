@@ -12,7 +12,9 @@ import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
 import com.iasdietideals24.backend.services.OffertaDiCompratoreService;
 import com.iasdietideals24.backend.services.OffertaService;
 import com.iasdietideals24.backend.utilities.RelationsConverter;
+import org.springframework.stereotype.Service;
 
+@Service
 public class OffertaDiCompratoreServiceImpl implements OffertaDiCompratoreService {
 
     private final OffertaService offertaService;
@@ -59,6 +61,6 @@ public class OffertaDiCompratoreServiceImpl implements OffertaDiCompratoreServic
     public void updatePresentFields(OffertaDiCompratoreDto updatedOffertaDiCompratoreDto, OffertaDiCompratore existingOffertaDiCompratore) throws InvalidParameterException {
         offertaService.updatePresentFields(updatedOffertaDiCompratoreDto, existingOffertaDiCompratore);
 
-        // Non è possibile modificare l'associazione "compratoreCollegato" tramite la risorsa "offerte/offerte-di-compratori"
+        // Non è possibile modificare l'associazione "compratoreCollegato" tramite la risorsa "offerte/di-compratori"
     }
 }

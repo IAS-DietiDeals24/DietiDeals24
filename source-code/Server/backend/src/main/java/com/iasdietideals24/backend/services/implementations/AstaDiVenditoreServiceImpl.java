@@ -12,7 +12,9 @@ import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
 import com.iasdietideals24.backend.services.AstaDiVenditoreService;
 import com.iasdietideals24.backend.services.AstaService;
 import com.iasdietideals24.backend.utilities.RelationsConverter;
+import org.springframework.stereotype.Service;
 
+@Service
 public class AstaDiVenditoreServiceImpl implements AstaDiVenditoreService {
 
     private final AstaService astaService;
@@ -59,6 +61,6 @@ public class AstaDiVenditoreServiceImpl implements AstaDiVenditoreService {
     public void updatePresentFields(AstaDiVenditoreDto updatedAstaDiVenditoreDto, AstaDiVenditore existingAstaDiVenditore) throws InvalidParameterException {
         astaService.updatePresentFields(updatedAstaDiVenditoreDto, existingAstaDiVenditore);
 
-        // Non è possibile modificare l'associazione "proprietario" tramite la risorsa "aste/aste-di-venditori"
+        // Non è possibile modificare l'associazione "proprietario" tramite la risorsa "aste/di-venditori"
     }
 }
