@@ -45,7 +45,6 @@ public class NotificaController {
     @PutMapping(path = "/notifiche/{idNotifica}")
     public ResponseEntity<NotificaDto> fullUpdateNotifica(@PathVariable("idNotifica") Long idNotifica, @RequestBody NotificaDto receivedNotificaDto) throws InvalidParameterException {
         if (notificaService.isExists(idNotifica)) {
-            receivedNotificaDto.setIdNotifica(idNotifica);
             NotificaDto updatedNotificaDto = notificaService.fullUpdate(idNotifica, receivedNotificaDto);
             return new ResponseEntity<>(updatedNotificaDto, HttpStatus.OK);
         } else {

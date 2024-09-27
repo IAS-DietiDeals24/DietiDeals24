@@ -32,7 +32,7 @@ public class AccountServiceImpl implements AccountService {
         checkProfiloShallowValid(accountDto.getProfiloShallow());
     }
 
-    void checkEmailValid(String email) throws InvalidParameterException {
+    private void checkEmailValid(String email) throws InvalidParameterException {
         if (email == null)
             throw new InvalidParameterException("L'email non può essere null!");
         else if (email.isBlank())
@@ -41,21 +41,21 @@ public class AccountServiceImpl implements AccountService {
             throw new InvalidParameterException("Formato email non valido!");
     }
 
-    void checkPasswordValid(String password) throws InvalidParameterException {
+    private void checkPasswordValid(String password) throws InvalidParameterException {
         if (password == null)
             throw new InvalidParameterException("La password non può essere null!");
         else if (password.isBlank())
             throw new InvalidParameterException("La password non può essere vuota!");
     }
 
-    void checkProfiloShallowValid(ProfiloShallowDto profiloShallow) throws InvalidParameterException {
+    private void checkProfiloShallowValid(ProfiloShallowDto profiloShallow) throws InvalidParameterException {
         if (profiloShallow == null)
             throw new InvalidParameterException();
 
         checkNomeUtenteValid(profiloShallow.getNomeUtente());
     }
 
-    void checkNomeUtenteValid(String nomeUtente) throws InvalidParameterException {
+    private void checkNomeUtenteValid(String nomeUtente) throws InvalidParameterException {
         if (nomeUtente == null)
             throw new InvalidParameterException("Il nome utente non può essere null!");
         else if (nomeUtente.isBlank())
@@ -69,7 +69,7 @@ public class AccountServiceImpl implements AccountService {
         convertNotificheRicevuteShallow(accountDto.getNotificheRicevuteShallow(), account);
     }
 
-    void convertProfiloShallow(ProfiloShallowDto profiloShallowDto, Account nuovoAccount) throws InvalidParameterException {
+    private void convertProfiloShallow(ProfiloShallowDto profiloShallowDto, Account nuovoAccount) throws InvalidParameterException {
 
         Profilo convertedProfilo = relationsConverter.convertProfiloShallowRelation(profiloShallowDto);
 
@@ -85,7 +85,7 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    void convertNotificheInviateShallow(Set<NotificaShallowDto> notificheInviateShallowDto, Account nuovoAccount) throws InvalidParameterException {
+    private void convertNotificheInviateShallow(Set<NotificaShallowDto> notificheInviateShallowDto, Account nuovoAccount) throws InvalidParameterException {
         if (notificheInviateShallowDto != null) {
             for (NotificaShallowDto notificaShallowDto : notificheInviateShallowDto) {
 
@@ -99,7 +99,7 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    void convertNotificheRicevuteShallow(Set<NotificaShallowDto> notificheRicevuteShallowDto, Account nuovoAccount) throws InvalidParameterException {
+    private void convertNotificheRicevuteShallow(Set<NotificaShallowDto> notificheRicevuteShallowDto, Account nuovoAccount) throws InvalidParameterException {
         if (notificheRicevuteShallowDto != null) {
             for (NotificaShallowDto notificaShallowDto : notificheRicevuteShallowDto) {
 
@@ -118,23 +118,25 @@ public class AccountServiceImpl implements AccountService {
         ifPresentUpdateEmail(updatedAccountDto.getEmail(), existingAccount);
         ifPresentUpdatePassword(updatedAccountDto.getPassword(), existingAccount);
         ifPresentUpdateTokens(updatedAccountDto.getTokens(), existingAccount);
+
+        // Non è possibile modificare le associazioni "profilo", "notificheInviate", "notificheRicevute" tramite la risorsa "accounts"
     }
 
-    void ifPresentUpdateEmail(String updatedEmail, Account existingAccount) throws InvalidParameterException {
+    private void ifPresentUpdateEmail(String updatedEmail, Account existingAccount) throws InvalidParameterException {
         if (updatedEmail != null) {
             checkEmailValid(updatedEmail);
             existingAccount.setEmail(updatedEmail);
         }
     }
 
-    void ifPresentUpdatePassword(String updatedPassword, Account existingAccount) throws InvalidParameterException {
+    private void ifPresentUpdatePassword(String updatedPassword, Account existingAccount) throws InvalidParameterException {
         if (updatedPassword != null) {
             checkPasswordValid(updatedPassword);
             existingAccount.setPassword(updatedPassword);
         }
     }
 
-    void ifPresentUpdateTokens(TokensAccountDto updatedTokensDto, Account existingAccount) {
+    private void ifPresentUpdateTokens(TokensAccountDto updatedTokensDto, Account existingAccount) {
         TokensAccount existingTokens = existingAccount.getTokens();
 
         if (updatedTokensDto != null) {
@@ -149,25 +151,25 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
-    void ifPresentUpdateIdFacebook(String updatedIdFacebook, TokensAccount existingTokens) {
+    private void ifPresentUpdateIdFacebook(String updatedIdFacebook, TokensAccount existingTokens) {
         if (updatedIdFacebook != null) {
             existingTokens.setIdFacebook(updatedIdFacebook);
         }
     }
 
-    void ifPresentUpdateIdGoogle(String updatedIdGoogle, TokensAccount existingTokens) {
+    private void ifPresentUpdateIdGoogle(String updatedIdGoogle, TokensAccount existingTokens) {
         if (updatedIdGoogle != null) {
             existingTokens.setIdGoogle(updatedIdGoogle);
         }
     }
 
-    void ifPresentUpdateIdX(String updatedIdX, TokensAccount existingTokens) {
+    private void ifPresentUpdateIdX(String updatedIdX, TokensAccount existingTokens) {
         if (updatedIdX != null) {
             existingTokens.setIdX(updatedIdX);
         }
     }
 
-    void ifPresentUpdateIdGitHub(String updatedIdGitHub, TokensAccount existingTokens) {
+    private void ifPresentUpdateIdGitHub(String updatedIdGitHub, TokensAccount existingTokens) {
         if (updatedIdGitHub != null) {
             existingTokens.setIdGitHub(updatedIdGitHub);
         }

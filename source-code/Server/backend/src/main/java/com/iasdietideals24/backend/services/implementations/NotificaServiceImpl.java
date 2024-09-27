@@ -8,20 +8,13 @@ import com.iasdietideals24.backend.exceptions.UpdateRuntimeException;
 import com.iasdietideals24.backend.mapstruct.dto.NotificaDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
-import com.iasdietideals24.backend.mapstruct.dto.shallows.NotificaShallowDto;
-import com.iasdietideals24.backend.mapstruct.mappers.CompratoreMapper;
 import com.iasdietideals24.backend.mapstruct.mappers.NotificaMapper;
-import com.iasdietideals24.backend.mapstruct.mappers.VenditoreMapper;
-import com.iasdietideals24.backend.repositories.CompratoreRepository;
 import com.iasdietideals24.backend.repositories.NotificaRepository;
-import com.iasdietideals24.backend.repositories.VenditoreRepository;
-import com.iasdietideals24.backend.services.AccountService;
 import com.iasdietideals24.backend.services.NotificaService;
 import com.iasdietideals24.backend.utilities.RelationsConverter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -89,17 +82,34 @@ public class NotificaServiceImpl implements NotificaService {
     @Override
     public NotificaDto fullUpdate(Long idNotifica, NotificaDto updatedNotificaDto) throws InvalidParameterException {
 
+        updatedNotificaDto.setIdNotifica(idNotifica);
+
         if (!notificaRepository.existsById(idNotifica))
             throw new UpdateRuntimeException("L'id notifica \"" + idNotifica + "\" non corrisponde a nessuna notifica!");
-
-        // L'implementazione di fullUpdate e create sono identiche, dato che utilizziamo lo stesso metodo "save" della repository
-        return this.create(updatedNotificaDto);
+        else {
+            // L'implementazione di fullUpdate e create sono identiche, dato che utilizziamo lo stesso metodo "save" della repository
+            return this.create(updatedNotificaDto);
+        }
     }
 
     @Override
-    public NotificaDto partialUpdate(Long idNotifica, NotificaDto updatedNotificaDto) {
-        //TODO
-        return null;
+    public NotificaDto partialUpdate(Long idNotifica, NotificaDto updatedNotificaDto) throws InvalidParameterException {
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        updatedNotificaDto.setIdNotifica(idNotifica);
+
+        Optional<Notifica> foundNotifica = notificaRepository.findById(idNotifica);
+        if (foundNotifica.isEmpty())
+            throw new UpdateRuntimeException("L'id notifica non corrsiponde a nessuna notifica esistente!");
+        else {
+            // Recuperiamo l'entità Profilo dal wrapping Optional
+            Notifica existingNotifica = foundNotifica.get();
+
+            // Effettuiamo le modifiche
+            updatePresentFields(updatedNotificaDto, existingNotifica);
+
+            return notificaMapper.toDto(notificaRepository.save(existingNotifica));
+        }
     }
 
     @Override
@@ -119,28 +129,28 @@ public class NotificaServiceImpl implements NotificaService {
         checkAstaAssociataShallow(notificaDto.getAstaAssociataShallow());
     }
 
-    void checkDataInvioValid(LocalDate dataInvio) throws InvalidParameterException {
+    private void checkDataInvioValid(LocalDate dataInvio) throws InvalidParameterException {
         if (dataInvio == null)
             throw new InvalidParameterException("La data di invio non può essere null!");
         else if (dataInvio.isAfter(LocalDate.now()))
             throw new InvalidParameterException("La data di invio non può essere successiva alla data odierna!");
     }
 
-    void checkOraInvioValid(LocalTime oraInvio) throws InvalidParameterException {
+    private void checkOraInvioValid(LocalTime oraInvio) throws InvalidParameterException {
         if (oraInvio == null)
             throw new InvalidParameterException("L'ora di invio non può essere null!");
         else if (oraInvio.isAfter(LocalTime.now()))
-            throw new InvalidParameterException("L'ora di invio non può essere successiva alla data odierna!");
+            throw new InvalidParameterException("L'ora di invio non può essere successiva all'ora odierna!");
     }
 
-    void checkMessaggioValid(String messaggio) throws InvalidParameterException {
+    private void checkMessaggioValid(String messaggio) throws InvalidParameterException {
         if (messaggio == null)
             throw new InvalidParameterException("Il messaggio non può essere null!");
         else if (messaggio.isBlank())
             throw new InvalidParameterException("Il messaggio non può essere vuoto!");
     }
 
-    void checkDestinatariValid(Set<AccountShallowDto> accountsShallowDto) throws InvalidParameterException {
+    private void checkDestinatariValid(Set<AccountShallowDto> accountsShallowDto) throws InvalidParameterException {
         if (accountsShallowDto == null)
             throw new InvalidParameterException("La lista di destinatari non può essere null!");
 
@@ -149,14 +159,14 @@ public class NotificaServiceImpl implements NotificaService {
         }
     }
 
-    void checkMittenteDestinatarioValid(AccountShallowDto accountShallowDto) throws InvalidParameterException {
+    private void checkMittenteDestinatarioValid(AccountShallowDto accountShallowDto) throws InvalidParameterException {
         if (accountShallowDto == null)
             throw new InvalidParameterException("L'account mittente/destinatario non può essere null!");
 
         checkEmailValid(accountShallowDto.getEmail());
     }
 
-    void checkEmailValid(String email) throws InvalidParameterException {
+    private void checkEmailValid(String email) throws InvalidParameterException {
         if (email == null)
             throw new InvalidParameterException("L'email non può essere null!");
         else if (email.isBlank())
@@ -165,7 +175,7 @@ public class NotificaServiceImpl implements NotificaService {
             throw new InvalidParameterException("Formato email non valido!");
     }
 
-    void checkAstaAssociataShallow(AstaShallowDto astaAssociataShallow) throws InvalidParameterException {
+    private void checkAstaAssociataShallow(AstaShallowDto astaAssociataShallow) throws InvalidParameterException {
         if (astaAssociataShallow == null)
             throw new InvalidParameterException("L'asta associata non può essere null!");
     }
@@ -177,40 +187,65 @@ public class NotificaServiceImpl implements NotificaService {
         convertAstaAssociataShallow(notificaDto.getAstaAssociataShallow(), notifica);
     }
 
-    void convertMittenteShallow(AccountShallowDto mittenteShallowDto, Notifica nuovaNotifica) throws InvalidParameterException {
+    private void convertMittenteShallow(AccountShallowDto mittenteShallowDto, Notifica notifica) throws InvalidParameterException {
         Account convertedAccount = relationsConverter.convertAccountShallowRelation(mittenteShallowDto);
 
         if (convertedAccount != null) {
-            nuovaNotifica.setMittente(convertedAccount);
-            convertedAccount.addNotificaInviata(nuovaNotifica);
+            notifica.setMittente(convertedAccount);
+            convertedAccount.addNotificaInviata(notifica);
         }
     }
 
-    void convertDestinatariShallow(Set<AccountShallowDto> destinatariShallowDto, Notifica nuovaNotifica) throws InvalidParameterException {
+    private void convertDestinatariShallow(Set<AccountShallowDto> destinatariShallowDto, Notifica notifica) throws InvalidParameterException {
         if (destinatariShallowDto != null) {
             for (AccountShallowDto accountShallowDto : destinatariShallowDto) {
 
                 Account convertedAccount = relationsConverter.convertAccountShallowRelation(accountShallowDto);
 
                 if (convertedAccount != null) {
-                    nuovaNotifica.addDestinatario(convertedAccount);
-                    convertedAccount.addNotificaRicevuta(nuovaNotifica);
+                    notifica.addDestinatario(convertedAccount);
+                    convertedAccount.addNotificaRicevuta(notifica);
                 }
             }
         }
     }
 
-    void convertAstaAssociataShallow(AstaShallowDto astaAssociataShallowDto, Notifica nuovaNotifica) throws InvalidParameterException {
+    private void convertAstaAssociataShallow(AstaShallowDto astaAssociataShallowDto, Notifica notifica) throws InvalidParameterException {
         Asta convertedAsta = relationsConverter.convertAstaShallowRelation(astaAssociataShallowDto);
 
         if (convertedAsta != null) {
-            nuovaNotifica.setAstaAssociata(convertedAsta);
-            convertedAsta.addNotificaAssociata(nuovaNotifica);
+            notifica.setAstaAssociata(convertedAsta);
+            convertedAsta.addNotificaAssociata(notifica);
         }
     }
 
     @Override
     public void updatePresentFields(NotificaDto updatedNotificaDto, Notifica existingNotifica) throws InvalidParameterException {
-        //TODO
+        ifPresentUpdatDataInvio(updatedNotificaDto.getDataInvio(), existingNotifica);
+        ifPresentUpdateOraInvio(updatedNotificaDto.getOraInvio(), existingNotifica);
+        ifPresentUpdateMessaggio(updatedNotificaDto.getMessaggio(), existingNotifica);
+
+        // Non è possibile modificare le associazioni "mittente", "destinatari", "astaAssociata" tramite la risorsa "notifiche"
+    }
+
+    private void ifPresentUpdatDataInvio(LocalDate updatedDataInvio, Notifica existingNotifica) throws InvalidParameterException {
+        if (updatedDataInvio != null) {
+            this.checkDataInvioValid(updatedDataInvio);
+            existingNotifica.setDataInvio(updatedDataInvio);
+        }
+    }
+
+    private void ifPresentUpdateOraInvio(LocalTime updatedOraInvio, Notifica existingNotifica) throws InvalidParameterException {
+        if (updatedOraInvio != null) {
+            this.checkOraInvioValid(updatedOraInvio);
+            existingNotifica.setOraInvio(updatedOraInvio);
+        }
+    }
+
+    private void ifPresentUpdateMessaggio(String updatedMessaggio, Notifica existingNotifica) throws InvalidParameterException {
+        if (updatedMessaggio != null) {
+            this.checkMessaggioValid(updatedMessaggio);
+            existingNotifica.setMessaggio(updatedMessaggio);
+        }
     }
 }

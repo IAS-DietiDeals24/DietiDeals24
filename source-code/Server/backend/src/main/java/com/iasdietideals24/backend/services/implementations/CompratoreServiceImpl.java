@@ -100,8 +100,6 @@ public class CompratoreServiceImpl implements CompratoreService {
             // Effettuiamo le modifiche
             updatePresentFields(updatedCompratoreDto, existingCompratore);
 
-            // Non è possibile modificare le associazioni "profilo", "notificheInviate", "notificheRicevute", "astePossedute", "offerteCollegate"
-
             return compratoreMapper.toDto(compratoreRepository.save(existingCompratore));
         }
     }
@@ -130,7 +128,7 @@ public class CompratoreServiceImpl implements CompratoreService {
         convertOfferteCollegateShallow(compratoreDto.getOfferteCollegateShallow(), compratore);
     }
 
-    void convertAstePosseduteShallow(Set<AstaShallowDto> astePosseduteShallowDto, Compratore nuovoCompratore) throws InvalidParameterException {
+    private void convertAstePosseduteShallow(Set<AstaShallowDto> astePosseduteShallowDto, Compratore compratore) throws InvalidParameterException {
         if (astePosseduteShallowDto != null) {
             for (AstaShallowDto astaShallowDto : astePosseduteShallowDto) {
 
@@ -138,8 +136,8 @@ public class CompratoreServiceImpl implements CompratoreService {
 
                 if (convertedAsta != null) {
                     if (convertedAsta instanceof AstaDiCompratore convertedAstaDiCompratore) {
-                        nuovoCompratore.addAstaPosseduta(convertedAstaDiCompratore);
-                        convertedAstaDiCompratore.setProprietario(nuovoCompratore);
+                        compratore.addAstaPosseduta(convertedAstaDiCompratore);
+                        convertedAstaDiCompratore.setProprietario(compratore);
                     } else {
                         throw new InvalidTypeException("Un compratore può possedere solo aste di compratori!");
                     }
@@ -148,7 +146,7 @@ public class CompratoreServiceImpl implements CompratoreService {
         }
     }
 
-    void convertOfferteCollegateShallow(Set<OffertaShallowDto> offerteCollegateShallowDto, Compratore nuovoCompratore) throws InvalidParameterException {
+    private void convertOfferteCollegateShallow(Set<OffertaShallowDto> offerteCollegateShallowDto, Compratore compratore) throws InvalidParameterException {
         if (offerteCollegateShallowDto != null) {
             for (OffertaShallowDto offertaShallowDto : offerteCollegateShallowDto) {
 
@@ -156,8 +154,8 @@ public class CompratoreServiceImpl implements CompratoreService {
 
                 if (convertedOfferta != null) {
                     if (convertedOfferta instanceof OffertaDiCompratore convertedOffertaDiCompratore) {
-                        nuovoCompratore.addOffertaCollegata(convertedOffertaDiCompratore);
-                        convertedOffertaDiCompratore.setCompratoreCollegato(nuovoCompratore);
+                        compratore.addOffertaCollegata(convertedOffertaDiCompratore);
+                        convertedOffertaDiCompratore.setCompratoreCollegato(compratore);
                     } else {
                         throw new InvalidTypeException("Un compratore può essere collegato solo ad offerte di compratori!");
                     }
@@ -169,5 +167,7 @@ public class CompratoreServiceImpl implements CompratoreService {
     @Override
     public void updatePresentFields(CompratoreDto updatedCompratoreDto, Compratore existingCompratore) throws InvalidParameterException {
         accountService.updatePresentFields(updatedCompratoreDto, existingCompratore);
+
+        // Non è possibile modificare le associazioni "astePossedute", "offerteCollegate" tramite la risorsa "accounts/compratori"
     }
 }
