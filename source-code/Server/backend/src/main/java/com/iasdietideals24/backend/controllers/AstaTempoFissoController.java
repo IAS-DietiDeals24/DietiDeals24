@@ -63,7 +63,7 @@ public class AstaTempoFissoController {
     }
 
     @DeleteMapping(path = "/aste/di-venditori/tempo-fisso/{idAsta}")
-    public ResponseEntity deleteAstaTempoFisso(@PathVariable("idAsta") Long idAsta) {
+    public ResponseEntity<AstaTempoFissoDto> deleteAstaTempoFisso(@PathVariable("idAsta") Long idAsta) {
         astaTempoFissoService.delete(idAsta);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

@@ -94,7 +94,7 @@ public class CompratoreServiceImpl implements CompratoreService {
         Optional<Compratore> foundCompratore = compratoreRepository.findById(email);
 
         if (foundCompratore.isEmpty())
-            throw new UpdateRuntimeException("L'email non corrisponde a nessun compratore esistente!");
+            throw new UpdateRuntimeException("L'email \"" + email + "\" non corrisponde a nessun compratore esistente!");
         else {
 
             // Recuperiamo l'entità dal wrapping Optional

@@ -63,7 +63,7 @@ public class AstaInversaController {
     }
 
     @DeleteMapping(path = "/aste/di-compratori/inverse/{idAsta}")
-    public ResponseEntity deleteAstaInversa(@PathVariable("idAsta") Long idAsta) {
+    public ResponseEntity<AstaInversaDto> deleteAstaInversa(@PathVariable("idAsta") Long idAsta) {
         astaInversaService.delete(idAsta);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

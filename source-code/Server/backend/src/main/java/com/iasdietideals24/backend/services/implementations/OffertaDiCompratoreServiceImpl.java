@@ -53,7 +53,6 @@ public class OffertaDiCompratoreServiceImpl implements OffertaDiCompratoreServic
                 throw new InvalidTypeException("Un compratore può essere collegato solo ad offerte di compratore!");
             }
         }
-
     }
 
     @Override

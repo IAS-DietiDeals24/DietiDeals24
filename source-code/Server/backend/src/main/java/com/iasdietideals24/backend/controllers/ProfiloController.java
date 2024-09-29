@@ -59,7 +59,7 @@ public class ProfiloController {
     }
 
     @DeleteMapping(path = "/profili/{nomeUtente}")
-    public ResponseEntity deleteProfilo(@PathVariable("nomeUtente") String nomeUtente) {
+    public ResponseEntity<ProfiloDto> deleteProfilo(@PathVariable("nomeUtente") String nomeUtente) {
         profiloService.delete(nomeUtente);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

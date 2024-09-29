@@ -53,7 +53,6 @@ public class OffertaDiVenditoreServiceImpl implements OffertaDiVenditoreService 
                 throw new InvalidTypeException("Un venditore può essere collegato solo ad offerte di venditore!");
             }
         }
-
     }
 
     @Override

@@ -85,7 +85,7 @@ public class NotificaServiceImpl implements NotificaService {
         updatedNotificaDto.setIdNotifica(idNotifica);
 
         if (!notificaRepository.existsById(idNotifica))
-            throw new UpdateRuntimeException("L'id notifica \"" + idNotifica + "\" non corrisponde a nessuna notifica!");
+            throw new UpdateRuntimeException("L'id notifica \"" + idNotifica + "\" non corrisponde a nessuna notifica esistente!");
         else {
             // L'implementazione di fullUpdate e create sono identiche, dato che utilizziamo lo stesso metodo "save" della repository
             return this.create(updatedNotificaDto);
@@ -100,7 +100,7 @@ public class NotificaServiceImpl implements NotificaService {
 
         Optional<Notifica> foundNotifica = notificaRepository.findById(idNotifica);
         if (foundNotifica.isEmpty())
-            throw new UpdateRuntimeException("L'id notifica non corrsiponde a nessuna notifica esistente!");
+            throw new UpdateRuntimeException("L'id notifica \"" + idNotifica + "\" non corrisponde a nessuna notifica esistente!");
         else {
             // Recuperiamo l'entità dal wrapping Optional
             Notifica existingNotifica = foundNotifica.get();

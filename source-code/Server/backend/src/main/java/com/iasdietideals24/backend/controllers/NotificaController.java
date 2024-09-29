@@ -63,7 +63,7 @@ public class NotificaController {
     }
 
     @DeleteMapping(path = "/notifiche/{idNotifica}")
-    public ResponseEntity deleteNotifica(@PathVariable("idNotifica") Long idNotifica) {
+    public ResponseEntity<NotificaDto> deleteNotifica(@PathVariable("idNotifica") Long idNotifica) {
         notificaService.delete(idNotifica);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

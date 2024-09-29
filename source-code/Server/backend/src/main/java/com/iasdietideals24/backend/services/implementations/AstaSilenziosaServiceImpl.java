@@ -85,7 +85,7 @@ public class AstaSilenziosaServiceImpl implements AstaSilenziosaService {
         updatedAstaSilenziosaDto.setIdAsta(idAsta);
 
         if (!astaSilenziosaRepository.existsById(idAsta))
-            throw new UpdateRuntimeException("L'id asta \"" + idAsta + "\" non corrisponde a nessuna asta silenziosa!");
+            throw new UpdateRuntimeException("L'id asta \"" + idAsta + "\" non corrisponde a nessuna asta silenziosa esistente!");
         else {
             return this.create(updatedAstaSilenziosaDto);
         }
@@ -99,7 +99,7 @@ public class AstaSilenziosaServiceImpl implements AstaSilenziosaService {
 
         Optional<AstaSilenziosa> foundAstaSilenziosa = astaSilenziosaRepository.findById(idAsta);
         if (foundAstaSilenziosa.isEmpty())
-            throw new UpdateRuntimeException("L'id asta non corrisponde a nessuna asta silenziosa esistente!");
+            throw new UpdateRuntimeException("L'id asta \"" + idAsta + "\" non corrisponde a nessuna asta silenziosa esistente!");
         else {
             // Recuperiamo l'entità dal wrapping Optional
             AstaSilenziosa existingAstaSilenziosa = foundAstaSilenziosa.get();

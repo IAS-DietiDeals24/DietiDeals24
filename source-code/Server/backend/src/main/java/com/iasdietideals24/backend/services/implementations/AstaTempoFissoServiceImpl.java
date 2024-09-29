@@ -86,7 +86,7 @@ public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
         updatedAstaTempoFissoDto.setIdAsta(idAsta);
 
         if (!astaTempoFissoRepository.existsById(idAsta))
-            throw new UpdateRuntimeException("L'id asta \"" + idAsta + "\" non corrisponde a nessuna asta a tempo fisso!");
+            throw new UpdateRuntimeException("L'id asta \"" + idAsta + "\" non corrisponde a nessuna asta a tempo fisso esistente!");
         else {
             return this.create(updatedAstaTempoFissoDto);
         }
@@ -100,7 +100,7 @@ public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
 
         Optional<AstaTempoFisso> foundAstaTempoFisso = astaTempoFissoRepository.findById(idAsta);
         if (foundAstaTempoFisso.isEmpty())
-            throw new UpdateRuntimeException("L'id asta non corrisponde a nessuna asta a tempo fisso esistente!");
+            throw new UpdateRuntimeException("L'id asta \"" + idAsta + "\" non corrisponde a nessuna asta a tempo fisso esistente!");
         else {
             // Recuperiamo l'entità dal wrapping Optional
             AstaTempoFisso existingAstaTempoFisso = foundAstaTempoFisso.get();

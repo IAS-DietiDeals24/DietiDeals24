@@ -63,7 +63,7 @@ public class AstaSilenziosaController {
     }
 
     @DeleteMapping(path = "/aste/di-venditori/silenziose/{idAsta}")
-    public ResponseEntity deleteAstaSilenziosa(@PathVariable("idAsta") Long idAsta) {
+    public ResponseEntity<AstaSilenziosaDto> deleteAstaSilenziosa(@PathVariable("idAsta") Long idAsta) {
         astaSilenziosaService.delete(idAsta);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

@@ -58,7 +58,7 @@ public class CompratoreController {
     }
 
     @DeleteMapping(path = "/accounts/compratori/{email}")
-    public ResponseEntity deleteCompratore(@PathVariable("email") String email) throws InvalidParameterException {
+    public ResponseEntity<CompratoreDto> deleteCompratore(@PathVariable("email") String email) throws InvalidParameterException {
         compratoreService.delete(email);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
