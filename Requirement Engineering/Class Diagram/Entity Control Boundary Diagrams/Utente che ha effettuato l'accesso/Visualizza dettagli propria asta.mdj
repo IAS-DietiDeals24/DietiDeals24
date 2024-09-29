@@ -4467,7 +4467,7 @@
 											"top": 1619,
 											"width": 310.6005859375,
 											"height": 13,
-											"text": "-isAccettata: Boolean",
+											"text": "-stato: Enum",
 											"horizontalAlignment": 0
 										},
 										{
@@ -4521,7 +4521,7 @@
 											"top": 1657,
 											"width": 310.6005859375,
 											"height": 13,
-											"text": "+getIsAccettata()",
+											"text": "+getStato()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -4539,7 +4539,7 @@
 											"top": 1672,
 											"width": 310.6005859375,
 											"height": 13,
-											"text": "+setIsAccettata(isAccettata: Boolean)",
+											"text": "+setStato(stato: Enum)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -15778,9 +15778,9 @@
 							"_parent": {
 								"$ref": "AAAAAAGNZN9ASUVSXTk="
 							},
-							"name": "isAccettata",
+							"name": "stato",
 							"visibility": "private",
-							"type": "Boolean"
+							"type": "Enum"
 						},
 						{
 							"_type": "UMLAttribute",
@@ -15802,7 +15802,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNZN9ASUVSXTk="
 							},
-							"name": "getIsAccettata"
+							"name": "getStato"
 						},
 						{
 							"_type": "UMLOperation",
@@ -15810,7 +15810,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGNZN9ASUVSXTk="
 							},
-							"name": "setIsAccettata",
+							"name": "setStato",
 							"parameters": [
 								{
 									"_type": "UMLParameter",
@@ -15818,8 +15818,8 @@
 									"_parent": {
 										"$ref": "AAAAAAGNZOHYjXghgQ4="
 									},
-									"name": "isAccettata",
-									"type": "Boolean"
+									"name": "stato",
+									"type": "Enum"
 								}
 							]
 						},
