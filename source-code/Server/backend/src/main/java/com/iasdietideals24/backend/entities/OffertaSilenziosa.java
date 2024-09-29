@@ -3,6 +3,8 @@ package com.iasdietideals24.backend.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import com.iasdietideals24.backend.entities.utilities.StatoOffertaSilenziosa;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,7 +16,9 @@ import java.time.LocalTime;
 @Entity
 @DiscriminatorValue("Silenziosa")
 public class OffertaSilenziosa extends OffertaDiCompratore {
-    private Boolean isAccettata = null;
+    @Enumerated(EnumType.STRING)
+    @NonNull
+    private StatoOffertaSilenziosa stato = StatoOffertaSilenziosa.PENDING;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "fk_astasilenziosa_idasta")
@@ -22,10 +26,10 @@ public class OffertaSilenziosa extends OffertaDiCompratore {
     private AstaSilenziosa astaRiferimento;
 
     // AllArgsConstructor
-    public OffertaSilenziosa(@NonNull LocalDate dataInvio, @NonNull LocalTime oraInvio, @NonNull BigDecimal valore, @NonNull Compratore compratoreCollegato, Boolean isAccettata, @NonNull AstaSilenziosa astaRiferimento) {
+    public OffertaSilenziosa(@NonNull LocalDate dataInvio, @NonNull LocalTime oraInvio, @NonNull BigDecimal valore, @NonNull Compratore compratoreCollegato, StatoOffertaSilenziosa stato, @NonNull AstaSilenziosa astaRiferimento) {
         super(dataInvio, oraInvio, valore, compratoreCollegato);
 
-        this.isAccettata = isAccettata;
+        this.stato = stato;
 
         this.astaRiferimento = astaRiferimento;
         astaRiferimento.addOffertaRicevuta(this);
@@ -33,6 +37,6 @@ public class OffertaSilenziosa extends OffertaDiCompratore {
 
     @Override
     public String toString() {
-        return "OffertaSilenziosa(isAccettata=" + this.getIsAccettata() + ", astaRiferimento=" + this.getAstaRiferimento().getIdAsta() + ") is a " + super.toString();
+        return "OffertaSilenziosa(stato=" + this.getStato() + ", astaRiferimento=" + this.getAstaRiferimento().getIdAsta() + ") is a " + super.toString();
     }
 }

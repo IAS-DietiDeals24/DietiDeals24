@@ -9,7 +9,9 @@ import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import com.iasdietideals24.backend.exceptions.UpdateRuntimeException;
 import com.iasdietideals24.backend.mapstruct.dto.OffertaSilenziosaDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
+import com.iasdietideals24.backend.mapstruct.dto.utilities.StatoOffertaSilenziosaDto;
 import com.iasdietideals24.backend.mapstruct.mappers.OffertaSilenziosaMapper;
+import com.iasdietideals24.backend.mapstruct.mappers.StatoOffertaSilenziosaMapper;
 import com.iasdietideals24.backend.repositories.OffertaSilenziosaRepository;
 import com.iasdietideals24.backend.services.OffertaDiCompratoreService;
 import com.iasdietideals24.backend.services.OffertaSilenziosaService;
@@ -24,15 +26,18 @@ import java.util.Optional;
 public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
 
     private final OffertaDiCompratoreService offertaDiCompratoreService;
+    private final StatoOffertaSilenziosaMapper statoOffertaSilenziosaMapper;
     private final OffertaSilenziosaMapper offertaSilenziosaMapper;
     private final OffertaSilenziosaRepository offertaSilenziosaRepository;
     private final RelationsConverter relationsConverter;
 
     public OffertaSilenziosaServiceImpl(OffertaDiCompratoreService offertaDiCompratoreService,
+                                        StatoOffertaSilenziosaMapper statoOffertaSilenziosaMapper,
                                         OffertaSilenziosaMapper offertaSilenziosaMapper,
                                         OffertaSilenziosaRepository offertaSilenziosaRepository,
                                         RelationsConverter relationsConverter) {
         this.offertaDiCompratoreService = offertaDiCompratoreService;
+        this.statoOffertaSilenziosaMapper = statoOffertaSilenziosaMapper;
         this.offertaSilenziosaMapper = offertaSilenziosaMapper;
         this.offertaSilenziosaRepository = offertaSilenziosaRepository;
         this.relationsConverter = relationsConverter;
@@ -150,12 +155,14 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
     @Override
     public void updatePresentFields(OffertaSilenziosaDto updatedOffertaSilenziosaDto, OffertaSilenziosa existingOffertaSilenziosa) throws InvalidParameterException {
         offertaDiCompratoreService.updatePresentFields(updatedOffertaSilenziosaDto, existingOffertaSilenziosa);
-        ifPresentUpdateIsAccettata(updatedOffertaSilenziosaDto.getIsAccettata(), existingOffertaSilenziosa);
+        ifPresentUpdateStato(updatedOffertaSilenziosaDto.getStato(), existingOffertaSilenziosa);
 
         // Non è possibile modificare l'associazione "astaRiferimento" tramite la risorsa "offerte/di-compratori/silenziose"
     }
 
-    private void ifPresentUpdateIsAccettata(Boolean isAccettata, OffertaSilenziosa existingOffertaSilenziosa) {
-        existingOffertaSilenziosa.setIsAccettata(isAccettata);
+    private void ifPresentUpdateStato(StatoOffertaSilenziosaDto stato, OffertaSilenziosa existingOffertaSilenziosa) {
+        if (stato != null) {
+            existingOffertaSilenziosa.setStato(statoOffertaSilenziosaMapper.toEntity(stato));
+        }
     }
 }

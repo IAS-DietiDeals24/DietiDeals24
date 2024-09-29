@@ -8,7 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring",
-        uses = {AccountMapper.class, AstaMapper.class})
+        uses = {AccountMapper.class, AstaMapper.class, StatoOffertaSilenziosaMapper.class})
 public interface OffertaSilenziosaMapper {
 
     @Mapping(source = "compratoreCollegato", target = "compratoreCollegatoShallow")

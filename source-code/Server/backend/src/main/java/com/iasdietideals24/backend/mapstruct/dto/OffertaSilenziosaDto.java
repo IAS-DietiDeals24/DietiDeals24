@@ -1,6 +1,7 @@
 package com.iasdietideals24.backend.mapstruct.dto;
 
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
+import com.iasdietideals24.backend.mapstruct.dto.utilities.StatoOffertaSilenziosaDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class OffertaSilenziosaDto extends OffertaDiCompratoreDto {
 
-    private Boolean isAccettata = null;
+    private StatoOffertaSilenziosaDto stato;
 
     private AstaShallowDto astaRiferimentoShallow;
 }
