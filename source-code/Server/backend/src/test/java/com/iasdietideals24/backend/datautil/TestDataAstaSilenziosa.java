@@ -2,6 +2,7 @@ package com.iasdietideals24.backend.datautil;
 
 import com.iasdietideals24.backend.entities.AstaSilenziosa;
 import com.iasdietideals24.backend.entities.Venditore;
+import com.iasdietideals24.backend.entities.utilities.CategoriaAsta;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -12,7 +13,7 @@ public final class TestDataAstaSilenziosa {
     }
 
     public static AstaSilenziosa createAstaSilenziosaA(final Venditore proprietario) {
-        return new AstaSilenziosa("Automobili",
+        return new AstaSilenziosa(CategoriaAsta.VEHICLES,
                 "Porsche 911",
                 "Porsche 911 di mio padre. Vendo perché ora abbiamo una Lamborghini Aventador.",
                 LocalDate.of(2025, 1, 11),
@@ -22,7 +23,7 @@ public final class TestDataAstaSilenziosa {
     }
 
     public static AstaSilenziosa createAstaSilenziosaB(final Venditore proprietario) {
-        return new AstaSilenziosa("Manga",
+        return new AstaSilenziosa(CategoriaAsta.COMICS_AND_MANGAS,
                 "Jujutsu Kaisen vol. 4 di Gege Akutami",
                 "Volume 4 del manga Jujutsu Kaisen in ottime condizioni. Leggermente rovinato agli angoli.",
                 LocalDate.of(2024, 12, 24),
@@ -32,7 +33,7 @@ public final class TestDataAstaSilenziosa {
     }
 
     public static AstaSilenziosa createAstaSilenziosaC(final Venditore proprietario) {
-        return new AstaSilenziosa("Musica",
+        return new AstaSilenziosa(CategoriaAsta.MUSIC,
                 "Reputation di Taylor Swift",
                 "CD dell'album Reputation di Taylor Swift semi nuovo. Poster mancante.",
                 LocalDate.of(2024, 6, 19),

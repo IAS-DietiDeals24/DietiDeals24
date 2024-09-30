@@ -14,7 +14,6 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 @Entity
-@DiscriminatorValue("Silenziosa")
 public class OffertaSilenziosa extends OffertaDiCompratore {
     @Enumerated(EnumType.STRING)
     @NonNull

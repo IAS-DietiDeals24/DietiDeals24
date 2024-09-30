@@ -12,7 +12,6 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 @Entity
-@DiscriminatorValue("Inversa")
 public class OffertaInversa extends OffertaDiVenditore {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "fk_astainversa_idasta")

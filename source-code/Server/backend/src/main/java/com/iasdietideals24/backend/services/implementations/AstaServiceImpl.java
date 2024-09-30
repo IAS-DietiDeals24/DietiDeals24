@@ -6,6 +6,7 @@ import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.mapstruct.dto.AstaDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.NotificaShallowDto;
+import com.iasdietideals24.backend.mapstruct.mappers.CategoriaAstaMapper;
 import com.iasdietideals24.backend.services.AstaService;
 import com.iasdietideals24.backend.utilities.RelationsConverter;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,12 @@ import java.util.Set;
 @Service
 public class AstaServiceImpl implements AstaService {
 
+    private final CategoriaAstaMapper categoriaAstaMapper;
     private final RelationsConverter relationsConverter;
 
-    protected AstaServiceImpl(RelationsConverter relationsConverter) {
+    protected AstaServiceImpl(CategoriaAstaMapper categoriaAstaMapper,
+                              RelationsConverter relationsConverter) {
+        this.categoriaAstaMapper = categoriaAstaMapper;
         this.relationsConverter = relationsConverter;
     }
 
@@ -101,7 +105,7 @@ public class AstaServiceImpl implements AstaService {
     private void ifPresentUpdateCategoria(String updatedCategoria, Asta existingAsta) throws InvalidParameterException {
         if (updatedCategoria != null) {
             checkCategoriaValid(updatedCategoria);
-            existingAsta.setCategoria(updatedCategoria);
+            existingAsta.setCategoria(categoriaAstaMapper.toEntity(updatedCategoria));
         }
     }
 

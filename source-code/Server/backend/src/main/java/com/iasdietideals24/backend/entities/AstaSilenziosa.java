@@ -1,5 +1,6 @@
 package com.iasdietideals24.backend.entities;
 
+import com.iasdietideals24.backend.entities.utilities.CategoriaAsta;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -17,7 +18,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-//@DiscriminatorValue("Silenziosa")
 public class AstaSilenziosa extends AstaDiVenditore {
     @OneToMany(mappedBy = "astaRiferimento", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
@@ -25,7 +25,7 @@ public class AstaSilenziosa extends AstaDiVenditore {
     private Set<OffertaSilenziosa> offerteRicevute = new LinkedHashSet<>();
 
     // AllArgsConstructor
-    public AstaSilenziosa(@NonNull String categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Venditore proprietario) {
+    public AstaSilenziosa(@NonNull CategoriaAsta categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Venditore proprietario) {
         super(categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, proprietario);
     }
 

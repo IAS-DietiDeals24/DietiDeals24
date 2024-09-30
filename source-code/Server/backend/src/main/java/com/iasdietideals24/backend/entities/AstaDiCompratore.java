@@ -1,5 +1,6 @@
 package com.iasdietideals24.backend.entities;
 
+import com.iasdietideals24.backend.entities.utilities.CategoriaAsta;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,8 +12,6 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 @Entity
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-//@DiscriminatorColumn(name = "tipoAsta", discriminatorType = DiscriminatorType.STRING)
 public abstract class AstaDiCompratore extends Asta {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "fk_compratore_email")
@@ -20,7 +19,7 @@ public abstract class AstaDiCompratore extends Asta {
     private Compratore proprietario;
 
     // AllArgsConstructor
-    protected AstaDiCompratore(@NonNull String categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Compratore proprietario) {
+    protected AstaDiCompratore(@NonNull CategoriaAsta categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Compratore proprietario) {
         super(categoria, nome, descrizione, dataScadenza, oraScadenza, immagine);
 
         this.proprietario = proprietario;

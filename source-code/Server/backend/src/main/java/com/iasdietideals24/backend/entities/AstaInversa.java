@@ -1,5 +1,6 @@
 package com.iasdietideals24.backend.entities;
 
+import com.iasdietideals24.backend.entities.utilities.CategoriaAsta;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -18,7 +19,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-//@DiscriminatorValue("Inversa")
 public class AstaInversa extends AstaDiCompratore {
     @NonNull
     private BigDecimal sogliaIniziale;
@@ -29,7 +29,7 @@ public class AstaInversa extends AstaDiCompratore {
     private Set<OffertaInversa> offerteRicevute = new LinkedHashSet<>();
 
     // AllArgsConstructor
-    public AstaInversa(@NonNull String categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Compratore proprietario, @NonNull BigDecimal sogliaIniziale) {
+    public AstaInversa(@NonNull CategoriaAsta categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Compratore proprietario, @NonNull BigDecimal sogliaIniziale) {
         super(categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, proprietario);
 
         this.sogliaIniziale = sogliaIniziale;

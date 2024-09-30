@@ -1,5 +1,6 @@
 package com.iasdietideals24.backend.entities;
 
+import com.iasdietideals24.backend.entities.utilities.CategoriaAsta;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,8 +21,9 @@ public abstract class Asta {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "asta_id_seq")
     private Long idAsta;
 
+    @Enumerated(EnumType.STRING)
     @NonNull
-    private String categoria;
+    private CategoriaAsta categoria;
 
     @NonNull
     private String nome;
@@ -43,7 +45,7 @@ public abstract class Asta {
     private Set<Notifica> notificheAssociate = new HashSet<>();
 
     // AllArgsConstructor
-    protected Asta(@NonNull String categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine) {
+    protected Asta(@NonNull CategoriaAsta categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine) {
         this.categoria = categoria;
         this.nome = nome;
         this.descrizione = descrizione;

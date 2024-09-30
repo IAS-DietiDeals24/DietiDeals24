@@ -9,7 +9,6 @@ import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import com.iasdietideals24.backend.exceptions.UpdateRuntimeException;
 import com.iasdietideals24.backend.mapstruct.dto.OffertaSilenziosaDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
-import com.iasdietideals24.backend.mapstruct.dto.utilities.StatoOffertaSilenziosaDto;
 import com.iasdietideals24.backend.mapstruct.mappers.OffertaSilenziosaMapper;
 import com.iasdietideals24.backend.mapstruct.mappers.StatoOffertaSilenziosaMapper;
 import com.iasdietideals24.backend.repositories.OffertaSilenziosaRepository;
@@ -125,7 +124,15 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
     @Override
     public void checkFieldsValid(OffertaSilenziosaDto offertaSilenziosaDto) throws InvalidParameterException {
         offertaDiCompratoreService.checkFieldsValid(offertaSilenziosaDto);
+        checkStatoValid(offertaSilenziosaDto.getStato());
         checkAstaRiferimentoValid(offertaSilenziosaDto.getAstaRiferimentoShallow());
+    }
+
+    private void checkStatoValid(String stato) throws InvalidParameterException {
+        if (stato == null)
+            throw new InvalidParameterException("Lo stato non può essere null!");
+        else if (stato.isBlank())
+            throw new InvalidParameterException("Lo stato non può essere vuoto!");
     }
 
     private void checkAstaRiferimentoValid(AstaShallowDto astaRiferimentoShallow) throws InvalidParameterException {
@@ -160,8 +167,9 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
         // Non è possibile modificare l'associazione "astaRiferimento" tramite la risorsa "offerte/di-compratori/silenziose"
     }
 
-    private void ifPresentUpdateStato(StatoOffertaSilenziosaDto stato, OffertaSilenziosa existingOffertaSilenziosa) {
+    private void ifPresentUpdateStato(String stato, OffertaSilenziosa existingOffertaSilenziosa) throws InvalidParameterException {
         if (stato != null) {
+            checkStatoValid(stato);
             existingOffertaSilenziosa.setStato(statoOffertaSilenziosaMapper.toEntity(stato));
         }
     }

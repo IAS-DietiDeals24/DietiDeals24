@@ -1,7 +1,7 @@
 package com.iasdietideals24.backend.entities.utilities;
 
 /**
- * L'enumeration "statoOffertaSilenziosa" rappresenta i diversi stati che può assumere l'offerta silenziosa.
+ * L'enumeration "StatoOffertaSilenziosa" rappresenta i diversi stati che può assumere l'offerta silenziosa.
  * I possibili stati sono: PENDING, ACCEPTED, REJECTED.
  */
 

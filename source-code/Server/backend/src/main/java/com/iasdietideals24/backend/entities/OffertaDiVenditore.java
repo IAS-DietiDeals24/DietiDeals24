@@ -12,8 +12,6 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipoOfferta")
 public abstract class OffertaDiVenditore extends Offerta {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "fk_venditore_email")

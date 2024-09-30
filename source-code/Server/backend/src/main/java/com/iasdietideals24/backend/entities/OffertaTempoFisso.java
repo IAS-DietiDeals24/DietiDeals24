@@ -12,7 +12,6 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 @Entity
-@DiscriminatorValue("Tempo fisso")
 public class OffertaTempoFisso extends OffertaDiCompratore {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "fk_astatempofisso_idasta")
