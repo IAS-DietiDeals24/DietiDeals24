@@ -18,7 +18,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@DiscriminatorValue("Tempo fisso")
+//@DiscriminatorValue("Tempo fisso")
 public class AstaTempoFisso extends AstaDiVenditore {
     @NonNull
     private BigDecimal sogliaMinima;

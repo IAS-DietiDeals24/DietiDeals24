@@ -18,7 +18,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@DiscriminatorValue("Inversa")
+//@DiscriminatorValue("Inversa")
 public class AstaInversa extends AstaDiCompratore {
     @NonNull
     private BigDecimal sogliaIniziale;

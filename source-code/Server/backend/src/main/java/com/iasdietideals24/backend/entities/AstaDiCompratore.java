@@ -11,8 +11,8 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipoAsta")
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+//@DiscriminatorColumn(name = "tipoAsta", discriminatorType = DiscriminatorType.STRING)
 public abstract class AstaDiCompratore extends Asta {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "fk_compratore_email")

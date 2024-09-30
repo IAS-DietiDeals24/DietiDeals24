@@ -17,7 +17,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@DiscriminatorValue("Silenziosa")
+//@DiscriminatorValue("Silenziosa")
 public class AstaSilenziosa extends AstaDiVenditore {
     @OneToMany(mappedBy = "astaRiferimento", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
