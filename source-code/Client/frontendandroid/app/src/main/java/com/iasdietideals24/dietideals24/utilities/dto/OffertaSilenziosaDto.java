@@ -1,5 +1,6 @@
 package com.iasdietideals24.dietideals24.utilities.dto;
 
+import com.iasdietideals24.dietideals24.utilities.classes.StatoOfferta;
 import com.iasdietideals24.dietideals24.utilities.classes.data.Offerta;
 import com.iasdietideals24.dietideals24.utilities.classes.data.OffertaRicevuta;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto;
@@ -9,7 +10,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,16 +17,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class OffertaSilenziosaDto extends OffertaDiCompratoreDto {
 
-    private Boolean isAccettata = null;
+    private String stato = "";
 
     private AstaShallowDto astaRiferimentoShallow = new AstaShallowDto();
 
-    public OffertaSilenziosaDto(Long idOfferta, LocalDate dataInvio, LocalTime oraInvio, BigDecimal valore, AccountShallowDto compratoreCollegatoShallow, Boolean isAccettata, AstaShallowDto astaRiferimentoShallow) {
+    public OffertaSilenziosaDto(Long idOfferta, LocalDate dataInvio, LocalTime oraInvio, BigDecimal valore, AccountShallowDto compratoreCollegatoShallow, String stato, AstaShallowDto astaRiferimentoShallow) {
         super(idOfferta, dataInvio, oraInvio, valore, compratoreCollegatoShallow);
-        this.isAccettata = isAccettata;
+        this.stato = stato;
         this.astaRiferimentoShallow = astaRiferimentoShallow;
     }
 
@@ -51,7 +50,7 @@ public class OffertaSilenziosaDto extends OffertaDiCompratoreDto {
                 valore,
                 dataInvio,
                 oraInvio,
-                isAccettata
+                StatoOfferta.valueOf(stato)
         );
     }
 }

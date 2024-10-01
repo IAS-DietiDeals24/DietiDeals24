@@ -14,10 +14,12 @@ import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.classes.APIController
 import com.iasdietideals24.dietideals24.utilities.classes.Logger
+import com.iasdietideals24.dietideals24.utilities.classes.StatoOfferta
 import com.iasdietideals24.dietideals24.utilities.classes.chiamaAPI
 import com.iasdietideals24.dietideals24.utilities.classes.data.OffertaRicevuta
 import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo
 import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
+import com.iasdietideals24.dietideals24.utilities.dto.OffertaSilenziosaDto
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
 import com.iasdietideals24.dietideals24.utilities.interfaces.OnRefresh
 import retrofit2.Call
@@ -64,12 +66,13 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
 
         binding.offertaTempo.text = resources.getString(R.string.placeholder, tempoFa)
 
-        if (currentOfferta.accettata == null) {
-            binding.offertaImmagine.setOnClickListener {
-                Logger.log("Showing user profile")
+        binding.offertaImmagine.setOnClickListener {
+            Logger.log("Showing user profile")
 
-                immagineListener?.onGoToProfile(currentOfferta.idOfferente, this::class)
-            }
+            immagineListener?.onGoToProfile(currentOfferta.idOfferente, this::class)
+        }
+
+        if (currentOfferta.stato == StatoOfferta.PENDING) {
 
             binding.offertaPulsanteAccetta.setOnClickListener {
                 MaterialAlertDialogBuilder(itemView.context, R.style.Dialog)
@@ -95,7 +98,7 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
                     .show()
             }
         } else {
-            if (currentOfferta.accettata == false)
+            if (currentOfferta.stato == StatoOfferta.REJECTED)
                 binding.offertaLinearLayout1.setBackgroundColor(
                     resources.getColor(
                         R.color.grigioChiaro,
@@ -116,10 +119,20 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
 
     @EventHandler
     private fun clickAccetta(idAsta: Long, idOfferta: Long, resources: Resources) {
+        val patchOfferta = OffertaSilenziosaDto(
+            0,
+            null,
+            null,
+            null,
+            null,
+            StatoOfferta.ACCEPTED.name,
+            null
+        )
+
         var returned: Boolean? = null
 
         val call =
-            APIController.instance.accettaOfferta(idOfferta)
+            APIController.instance.accettaOfferta(patchOfferta, idOfferta)
 
         call.enqueue(object : Callback<Boolean> {
             override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
@@ -173,10 +186,20 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
 
     @EventHandler
     private fun clickRifiuta(idAsta: Long, idOfferta: Long, resources: Resources) {
+        val patchOfferta = OffertaSilenziosaDto(
+            0,
+            null,
+            null,
+            null,
+            null,
+            StatoOfferta.REJECTED.name,
+            null
+        )
+
         var returned: Boolean? = null
 
         val call =
-            APIController.instance.rifiutaOfferta(idOfferta)
+            APIController.instance.rifiutaOfferta(patchOfferta, idOfferta)
 
         call.enqueue(object : Callback<Boolean> {
             override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {

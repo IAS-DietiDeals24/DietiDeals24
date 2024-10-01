@@ -54,6 +54,7 @@ object CurrentUser {
 
 enum class TipoAccount { COMPRATORE, VENDITORE, OSPITE }
 enum class TipoAsta { INVERSA, TEMPO_FISSO, SILENZIOSA }
+enum class StatoOfferta { PENDING, ACCEPTED, REJECTED }
 
 object Logger {
     private val LOG_FILE_NAME = "app_log_${Date()}.txt"

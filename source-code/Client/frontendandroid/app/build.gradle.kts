@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.datastore.preferences)
     implementation(libs.lifecycle.common.jvm)
     implementation(libs.commons.text)
+    implementation(libs.paging.runtime.ktx)
     implementation(libs.kotlin.reflect)
 
     compileOnly(libs.lombok)

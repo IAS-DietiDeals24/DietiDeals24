@@ -1,5 +1,6 @@
 package com.iasdietideals24.dietideals24.utilities.classes.data
 
+import com.iasdietideals24.dietideals24.utilities.classes.StatoOfferta
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
@@ -13,5 +14,5 @@ data class OffertaRicevuta(
     val offerta: BigDecimal = BigDecimal(0.0),
     val dataInvio: LocalDate = LocalDate.MIN,
     val oraInvio: LocalTime = LocalTime.MIN,
-    val accettata: Boolean? = null
+    val stato: StatoOfferta = StatoOfferta.PENDING
 )

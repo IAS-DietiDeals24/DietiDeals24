@@ -19,6 +19,7 @@ firebase-analytics = "22.1.0"
 kotlin-reflect = "2.0.20"
 firebase-perf = "21.0.1"
 lombok = "1.18.34"
+paging-runtime-ktx = "3.3.2"
 
 # Plugin
 android-application = "8.6.1"
@@ -48,7 +49,7 @@ firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin-reflect" }
 firebase-perf = { group = "com.google.firebase", name = "firebase-perf", version.ref = "firebase-perf" }
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
-
+paging-runtime-ktx = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "paging-runtime-ktx" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-application" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "jetbrains-kotlin-android" }
