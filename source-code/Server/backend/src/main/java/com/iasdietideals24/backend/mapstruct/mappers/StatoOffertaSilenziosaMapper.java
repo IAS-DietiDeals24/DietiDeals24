@@ -7,7 +7,7 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface StatoOffertaSilenziosaMapper {
 
-    String toString(StatoOffertaSilenziosa statoOffertaSilenziosa);
+    String toStringEnum(StatoOffertaSilenziosa statoOffertaSilenziosa);
 
     @EnumMapping(unexpectedValueMappingException = InvalidParameterException.class)
     @ValueMapping(source = MappingConstants.ANY_REMAINING, target = MappingConstants.THROW_EXCEPTION)

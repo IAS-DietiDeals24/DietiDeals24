@@ -4,7 +4,7 @@ package com.iasdietideals24.backend.entities.utilities;
  * L'enumeration "CategoriaAsta" rappresenta le diverse categorie a cui può essere assegnata un'asta.
  */
 
-public enum CategoriaAsta {
+public enum CategoriaAstaEnum {
     BOOKS,
     COMICS_AND_MANGAS,
     MUSIC,

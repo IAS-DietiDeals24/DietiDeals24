@@ -2,7 +2,7 @@ package com.iasdietideals24.backend.datautil;
 
 import com.iasdietideals24.backend.entities.AstaInversa;
 import com.iasdietideals24.backend.entities.Compratore;
-import com.iasdietideals24.backend.entities.utilities.CategoriaAsta;
+import com.iasdietideals24.backend.entities.utilities.CategoriaAstaEnum;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,7 +14,7 @@ public final class TestDataAstaInversa {
     }
 
     public static AstaInversa createAstaInversaA(final Compratore proprietario) {
-        return new AstaInversa(CategoriaAsta.VIDEOGAMES_AND_CONSOLES,
+        return new AstaInversa(CategoriaAstaEnum.VIDEOGAMES_AND_CONSOLES,
                 "Dragon Age: Origins Xbox 360",
                 "Edizione Xbox 360 del videogioco Dragon Age: Origins. Ci giocava mio marito.",
                 LocalDate.of(2024, 6, 19),
@@ -25,7 +25,7 @@ public final class TestDataAstaInversa {
     }
 
     public static AstaInversa createAstaInversaB(final Compratore proprietario) {
-        return new AstaInversa(CategoriaAsta.CLOTHINGS_AND_WEARABLES,
+        return new AstaInversa(CategoriaAstaEnum.CLOTHINGS_AND_WEARABLES,
                 "Borsa Carpisa",
                 "Borsa Carpisa in trama coccodrillo e metalleria oro.",
                 LocalDate.of(2023, 6, 19),
@@ -36,7 +36,7 @@ public final class TestDataAstaInversa {
     }
 
     public static AstaInversa createAstaInversaC(final Compratore proprietario) {
-        return new AstaInversa(CategoriaAsta.CLOTHINGS_AND_WEARABLES,
+        return new AstaInversa(CategoriaAstaEnum.CLOTHINGS_AND_WEARABLES,
                 "Portafogli Carpisa",
                 "Portafogli Carpisa capiente con cerniera.",
                 LocalDate.of(2022, 9, 10),
