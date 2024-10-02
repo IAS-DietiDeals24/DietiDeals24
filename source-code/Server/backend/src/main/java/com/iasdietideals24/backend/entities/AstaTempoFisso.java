@@ -1,6 +1,5 @@
 package com.iasdietideals24.backend.entities;
 
-import com.iasdietideals24.backend.entities.utilities.CategoriaAstaEnum;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -28,7 +27,7 @@ public class AstaTempoFisso extends AstaDiVenditore {
     private Set<OffertaTempoFisso> offerteRicevute = new LinkedHashSet<>();
 
     // AllArgsConstructor
-    public AstaTempoFisso(@NonNull CategoriaAstaEnum categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Venditore proprietario, @NonNull BigDecimal sogliaMinima) {
+    public AstaTempoFisso(@NonNull CategoriaAsta categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Venditore proprietario, @NonNull BigDecimal sogliaMinima) {
         super(categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, proprietario);
 
         this.setSogliaMinima(sogliaMinima);

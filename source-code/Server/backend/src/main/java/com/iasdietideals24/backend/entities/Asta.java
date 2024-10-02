@@ -20,11 +20,6 @@ public abstract class Asta {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "asta_id_seq")
     private Long idAsta;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "fk_categoria_asta_nome")
-    @NonNull
-    private CategoriaAsta categoria;
-
     @NonNull
     private String nome;
 
@@ -38,6 +33,11 @@ public abstract class Asta {
     private LocalTime oraScadenza;
 
     private byte[] immagine;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "fk_categoria_asta_nome")
+    @NonNull
+    private CategoriaAsta categoria;
 
     @OneToMany(mappedBy = "astaAssociata", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
@@ -75,6 +75,6 @@ public abstract class Asta {
         }
         listIdNotificheAssociate.append("]");
 
-        return "Asta(idAsta=" + this.getIdAsta() + ", categoria=" + this.getCategoria().getNome() + ", nome=" + this.getNome() + ", descrizione=" + this.getDescrizione() + ", dataScadenza=" + this.getDataScadenza() + ", oraScadenza=" + this.getOraScadenza() + ", immagine=" + java.util.Arrays.toString(this.getImmagine()) + ", notificheAssociate=" + listIdNotificheAssociate + ")";
+        return "Asta(idAsta=" + this.getIdAsta() + ", nome=" + this.getNome() + ", descrizione=" + this.getDescrizione() + ", dataScadenza=" + this.getDataScadenza() + ", oraScadenza=" + this.getOraScadenza() + ", immagine=" + java.util.Arrays.toString(this.getImmagine()) + ", categoria=" + this.getCategoria().getNome() + ", notificheAssociate=" + listIdNotificheAssociate + ")";
     }
 }

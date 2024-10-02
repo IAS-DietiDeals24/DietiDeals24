@@ -3,8 +3,10 @@ package com.iasdietideals24.backend;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iasdietideals24.backend.datautil.TestDataAstaInversa;
+import com.iasdietideals24.backend.datautil.TestDataCategoriaAsta;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
 import com.iasdietideals24.backend.entities.AstaInversa;
+import com.iasdietideals24.backend.entities.CategoriaAsta;
 import com.iasdietideals24.backend.entities.Compratore;
 import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
@@ -35,7 +37,8 @@ class JacksonIntegrationTests {
         // Arrange
         Profilo profilo = TestDataProfilo.createProfiloCompratoreA(); // Creiamo l'account per l'asta
         Compratore proprietario = profilo.getCompratore(); // Cerchiamo l'account di tipo compratore
-        AstaInversa asta = TestDataAstaInversa.createAstaInversaA(proprietario); // Associamo l'account all'asta
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE(); // Creiamo la categoria per l'asta
+        AstaInversa asta = TestDataAstaInversa.createAstaInversaA(categoriaAsta, proprietario); // Associamo l'account all'asta
 
         AstaInversaDto astaInversaDto = astaInversaMapper.toDto(asta);
 
@@ -58,7 +61,8 @@ class JacksonIntegrationTests {
         // Act
         Profilo profilo = TestDataProfilo.createProfiloCompratoreA(); // Creiamo l'account per l'asta
         Compratore proprietario = profilo.getCompratore(); // Cerchiamo l'account di tipo compratore
-        AstaInversa oracolo = TestDataAstaInversa.createAstaInversaA(proprietario); // Associamo l'account all'asta
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE(); // Creiamo la categoria per l'asta
+        AstaInversa oracolo = TestDataAstaInversa.createAstaInversaA(categoriaAsta, proprietario); // Associamo l'account all'asta
 
         // Assert
         //assertEquals(oracolo, result);

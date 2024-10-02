@@ -1,6 +1,5 @@
 package com.iasdietideals24.backend.entities;
 
-import com.iasdietideals24.backend.entities.utilities.CategoriaAstaEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +18,7 @@ public abstract class AstaDiCompratore extends Asta {
     private Compratore proprietario;
 
     // AllArgsConstructor
-    protected AstaDiCompratore(@NonNull CategoriaAstaEnum categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Compratore proprietario) {
+    protected AstaDiCompratore(@NonNull CategoriaAsta categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Compratore proprietario) {
         super(categoria, nome, descrizione, dataScadenza, oraScadenza, immagine);
 
         this.proprietario = proprietario;

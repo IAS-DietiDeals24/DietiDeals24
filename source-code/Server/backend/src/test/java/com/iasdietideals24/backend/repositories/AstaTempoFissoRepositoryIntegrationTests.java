@@ -1,8 +1,10 @@
 package com.iasdietideals24.backend.repositories;
 
 import com.iasdietideals24.backend.datautil.TestDataAstaTempoFisso;
+import com.iasdietideals24.backend.datautil.TestDataCategoriaAsta;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
 import com.iasdietideals24.backend.entities.AstaTempoFisso;
+import com.iasdietideals24.backend.entities.CategoriaAsta;
 import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.entities.Venditore;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
@@ -41,7 +43,8 @@ class AstaTempoFissoRepositoryIntegrationTests {
         // Creazione oggetto
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreC();
         Venditore venditore = profiloVenditore.getVenditore();
-        AstaTempoFisso astaTempoFisso = TestDataAstaTempoFisso.createAstaTempoFissoA(venditore);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaB();
+        AstaTempoFisso astaTempoFisso = TestDataAstaTempoFisso.createAstaTempoFissoA(categoriaAsta, venditore);
 
         // Salvataggio oggetto nel database
         underTest.save(astaTempoFisso);
@@ -61,15 +64,18 @@ class AstaTempoFissoRepositoryIntegrationTests {
         // Creazione oggetti
         Profilo profiloVenditoreA = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditoreA = profiloVenditoreA.getVenditore();
-        AstaTempoFisso astaTempoFissoA = TestDataAstaTempoFisso.createAstaTempoFissoA(venditoreA);
+        CategoriaAsta categoriaAstaA = TestDataCategoriaAsta.createCategoriaAstaB();
+        AstaTempoFisso astaTempoFissoA = TestDataAstaTempoFisso.createAstaTempoFissoA(categoriaAstaA, venditoreA);
 
         Profilo profiloVenditoreB = TestDataProfilo.createProfiloVenditoreB();
         Venditore venditoreB = profiloVenditoreB.getVenditore();
-        AstaTempoFisso astaTempoFissoB = TestDataAstaTempoFisso.createAstaTempoFissoB(venditoreB);
+        CategoriaAsta categoriaAstaB = TestDataCategoriaAsta.createCategoriaAstaE();
+        AstaTempoFisso astaTempoFissoB = TestDataAstaTempoFisso.createAstaTempoFissoB(categoriaAstaB, venditoreB);
 
         Profilo profiloVenditoreC = TestDataProfilo.createProfiloVenditoreC();
         Venditore venditoreC = profiloVenditoreC.getVenditore();
-        AstaTempoFisso astaTempoFissoC = TestDataAstaTempoFisso.createAstaTempoFissoC(venditoreC);
+        CategoriaAsta categoriaAstaC = TestDataCategoriaAsta.createCategoriaAstaK();
+        AstaTempoFisso astaTempoFissoC = TestDataAstaTempoFisso.createAstaTempoFissoC(categoriaAstaC, venditoreC);
 
         // Salvataggio oggetti nel database
         underTest.save(astaTempoFissoA);
@@ -90,7 +96,8 @@ class AstaTempoFissoRepositoryIntegrationTests {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditore = profiloVenditore.getVenditore();
-        AstaTempoFisso astaTempoFisso = TestDataAstaTempoFisso.createAstaTempoFissoC(venditore);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaK();
+        AstaTempoFisso astaTempoFisso = TestDataAstaTempoFisso.createAstaTempoFissoC(categoriaAsta, venditore);
         underTest.save(astaTempoFisso);
 
         // Modifica e salvataggio dell'oggetto nel database
@@ -112,7 +119,8 @@ class AstaTempoFissoRepositoryIntegrationTests {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditore = profiloVenditore.getVenditore();
-        AstaTempoFisso astaTempoFisso = TestDataAstaTempoFisso.createAstaTempoFissoB(venditore);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        AstaTempoFisso astaTempoFisso = TestDataAstaTempoFisso.createAstaTempoFissoB(categoriaAsta, venditore);
         underTest.save(astaTempoFisso);
 
         // Rimozione dell'oggetto dal database

@@ -1,6 +1,7 @@
 package com.iasdietideals24.backend.repositories;
 
 import com.iasdietideals24.backend.datautil.TestDataAstaTempoFisso;
+import com.iasdietideals24.backend.datautil.TestDataCategoriaAsta;
 import com.iasdietideals24.backend.datautil.TestDataOffertaTempoFisso;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
 import com.iasdietideals24.backend.entities.*;
@@ -41,7 +42,8 @@ class OffertaTempoFissoRepositoryIntegrationTests {
         // Creazione oggetto
         Profilo profiloProprietario = TestDataProfilo.createProfiloVenditoreA();
         Venditore proprietario = profiloProprietario.getVenditore();
-        AstaTempoFisso astaRiferimento = TestDataAstaTempoFisso.createAstaTempoFissoA(proprietario);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaB();
+        AstaTempoFisso astaRiferimento = TestDataAstaTempoFisso.createAstaTempoFissoA(categoriaAsta, proprietario);
         Profilo profiloCompratoreCollegato = TestDataProfilo.createProfiloCompratoreB();
         Compratore compratoreCollegato = profiloCompratoreCollegato.getCompratore();
         OffertaTempoFisso offertaTempoFisso = TestDataOffertaTempoFisso.createOffertaTempoFissoA(compratoreCollegato, astaRiferimento);
@@ -64,17 +66,20 @@ class OffertaTempoFissoRepositoryIntegrationTests {
         // Creazione oggetti
         Profilo profiloProprietarioA = TestDataProfilo.createProfiloVenditoreA();
         Venditore proprietarioA = profiloProprietarioA.getVenditore();
-        AstaTempoFisso astaRiferimentoA = TestDataAstaTempoFisso.createAstaTempoFissoA(proprietarioA);
+        CategoriaAsta categoriaAstaA = TestDataCategoriaAsta.createCategoriaAstaB();
+        AstaTempoFisso astaRiferimentoA = TestDataAstaTempoFisso.createAstaTempoFissoA(categoriaAstaA, proprietarioA);
         Profilo profiloCompratoreCollegatoB = TestDataProfilo.createProfiloCompratoreB();
         Compratore compratoreCollegatoB = profiloCompratoreCollegatoB.getCompratore();
         OffertaTempoFisso offertaTempoFissoA = TestDataOffertaTempoFisso.createOffertaTempoFissoA(compratoreCollegatoB, astaRiferimentoA);
 
         Profilo profiloProprietarioC = TestDataProfilo.createProfiloVenditoreC();
         Venditore proprietarioC = profiloProprietarioC.getVenditore();
-        AstaTempoFisso astaRiferimentoB = TestDataAstaTempoFisso.createAstaTempoFissoB(proprietarioC);
+        CategoriaAsta categoriaAstaB = TestDataCategoriaAsta.createCategoriaAstaE();
+        AstaTempoFisso astaRiferimentoB = TestDataAstaTempoFisso.createAstaTempoFissoB(categoriaAstaB, proprietarioC);
         OffertaTempoFisso offertaTempoFissoB = TestDataOffertaTempoFisso.createOffertaTempoFissoB(compratoreCollegatoB, astaRiferimentoB);
 
-        AstaTempoFisso astaRiferimentoC = TestDataAstaTempoFisso.createAstaTempoFissoC(proprietarioC);
+        CategoriaAsta categoriaAstaC = TestDataCategoriaAsta.createCategoriaAstaK();
+        AstaTempoFisso astaRiferimentoC = TestDataAstaTempoFisso.createAstaTempoFissoC(categoriaAstaC, proprietarioC);
         OffertaTempoFisso offertaTempoFissoC = TestDataOffertaTempoFisso.createOffertaTempoFissoC(compratoreCollegatoB, astaRiferimentoC);
 
         // Salvataggio oggetti nel database
@@ -96,7 +101,8 @@ class OffertaTempoFissoRepositoryIntegrationTests {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloVenditoreB();
         Venditore proprietario = profiloProprietario.getVenditore();
-        AstaTempoFisso astaRiferimento = TestDataAstaTempoFisso.createAstaTempoFissoB(proprietario);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        AstaTempoFisso astaRiferimento = TestDataAstaTempoFisso.createAstaTempoFissoB(categoriaAsta, proprietario);
         Profilo profiloCompratoreCollegato = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratoreCollegato = profiloCompratoreCollegato.getCompratore();
         OffertaTempoFisso offertaTempoFisso = TestDataOffertaTempoFisso.createOffertaTempoFissoC(compratoreCollegato, astaRiferimento);
@@ -121,7 +127,8 @@ class OffertaTempoFissoRepositoryIntegrationTests {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloVenditoreC();
         Venditore proprietario = profiloProprietario.getVenditore();
-        AstaTempoFisso astaRiferimento = TestDataAstaTempoFisso.createAstaTempoFissoC(proprietario);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaK();
+        AstaTempoFisso astaRiferimento = TestDataAstaTempoFisso.createAstaTempoFissoC(categoriaAsta, proprietario);
         Profilo profiloCompratoreCollegato = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratoreCollegato = profiloCompratoreCollegato.getCompratore();
         OffertaTempoFisso offertaTempoFisso = TestDataOffertaTempoFisso.createOffertaTempoFissoA(compratoreCollegato, astaRiferimento);

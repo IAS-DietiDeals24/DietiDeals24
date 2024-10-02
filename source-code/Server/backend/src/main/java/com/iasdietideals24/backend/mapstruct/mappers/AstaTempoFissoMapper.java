@@ -13,6 +13,7 @@ import org.mapstruct.Mapping;
         collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
 public interface AstaTempoFissoMapper {
 
+    @Mapping(source = "categoria", target = "categoriaShallow")
     @Mapping(source = "notificheAssociate", target = "notificheAssociateShallow")
     @Mapping(source = "proprietario", target = "proprietarioShallow")
     @Mapping(source = "offerteRicevute", target = "offerteRicevuteShallow")

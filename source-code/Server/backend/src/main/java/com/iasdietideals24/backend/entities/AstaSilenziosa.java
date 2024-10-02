@@ -1,6 +1,5 @@
 package com.iasdietideals24.backend.entities;
 
-import com.iasdietideals24.backend.entities.utilities.CategoriaAstaEnum;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -24,7 +23,7 @@ public class AstaSilenziosa extends AstaDiVenditore {
     private Set<OffertaSilenziosa> offerteRicevute = new LinkedHashSet<>();
 
     // AllArgsConstructor
-    public AstaSilenziosa(@NonNull CategoriaAstaEnum categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Venditore proprietario) {
+    public AstaSilenziosa(@NonNull CategoriaAsta categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Venditore proprietario) {
         super(categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, proprietario);
     }
 
