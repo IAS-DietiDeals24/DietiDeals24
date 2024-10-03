@@ -45,7 +45,7 @@ class JacksonIntegrationTests {
         String result = objectMapper.writeValueAsString(astaInversaDto); // Serializziamo l'oggetto Java in Json
 
         // Act
-        String oracolo = "{\"idAsta\":null,\"categoria\":\"Videogiochi\",\"nome\":\"Dragon Age: Origins Xbox 360\",\"descrizione\":\"Edizione Xbox 360 del videogioco Dragon Age: Origins. Ci giocava mio marito.\",\"dataScadenza\":[2024,6,19],\"oraScadenza\":[18,44],\"immagine\":null,\"notificheAssociateShallow\":[],\"proprietarioShallow\":{\"email\":\"pippo.baudo@gmail.com\",\"tipoAccount\":\"Compratore\"},\"sogliaIniziale\":1.0,\"offerteRicevuteShallow\":[]}";
+        String oracolo = "{\"idAsta\":null,\"nome\":\"Dragon Age: Origins Xbox 360\",\"descrizione\":\"Edizione Xbox 360 del videogioco Dragon Age: Origins. Ci giocava mio marito.\",\"dataScadenza\":[2024,6,19],\"oraScadenza\":[18,44],\"immagine\":null,\"categoriaShallow\":{\"nome\":\"VIDEOGAMES_AND_CONSOLES\"},\"notificheAssociateShallow\":[],\"proprietarioShallow\":{\"email\":\"pippo.baudo@gmail.com\",\"tipoAccount\":\"Compratore\"},\"sogliaIniziale\":1.0,\"offerteRicevuteShallow\":[]}";
 
         // Assert
         assertEquals(oracolo, result);
@@ -54,7 +54,7 @@ class JacksonIntegrationTests {
 
     void testObjectMapperCreateJavaObjectFromJsonObject() throws JsonProcessingException, InvalidTypeException {
         // Arrange
-        String json = "{\"idAsta\":null,\"categoria\":\"Videogiochi\",\"nome\":\"Dragon Age: Origins Xbox 360\",\"descrizione\":\"Edizione Xbox 360 del videogioco Dragon Age: Origins. Ci giocava mio marito.\",\"dataScadenza\":[2024,6,19],\"oraScadenza\":[18,44],\"immagine\":null,\"notificheAssociateShallow\":[],\"proprietarioShallow\":{\"email\":\"pippo.baudo@gmail.com\",\"tipoAccount\":\"Compratore\"},\"sogliaIniziale\":1.0,\"offerteRicevuteShallow\":[]}";
+        String json = "{\"idAsta\":null,\"nome\":\"Dragon Age: Origins Xbox 360\",\"descrizione\":\"Edizione Xbox 360 del videogioco Dragon Age: Origins. Ci giocava mio marito.\",\"dataScadenza\":[2024,6,19],\"oraScadenza\":[18,44],\"immagine\":null,\"categoriaShallow\":{\"nome\":\"VIDEOGAMES_AND_CONSOLES\"},\"notificheAssociateShallow\":[],\"proprietarioShallow\":{\"email\":\"pippo.baudo@gmail.com\",\"tipoAccount\":\"Compratore\"},\"sogliaIniziale\":1.0,\"offerteRicevuteShallow\":[]}";
         AstaInversaDto astaInversaDto = objectMapper.readValue(json, AstaInversaDto.class); // Serializziamo l'oggetto Java in Json
         //AstaInversa result = astaInversaMapper.toEntity(astaInversaDto);
 

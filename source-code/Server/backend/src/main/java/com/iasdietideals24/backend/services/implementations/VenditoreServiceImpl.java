@@ -48,7 +48,7 @@ public class VenditoreServiceImpl implements VenditoreService {
         // Recuperiamo le associazioni
         convertRelations(nuovoVenditoreDto, nuovoVenditore);
 
-        //Registriamo l'entità
+        // Registriamo l'entità
         Venditore savedVenditore = venditoreRepository.save(nuovoVenditore);
 
         return venditoreMapper.toDto(savedVenditore);

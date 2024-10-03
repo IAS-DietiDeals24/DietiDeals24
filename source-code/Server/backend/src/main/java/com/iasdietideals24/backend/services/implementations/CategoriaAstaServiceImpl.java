@@ -12,10 +12,12 @@ import com.iasdietideals24.backend.services.CategoriaAstaService;
 import com.iasdietideals24.backend.utilities.RelationsConverter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.Set;
 
+@Service
 public class CategoriaAstaServiceImpl implements CategoriaAstaService {
 
     private final CategoriaAstaMapper categoriaAstaMapper;
@@ -43,7 +45,7 @@ public class CategoriaAstaServiceImpl implements CategoriaAstaService {
         // Recuperiamo le associazioni
         convertRelations(nuovoCategoriaAstaDto, nuovaCategoriaAsta);
 
-        //Registriamo l'entità
+        // Registriamo l'entità
         CategoriaAsta savedCategoriaAsta = categoriaAstaRepository.save(nuovaCategoriaAsta);
 
         return categoriaAstaMapper.toDto(savedCategoriaAsta);
