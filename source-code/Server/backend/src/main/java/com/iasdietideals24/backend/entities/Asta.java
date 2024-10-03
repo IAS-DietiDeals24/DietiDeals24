@@ -1,6 +1,5 @@
 package com.iasdietideals24.backend.entities;
 
-import com.iasdietideals24.backend.entities.utilities.CategoriaAsta;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,10 +20,6 @@ public abstract class Asta {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "asta_id_seq")
     private Long idAsta;
 
-    @Enumerated(EnumType.STRING)
-    @NonNull
-    private CategoriaAsta categoria;
-
     @NonNull
     private String nome;
 
@@ -39,6 +34,11 @@ public abstract class Asta {
 
     private byte[] immagine;
 
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "fk_categoria_asta_nome")
+    @NonNull
+    private CategoriaAsta categoria;
+
     @OneToMany(mappedBy = "astaAssociata", cascade = CascadeType.ALL)
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
@@ -46,12 +46,14 @@ public abstract class Asta {
 
     // AllArgsConstructor
     protected Asta(@NonNull CategoriaAsta categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine) {
-        this.categoria = categoria;
         this.nome = nome;
         this.descrizione = descrizione;
         this.dataScadenza = dataScadenza;
         this.oraScadenza = oraScadenza;
         this.immagine = immagine;
+
+        this.categoria = categoria;
+        categoria.addAstaAssegnata(this);
     }
 
     // Metodi per notificheAssociate
@@ -73,6 +75,6 @@ public abstract class Asta {
         }
         listIdNotificheAssociate.append("]");
 
-        return "Asta(idAsta=" + this.getIdAsta() + ", categoria=" + this.getCategoria() + ", nome=" + this.getNome() + ", descrizione=" + this.getDescrizione() + ", dataScadenza=" + this.getDataScadenza() + ", oraScadenza=" + this.getOraScadenza() + ", immagine=" + java.util.Arrays.toString(this.getImmagine()) + ", notificheAssociate=" + listIdNotificheAssociate + ")";
+        return "Asta(idAsta=" + this.getIdAsta() + ", nome=" + this.getNome() + ", descrizione=" + this.getDescrizione() + ", dataScadenza=" + this.getDataScadenza() + ", oraScadenza=" + this.getOraScadenza() + ", immagine=" + java.util.Arrays.toString(this.getImmagine()) + ", categoria=" + this.getCategoria().getNome() + ", notificheAssociate=" + listIdNotificheAssociate + ")";
     }
 }

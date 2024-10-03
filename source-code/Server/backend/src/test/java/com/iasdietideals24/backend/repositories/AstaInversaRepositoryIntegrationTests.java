@@ -1,8 +1,10 @@
 package com.iasdietideals24.backend.repositories;
 
 import com.iasdietideals24.backend.datautil.TestDataAstaInversa;
+import com.iasdietideals24.backend.datautil.TestDataCategoriaAsta;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
 import com.iasdietideals24.backend.entities.AstaInversa;
+import com.iasdietideals24.backend.entities.CategoriaAsta;
 import com.iasdietideals24.backend.entities.Compratore;
 import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
@@ -41,7 +43,8 @@ class AstaInversaRepositoryIntegrationTests {
         // Creazione oggetto
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreC();
         Compratore compratore = profiloCompratore.getCompratore();
-        AstaInversa astaInversa = TestDataAstaInversa.createAstaInversaA(compratore);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        AstaInversa astaInversa = TestDataAstaInversa.createAstaInversaA(categoriaAsta, compratore);
 
         // Salvataggio oggetto nel database
         underTest.save(astaInversa);
@@ -61,15 +64,17 @@ class AstaInversaRepositoryIntegrationTests {
         // Creazione oggetti
         Profilo profiloCompratoreA = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratoreA = profiloCompratoreA.getCompratore();
-        AstaInversa astaInversaA = TestDataAstaInversa.createAstaInversaA(compratoreA);
+        CategoriaAsta categoriaAstaA = TestDataCategoriaAsta.createCategoriaAstaE();
+        AstaInversa astaInversaA = TestDataAstaInversa.createAstaInversaA(categoriaAstaA, compratoreA);
 
         Profilo profiloCompratoreB = TestDataProfilo.createProfiloCompratoreB();
         Compratore compratoreB = profiloCompratoreB.getCompratore();
-        AstaInversa astaInversaB = TestDataAstaInversa.createAstaInversaB(compratoreB);
+        CategoriaAsta categoriaAstaB = TestDataCategoriaAsta.createCategoriaAstaK();
+        AstaInversa astaInversaB = TestDataAstaInversa.createAstaInversaB(categoriaAstaB, compratoreB);
 
         Profilo profiloCompratoreC = TestDataProfilo.createProfiloCompratoreC();
         Compratore compratoreC = profiloCompratoreC.getCompratore();
-        AstaInversa astaInversaC = TestDataAstaInversa.createAstaInversaC(compratoreC);
+        AstaInversa astaInversaC = TestDataAstaInversa.createAstaInversaC(categoriaAstaB, compratoreC);
 
         // Salvataggio oggetti nel database
         underTest.save(astaInversaA);
@@ -90,7 +95,8 @@ class AstaInversaRepositoryIntegrationTests {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratore = profiloCompratore.getCompratore();
-        AstaInversa astaInversa = TestDataAstaInversa.createAstaInversaA(compratore);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        AstaInversa astaInversa = TestDataAstaInversa.createAstaInversaA(categoriaAsta, compratore);
         underTest.save(astaInversa);
 
         // Modifica e salvataggio dell'oggetto nel database
@@ -112,7 +118,8 @@ class AstaInversaRepositoryIntegrationTests {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreA();
         Compratore compratore = profiloCompratore.getCompratore();
-        AstaInversa astaInversa = TestDataAstaInversa.createAstaInversaA(compratore);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        AstaInversa astaInversa = TestDataAstaInversa.createAstaInversaA(categoriaAsta, compratore);
         underTest.save(astaInversa);
 
         // Rimozione dell'oggetto dal database

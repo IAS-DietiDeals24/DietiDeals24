@@ -5,6 +5,8 @@ import com.iasdietideals24.backend.entities.Notifica;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.mapstruct.dto.AstaDto;
+import com.iasdietideals24.backend.mapstruct.dto.CategoriaAstaDto;
+import com.iasdietideals24.backend.mapstruct.dto.shallows.CategoriaAstaShallowDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.NotificaShallowDto;
 import com.iasdietideals24.backend.mapstruct.mappers.CategoriaAstaMapper;
 import com.iasdietideals24.backend.services.AstaService;
@@ -18,29 +20,24 @@ import java.util.Set;
 @Service
 public class AstaServiceImpl implements AstaService {
 
-    private final CategoriaAstaMapper categoriaAstaMapper;
     private final RelationsConverter relationsConverter;
 
-    protected AstaServiceImpl(CategoriaAstaMapper categoriaAstaMapper,
-                              RelationsConverter relationsConverter) {
-        this.categoriaAstaMapper = categoriaAstaMapper;
+    protected AstaServiceImpl(RelationsConverter relationsConverter) {
         this.relationsConverter = relationsConverter;
     }
 
     @Override
     public void checkFieldsValid(AstaDto astaDto) throws InvalidParameterException {
-        checkCategoriaValid(astaDto.getCategoria());
         checkNomeValid(astaDto.getNome());
         checkDescrizioneValid(astaDto.getDescrizione());
         checkDataScadenzaValid(astaDto.getDataScadenza());
         checkOraScadenzaValid(astaDto.getOraScadenza());
+        checkCategoriaValid(astaDto.getCategoriaShallow());
     }
 
-    private void checkCategoriaValid(String categoria) throws InvalidParameterException {
+    private void checkCategoriaValid(CategoriaAstaShallowDto categoria) throws InvalidParameterException {
         if (categoria == null)
             throw new InvalidParameterException("La categoria non può essere null!");
-        else if (categoria.isBlank())
-            throw new InvalidParameterException("La categoria non può essere vuoto!");
     }
 
     private void checkNomeValid(String nome) throws InvalidParameterException {
@@ -92,21 +89,13 @@ public class AstaServiceImpl implements AstaService {
 
     @Override
     public void updatePresentFields(AstaDto updatedAstaDto, Asta existingAsta) throws InvalidParameterException {
-        ifPresentUpdateCategoria(updatedAstaDto.getCategoria(), existingAsta);
         ifPresentUpdateNome(updatedAstaDto.getNome(), existingAsta);
         ifPresentUpdateDescrizione(updatedAstaDto.getDescrizione(), existingAsta);
         ifPresentUpdateDataScadenza(updatedAstaDto.getDataScadenza(), existingAsta);
         ifPresentUpdateOraScadenza(updatedAstaDto.getOraScadenza(), existingAsta);
         ifPresentUpdateImmagine(updatedAstaDto.getImmagine(), existingAsta);
 
-        // Non è possibile modificare l'associazione "notificheAssociate" tramite la risorsa "aste"
-    }
-
-    private void ifPresentUpdateCategoria(String updatedCategoria, Asta existingAsta) throws InvalidParameterException {
-        if (updatedCategoria != null) {
-            checkCategoriaValid(updatedCategoria);
-            existingAsta.setCategoria(categoriaAstaMapper.toEntity(updatedCategoria));
-        }
+        // Non è possibile modificare l'associazione "categoria", "notificheAssociate" tramite la risorsa "aste"
     }
 
     private void ifPresentUpdateNome(String updatedNome, Asta existingAsta) throws InvalidParameterException {

@@ -48,7 +48,7 @@ public class CompratoreServiceImpl implements CompratoreService {
         // Recuperiamo le associazioni
         convertRelations(nuovoCompratoreDto, nuovoCompratore);
 
-        //Registriamo l'entità
+        // Registriamo l'entità
         Compratore savedCompratore = compratoreRepository.save(nuovoCompratore);
 
         return compratoreMapper.toDto(savedCompratore);

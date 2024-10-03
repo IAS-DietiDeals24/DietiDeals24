@@ -29,6 +29,8 @@ Gli endpoint esposti dalla DietiDeals24 REST API sono:
     - `/{email}`
 - `/accounts/venditori`
     - `/{email}`
+- `/categorie-asta`
+    - `/{nome}`
 - `/profili`
     - `{nomeUtente}`
 - `/notifiche`

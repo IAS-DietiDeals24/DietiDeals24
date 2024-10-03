@@ -1,8 +1,10 @@
 package com.iasdietideals24.backend.repositories;
 
 import com.iasdietideals24.backend.datautil.TestDataAstaSilenziosa;
+import com.iasdietideals24.backend.datautil.TestDataCategoriaAsta;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
 import com.iasdietideals24.backend.entities.AstaSilenziosa;
+import com.iasdietideals24.backend.entities.CategoriaAsta;
 import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.entities.Venditore;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
@@ -41,7 +43,8 @@ class AstaSilenziosaRepositoryIntegrationTests {
         // Creazione oggetto
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreC();
         Venditore venditore = profiloVenditore.getVenditore();
-        AstaSilenziosa astaSilenziosa = TestDataAstaSilenziosa.createAstaSilenziosaA(venditore);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaM();
+        AstaSilenziosa astaSilenziosa = TestDataAstaSilenziosa.createAstaSilenziosaA(categoriaAsta, venditore);
 
         // Salvataggio oggetto nel database
         underTest.save(astaSilenziosa);
@@ -61,15 +64,18 @@ class AstaSilenziosaRepositoryIntegrationTests {
         // Creazione oggetti
         Profilo profiloVenditoreA = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditoreA = profiloVenditoreA.getVenditore();
-        AstaSilenziosa astaSilenziosaA = TestDataAstaSilenziosa.createAstaSilenziosaA(venditoreA);
+        CategoriaAsta categoriaAstaA = TestDataCategoriaAsta.createCategoriaAstaM();
+        AstaSilenziosa astaSilenziosaA = TestDataAstaSilenziosa.createAstaSilenziosaA(categoriaAstaA, venditoreA);
 
         Profilo profiloVenditoreB = TestDataProfilo.createProfiloVenditoreB();
         Venditore venditoreB = profiloVenditoreB.getVenditore();
-        AstaSilenziosa astaSilenziosaB = TestDataAstaSilenziosa.createAstaSilenziosaB(venditoreB);
+        CategoriaAsta categoriaAstaB = TestDataCategoriaAsta.createCategoriaAstaB();
+        AstaSilenziosa astaSilenziosaB = TestDataAstaSilenziosa.createAstaSilenziosaB(categoriaAstaB, venditoreB);
 
         Profilo profiloVenditoreC = TestDataProfilo.createProfiloVenditoreC();
         Venditore venditoreC = profiloVenditoreC.getVenditore();
-        AstaSilenziosa astaSilenziosaC = TestDataAstaSilenziosa.createAstaSilenziosaC(venditoreC);
+        CategoriaAsta categoriaAstaC = TestDataCategoriaAsta.createCategoriaAstaC();
+        AstaSilenziosa astaSilenziosaC = TestDataAstaSilenziosa.createAstaSilenziosaC(categoriaAstaC, venditoreC);
 
         // Salvataggio oggetti nel database
         underTest.save(astaSilenziosaA);
@@ -90,7 +96,8 @@ class AstaSilenziosaRepositoryIntegrationTests {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditore = profiloVenditore.getVenditore();
-        AstaSilenziosa astaSilenziosa = TestDataAstaSilenziosa.createAstaSilenziosaC(venditore);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaC();
+        AstaSilenziosa astaSilenziosa = TestDataAstaSilenziosa.createAstaSilenziosaC(categoriaAsta, venditore);
         underTest.save(astaSilenziosa);
 
         // Modifica e salvataggio dell'oggetto nel database
@@ -112,7 +119,8 @@ class AstaSilenziosaRepositoryIntegrationTests {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditore = profiloVenditore.getVenditore();
-        AstaSilenziosa astaSilenziosa = TestDataAstaSilenziosa.createAstaSilenziosaB(venditore);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaB();
+        AstaSilenziosa astaSilenziosa = TestDataAstaSilenziosa.createAstaSilenziosaB(categoriaAsta, venditore);
         underTest.save(astaSilenziosa);
 
         // Rimozione dell'oggetto dal database

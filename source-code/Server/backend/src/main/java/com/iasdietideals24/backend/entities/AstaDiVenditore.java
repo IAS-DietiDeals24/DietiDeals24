@@ -1,6 +1,5 @@
 package com.iasdietideals24.backend.entities;
 
-import com.iasdietideals24.backend.entities.utilities.CategoriaAsta;
 import jakarta.persistence.*;
 import lombok.*;
 

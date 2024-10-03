@@ -1,18 +1,33 @@
 package com.iasdietideals24.backend.mapstruct.mappers;
 
-import com.iasdietideals24.backend.entities.utilities.CategoriaAsta;
-import com.iasdietideals24.backend.exceptions.InvalidParameterException;
-import org.mapstruct.EnumMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.ValueMapping;
+import com.iasdietideals24.backend.entities.CategoriaAsta;
+import com.iasdietideals24.backend.exceptions.InvalidTypeException;
+import com.iasdietideals24.backend.mapstruct.dto.CategoriaAstaDto;
+import com.iasdietideals24.backend.mapstruct.dto.shallows.CategoriaAstaShallowDto;
+import org.mapstruct.*;
 
-@Mapper(componentModel = "spring")
+import java.util.Set;
+
+@Mapper(componentModel = "spring",
+        uses = AstaMapper.class,
+        collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
 public interface CategoriaAstaMapper {
 
-    String toString(CategoriaAsta categoriaAsta);
+    @Mapping(source = "asteAssegnate", target = "asteAssegnateShallow")
+    CategoriaAstaDto toDto(CategoriaAsta categoriaAsta);
 
-    @EnumMapping(unexpectedValueMappingException = InvalidParameterException.class)
-    @ValueMapping (source = MappingConstants.ANY_REMAINING, target = MappingConstants.THROW_EXCEPTION)
-    CategoriaAsta toEntity(String categoriaAstaString) throws InvalidParameterException;
+    @InheritInverseConfiguration
+    CategoriaAsta toEntity(CategoriaAstaDto categoriaAstaDto) throws InvalidTypeException;
+
+    // Shallow DTO
+    @BeanMapping(ignoreByDefault = true)
+    @Mapping(source = "nome", target = "nome")
+    CategoriaAstaShallowDto toShallowDto(CategoriaAsta categoriaAsta);
+
+    @InheritInverseConfiguration
+    CategoriaAsta toEntity(CategoriaAstaShallowDto categoriaAstaShallowDto);
+
+    Set<CategoriaAstaShallowDto> toShallowDto(Set<CategoriaAsta> categorieAsta);
+
+    Set<CategoriaAsta> toEntity(Set<CategoriaAstaShallowDto> categorieAstaShallowDto);
 }

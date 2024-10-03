@@ -1,8 +1,6 @@
 package com.iasdietideals24.backend.entities;
 
-import com.iasdietideals24.backend.entities.utilities.CategoriaAsta;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.*;

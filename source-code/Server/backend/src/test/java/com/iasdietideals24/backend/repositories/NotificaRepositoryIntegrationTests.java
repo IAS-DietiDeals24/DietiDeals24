@@ -38,7 +38,8 @@ class NotificaRepositoryIntegrationTests {
         // Creazione oggetto
         Profilo profiloMittente = TestDataProfilo.createProfiloCompratoreA();
         Compratore mittente = profiloMittente.getCompratore();
-        AstaDiCompratore astaAssociata = TestDataAstaInversa.createAstaInversaA(mittente);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        AstaDiCompratore astaAssociata = TestDataAstaInversa.createAstaInversaA(categoriaAsta, mittente);
         Profilo profiloDestinatario = TestDataProfilo.createProfiloVenditoreB();
         Venditore destinatario = profiloDestinatario.getVenditore();
         Notifica notifica = TestDataNotifica.createNotificaA(mittente, destinatario, astaAssociata);
@@ -61,19 +62,22 @@ class NotificaRepositoryIntegrationTests {
         // Creazione oggetti
         Profilo profiloMittenteA = TestDataProfilo.createProfiloCompratoreA();
         Compratore mittenteA = profiloMittenteA.getCompratore();
-        AstaDiCompratore astaAssociataA = TestDataAstaInversa.createAstaInversaA(mittenteA);
+        CategoriaAsta categoriaAstaA = TestDataCategoriaAsta.createCategoriaAstaE();
+        AstaDiCompratore astaAssociataA = TestDataAstaInversa.createAstaInversaA(categoriaAstaA, mittenteA);
         Profilo profiloDestinatarioB = TestDataProfilo.createProfiloVenditoreB();
         Venditore destinatarioB = profiloDestinatarioB.getVenditore();
         Notifica notificaA = TestDataNotifica.createNotificaA(mittenteA, destinatarioB, astaAssociataA);
 
         Venditore mittenteB = destinatarioB;
-        AstaDiVenditore astaAssociataB = TestDataAstaSilenziosa.createAstaSilenziosaB(mittenteB);
+        CategoriaAsta categoriaAstaB = TestDataCategoriaAsta.createCategoriaAstaB();
+        AstaDiVenditore astaAssociataB = TestDataAstaSilenziosa.createAstaSilenziosaB(categoriaAstaB, mittenteB);
         Compratore destinatarioA = mittenteA;
         Notifica notificaB = TestDataNotifica.createNotificaA(mittenteB, destinatarioA, astaAssociataB);
 
         Profilo profiloMittenteC = TestDataProfilo.createProfiloVenditoreC();
         Venditore mittenteC = profiloMittenteC.getVenditore();
-        AstaDiVenditore astaAssociataC = TestDataAstaTempoFisso.createAstaTempoFissoC(mittenteC);
+        CategoriaAsta categoriaAstaC = TestDataCategoriaAsta.createCategoriaAstaK();
+        AstaDiVenditore astaAssociataC = TestDataAstaTempoFisso.createAstaTempoFissoC(categoriaAstaC, mittenteC);
         Compratore destinatarioC = mittenteA;
         Notifica notificaC = TestDataNotifica.createNotificaA(mittenteC, destinatarioC, astaAssociataC);
 
@@ -96,7 +100,8 @@ class NotificaRepositoryIntegrationTests {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloMittente = TestDataProfilo.createProfiloCompratoreC();
         Compratore mittente = profiloMittente.getCompratore();
-        AstaDiCompratore astaAssociata = TestDataAstaInversa.createAstaInversaA(mittente);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        AstaDiCompratore astaAssociata = TestDataAstaInversa.createAstaInversaA(categoriaAsta, mittente);
         Profilo profiloDestinatario = TestDataProfilo.createProfiloVenditoreA();
         Venditore destinatario = profiloDestinatario.getVenditore();
         Notifica notifica = TestDataNotifica.createNotificaA(mittente, destinatario, astaAssociata);
@@ -121,7 +126,8 @@ class NotificaRepositoryIntegrationTests {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloMittente = TestDataProfilo.createProfiloVenditoreA();
         Venditore mittente = profiloMittente.getVenditore();
-        AstaDiVenditore astaAssociata = TestDataAstaTempoFisso.createAstaTempoFissoA(mittente);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaB();
+        AstaDiVenditore astaAssociata = TestDataAstaTempoFisso.createAstaTempoFissoA(categoriaAsta, mittente);
         Profilo profiloDestinatario1 = TestDataProfilo.createProfiloCompratoreB();
         Compratore destinatario1 = profiloDestinatario1.getCompratore();
         Profilo profiloDestinatario2 = TestDataProfilo.createProfiloCompratoreC();

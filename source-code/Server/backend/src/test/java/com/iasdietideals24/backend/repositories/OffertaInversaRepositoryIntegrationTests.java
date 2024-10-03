@@ -1,6 +1,7 @@
 package com.iasdietideals24.backend.repositories;
 
 import com.iasdietideals24.backend.datautil.TestDataAstaInversa;
+import com.iasdietideals24.backend.datautil.TestDataCategoriaAsta;
 import com.iasdietideals24.backend.datautil.TestDataOffertaInversa;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
 import com.iasdietideals24.backend.entities.*;
@@ -41,7 +42,8 @@ class OffertaInversaRepositoryIntegrationTests {
         // Creazione oggetto
         Profilo profiloProprietario = TestDataProfilo.createProfiloCompratoreA();
         Compratore proprietario = profiloProprietario.getCompratore();
-        AstaInversa astaRiferimento = TestDataAstaInversa.createAstaInversaA(proprietario);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        AstaInversa astaRiferimento = TestDataAstaInversa.createAstaInversaA(categoriaAsta, proprietario);
         Profilo profiloVenditoreCollegato = TestDataProfilo.createProfiloVenditoreB();
         Venditore venditoreCollegato = profiloVenditoreCollegato.getVenditore();
         OffertaInversa offertaInversa = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegato, astaRiferimento);
@@ -64,17 +66,19 @@ class OffertaInversaRepositoryIntegrationTests {
         // Creazione oggetti
         Profilo profiloProprietarioA = TestDataProfilo.createProfiloCompratoreA();
         Compratore proprietarioA = profiloProprietarioA.getCompratore();
-        AstaInversa astaRiferimentoA = TestDataAstaInversa.createAstaInversaA(proprietarioA);
+        CategoriaAsta categoriaAstaA = TestDataCategoriaAsta.createCategoriaAstaE();
+        AstaInversa astaRiferimentoA = TestDataAstaInversa.createAstaInversaA(categoriaAstaA, proprietarioA);
         Profilo profiloVenditoreCollegatoB = TestDataProfilo.createProfiloVenditoreB();
         Venditore venditoreCollegatoB = profiloVenditoreCollegatoB.getVenditore();
         OffertaInversa offertaInversaA = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegatoB, astaRiferimentoA);
 
         Profilo profiloProprietarioC = TestDataProfilo.createProfiloCompratoreC();
         Compratore proprietarioC = profiloProprietarioC.getCompratore();
-        AstaInversa astaRiferimentoB = TestDataAstaInversa.createAstaInversaB(proprietarioC);
+        CategoriaAsta categoriaAstaB = TestDataCategoriaAsta.createCategoriaAstaK();
+        AstaInversa astaRiferimentoB = TestDataAstaInversa.createAstaInversaB(categoriaAstaB, proprietarioC);
         OffertaInversa offertaInversaB = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegatoB, astaRiferimentoB);
 
-        AstaInversa astaRiferimentoC = TestDataAstaInversa.createAstaInversaC(proprietarioC);
+        AstaInversa astaRiferimentoC = TestDataAstaInversa.createAstaInversaC(categoriaAstaB, proprietarioC);
         OffertaInversa offertaInversaC = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegatoB, astaRiferimentoC);
 
         // Salvataggio oggetti nel database
@@ -96,7 +100,8 @@ class OffertaInversaRepositoryIntegrationTests {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloCompratoreB();
         Compratore proprietario = profiloProprietario.getCompratore();
-        AstaInversa astaRiferimento = TestDataAstaInversa.createAstaInversaB(proprietario);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaK();
+        AstaInversa astaRiferimento = TestDataAstaInversa.createAstaInversaB(categoriaAsta, proprietario);
         Profilo profiloVenditoreCollegato = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditoreCollegato = profiloVenditoreCollegato.getVenditore();
         OffertaInversa offertaInversa = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegato, astaRiferimento);
@@ -121,7 +126,8 @@ class OffertaInversaRepositoryIntegrationTests {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloCompratoreC();
         Compratore proprietario = profiloProprietario.getCompratore();
-        AstaInversa astaRiferimento = TestDataAstaInversa.createAstaInversaC(proprietario);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaK();
+        AstaInversa astaRiferimento = TestDataAstaInversa.createAstaInversaC(categoriaAsta, proprietario);
         Profilo profiloVenditoreCollegato = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditoreCollegato = profiloVenditoreCollegato.getVenditore();
         OffertaInversa offertaInversa = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegato, astaRiferimento);

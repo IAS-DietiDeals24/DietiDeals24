@@ -99,6 +99,7 @@ public class ProfiloServiceImpl implements ProfiloService {
         if (foundProfilo.isEmpty())
             throw new UpdateRuntimeException("Il nome \"" + nomeUtente + "\" utente non corrisponde a nessun profilo esistente!");
         else {
+
             // Recuperiamo l'entità dal wrapping Optional
             Profilo existingProfilo = foundProfilo.get();
 

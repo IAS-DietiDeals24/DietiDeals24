@@ -35,7 +35,7 @@ public abstract class Account {
     @EqualsAndHashCode.Exclude
     private Set<Notifica> notificheInviate = new HashSet<>();
 
-    @ManyToMany(mappedBy = "destinatari", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "destinatari", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     private Set<Notifica> notificheRicevute = new HashSet<>();
