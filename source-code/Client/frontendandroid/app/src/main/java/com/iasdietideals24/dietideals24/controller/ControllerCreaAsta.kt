@@ -12,7 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
@@ -26,28 +26,42 @@ import com.iasdietideals24.dietideals24.databinding.CreaastaBinding
 import com.iasdietideals24.dietideals24.model.ModelAsta
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.classes.APIController
-import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
-import com.iasdietideals24.dietideals24.utilities.classes.Logger
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAsta
-import com.iasdietideals24.dietideals24.utilities.classes.data.Asta
-import com.iasdietideals24.dietideals24.utilities.classes.toLocalDate
-import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
-import com.iasdietideals24.dietideals24.utilities.classes.toMillis
+import com.iasdietideals24.dietideals24.utilities.data.Asta
+import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToHome
+import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.kscripts.Logger
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToHome
+import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalDate
+import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
+import com.iasdietideals24.dietideals24.utilities.kscripts.toMillis
+import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
+import com.iasdietideals24.dietideals24.utilities.tools.ImageHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
 
 class ControllerCreaAsta : Controller<CreaastaBinding>() {
 
-    private lateinit var viewModel: ModelAsta
+    // ViewModel
+    private val viewModel: ModelAsta by activityViewModel()
 
+    // Repositories
+    private val astaInversaRepository: AstaInversaRepository by inject()
+    private val astaSilenziosaRepository: AstaSilenziosaRepository by inject()
+    private val astaTempoFissoRepository: AstaTempoFissoRepository by inject()
+
+    // Listeners
     private var listenerGoToHome: OnGoToHome? = null
-
     private lateinit var requestPermissions: ActivityResultLauncher<Array<String>>
     private lateinit var selectPhoto: ActivityResultLauncher<String>
 
@@ -205,8 +219,6 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity)[ModelAsta::class]
-
         requestPermissions =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results: Map<String, Boolean> ->
                 apriGalleria(results)
@@ -306,69 +318,67 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
 
     @EventHandler
     private fun clickCrea() {
-        try {
-            viewModel.validate()
+        lifecycleScope.launch {
+            try {
+                viewModel.validate()
 
-            viewModel.idCreatore.value = CurrentUser.id
+                viewModel.idCreatore.value = CurrentUser.id
 
-            val returned: Asta = creaAsta()
+                val returned: Asta = withContext(Dispatchers.IO) { creaAsta().toAsta() }
 
-            when (returned.idAsta) {
-                0L -> Snackbar.make(
-                    fragmentView,
-                    R.string.crea_astaNonCreata,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
-
-                else -> {
-                    viewModel.clear()
-
-                    Snackbar.make(
+                when (returned.idAsta) {
+                    0L -> Snackbar.make(
                         fragmentView,
-                        R.string.crea_astaCreataConSuccesso,
+                        R.string.crea_astaNonCreata,
                         Snackbar.LENGTH_SHORT
                     )
                         .setBackgroundTint(resources.getColor(R.color.blu, null))
                         .setTextColor(resources.getColor(R.color.grigio, null))
                         .show()
 
-                    Logger.log("Auction created successfully")
+                    else -> {
+                        viewModel.clear()
 
-                    listenerGoToHome?.onGoToHome()
+                        Snackbar.make(
+                            fragmentView,
+                            R.string.crea_astaCreataConSuccesso,
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .setBackgroundTint(resources.getColor(R.color.blu, null))
+                            .setTextColor(resources.getColor(R.color.grigio, null))
+                            .show()
+
+                        Logger.log("Auction created successfully")
+
+                        listenerGoToHome?.onGoToHome()
+                    }
                 }
+            } catch (_: EccezioneCampiNonCompilati) {
+                erroreCampo(
+                    R.string.registrazione_erroreCampiObbligatoriNonCompilati,
+                    binding.creaCampoDataScadenza,
+                    binding.creaCampoOra,
+                    binding.creaCampoPrezzo,
+                    binding.creaCampoNome,
+                    binding.creaCampoCategoria,
+                    binding.creaCampoDescrizione
+                )
+            } catch (_: Exception) {
+                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
             }
-        } catch (_: EccezioneCampiNonCompilati) {
-            erroreCampo(
-                R.string.registrazione_erroreCampiObbligatoriNonCompilati,
-                binding.creaCampoDataScadenza,
-                binding.creaCampoOra,
-                binding.creaCampoPrezzo,
-                binding.creaCampoNome,
-                binding.creaCampoCategoria,
-                binding.creaCampoDescrizione
-            )
         }
     }
 
-    private fun creaAsta(): Asta {
+    private suspend fun creaAsta(): AstaDto {
         return when (viewModel.tipo.value!!) {
-            TipoAsta.INVERSA -> {
-                val call = APIController.instance.creaAstaInversa(viewModel.toAstaInversa())
-                chiamaAPI(call).toAsta()
-            }
+            TipoAsta.INVERSA -> astaInversaRepository.creaAstaInversa(viewModel.toAstaInversa())
 
-            TipoAsta.TEMPO_FISSO -> {
-                val call = APIController.instance.creaAstaTempoFisso(viewModel.toAstaTempoFisso())
-                chiamaAPI(call).toAsta()
-            }
+            TipoAsta.TEMPO_FISSO -> astaTempoFissoRepository.creaAstaTempoFisso(viewModel.toAstaTempoFisso())
 
-            TipoAsta.SILENZIOSA -> {
-                val call = APIController.instance.creaAstaSilenziosa(viewModel.toAstaSilenziosa())
-                chiamaAPI(call).toAsta()
-            }
+            TipoAsta.SILENZIOSA -> astaSilenziosaRepository.creaAstaSilenziosa(viewModel.toAstaSilenziosa())
         }
     }
 

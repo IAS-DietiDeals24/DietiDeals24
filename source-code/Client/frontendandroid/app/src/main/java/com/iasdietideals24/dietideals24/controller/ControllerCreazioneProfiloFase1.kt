@@ -4,30 +4,35 @@ import android.content.Context
 import android.icu.util.Calendar
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.facebook.AccessToken
 import com.facebook.login.LoginManager
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.Creazioneprofilofase1Binding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.classes.toLocalDate
-import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
-import com.iasdietideals24.dietideals24.utilities.classes.toMillis
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneNomeUtenteUsato
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnNextStep
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep
+import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalDate
+import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
+import com.iasdietideals24.dietideals24.utilities.kscripts.toMillis
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.time.LocalDate
 
 class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>() {
 
-    private lateinit var viewModel: ModelRegistrazione
+    // ViewModel
+    private val viewModel: ModelRegistrazione by activityViewModel()
 
+    // Listeners
     private var listenerBackButton: OnBackButton? = null
     private var listenerNextStep: OnNextStep? = null
 
@@ -78,11 +83,6 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
     }
 
     @UIBuilder
-    override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity)[ModelRegistrazione::class]
-    }
-
-    @UIBuilder
     override fun impostaOsservatori() {
         val nomeUtenteObserver = Observer<String> { newNomeUtente ->
             binding.creazioneProfiloFase1NomeUtente.setText(newNomeUtente)
@@ -121,27 +121,35 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
 
     @EventHandler
     private fun clickAvanti() {
-        viewModel.nomeUtente.value = estraiTestoDaElemento(binding.creazioneProfiloFase1NomeUtente)
-        viewModel.nome.value = estraiTestoDaElemento(binding.creazioneProfiloFase1Nome)
-        viewModel.cognome.value = estraiTestoDaElemento(binding.creazioneProfiloFase1Cognome)
+        lifecycleScope.launch {
+            viewModel.nomeUtente.value =
+                estraiTestoDaElemento(binding.creazioneProfiloFase1NomeUtente)
+            viewModel.nome.value = estraiTestoDaElemento(binding.creazioneProfiloFase1Nome)
+            viewModel.cognome.value = estraiTestoDaElemento(binding.creazioneProfiloFase1Cognome)
 
-        try {
-            viewModel.validateProfile()
+            try {
+                viewModel.validateProfile()
 
-            listenerNextStep?.onNextStep(this::class)
-        } catch (_: EccezioneCampiNonCompilati) {
-            erroreCampo(
-                R.string.registrazione_erroreCampiObbligatoriNonCompilati,
-                binding.creazioneProfiloFase1CampoNomeUtente,
-                binding.creazioneProfiloFase1CampoNome,
-                binding.creazioneProfiloFase1CampoCognome,
-                binding.creazioneProfiloFase1CampoDataNascita
-            )
-        } catch (_: EccezioneNomeUtenteUsato) {
-            erroreCampo(
-                R.string.registrazione_erroreNomeUtenteGiàUsato,
-                binding.creazioneProfiloFase1CampoNomeUtente
-            )
+                listenerNextStep?.onNextStep(this::class)
+            } catch (_: EccezioneCampiNonCompilati) {
+                erroreCampo(
+                    R.string.registrazione_erroreCampiObbligatoriNonCompilati,
+                    binding.creazioneProfiloFase1CampoNomeUtente,
+                    binding.creazioneProfiloFase1CampoNome,
+                    binding.creazioneProfiloFase1CampoCognome,
+                    binding.creazioneProfiloFase1CampoDataNascita
+                )
+            } catch (_: EccezioneNomeUtenteUsato) {
+                erroreCampo(
+                    R.string.registrazione_erroreNomeUtenteGiàUsato,
+                    binding.creazioneProfiloFase1CampoNomeUtente
+                )
+            } catch (_: Exception) {
+                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+            }
         }
     }
 

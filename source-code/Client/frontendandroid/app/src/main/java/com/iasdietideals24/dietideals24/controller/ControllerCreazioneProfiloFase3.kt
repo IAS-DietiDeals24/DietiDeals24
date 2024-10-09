@@ -2,24 +2,39 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
+import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.Home
 import com.iasdietideals24.dietideals24.databinding.Creazioneprofilofase3Binding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.classes.APIController
-import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.classes.Logger
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
-import com.iasdietideals24.dietideals24.utilities.classes.data.Account
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.data.Account
+import com.iasdietideals24.dietideals24.utilities.dto.exceptional.PutProfiloDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.kscripts.Logger
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>() {
 
-    private lateinit var viewModel: ModelRegistrazione
+    // ViewModel
+    private val viewModel: ModelRegistrazione by activityViewModel()
 
+    // Services
+    private val compratoreRepository: CompratoreRepository by inject()
+    private val venditoreRepository: VenditoreRepository by inject()
+
+    // Listeners
     private var listenerBackButton: OnBackButton? = null
     private var listenerChangeActivity: OnChangeActivity? = null
 
@@ -45,11 +60,6 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
     override fun impostaEventiClick() {
         binding.creazioneProfiloFase3PulsanteIndietro.setOnClickListener { clickIndietro() }
         binding.creazioneProfiloFase3PulsanteFine.setOnClickListener { clickFine() }
-    }
-
-    @UIBuilder
-    override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity)[ModelRegistrazione::class]
     }
 
     @UIBuilder
@@ -87,29 +97,37 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
 
     @EventHandler
     private fun clickFine() {
-        val account: Account = creazioneAccount()
+        lifecycleScope.launch {
+            try {
+                val account: Account =
+                    withContext(Dispatchers.IO) { creazioneAccount().toAccount() }
 
-        if (account.email != "") {
-            Logger.log("Profile creation successful")
+                if (account.email != "") {
+                    Logger.log("Profile creation successful")
 
-            CurrentUser.id = account.email
-            listenerChangeActivity?.onChangeActivity(Home::class.java)
+                    CurrentUser.id = account.email
+                    listenerChangeActivity?.onChangeActivity(Home::class.java)
+                }
+            } catch (_: Exception) {
+                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+            }
         }
     }
 
-    private fun creazioneAccount(): Account {
+    private suspend fun creazioneAccount(): PutProfiloDto {
         return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
-            val call = APIController.instance.creazioneAccountCompratore(
+            compratoreRepository.creazioneAccountCompratore(
                 viewModel.email.value!!,
                 viewModel.toAccountCompratore()
             )
-            chiamaAPI(call).toAccount()
         } else {
-            val call = APIController.instance.creazioneAccountVenditore(
+            venditoreRepository.creazioneAccountVenditore(
                 viewModel.email.value!!,
                 viewModel.toAccountVenditore()
             )
-            chiamaAPI(call).toAccount()
         }
     }
 }

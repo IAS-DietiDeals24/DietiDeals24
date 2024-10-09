@@ -3,6 +3,7 @@ package com.iasdietideals24.dietideals24.controller
 import android.content.Context
 import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
@@ -10,19 +11,28 @@ import com.iasdietideals24.dietideals24.activities.ScelteIniziali
 import com.iasdietideals24.dietideals24.databinding.ProfiloBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.classes.APIController
-import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.classes.Logger
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
-import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaProfilo
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToCreatedAuctions
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToHelp
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToParticipation
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
+import com.iasdietideals24.dietideals24.utilities.data.AnteprimaProfilo
+import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.kscripts.Logger
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToCreatedAuctions
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToHelp
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToParticipation
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToProfile
+import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
 
 class ControllerProfilo : Controller<ProfiloBinding>() {
 
+    // Repositories
+    private val repositoryProfilo: ProfiloRepository by inject()
+
+    // Listeners
     private var listenerProfile: OnGoToProfile? = null
     private var listenerCreatedAuctions: OnGoToCreatedAuctions? = null
     private var listenerParticipation: OnGoToParticipation? = null
@@ -61,59 +71,66 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
 
     @UIBuilder
     override fun impostaMessaggiCorpo() {
-        if (CurrentUser.id != "") {
-            val result: AnteprimaProfilo = recuperaProfilo()
+        lifecycleScope.launch {
+            try {
+                if (CurrentUser.id != "") {
+                    val result: AnteprimaProfilo =
+                        withContext(Dispatchers.IO) { recuperaProfilo().toAnteprimaProfilo() }
 
-            if (result.nome != "") {
-                when (result.tipoAccount) {
-                    TipoAccount.COMPRATORE -> binding.profiloTipoAccount.text = getString(
-                        R.string.profilo_tipoAccount,
-                        getString(R.string.tipoAccount_compratore)
-                    )
+                    if (result.nome != "") {
+                        when (result.tipoAccount) {
+                            TipoAccount.COMPRATORE -> binding.profiloTipoAccount.text = getString(
+                                R.string.profilo_tipoAccount,
+                                getString(R.string.tipoAccount_compratore)
+                            )
 
-                    TipoAccount.VENDITORE -> binding.profiloTipoAccount.text = getString(
-                        R.string.profilo_tipoAccount,
-                        getString(R.string.tipoAccount_venditore)
-                    )
+                            TipoAccount.VENDITORE -> binding.profiloTipoAccount.text = getString(
+                                R.string.profilo_tipoAccount,
+                                getString(R.string.tipoAccount_venditore)
+                            )
 
-                    TipoAccount.OSPITE -> binding.profiloTipoAccount.text = getString(
-                        R.string.profilo_tipoAccount,
-                        getString(R.string.tipoAccount_ospite)
-                    )
-                }
-                binding.profiloNome.text = getString(R.string.placeholder, result.nome)
+                            TipoAccount.OSPITE -> binding.profiloTipoAccount.text = getString(
+                                R.string.profilo_tipoAccount,
+                                getString(R.string.tipoAccount_ospite)
+                            )
+                        }
+                        binding.profiloNome.text = getString(R.string.placeholder, result.nome)
 
-                if (result.immagineProfilo.isNotEmpty()) {
-                    binding.profiloImmagine.load(result.immagineProfilo) {
-                        crossfade(true)
+                        if (result.immagineProfilo.isNotEmpty()) {
+                            binding.profiloImmagine.load(result.immagineProfilo) {
+                                crossfade(true)
+                            }
+                            binding.profiloImmagine.scaleType = ImageView.ScaleType.CENTER_CROP
+                        }
                     }
-                    binding.profiloImmagine.scaleType = ImageView.ScaleType.CENTER_CROP
+                } else {
+                    binding.profiloTipoAccount.text =
+                        getString(
+                            R.string.profilo_tipoAccount,
+                            getString(R.string.tipoAccount_ospite)
+                        )
+                    binding.profiloNome.text = getString(R.string.tipoAccount_ospite)
+                    binding.profiloPulsanteUtente.isEnabled = false
+                    binding.profiloPulsanteUtente.setIconTintResource(R.color.grigioScuro)
+                    binding.profiloPulsanteAste.isEnabled = false
+                    binding.profiloPulsanteAste.setIconTintResource(R.color.grigioScuro)
+                    binding.profiloPulsanteStorico.isEnabled = false
+                    binding.profiloPulsanteStorico.setIconTintResource(R.color.grigioScuro)
+                    binding.profiloPulsanteEsci.text = getString(R.string.profilo_pulsante5O)
+                    binding.profiloPulsanteEsci.icon =
+                        ResourcesCompat.getDrawable(resources, R.drawable.icona_porta, null)
                 }
-            } else
+            } catch (e: Exception) {
                 Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                     .setBackgroundTint(resources.getColor(R.color.blu, null))
                     .setTextColor(resources.getColor(R.color.grigio, null))
                     .show()
-        } else {
-            binding.profiloTipoAccount.text =
-                getString(R.string.profilo_tipoAccount, getString(R.string.tipoAccount_ospite))
-            binding.profiloNome.text = getString(R.string.tipoAccount_ospite)
-            binding.profiloPulsanteUtente.isEnabled = false
-            binding.profiloPulsanteUtente.setIconTintResource(R.color.grigioScuro)
-            binding.profiloPulsanteAste.isEnabled = false
-            binding.profiloPulsanteAste.setIconTintResource(R.color.grigioScuro)
-            binding.profiloPulsanteStorico.isEnabled = false
-            binding.profiloPulsanteStorico.setIconTintResource(R.color.grigioScuro)
-            binding.profiloPulsanteEsci.text = getString(R.string.profilo_pulsante5O)
-            binding.profiloPulsanteEsci.icon =
-                ResourcesCompat.getDrawable(resources, R.drawable.icona_porta, null)
+            }
         }
     }
 
-    private fun recuperaProfilo(): AnteprimaProfilo {
-        val call = APIController.instance.caricaProfiloDaAccount(CurrentUser.id)
-
-        return chiamaAPI(call).toAnteprimaProfilo()
+    private suspend fun recuperaProfilo(): ProfiloDto {
+        return repositoryProfilo.caricaProfiloDaAccount(CurrentUser.id)
     }
 
     @UIBuilder

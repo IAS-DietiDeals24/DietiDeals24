@@ -8,10 +8,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.AiutoBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 
 class ControllerAiuto : Controller<AiutoBinding>() {
 
+    // Listeners
     private var listenerBackButton: OnBackButton? = null
 
     override fun onAttach(context: Context) {

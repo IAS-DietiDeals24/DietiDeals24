@@ -1,22 +1,15 @@
 package com.iasdietideals24.dietideals24.utilities.dto;
 
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAsta;
-import com.iasdietideals24.dietideals24.utilities.classes.data.Notifica;
+import com.iasdietideals24.dietideals24.utilities.data.Notifica;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto;
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
 public class NotificaDto {
 
     private Long idNotifica = 0L;
@@ -33,8 +26,31 @@ public class NotificaDto {
 
     private AstaShallowDto astaAssociataShallow = new AstaShallowDto();
 
+    public NotificaDto() {
+    }
+
     public Notifica toNotifica() {
         return new Notifica(astaAssociataShallow.getIdAsta(), TipoAsta.valueOf(astaAssociataShallow.getTipoAstaSpecifica()),
                 mittenteShallow.getEmail(), "", new byte[]{}, messaggio, dataInvio, oraInvio);
+    }
+
+    public Long getIdNotifica() {
+        return this.idNotifica;
+    }
+
+    public LocalDate getDataInvio() {
+        return this.dataInvio;
+    }
+
+    public LocalTime getOraInvio() {
+        return this.oraInvio;
+    }
+
+    public void setDataInvio(LocalDate dataInvio) {
+        this.dataInvio = dataInvio;
+    }
+
+    public void setOraInvio(LocalTime oraInvio) {
+        this.oraInvio = oraInvio;
     }
 }

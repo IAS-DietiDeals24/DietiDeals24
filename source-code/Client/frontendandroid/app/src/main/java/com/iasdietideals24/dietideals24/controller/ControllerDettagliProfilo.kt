@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.google.android.material.snackbar.Snackbar
@@ -13,24 +13,41 @@ import com.iasdietideals24.dietideals24.databinding.DettagliprofiloBinding
 import com.iasdietideals24.dietideals24.model.ModelProfilo
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.classes.APIController
-import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.classes.Logger
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
-import com.iasdietideals24.dietideals24.utilities.classes.data.Account
-import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo
-import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnEditButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnOpenUrl
+import com.iasdietideals24.dietideals24.utilities.data.Account
+import com.iasdietideals24.dietideals24.utilities.data.Profilo
+import com.iasdietideals24.dietideals24.utilities.dto.AccountDto
+import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.kscripts.Logger
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnEditButton
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnOpenUrl
+import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
+import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.time.LocalDate
 
 class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
 
+    // Navigation
     private val args: ControllerDettagliProfiloArgs by navArgs()
 
-    private lateinit var viewModel: ModelProfilo
+    // ViewModel
+    private val viewModel: ModelProfilo by activityViewModel()
 
+    // Repositories
+    private val compratoreRepository: CompratoreRepository by inject()
+    private val venditoreRepository: VenditoreRepository by inject()
+    private val profiloRepository: ProfiloRepository by inject()
+
+    // Listeners
     private var listenerBackButton: OnBackButton? = null
     private var listenerEditButton: OnEditButton? = null
     private var listenerOpenUrl: OnOpenUrl? = null
@@ -74,69 +91,66 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity)[ModelProfilo::class]
+        lifecycleScope.launch {
+            try {
+                val account: Account =
+                    withContext(Dispatchers.IO) { caricaAccount().toAccount() }
+                val profilo: Profilo =
+                    withContext(Dispatchers.IO) { caricaProfiloDaAccount().toProfilo() }
 
-        val account: Account = caricaAccount()
-        val profilo: Profilo = caricaProfiloDaAccount()
+                if (profilo.nomeUtente != "") {
+                    viewModel.tipoAccount.value = account.tipoAccount.name
+                    viewModel.nomeUtente.value = profilo.nomeUtente
+                    viewModel.immagineProfilo.value = profilo.immagineProfilo
+                    viewModel.nome.value = profilo.nome
+                    viewModel.cognome.value = profilo.cognome
+                    viewModel.email.value = account.email
+                    viewModel.dataNascita.value = profilo.dataNascita
+                    viewModel.genere.value = profilo.genere
+                    viewModel.areaGeografica.value = profilo.areaGeografica
+                    viewModel.biografia.value = profilo.biografia
+                    viewModel.linkInstagram.value = profilo.linkInstagram
+                    viewModel.linkFacebook.value = profilo.linkFacebook
+                    viewModel.linkGitHub.value = profilo.linkGitHub
+                    viewModel.linkX.value = profilo.linkX
+                    viewModel.linkPersonale.value = profilo.linkPersonale
 
-        if (profilo.nomeUtente != "") {
-            viewModel.tipoAccount.value = account.tipoAccount.name
-            viewModel.nomeUtente.value = profilo.nomeUtente
-            viewModel.immagineProfilo.value = profilo.immagineProfilo
-            viewModel.nome.value = profilo.nome
-            viewModel.cognome.value = profilo.cognome
-            viewModel.email.value = account.email
-            viewModel.dataNascita.value = profilo.dataNascita
-            viewModel.genere.value = profilo.genere
-            viewModel.areaGeografica.value = profilo.areaGeografica
-            viewModel.biografia.value = profilo.biografia
-            viewModel.linkInstagram.value = profilo.linkInstagram
-            viewModel.linkFacebook.value = profilo.linkFacebook
-            viewModel.linkGitHub.value = profilo.linkGitHub
-            viewModel.linkX.value = profilo.linkX
-            viewModel.linkPersonale.value = profilo.linkPersonale
-
-            if (CurrentUser.id != viewModel.email.value)
-                binding.dettagliProfiloPulsanteModifica.visibility = View.GONE
-        } else {
-            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
+                    if (CurrentUser.id != viewModel.email.value)
+                        binding.dettagliProfiloPulsanteModifica.visibility = View.GONE
+                }
+            } catch (_: Exception) {
+                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+            }
         }
     }
 
-    private fun caricaAccount(): Account {
+    private suspend fun caricaAccount(): AccountDto {
         return when (CurrentUser.tipoAccount) {
             TipoAccount.COMPRATORE -> {
-                val call = APIController.instance.caricaAccountCompratore(viewModel.email.value!!)
-                chiamaAPI(call).toAccount()
+                compratoreRepository.caricaAccountCompratore(viewModel.email.value!!)
             }
 
             TipoAccount.VENDITORE -> {
-                val call = APIController.instance.caricaAccountVenditore(viewModel.email.value!!)
-                chiamaAPI(call).toAccount()
+                venditoreRepository.caricaAccountVenditore(viewModel.email.value!!)
             }
 
             else -> {
-                val call1 = APIController.instance.caricaAccountVenditore(viewModel.email.value!!)
-                val returned = chiamaAPI(call1)
-                if (returned.email != "")
-                    returned.toAccount()
-                else {
-                    val call2 =
-                        APIController.instance.caricaAccountCompratore((viewModel.email.value!!))
-                    chiamaAPI(call2).toAccount()
-                }
+                val account =
+                    compratoreRepository.caricaAccountCompratore(viewModel.email.value!!)
+
+                if (account.email == "")
+                    venditoreRepository.caricaAccountVenditore(viewModel.email.value!!)
+                else
+                    account
             }
         }
     }
 
-    private fun caricaProfiloDaAccount(): Profilo {
-        val call =
-            APIController.instance.caricaProfiloDaAccount(if (args.id == "") CurrentUser.id else args.id)
-
-        return chiamaAPI(call).toProfilo()
+    private suspend fun caricaProfiloDaAccount(): ProfiloDto {
+        return profiloRepository.caricaProfiloDaAccount(if (args.id == "") CurrentUser.id else args.id)
     }
 
     @UIBuilder

@@ -1,5 +1,7 @@
 package com.iasdietideals24.dietideals24.utilities.dto;
 
+import com.iasdietideals24.dietideals24.utilities.data.AnteprimaAsta;
+import com.iasdietideals24.dietideals24.utilities.data.Asta;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto;
 
 import java.time.LocalDate;
@@ -7,14 +9,7 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
-public class AstaDto {
+abstract public class AstaDto {
     protected Long idAsta = 0L;
 
     protected String categoria = "";
@@ -41,4 +36,52 @@ public class AstaDto {
         this.immagine = immagine;
         this.notificheAssociateShallow = notificheAssociateShallow;
     }
+
+    public AstaDto() {
+    }
+
+    public abstract Asta toAsta();
+
+    public abstract AnteprimaAsta toAnteprimaAsta();
+
+    public Long getIdAsta() {
+        return this.idAsta;
+    }
+
+    public String getCategoria() {
+        return this.categoria;
+    }
+
+    public String getNome() {
+        return this.nome;
+    }
+
+    public String getDescrizione() {
+        return this.descrizione;
+    }
+
+    public byte[] getImmagine() {
+        return this.immagine;
+    }
+
+    public void setIdAsta(Long idAsta) {
+        this.idAsta = idAsta;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
+    }
+
+    public void setImmagine(byte[] immagine) {
+        this.immagine = immagine;
+    }
+
 }

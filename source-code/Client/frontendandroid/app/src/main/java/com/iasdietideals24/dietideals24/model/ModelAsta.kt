@@ -2,14 +2,27 @@ package com.iasdietideals24.dietideals24.model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
-import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.dto.AstaInversaDto
 import com.iasdietideals24.dietideals24.utilities.dto.AstaSilenziosaDto
 import com.iasdietideals24.dietideals24.utilities.dto.AstaTempoFissoDto
+import com.iasdietideals24.dietideals24.utilities.dto.OffertaDto
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
+import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.paging.OffertaInversaPagingSource
+import com.iasdietideals24.dietideals24.utilities.paging.OffertaSilenziosaPagingSource
+import com.iasdietideals24.dietideals24.utilities.paging.OffertaTempoFissoPagingSource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.merge
+import org.koin.core.parameter.parametersOf
+import org.koin.java.KoinJavaComponent.get
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
@@ -224,5 +237,58 @@ class ModelAsta : ViewModel() {
         ) {
             throw EccezioneCampiNonCompilati("Prezzo non valido")
         }
+    }
+
+    private val flowInverse = Pager(
+        PagingConfig(pageSize = 20)
+    ) {
+        creaPagingSourceInversa()
+    }.flow
+        .cachedIn(viewModelScope)
+
+    private val flowTempoFisso = Pager(
+        PagingConfig(pageSize = 20)
+    ) {
+        creaPagingSourceTempoFisso()
+    }.flow
+        .cachedIn(viewModelScope)
+
+    private val flowSilenziose = Pager(
+        PagingConfig(pageSize = 20)
+    ) {
+        creaPagingSourceSilenziosa()
+    }.flow
+        .cachedIn(viewModelScope)
+
+    private fun creaPagingSourceInversa(): OffertaInversaPagingSource {
+        return get(OffertaInversaPagingSource::class.java) { parametersOf(idAsta.value!!) }
+    }
+
+    private fun creaPagingSourceTempoFisso(): OffertaTempoFissoPagingSource {
+        return get(OffertaTempoFissoPagingSource::class.java) { parametersOf(idAsta.value!!) }
+    }
+
+    private fun creaPagingSourceSilenziosa(): OffertaSilenziosaPagingSource {
+        return get(OffertaSilenziosaPagingSource::class.java) { parametersOf(idAsta.value!!) }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun getInverseFlows(): Flow<PagingData<OffertaDto>> {
+        return flowInverse as Flow<PagingData<OffertaDto>>
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun getTempoFissoFlows(): Flow<PagingData<OffertaDto>> {
+        return flowTempoFisso as Flow<PagingData<OffertaDto>>
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun getSilenzioseFlows(): Flow<PagingData<OffertaDto>> {
+        return flowSilenziose as Flow<PagingData<OffertaDto>>
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun getFlows(): Flow<PagingData<OffertaDto>> {
+        return merge(flowInverse, flowTempoFisso, flowSilenziose) as Flow<PagingData<OffertaDto>>
     }
 }

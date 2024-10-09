@@ -1,5 +1,6 @@
 package com.iasdietideals24.dietideals24.utilities.dto;
 
+import com.iasdietideals24.dietideals24.utilities.data.Account;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.ProfiloShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.TokensAccountDto;
@@ -7,14 +8,7 @@ import com.iasdietideals24.dietideals24.utilities.dto.utilities.TokensAccountDto
 import java.util.HashSet;
 import java.util.Set;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
-public class AccountDto {
+public abstract class AccountDto {
 
     protected String email = "";
 
@@ -28,7 +22,24 @@ public class AccountDto {
 
     protected Set<NotificaShallowDto> notificheRicevuteShallow = new HashSet<>();
 
+    public AccountDto() {
+    }
+
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public abstract Account toAccount();
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

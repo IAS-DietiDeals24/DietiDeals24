@@ -2,25 +2,31 @@ package com.iasdietideals24.dietideals24.model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
-import com.iasdietideals24.dietideals24.utilities.classes.APIController
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.dto.exceptional.PutProfiloDto
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.AnagraficaProfiloDto
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.LinksProfiloDto
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.TokensAccountDto
-import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneNomeUtenteUsato
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezionePasswordNonSicura
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
-class ModelRegistrazione : ViewModel() {
+class ModelRegistrazione(
+    private val profiloRepository: ProfiloRepository,
+    private val venditoreRepository: VenditoreRepository,
+    private val compratoreRepository: CompratoreRepository
+) : ViewModel() {
 
     private val _facebookAccountID: MutableLiveData<String> by lazy {
         MutableLiveData<String>("")
@@ -255,11 +261,12 @@ class ModelRegistrazione : ViewModel() {
         if (email.value?.contains(Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) == false)
             throw EccezioneEmailNonValida("Email non valida.")
 
-        val returned = esisteEmail()
-        if (returned == null)
-            throw EccezioneAPI("Errore durante la chiamata API.")
-        else if (returned == true)
-            throw EccezioneEmailUsata("Email già usata.")
+        viewModelScope.launch {
+            val returned = withContext(Dispatchers.IO) { esisteEmail() }
+
+            if (returned)
+                throw EccezioneEmailUsata("Email già usata.")
+        }
     }
 
     @Throws(EccezioneCampiNonCompilati::class, EccezionePasswordNonSicura::class)
@@ -274,27 +281,11 @@ class ModelRegistrazione : ViewModel() {
             throw EccezionePasswordNonSicura("Password non sicura.")
     }
 
-    private fun esisteEmail(): Boolean? {
-        var returned: Boolean? = null
-
-        val call = if (tipoAccount.value == TipoAccount.COMPRATORE)
-            APIController.instance.esisteEmailCompratore(email.value!!)
+    private suspend fun esisteEmail(): Boolean {
+        return if (tipoAccount.value == TipoAccount.COMPRATORE)
+            compratoreRepository.esisteEmailCompratore(email.value!!)
         else
-            APIController.instance.esisteEmailVenditore(email.value!!)
-
-        call.enqueue(object : Callback<Boolean> {
-            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
-                if (response.isSuccessful) {
-                    returned = response.body()
-                }
-            }
-
-            override fun onFailure(call: Call<Boolean>, t: Throwable) {
-                throw t
-            }
-        })
-
-        return returned
+            venditoreRepository.esisteEmailVenditore(email.value!!)
     }
 
     @Validation
@@ -303,32 +294,16 @@ class ModelRegistrazione : ViewModel() {
         if (nomeUtente.value?.isEmpty() == true)
             throw EccezioneCampiNonCompilati("Nome utente non compilato.")
 
-        val returned = esisteNomeUtente()
-        if (returned == null)
-            throw EccezioneAPI("Errore durante la chiamata API.")
-        else if (returned == true)
-            throw EccezioneNomeUtenteUsato("Nome utente già usato.")
+        viewModelScope.launch {
+            val returned = withContext(Dispatchers.IO) { esisteNomeUtente() }
+
+            if (returned)
+                throw EccezioneNomeUtenteUsato("Nome utente già usato.")
+        }
     }
 
-    private fun esisteNomeUtente(): Boolean? {
-        var returned: Boolean? = null
-
-        val call =
-            APIController.instance.esisteNomeUtente(nomeUtente.value!!)
-
-        call.enqueue(object : Callback<Boolean> {
-            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
-                if (response.isSuccessful) {
-                    returned = response.body()
-                }
-            }
-
-            override fun onFailure(call: Call<Boolean>, t: Throwable) {
-                throw t
-            }
-        })
-
-        return returned
+    private suspend fun esisteNomeUtente(): Boolean {
+        return profiloRepository.esisteNomeUtente(nomeUtente.value!!)
     }
 
     @Validation

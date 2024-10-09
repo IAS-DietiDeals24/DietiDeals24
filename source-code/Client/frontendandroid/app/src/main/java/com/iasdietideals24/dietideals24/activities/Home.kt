@@ -28,30 +28,42 @@ import com.iasdietideals24.dietideals24.controller.ControllerPartecipazioniDirec
 import com.iasdietideals24.dietideals24.controller.ControllerProfilo
 import com.iasdietideals24.dietideals24.controller.ControllerProfiloDirections
 import com.iasdietideals24.dietideals24.databinding.ActivityHomeBinding
-import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAsta
-import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderAnteprimaAsta
-import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderAstaCreata
-import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderNotifica
-import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderOfferta
-import com.iasdietideals24.dietideals24.utilities.classes.viewHolders.ViewHolderPartecipazione
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnEditButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToBids
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToCreatedAuctions
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToHelp
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToHome
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToParticipation
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnOpenUrl
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnRefresh
+import com.iasdietideals24.dietideals24.model.ModelAsta
+import com.iasdietideals24.dietideals24.model.ModelAsteCreate
+import com.iasdietideals24.dietideals24.model.ModelHome
+import com.iasdietideals24.dietideals24.model.ModelNotifiche
+import com.iasdietideals24.dietideals24.model.ModelProfilo
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
+import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnEditButton
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToBids
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToCreatedAuctions
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToDetails
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToHelp
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToHome
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToParticipation
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToProfile
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnOpenUrl
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnRefresh
+import com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderAnteprimaAsta
+import com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderAstaCreata
+import com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderNotifica
+import com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderOfferta
+import com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderPartecipazione
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.reflect.KClass
 
 class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToProfile, OnEditButton,
     OnGoToBids, OnRefresh, OnOpenUrl, OnGoToDetails, OnGoToParticipation, OnChangeActivity,
     OnGoToHome, OnGoToCreatedAuctions, OnGoToHelp {
+
+    private val viewModelAsta by viewModel<ModelAsta>()
+    private val viewModelProfilo by viewModel<ModelProfilo>()
+    private val viewModelAsteCreate by viewModel<ModelAsteCreate>()
+    private val viewModelHome by viewModel<ModelHome>()
+    private val viewModelNotifiche by viewModel<ModelNotifiche>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,14 +105,14 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
         when (sender) {
             ViewHolderAnteprimaAsta::class -> {
                 val action =
-                    ControllerHomeDirections.actionControllerHomeToControllerDettagliAsta(id, tipo)
+                    ControllerHomeDirections.actionControllerHomeToControllerDettagliAsta(tipo, id)
                 navController.navigate(action)
             }
 
             ViewHolderNotifica::class -> {
                 val action =
                     ControllerNotificheDirections.actionControllerNotificheToControllerDettagliAsta(
-                        id, tipo
+                        tipo, id
                     )
                 navController.navigate(action)
             }
@@ -108,7 +120,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
             ControllerModificaAsta::class -> {
                 val action =
                     ControllerModificaAstaDirections.actionControllerModificaAstaToControllerDettagliAsta(
-                        id, tipo
+                        tipo, id
                     )
                 navController.navigate(action)
             }
@@ -116,7 +128,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
             ViewHolderPartecipazione::class -> {
                 val action =
                     ControllerPartecipazioniDirections.actionControllerPartecipazioniToControllerDettagliAsta(
-                        id, tipo
+                        tipo, id
                     )
                 navController.navigate(action)
             }
@@ -124,7 +136,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
             ViewHolderAstaCreata::class -> {
                 val action =
                     ControllerAsteCreateDirections.actionControllerAsteCreateToControllerDettagliAsta(
-                        id, tipo
+                        tipo, id
                     )
                 navController.navigate(action)
             }
@@ -224,7 +236,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
             ControllerDettagliAsta::class -> {
                 val action =
                     ControllerDettagliAstaDirections.actionControllerDettagliAstaToControllerOfferte(
-                        id, tipo
+                        tipo, id
                     )
                 navController.navigate(action)
             }
@@ -232,28 +244,28 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
             ViewHolderAstaCreata::class -> {
                 val action =
                     ControllerAsteCreateDirections.actionControllerAsteCreateToControllerOfferte(
-                        id, tipo
+                        tipo, id
                     )
                 navController.navigate(action)
             }
         }
     }
 
-    override fun onRefresh(id: Long, sender: KClass<*>) {
+    override fun onRefresh(id: Long, tipo: TipoAsta, sender: KClass<*>) {
         val navController = getNavController()
 
         when (sender) {
             ControllerDettagliAsta::class -> {
                 navController.popBackStack()
                 val action =
-                    ControllerDettagliAstaDirections.actionControllerDettagliAstaSelf(id)
+                    ControllerDettagliAstaDirections.actionControllerDettagliAstaSelf(tipo, id)
                 navController.navigate(action)
             }
 
             ViewHolderOfferta::class -> {
                 navController.popBackStack()
                 val action =
-                    ControllerOfferteDirections.actionControllerOfferteSelf(id)
+                    ControllerOfferteDirections.actionControllerOfferteSelf(tipo, id)
                 navController.navigate(action)
             }
 

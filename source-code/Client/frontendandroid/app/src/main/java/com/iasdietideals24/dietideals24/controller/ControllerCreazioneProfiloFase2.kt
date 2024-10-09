@@ -9,7 +9,6 @@ import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import coil.load
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
@@ -17,17 +16,20 @@ import com.iasdietideals24.dietideals24.databinding.Creazioneprofilofase2Binding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnNextStep
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep
+import com.iasdietideals24.dietideals24.utilities.tools.ImageHandler
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class ControllerCreazioneProfiloFase2 : Controller<Creazioneprofilofase2Binding>() {
 
-    private lateinit var viewModel: ModelRegistrazione
+    // ViewModel
+    private val viewModel: ModelRegistrazione by activityViewModel()
 
     private lateinit var requestPermissions: ActivityResultLauncher<Array<String>>
     private lateinit var selectPhoto: ActivityResultLauncher<String>
 
+    // Listeners
     private var listenerBackButton: OnBackButton? = null
     private var listenerNextStep: OnNextStep? = null
 
@@ -58,8 +60,6 @@ class ControllerCreazioneProfiloFase2 : Controller<Creazioneprofilofase2Binding>
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity)[ModelRegistrazione::class]
-
         requestPermissions =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results: Map<String, Boolean> ->
                 apriGalleria(results)

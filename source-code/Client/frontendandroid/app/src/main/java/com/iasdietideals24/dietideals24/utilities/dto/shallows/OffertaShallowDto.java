@@ -1,12 +1,5 @@
 package com.iasdietideals24.dietideals24.utilities.dto.shallows;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
 public class OffertaShallowDto {
 
     private Long idOfferta = 0L;
@@ -14,4 +7,12 @@ public class OffertaShallowDto {
     private String tipoOffertaPerAccount = "";
 
     private String tipoOffertaSpecifica = "";
+
+    public Long getIdOfferta() {
+        return this.idOfferta;
+    }
+
+    public void setIdOfferta(Long idOfferta) {
+        this.idOfferta = idOfferta;
+    }
 }

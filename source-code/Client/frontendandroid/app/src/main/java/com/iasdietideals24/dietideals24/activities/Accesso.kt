@@ -6,15 +6,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModelProvider
 import com.iasdietideals24.dietideals24.databinding.ActivityAccessoBinding
 import com.iasdietideals24.dietideals24.model.ModelAccesso
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class Accesso : DietiDeals24Activity<ActivityAccessoBinding>(), OnChangeActivity, OnBackButton {
 
-    private lateinit var viewModel: ModelAccesso
+    private val viewModel by viewModel<ModelAccesso>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,8 +24,6 @@ class Accesso : DietiDeals24Activity<ActivityAccessoBinding>(), OnChangeActivity
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        viewModel = ViewModelProvider(this)[ModelAccesso::class]
     }
 
     override fun <Activity : AppCompatActivity> onChangeActivity(activity: Class<Activity>) {

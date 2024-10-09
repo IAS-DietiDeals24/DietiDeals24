@@ -1,12 +1,5 @@
 package com.iasdietideals24.dietideals24.utilities.dto.shallows;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
 public class AstaShallowDto {
 
     private Long idAsta = 0L;
@@ -19,5 +12,20 @@ public class AstaShallowDto {
         this.idAsta = idAsta;
         this.tipoAstaPerAccount = tipoAstaPerAccount;
         this.tipoAstaSpecifica = tipoAstaSpecifica;
+    }
+
+    public AstaShallowDto() {
+    }
+
+    public Long getIdAsta() {
+        return this.idAsta;
+    }
+
+    public String getTipoAstaSpecifica() {
+        return this.tipoAstaSpecifica;
+    }
+
+    public void setIdAsta(Long idAsta) {
+        this.idAsta = idAsta;
     }
 }

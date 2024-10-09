@@ -1,7 +1,6 @@
 package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,30 +8,35 @@ import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.OfferteBinding
 import com.iasdietideals24.dietideals24.model.ModelAsta
+import com.iasdietideals24.dietideals24.utilities.adapters.AdapterOfferte
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.classes.APIController
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAsta
-import com.iasdietideals24.dietideals24.utilities.classes.adapters.AdapterOfferte
-import com.iasdietideals24.dietideals24.utilities.classes.data.OffertaRicevuta
-import com.iasdietideals24.dietideals24.utilities.classes.toArrayOfOffertaRicevuta
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
-import kotlinx.coroutines.Dispatchers
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToDetails
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import org.koin.core.parameter.parametersOf
 
 class ControllerOfferte : Controller<OfferteBinding>() {
 
+    // Navigation
     private val args: ControllerOfferteArgs by navArgs()
-    private lateinit var viewModel: ModelAsta
 
-    private var mainDispatcher = Dispatchers.Main
-    private var ioDispatcher = Dispatchers.IO
+    // ViewModel
+    private val viewModel: ModelAsta by activityViewModel()
+
+    // PagingAdapters
+    private val adapterOfferte: AdapterOfferte by inject { parametersOf(resources) }
+
     private var jobOfferte: Job? = null
 
+    // Listeners
     private var listenerDetails: OnGoToDetails? = null
 
     override fun onAttach(context: Context) {
@@ -81,45 +85,36 @@ class ControllerOfferte : Controller<OfferteBinding>() {
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity)[ModelAsta::class]
-
         binding.offerteRecyclerView.layoutManager = LinearLayoutManager(fragmentContext)
     }
 
     private suspend fun aggiornaOfferte() {
-        val result: Array<OffertaRicevuta> = withContext(ioDispatcher) {
-            when (viewModel.tipo.value!!) {
-                TipoAsta.TEMPO_FISSO -> {
-                    val call =
-                        APIController.instance.recuperaOfferteTempoFisso(if (args.id == 0L) viewModel.idAsta.value!! else args.id)
-
-                    chiamaAPI(call).toArrayOfOffertaRicevuta()
+        when (viewModel.tipo.value!!) {
+            TipoAsta.TEMPO_FISSO -> {
+                viewModel.getTempoFissoFlows().collectLatest { pagingData ->
+                    adapterOfferte.submitData(pagingData)
                 }
+            }
 
-                TipoAsta.SILENZIOSA -> {
-                    val call =
-                        APIController.instance.recuperaOfferteSilenziose(if (args.id == 0L) viewModel.idAsta.value!! else args.id)
-
-                    chiamaAPI(call).toArrayOfOffertaRicevuta()
+            TipoAsta.SILENZIOSA -> {
+                viewModel.getSilenzioseFlows().collectLatest { pagingData ->
+                    adapterOfferte.submitData(pagingData)
                 }
+            }
 
-                TipoAsta.INVERSA -> {
-                    val call =
-                        APIController.instance.recuperaOfferteInverse(if (args.id == 0L) viewModel.idAsta.value!! else args.id)
-
-                    chiamaAPI(call).toArrayOfOffertaRicevuta()
+            TipoAsta.INVERSA -> {
+                viewModel.getInverseFlows().collectLatest { pagingData ->
+                    adapterOfferte.submitData(pagingData)
                 }
             }
         }
 
-        withContext(mainDispatcher) {
-            if (result.isNotEmpty())
-                binding.offerteRecyclerView.adapter = AdapterOfferte(result, resources)
-            else
-                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
-        }
+        if (viewModel.getFlows().count() != 0)
+            binding.offerteRecyclerView.adapter = adapterOfferte
+        else
+            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.blu, null))
+                .setTextColor(resources.getColor(R.color.grigio, null))
+                .show()
     }
 }

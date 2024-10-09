@@ -1,18 +1,11 @@
 package com.iasdietideals24.dietideals24.utilities.dto.exceptional;
 
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount;
-import com.iasdietideals24.dietideals24.utilities.classes.data.Account;
+import com.iasdietideals24.dietideals24.utilities.data.Account;
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.AnagraficaProfiloDto;
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.LinksProfiloDto;
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.TokensAccountDto;
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
 public class PutProfiloDto {
 
     private String nomeUtente = "";
@@ -42,8 +35,42 @@ public class PutProfiloDto {
         this.tipoAccount = tipoAccount;
     }
 
+    public PutProfiloDto() {
+    }
+
     public Account toAccount() {
         return new Account(tokens.getIdFacebook(), email, password, TipoAccount.valueOf(tipoAccount));
     }
 
+    public String getNomeUtente() {
+        return this.nomeUtente;
+    }
+
+    public void setNomeUtente(String nomeUtente) {
+        this.nomeUtente = nomeUtente;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getTipoAccount() {
+        return this.tipoAccount;
+    }
+
+    public void setTipoAccount(String tipoAccount) {
+        this.tipoAccount = tipoAccount;
+    }
 }

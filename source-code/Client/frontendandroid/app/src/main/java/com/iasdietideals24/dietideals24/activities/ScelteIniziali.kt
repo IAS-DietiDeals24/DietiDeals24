@@ -16,10 +16,10 @@ import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.controller.ControllerSelezioneTipoAccount
 import com.iasdietideals24.dietideals24.controller.ControllerSelezioneTipoAccountDirections
 import com.iasdietideals24.dietideals24.databinding.ActivityScelteInizialiBinding
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnHideBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnNextStep
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnShowBackButton
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnHideBackButton
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnShowBackButton
 import kotlin.reflect.KClass
 
 

@@ -3,7 +3,7 @@ package com.iasdietideals24.dietideals24.controller
 import android.content.Context
 import android.os.Bundle
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.facebook.AccessToken
 import com.facebook.CallbackManager.Factory.create
 import com.facebook.FacebookCallback
@@ -18,31 +18,41 @@ import com.iasdietideals24.dietideals24.databinding.RegistrazioneBinding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.classes.APIController
-import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.classes.Logger
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
-import com.iasdietideals24.dietideals24.utilities.classes.data.Account
-import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAPI
+import com.iasdietideals24.dietideals24.utilities.data.Account
+import com.iasdietideals24.dietideals24.utilities.dto.AccountDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezionePasswordNonSicura
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnNextStep
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnSkipStep
-import kotlinx.coroutines.runBlocking
+import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.kscripts.Logger
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnSkipStep
+import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.apache.commons.text.RandomStringGenerator
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
 
-    private lateinit var viewModel: ModelRegistrazione
+    // ViewModel
+    private val viewModel: ModelRegistrazione by activityViewModel()
 
-    private var facebookCallbackManager = create()
+    // Repositories
+    private val compratoreRepository: CompratoreRepository by inject()
+    private val venditoreRepository: VenditoreRepository by inject()
 
+    // Listeners
+    private val facebookCallbackManager = create()
     private var listenerBackButton: OnBackButton? = null
     private var listenerChangeActivity: OnChangeActivity? = null
     private var listenerNextStep: OnNextStep? = null
@@ -76,8 +86,8 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
 
     @UIBuilder
     override fun impostaMessaggiCorpo() {
-        when (runBlocking { caricaPreferenzaStringa("tipoAccount") }) {
-            "compratore" -> {
+        when (CurrentUser.tipoAccount) {
+            TipoAccount.COMPRATORE -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_compratore)
                 binding.registrazioneTipoAccount.text = getString(
                     R.string.placeholder,
@@ -85,12 +95,16 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
                 )
             }
 
-            "venditore" -> {
+            TipoAccount.VENDITORE -> {
                 val stringaTipoAccount = getString(R.string.tipoAccount_venditore)
                 binding.registrazioneTipoAccount.text = getString(
                     R.string.placeholder,
                     stringaTipoAccount
                 )
+            }
+
+            else -> {
+                // Non fare nulla
             }
         }
     }
@@ -119,41 +133,46 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
                         .setTextColor(resources.getColor(R.color.grigio, null))
                         .show()
 
-                    val returned: Account = accountFacebook(result.accessToken.userId)
-
-                    when (returned.email) {
-                        "" -> { // non esiste un account associato a questo account Facebook con questo tipo, registrati
-                            queryFacebookGraph(result.accessToken)
-
-                            try {
-                                scegliAssociaCreaProfilo()
-                            } catch (_: EccezioneAPI) {
-                                Snackbar.make(
-                                    fragmentView,
-                                    R.string.apiError,
-                                    Snackbar.LENGTH_SHORT
-                                )
-                                    .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                                    .setTextColor(resources.getColor(R.color.grigio, null))
-                                    .show()
-
-                                Logger.log("Facebook sign-up successful")
-
-                                viewModel.clear()
-                                LoginManager.getInstance().logOut()
+                    lifecycleScope.launch {
+                        try {
+                            val returned: Account = withContext(Dispatchers.IO) {
+                                accountFacebook(result.accessToken.userId).toAccount()
                             }
-                        }
 
-                        else -> { // esiste un account associato a questo account Facebook con questo tipo
-                            Snackbar.make(
-                                fragmentView,
-                                R.string.registrazione_accountFacebookGiàCollegato,
-                                Snackbar.LENGTH_SHORT
-                            )
-                                .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                            when (returned.email) {
+                                "" -> { // non esiste un account associato a questo account Facebook con questo tipo, registrati
+                                    queryFacebookGraph(result.accessToken)
+
+                                    scegliAssociaCreaProfilo()
+
+                                    Logger.log("Facebook sign-up successful")
+                                }
+
+                                else -> { // esiste un account associato a questo account Facebook con questo tipo
+                                    Snackbar.make(
+                                        fragmentView,
+                                        R.string.registrazione_accountFacebookGiàCollegato,
+                                        Snackbar.LENGTH_SHORT
+                                    )
+                                        .setBackgroundTint(
+                                            resources.getColor(
+                                                R.color.arancione,
+                                                null
+                                            )
+                                        )
+                                        .setTextColor(resources.getColor(R.color.grigio, null))
+                                        .show()
+
+                                    LoginManager.getInstance().logOut()
+                                }
+                            }
+                        } catch (_: Exception) {
+                            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                                .setBackgroundTint(resources.getColor(R.color.blu, null))
                                 .setTextColor(resources.getColor(R.color.grigio, null))
                                 .show()
 
+                            viewModel.clear()
                             LoginManager.getInstance().logOut()
                         }
                     }
@@ -176,15 +195,11 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
             })
     }
 
-    private fun accountFacebook(facebookId: String): Account {
+    private suspend fun accountFacebook(facebookId: String): AccountDto {
         return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
-            val call = APIController.instance.accountFacebookCompratore(facebookId)
-
-            chiamaAPI(call).toAccount()
+            compratoreRepository.accountFacebookCompratore(facebookId)
         } else {
-            val call = APIController.instance.accountFacebookVenditore(facebookId)
-
-            chiamaAPI(call).toAccount()
+            venditoreRepository.accountFacebookVenditore(facebookId)
         }
     }
 
@@ -199,11 +214,6 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
             rimuoviErroreCampo(binding.registrazioneCampoEmail)
             rimuoviErroreCampo(binding.registrazioneCampoPassword)
         }
-    }
-
-    @UIBuilder
-    override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity)[ModelRegistrazione::class]
     }
 
     @EventHandler
@@ -228,35 +238,43 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
         viewModel.password.value = estraiTestoDaElemento(binding.registrazionePassword)
         viewModel.tipoAccount.value = CurrentUser.tipoAccount
 
-        try {
-            viewModel.validateAccount()
+        lifecycleScope.launch {
+            try {
+                viewModel.validateAccount()
 
-            scegliAssociaCreaProfilo()
-        } catch (_: EccezioneCampiNonCompilati) {
-            erroreCampo(
-                R.string.registrazione_erroreCampiObbligatoriNonCompilati,
-                binding.registrazioneCampoEmail,
-                binding.registrazioneCampoPassword
-            )
-        } catch (_: EccezioneEmailNonValida) {
-            erroreCampo(R.string.registrazione_erroreFormatoEmail, binding.registrazioneCampoEmail)
-        } catch (_: EccezioneEmailUsata) {
-            erroreCampo(R.string.registrazione_erroreEmailGiàUsata, binding.registrazioneCampoEmail)
-        } catch (_: EccezionePasswordNonSicura) {
-            erroreCampo(
-                R.string.registrazione_errorePasswordNonSicura,
-                binding.registrazioneCampoPassword
-            )
-        } catch (_: EccezioneAPI) {
-            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
+                scegliAssociaCreaProfilo()
+            } catch (_: EccezioneCampiNonCompilati) {
+                erroreCampo(
+                    R.string.registrazione_erroreCampiObbligatoriNonCompilati,
+                    binding.registrazioneCampoEmail,
+                    binding.registrazioneCampoPassword
+                )
+            } catch (_: EccezioneEmailNonValida) {
+                erroreCampo(
+                    R.string.registrazione_erroreFormatoEmail,
+                    binding.registrazioneCampoEmail
+                )
+            } catch (_: EccezioneEmailUsata) {
+                erroreCampo(
+                    R.string.registrazione_erroreEmailGiàUsata,
+                    binding.registrazioneCampoEmail
+                )
+            } catch (_: EccezionePasswordNonSicura) {
+                erroreCampo(
+                    R.string.registrazione_errorePasswordNonSicura,
+                    binding.registrazioneCampoPassword
+                )
+            } catch (_: Exception) {
+                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+            }
         }
     }
 
-    private fun scegliAssociaCreaProfilo() {
-        val returned: Account = associaCreaProfilo()
+    private suspend fun scegliAssociaCreaProfilo() {
+        val returned = withContext(Dispatchers.IO) { associaCreaProfilo().toAccount() }
 
         Logger.log("Sign-up successful")
 
@@ -269,15 +287,11 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
         }
     }
 
-    private fun associaCreaProfilo(): Account {
+    private suspend fun associaCreaProfilo(): AccountDto {
         return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
-            val call = APIController.instance.associaCreaProfiloCompratore(viewModel.email.value!!)
-
-            chiamaAPI(call).toAccount()
+            compratoreRepository.associaCreaProfiloCompratore(viewModel.email.value!!)
         } else {
-            val call = APIController.instance.associaCreaProfiloVenditore(viewModel.email.value!!)
-
-            chiamaAPI(call).toAccount()
+            venditoreRepository.associaCreaProfiloVenditore(viewModel.email.value!!)
         }
     }
 

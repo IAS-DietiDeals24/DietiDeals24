@@ -11,7 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.google.android.material.datepicker.CalendarConstraints
@@ -26,28 +26,46 @@ import com.iasdietideals24.dietideals24.databinding.ModificaastaBinding
 import com.iasdietideals24.dietideals24.model.ModelAsta
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.classes.APIController
-import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
-import com.iasdietideals24.dietideals24.utilities.classes.Logger
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAsta
-import com.iasdietideals24.dietideals24.utilities.classes.data.Asta
-import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo
-import com.iasdietideals24.dietideals24.utilities.classes.toLocalDate
-import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
-import com.iasdietideals24.dietideals24.utilities.classes.toMillis
+import com.iasdietideals24.dietideals24.utilities.data.Asta
+import com.iasdietideals24.dietideals24.utilities.data.Profilo
+import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
+import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToDetails
+import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.kscripts.Logger
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToDetails
+import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalDate
+import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
+import com.iasdietideals24.dietideals24.utilities.kscripts.toMillis
+import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
 
 class ControllerModificaAsta : Controller<ModificaastaBinding>() {
 
+    // Navigation
     private val args: ControllerModificaAstaArgs by navArgs()
 
-    private lateinit var viewModel: ModelAsta
+    // Repositories
+    private val repositoryAstaInversa: AstaInversaRepository by inject()
+    private val repositoryAstaSilenziosa: AstaSilenziosaRepository by inject()
+    private val repositoryAstaTempoFisso: AstaTempoFissoRepository by inject()
+    private val repositoryProfilo: ProfiloRepository by inject()
 
+    // ViewModel
+    private val viewModel: ModelAsta by activityViewModel()
+
+    // Listeners
     private var listenerDetails: OnGoToDetails? = null
 
     private lateinit var requestPermissions: ActivityResultLauncher<Array<String>>
@@ -155,60 +173,61 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity)[ModelAsta::class]
-
-        if (args.id != 0L) {
-            val asta: Asta = caricaAsta()
-            val creatoreAsta: Profilo = caricaProfilo(asta.idCreatore)
-
-            if (asta.idAsta != 0L && creatoreAsta.nomeUtente != "") {
-                viewModel.idAsta.value = asta.idAsta
-                viewModel.idCreatore.value = asta.idCreatore
-                viewModel.nomeCreatore.value = creatoreAsta.nome
-                viewModel.tipo.value = asta.tipo
-                viewModel.dataFine.value = asta.dataFine
-                viewModel.oraFine.value = asta.oraFine
-                viewModel.prezzo.value = asta.prezzo
-                viewModel.immagine.value = asta.immagine
-                viewModel.nome.value = asta.nome
-                viewModel.categoria.value = asta.categoria
-                viewModel.descrizione.value = asta.descrizione
-            }
-        }
-
         requestPermissions =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results: Map<String, Boolean> ->
                 apriGalleria(results)
             }
 
         selectPhoto = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            viewModel.immagine.value = ImageHandler.encodeImage(uri, fragmentContext)
+            viewModel.immagine.value =
+                com.iasdietideals24.dietideals24.utilities.tools.ImageHandler.encodeImage(
+                    uri,
+                    fragmentContext
+                )
+        }
+
+        if (args.id != 0L) {
+            lifecycleScope.launch {
+                try {
+                    val asta: Asta = withContext(Dispatchers.IO) { caricaAsta().toAsta() }
+                    val creatoreAsta: Profilo =
+                        withContext(Dispatchers.IO) { caricaProfilo(asta.idCreatore).toProfilo() }
+
+                    if (asta.idAsta != 0L && creatoreAsta.nomeUtente != "") {
+                        viewModel.idAsta.value = asta.idAsta
+                        viewModel.idCreatore.value = asta.idCreatore
+                        viewModel.nomeCreatore.value = creatoreAsta.nome
+                        viewModel.tipo.value = asta.tipo
+                        viewModel.dataFine.value = asta.dataFine
+                        viewModel.oraFine.value = asta.oraFine
+                        viewModel.prezzo.value = asta.prezzo
+                        viewModel.immagine.value = asta.immagine
+                        viewModel.nome.value = asta.nome
+                        viewModel.categoria.value = asta.categoria
+                        viewModel.descrizione.value = asta.descrizione
+                    }
+                } catch (e: Exception) {
+                    Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                        .setBackgroundTint(resources.getColor(R.color.blu, null))
+                        .setTextColor(resources.getColor(R.color.grigio, null))
+                        .show()
+                }
+            }
         }
     }
 
-    private fun caricaAsta(): Asta {
+    private suspend fun caricaAsta(): AstaDto {
         return when (viewModel.tipo.value!!) {
-            TipoAsta.INVERSA -> {
-                val call = APIController.instance.caricaAstaInversa(args.id)
-                chiamaAPI(call).toAsta()
-            }
+            TipoAsta.INVERSA -> repositoryAstaInversa.caricaAstaInversa(args.id)
 
-            TipoAsta.SILENZIOSA -> {
-                val call = APIController.instance.caricaAstaSilenziosa(args.id)
-                chiamaAPI(call).toAsta()
-            }
+            TipoAsta.SILENZIOSA -> repositoryAstaSilenziosa.caricaAstaSilenziosa(args.id)
 
-            TipoAsta.TEMPO_FISSO -> {
-                val call = APIController.instance.caricaAstaTempoFisso(args.id)
-                chiamaAPI(call).toAsta()
-            }
+            TipoAsta.TEMPO_FISSO -> repositoryAstaTempoFisso.caricaAstaTempoFisso(args.id)
         }
     }
 
-    private fun caricaProfilo(idCreatore: String): Profilo {
-        val call = APIController.instance.caricaProfiloDaAccount(idCreatore)
-
-        return chiamaAPI(call).toProfilo()
+    private suspend fun caricaProfilo(idCreatore: String): ProfiloDto {
+        return repositoryProfilo.caricaProfiloDaAccount(idCreatore)
     }
 
     private fun apriGalleria(results: Map<String, Boolean>) {
@@ -309,79 +328,84 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
 
     @EventHandler
     private fun clickModifica() {
-        try {
-            viewModel.validate()
+        lifecycleScope.launch {
+            try {
+                viewModel.validate()
 
-            viewModel.idCreatore.value = CurrentUser.id
+                viewModel.idCreatore.value = CurrentUser.id
 
-            val returned: Asta = aggiornaAsta()
+                val returned: Asta = withContext(Dispatchers.IO) { aggiornaAsta().toAsta() }
 
-            when (returned.idAsta) {
-                0L -> Snackbar.make(
-                    fragmentView,
-                    R.string.crea_astaNonModificata,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
-
-                else -> {
-                    viewModel.clear()
-
-                    Snackbar.make(
+                when (returned.idAsta) {
+                    0L -> Snackbar.make(
                         fragmentView,
-                        R.string.crea_astaModificataConSuccesso,
+                        R.string.crea_astaNonModificata,
                         Snackbar.LENGTH_SHORT
                     )
                         .setBackgroundTint(resources.getColor(R.color.blu, null))
                         .setTextColor(resources.getColor(R.color.grigio, null))
                         .show()
 
-                    Logger.log("Auction created successfully")
+                    else -> {
+                        viewModel.clear()
 
-                    listenerDetails?.onGoToDetails(
-                        viewModel.idAsta.value!!,
-                        viewModel.tipo.value!!,
-                        this::class
-                    )
+                        Snackbar.make(
+                            fragmentView,
+                            R.string.crea_astaModificataConSuccesso,
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .setBackgroundTint(resources.getColor(R.color.blu, null))
+                            .setTextColor(resources.getColor(R.color.grigio, null))
+                            .show()
+
+                        Logger.log("Auction created successfully")
+
+                        listenerDetails?.onGoToDetails(
+                            viewModel.idAsta.value!!,
+                            viewModel.tipo.value!!,
+                            this::class
+                        )
+                    }
                 }
+            } catch (_: EccezioneCampiNonCompilati) {
+                erroreCampo(
+                    R.string.registrazione_erroreCampiObbligatoriNonCompilati,
+                    binding.modificaCampoDataScadenza,
+                    binding.modificaCampoOra,
+                    binding.modificaCampoNome,
+                    binding.modificaCampoCategoria,
+                    binding.modificaCampoDescrizione
+                )
+            } catch (e: Exception) {
+                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
             }
-        } catch (_: EccezioneCampiNonCompilati) {
-            erroreCampo(
-                R.string.registrazione_erroreCampiObbligatoriNonCompilati,
-                binding.modificaCampoDataScadenza,
-                binding.modificaCampoOra,
-                binding.modificaCampoNome,
-                binding.modificaCampoCategoria,
-                binding.modificaCampoDescrizione
-            )
         }
-
     }
 
-    private fun aggiornaAsta(): Asta {
+    private suspend fun aggiornaAsta(): AstaDto {
         return when (viewModel.tipo.value!!) {
             TipoAsta.INVERSA -> {
-                val call =
-                    APIController.instance.aggiornaAstaInversa(viewModel.toAstaInversa(), args.id)
-                chiamaAPI(call).toAsta()
+                repositoryAstaInversa.aggiornaAstaInversa(
+                    viewModel.toAstaInversa(),
+                    args.id
+                )
             }
 
             TipoAsta.TEMPO_FISSO -> {
-                val call = APIController.instance.aggiornaAstaTempoFisso(
+                repositoryAstaTempoFisso.aggiornaAstaTempoFisso(
                     viewModel.toAstaTempoFisso(),
                     args.id
                 )
-                chiamaAPI(call).toAsta()
             }
 
             TipoAsta.SILENZIOSA -> {
-                val call = APIController.instance.aggiornaAstaSilenziosa(
+                repositoryAstaSilenziosa.aggiornaAstaSilenziosa(
                     viewModel.toAstaSilenziosa(),
                     args.id
                 )
-                chiamaAPI(call).toAsta()
             }
         }
     }

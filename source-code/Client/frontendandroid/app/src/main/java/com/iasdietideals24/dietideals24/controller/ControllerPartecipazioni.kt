@@ -1,22 +1,33 @@
 package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.PartecipazioniBinding
+import com.iasdietideals24.dietideals24.model.ModelPartecipazioni
+import com.iasdietideals24.dietideals24.utilities.adapters.AdapterPartecipazioni
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.classes.APIController
-import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
-import com.iasdietideals24.dietideals24.utilities.classes.adapters.AdapterPartecipazioni
-import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaAsta
-import com.iasdietideals24.dietideals24.utilities.classes.toArrayOfAnteprimaAsta
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import org.koin.core.parameter.parametersOf
 
 class ControllerPartecipazioni : Controller<PartecipazioniBinding>() {
 
+    // ViewModel
+    private val viewModel: ModelPartecipazioni by activityViewModel()
+
+    // PagingAdapter
+    private val adapterPartecipazioni: AdapterPartecipazioni by inject { parametersOf(resources) }
+
+    // Listeners
     private var listenerBackButton: OnBackButton? = null
 
     override fun onAttach(context: Context) {
@@ -36,27 +47,28 @@ class ControllerPartecipazioni : Controller<PartecipazioniBinding>() {
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
         binding.partecipazioniRecyclerView.layoutManager = LinearLayoutManager(fragmentContext)
-        val result: Array<AnteprimaAsta> = recuperaPartecipazioni()
-
-        if (result.isNotEmpty())
-            binding.partecipazioniRecyclerView.adapter = AdapterPartecipazioni(result, resources)
-        else
-            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
-
+        recuperaPartecipazioni()
+        binding.partecipazioniRecyclerView.adapter = adapterPartecipazioni
     }
 
-    private fun recuperaPartecipazioni(): Array<AnteprimaAsta> {
-        return if (CurrentUser.tipoAccount === TipoAccount.COMPRATORE) {
-            val call1 = APIController.instance.recuperaPartecipazioniSilenziose(CurrentUser.id)
-            val call2 = APIController.instance.recuperaPartecipazioniTempoFisso(CurrentUser.id)
-            chiamaAPI(call1).toArrayOfAnteprimaAsta()
-                .plus(chiamaAPI(call2).toArrayOfAnteprimaAsta())
-        } else {
-            val call = APIController.instance.recuperaPartecipazioniInverse(CurrentUser.id)
-            chiamaAPI(call).toArrayOfAnteprimaAsta()
+    private fun recuperaPartecipazioni() {
+        lifecycleScope.launch {
+            try {
+                if (CurrentUser.tipoAccount === TipoAccount.COMPRATORE) {
+                    viewModel.getCompratoreFlows().collectLatest { pagingData ->
+                        adapterPartecipazioni.submitData(pagingData)
+                    }
+                } else {
+                    viewModel.getVenditoreFlows().collectLatest { pagingData ->
+                        adapterPartecipazioni.submitData(pagingData)
+                    }
+                }
+            } catch (_: Exception) {
+                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+            }
         }
     }
 

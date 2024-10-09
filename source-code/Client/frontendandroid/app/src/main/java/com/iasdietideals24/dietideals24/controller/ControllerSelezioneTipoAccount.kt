@@ -1,6 +1,7 @@
 package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
+import androidx.lifecycle.lifecycleScope
 import com.facebook.AccessToken
 import com.facebook.LoginStatusCallback
 import com.facebook.login.LoginManager.Companion.getInstance
@@ -10,19 +11,31 @@ import com.iasdietideals24.dietideals24.activities.Home
 import com.iasdietideals24.dietideals24.databinding.SelezionetipoaccountBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.classes.APIController
-import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.classes.Logger
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
-import com.iasdietideals24.dietideals24.utilities.classes.data.Account
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnHideBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnNextStep
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnShowBackButton
+import com.iasdietideals24.dietideals24.utilities.data.Account
+import com.iasdietideals24.dietideals24.utilities.dto.AccountDto
+import com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.kscripts.Logger
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnHideBackButton
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnShowBackButton
+import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
 
 class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>() {
 
+    // Repositories
+    private val compratoreRepository: CompratoreRepository by inject()
+    private val venditoreRepository: VenditoreRepository by inject()
+
+    // Listeners
     private var changeActivityListener: OnChangeActivity? = null
     private var hideBackButtonListener: OnHideBackButton? = null
     private var showBackButtonListener: OnShowBackButton? = null
@@ -98,30 +111,36 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
         }
 
         if (email != "" && password != "" && tipoAccount != "") {
-            val returned: Account = accedi(email!!, password!!)
+            lifecycleScope.launch {
+                try {
+                    val returned: Account =
+                        withContext(Dispatchers.IO) { accedi(email!!, password!!).toAccount() }
 
-            if (returned.email != "") {
-                CurrentUser.id = returned.email
-                changeActivityListener?.onChangeActivity(Home::class.java)
+                    if (returned.email != "") {
+                        CurrentUser.id = returned.email
+                        changeActivityListener?.onChangeActivity(Home::class.java)
+                    }
+                } catch (e: Exception) {
+                    Snackbar.make(
+                        fragmentView,
+                        R.string.apiError,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .setBackgroundTint(resources.getColor(R.color.blu, null))
+                        .setTextColor(resources.getColor(R.color.grigio, null))
+                        .show()
+                }
             }
         }
     }
 
-    private fun accedi(email: String, password: String): Account {
+    private suspend fun accedi(email: String, password: String): AccountDto {
         return when (CurrentUser.tipoAccount) {
-            TipoAccount.COMPRATORE -> {
-                val call = APIController.instance.accediCompratore(email, password)
+            TipoAccount.COMPRATORE -> compratoreRepository.accediCompratore(email, password)
 
-                chiamaAPI(call).toAccount()
-            }
+            TipoAccount.VENDITORE -> venditoreRepository.accediVenditore(email, password)
 
-            TipoAccount.VENDITORE -> {
-                val call = APIController.instance.accediVenditore(email, password)
-
-                chiamaAPI(call).toAccount()
-            }
-
-            else -> Account()
+            else -> CompratoreDto()
         }
     }
 

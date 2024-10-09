@@ -3,9 +3,8 @@ package com.iasdietideals24.dietideals24.model
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAccountNonEsistente
-
 
 class ModelAccesso : ViewModel() {
 

@@ -7,19 +7,15 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Set;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
-public class AstaDiVenditoreDto extends AstaDto {
+public abstract class AstaDiVenditoreDto extends AstaDto {
 
     protected AccountShallowDto proprietarioShallow = new AccountShallowDto();
 
     public AstaDiVenditoreDto(Long idAsta, String categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow) {
         super(idAsta, categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, notificheAssociateShallow);
         this.proprietarioShallow = proprietarioShallow;
+    }
+
+    public AstaDiVenditoreDto() {
     }
 }

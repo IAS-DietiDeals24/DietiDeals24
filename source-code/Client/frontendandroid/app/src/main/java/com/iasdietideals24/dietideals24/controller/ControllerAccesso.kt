@@ -2,6 +2,7 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.lifecycleScope
 import com.facebook.CallbackManager.Factory.create
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -13,24 +14,36 @@ import com.iasdietideals24.dietideals24.databinding.AccessoBinding
 import com.iasdietideals24.dietideals24.model.ModelAccesso
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.classes.APIController
-import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.classes.Logger
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount
-import com.iasdietideals24.dietideals24.utilities.classes.data.Account
+import com.iasdietideals24.dietideals24.utilities.data.Account
+import com.iasdietideals24.dietideals24.utilities.dto.AccountDto
+import com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAccountNonEsistente
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.kscripts.Logger
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 
 class ControllerAccesso : Controller<AccessoBinding>() {
 
-    private var viewModel: ModelAccesso = ModelAccesso()
+    // ViewModel
+    private val viewModel: ModelAccesso by activityViewModel()
 
-    private var facebookCallbackManager = create()
+    // Repositories
+    private val compratoreRepository: CompratoreRepository by inject()
+    private val venditoreRepository: VenditoreRepository by inject()
 
+    // Listeners
+    private val facebookCallbackManager = create()
     private var listenerBackButton: OnBackButton? = null
     private var listenerChangeActivity: OnChangeActivity? = null
 
@@ -100,24 +113,34 @@ class ControllerAccesso : Controller<AccessoBinding>() {
                         .setTextColor(resources.getColor(R.color.grigio, null))
                         .show()
 
-                    val returned: Account = accountFacebook(result)
+                    lifecycleScope.launch {
+                        try {
+                            val returned: Account =
+                                withContext(Dispatchers.IO) { accountFacebook(result).toAccount() }
 
-                    when (returned.facebookId) {
-                        // non esiste un account associato a questo account Facebook con questo tipo
-                        "" -> Snackbar.make(
-                            fragmentView,
-                            R.string.accesso_noAccountFacebookCollegato,
-                            Snackbar.LENGTH_SHORT
-                        )
-                            .setBackgroundTint(resources.getColor(R.color.blu, null))
-                            .setTextColor(resources.getColor(R.color.grigio, null))
-                            .show()
+                            when (returned.facebookId) {
+                                // non esiste un account associato a questo account Facebook con questo tipo
+                                "" -> Snackbar.make(
+                                    fragmentView,
+                                    R.string.accesso_noAccountFacebookCollegato,
+                                    Snackbar.LENGTH_SHORT
+                                )
+                                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                                    .setTextColor(resources.getColor(R.color.grigio, null))
+                                    .show()
 
-                        // esiste un account associato a questo account Facebook con questo tipo, accedi
-                        else -> {
-                            Logger.log("Facebook sign-in successful")
+                                // esiste un account associato a questo account Facebook con questo tipo, accedi
+                                else -> {
+                                    Logger.log("Facebook sign-in successful")
 
-                            listenerChangeActivity?.onChangeActivity(Home::class.java)
+                                    listenerChangeActivity?.onChangeActivity(Home::class.java)
+                                }
+                            }
+                        } catch (_: Exception) {
+                            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                                .setBackgroundTint(resources.getColor(R.color.blu, null))
+                                .setTextColor(resources.getColor(R.color.grigio, null))
+                                .show()
                         }
                     }
                 }
@@ -139,13 +162,13 @@ class ControllerAccesso : Controller<AccessoBinding>() {
             })
     }
 
-    private fun accountFacebook(result: LoginResult): Account {
-        return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
-            val call = APIController.instance.accountFacebookCompratore(result.accessToken.userId)
-            chiamaAPI(call).toAccount()
-        } else {
-            val call = APIController.instance.accountFacebookVenditore(result.accessToken.userId)
-            chiamaAPI(call).toAccount()
+    private suspend fun accountFacebook(result: LoginResult): AccountDto {
+        return when (CurrentUser.tipoAccount) {
+            TipoAccount.COMPRATORE -> compratoreRepository.accountFacebookCompratore(result.accessToken.userId)
+
+            TipoAccount.VENDITORE -> venditoreRepository.accountFacebookVenditore(result.accessToken.userId)
+
+            else -> CompratoreDto()
         }
     }
 
@@ -170,53 +193,59 @@ class ControllerAccesso : Controller<AccessoBinding>() {
     @OptIn(DelicateCoroutinesApi::class)
     @EventHandler
     private fun clickAccedi() {
-        viewModel.email.value = estraiTestoDaElemento(binding.accessoEmail)
-        viewModel.password.value = estraiTestoDaElemento(binding.accessoPassword)
-        viewModel.tipoAccount.value = CurrentUser.tipoAccount
+        lifecycleScope.launch {
+            viewModel.email.value = estraiTestoDaElemento(binding.accessoEmail)
+            viewModel.password.value = estraiTestoDaElemento(binding.accessoPassword)
+            viewModel.tipoAccount.value = CurrentUser.tipoAccount
 
-        try {
-            viewModel.validate()
+            try {
+                viewModel.validate()
 
-            val returned: Account = accedi()
+                val returned: Account = withContext(Dispatchers.IO) { accedi().toAccount() }
 
-            when (returned.email) {
-                "" -> throw EccezioneAccountNonEsistente("Account non esistente.")
+                when (returned.email) {
+                    "" -> throw EccezioneAccountNonEsistente("Account non esistente.")
 
-                else -> {
-                    GlobalScope.launch {
-                        salvaPreferenzaStringa("email", viewModel.email.value!!)
-                        salvaPreferenzaStringa("password", viewModel.password.value!!)
+                    else -> {
+                        GlobalScope.launch(Dispatchers.IO) {
+                            salvaPreferenzaStringa("email", viewModel.email.value!!)
+                            salvaPreferenzaStringa("password", viewModel.password.value!!)
+                        }
+
+                        Logger.log("Sign-in successful")
+
+                        CurrentUser.id = returned.email
+                        listenerChangeActivity?.onChangeActivity(Home::class.java)
                     }
-
-                    Logger.log("Sign-in successful")
-
-                    CurrentUser.id = returned.email
-                    listenerChangeActivity?.onChangeActivity(Home::class.java)
                 }
+            } catch (_: EccezioneAccountNonEsistente) {
+                erroreCampo(
+                    R.string.accesso_erroreCredenzialiNonCorrette,
+                    binding.accessoCampoEmail,
+                    binding.accessoCampoPassword
+                )
+            } catch (_: Exception) {
+                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
             }
-        } catch (_: EccezioneAccountNonEsistente) {
-            erroreCampo(
-                R.string.accesso_erroreCredenzialiNonCorrette,
-                binding.accessoCampoEmail,
-                binding.accessoCampoPassword
-            )
         }
     }
 
-    private fun accedi(): Account {
-        return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
-            val call = APIController.instance.accediCompratore(
+    private suspend fun accedi(): AccountDto {
+        return when (CurrentUser.tipoAccount) {
+            TipoAccount.COMPRATORE -> compratoreRepository.accediCompratore(
                 viewModel.email.value!!,
                 viewModel.password.value!!
             )
-            chiamaAPI(call).toAccount()
-        } else {
-            val call = APIController.instance.accediVenditore(
-                viewModel.email.value!!,
-                viewModel.password.value!!
-            )
-            chiamaAPI(call).toAccount()
-        }
 
+            TipoAccount.VENDITORE -> venditoreRepository.accediVenditore(
+                viewModel.email.value!!,
+                viewModel.password.value!!
+            )
+
+            else -> CompratoreDto()
+        }
     }
 }

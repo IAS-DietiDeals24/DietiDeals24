@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.facebook.AccessToken
@@ -21,16 +20,17 @@ import com.iasdietideals24.dietideals24.controller.ControllerRegistrazione
 import com.iasdietideals24.dietideals24.controller.ControllerRegistrazioneDirections
 import com.iasdietideals24.dietideals24.databinding.ActivityRegistrazioneBinding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnBackButton
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnChangeActivity
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnNextStep
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnSkipStep
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnSkipStep
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.reflect.KClass
 
 class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(), OnChangeActivity,
     OnBackButton, OnNextStep, OnSkipStep {
 
-    private lateinit var viewModel: ModelRegistrazione
+    private val viewModel by viewModel<ModelRegistrazione>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +44,6 @@ class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(), OnCh
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        viewModel = ViewModelProvider(this)[ModelRegistrazione::class]
     }
 
     override fun onStop() {

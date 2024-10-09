@@ -5,23 +5,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.NotificheBinding
+import com.iasdietideals24.dietideals24.model.ModelNotifiche
+import com.iasdietideals24.dietideals24.utilities.adapters.AdapterNotifiche
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.classes.APIController
-import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.classes.adapters.AdapterNotifiche
-import com.iasdietideals24.dietideals24.utilities.classes.data.Notifica
-import com.iasdietideals24.dietideals24.utilities.classes.toArrayOfNotifica
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
+import org.koin.core.parameter.parametersOf
 
 class ControllerNotifiche : Controller<NotificheBinding>() {
 
-    private var mainDispatcher = Dispatchers.Main
-    private var ioDispatcher = Dispatchers.IO
+    // ViewModel
+    private val viewModel: ModelNotifiche by activityViewModel()
+
+    // Adapter
+    private val adapterNotifiche: AdapterNotifiche by inject { parametersOf(resources) }
+
     private var jobNotifiche: Job? = null
 
     override fun onPause() {
@@ -48,20 +51,16 @@ class ControllerNotifiche : Controller<NotificheBinding>() {
     }
 
     private suspend fun aggiornaNotifiche() {
-        val result: Array<Notifica> = withContext(ioDispatcher) {
-            val call = APIController.instance.recuperaNotifiche(CurrentUser.id)
-
-            chiamaAPI(call).toArrayOfNotifica()
+        viewModel.getFlow().collect { pagingData ->
+            adapterNotifiche.submitData(pagingData)
         }
 
-        withContext(mainDispatcher) {
-            if (result.isNotEmpty())
-                binding.notificheRecyclerView.adapter = AdapterNotifiche(result, resources)
-            else
-                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
-        }
+        if (viewModel.getFlow().count() != 0)
+            binding.notificheRecyclerView.adapter = adapterNotifiche
+        else
+            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.blu, null))
+                .setTextColor(resources.getColor(R.color.grigio, null))
+                .show()
     }
 }

@@ -58,8 +58,9 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.perf)
     implementation(libs.retrofit)
-    implementation(libs.converter.gson)
+    implementation(libs.converter.jackson)
     implementation(libs.facebook.login)
+    implementation(libs.koin)
     implementation(libs.coil)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
@@ -68,8 +69,4 @@ dependencies {
     implementation(libs.commons.text)
     implementation(libs.paging.runtime.ktx)
     implementation(libs.kotlin.reflect)
-
-    compileOnly(libs.lombok)
-
-    annotationProcessor(libs.lombok)
 }

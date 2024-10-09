@@ -12,7 +12,7 @@ import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -22,24 +22,33 @@ import com.iasdietideals24.dietideals24.databinding.ModificaprofiloBinding
 import com.iasdietideals24.dietideals24.model.ModelProfilo
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.classes.APIController
-import com.iasdietideals24.dietideals24.utilities.classes.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.classes.ImageHandler
-import com.iasdietideals24.dietideals24.utilities.classes.Logger
-import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo
-import com.iasdietideals24.dietideals24.utilities.classes.toLocalStringShort
+import com.iasdietideals24.dietideals24.utilities.data.Profilo
+import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
-import com.iasdietideals24.dietideals24.utilities.interfaces.OnGoToProfile
+import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.kscripts.Logger
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToProfile
+import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
+import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.time.LocalDate
-
 
 class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
 
-    private lateinit var viewModel: ModelProfilo
+    // ViewModel
+    private val viewModel: ModelProfilo by activityViewModel()
+
+    // Repositories
+    private val repositoryProfilo: ProfiloRepository by inject()
 
     private lateinit var requestPermissions: ActivityResultLauncher<Array<String>>
     private lateinit var selectPhoto: ActivityResultLauncher<String>
 
+    // Listeners
     private var listenerProfile: OnGoToProfile? = null
 
     override fun onAttach(context: Context) {
@@ -75,15 +84,17 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        viewModel = ViewModelProvider(fragmentActivity)[ModelProfilo::class]
-
         requestPermissions =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results: Map<String, Boolean> ->
                 apriGalleria(results)
             }
 
         selectPhoto = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            viewModel.immagineProfilo.value = ImageHandler.encodeImage(uri, fragmentContext)
+            viewModel.immagineProfilo.value =
+                com.iasdietideals24.dietideals24.utilities.tools.ImageHandler.encodeImage(
+                    uri,
+                    fragmentContext
+                )
         }
     }
 
@@ -164,57 +175,67 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
 
     @EventHandler
     private fun clickConferma() {
-        try {
-            viewModel.validate()
+        lifecycleScope.launch {
+            try {
+                viewModel.validate()
 
-            val returned: Profilo = aggiornaProfilo()
+                val returned: Profilo =
+                    withContext(Dispatchers.IO) { aggiornaProfilo().toProfilo() }
 
-            when (returned.nomeUtente) {
-                "" -> Snackbar.make(
-                    fragmentView,
-                    R.string.modificaProfilo_fallimentoModifica,
-                    Snackbar.LENGTH_SHORT
-                )
-                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
-
-                else -> {
-                    Snackbar.make(
+                when (returned.nomeUtente) {
+                    "" -> Snackbar.make(
                         fragmentView,
-                        R.string.modificaProfilo_successoModifica,
+                        R.string.modificaProfilo_fallimentoModifica,
                         Snackbar.LENGTH_SHORT
                     )
                         .setBackgroundTint(resources.getColor(R.color.blu, null))
                         .setTextColor(resources.getColor(R.color.grigio, null))
                         .show()
 
-                    Logger.log("Profile edited successfully")
+                    else -> {
+                        Snackbar.make(
+                            fragmentView,
+                            R.string.modificaProfilo_successoModifica,
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .setBackgroundTint(resources.getColor(R.color.blu, null))
+                            .setTextColor(resources.getColor(R.color.grigio, null))
+                            .show()
 
-                    listenerProfile?.onGoToProfile(
-                        CurrentUser.id,
-                        ControllerModificaProfilo::class
-                    )
+                        Logger.log("Profile edited successfully")
+
+                        listenerProfile?.onGoToProfile(
+                            CurrentUser.id,
+                            ControllerModificaProfilo::class
+                        )
+                    }
                 }
+            } catch (_: EccezioneCampiNonCompilati) {
+                erroreCampo(
+                    R.string.registrazione_erroreCampiObbligatoriNonCompilati,
+                    binding.modificaProfiloCampoNome,
+                    binding.modificaProfiloCampoCognome,
+                    binding.modificaProfiloCampoDataNascita,
+                    binding.modificaProfiloCampoGenere
+                )
+            } catch (e: Exception) {
+                Snackbar.make(
+                    fragmentView,
+                    R.string.apiError,
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
             }
-        } catch (_: EccezioneCampiNonCompilati) {
-            erroreCampo(
-                R.string.registrazione_erroreCampiObbligatoriNonCompilati,
-                binding.modificaProfiloCampoNome,
-                binding.modificaProfiloCampoCognome,
-                binding.modificaProfiloCampoDataNascita,
-                binding.modificaProfiloCampoGenere
-            )
         }
     }
 
-    private fun aggiornaProfilo(): Profilo {
-        val call = APIController.instance.aggiornaProfilo(
+    private suspend fun aggiornaProfilo(): ProfiloDto {
+        return repositoryProfilo.aggiornaProfilo(
             viewModel.toProfilo(),
             viewModel.nomeUtente.value!!
         )
-
-        return chiamaAPI(call).toProfilo()
     }
 
     @EventHandler

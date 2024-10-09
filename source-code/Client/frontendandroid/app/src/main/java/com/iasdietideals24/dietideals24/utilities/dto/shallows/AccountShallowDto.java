@@ -1,12 +1,5 @@
 package com.iasdietideals24.dietideals24.utilities.dto.shallows;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
 public class AccountShallowDto {
 
     private String email = "";
@@ -15,6 +8,25 @@ public class AccountShallowDto {
 
     public AccountShallowDto(String email, String tipoAccount) {
         this.email = email;
+        this.tipoAccount = tipoAccount;
+    }
+
+    public AccountShallowDto() {
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public String getTipoAccount() {
+        return this.tipoAccount;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setTipoAccount(String tipoAccount) {
         this.tipoAccount = tipoAccount;
     }
 }

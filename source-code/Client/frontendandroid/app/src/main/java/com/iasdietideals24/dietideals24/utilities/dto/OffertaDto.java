@@ -1,17 +1,13 @@
 package com.iasdietideals24.dietideals24.utilities.dto;
 
+import com.iasdietideals24.dietideals24.utilities.data.Offerta;
+import com.iasdietideals24.dietideals24.utilities.data.OffertaRicevuta;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
-public class OffertaDto {
+public abstract class OffertaDto {
 
     protected Long idOfferta = 0L;
 
@@ -25,6 +21,45 @@ public class OffertaDto {
         this.idOfferta = idOfferta;
         this.dataInvio = dataInvio;
         this.oraInvio = oraInvio;
+        this.valore = valore;
+    }
+
+    public OffertaDto() {
+    }
+
+    public abstract Offerta toOfferta();
+
+    public abstract OffertaRicevuta toOffertaRicevuta();
+
+    public Long getIdOfferta() {
+        return this.idOfferta;
+    }
+
+    public LocalDate getDataInvio() {
+        return this.dataInvio;
+    }
+
+    public LocalTime getOraInvio() {
+        return this.oraInvio;
+    }
+
+    public BigDecimal getValore() {
+        return this.valore;
+    }
+
+    public void setIdOfferta(Long idOfferta) {
+        this.idOfferta = idOfferta;
+    }
+
+    public void setDataInvio(LocalDate dataInvio) {
+        this.dataInvio = dataInvio;
+    }
+
+    public void setOraInvio(LocalTime oraInvio) {
+        this.oraInvio = oraInvio;
+    }
+
+    public void setValore(BigDecimal valore) {
         this.valore = valore;
     }
 }

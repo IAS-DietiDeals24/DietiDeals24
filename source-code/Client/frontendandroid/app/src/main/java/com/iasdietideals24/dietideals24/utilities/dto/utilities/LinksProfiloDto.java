@@ -27,39 +27,19 @@ public class LinksProfiloDto {
         return this.linkPersonale;
     }
 
-    public void setLinkPersonale(String linkPersonale) {
-        this.linkPersonale = linkPersonale;
-    }
-
     public String getLinkInstagram() {
         return this.linkInstagram;
-    }
-
-    public void setLinkInstagram(String linkInstagram) {
-        this.linkInstagram = linkInstagram;
     }
 
     public String getLinkFacebook() {
         return this.linkFacebook;
     }
 
-    public void setLinkFacebook(String linkFacebook) {
-        this.linkFacebook = linkFacebook;
-    }
-
     public String getLinkGitHub() {
         return this.linkGitHub;
     }
 
-    public void setLinkGitHub(String linkGitHub) {
-        this.linkGitHub = linkGitHub;
-    }
-
     public String getLinkX() {
         return this.linkX;
-    }
-
-    public void setLinkX(String linkX) {
-        this.linkX = linkX;
     }
 }

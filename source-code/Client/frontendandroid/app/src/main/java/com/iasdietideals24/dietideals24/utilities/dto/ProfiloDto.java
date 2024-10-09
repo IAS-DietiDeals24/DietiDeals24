@@ -1,22 +1,15 @@
 package com.iasdietideals24.dietideals24.utilities.dto;
 
-import com.iasdietideals24.dietideals24.utilities.classes.TipoAccount;
-import com.iasdietideals24.dietideals24.utilities.classes.data.AnteprimaProfilo;
-import com.iasdietideals24.dietideals24.utilities.classes.data.Profilo;
+import com.iasdietideals24.dietideals24.utilities.data.AnteprimaProfilo;
+import com.iasdietideals24.dietideals24.utilities.data.Profilo;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.AnagraficaProfiloDto;
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.LinksProfiloDto;
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Getter
-@Setter
-@NoArgsConstructor
 public class ProfiloDto {
     private String nomeUtente = "";
 
@@ -34,6 +27,9 @@ public class ProfiloDto {
         this.anagrafica = anagrafica;
         this.links = links;
         this.accountsShallow = accountsShallow;
+    }
+
+    public ProfiloDto() {
     }
 
     public Profilo toProfilo() {
@@ -63,5 +59,13 @@ public class ProfiloDto {
                 TipoAccount.valueOf(accountsShallow.stream().findFirst().orElse(new AccountShallowDto()).getTipoAccount()),
                 profilePicture
         );
+    }
+
+    public String getNomeUtente() {
+        return this.nomeUtente;
+    }
+
+    public void setNomeUtente(String nomeUtente) {
+        this.nomeUtente = nomeUtente;
     }
 }
