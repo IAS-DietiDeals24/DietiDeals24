@@ -2,27 +2,27 @@ package com.iasdietideals24.dietideals24.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
-import com.iasdietideals24.dietideals24.utilities.paging.AstaInversaPagingSource
-import com.iasdietideals24.dietideals24.utilities.paging.AstaSilenziosaPagingSource
-import com.iasdietideals24.dietideals24.utilities.paging.AstaTempoFissoPagingSource
+import com.iasdietideals24.dietideals24.utilities.dto.CategoriaAstaDto
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.CategoriaAstaRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.merge
-import org.koin.core.parameter.parametersOf
-import org.koin.java.KoinJavaComponent.get
-import org.koin.java.KoinJavaComponent.inject
 
-class ModelHome : ViewModel() {
+class ModelHome(
+    private val inverseRepository: AstaInversaRepository,
+    private val tempoFissoRepository: AstaTempoFissoRepository,
+    private val silenziosaRepository: AstaSilenziosaRepository,
+    private val categoriaAstaRepository: CategoriaAstaRepository
+) : ViewModel() {
+
     private val _searchText = MutableStateFlow("")
 
     val searchText: MutableStateFlow<String> get() = _searchText
@@ -31,96 +31,38 @@ class ModelHome : ViewModel() {
 
     val filter: MutableStateFlow<String> get() = _filter
 
-    private val pagingSourceInverseTutte: AstaInversaPagingSource by inject(
-        AstaInversaPagingSource::class.java
-    ) { parametersOf("", "", "", AstaInversaRepository.ApiCall.TUTTE) }
+    private val flowInverseTutte by lazy {
+        inverseRepository.recuperaAsteInverse().cachedIn(viewModelScope)
+    }
 
-    private val pagingSourceTempoFissoTutte: AstaTempoFissoPagingSource by inject(
-        AstaTempoFissoPagingSource::class.java
-    ) { parametersOf("", "", "", AstaTempoFissoRepository.ApiCall.TUTTE) }
+    private val flowTempoFissoTutte by lazy {
+        tempoFissoRepository.recuperaAsteTempoFisso().cachedIn(viewModelScope)
+    }
 
-    private val pagingSourceSilenzioseTutte: AstaSilenziosaPagingSource by inject(
-        AstaSilenziosaPagingSource::class.java
-    ) { parametersOf("", "", "", AstaSilenziosaRepository.ApiCall.TUTTE) }
+    private val flowSilenzioseTutte by lazy {
+        silenziosaRepository.recuperaAsteSilenziose().cachedIn(viewModelScope)
+    }
 
-    private val flowInverseTutte = Pager(
-        PagingConfig(pageSize = 20)
-    ) {
-        pagingSourceInverseTutte
-    }.flow
-        .cachedIn(viewModelScope)
-
-    private val flowTempoFissoTutte = Pager(
-        PagingConfig(pageSize = 20)
-    ) {
-        pagingSourceTempoFissoTutte
-    }.flow
-        .cachedIn(viewModelScope)
-
-    private val flowSilenzioseTutte = Pager(
-        PagingConfig(pageSize = 20)
-    ) {
-        pagingSourceSilenzioseTutte
-    }.flow
-        .cachedIn(viewModelScope)
+    private val flowCategorieAsta by lazy {
+        categoriaAstaRepository.recuperaCategorieAsta().cachedIn(viewModelScope)
+    }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val flowInverseRicerca = searchText.flatMapLatest { _ ->
-        Pager(
-            PagingConfig(pageSize = 20)
-        ) {
-            creaPagingSourceInversa()
-        }.flow
+        inverseRepository.ricercaAsteInverse(searchText.value, filter.value)
             .cachedIn(viewModelScope)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val flowTempoFissoRicerca = searchText.flatMapLatest { _ ->
-        Pager(
-            PagingConfig(pageSize = 20)
-        ) {
-            creaPagingSourceTempoFisso()
-        }.flow
+        tempoFissoRepository.ricercaAsteTempoFisso(searchText.value, filter.value)
             .cachedIn(viewModelScope)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val flowSilenzioseRicerca = searchText.flatMapLatest { _ ->
-        Pager(
-            PagingConfig(pageSize = 20)
-        ) {
-            creaPagingSourceSilenziosa()
-        }.flow
+        silenziosaRepository.ricercaAsteSilenziose(searchText.value, filter.value)
             .cachedIn(viewModelScope)
-    }
-
-    private fun creaPagingSourceInversa(): AstaInversaPagingSource {
-        return get(AstaInversaPagingSource::class.java)
-        { parametersOf("", searchText.value, filter.value, AstaInversaRepository.ApiCall.RICERCA) }
-    }
-
-    private fun creaPagingSourceTempoFisso(): AstaTempoFissoPagingSource {
-        return get(AstaTempoFissoPagingSource::class.java)
-        {
-            parametersOf(
-                "",
-                searchText.value,
-                filter.value,
-                AstaTempoFissoRepository.ApiCall.RICERCA
-            )
-        }
-    }
-
-    private fun creaPagingSourceSilenziosa(): AstaSilenziosaPagingSource {
-        return get(AstaSilenziosaPagingSource::class.java)
-        {
-            parametersOf(
-                "",
-                searchText.value,
-                filter.value,
-                AstaSilenziosaRepository.ApiCall.RICERCA
-            )
-        }
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -151,5 +93,9 @@ class ModelHome : ViewModel() {
                 else
                     merge(flowInverseRicerca, flowTempoFissoRicerca, flowSilenzioseRicerca)
                 ) as Flow<PagingData<AstaDto>>
+    }
+
+    fun getFlowsCategorieAsta(): Flow<PagingData<CategoriaAstaDto>> {
+        return flowCategorieAsta
     }
 }

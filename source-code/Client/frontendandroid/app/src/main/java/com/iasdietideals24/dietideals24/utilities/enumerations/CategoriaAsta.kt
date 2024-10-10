@@ -14,5 +14,6 @@ enum class CategoriaAsta {
     CLOTHINGS_AND_WEARABLES,
     HOME_AND_FURNITURES,
     VEHICLES,
-    OTHER
+    OTHER,
+    ND
 }

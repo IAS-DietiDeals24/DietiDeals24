@@ -3,7 +3,9 @@ package com.iasdietideals24.dietideals24.utilities.dto;
 import com.iasdietideals24.dietideals24.utilities.data.AnteprimaAsta;
 import com.iasdietideals24.dietideals24.utilities.data.Asta;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto;
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto;
+import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta;
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta;
 
 import java.math.BigDecimal;
@@ -13,7 +15,7 @@ import java.util.Set;
 
 public class AstaSilenziosaDto extends AstaDiVenditoreDto {
 
-    public AstaSilenziosaDto(Long idAsta, String categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow) {
+    public AstaSilenziosaDto(Long idAsta, CategoriaAstaShallowDto categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow) {
         super(idAsta, categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, notificheAssociateShallow, proprietarioShallow);
     }
 
@@ -26,6 +28,6 @@ public class AstaSilenziosaDto extends AstaDiVenditoreDto {
     }
 
     public Asta toAsta() {
-        return new Asta(idAsta, proprietarioShallow.getEmail(), TipoAsta.SILENZIOSA, dataScadenza, oraScadenza, new BigDecimal("0.0"), immagine, nome, categoria, descrizione);
+        return new Asta(idAsta, proprietarioShallow.getEmail(), TipoAsta.SILENZIOSA, dataScadenza, oraScadenza, new BigDecimal("0.0"), immagine, nome, CategoriaAsta.valueOf(categoriaShallow.getNome()), descrizione);
     }
 }

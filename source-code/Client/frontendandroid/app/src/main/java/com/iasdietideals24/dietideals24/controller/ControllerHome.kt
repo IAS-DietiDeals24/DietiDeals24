@@ -2,8 +2,10 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.ArrayAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
@@ -114,8 +116,24 @@ class ControllerHome : Controller<HomeBinding>() {
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
         binding.homeRecyclerView.layoutManager = LinearLayoutManager(fragmentContext)
-        binding.homeFiltro.setSimpleItems(resources.getStringArray(R.array.home_categorieAsta))
-        binding.homeFiltro.setText(resources.getString(R.string.category_no_category), false)
+
+        lifecycleScope.launch {
+            val categorieAsta: MutableList<String> = mutableListOf()
+
+            viewModel.getFlowsCategorieAsta().collect { pagingData ->
+                pagingData.map { categoriaAstaDto ->
+                    categorieAsta.add(categoriaAstaDto.nome)
+                }
+            }
+
+            val adapter: ArrayAdapter<String> = ArrayAdapter(
+                fragmentContext,
+                android.R.layout.simple_dropdown_item_1line,
+                categorieAsta
+            )
+
+            binding.homeFiltro.setAdapter(adapter)
+        }
     }
 
     private suspend fun recuperaAste() {

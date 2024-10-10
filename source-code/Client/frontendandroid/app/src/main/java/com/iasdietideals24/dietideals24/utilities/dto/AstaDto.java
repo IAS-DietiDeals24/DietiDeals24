@@ -2,6 +2,7 @@ package com.iasdietideals24.dietideals24.utilities.dto;
 
 import com.iasdietideals24.dietideals24.utilities.data.AnteprimaAsta;
 import com.iasdietideals24.dietideals24.utilities.data.Asta;
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto;
 
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ import java.util.Set;
 abstract public class AstaDto {
     protected Long idAsta = 0L;
 
-    protected String categoria = "";
+    protected CategoriaAstaShallowDto categoriaShallow = new CategoriaAstaShallowDto();
 
     protected String nome = "";
 
@@ -26,9 +27,9 @@ abstract public class AstaDto {
 
     protected Set<NotificaShallowDto> notificheAssociateShallow = new HashSet<>();
 
-    public AstaDto(Long idAsta, String categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow) {
+    public AstaDto(Long idAsta, CategoriaAstaShallowDto categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow) {
         this.idAsta = idAsta;
-        this.categoria = categoria;
+        this.categoriaShallow = categoria;
         this.nome = nome;
         this.descrizione = descrizione;
         this.dataScadenza = dataScadenza;
@@ -48,36 +49,36 @@ abstract public class AstaDto {
         return this.idAsta;
     }
 
-    public String getCategoria() {
-        return this.categoria;
+    public void setIdAsta(Long idAsta) {
+        this.idAsta = idAsta;
+    }
+
+    public CategoriaAstaShallowDto getCategoria() {
+        return this.categoriaShallow;
+    }
+
+    public void setCategoria(CategoriaAstaShallowDto categoria) {
+        this.categoriaShallow = categoria;
     }
 
     public String getNome() {
         return this.nome;
     }
 
-    public String getDescrizione() {
-        return this.descrizione;
-    }
-
-    public byte[] getImmagine() {
-        return this.immagine;
-    }
-
-    public void setIdAsta(Long idAsta) {
-        this.idAsta = idAsta;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
-    }
-
     public void setNome(String nome) {
         this.nome = nome;
     }
 
+    public String getDescrizione() {
+        return this.descrizione;
+    }
+
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
+    }
+
+    public byte[] getImmagine() {
+        return this.immagine;
     }
 
     public void setImmagine(byte[] immagine) {

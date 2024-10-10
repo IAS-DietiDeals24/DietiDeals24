@@ -1,5 +1,6 @@
 package com.iasdietideals24.dietideals24.utilities.data
 
+import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -14,6 +15,6 @@ data class Asta(
     val prezzo: BigDecimal = BigDecimal(0.0),
     val immagine: ByteArray = ByteArray(0),
     val nome: String = "",
-    val categoria: String = "",
+    val categoria: CategoriaAsta = CategoriaAsta.ND,
     val descrizione: String = ""
 )

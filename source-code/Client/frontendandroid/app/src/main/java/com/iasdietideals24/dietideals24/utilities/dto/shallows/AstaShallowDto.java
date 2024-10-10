@@ -21,11 +21,11 @@ public class AstaShallowDto {
         return this.idAsta;
     }
 
-    public String getTipoAstaSpecifica() {
-        return this.tipoAstaSpecifica;
-    }
-
     public void setIdAsta(Long idAsta) {
         this.idAsta = idAsta;
+    }
+
+    public String getTipoAstaSpecifica() {
+        return this.tipoAstaSpecifica;
     }
 }

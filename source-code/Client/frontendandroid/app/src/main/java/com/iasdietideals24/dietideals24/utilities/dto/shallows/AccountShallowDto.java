@@ -18,12 +18,12 @@ public class AccountShallowDto {
         return this.email;
     }
 
-    public String getTipoAccount() {
-        return this.tipoAccount;
-    }
-
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getTipoAccount() {
+        return this.tipoAccount;
     }
 
     public void setTipoAccount(String tipoAccount) {

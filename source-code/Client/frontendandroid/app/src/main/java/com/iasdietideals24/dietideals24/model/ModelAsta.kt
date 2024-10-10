@@ -3,8 +3,6 @@ package com.iasdietideals24.dietideals24.model
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
@@ -13,21 +11,25 @@ import com.iasdietideals24.dietideals24.utilities.dto.AstaSilenziosaDto
 import com.iasdietideals24.dietideals24.utilities.dto.AstaTempoFissoDto
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaDto
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShallowDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.paging.OffertaInversaPagingSource
-import com.iasdietideals24.dietideals24.utilities.paging.OffertaSilenziosaPagingSource
-import com.iasdietideals24.dietideals24.utilities.paging.OffertaTempoFissoPagingSource
+import com.iasdietideals24.dietideals24.utilities.repositories.OffertaInversaRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.OffertaSilenziosaRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.OffertaTempoFissoRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.merge
-import org.koin.core.parameter.parametersOf
-import org.koin.java.KoinJavaComponent.get
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
 
-class ModelAsta : ViewModel() {
+class ModelAsta(
+    private val inverseRepository: OffertaInversaRepository,
+    private val tempoFissoRepository: OffertaTempoFissoRepository,
+    private val silenziosaRepository: OffertaSilenziosaRepository,
+) : ViewModel() {
 
     private val _idAsta: MutableLiveData<Long> by lazy {
         MutableLiveData<Long>(0L)
@@ -92,11 +94,11 @@ class ModelAsta : ViewModel() {
     val nome: MutableLiveData<String>
         get() = _nome
 
-    private val _categoria: MutableLiveData<String> by lazy {
-        MutableLiveData<String>("")
+    private val _categoria: MutableLiveData<CategoriaAsta> by lazy {
+        MutableLiveData<CategoriaAsta>(CategoriaAsta.ND)
     }
 
-    val categoria: MutableLiveData<String>
+    val categoria: MutableLiveData<CategoriaAsta>
         get() = _categoria
 
     private val _descrizione: MutableLiveData<String> by lazy {
@@ -116,14 +118,16 @@ class ModelAsta : ViewModel() {
         _prezzo.value = BigDecimal(0.0)
         _immagine.value = ByteArray(0)
         _nome.value = ""
-        _categoria.value = ""
+        _categoria.value = CategoriaAsta.ND
         _descrizione.value = ""
     }
 
     fun toAstaInversa(): AstaInversaDto {
         return AstaInversaDto(
             idAsta.value!!,
-            tipo.value!!.name,
+            CategoriaAstaShallowDto(
+                tipo.value!!.name,
+            ),
             nome.value!!,
             descrizione.value!!,
             dataFine.value!!,
@@ -141,7 +145,9 @@ class ModelAsta : ViewModel() {
     fun toAstaTempoFisso(): AstaTempoFissoDto {
         return AstaTempoFissoDto(
             idAsta.value!!,
-            tipo.value!!.name,
+            CategoriaAstaShallowDto(
+                tipo.value!!.name,
+            ),
             nome.value!!,
             descrizione.value!!,
             dataFine.value!!,
@@ -159,7 +165,9 @@ class ModelAsta : ViewModel() {
     fun toAstaSilenziosa(): AstaSilenziosaDto {
         return AstaSilenziosaDto(
             idAsta.value!!,
-            tipo.value!!.name,
+            CategoriaAstaShallowDto(
+                tipo.value!!.name,
+            ),
             nome.value!!,
             descrizione.value!!,
             dataFine.value!!,
@@ -213,7 +221,7 @@ class ModelAsta : ViewModel() {
     @Validation
     @Throws(EccezioneCampiNonCompilati::class)
     private fun categoria() {
-        if (categoria.value?.isEmpty() == true) {
+        if (categoria.value != CategoriaAsta.ND) {
             throw EccezioneCampiNonCompilati("Categoria non compilata.")
         }
     }
@@ -239,37 +247,16 @@ class ModelAsta : ViewModel() {
         }
     }
 
-    private val flowInverse = Pager(
-        PagingConfig(pageSize = 20)
-    ) {
-        creaPagingSourceInversa()
-    }.flow
-        .cachedIn(viewModelScope)
-
-    private val flowTempoFisso = Pager(
-        PagingConfig(pageSize = 20)
-    ) {
-        creaPagingSourceTempoFisso()
-    }.flow
-        .cachedIn(viewModelScope)
-
-    private val flowSilenziose = Pager(
-        PagingConfig(pageSize = 20)
-    ) {
-        creaPagingSourceSilenziosa()
-    }.flow
-        .cachedIn(viewModelScope)
-
-    private fun creaPagingSourceInversa(): OffertaInversaPagingSource {
-        return get(OffertaInversaPagingSource::class.java) { parametersOf(idAsta.value!!) }
+    private val flowInverse by lazy {
+        inverseRepository.recuperaOfferteInverse(idAsta.value!!).cachedIn(viewModelScope)
     }
 
-    private fun creaPagingSourceTempoFisso(): OffertaTempoFissoPagingSource {
-        return get(OffertaTempoFissoPagingSource::class.java) { parametersOf(idAsta.value!!) }
+    private val flowTempoFisso by lazy {
+        tempoFissoRepository.recuperaOfferteTempoFisso(idAsta.value!!).cachedIn(viewModelScope)
     }
 
-    private fun creaPagingSourceSilenziosa(): OffertaSilenziosaPagingSource {
-        return get(OffertaSilenziosaPagingSource::class.java) { parametersOf(idAsta.value!!) }
+    private val flowSilenziose by lazy {
+        silenziosaRepository.recuperaOfferteSilenziose(idAsta.value!!).cachedIn(viewModelScope)
     }
 
     @Suppress("UNCHECKED_CAST")

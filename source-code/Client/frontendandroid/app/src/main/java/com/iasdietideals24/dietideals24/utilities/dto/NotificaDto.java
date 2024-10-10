@@ -42,12 +42,12 @@ public class NotificaDto {
         return this.dataInvio;
     }
 
-    public LocalTime getOraInvio() {
-        return this.oraInvio;
-    }
-
     public void setDataInvio(LocalDate dataInvio) {
         this.dataInvio = dataInvio;
+    }
+
+    public LocalTime getOraInvio() {
+        return this.oraInvio;
     }
 
     public void setOraInvio(LocalTime oraInvio) {

@@ -28,6 +28,7 @@ import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.data.Asta
 import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
@@ -305,8 +306,8 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
         }
         viewModel.nome.observe(viewLifecycleOwner, nomeObserver)
 
-        val categoriaObserver = Observer<String> { newCategoria ->
-            binding.creaCategoria.setText(newCategoria)
+        val categoriaObserver = Observer<CategoriaAsta> { newCategoria ->
+            binding.creaCategoria.setText(newCategoria.name)
         }
         viewModel.categoria.observe(viewLifecycleOwner, categoriaObserver)
 

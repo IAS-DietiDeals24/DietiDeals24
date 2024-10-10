@@ -1,53 +1,32 @@
 package com.iasdietideals24.dietideals24.model
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
 import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.paging.AstaInversaPagingSource
-import com.iasdietideals24.dietideals24.utilities.paging.AstaSilenziosaPagingSource
-import com.iasdietideals24.dietideals24.utilities.paging.AstaTempoFissoPagingSource
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.merge
-import org.koin.core.parameter.parametersOf
-import org.koin.java.KoinJavaComponent.inject
 
-class ModelPartecipazioni : ViewModel() {
-    private val pagingSourceInverse: AstaInversaPagingSource by inject(
-        AstaInversaPagingSource::class.java
-    ) { parametersOf(CurrentUser.id, "", "", AstaInversaRepository.ApiCall.PARTECIPAZIONI) }
-    private val pagingSourceTempoFisso: AstaTempoFissoPagingSource by inject(
-        AstaTempoFissoPagingSource::class.java
-    ) { parametersOf(CurrentUser.id, "", "", AstaInversaRepository.ApiCall.PARTECIPAZIONI) }
-    private val pagingSourceSilenziose: AstaSilenziosaPagingSource by inject(
-        AstaSilenziosaPagingSource::class.java
-    ) { parametersOf(CurrentUser.id, "", "", AstaInversaRepository.ApiCall.PARTECIPAZIONI) }
+class ModelPartecipazioni(
+    private val inverseRepository: AstaInversaRepository,
+    private val tempoFissoRepository: AstaTempoFissoRepository,
+    private val silenziosaRepository: AstaSilenziosaRepository
+) : ViewModel() {
 
-    private val flowInverse = Pager(
-        PagingConfig(pageSize = 20)
-    ) {
-        pagingSourceInverse
-    }.flow
-        .cachedIn(viewModelScope)
+    private val flowInverse by lazy {
+        inverseRepository.recuperaPartecipazioniInverse(CurrentUser.id)
+    }
 
-    val flowTempoFisso = Pager(
-        PagingConfig(pageSize = 20)
-    ) {
-        pagingSourceTempoFisso
-    }.flow
-        .cachedIn(viewModelScope)
+    private val flowTempoFisso by lazy {
+        tempoFissoRepository.recuperaPartecipazioniTempoFisso(CurrentUser.id)
+    }
 
-    val flowSilenziose = Pager(
-        PagingConfig(pageSize = 20)
-    ) {
-        pagingSourceSilenziose
-    }.flow
-        .cachedIn(viewModelScope)
+    private val flowSilenziose by lazy {
+        silenziosaRepository.recuperaPartecipazioniSilenziose(CurrentUser.id)
+    }
 
     @Suppress("UNCHECKED_CAST")
     fun getVenditoreFlows(): Flow<PagingData<AstaDto>> {

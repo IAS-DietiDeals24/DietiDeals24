@@ -3,7 +3,9 @@ package com.iasdietideals24.dietideals24.utilities.dto;
 import com.iasdietideals24.dietideals24.utilities.data.AnteprimaAsta;
 import com.iasdietideals24.dietideals24.utilities.data.Asta;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto;
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto;
+import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta;
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta;
 
 import java.math.BigDecimal;
@@ -15,7 +17,7 @@ public class AstaInversaDto extends AstaDiCompratoreDto {
 
     private BigDecimal sogliaIniziale = BigDecimal.ZERO;
 
-    public AstaInversaDto(Long idAsta, String categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow, BigDecimal sogliaIniziale) {
+    public AstaInversaDto(Long idAsta, CategoriaAstaShallowDto categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow, BigDecimal sogliaIniziale) {
         super(idAsta, categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, notificheAssociateShallow, proprietarioShallow);
         this.sogliaIniziale = sogliaIniziale;
     }
@@ -29,6 +31,6 @@ public class AstaInversaDto extends AstaDiCompratoreDto {
     }
 
     public Asta toAsta() {
-        return new Asta(idAsta, proprietarioShallow.getEmail(), TipoAsta.INVERSA, dataScadenza, oraScadenza, sogliaIniziale, immagine, nome, categoria, descrizione);
+        return new Asta(idAsta, proprietarioShallow.getEmail(), TipoAsta.INVERSA, dataScadenza, oraScadenza, sogliaIniziale, immagine, nome, CategoriaAsta.valueOf(categoriaShallow.getNome()), descrizione);
     }
 }

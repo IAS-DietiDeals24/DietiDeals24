@@ -26,6 +26,7 @@ import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaDto
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaSilenziosaDto
 import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.kscripts.Logger
@@ -256,8 +257,8 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         }
         viewModel.nome.observe(viewLifecycleOwner, nomeObserver)
 
-        val categoriaObserver = Observer<String> { newCategoria ->
-            binding.dettagliAstaCategoria.text = newCategoria
+        val categoriaObserver = Observer<CategoriaAsta> { newCategoria ->
+            binding.dettagliAstaCategoria.text = newCategoria.toString()
         }
         viewModel.categoria.observe(viewLifecycleOwner, categoriaObserver)
 

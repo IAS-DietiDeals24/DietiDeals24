@@ -23,6 +23,7 @@ import com.iasdietideals24.dietideals24.utilities.dto.OffertaDto
 import com.iasdietideals24.dietideals24.utilities.paging.AstaInversaPagingSource
 import com.iasdietideals24.dietideals24.utilities.paging.AstaSilenziosaPagingSource
 import com.iasdietideals24.dietideals24.utilities.paging.AstaTempoFissoPagingSource
+import com.iasdietideals24.dietideals24.utilities.paging.CategoriaAstaPagingSource
 import com.iasdietideals24.dietideals24.utilities.paging.NotificaPagingSource
 import com.iasdietideals24.dietideals24.utilities.paging.OffertaInversaPagingSource
 import com.iasdietideals24.dietideals24.utilities.paging.OffertaSilenziosaPagingSource
@@ -30,6 +31,7 @@ import com.iasdietideals24.dietideals24.utilities.paging.OffertaTempoFissoPaging
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.CategoriaAstaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.NotificaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaInversaRepository
@@ -40,6 +42,7 @@ import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreReposito
 import com.iasdietideals24.dietideals24.utilities.services.AstaInversaService
 import com.iasdietideals24.dietideals24.utilities.services.AstaSilenziosaService
 import com.iasdietideals24.dietideals24.utilities.services.AstaTempoFissoService
+import com.iasdietideals24.dietideals24.utilities.services.CategoriaAstaService
 import com.iasdietideals24.dietideals24.utilities.services.CompratoreService
 import com.iasdietideals24.dietideals24.utilities.services.NotificaService
 import com.iasdietideals24.dietideals24.utilities.services.OffertaInversaService
@@ -61,6 +64,7 @@ val serviceModule = module {
     single<OffertaTempoFissoService> { RetrofitController.service() }
     single<ProfiloService> { RetrofitController.service() }
     single<VenditoreService> { RetrofitController.service() }
+    single<CategoriaAstaService> { RetrofitController.service() }
 }
 
 val repositoryModule = module {
@@ -74,6 +78,7 @@ val repositoryModule = module {
     single { OffertaTempoFissoRepository(get()) }
     single { ProfiloRepository(get()) }
     single { VenditoreRepository(get()) }
+    single { CategoriaAstaRepository(get()) }
 }
 
 val pagingSourceModule = module {
@@ -108,6 +113,7 @@ val pagingSourceModule = module {
     factory { params -> OffertaInversaPagingSource(get(), params.get()) }
     factory { params -> OffertaSilenziosaPagingSource(get(), params.get()) }
     factory { params -> OffertaTempoFissoPagingSource(get(), params.get()) }
+    factory { CategoriaAstaPagingSource(get()) }
 }
 
 val comparatorsModule = module {
@@ -127,11 +133,11 @@ val adapterModule = module {
 val viewModelModule = module {
     viewModel { ModelAccesso() }
     viewModel { ModelRegistrazione(get(), get(), get()) }
-    viewModel { ModelAsta() }
+    viewModel { ModelAsta(get(), get(), get()) }
     viewModel { ModelProfilo() }
-    viewModel { ModelAsteCreate() }
-    viewModel { ModelHome() }
+    viewModel { ModelAsteCreate(get(), get(), get()) }
+    viewModel { ModelHome(get(), get(), get(), get()) }
     viewModel { ModelNotifiche(get()) }
-    viewModel { ModelPartecipazioni() }
+    viewModel { ModelPartecipazioni(get(), get(), get()) }
 
 }

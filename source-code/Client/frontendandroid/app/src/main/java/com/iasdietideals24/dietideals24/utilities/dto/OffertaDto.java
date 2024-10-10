@@ -35,28 +35,28 @@ public abstract class OffertaDto {
         return this.idOfferta;
     }
 
-    public LocalDate getDataInvio() {
-        return this.dataInvio;
-    }
-
-    public LocalTime getOraInvio() {
-        return this.oraInvio;
-    }
-
-    public BigDecimal getValore() {
-        return this.valore;
-    }
-
     public void setIdOfferta(Long idOfferta) {
         this.idOfferta = idOfferta;
+    }
+
+    public LocalDate getDataInvio() {
+        return this.dataInvio;
     }
 
     public void setDataInvio(LocalDate dataInvio) {
         this.dataInvio = dataInvio;
     }
 
+    public LocalTime getOraInvio() {
+        return this.oraInvio;
+    }
+
     public void setOraInvio(LocalTime oraInvio) {
         this.oraInvio = oraInvio;
+    }
+
+    public BigDecimal getValore() {
+        return this.valore;
     }
 
     public void setValore(BigDecimal valore) {

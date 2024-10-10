@@ -51,11 +51,11 @@ class ControllerNotifiche : Controller<NotificheBinding>() {
     }
 
     private suspend fun aggiornaNotifiche() {
-        viewModel.getFlow().collect { pagingData ->
+        viewModel.getFlowNotifiche().collect { pagingData ->
             adapterNotifiche.submitData(pagingData)
         }
 
-        if (viewModel.getFlow().count() != 0)
+        if (viewModel.getFlowNotifiche().count() != 0)
             binding.notificheRecyclerView.adapter = adapterNotifiche
         else
             Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)

@@ -30,6 +30,7 @@ import com.iasdietideals24.dietideals24.utilities.data.Asta
 import com.iasdietideals24.dietideals24.utilities.data.Profilo
 import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
 import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
@@ -301,8 +302,8 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
         }
         viewModel.nome.observe(viewLifecycleOwner, nomeObserver)
 
-        val categoriaObserver = Observer<String> { newCategoria ->
-            binding.modificaCategoria.setText(newCategoria)
+        val categoriaObserver = Observer<CategoriaAsta> { newCategoria ->
+            binding.modificaCategoria.setText(newCategoria.name)
         }
         viewModel.categoria.observe(viewLifecycleOwner, categoriaObserver)
 
