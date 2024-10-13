@@ -1,9 +1,12 @@
 package com.iasdietideals24.dietideals24.controller
 
+import android.accounts.AccountManager
 import android.content.Context
+import android.os.Bundle
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
-import com.facebook.CallbackManager.Factory.create
+import com.amplifyframework.core.Amplify
+import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
@@ -19,15 +22,13 @@ import com.iasdietideals24.dietideals24.utilities.dto.AccountDto
 import com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAccountNonEsistente
-import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.kscripts.Logger
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
-import kotlinx.coroutines.DelicateCoroutinesApi
+import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
@@ -43,7 +44,7 @@ class ControllerAccesso : Controller<AccessoBinding>() {
     private val venditoreRepository: VenditoreRepository by inject()
 
     // Listeners
-    private val facebookCallbackManager = create()
+    private val facebookCallbackManager: CallbackManager by inject()
     private var listenerBackButton: OnBackButton? = null
     private var listenerChangeActivity: OnChangeActivity? = null
 
@@ -102,64 +103,73 @@ class ControllerAccesso : Controller<AccessoBinding>() {
         binding.accessoPulsanteFacebook.authType = "rerequest"
         binding.accessoPulsanteFacebook.registerCallback(
             facebookCallbackManager,
-            object : FacebookCallback<LoginResult> {
-                override fun onSuccess(result: LoginResult) {
-                    Snackbar.make(
-                        fragmentView,
-                        R.string.accesso_loginSocialOK,
-                        Snackbar.LENGTH_SHORT
-                    )
-                        .setBackgroundTint(resources.getColor(R.color.blu, null))
-                        .setTextColor(resources.getColor(R.color.grigio, null))
-                        .show()
+            facebookLoginCallback()
+        )
+    }
 
-                    lifecycleScope.launch {
-                        try {
-                            val returned: Account =
-                                withContext(Dispatchers.IO) { accountFacebook(result).toAccount() }
+    private fun facebookLoginCallback(): FacebookCallback<LoginResult> {
+        return object : FacebookCallback<LoginResult> {
+            override fun onSuccess(result: LoginResult) {
+                Snackbar.make(
+                    fragmentView,
+                    R.string.accesso_loginSocialOK,
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
 
-                            when (returned.facebookId) {
-                                // non esiste un account associato a questo account Facebook con questo tipo
-                                "" -> Snackbar.make(
-                                    fragmentView,
-                                    R.string.accesso_noAccountFacebookCollegato,
-                                    Snackbar.LENGTH_SHORT
-                                )
-                                    .setBackgroundTint(resources.getColor(R.color.blu, null))
-                                    .setTextColor(resources.getColor(R.color.grigio, null))
-                                    .show()
+                lifecycleScope.launch {
+                    try {
+                        val returned: Account =
+                            withContext(Dispatchers.IO) { accountFacebook(result).toAccount() }
 
-                                // esiste un account associato a questo account Facebook con questo tipo, accedi
-                                else -> {
-                                    Logger.log("Facebook sign-in successful")
-
-                                    listenerChangeActivity?.onChangeActivity(Home::class.java)
-                                }
-                            }
-                        } catch (_: Exception) {
-                            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                        when (returned.facebookId) {
+                            // non esiste un account associato a questo account Facebook con questo tipo
+                            "" -> Snackbar.make(
+                                fragmentView,
+                                R.string.accesso_noAccountFacebookCollegato,
+                                Snackbar.LENGTH_SHORT
+                            )
                                 .setBackgroundTint(resources.getColor(R.color.blu, null))
                                 .setTextColor(resources.getColor(R.color.grigio, null))
                                 .show()
+
+                            // esiste un account associato a questo account Facebook con questo tipo, accedi
+                            else -> {
+                                Logger.log("Facebook sign-in successful")
+
+                                CurrentUser.id = returned.email
+
+                                accessoAccountManager()
+
+                                listenerChangeActivity?.onChangeActivity(Home::class.java)
+                            }
                         }
+                    } catch (_: Exception) {
+                        Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(resources.getColor(R.color.blu, null))
+                            .setTextColor(resources.getColor(R.color.grigio, null))
+                            .show()
                     }
                 }
+            }
 
-                override fun onCancel() {
-                    // Non fare nulla
-                }
+            override fun onCancel() {
+                // Non fare nulla
+            }
 
-                override fun onError(error: FacebookException) {
-                    Snackbar.make(
-                        fragmentView,
-                        R.string.accesso_erroreSocial,
-                        Snackbar.LENGTH_SHORT
-                    )
-                        .setBackgroundTint(resources.getColor(R.color.blu, null))
-                        .setTextColor(resources.getColor(R.color.grigio, null))
-                        .show()
-                }
-            })
+            override fun onError(error: FacebookException) {
+                Snackbar.make(
+                    fragmentView,
+                    R.string.accesso_erroreSocial,
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+            }
+        }
     }
 
     private suspend fun accountFacebook(result: LoginResult): AccountDto {
@@ -190,7 +200,6 @@ class ControllerAccesso : Controller<AccessoBinding>() {
         listenerBackButton?.onBackButton()
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     @EventHandler
     private fun clickAccedi() {
         lifecycleScope.launch {
@@ -201,20 +210,20 @@ class ControllerAccesso : Controller<AccessoBinding>() {
             try {
                 viewModel.validate()
 
+                Amplify.Auth.signIn(viewModel.email.value!!, viewModel.password.value!!, {}, {})
+
                 val returned: Account = withContext(Dispatchers.IO) { accedi().toAccount() }
 
                 when (returned.email) {
                     "" -> throw EccezioneAccountNonEsistente("Account non esistente.")
 
                     else -> {
-                        GlobalScope.launch(Dispatchers.IO) {
-                            salvaPreferenzaStringa("email", viewModel.email.value!!)
-                            salvaPreferenzaStringa("password", viewModel.password.value!!)
-                        }
-
                         Logger.log("Sign-in successful")
 
                         CurrentUser.id = returned.email
+
+                        accessoAccountManager()
+
                         listenerChangeActivity?.onChangeActivity(Home::class.java)
                     }
                 }
@@ -247,5 +256,19 @@ class ControllerAccesso : Controller<AccessoBinding>() {
 
             else -> CompratoreDto()
         }
+    }
+
+    private fun accessoAccountManager() {
+        val accountManager = AccountManager.get(context)
+
+        val accountData = Bundle()
+        accountData.putString("TipoAccount", viewModel.tipoAccount.value.toString())
+
+        val account = android.accounts.Account(
+            viewModel.email.value,
+            "com.iasdietideals24.dietideals24.account"
+        )
+
+        accountManager.addAccountExplicitly(account, viewModel.password.value, accountData)
     }
 }

@@ -34,7 +34,6 @@ import com.iasdietideals24.dietideals24.model.ModelHome
 import com.iasdietideals24.dietideals24.model.ModelNotifiche
 import com.iasdietideals24.dietideals24.model.ModelProfilo
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
-import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnEditButton
@@ -47,6 +46,7 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToParticipation
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToProfile
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnOpenUrl
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnRefresh
+import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderAnteprimaAsta
 import com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderAstaCreata
 import com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderNotifica

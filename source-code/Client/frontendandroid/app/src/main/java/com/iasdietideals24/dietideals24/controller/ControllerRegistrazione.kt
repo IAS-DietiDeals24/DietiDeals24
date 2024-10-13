@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.facebook.AccessToken
-import com.facebook.CallbackManager.Factory.create
+import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.GraphRequest
@@ -25,14 +25,14 @@ import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCo
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezionePasswordNonSicura
-import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.kscripts.Logger
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnSkipStep
 import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
+import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -52,7 +52,7 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
     private val venditoreRepository: VenditoreRepository by inject()
 
     // Listeners
-    private val facebookCallbackManager = create()
+    private val facebookCallbackManager: CallbackManager by inject()
     private var listenerBackButton: OnBackButton? = null
     private var listenerChangeActivity: OnChangeActivity? = null
     private var listenerNextStep: OnNextStep? = null
@@ -122,77 +122,82 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
         binding.registrazionePulsanteFacebook.authType = "rerequest"
         binding.registrazionePulsanteFacebook.registerCallback(
             facebookCallbackManager,
-            object : FacebookCallback<LoginResult> {
-                override fun onSuccess(result: LoginResult) {
-                    Snackbar.make(
-                        fragmentView,
-                        R.string.accesso_loginSocialOK,
-                        Snackbar.LENGTH_SHORT
-                    )
-                        .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                        .setTextColor(resources.getColor(R.color.grigio, null))
-                        .show()
+            facebookSignupCallback()
+        )
+    }
 
-                    lifecycleScope.launch {
-                        try {
-                            val returned: Account = withContext(Dispatchers.IO) {
-                                accountFacebook(result.accessToken.userId).toAccount()
-                            }
+    private fun facebookSignupCallback(): FacebookCallback<LoginResult> {
+        return object : FacebookCallback<LoginResult> {
+            override fun onSuccess(result: LoginResult) {
+                Snackbar.make(
+                    fragmentView,
+                    R.string.accesso_loginSocialOK,
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
 
-                            when (returned.email) {
-                                "" -> { // non esiste un account associato a questo account Facebook con questo tipo, registrati
-                                    queryFacebookGraph(result.accessToken)
-
-                                    scegliAssociaCreaProfilo()
-
-                                    Logger.log("Facebook sign-up successful")
-                                }
-
-                                else -> { // esiste un account associato a questo account Facebook con questo tipo
-                                    Snackbar.make(
-                                        fragmentView,
-                                        R.string.registrazione_accountFacebookGiàCollegato,
-                                        Snackbar.LENGTH_SHORT
-                                    )
-                                        .setBackgroundTint(
-                                            resources.getColor(
-                                                R.color.arancione,
-                                                null
-                                            )
-                                        )
-                                        .setTextColor(resources.getColor(R.color.grigio, null))
-                                        .show()
-
-                                    LoginManager.getInstance().logOut()
-                                }
-                            }
-                        } catch (_: Exception) {
-                            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                                .setTextColor(resources.getColor(R.color.grigio, null))
-                                .show()
-
-                            viewModel.clear()
-                            LoginManager.getInstance().logOut()
+                lifecycleScope.launch {
+                    try {
+                        val returned: Account = withContext(Dispatchers.IO) {
+                            accountFacebook(result.accessToken.userId).toAccount()
                         }
+
+                        when (returned.email) {
+                            "" -> { // non esiste un account associato a questo account Facebook con questo tipo, registrati
+                                queryFacebookGraph(result.accessToken)
+
+                                scegliAssociaCreaProfilo()
+
+                                Logger.log("Facebook sign-up successful")
+                            }
+
+                            else -> { // esiste un account associato a questo account Facebook con questo tipo
+                                Snackbar.make(
+                                    fragmentView,
+                                    R.string.registrazione_accountFacebookGiàCollegato,
+                                    Snackbar.LENGTH_SHORT
+                                )
+                                    .setBackgroundTint(
+                                        resources.getColor(
+                                            R.color.arancione,
+                                            null
+                                        )
+                                    )
+                                    .setTextColor(resources.getColor(R.color.grigio, null))
+                                    .show()
+
+                                LoginManager.getInstance().logOut()
+                            }
+                        }
+                    } catch (_: Exception) {
+                        Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(resources.getColor(R.color.blu, null))
+                            .setTextColor(resources.getColor(R.color.grigio, null))
+                            .show()
+
+                        viewModel.clear()
+                        LoginManager.getInstance().logOut()
                     }
                 }
+            }
 
-                override fun onCancel() {
-                    // Non fare nulla
-                }
+            override fun onCancel() {
+                // Non fare nulla
+            }
 
-                override fun onError(error: FacebookException) {
-                    Snackbar.make(
-                        fragmentView,
-                        R.string.registrazione_erroreRegistrazioneSocial,
-                        Snackbar.LENGTH_SHORT
-                    )
-                        .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                        .setTextColor(resources.getColor(R.color.grigio, null))
-                        .show()
-                }
-            })
+            override fun onError(error: FacebookException) {
+                Snackbar.make(
+                    fragmentView,
+                    R.string.registrazione_erroreRegistrazioneSocial,
+                    Snackbar.LENGTH_SHORT
+                )
+                    .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+            }
+        }
     }
 
     private suspend fun accountFacebook(facebookId: String): AccountDto {

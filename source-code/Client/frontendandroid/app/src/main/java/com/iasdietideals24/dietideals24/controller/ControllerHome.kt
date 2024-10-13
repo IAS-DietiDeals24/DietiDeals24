@@ -14,8 +14,8 @@ import com.iasdietideals24.dietideals24.model.ModelHome
 import com.iasdietideals24.dietideals24.utilities.adapters.AdapterHome
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
-import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.kscripts.Logger
+import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest

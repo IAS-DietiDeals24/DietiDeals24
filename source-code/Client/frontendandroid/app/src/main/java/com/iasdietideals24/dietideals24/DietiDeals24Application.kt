@@ -1,8 +1,12 @@
 package com.iasdietideals24.dietideals24
 
 import android.app.Application
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
+import com.amplifyframework.core.Amplify
+import com.amplifyframework.core.configuration.AmplifyOutputs
 import com.iasdietideals24.dietideals24.utilities.kscripts.adapterModule
 import com.iasdietideals24.dietideals24.utilities.kscripts.comparatorsModule
+import com.iasdietideals24.dietideals24.utilities.kscripts.facebookModule
 import com.iasdietideals24.dietideals24.utilities.kscripts.pagingSourceModule
 import com.iasdietideals24.dietideals24.utilities.kscripts.repositoryModule
 import com.iasdietideals24.dietideals24.utilities.kscripts.serviceModule
@@ -23,8 +27,12 @@ class DietiDeals24Application : Application() {
                 pagingSourceModule,
                 comparatorsModule,
                 adapterModule,
-                viewModelModule
+                viewModelModule,
+                facebookModule
             )
         }
+
+        Amplify.addPlugin(AWSCognitoAuthPlugin())
+        Amplify.configure(AmplifyOutputs(R.raw.amplify_outputs), applicationContext)
     }
 }

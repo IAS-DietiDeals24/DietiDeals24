@@ -32,11 +32,12 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "21"
     }
     dependenciesInfo {
         includeInApk = false
@@ -69,4 +70,6 @@ dependencies {
     implementation(libs.commons.text)
     implementation(libs.paging.runtime.ktx)
     implementation(libs.kotlin.reflect)
+    implementation(libs.aws.auth.cognito)
+    coreLibraryDesugaring(libs.desugar)
 }

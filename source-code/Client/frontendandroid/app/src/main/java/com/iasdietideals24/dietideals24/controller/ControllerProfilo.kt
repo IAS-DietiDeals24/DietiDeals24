@@ -1,10 +1,13 @@
 package com.iasdietideals24.dietideals24.controller
 
+import android.accounts.AccountManager
 import android.content.Context
 import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import coil.load
+import com.amplifyframework.core.Amplify
+import com.facebook.login.LoginManager
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.ScelteIniziali
@@ -14,14 +17,14 @@ import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.data.AnteprimaProfilo
 import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
-import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.kscripts.Logger
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToCreatedAuctions
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToHelp
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToParticipation
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToProfile
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
+import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -177,6 +180,23 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
     @EventHandler
     private fun clickEsci() {
         Logger.log("Logging out")
+
+        // Esci da Facebook
+        LoginManager.getInstance().logOut()
+
+        // Esci da Cognito
+        Amplify.Auth.signOut { CurrentUser.accessToken = "" }
+
+        // Esci dall'account nell'AccountManager
+        val accountManager = AccountManager.get(context)
+        val accounts =
+            accountManager.getAccountsByType("com.iasdietideals24.dietideals24.account")
+
+        if (accounts.isNotEmpty()) {
+            val account = accounts[0]
+
+            accountManager.removeAccountExplicitly(account)
+        }
 
         listenerChangeActivity?.onChangeActivity(ScelteIniziali::class.java)
     }

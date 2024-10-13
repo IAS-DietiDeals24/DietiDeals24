@@ -11,8 +11,8 @@ import com.iasdietideals24.dietideals24.utilities.adapters.AdapterPartecipazioni
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
-import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
+import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject

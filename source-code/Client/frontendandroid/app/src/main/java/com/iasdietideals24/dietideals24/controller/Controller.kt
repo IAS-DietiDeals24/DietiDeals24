@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewbinding.ViewBinding
@@ -15,9 +13,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.annotations.Utility
-import com.iasdietideals24.dietideals24.utilities.kscripts.DataStore.dataStore
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import java.lang.reflect.ParameterizedType
 
 abstract class Controller<bindingType : ViewBinding> : Fragment() {
@@ -180,30 +175,5 @@ abstract class Controller<bindingType : ViewBinding> : Fragment() {
     protected fun erroreCampo(messaggioErrore: Int, vararg campoErrore: TextInputLayout) {
         for (campo in campoErrore)
             campo.error = getString(messaggioErrore)
-    }
-
-    /**
-     * Salva in maniera asincrona una preferenza nel datastore dell'applicazione.
-     * @param name La chiave della preferenza da salvare.
-     * @param value Il valore della preferenza da salvare.
-     */
-    @Utility
-    protected suspend fun salvaPreferenzaStringa(name: String, value: String) {
-        fragmentContext.dataStore.edit { preferences ->
-            preferences[stringPreferencesKey(name)] = value
-        }
-    }
-
-    /**
-     * Carica in maniera asincrona una preferenza dal datastore dell'applicazione.
-     * @param name La chiave della preferenza da caricare.
-     * @return Il valore della preferenza caricata.
-     */
-    @Utility
-    protected suspend fun caricaPreferenzaStringa(name: String): String {
-        return fragmentContext.dataStore.data
-            .map { preferences ->
-                preferences[stringPreferencesKey(name)] ?: ""
-            }.first()
     }
 }

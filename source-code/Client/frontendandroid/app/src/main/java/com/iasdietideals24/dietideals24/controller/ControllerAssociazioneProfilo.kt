@@ -1,7 +1,12 @@
 package com.iasdietideals24.dietideals24.controller
 
+import android.accounts.AccountManager
 import android.content.Context
+import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
+import com.amplifyframework.auth.AuthUserAttributeKey
+import com.amplifyframework.auth.options.AuthSignUpOptions
+import com.amplifyframework.core.Amplify
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.Home
@@ -12,11 +17,11 @@ import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.data.Account
 import com.iasdietideals24.dietideals24.utilities.dto.exceptional.PutProfiloDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
-import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.kscripts.Logger
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
+import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -58,6 +63,26 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
     private fun clickFine() {
         lifecycleScope.launch {
             try {
+                Amplify.Auth.signUp(
+                    viewModel.email.value!!,
+                    viewModel.password.value!!,
+                    AuthSignUpOptions.builder()
+                        .userAttribute(
+                            AuthUserAttributeKey.birthdate(),
+                            viewModel.dataNascita.value.toString()
+                        )
+                        .userAttribute(
+                            AuthUserAttributeKey.preferredUsername(),
+                            viewModel.nomeUtente.value!!
+                        )
+                        .userAttribute(AuthUserAttributeKey.email(), viewModel.email.value!!)
+                        .userAttribute(AuthUserAttributeKey.givenName(), viewModel.nome.value!!)
+                        .userAttribute(AuthUserAttributeKey.familyName(), viewModel.cognome.value!!)
+                        .build(),
+                    {},
+                    {}
+                )
+
                 val returned: Account =
                     withContext(Dispatchers.IO) { associazioneProfilo().toAccount() }
 
@@ -68,6 +93,9 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
                         Logger.log("Profile linking successful")
 
                         CurrentUser.id = returned.email
+
+                        registrazioneAccountManager()
+
                         listenerChangeActivity?.onChangeActivity(Home::class.java)
                     }
                 }
@@ -94,5 +122,19 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
 
             else -> PutProfiloDto()
         }
+    }
+
+    private fun registrazioneAccountManager() {
+        val accountManager = AccountManager.get(context)
+
+        val accountData = Bundle()
+        accountData.putString("TipoAccount", viewModel.tipoAccount.value.toString())
+
+        val account = android.accounts.Account(
+            viewModel.email.value,
+            "com.iasdietideals24.dietideals24.account"
+        )
+
+        accountManager.addAccountExplicitly(account, viewModel.password.value, accountData)
     }
 }

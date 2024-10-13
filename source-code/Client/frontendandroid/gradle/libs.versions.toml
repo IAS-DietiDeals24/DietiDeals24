@@ -20,10 +20,12 @@ kotlin-reflect = "2.0.20"
 firebase-perf = "21.0.1"
 paging-runtime-ktx = "3.3.2"
 koin = "4.0.0"
+aws-auth-cognito = "2.23.0"
+desugar = "2.1.2"
 
 # Plugin
 android-application = "8.7.0"
-jetbrains-kotlin-android = "2.0.20"
+jetbrains-kotlin-android = "2.0.21"
 androidx-navigation-safeargs-kotlin = "2.8.2"
 google-services = "4.4.2"
 google-firebase-crashlytics = "3.0.2"
@@ -50,6 +52,8 @@ kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", vers
 firebase-perf = { group = "com.google.firebase", name = "firebase-perf", version.ref = "firebase-perf" }
 paging-runtime-ktx = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "paging-runtime-ktx" }
 koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+aws-auth-cognito = { group = "com.amplifyframework", name = "aws-auth-cognito", version.ref = "aws-auth-cognito" }
+desugar = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-application" }

@@ -3,10 +3,10 @@ package com.iasdietideals24.dietideals24.model
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagingData
 import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
-import com.iasdietideals24.dietideals24.utilities.kscripts.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
+import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.merge
 

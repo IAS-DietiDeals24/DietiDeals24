@@ -1,6 +1,7 @@
 package com.iasdietideals24.dietideals24.utilities.kscripts
 
 import androidx.recyclerview.widget.DiffUtil
+import com.facebook.CallbackManager.Factory.create
 import com.iasdietideals24.dietideals24.model.ModelAccesso
 import com.iasdietideals24.dietideals24.model.ModelAsta
 import com.iasdietideals24.dietideals24.model.ModelAsteCreate
@@ -50,6 +51,7 @@ import com.iasdietideals24.dietideals24.utilities.services.OffertaSilenziosaServ
 import com.iasdietideals24.dietideals24.utilities.services.OffertaTempoFissoService
 import com.iasdietideals24.dietideals24.utilities.services.ProfiloService
 import com.iasdietideals24.dietideals24.utilities.services.VenditoreService
+import com.iasdietideals24.dietideals24.utilities.tools.RetrofitController
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -139,5 +141,8 @@ val viewModelModule = module {
     viewModel { ModelHome(get(), get(), get(), get()) }
     viewModel { ModelNotifiche(get()) }
     viewModel { ModelPartecipazioni(get(), get(), get()) }
+}
 
+val facebookModule = module {
+    factory { create() }
 }
