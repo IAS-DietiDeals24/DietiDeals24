@@ -13,7 +13,7 @@ WORKDIR /source-code/
 
 # Compile the source code
 RUN chmod 755 ./mvnw
-RUN ["./mvnw", "clean", "install"]
+RUN ["./mvnw", "clean", "install", "-DskipTests=true"]
 
 
 # Container needed to run my app

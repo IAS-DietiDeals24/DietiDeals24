@@ -1,0 +1,2 @@
+docker compose -f ../../source-code/docker-compose/docker-compose.yaml -f ../../source-code/docker-compose/docker-compose.prod.yaml up -d
+PAUSE
