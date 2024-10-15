@@ -24,13 +24,13 @@
         \end{itemize}
 
     \section{Tecnologie adottate}
-        Il client è un'applicazione per sistema operativo \textbf{Android}, scritta in linguaggio \textbf{Kotlin} e fa uso della libreria per la gestione delle immagini \textbf{Coil}. \\
+        Il client è un'applicazione per sistema operativo \textbf{Android}, scritta in linguaggio \textbf{Kotlin}. \\
         Il server si articola in:
         \begin{itemize}
             \item Un'applicazione \textbf{Java} salvata in un'immagine ed eseguita in un container del programma \textbf{Docker (Compose)}, installato su una macchina virtuale fornita da \textbf{AWS EC2}.
             \item Una base di dati relazionale \textbf{PostgreSQL}, al cui interno sono conservati tutti i dati dell'applicazione, eseguita anch'essa come immagine Docker sulla stessa macchina virtuale AWS EC2.
         \end{itemize}
-        Per lo scambio di messaggi tra client e server (attraverso le \textbf{REST API}), si utilizzano \textbf{Retrofit} su client e \textbf{Spring Framework} su server. \\
+        Per lo scambio di messaggi tra client e server (attraverso le \textbf{REST API}), il server adotta lo \textbf{Spring Framework}. \\
 
         \subsection{Android}
             \subsubsection{Cos'è Android? \cite{Wikipedia1}}
@@ -43,7 +43,7 @@
             \subsubsection{Perché Android?}
                 Quasi tutti ormai posseggono uno smartphone. Ed essendo un sistema operativo così diffuso (conta circa il 69.94\% del mercato dei sistemi operativi per dispositivi mobili \cite{Statcounter1}) e disponibile su una grande varietà di dispositivi, Android è la scelta giusta per rendere l'applicazione disponibile quasi ovunque ed accessibile a chiunque.
 
-         \subsection{AWS EC2}
+         \subsection{AWS EC2 + Cognito}
             \subsubsection{Cos'è AWS? \cite{AWS1}}
                 Amazon Web Services è la soluzione cloud, fornita da Amazon, più ricca e ampiamente adottata al mondo: conta circa 200 servizi forniti dai numerosi centri di dati sparsi in tutto il globo. Attualmente il tasso di adozione dei servizi AWS globalmente è al 71\% \cite{CNN1}. AWS offre anche un Free Tier, ossia permette di sfruttare alcuni dei suoi servizi gratuitamente (a tempo limitato, illimitato, a soglia). Inoltre, ogni servizio fornisce delle API per poter richiedere al server la dispensa del servizio affittato.
             \begin{figure}[htbp!]
@@ -62,7 +62,20 @@
             \end{figure}
             \subsubsection{Perché EC2?}
                 A causa della sua ampia personalizzazione sulla base delle necessità dell'applicazione e grazie alla possibilità di creare, lanciare, e fermare le istanze delle macchine virtuali sul server su richiesta, pagando solo il tempo di computazione sfruttato, l'elasticità del servizio è indubbia \cite{Wikipedia6}. Il Free Tier di EC2 garantisce 750 ore di computazione in 12 mesi su una istanza di tipo "micro" \cite{AWS3}.
-                
+            \subsubsection{Cos'è Cognito? \cite{AWS4}} 
+            Amazon Cognito è una piattaforma di identità per app web e per dispositivi mobili. È una directory utente, un server di autenticazione e un servizio di autorizzazione per token di accesso OAuth 2.0 e credenziali AWS. Con Amazon Cognito, puoi autenticare e autorizzare gli utenti dalla directory utente integrata, dalla directory aziendale e dai provider di identità utente come Google e Facebook.
+            \begin{figure}[htbp!]
+                \centering
+                \includegraphics[width=0.2\linewidth]{Immagini/System Design/AWS Cognito.png}
+                \caption{Logo di Cognito}
+            \end{figure}
+            \subsubsection{Perché Cognito? \cite{AWS5}}
+            \begin{itemize}
+                \item Offre una gestione dell'identità e degli accessi del cliente, grazie a un servizio conveniente e personalizzabile;
+                \item Aggiunge funzionalità di sicurezza avanzate come l'autenticazione adattiva basata sul rischio, il monitoraggio delle credenziali compromesse e i parametri di sicurezza;
+                \item Permette di ridimensionare la directory degli utenti fino a milioni di utenti, con alte prestazioni e affidabilità.
+                \item Consente l'accesso federato con OIDC o SAML 2.0 e la connessione ad altri servizi e prodotti AWS.
+            \end{itemize}
         \subsection{Kotlin}
             \subsubsection{Cos'è Kotlin? \cite{Wikipedia2}}
                 Kotlin è un linguaggio di programmazione multi-piattaforma, staticamente e fortemente tipizzato con inferenza di tipo, general purpose, multi-paradigma (orientato agli oggetti, imperativo, funzionale). Sviluppato da JetBrains, Kotlin è realizzato per essere interscambiabile con Java, poiché è interpretato da una macchina virtuale Java (JVM) che utilizza la libreria di classi Java standard. Ha pian piano soppiantato l'utilizzo di Java per la realizzazione di applicazioni Android ed è diventato nel 2019 il linguaggio primario e consigliato da Google per la realizzazione di esse.
@@ -81,23 +94,6 @@
                     \item Maturità del linguaggio e dell'ambiente di sviluppo, continuamente migliorati e supportati;
                     \item Interoperabilità con Java, consentendo in iniettare codice Java in quello Kotlin e di utilizzare librerie di Java con Kotlin;
                     \item Semplicità e facilità di apprendimento ed utilizzo.
-                \end{itemize}
-                 
-        \subsection{Coil}
-            \subsubsection{Cosè Coil?}
-                Coil (COroutine Image Loader) è una libreria per il caricamento delle immagini nelle app Android, scritta interamente in Kotlin, che permette di rendere semplici, rapidi ed indolori la visualizzazione delle immagini sull'interfaccia e la gestione in memoria delle stesse.
-            \begin{figure}[htbp!]
-                \centering
-                \includegraphics[width=0.5\linewidth]{Immagini/System Design/Coil.png}
-                \caption{Logo di Coil}
-            \end{figure}
-            \subsubsection{Perché Coil? \cite{Github1}}
-                Coil sfrutta le Coroutine Kotlin per assolvere al suo ruolo in maniera asincrona. Coil è:
-                \begin{itemize}
-                    \item Rapido, grazie a numerose operazioni di ottimizzazione quali cache in memoria e su archiviazione, sotto-campionamento delle immagini in memoria, gestione automatica delle richieste di pausa e cancellazione della visualizzazione ed altro;
-                    \item Leggero, poiché aggiunge la quantità minima di metodi possibili per svolgere le sue funzioni;
-                    \item Facile da usare, poiché sfrutta la semplicità di Kotlin e codice boilerplate minimale;
-                    \item Moderno, perché sfrutta le più moderne librerie di Kotlin quali Coroutine, OkHttp, Okio, e Lifecycle AndroidX.
                 \end{itemize}
                 
         \subsection{Java}
@@ -154,15 +150,6 @@
                 Le REST API (REpresentational State Transfer Application Programming Interface) sono un'interfaccia di programmazione dell'applicazione che segue i princìpi REST, utilizzata per connettere tra loro componenti e applicazioni in un'architettura di microservizi. Le REST API sfruttano l'impalcatura del protocollo HTTP per poter permettere di effettuare tutte le principali operazioni sui dati attraverso i metodi HTTP, e i messaggi sono scambiati attraverso file JSON (ma anche XML o HTML).
             \subsubsection{Perché le REST API?}
                 I sei princìpi REST sono un'interfaccia uniforme, il disaccoppiamento client-server, servizio senza stato, possibilità di utilizzo del meccanismo di cache, organizzazione del sistema a più livelli, ed esecuzione di codice su richiesta \cite{IBM1}. La realizzazione di applicazioni che comunicano attraverso REST API permette di spingere al massimo l'indipendenza tra i vari servizi, non rinunciando però ad una semplicità di fondo nella comunicazione, essendo il protocollo HTTP un protocollo maturo, quindi testato e funzionante, e strutturalmente semplice. Inoltre, la comunicazione attraverso file JSON (un formato comodo nella lettura sia per esseri umani che per calcolatori e uno dei formati di scambio dei dati più diffuso al mondo), ne permette la lettura da parte di moltissimi linguaggi di programmazione, ciascuno dei quali in possesso di strumenti di parsing di tale formato.
-
-        \subsection{Retrofit}
-            \subsubsection{Cos'è Retrofit?}
-                Retrofit è un client HTTP type-safe per Android e Java sviluppato da Square. Semplifica il processo di interazione con i servizi web, consentendo agli sviluppatori di definire gli endpoint delle API mediante annotazioni e di eseguire le richieste di rete attraverso queste interfacce. Retrofit gestisce i dettagli delle richieste web, delle risposte e del parsing dei dati, facilitando l'integrazione delle API REST nelle applicazioni Android e Java.
-            \begin{figure}[htbp!]
-                \centering
-                \includegraphics[width=0.5\linewidth]{Immagini/System Design/Retrofit.png}
-                \caption{Logo di Retrofit}
-            \end{figure}
             
         \subsection{Spring Framework}
             \subsubsection{Cos'è Spring Framework?}
