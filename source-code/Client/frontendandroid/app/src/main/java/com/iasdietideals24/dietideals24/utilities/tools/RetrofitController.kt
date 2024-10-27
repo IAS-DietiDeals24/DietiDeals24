@@ -12,7 +12,7 @@ object RetrofitController {
 
     inline fun <reified T : Service> service(): T {
         return Retrofit.Builder()
-            .baseUrl("http://localhost:8080")
+            .baseUrl("http://15.160.144.38:55501")
             .client(okHttpClient)
             .addConverterFactory(JacksonConverterFactory.create())
             .build()
