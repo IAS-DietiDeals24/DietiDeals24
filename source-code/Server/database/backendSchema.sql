@@ -117,19 +117,19 @@ EXECUTE FUNCTION cleanup_venditore();
 
 CREATE TABLE asta_inversa
 (
-    id_asta          BIGINT GENERATED ALWAYS AS IDENTITY,
+    id_asta             BIGINT GENERATED ALWAYS AS IDENTITY,
     CONSTRAINT pk_asta_inversa PRIMARY KEY (id_asta),
-    data_scadenza    DATE          NOT NULL,
+    data_scadenza       DATE          NOT NULL,
     CONSTRAINT chk_data_scadenza CHECK (data_scadenza > NOW()),
-    descrizione      TEXT          NOT NULL,
-    immagine         BYTEA,
-    nome             TEXT          NOT NULL,
-    ora_scadenza     TIME          NOT NULL,
-    categoria_asta   TEXT          NOT NULL,
-    CONSTRAINT fk_categoria_asta FOREIGN KEY (categoria_asta) REFERENCES categoria_asta (nome) ON UPDATE CASCADE ON DELETE CASCADE,
-    compratore_email TEXT          NOT NULL,
+    descrizione         TEXT          NOT NULL,
+    immagine            BYTEA,
+    nome                TEXT          NOT NULL,
+    ora_scadenza        TIME          NOT NULL,
+    categoria_asta_nome TEXT          NOT NULL,
+    CONSTRAINT fk_categoria_asta_nome FOREIGN KEY (categoria_asta_nome) REFERENCES categoria_asta (nome) ON UPDATE CASCADE ON DELETE CASCADE,
+    compratore_email    TEXT          NOT NULL,
     CONSTRAINT fk_compratore_email FOREIGN KEY (compratore_email) REFERENCES compratore (email) ON UPDATE CASCADE ON DELETE CASCADE,
-    soglia_iniziale  DECIMAL(2, 2) NOT NULL,
+    soglia_iniziale     DECIMAL(2, 2) NOT NULL,
     CONSTRAINT chk_soglia_iniziale CHECK (soglia_iniziale >= 0)
 );
 
@@ -152,17 +152,17 @@ EXECUTE FUNCTION cleanup_asta_inversa();
 
 CREATE TABLE asta_silenziosa
 (
-    id_asta         BIGINT GENERATED ALWAYS AS IDENTITY,
+    id_asta             BIGINT GENERATED ALWAYS AS IDENTITY,
     CONSTRAINT pk_asta_silenziosa PRIMARY KEY (id_asta),
-    data_scadenza   DATE NOT NULL,
+    data_scadenza       DATE NOT NULL,
     CONSTRAINT chk_data_scadenza CHECK (data_scadenza > NOW()),
-    descrizione     TEXT NOT NULL,
-    immagine        BYTEA,
-    nome            TEXT NOT NULL,
-    ora_scadenza    TIME NOT NULL,
-    categoria_asta  TEXT NOT NULL,
-    CONSTRAINT fk_categoria_asta FOREIGN KEY (categoria_asta) REFERENCES categoria_asta (nome) ON UPDATE CASCADE ON DELETE CASCADE,
-    venditore_email TEXT NOT NULL,
+    descrizione         TEXT NOT NULL,
+    immagine            BYTEA,
+    nome                TEXT NOT NULL,
+    ora_scadenza        TIME NOT NULL,
+    categoria_asta_nome TEXT NOT NULL,
+    CONSTRAINT fk_categoria_asta_nome FOREIGN KEY (categoria_asta_nome) REFERENCES categoria_asta (nome) ON UPDATE CASCADE ON DELETE CASCADE,
+    venditore_email     TEXT NOT NULL,
     CONSTRAINT fk_venditore_email FOREIGN KEY (venditore_email) REFERENCES venditore (email) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -185,19 +185,19 @@ EXECUTE FUNCTION cleanup_asta_silenziosa();
 
 CREATE TABLE asta_tempo_fisso
 (
-    id_asta         BIGINT GENERATED ALWAYS AS IDENTITY,
+    id_asta             BIGINT GENERATED ALWAYS AS IDENTITY,
     CONSTRAINT pk_asta_tempo_fisso PRIMARY KEY (id_asta),
-    data_scadenza   DATE          NOT NULL,
+    data_scadenza       DATE          NOT NULL,
     CONSTRAINT chk_data_scadenza CHECK (data_scadenza > NOW()),
-    descrizione     TEXT          NOT NULL,
-    immagine        BYTEA,
-    nome            TEXT          NOT NULL,
-    ora_scadenza    TIME          NOT NULL,
-    categoria_asta  TEXT          NOT NULL,
-    CONSTRAINT fk_categoria_asta FOREIGN KEY (categoria_asta) REFERENCES categoria_asta (nome) ON UPDATE CASCADE ON DELETE CASCADE,
-    venditore_email TEXT          NOT NULL,
+    descrizione         TEXT          NOT NULL,
+    immagine            BYTEA,
+    nome                TEXT          NOT NULL,
+    ora_scadenza        TIME          NOT NULL,
+    categoria_asta_nome TEXT          NOT NULL,
+    CONSTRAINT fk_categoria_asta_nome FOREIGN KEY (categoria_asta_nome) REFERENCES categoria_asta (nome) ON UPDATE CASCADE ON DELETE CASCADE,
+    venditore_email     TEXT          NOT NULL,
     CONSTRAINT fk_venditore_email FOREIGN KEY (venditore_email) REFERENCES venditore (email) ON UPDATE CASCADE ON DELETE CASCADE,
-    soglia_minima   DECIMAL(2, 2) NOT NULL,
+    soglia_minima       DECIMAL(2, 2) NOT NULL,
     CONSTRAINT chk_soglia_minima CHECK (soglia_minima >= 0)
 );
 

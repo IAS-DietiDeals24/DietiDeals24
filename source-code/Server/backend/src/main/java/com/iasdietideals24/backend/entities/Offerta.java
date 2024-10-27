@@ -7,24 +7,33 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import org.hibernate.annotations.Check;
+
 @EqualsAndHashCode
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Check(constraints = "data_invio <= NOW() AND valore > 0")
 public abstract class Offerta {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "offerta_id_seq")
+    @Column(name = "id_offerta", nullable = false)
     private Long idOfferta;
 
     @NonNull
+    @Temporal(TemporalType.DATE)
+    @Column(name = "data_invio", nullable = false)
     private LocalDate dataInvio;
 
     @NonNull
+    @Temporal(TemporalType.TIME)
+    @Column(name = "ora_invio", nullable = false)
     private LocalTime oraInvio;
 
     @NonNull
+    @Column(name = "valore", nullable = false, scale = 2, precision = 2)
     private BigDecimal valore;
 
     // AllArgsConstructor

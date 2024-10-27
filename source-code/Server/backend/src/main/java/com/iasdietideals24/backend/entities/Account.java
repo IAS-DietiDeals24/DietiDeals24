@@ -17,20 +17,22 @@ import java.util.Set;
 public abstract class Account {
     @Id
     @NonNull
+    @Column(name = "email", nullable = false)
     private String email;
 
     @NonNull
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Embedded
     private TokensAccount tokens;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "fk_profilo_nomeutente")
+    @ManyToOne
+    @JoinColumn(name = "profilo_nome_utente", nullable = false)
     @NonNull
     private Profilo profilo;
 
-    @OneToMany(mappedBy = "mittente", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "mittente", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     private Set<Notifica> notificheInviate = new HashSet<>();

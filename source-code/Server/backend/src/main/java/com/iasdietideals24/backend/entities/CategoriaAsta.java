@@ -1,6 +1,7 @@
 package com.iasdietideals24.backend.entities;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -18,9 +19,10 @@ import java.util.Set;
 public class CategoriaAsta {
     @Id
     @NonNull
+    @Column(name = "nome", nullable = false)
     private String nome;
 
-    @OneToMany(mappedBy = "categoria", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     private Set<Asta> asteAssegnate = new HashSet<>();

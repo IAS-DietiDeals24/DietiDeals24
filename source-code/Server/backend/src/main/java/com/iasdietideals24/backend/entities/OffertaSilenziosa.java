@@ -17,10 +17,11 @@ import java.time.LocalTime;
 public class OffertaSilenziosa extends OffertaDiCompratore {
     @Enumerated(EnumType.STRING)
     @NonNull
+    @Column(name = "stato", nullable = false)
     private StatoOffertaSilenziosa stato = StatoOffertaSilenziosa.PENDING;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "fk_astasilenziosa_idasta")
+    @ManyToOne
+    @JoinColumn(name = "asta_silenziosa_id_asta", nullable = false)
     @NonNull
     private AstaSilenziosa astaRiferimento;
 

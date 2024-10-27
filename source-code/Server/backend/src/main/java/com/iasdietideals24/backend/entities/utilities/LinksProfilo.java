@@ -1,5 +1,6 @@
 package com.iasdietideals24.backend.entities.utilities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -13,14 +14,19 @@ import lombok.Setter;
 @Embeddable
 public class LinksProfilo {
 
+    @Column(name = "link_personale")
     private String linkPersonale;
 
+    @Column(name = "link_instagram")
     private String linkInstagram;
 
+    @Column(name = "link_facebook")
     private String linkFacebook;
 
+    @Column(name = "link_git_hub")
     private String linkGitHub;
 
+    @Column(name = "link_x")
     private String linkX;
 
     // AllArgsConstructor
