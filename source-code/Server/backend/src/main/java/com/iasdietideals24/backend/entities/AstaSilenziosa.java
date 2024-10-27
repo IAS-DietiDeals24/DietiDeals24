@@ -17,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 public class AstaSilenziosa extends AstaDiVenditore {
-    @OneToMany(mappedBy = "astaRiferimento", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "astaRiferimento", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     private Set<OffertaSilenziosa> offerteRicevute = new LinkedHashSet<>();

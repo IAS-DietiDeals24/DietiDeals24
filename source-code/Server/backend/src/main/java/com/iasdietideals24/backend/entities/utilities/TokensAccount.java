@@ -1,5 +1,6 @@
 package com.iasdietideals24.backend.entities.utilities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -13,12 +14,16 @@ import lombok.Setter;
 @Embeddable
 public class TokensAccount {
 
+    @Column(name = "id_facebook")
     private String idFacebook;
 
+    @Column(name = "id_google")
     private String idGoogle;
 
+    @Column(name = "id_x")
     private String idX;
 
+    @Column(name = "id_git_hub")
     private String idGitHub;
 
     // AllArgsConstructor

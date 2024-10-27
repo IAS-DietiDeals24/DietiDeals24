@@ -2,13 +2,13 @@ package com.iasdietideals24.dietideals24.utilities.dto.utilities;
 
 public class TokensAccountDto {
 
-    private String idFacebook;
+    private String idFacebook = "";
 
-    private String idGoogle;
+    private String idGoogle = "";
 
-    private String idX;
+    private String idX = "";
 
-    private String idGitHub;
+    private String idGitHub = "";
 
     public TokensAccountDto(String idFacebook, String idGoogle, String idX, String idGitHub) {
         this.idFacebook = idFacebook;

@@ -9,37 +9,48 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.hibernate.annotations.Check;
+
 @EqualsAndHashCode
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Check(constraints = "data_scadenza > NOW()")
 public abstract class Asta {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "asta_id_seq")
+    @Column(name = "id_asta", nullable = false)
     private Long idAsta;
 
     @NonNull
+    @Column(name = "nome", nullable = false)
     private String nome;
 
     @NonNull
+    @Column(name = "descrizione", nullable = false)
     private String descrizione;
 
     @NonNull
+    @Temporal(TemporalType.DATE)
+    @Column(name = "data_scadenza", nullable = false)
     private LocalDate dataScadenza;
 
     @NonNull
+    @Temporal(TemporalType.TIME)
+    @Column(name = "ora_scadenza", nullable = false)
     private LocalTime oraScadenza;
 
+    @Column(name = "immagine")
     private byte[] immagine;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "fk_categoria_asta_nome")
+    @ManyToOne
+    @JoinColumn(name = "categoria_asta_nome", nullable = false)
     @NonNull
     private CategoriaAsta categoria;
 
-    @OneToMany(mappedBy = "astaAssociata", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "astaAssociata", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     private Set<Notifica> notificheAssociate = new HashSet<>();

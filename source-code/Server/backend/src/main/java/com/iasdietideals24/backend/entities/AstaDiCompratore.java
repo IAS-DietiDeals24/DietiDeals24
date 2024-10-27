@@ -12,8 +12,8 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Entity
 public abstract class AstaDiCompratore extends Asta {
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "fk_compratore_email")
+    @ManyToOne
+    @JoinColumn(name = "compratore_email", nullable = false)
     @NonNull
     private Compratore proprietario;
 

@@ -2,15 +2,15 @@ package com.iasdietideals24.dietideals24.utilities.dto.utilities;
 
 public class LinksProfiloDto {
 
-    private String linkPersonale;
+    private String linkPersonale = "";
 
-    private String linkInstagram;
+    private String linkInstagram = "";
 
-    private String linkFacebook;
+    private String linkFacebook = "";
 
-    private String linkGitHub;
+    private String linkGitHub = "";
 
-    private String linkX;
+    private String linkX = "";
 
     public LinksProfiloDto(String linkPersonale, String linkInstagram, String linkFacebook, String linkGitHub, String linkX) {
         this.linkPersonale = linkPersonale;

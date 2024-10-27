@@ -9,41 +9,50 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.hibernate.annotations.Check;
+
 @EqualsAndHashCode
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
+@Check(constraints = "data_invio <= NOW()")
 public class Notifica {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "notifica_id_seq")
+    @Column(name = "id_notifica", nullable = false)
     private Long idNotifica;
 
     @NonNull
+    @Temporal(TemporalType.DATE)
+    @Column(name = "data_invio", nullable = false)
     private LocalDate dataInvio;
 
     @NonNull
+    @Temporal(TemporalType.TIME)
+    @Column(name = "ora_invio", nullable = false)
     private LocalTime oraInvio;
 
     @NonNull
+    @Column(name = "messaggio", nullable = false)
     private String messaggio;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "fk_account_email")
+    @ManyToOne
+    @JoinColumn(name = "account_email", nullable = false)
     @NonNull
     private Account mittente;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "destinatari",
-            joinColumns = {@JoinColumn(name = "fk_notifica_idnotifica")},
-            inverseJoinColumns = {@JoinColumn(name = "fk_account_email")})
+            joinColumns = {@JoinColumn(name = "notifica_id_notifica", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "account_email", nullable = false)})
     @NonNull
     @EqualsAndHashCode.Exclude
     @Setter(AccessLevel.NONE)
     private Set<Account> destinatari = new HashSet<>();
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "fk_asta_idasta")
+    @ManyToOne
+    @JoinColumn(name = "asta_id_asta", nullable = false)
     @NonNull
     private Asta astaAssociata;
 

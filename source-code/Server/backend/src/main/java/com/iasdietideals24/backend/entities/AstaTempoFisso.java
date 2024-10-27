@@ -1,6 +1,7 @@
 package com.iasdietideals24.backend.entities;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.*;
@@ -12,16 +13,20 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.hibernate.annotations.Check;
+
 @EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
+@Check(constraints = "soglia_minima >= 0")
 public class AstaTempoFisso extends AstaDiVenditore {
     @NonNull
+    @Column(name = "soglia_minima", nullable = false, scale = 2, precision = 2)
     private BigDecimal sogliaMinima;
 
-    @OneToMany(mappedBy = "astaRiferimento", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "astaRiferimento", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     private Set<OffertaTempoFisso> offerteRicevute = new LinkedHashSet<>();

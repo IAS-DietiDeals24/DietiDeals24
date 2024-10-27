@@ -21,9 +21,10 @@ import java.util.Set;
 public class Profilo {
     @Id
     @NonNull
+    @Column(name = "nome_utente", nullable = false)
     private String nomeUtente;
 
-    @NonNull
+    @Column(name = "profile_picture")
     private byte[] profilePicture;
 
     @Embedded
@@ -33,14 +34,14 @@ public class Profilo {
     @Embedded
     private LinksProfilo links;
 
-    @OneToMany(mappedBy = "profilo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "profilo", cascade = CascadeType.ALL, orphanRemoval = true)
     @NonNull
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     private Set<Account> accounts = new HashSet<>();
 
     // AllArgsConstructor
-    public Profilo(@NonNull String nomeUtente, @NonNull byte[] profilePicture, @NonNull AnagraficaProfilo anagraficaProfilo, LinksProfilo linksProfilo, @NonNull Account account) {
+    public Profilo(@NonNull String nomeUtente, byte[] profilePicture, @NonNull AnagraficaProfilo anagraficaProfilo, LinksProfilo linksProfilo, @NonNull Account account) {
         this.nomeUtente = nomeUtente;
         this.profilePicture = profilePicture;
         this.anagrafica = anagraficaProfilo;
@@ -51,7 +52,7 @@ public class Profilo {
     }
 
     // Creazione dell'account contestualmente al profilo
-    public Profilo(@NonNull String nomeUtente, @NonNull byte[] profilePicture, @NonNull AnagraficaProfilo anagraficaProfilo, LinksProfilo linksProfilo, @NonNull String email, @NonNull String password, TokensAccount tokensAccount, @NonNull String tipoAccount) throws InvalidTypeException {
+    public Profilo(@NonNull String nomeUtente, byte[] profilePicture, @NonNull AnagraficaProfilo anagraficaProfilo, LinksProfilo linksProfilo, @NonNull String email, @NonNull String password, TokensAccount tokensAccount, @NonNull String tipoAccount) throws InvalidTypeException {
         this.nomeUtente = nomeUtente;
         this.profilePicture = profilePicture;
         this.anagrafica = anagraficaProfilo;

@@ -4,17 +4,17 @@ import java.time.LocalDate;
 
 public class AnagraficaProfiloDto {
 
-    private String nome;
+    private String nome = "";
 
-    private String cognome;
+    private String cognome = "";
 
-    private LocalDate dataNascita;
+    private LocalDate dataNascita = LocalDate.now();
 
-    private String areaGeografica;
+    private String areaGeografica = "";
 
-    private String genere;
+    private String genere = "";
 
-    private String biografia;
+    private String biografia = "";
 
     public AnagraficaProfiloDto(String nome, String cognome, LocalDate dataNascita, String areaGeografica, String genere, String biografia) {
         this.nome = nome;
