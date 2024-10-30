@@ -2,8 +2,17 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import com.amplifyframework.auth.AuthUserAttribute
+import com.amplifyframework.auth.AuthUserAttributeKey
+import com.amplifyframework.auth.options.AuthSignUpOptions
+import com.amplifyframework.core.Amplify
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -11,8 +20,11 @@ import com.facebook.FacebookException
 import com.facebook.GraphRequest
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.RegistrazioneBinding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
@@ -27,6 +39,7 @@ import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezionePasswordNonSicura
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnEmailVerification
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnSkipStep
 import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
@@ -42,7 +55,7 @@ import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
+class ControllerRegistrazione : Controller<RegistrazioneBinding>(), OnEmailVerification {
 
     // ViewModel
     private val viewModel: ModelRegistrazione by activityViewModel()
@@ -148,9 +161,9 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
                             "" -> { // non esiste un account associato a questo account Facebook con questo tipo, registrati
                                 queryFacebookGraph(result.accessToken)
 
-                                scegliAssociaCreaProfilo()
+                                amplifySignUp()
 
-                                Logger.log("Facebook sign-up successful")
+                                confermaEmail(true)
                             }
 
                             else -> { // esiste un account associato a questo account Facebook con questo tipo
@@ -221,6 +234,19 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
         }
     }
 
+    @UIBuilder
+    override fun impostaOsservatori() {
+        val eccezioneObserver = Observer<Exception> { newException ->
+            if (newException.javaClass == EccezioneEmailUsata::class.java) {
+                erroreCampo(
+                    R.string.registrazione_erroreEmailGiàUsata,
+                    binding.registrazioneCampoEmail
+                )
+            }
+        }
+        viewModel.eccezione.observe(viewLifecycleOwner, eccezioneObserver)
+    }
+
     @EventHandler
     private fun clickInfoPassword() {
         MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
@@ -245,9 +271,9 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
 
         lifecycleScope.launch {
             try {
-                viewModel.validateAccount()
+                amplifySignUp()
 
-                scegliAssociaCreaProfilo()
+                confermaEmail(false)
             } catch (_: EccezioneCampiNonCompilati) {
                 erroreCampo(
                     R.string.registrazione_erroreCampiObbligatoriNonCompilati,
@@ -257,11 +283,6 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
             } catch (_: EccezioneEmailNonValida) {
                 erroreCampo(
                     R.string.registrazione_erroreFormatoEmail,
-                    binding.registrazioneCampoEmail
-                )
-            } catch (_: EccezioneEmailUsata) {
-                erroreCampo(
-                    R.string.registrazione_erroreEmailGiàUsata,
                     binding.registrazioneCampoEmail
                 )
             } catch (_: EccezionePasswordNonSicura) {
@@ -276,6 +297,72 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
                     .show()
             }
         }
+    }
+
+    private fun amplifySignUp() {
+        Amplify.Auth.signUp(
+            viewModel.email.value!!,
+            viewModel.password.value!!,
+            AuthSignUpOptions.builder().userAttributes(
+                listOf(
+                    AuthUserAttribute(AuthUserAttributeKey.birthdate(), "01/01/1970"),
+                    AuthUserAttribute(AuthUserAttributeKey.preferredUsername(), "temp"),
+                    AuthUserAttribute(AuthUserAttributeKey.givenName(), "temp"),
+                    AuthUserAttribute(AuthUserAttributeKey.familyName(), "temp")
+                )
+            ).build(),
+            {},
+            {
+                error -> Log.e("Amplify", error.message!!)
+            }
+        )
+    }
+
+    private fun confermaEmail(facebookLogin: Boolean) {
+        val viewInflated: View = LayoutInflater.from(context)
+            .inflate(R.layout.popupconfermaemail, view as ViewGroup?, false)
+        val codice: TextInputEditText = viewInflated.findViewById(R.id.popupConfermaEmail_codice)
+        val campoCodice: TextInputLayout =
+            viewInflated.findViewById(R.id.popupConfermaEmail_campoCodice)
+        val pulsante: MaterialButton = viewInflated.findViewById(R.id.popupConfermaEmail_pulsante)
+        codice.addTextChangedListener {
+            rimuoviErroreCampo(campoCodice)
+        }
+
+        val dialog = MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
+            .setTitle(getString(R.string.popupConfermaEmail_titolo))
+            .setIcon(R.drawable.icona_aiuto_arancione)
+            .setMessage(getString(R.string.popupConfermaEmail_messaggio))
+            .setView(viewInflated)
+            .setNegativeButton(getString(R.string.annulla)) { _, _ ->
+                onEmailNotConfirmed(facebookLogin)
+            }
+            .create()
+
+        pulsante.setOnClickListener {
+            if (codice.text.toString().isEmpty()) {
+                fragmentActivity.runOnUiThread {
+                    erroreCampo(R.string.popupConfermaEmail_codiceNonInserito, campoCodice)
+                }
+            } else {
+                Amplify.Auth.confirmSignUp(
+                    viewModel.email.value!!,
+                    codice.text.toString(),
+                    {
+                        dialog.dismiss()
+
+                        onEmailConfirmed(facebookLogin)
+                    },
+                    {
+                        fragmentActivity.runOnUiThread {
+                            erroreCampo(R.string.popupConfermaEmail_codiceErrato, campoCodice)
+                        }
+                    }
+                )
+            }
+        }
+
+        dialog.show()
     }
 
     private suspend fun scegliAssociaCreaProfilo() {
@@ -294,9 +381,9 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
 
     private suspend fun associaCreaProfilo(): AccountDto {
         return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
-            compratoreRepository.associaCreaProfiloCompratore(viewModel.email.value!!)
+            venditoreRepository.caricaAccountVenditore(viewModel.email.value!!)
         } else {
-            venditoreRepository.associaCreaProfiloVenditore(viewModel.email.value!!)
+            compratoreRepository.caricaAccountCompratore(viewModel.email.value!!)
         }
     }
 
@@ -336,5 +423,25 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
         )
         request.parameters = parameters
         request.executeAsync()
+    }
+
+    override fun onEmailConfirmed(facebookLogin: Boolean) {
+        Amplify.Auth.signIn(viewModel.email.value!!, viewModel.password.value!!, {}, {})
+
+        if (facebookLogin) {
+            Logger.log("Facebook sign-up successful")
+        } else {
+            viewModel.validateAccount()
+        }
+
+        lifecycleScope.launch {
+            scegliAssociaCreaProfilo()
+        }
+    }
+
+    override fun onEmailNotConfirmed(facebookLogin: Boolean) {
+        if (facebookLogin) {
+            LoginManager.getInstance().logOut()
+        }
     }
 }

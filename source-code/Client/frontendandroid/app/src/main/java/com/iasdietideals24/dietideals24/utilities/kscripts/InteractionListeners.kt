@@ -67,3 +67,8 @@ fun interface OnGoToBids {
 interface OnRefresh {
     fun onRefresh(id: Long = 0L, tipo: TipoAsta, sender: KClass<*>)
 }
+
+interface OnEmailVerification {
+    fun onEmailConfirmed(facebookLogin: Boolean)
+    fun onEmailNotConfirmed(facebookLogin: Boolean)
+}

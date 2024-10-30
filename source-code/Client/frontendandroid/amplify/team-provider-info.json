@@ -1,0 +1,33 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-frontendandroid-dev-e7b1e-authRole",
+      "UnauthRoleArn": "arn:aws:iam::806142083999:role/amplify-frontendandroid-dev-e7b1e-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::806142083999:role/amplify-frontendandroid-dev-e7b1e-authRole",
+      "Region": "eu-south-1",
+      "DeploymentBucketName": "amplify-frontendandroid-dev-e7b1e-deployment",
+      "UnauthRoleName": "amplify-frontendandroid-dev-e7b1e-unauthRole",
+      "StackName": "amplify-frontendandroid-dev-e7b1e",
+      "StackId": "arn:aws:cloudformation:eu-south-1:806142083999:stack/amplify-frontendandroid-dev-e7b1e/82b921f9-4ef0-4c9a-85c1-2f83bb622554",
+      "AmplifyAppId": "d3sjrpkzqjntng"
+    },
+    "categories": {
+      "auth": {
+        "frontendandroid3ed283b2": {
+          "userPoolId": "eu-south-1_PxNfdEzNI",
+          "userPoolName": "DietiDeals24UserPool",
+          "webClientId": "5jijmejg2uu014a1rd5urm74je",
+          "nativeClientId": "5jijmejg2uu014a1rd5urm74je",
+          "identityPoolId": "eu-south-1:6440f802-c139-4ac6-8b76-10f16cb3a76c",
+          "identityPoolName": "DietiDeals24IdentityPool",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::806142083999:role/UtenteAutenticato",
+          "authRoleName": "UtenteAutenticato",
+          "unauthRoleArn": "arn:aws:iam::806142083999:role/UtenteNonAutenticato",
+          "unauthRoleName": "UtenteNonAutenticato",
+          "facebookAppId": "345886311791288"
+        }
+      }
+    }
+  }
+}

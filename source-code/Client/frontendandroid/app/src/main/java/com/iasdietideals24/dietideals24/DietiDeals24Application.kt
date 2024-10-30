@@ -3,7 +3,6 @@ package com.iasdietideals24.dietideals24
 import android.app.Application
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
 import com.amplifyframework.core.Amplify
-import com.amplifyframework.core.configuration.AmplifyOutputs
 import com.iasdietideals24.dietideals24.utilities.kscripts.adapterModule
 import com.iasdietideals24.dietideals24.utilities.kscripts.comparatorsModule
 import com.iasdietideals24.dietideals24.utilities.kscripts.facebookModule
@@ -33,6 +32,6 @@ class DietiDeals24Application : Application() {
         }
 
         Amplify.addPlugin(AWSCognitoAuthPlugin())
-        Amplify.configure(AmplifyOutputs(R.raw.amplify_outputs), applicationContext)
+        Amplify.configure(applicationContext)
     }
 }

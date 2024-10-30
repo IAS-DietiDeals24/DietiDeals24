@@ -208,9 +208,9 @@ class ControllerAccesso : Controller<AccessoBinding>() {
             viewModel.tipoAccount.value = CurrentUser.tipoAccount
 
             try {
-                viewModel.validate()
-
                 Amplify.Auth.signIn(viewModel.email.value!!, viewModel.password.value!!, {}, {})
+
+                viewModel.validate()
 
                 val returned: Account = withContext(Dispatchers.IO) { accedi().toAccount() }
 

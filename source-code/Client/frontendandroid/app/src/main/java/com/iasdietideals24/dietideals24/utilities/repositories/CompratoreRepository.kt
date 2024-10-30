@@ -26,12 +26,4 @@ class CompratoreRepository(private val service: CompratoreService) {
     suspend fun caricaAccountCompratore(accountEmail: String): CompratoreDto {
         return service.caricaAccountCompratore(accountEmail).body() ?: CompratoreDto()
     }
-
-    suspend fun esisteEmailCompratore(accountEmail: String): Boolean {
-        return service.esisteEmailCompratore(accountEmail).body() ?: false
-    }
-
-    suspend fun associaCreaProfiloCompratore(accountEmail: String): CompratoreDto {
-        return service.associaCreaProfiloCompratore(accountEmail).body() ?: CompratoreDto()
-    }
 }

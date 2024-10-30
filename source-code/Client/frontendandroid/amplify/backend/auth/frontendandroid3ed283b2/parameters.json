@@ -1,0 +1,31 @@
+{
+  "authSelections": "identityPoolAndUserPool",
+  "resourceName": "frontendandroid3ed283b2",
+  "serviceType": "imported",
+  "region": "eu-south-1",
+  "usernameAttributes": [
+    "email"
+  ],
+  "authProvidersUserPool": [
+    "Facebook"
+  ],
+  "requiredAttributes": [
+    "birthdate",
+    "preferred_username",
+    "email",
+    "given_name",
+    "family_name"
+  ],
+  "passwordPolicyMinLength": 8,
+  "passwordPolicyCharacters": [
+    "Requires Lowercase",
+    "Requires Uppercase",
+    "Requires Numbers",
+    "Requires Symbols"
+  ],
+  "mfaConfiguration": "OFF",
+  "autoVerifiedAttributes": [
+    "email"
+  ],
+  "mfaTypes": []
+}

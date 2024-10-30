@@ -233,4 +233,10 @@
     <string name="elimina_titoloConfermaElimina">Conferma eliminazione</string>
     <string name="elimina_testoConfermaElimina">Confermi di voler eliminare questa asta? Non sarai più in grado di ripristinarla.</string>
     <string name="responseError">Errore</string>
+    <string name="popupConfermaEmail_accessibilitàCodice">Codice</string>
+    <string name="popupConfermaEmail_pulsante">Controlla</string>
+    <string name="popupConfermaEmail_titolo">Verifica email</string>
+    <string name="popupConfermaEmail_messaggio">Inserisci il codice che ti è stato inviato via email.</string>
+    <string name="popupConfermaEmail_codiceNonInserito">Non hai inserito nessun codice.</string>
+    <string name="popupConfermaEmail_codiceErrato">Il codice non è valido. Per favore, riprova.</string>
 </resources>

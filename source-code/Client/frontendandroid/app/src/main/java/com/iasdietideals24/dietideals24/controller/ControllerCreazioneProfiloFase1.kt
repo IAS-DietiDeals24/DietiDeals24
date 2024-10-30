@@ -5,6 +5,7 @@ import android.icu.util.Calendar
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import com.amplifyframework.core.Amplify
 import com.facebook.AccessToken
 import com.facebook.login.LoginManager
 import com.google.android.material.datepicker.CalendarConstraints
@@ -106,8 +107,17 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
                 binding.creazioneProfiloFase1DataNascita.setText("")
         }
         viewModel.dataNascita.observe(viewLifecycleOwner, dataNascitaObserver)
-    }
 
+        val eccezioneObserver = Observer<Exception> { newException ->
+            if (newException.javaClass == EccezioneNomeUtenteUsato::class.java) {
+                erroreCampo(
+                    R.string.registrazione_erroreNomeUtenteGiàUsato,
+                    binding.creazioneProfiloFase1CampoNomeUtente
+                )
+            }
+        }
+        viewModel.eccezione.observe(viewLifecycleOwner, eccezioneObserver)
+    }
 
     @EventHandler
     private fun clickIndietro() {
@@ -115,6 +125,8 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
         if (accessToken != null && !accessToken.isExpired) {
             LoginManager.getInstance().logOut()
         }
+
+        Amplify.Auth.deleteUser({}, {})
 
         listenerBackButton?.onBackButton()
     }
@@ -138,11 +150,6 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
                     binding.creazioneProfiloFase1CampoNome,
                     binding.creazioneProfiloFase1CampoCognome,
                     binding.creazioneProfiloFase1CampoDataNascita
-                )
-            } catch (_: EccezioneNomeUtenteUsato) {
-                erroreCampo(
-                    R.string.registrazione_erroreNomeUtenteGiàUsato,
-                    binding.creazioneProfiloFase1CampoNomeUtente
                 )
             } catch (_: Exception) {
                 Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)

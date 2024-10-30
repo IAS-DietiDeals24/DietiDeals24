@@ -5,8 +5,8 @@ import android.content.Context
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import com.amplifyframework.auth.AuthUserAttribute
 import com.amplifyframework.auth.AuthUserAttributeKey
-import com.amplifyframework.auth.options.AuthSignUpOptions
 import com.amplifyframework.core.Amplify
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
@@ -104,25 +104,7 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
     private fun clickFine() {
         lifecycleScope.launch {
             try {
-                Amplify.Auth.signUp(
-                    viewModel.email.value!!,
-                    viewModel.password.value!!,
-                    AuthSignUpOptions.builder()
-                        .userAttribute(
-                            AuthUserAttributeKey.birthdate(),
-                            viewModel.dataNascita.value.toString()
-                        )
-                        .userAttribute(
-                            AuthUserAttributeKey.preferredUsername(),
-                            viewModel.nomeUtente.value!!
-                        )
-                        .userAttribute(AuthUserAttributeKey.email(), viewModel.email.value!!)
-                        .userAttribute(AuthUserAttributeKey.givenName(), viewModel.nome.value!!)
-                        .userAttribute(AuthUserAttributeKey.familyName(), viewModel.cognome.value!!)
-                        .build(),
-                    {},
-                    {}
-                )
+                amplifyUpdateAttributes()
 
                 val account: Account =
                     withContext(Dispatchers.IO) { creazioneAccount().toAccount() }
@@ -143,6 +125,29 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
                     .show()
             }
         }
+    }
+
+    private fun amplifyUpdateAttributes() {
+        Amplify.Auth.updateUserAttributes(
+            listOf(
+                AuthUserAttribute(
+                    AuthUserAttributeKey.birthdate(),
+                    viewModel.dataNascita.value.toString()
+                ),
+                AuthUserAttribute(
+                    AuthUserAttributeKey.preferredUsername(),
+                    viewModel.nomeUtente.value!!
+                ),
+                AuthUserAttribute(AuthUserAttributeKey.email(), viewModel.email.value!!),
+                AuthUserAttribute(AuthUserAttributeKey.givenName(), viewModel.nome.value!!),
+                AuthUserAttribute(
+                    AuthUserAttributeKey.familyName(),
+                    viewModel.cognome.value!!
+                )
+            ),
+            {},
+            {}
+        )
     }
 
     private suspend fun creazioneAccount(): PutProfiloDto {

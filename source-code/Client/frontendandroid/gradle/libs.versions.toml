@@ -11,20 +11,21 @@ facebook-login = "17.0.2"
 coil = "2.7.0"
 datastore-preferences = "1.1.1"
 commons-text = "1.12.0"
-gradle = "8.7.1"
+gradle = "8.7.2"
 navigation-fragment-ktx = "2.8.3"
 navigation-ui-ktx = "2.8.3"
-lifecycle-common-jvm = "2.8.6"
+lifecycle-common-jvm = "2.8.7"
 firebase-analytics = "22.1.2"
-kotlin-reflect = "2.0.20"
+kotlin-reflect = "2.0.21"
 firebase-perf = "21.0.2"
 paging-runtime-ktx = "3.3.2"
 koin = "4.0.0"
-aws-auth-cognito = "2.23.0"
+amplify = "2.24.0"
+aws-auth-cognito = "2.24.0"
 desugar = "2.1.2"
 
 # Plugin
-android-application = "8.7.1"
+android-application = "8.7.2"
 jetbrains-kotlin-android = "2.0.21"
 androidx-navigation-safeargs-kotlin = "2.8.3"
 google-services = "4.4.2"
@@ -52,6 +53,7 @@ kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", vers
 firebase-perf = { group = "com.google.firebase", name = "firebase-perf", version.ref = "firebase-perf" }
 paging-runtime-ktx = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "paging-runtime-ktx" }
 koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+amplify = { group = "com.amplifyframework", name = "core", version.ref = "amplify" }
 aws-auth-cognito = { group = "com.amplifyframework", name = "aws-auth-cognito", version.ref = "aws-auth-cognito" }
 desugar = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar" }
 

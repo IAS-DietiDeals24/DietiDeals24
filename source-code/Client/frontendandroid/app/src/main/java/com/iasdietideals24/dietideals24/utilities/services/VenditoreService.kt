@@ -56,25 +56,4 @@ interface VenditoreService : Service {
     suspend fun caricaAccountVenditore(
         @Path("email") accountEmail: String,
     ): Response<VenditoreDto>
-
-    /**
-     * Il metodo controlla se l'email è già associata a un account venditore.
-     * @param accountEmail Email dell'account che sta tentando di registrarsi.
-     * @return Un [Boolean] che indica se l'email è già associata a un account dello stesso tipo.
-     */
-    @GET("accounts/venditori/{email}/exists")
-    suspend fun esisteEmailVenditore(
-        @Path("email") accountEmail: String,
-    ): Response<Boolean>
-
-    /**
-     * Il metodo controlla se l'email che si sta usando per creare l'account venditore è già associato
-     * a un account di tipo compratore.
-     * @param accountEmail Email dell'account che sta tentando di registrarsi.
-     * @return Un [Boolean] che indica se l'email è già associata a un account di tipo diverso.
-     */
-    @GET("accounts/venditori/{email}")
-    suspend fun associaCreaProfiloVenditore(
-        @Path("email") accountEmail: String,
-    ): Response<VenditoreDto>
 }

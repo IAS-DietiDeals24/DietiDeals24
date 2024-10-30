@@ -8,8 +8,8 @@ class ProfiloRepository(private val service: ProfiloService) {
         return service.caricaProfiloDaAccount(accountEmail).body() ?: ProfiloDto()
     }
 
-    suspend fun esisteNomeUtente(nomeUtente: String): Boolean {
-        return service.esisteNomeUtente(nomeUtente).body() ?: false
+    suspend fun caricaProfilo(nomeUtente: String): ProfiloDto {
+        return service.caricaProfilo(nomeUtente).body() ?: ProfiloDto()
     }
 
     suspend fun aggiornaProfilo(profilo: ProfiloDto, nomeUtente: String): ProfiloDto {

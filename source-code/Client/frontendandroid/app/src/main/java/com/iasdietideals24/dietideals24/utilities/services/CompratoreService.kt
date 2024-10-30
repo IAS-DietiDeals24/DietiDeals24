@@ -56,25 +56,4 @@ interface CompratoreService : Service {
     suspend fun caricaAccountCompratore(
         @Path("email") accountEmail: String,
     ): Response<CompratoreDto>
-
-    /**
-     * Il metodo controlla se l'email è già associata a un account compratore.
-     * @param accountEmail Email dell'account che sta tentando di registrarsi.
-     * @return Un [Boolean] che indica se l'email è già associata a un account dello stesso tipo.
-     */
-    @GET("accounts/compratori/{email}/exists")
-    suspend fun esisteEmailCompratore(
-        @Path("email") accountEmail: String,
-    ): Response<Boolean>
-
-    /**
-     * Il metodo controlla se l'email che si sta usando per creare l'account compratore è già associato
-     * a un account di tipo venditore.
-     * @param accountEmail Email dell'account che sta tentando di registrarsi.
-     * @return Un [Boolean] che indica se l'email è già associata a un account di tipo diverso.
-     */
-    @GET("accounts/compratori/{email}")
-    suspend fun associaCreaProfiloCompratore(
-        @Path("email") accountEmail: String,
-    ): Response<CompratoreDto>
 }

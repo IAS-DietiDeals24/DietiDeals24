@@ -20,14 +20,14 @@ interface ProfiloService : Service {
     ): Response<ProfiloDto>
 
     /**
-     * Il metodo controlla se il nome utente è già associata a un profilo.
-     * @param nomeUtente Nome utente del profilo che sta tentando di registrarsi.
-     * @return Un [Boolean] che indica se il nome utente è già associato a un profilo.
+     * Il metodo recupera il profilo con il nome utente specificato.
+     * @param nomeUtente Nome utente del profilo che si vuole recuperare.
+     * @return [ProfiloDto] richiesto. Se non esiste, viene restituito un profilo vuoto.
      */
-    @GET("profili/{nomeUtente}/exists")
-    suspend fun esisteNomeUtente(
+    @GET("profili/{nomeUtente}")
+    suspend fun caricaProfilo(
         @Path("nomeUtente") nomeUtente: String,
-    ): Response<Boolean>
+    ): Response<ProfiloDto>
 
     /**
      * Aggiorna i dati di un profilo.

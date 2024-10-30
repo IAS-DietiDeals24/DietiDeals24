@@ -149,6 +149,13 @@ class ModelRegistrazione(
     val linkX: MutableLiveData<String>
         get() = _linkX
 
+    private val _eccezione: MutableLiveData<Exception> by lazy {
+        MutableLiveData<Exception>(Exception())
+    }
+
+    val eccezione: MutableLiveData<Exception>
+        get() = _eccezione
+
     fun clear() {
         _facebookAccountID.value = ""
         _email.value = ""
@@ -265,7 +272,7 @@ class ModelRegistrazione(
             val returned = withContext(Dispatchers.IO) { esisteEmail() }
 
             if (returned)
-                throw EccezioneEmailUsata("Email già usata.")
+                eccezione.value = EccezioneEmailUsata("Email già usata.")
         }
     }
 
@@ -283,9 +290,9 @@ class ModelRegistrazione(
 
     private suspend fun esisteEmail(): Boolean {
         return if (tipoAccount.value == TipoAccount.COMPRATORE)
-            compratoreRepository.esisteEmailCompratore(email.value!!)
+            compratoreRepository.caricaAccountCompratore(email.value!!).email.isNotEmpty()
         else
-            venditoreRepository.esisteEmailVenditore(email.value!!)
+            venditoreRepository.caricaAccountVenditore(email.value!!).email.isNotEmpty()
     }
 
     @Validation
@@ -298,12 +305,12 @@ class ModelRegistrazione(
             val returned = withContext(Dispatchers.IO) { esisteNomeUtente() }
 
             if (returned)
-                throw EccezioneNomeUtenteUsato("Nome utente già usato.")
+                eccezione.value = EccezioneNomeUtenteUsato("Nome utente già usato.")
         }
     }
 
     private suspend fun esisteNomeUtente(): Boolean {
-        return profiloRepository.esisteNomeUtente(nomeUtente.value!!)
+        return profiloRepository.caricaProfilo(nomeUtente.value!!).nomeUtente.isNotEmpty()
     }
 
     @Validation

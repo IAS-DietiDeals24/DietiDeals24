@@ -25,12 +25,4 @@ class VenditoreRepository(private val service: VenditoreService) {
     suspend fun caricaAccountVenditore(accountEmail: String): VenditoreDto {
         return service.caricaAccountVenditore(accountEmail).body() ?: VenditoreDto()
     }
-
-    suspend fun esisteEmailVenditore(accountEmail: String): Boolean {
-        return service.esisteEmailVenditore(accountEmail).body() ?: false
-    }
-
-    suspend fun associaCreaProfiloVenditore(accountEmail: String): VenditoreDto {
-        return service.associaCreaProfiloVenditore(accountEmail).body() ?: VenditoreDto()
-    }
 }
