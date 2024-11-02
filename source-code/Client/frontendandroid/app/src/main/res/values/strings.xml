@@ -249,4 +249,6 @@
     <string name="popupConfermaEmail_messaggio">Insert the code that was sent to your email.</string>
     <string name="popupConfermaEmail_codiceNonInserito">No code inserted.</string>
     <string name="popupConfermaEmail_codiceErrato">The code is invalid. Please, retry.</string>
+    <string name="maschio">Male</string>
+    <string name="femmina">Female</string>
 </resources>

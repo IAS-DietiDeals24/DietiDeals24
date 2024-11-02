@@ -19,7 +19,7 @@ import org.hibernate.annotations.Check;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Entity(name = "asta_inversa")
 @Check(constraints = "soglia_iniziale >= 0")
 public class AstaInversa extends AstaDiCompratore {
     @NonNull

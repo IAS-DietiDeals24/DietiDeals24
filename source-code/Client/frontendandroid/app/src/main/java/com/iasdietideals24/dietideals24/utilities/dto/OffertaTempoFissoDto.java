@@ -22,6 +22,10 @@ public class OffertaTempoFissoDto extends OffertaDiCompratoreDto {
     public OffertaTempoFissoDto() {
     }
 
+    public AstaShallowDto getAstaRiferimentoShallow() {
+        return this.astaRiferimentoShallow;
+    }
+
     public Offerta toOfferta() {
         return new Offerta(
                 idOfferta,

@@ -19,4 +19,8 @@ public abstract class AstaDiCompratoreDto extends AstaDto {
 
     public AstaDiCompratoreDto() {
     }
+
+    public AccountShallowDto getProprietarioShallow() {
+        return this.proprietarioShallow;
+    }
 }

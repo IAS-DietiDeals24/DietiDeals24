@@ -15,7 +15,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Entity(name = "categoria_asta")
 public class CategoriaAsta {
     @Id
     @NonNull

@@ -33,4 +33,8 @@ public class AstaTempoFissoDto extends AstaDiVenditoreDto {
     public Asta toAsta() {
         return new Asta(idAsta, proprietarioShallow.getEmail(), TipoAsta.INVERSA, dataScadenza, oraScadenza, sogliaMinima, immagine, nome, CategoriaAsta.valueOf(categoriaShallow.getNome()), descrizione);
     }
+
+    public BigDecimal getSogliaMinima() {
+        return this.sogliaMinima;
+    }
 }

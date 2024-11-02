@@ -6,4 +6,8 @@ public class NotificaShallowDto {
 
     public NotificaShallowDto() {
     }
+
+    public Long getIdNotifica() {
+        return this.idNotifica;
+    }
 }

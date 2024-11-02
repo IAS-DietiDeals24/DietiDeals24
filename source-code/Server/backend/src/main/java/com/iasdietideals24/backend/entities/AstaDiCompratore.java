@@ -10,7 +10,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Entity(name = "asta_di_compratore")
 public abstract class AstaDiCompratore extends Asta {
     @ManyToOne
     @JoinColumn(name = "compratore_email", nullable = false)

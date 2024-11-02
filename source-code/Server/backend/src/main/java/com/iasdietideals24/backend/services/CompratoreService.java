@@ -14,7 +14,11 @@ public interface CompratoreService {
 
     Page<CompratoreDto> findAll(Pageable pageable);
 
+    Optional<CompratoreDto> findByIdFacebook(String email);
+
     Optional<CompratoreDto> findOne(String email);
+
+    Optional<CompratoreDto> findOneWithPassword(String email, String password);
 
     boolean isExists(String email);
 

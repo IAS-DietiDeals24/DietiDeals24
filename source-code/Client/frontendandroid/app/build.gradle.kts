@@ -72,5 +72,6 @@ dependencies {
     implementation(libs.kotlin.reflect)
     implementation(libs.amplify)
     implementation(libs.aws.auth.cognito)
+    implementation(libs.jackson.datatype.jsr310)
     coreLibraryDesugaring(libs.desugar)
 }

@@ -1,5 +1,7 @@
 package com.iasdietideals24.dietideals24.utilities.tools
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.iasdietideals24.dietideals24.utilities.services.Service
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -10,11 +12,13 @@ object RetrofitController {
         .addInterceptor(HeaderInterceptor)
         .build()
 
+    val objectMapper: ObjectMapper = ObjectMapper().registerModule(JavaTimeModule())
+
     inline fun <reified T : Service> service(): T {
         return Retrofit.Builder()
             .baseUrl("http://ec2-15-160-144-38.eu-south-1.compute.amazonaws.com:55501")
             .client(okHttpClient)
-            .addConverterFactory(JacksonConverterFactory.create())
+            .addConverterFactory(JacksonConverterFactory.create(objectMapper))
             .build()
             .create(T::class.java)
     }

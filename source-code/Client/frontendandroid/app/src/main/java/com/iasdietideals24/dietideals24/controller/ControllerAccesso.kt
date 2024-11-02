@@ -5,10 +5,10 @@ import android.content.Context
 import android.os.Bundle
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
-import com.amplifyframework.core.Amplify
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
+import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
@@ -97,7 +97,7 @@ class ControllerAccesso : Controller<AccessoBinding>() {
         binding.accessoPulsanteAccedi.setOnClickListener { clickAccedi() }
 
         binding.accessoPulsanteFacebook.permissions = listOf(
-            "email", "public_profile", "user_birthday",
+            "openid", "email", "public_profile", "user_birthday",
             "user_gender", "user_link", "user_location"
         )
         binding.accessoPulsanteFacebook.authType = "rerequest"
@@ -124,22 +124,28 @@ class ControllerAccesso : Controller<AccessoBinding>() {
                         val returned: Account =
                             withContext(Dispatchers.IO) { accountFacebook(result).toAccount() }
 
-                        when (returned.facebookId) {
+                        when (returned.idFacebook) {
                             // non esiste un account associato a questo account Facebook con questo tipo
-                            "" -> Snackbar.make(
-                                fragmentView,
-                                R.string.accesso_noAccountFacebookCollegato,
-                                Snackbar.LENGTH_SHORT
-                            )
-                                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                                .setTextColor(resources.getColor(R.color.grigio, null))
-                                .show()
+                            "" -> {
+                                Snackbar.make(
+                                    fragmentView,
+                                    R.string.accesso_noAccountFacebookCollegato,
+                                    Snackbar.LENGTH_SHORT
+                                )
+                                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                                    .setTextColor(resources.getColor(R.color.grigio, null))
+                                    .show()
+
+                                LoginManager.getInstance().logOut()
+                            }
 
                             // esiste un account associato a questo account Facebook con questo tipo, accedi
                             else -> {
                                 Logger.log("Facebook sign-in successful")
 
                                 CurrentUser.id = returned.email
+
+                                accediAmplify(returned.email, returned.password)
 
                                 accessoAccountManager()
 
@@ -208,8 +214,6 @@ class ControllerAccesso : Controller<AccessoBinding>() {
             viewModel.tipoAccount.value = CurrentUser.tipoAccount
 
             try {
-                Amplify.Auth.signIn(viewModel.email.value!!, viewModel.password.value!!, {}, {})
-
                 viewModel.validate()
 
                 val returned: Account = withContext(Dispatchers.IO) { accedi().toAccount() }
@@ -221,6 +225,8 @@ class ControllerAccesso : Controller<AccessoBinding>() {
                         Logger.log("Sign-in successful")
 
                         CurrentUser.id = returned.email
+
+                        accediAmplify(returned.email, returned.password)
 
                         accessoAccountManager()
 

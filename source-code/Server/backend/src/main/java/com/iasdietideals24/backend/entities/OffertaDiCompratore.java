@@ -11,7 +11,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Entity(name = "offerta_di_compratore")
 public abstract class OffertaDiCompratore extends Offerta {
     @ManyToOne
     @JoinColumn(name = "compratore_email", nullable = false)

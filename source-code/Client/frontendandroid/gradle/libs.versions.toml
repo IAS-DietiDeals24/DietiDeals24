@@ -23,6 +23,7 @@ koin = "4.0.0"
 amplify = "2.24.0"
 aws-auth-cognito = "2.24.0"
 desugar = "2.1.2"
+jackson-datatype-jsr310 = "2.18.1"
 
 # Plugin
 android-application = "8.7.2"
@@ -56,6 +57,7 @@ koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 amplify = { group = "com.amplifyframework", name = "core", version.ref = "amplify" }
 aws-auth-cognito = { group = "com.amplifyframework", name = "aws-auth-cognito", version.ref = "aws-auth-cognito" }
 desugar = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar" }
+jackson-datatype-jsr310 = { group = "com.fasterxml.jackson.datatype", name = "jackson-datatype-jsr310", version.ref = "jackson-datatype-jsr310"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-application" }

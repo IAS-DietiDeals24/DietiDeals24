@@ -33,4 +33,8 @@ public class AstaInversaDto extends AstaDiCompratoreDto {
     public Asta toAsta() {
         return new Asta(idAsta, proprietarioShallow.getEmail(), TipoAsta.INVERSA, dataScadenza, oraScadenza, sogliaIniziale, immagine, nome, CategoriaAsta.valueOf(categoriaShallow.getNome()), descrizione);
     }
+
+    public BigDecimal getSogliaIniziale() {
+        return this.sogliaIniziale;
+    }
 }

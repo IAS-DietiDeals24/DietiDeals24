@@ -37,9 +37,26 @@ public class VenditoreController {
         return new ResponseEntity<>(foundVenditoriDto, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/accounts/venditori/facebook/{idFacebook}")
+    public ResponseEntity<VenditoreDto> getVenditoreFacebook(@PathVariable("idFacebook") String idFacebook) {
+        Optional<VenditoreDto> foundVenditoreDto = venditoreService.findByIdFacebook(idFacebook);
+        if (foundVenditoreDto.isPresent()) {
+            return new ResponseEntity<>(foundVenditoreDto.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping(path = "/accounts/venditori/{email}")
-    public ResponseEntity<VenditoreDto> getVenditore(@PathVariable("email") String email) {
-        Optional<VenditoreDto> foundVenditoreDto = venditoreService.findOne(email);
+    public ResponseEntity<VenditoreDto> getVenditore(
+            @PathVariable("email") String email,
+            @RequestParam(name = "password", required = false, defaultValue = "") String password
+    ) {
+        Optional<VenditoreDto> foundVenditoreDto;
+        if (password.isEmpty())
+            foundVenditoreDto = venditoreService.findOne(email);
+        else
+            foundVenditoreDto = venditoreService.findOneWithPassword(email, password);
         if (foundVenditoreDto.isPresent()) {
             return new ResponseEntity<>(foundVenditoreDto.get(), HttpStatus.OK);
         } else {

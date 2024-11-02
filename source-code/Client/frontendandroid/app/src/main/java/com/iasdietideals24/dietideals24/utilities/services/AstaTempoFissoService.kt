@@ -7,7 +7,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
-import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -32,7 +32,7 @@ interface AstaTempoFissoService : Service {
      * @param asta Wrapper con le informazioni necessarie a creare l'asta.
      * @return [AstaTempoFissoDto] appena creata. Se non è stata creata, viene restituita un'asta vuota.
      */
-    @POST("aste/di-venditori/tempo-fisso")
+    @PUT("aste/di-venditori/tempo-fisso")
     suspend fun creaAstaTempoFisso(
         @Body asta: AstaTempoFissoDto
     ): Response<AstaTempoFissoDto>

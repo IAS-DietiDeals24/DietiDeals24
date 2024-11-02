@@ -5,7 +5,7 @@ import com.iasdietideals24.dietideals24.utilities.tools.Page
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Query
 
 interface OffertaInversaService : Service {
@@ -38,7 +38,7 @@ interface OffertaInversaService : Service {
      * @param idAsta Identificativo dell'asta alla quale inviare l'offerta.
      * @return [OffertaInversaDto] appena inviata. Se non è stata inviata, viene restituita un'offerta vuota.
      */
-    @POST("offerte/di-compratori/inverse")
+    @PUT("offerte/di-compratori/inverse")
     suspend fun inviaOffertaInversa(
         @Body offerta: OffertaInversaDto,
         @Query("idAsta") idAsta: Long

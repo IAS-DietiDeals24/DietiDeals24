@@ -11,10 +11,10 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Entity(name = "offerta_tempo_fisso")
 public class OffertaTempoFisso extends OffertaDiCompratore {
     @ManyToOne
-    @JoinColumn(name = "asta_tempofisso_id_asta", nullable = false)
+    @JoinColumn(name = "asta_tempo_fisso_id_asta", nullable = false)
     @NonNull
     private AstaTempoFisso astaRiferimento;
 

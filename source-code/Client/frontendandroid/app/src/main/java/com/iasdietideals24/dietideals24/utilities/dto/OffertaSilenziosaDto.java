@@ -17,7 +17,6 @@ public class OffertaSilenziosaDto extends OffertaDiCompratoreDto {
 
     private AstaShallowDto astaRiferimentoShallow = new AstaShallowDto();
 
-
     public OffertaSilenziosaDto(Long idOfferta, LocalDate dataInvio, LocalTime oraInvio, BigDecimal valore, AccountShallowDto compratoreCollegatoShallow, String stato, AstaShallowDto astaRiferimentoShallow) {
         super(idOfferta, dataInvio, oraInvio, valore, compratoreCollegatoShallow);
         this.stato = stato;
@@ -25,6 +24,14 @@ public class OffertaSilenziosaDto extends OffertaDiCompratoreDto {
     }
 
     public OffertaSilenziosaDto() {
+    }
+
+    public String getStato() {
+        return this.stato;
+    }
+
+    public AstaShallowDto getAstaRiferimentoShallow() {
+        return this.astaRiferimentoShallow;
     }
 
     public Offerta toOfferta() {

@@ -73,6 +73,24 @@ public class VenditoreServiceImpl implements VenditoreService {
     }
 
     @Override
+    public Optional<VenditoreDto> findByIdFacebook(String idFacebook) {
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        Optional<Venditore> foundVenditore = venditoreRepository.findByTokensIdFacebook(idFacebook);
+
+        return foundVenditore.map(venditoreMapper::toDto);
+    }
+
+    @Override
+    public Optional<VenditoreDto> findOneWithPassword(String email, String password) {
+
+        // Recuperiamo l'entità con l'id e password passati per parametro
+        Optional<Venditore> foundVenditore = venditoreRepository.findByEmailAndPassword(email, password);
+
+        return foundVenditore.map(venditoreMapper::toDto);
+    }
+
+    @Override
     public boolean isExists(String email) {
 
         // Verifichiamo che esista un'entità con l'id passato per parametro

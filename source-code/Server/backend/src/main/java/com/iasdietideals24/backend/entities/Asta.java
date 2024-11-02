@@ -15,7 +15,7 @@ import org.hibernate.annotations.Check;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Entity(name = "asta")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Check(constraints = "data_scadenza > NOW()")
 public abstract class Asta {

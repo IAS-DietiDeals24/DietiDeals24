@@ -32,6 +32,22 @@ public class ProfiloDto {
     public ProfiloDto() {
     }
 
+    public byte[] getProfilePicture() {
+        return this.profilePicture;
+    }
+
+    public AnagraficaProfiloDto getAnagrafica() {
+        return this.anagrafica;
+    }
+
+    public LinksProfiloDto getLinks() {
+        return this.links;
+    }
+
+    public Set<AccountShallowDto> getAccountsShallow() {
+        return this.accountsShallow;
+    }
+
     public Profilo toProfilo() {
         return new Profilo(
                 accountsShallow.stream().findFirst().orElse(new AccountShallowDto()).getEmail(),

@@ -13,7 +13,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Entity(name = "offerta_silenziosa")
 public class OffertaSilenziosa extends OffertaDiCompratore {
     @Enumerated(EnumType.STRING)
     @NonNull

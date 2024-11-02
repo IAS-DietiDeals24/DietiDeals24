@@ -3,7 +3,6 @@ package com.iasdietideals24.dietideals24.controller
 import android.accounts.AccountManager
 import android.content.Context
 import androidx.lifecycle.lifecycleScope
-import com.amplifyframework.core.Amplify
 import com.facebook.AccessToken
 import com.facebook.LoginStatusCallback
 import com.facebook.login.LoginManager.Companion.getInstance
@@ -117,13 +116,13 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
             if (email != "" && password != "" && tipoAccount != "") {
                 lifecycleScope.launch {
                     try {
-                        Amplify.Auth.signIn(email, password, {}, {})
-
                         val returned: Account =
                             withContext(Dispatchers.IO) { accedi(email, password).toAccount() }
 
                         if (returned.email != "") {
                             CurrentUser.id = returned.email
+
+                            accediAmplify(email, password)
 
                             changeActivityListener?.onChangeActivity(Home::class.java)
                         }

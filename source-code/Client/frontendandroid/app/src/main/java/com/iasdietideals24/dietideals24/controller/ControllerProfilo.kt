@@ -6,7 +6,6 @@ import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import coil.load
-import com.amplifyframework.core.Amplify
 import com.facebook.login.LoginManager
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
@@ -185,7 +184,7 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
         LoginManager.getInstance().logOut()
 
         // Esci da Cognito
-        Amplify.Auth.signOut { CurrentUser.accessToken = "" }
+        esciAmplify()
 
         // Esci dall'account nell'AccountManager
         val accountManager = AccountManager.get(context)

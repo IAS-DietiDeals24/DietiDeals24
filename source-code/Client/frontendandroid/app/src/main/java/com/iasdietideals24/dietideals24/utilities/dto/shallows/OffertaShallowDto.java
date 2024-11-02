@@ -15,4 +15,12 @@ public class OffertaShallowDto {
     public void setIdOfferta(Long idOfferta) {
         this.idOfferta = idOfferta;
     }
+
+    public String getTipoOffertaPerAccount() {
+        return this.tipoOffertaPerAccount;
+    }
+
+    public String getTipoOffertaSpecifica() {
+        return this.tipoOffertaSpecifica;
+    }
 }

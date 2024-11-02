@@ -22,6 +22,10 @@ public class OffertaInversaDto extends OffertaDiVenditoreDto {
     public OffertaInversaDto() {
     }
 
+    public AstaShallowDto getAstaRiferimentoShallow() {
+        return this.astaRiferimentoShallow;
+    }
+
     public Offerta toOfferta() {
         return new Offerta(
                 idOfferta,

@@ -15,7 +15,7 @@ import org.hibernate.annotations.Check;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Entity(name = "notifica")
 @Check(constraints = "data_invio <= NOW()")
 public class Notifica {
     @Id
@@ -43,7 +43,7 @@ public class Notifica {
     private Account mittente;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "destinatari",
+    @JoinTable(name = "destinatario",
             joinColumns = {@JoinColumn(name = "notifica_id_notifica", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "account_email", nullable = false)})
     @NonNull

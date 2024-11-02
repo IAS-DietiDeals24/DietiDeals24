@@ -5,9 +5,6 @@ import android.content.Context
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import com.amplifyframework.auth.AuthUserAttribute
-import com.amplifyframework.auth.AuthUserAttributeKey
-import com.amplifyframework.core.Amplify
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.Home
@@ -20,8 +17,8 @@ import com.iasdietideals24.dietideals24.utilities.dto.exceptional.PutProfiloDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
-import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
-import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
+import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
+import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
@@ -36,8 +33,7 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
     private val viewModel: ModelRegistrazione by activityViewModel()
 
     // Services
-    private val compratoreRepository: CompratoreRepository by inject()
-    private val venditoreRepository: VenditoreRepository by inject()
+    private val profiloRepository: ProfiloRepository by inject()
 
     // Listeners
     private var listenerBackButton: OnBackButton? = null
@@ -104,8 +100,6 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
     private fun clickFine() {
         lifecycleScope.launch {
             try {
-                amplifyUpdateAttributes()
-
                 val account: Account =
                     withContext(Dispatchers.IO) { creazioneAccount().toAccount() }
 
@@ -113,6 +107,17 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
                     Logger.log("Profile creation successful")
 
                     CurrentUser.id = account.email
+
+                    aggiornaAttributiAmplify(
+                        mapOf(
+                            "email" to viewModel.email.value!!,
+                            "password" to viewModel.password.value!!,
+                            "dataNascita" to viewModel.dataNascita.value!!.toLocalStringShort(),
+                            "nomeUtente" to viewModel.nomeUtente.value!!,
+                            "nome" to viewModel.nome.value!!,
+                            "cognome" to viewModel.cognome.value!!
+                        )
+                    )
 
                     registrazioneAccountManager()
 
@@ -127,38 +132,15 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
         }
     }
 
-    private fun amplifyUpdateAttributes() {
-        Amplify.Auth.updateUserAttributes(
-            listOf(
-                AuthUserAttribute(
-                    AuthUserAttributeKey.birthdate(),
-                    viewModel.dataNascita.value.toString()
-                ),
-                AuthUserAttribute(
-                    AuthUserAttributeKey.preferredUsername(),
-                    viewModel.nomeUtente.value!!
-                ),
-                AuthUserAttribute(AuthUserAttributeKey.email(), viewModel.email.value!!),
-                AuthUserAttribute(AuthUserAttributeKey.givenName(), viewModel.nome.value!!),
-                AuthUserAttribute(
-                    AuthUserAttributeKey.familyName(),
-                    viewModel.cognome.value!!
-                )
-            ),
-            {},
-            {}
-        )
-    }
-
     private suspend fun creazioneAccount(): PutProfiloDto {
         return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
-            compratoreRepository.creazioneAccountCompratore(
-                viewModel.email.value!!,
+            profiloRepository.creazioneAccountProfilo(
+                viewModel.nomeUtente.value!!,
                 viewModel.toAccountCompratore()
             )
         } else {
-            venditoreRepository.creazioneAccountVenditore(
-                viewModel.email.value!!,
+            profiloRepository.creazioneAccountProfilo(
+                viewModel.nomeUtente.value!!,
                 viewModel.toAccountVenditore()
             )
         }

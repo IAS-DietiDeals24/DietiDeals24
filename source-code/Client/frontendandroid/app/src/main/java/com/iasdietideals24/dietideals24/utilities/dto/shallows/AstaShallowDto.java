@@ -25,6 +25,10 @@ public class AstaShallowDto {
         this.idAsta = idAsta;
     }
 
+    public String getTipoAstaPerAccount() {
+        return this.tipoAstaPerAccount;
+    }
+
     public String getTipoAstaSpecifica() {
         return this.tipoAstaSpecifica;
     }

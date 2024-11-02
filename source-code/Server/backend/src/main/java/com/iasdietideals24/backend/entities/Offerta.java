@@ -13,7 +13,7 @@ import org.hibernate.annotations.Check;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Entity(name = "offerta")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Check(constraints = "data_invio <= NOW() AND valore > 0")
 public abstract class Offerta {

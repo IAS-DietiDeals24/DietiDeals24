@@ -85,4 +85,19 @@ abstract public class AstaDto {
         this.immagine = immagine;
     }
 
+    public CategoriaAstaShallowDto getCategoriaShallow() {
+        return categoriaShallow;
+    }
+
+    public LocalDate getDataScadenza() {
+        return dataScadenza;
+    }
+
+    public LocalTime getOraScadenza() {
+        return oraScadenza;
+    }
+
+    public Set<NotificaShallowDto> getNotificheAssociateShallow() {
+        return notificheAssociateShallow;
+    }
 }

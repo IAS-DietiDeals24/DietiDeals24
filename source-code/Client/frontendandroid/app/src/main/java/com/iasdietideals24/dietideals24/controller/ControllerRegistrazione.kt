@@ -2,16 +2,12 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import com.amplifyframework.auth.AuthUserAttribute
-import com.amplifyframework.auth.AuthUserAttributeKey
-import com.amplifyframework.auth.options.AuthSignUpOptions
 import com.amplifyframework.core.Amplify
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
@@ -153,15 +149,26 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>(), OnEmailVerif
 
                 lifecycleScope.launch {
                     try {
+                        withContext(Dispatchers.IO) { queryFacebookGraph(result.accessToken) }
+
+                        viewModel.validateAccount()
+
                         val returned: Account = withContext(Dispatchers.IO) {
                             accountFacebook(result.accessToken.userId).toAccount()
                         }
 
                         when (returned.email) {
                             "" -> { // non esiste un account associato a questo account Facebook con questo tipo, registrati
-                                queryFacebookGraph(result.accessToken)
-
-                                amplifySignUp()
+                                registraAmplify(
+                                    mapOf(
+                                        "email" to viewModel.email.value!!,
+                                        "password" to viewModel.password.value!!,
+                                        "dataNascita" to "01-01-1970",
+                                        "nomeUtente" to "temp",
+                                        "nome" to "temp",
+                                        "cognome" to "temp"
+                                    )
+                                )
 
                                 confermaEmail(true)
                             }
@@ -186,7 +193,7 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>(), OnEmailVerif
                         }
                     } catch (_: Exception) {
                         Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                            .setBackgroundTint(resources.getColor(R.color.blu, null))
+                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
                             .setTextColor(resources.getColor(R.color.grigio, null))
                             .show()
 
@@ -213,11 +220,11 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>(), OnEmailVerif
         }
     }
 
-    private suspend fun accountFacebook(facebookId: String): AccountDto {
+    private suspend fun accountFacebook(idFacebook: String): AccountDto {
         return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
-            compratoreRepository.accountFacebookCompratore(facebookId)
+            compratoreRepository.accountFacebookCompratore(idFacebook)
         } else {
-            venditoreRepository.accountFacebookVenditore(facebookId)
+            venditoreRepository.accountFacebookVenditore(idFacebook)
         }
     }
 
@@ -269,53 +276,43 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>(), OnEmailVerif
         viewModel.password.value = estraiTestoDaElemento(binding.registrazionePassword)
         viewModel.tipoAccount.value = CurrentUser.tipoAccount
 
-        lifecycleScope.launch {
-            try {
-                amplifySignUp()
+        try {
+            viewModel.validateAccount()
 
-                confermaEmail(false)
-            } catch (_: EccezioneCampiNonCompilati) {
-                erroreCampo(
-                    R.string.registrazione_erroreCampiObbligatoriNonCompilati,
-                    binding.registrazioneCampoEmail,
-                    binding.registrazioneCampoPassword
+            registraAmplify(
+                mapOf(
+                    "email" to viewModel.email.value!!,
+                    "password" to viewModel.password.value!!,
+                    "dataNascita" to "01-01-1970",
+                    "nomeUtente" to "temp",
+                    "nome" to "temp",
+                    "cognome" to "temp"
                 )
-            } catch (_: EccezioneEmailNonValida) {
-                erroreCampo(
-                    R.string.registrazione_erroreFormatoEmail,
-                    binding.registrazioneCampoEmail
-                )
-            } catch (_: EccezionePasswordNonSicura) {
-                erroreCampo(
-                    R.string.registrazione_errorePasswordNonSicura,
-                    binding.registrazioneCampoPassword
-                )
-            } catch (_: Exception) {
-                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                    .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                    .setTextColor(resources.getColor(R.color.grigio, null))
-                    .show()
-            }
+            )
+
+            confermaEmail(false)
+        } catch (_: EccezioneCampiNonCompilati) {
+            erroreCampo(
+                R.string.registrazione_erroreCampiObbligatoriNonCompilati,
+                binding.registrazioneCampoEmail,
+                binding.registrazioneCampoPassword
+            )
+        } catch (_: EccezioneEmailNonValida) {
+            erroreCampo(
+                R.string.registrazione_erroreFormatoEmail,
+                binding.registrazioneCampoEmail
+            )
+        } catch (_: EccezionePasswordNonSicura) {
+            erroreCampo(
+                R.string.registrazione_errorePasswordNonSicura,
+                binding.registrazioneCampoPassword
+            )
+        } catch (_: Exception) {
+            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                .setTextColor(resources.getColor(R.color.grigio, null))
+                .show()
         }
-    }
-
-    private fun amplifySignUp() {
-        Amplify.Auth.signUp(
-            viewModel.email.value!!,
-            viewModel.password.value!!,
-            AuthSignUpOptions.builder().userAttributes(
-                listOf(
-                    AuthUserAttribute(AuthUserAttributeKey.birthdate(), "01/01/1970"),
-                    AuthUserAttribute(AuthUserAttributeKey.preferredUsername(), "temp"),
-                    AuthUserAttribute(AuthUserAttributeKey.givenName(), "temp"),
-                    AuthUserAttribute(AuthUserAttributeKey.familyName(), "temp")
-                )
-            ).build(),
-            {},
-            {
-                error -> Log.e("Amplify", error.message!!)
-            }
-        )
     }
 
     private fun confermaEmail(facebookLogin: Boolean) {
@@ -396,8 +393,9 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>(), OnEmailVerif
             viewModel.password.postValue(
                 RandomStringGenerator.Builder().withinRange(33, 122).get().generate(16)
             )
+            viewModel.nomeUtente.postValue(obj?.optString("name"))
             viewModel.nome.postValue(
-                obj?.optString("name") +
+                obj?.optString("first_name") +
                         if (obj?.optString("middle_name") != "")
                             " " + obj?.optString("middle_name")
                         else ""
@@ -413,20 +411,24 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>(), OnEmailVerif
             viewModel.areaGeografica.postValue(
                 obj?.optJSONObject("location")?.optString("name")
             )
-            viewModel.genere.postValue(obj?.optString("gender"))
+            when (obj?.optString("gender")) {
+                "male" -> viewModel.genere.postValue(getString(R.string.maschio))
+                "female" -> viewModel.genere.postValue(getString(R.string.femmina))
+            }
+            viewModel.linkFacebook.postValue(obj?.optString("link"))
         }
 
         val parameters = Bundle()
         parameters.putString(
             "fields",
-            "email,name,middle_name,last_name,birthday,about,location,gender"
+            "id,email,name,first_name,middle_name,last_name,birthday,about,location,gender,link"
         )
         request.parameters = parameters
-        request.executeAsync()
+        request.executeAndWait()
     }
 
     override fun onEmailConfirmed(facebookLogin: Boolean) {
-        Amplify.Auth.signIn(viewModel.email.value!!, viewModel.password.value!!, {}, {})
+        accediAmplify(viewModel.email.value!!, viewModel.password.value!!)
 
         if (facebookLogin) {
             Logger.log("Facebook sign-up successful")
@@ -443,5 +445,7 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>(), OnEmailVerif
         if (facebookLogin) {
             LoginManager.getInstance().logOut()
         }
+
+        cancellaAmplify()
     }
 }

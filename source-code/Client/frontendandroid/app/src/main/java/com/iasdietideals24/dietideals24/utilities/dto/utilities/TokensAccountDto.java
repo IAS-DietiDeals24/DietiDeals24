@@ -23,4 +23,16 @@ public class TokensAccountDto {
     public String getIdFacebook() {
         return this.idFacebook;
     }
+
+    public String getIdGoogle() {
+        return this.idGoogle;
+    }
+
+    public String getIdX() {
+        return this.idX;
+    }
+
+    public String getIdGitHub() {
+        return this.idGitHub;
+    }
 }

@@ -42,4 +42,20 @@ public abstract class AccountDto {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public TokensAccountDto getTokens() {
+        return this.tokens;
+    }
+
+    public ProfiloShallowDto getProfiloShallow() {
+        return this.profiloShallow;
+    }
+
+    public Set<NotificaShallowDto> getNotificheInviateShallow() {
+        return this.notificheInviateShallow;
+    }
+
+    public Set<NotificaShallowDto> getNotificheRicevuteShallow() {
+        return this.notificheRicevuteShallow;
+    }
 }

@@ -239,4 +239,6 @@
     <string name="popupConfermaEmail_messaggio">Inserisci il codice che ti è stato inviato via email.</string>
     <string name="popupConfermaEmail_codiceNonInserito">Non hai inserito nessun codice.</string>
     <string name="popupConfermaEmail_codiceErrato">Il codice non è valido. Per favore, riprova.</string>
+    <string name="maschio">Uomo</string>
+    <string name="femmina">Donna</string>
 </resources>

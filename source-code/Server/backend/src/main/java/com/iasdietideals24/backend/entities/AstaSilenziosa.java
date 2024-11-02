@@ -15,7 +15,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Entity(name = "asta_silenziosa")
 public class AstaSilenziosa extends AstaDiVenditore {
     @OneToMany(mappedBy = "astaRiferimento", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter(AccessLevel.NONE)

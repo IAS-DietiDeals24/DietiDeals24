@@ -4,9 +4,6 @@ import android.accounts.AccountManager
 import android.content.Context
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
-import com.amplifyframework.auth.AuthUserAttributeKey
-import com.amplifyframework.auth.options.AuthSignUpOptions
-import com.amplifyframework.core.Amplify
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.Home
@@ -18,8 +15,7 @@ import com.iasdietideals24.dietideals24.utilities.data.Account
 import com.iasdietideals24.dietideals24.utilities.dto.exceptional.PutProfiloDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
-import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
-import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
@@ -34,8 +30,7 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
     private val viewModel: ModelRegistrazione by activityViewModel()
 
     // Repositories
-    private val venditoreRepository: VenditoreRepository by inject()
-    private val compratoreRepository: CompratoreRepository by inject()
+    private val profiloRepository: ProfiloRepository by inject()
 
     // Listeners
     private var listenerChangeActivity: OnChangeActivity? = null
@@ -63,26 +58,6 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
     private fun clickFine() {
         lifecycleScope.launch {
             try {
-                Amplify.Auth.signUp(
-                    viewModel.email.value!!,
-                    viewModel.password.value!!,
-                    AuthSignUpOptions.builder()
-                        .userAttribute(
-                            AuthUserAttributeKey.birthdate(),
-                            viewModel.dataNascita.value.toString()
-                        )
-                        .userAttribute(
-                            AuthUserAttributeKey.preferredUsername(),
-                            viewModel.nomeUtente.value!!
-                        )
-                        .userAttribute(AuthUserAttributeKey.email(), viewModel.email.value!!)
-                        .userAttribute(AuthUserAttributeKey.givenName(), viewModel.nome.value!!)
-                        .userAttribute(AuthUserAttributeKey.familyName(), viewModel.cognome.value!!)
-                        .build(),
-                    {},
-                    {}
-                )
-
                 val returned: Account =
                     withContext(Dispatchers.IO) { associazioneProfilo().toAccount() }
 
@@ -110,13 +85,13 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
 
     private suspend fun associazioneProfilo(): PutProfiloDto {
         return when (CurrentUser.tipoAccount) {
-            TipoAccount.COMPRATORE -> compratoreRepository.creazioneAccountCompratore(
-                viewModel.email.value!!,
+            TipoAccount.COMPRATORE -> profiloRepository.creazioneAccountProfilo(
+                viewModel.nomeUtente.value!!,
                 viewModel.toAccountCompratore()
             )
 
-            TipoAccount.VENDITORE -> venditoreRepository.creazioneAccountVenditore(
-                viewModel.email.value!!,
+            TipoAccount.VENDITORE -> profiloRepository.creazioneAccountProfilo(
+                viewModel.nomeUtente.value!!,
                 viewModel.toAccountVenditore()
             )
 

@@ -16,6 +16,10 @@ public interface VenditoreService {
 
     Optional<VenditoreDto> findOne(String email);
 
+    Optional<VenditoreDto> findByIdFacebook(String idFacebook);
+
+    Optional<VenditoreDto> findOneWithPassword(String idFacebook, String password);
+
     boolean isExists(String email);
 
     VenditoreDto fullUpdate(String email, VenditoreDto updatedVenditoreDto) throws InvalidParameterException;

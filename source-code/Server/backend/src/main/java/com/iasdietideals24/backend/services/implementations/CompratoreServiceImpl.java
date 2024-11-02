@@ -64,12 +64,29 @@ public class CompratoreServiceImpl implements CompratoreService {
     }
 
     @Override
+    public Optional<CompratoreDto> findByIdFacebook(String idFacebook) {
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        Optional<Compratore> foundVenditore = compratoreRepository.findByTokensIdFacebook(idFacebook);
+
+        return foundVenditore.map(compratoreMapper::toDto);
+    }
+
+    @Override
     public Optional<CompratoreDto> findOne(String email) {
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<Compratore> foundCompratore = compratoreRepository.findById(email);
 
         return foundCompratore.map(compratoreMapper::toDto);
+    }
+
+    @Override
+    public Optional<CompratoreDto> findOneWithPassword(String email, String password) {
+        // Recuperiamo l'entità con l'id e password passati per parametro
+        Optional<Compratore> foundVenditore = compratoreRepository.findByEmailAndPassword(email, password);
+
+        return foundVenditore.map(compratoreMapper::toDto);
     }
 
     @Override

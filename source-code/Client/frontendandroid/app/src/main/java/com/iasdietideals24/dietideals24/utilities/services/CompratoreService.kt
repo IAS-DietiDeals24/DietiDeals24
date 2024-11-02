@@ -1,11 +1,8 @@
 package com.iasdietideals24.dietideals24.utilities.services
 
 import com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto
-import com.iasdietideals24.dietideals24.utilities.dto.exceptional.PutProfiloDto
 import retrofit2.Response
-import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -13,13 +10,13 @@ interface CompratoreService : Service {
     /**
      * Il metodo recupera l'account associato all'ID dell'account Facebook, ma solo se l'utente ha
      * un account associato a questo profilo Facebook di tipo compratore.
-     * @param facebookId Identificativo dell'account Facebook dell'utente.
+     * @param idFacebook Identificativo dell'account Facebook dell'utente.
      * @return [CompratoreDto] associato a questo account Facebook. Se non esiste, viene restituito un
      * account vuoto.
      */
-    @GET("accounts/compratori")
+    @GET("accounts/compratori/facebook/{idFacebook}")
     suspend fun accountFacebookCompratore(
-        @Query("facebookId") facebookId: String
+        @Path("idFacebook") idFacebook: String
     ): Response<CompratoreDto>
 
     /**
@@ -34,18 +31,6 @@ interface CompratoreService : Service {
         @Path("email") accountEmail: String,
         @Query("password") accountPassword: String
     ): Response<CompratoreDto>
-
-    /**
-     * Crea un nuovo account compratore con le credenziali indicate.
-     * @param accountEmail L'email dell'account da creare.
-     * @param account Wrapper con le informazioni necessarie a creare il nuovo account.
-     * @return [PutProfiloDto] appena creato. Se non è stato creato, viene restituito un account vuoto.
-     */
-    @POST("accounts/compratori/{email}")
-    suspend fun creazioneAccountCompratore(
-        @Path("email") accountEmail: String,
-        @Body account: PutProfiloDto
-    ): Response<PutProfiloDto>
 
     /**
      * Il metodo recupera l'account compratore specificato.

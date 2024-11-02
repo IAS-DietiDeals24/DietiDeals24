@@ -17,4 +17,8 @@ public abstract class OffertaDiCompratoreDto extends OffertaDto {
 
     public OffertaDiCompratoreDto() {
     }
+
+    public AccountShallowDto getCompratoreCollegatoShallow() {
+        return this.compratoreCollegatoShallow;
+    }
 }

@@ -19,7 +19,7 @@ import org.hibernate.annotations.Check;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Entity(name = "asta_tempo_fisso")
 @Check(constraints = "soglia_minima >= 0")
 public class AstaTempoFisso extends AstaDiVenditore {
     @NonNull

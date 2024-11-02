@@ -38,6 +38,22 @@ public class PutProfiloDto {
     public PutProfiloDto() {
     }
 
+    public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public AnagraficaProfiloDto getAnagrafica() {
+        return anagrafica;
+    }
+
+    public LinksProfiloDto getLinks() {
+        return links;
+    }
+
+    public TokensAccountDto getTokens() {
+        return tokens;
+    }
+
     public Account toAccount() {
         return new Account(tokens.getIdFacebook(), email, password, TipoAccount.valueOf(tipoAccount));
     }

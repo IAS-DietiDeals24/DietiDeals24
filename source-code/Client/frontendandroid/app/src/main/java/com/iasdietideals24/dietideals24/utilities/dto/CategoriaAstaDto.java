@@ -14,4 +14,8 @@ public class CategoriaAstaDto {
     public String getNome() {
         return this.nome;
     }
+
+    public Set<AstaShallowDto> getAsteAssegnateShallow() {
+        return this.asteAssegnateShallow;
+    }
 }
