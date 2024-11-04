@@ -72,7 +72,8 @@ public class ProfiloDto {
     public AnteprimaProfilo toAnteprimaProfilo() {
         return new AnteprimaProfilo(
                 nomeUtente,
-                TipoAccount.valueOf(accountsShallow.stream().findFirst().orElse(new AccountShallowDto()).getTipoAccount()),
+                TipoAccount.valueOf(accountsShallow.stream().findFirst().orElse(new AccountShallowDto())
+                        .getTipoAccount().toUpperCase()),
                 profilePicture
         );
     }

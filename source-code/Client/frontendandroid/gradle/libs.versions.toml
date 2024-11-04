@@ -9,7 +9,6 @@ retrofit = "2.11.0"
 converter-jackson = "2.11.0"
 facebook-login = "17.0.2"
 coil = "2.7.0"
-datastore-preferences = "1.1.1"
 commons-text = "1.12.0"
 gradle = "8.7.2"
 navigation-fragment-ktx = "2.8.3"
@@ -43,7 +42,6 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 converter-jackson = { group = "com.squareup.retrofit2", name = "converter-jackson", version.ref = "converter-jackson" }
 facebook-login = { group = "com.facebook.android", name = "facebook-login", version.ref = "facebook-login" }
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore-preferences" }
 commons-text = { group = "org.apache.commons", name = "commons-text", version.ref = "commons-text" }
 gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle" }
 navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation-fragment-ktx" }

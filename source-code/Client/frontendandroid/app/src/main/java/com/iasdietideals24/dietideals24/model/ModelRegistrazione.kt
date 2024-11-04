@@ -185,8 +185,8 @@ class ModelRegistrazione(
                 cognome.value,
                 dataNascita.value,
                 areaGeografica.value,
-                biografia.value,
-                genere.value
+                genere.value,
+                biografia.value
             ),
             LinksProfiloDto(
                 linkPersonale.value,
@@ -203,7 +203,7 @@ class ModelRegistrazione(
                 "",
                 ""
             ),
-            TipoAccount.COMPRATORE.toString()
+            "Compratore"
         )
     }
 
@@ -216,8 +216,8 @@ class ModelRegistrazione(
                 cognome.value,
                 dataNascita.value,
                 areaGeografica.value,
-                biografia.value,
-                genere.value
+                genere.value,
+                biografia.value
             ),
             LinksProfiloDto(
                 linkPersonale.value,
@@ -234,7 +234,7 @@ class ModelRegistrazione(
                 "",
                 ""
             ),
-            TipoAccount.VENDITORE.toString()
+            "Venditore"
         )
     }
 

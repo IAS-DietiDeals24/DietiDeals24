@@ -65,7 +65,6 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
-    implementation(libs.datastore.preferences)
     implementation(libs.lifecycle.common.jvm)
     implementation(libs.commons.text)
     implementation(libs.paging.runtime.ktx)

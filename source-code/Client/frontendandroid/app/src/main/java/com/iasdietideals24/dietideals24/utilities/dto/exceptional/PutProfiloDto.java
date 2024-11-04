@@ -55,7 +55,12 @@ public class PutProfiloDto {
     }
 
     public Account toAccount() {
-        return new Account(tokens.getIdFacebook(), email, password, TipoAccount.valueOf(tipoAccount));
+        return new Account(
+                tokens.getIdFacebook(),
+                email,
+                password,
+                TipoAccount.valueOf(tipoAccount.toUpperCase())
+        );
     }
 
     public String getNomeUtente() {

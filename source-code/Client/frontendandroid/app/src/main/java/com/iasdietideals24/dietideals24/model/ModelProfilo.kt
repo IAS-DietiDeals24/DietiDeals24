@@ -7,7 +7,6 @@ import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.AnagraficaProfiloDto
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.LinksProfiloDto
-import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import java.time.LocalDate
 
@@ -141,11 +140,11 @@ class ModelProfilo : ViewModel() {
             setOf(
                 AccountShallowDto(
                     email.value!!,
-                    TipoAccount.COMPRATORE.name
+                    "Compratore"
                 ),
                 AccountShallowDto(
                     email.value!!,
-                    TipoAccount.VENDITORE.name
+                    "Venditore"
                 )
             )
         )
