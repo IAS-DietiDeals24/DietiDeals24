@@ -13,6 +13,7 @@ import com.iasdietideals24.backend.mapstruct.dto.utilities.LinksProfiloDto;
 import com.iasdietideals24.backend.mapstruct.mappers.AnagraficaProfiloMapper;
 import com.iasdietideals24.backend.mapstruct.mappers.LinksProfiloMapper;
 import com.iasdietideals24.backend.mapstruct.mappers.ProfiloMapper;
+import com.iasdietideals24.backend.mapstruct.mappers.PutProfiloMapper;
 import com.iasdietideals24.backend.repositories.ProfiloRepository;
 import com.iasdietideals24.backend.services.ProfiloService;
 import org.springframework.data.domain.Page;
@@ -27,12 +28,14 @@ import java.util.Set;
 public class ProfiloServiceImpl implements ProfiloService {
 
     private final ProfiloMapper profiloMapper;
+    private final PutProfiloMapper putProfiloMapper;
     private final AnagraficaProfiloMapper anagraficaProfiloMapper;
     private final LinksProfiloMapper linksProfiloMapper;
     private final ProfiloRepository profiloRepository;
 
-    public ProfiloServiceImpl(ProfiloMapper profiloMapper, AnagraficaProfiloMapper anagraficaProfiloMapper, LinksProfiloMapper linksProfiloMapper, ProfiloRepository profiloRepository) {
+    public ProfiloServiceImpl(ProfiloMapper profiloMapper, PutProfiloMapper putProfiloMapper, AnagraficaProfiloMapper anagraficaProfiloMapper, LinksProfiloMapper linksProfiloMapper, ProfiloRepository profiloRepository) {
         this.profiloMapper = profiloMapper;
+        this.putProfiloMapper = putProfiloMapper;
         this.anagraficaProfiloMapper = anagraficaProfiloMapper;
         this.linksProfiloMapper = linksProfiloMapper;
         this.profiloRepository = profiloRepository;
@@ -46,7 +49,7 @@ public class ProfiloServiceImpl implements ProfiloService {
         checkFieldsValid(nuovoProfiloDto);
 
         // Convertiamo a entità
-        Profilo nuovoProfilo = profiloMapper.toEntity(nuovoProfiloDto);
+        Profilo nuovoProfilo = putProfiloMapper.toEntity(nuovoProfiloDto);
 
         // Recuperiamo le associazioni
         convertRelations(nuovoProfiloDto, nuovoProfilo);
