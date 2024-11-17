@@ -1,8 +1,6 @@
 package com.iasdietideals24.dietideals24.controller
 
-import android.accounts.AccountManager
 import android.content.Context
-import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
@@ -13,11 +11,10 @@ import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.data.Account
-import com.iasdietideals24.dietideals24.utilities.dto.exceptional.PutProfiloDto
+import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
-import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.tools.Logger
@@ -112,14 +109,12 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
                         mapOf(
                             "email" to viewModel.email.value!!,
                             "password" to viewModel.password.value!!,
-                            "dataNascita" to viewModel.dataNascita.value!!.toLocalStringShort(),
+                            "dataNascita" to viewModel.dataNascita.value!!.toString(),
                             "nomeUtente" to viewModel.nomeUtente.value!!,
                             "nome" to viewModel.nome.value!!,
                             "cognome" to viewModel.cognome.value!!
                         )
                     )
-
-                    registrazioneAccountManager()
 
                     listenerChangeActivity?.onChangeActivity(Home::class.java)
                 }
@@ -132,7 +127,7 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
         }
     }
 
-    private suspend fun creazioneAccount(): PutProfiloDto {
+    private suspend fun creazioneAccount(): ProfiloDto {
         return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
             profiloRepository.creazioneAccountProfilo(
                 viewModel.nomeUtente.value!!,
@@ -144,19 +139,5 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
                 viewModel.toAccountVenditore()
             )
         }
-    }
-
-    private fun registrazioneAccountManager() {
-        val accountManager = AccountManager.get(context)
-
-        val accountData = Bundle()
-        accountData.putString("TipoAccount", viewModel.tipoAccount.value.toString())
-
-        val account = android.accounts.Account(
-            viewModel.email.value,
-            "com.iasdietideals24.dietideals24.account"
-        )
-
-        accountManager.addAccountExplicitly(account, viewModel.password.value, accountData)
     }
 }

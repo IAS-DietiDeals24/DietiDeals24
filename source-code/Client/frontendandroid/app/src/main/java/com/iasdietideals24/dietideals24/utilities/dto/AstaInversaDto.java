@@ -5,6 +5,7 @@ import com.iasdietideals24.dietideals24.utilities.data.Asta;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto;
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.OffertaShallowDto;
 import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta;
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta;
 
@@ -17,8 +18,8 @@ public class AstaInversaDto extends AstaDiCompratoreDto {
 
     private BigDecimal sogliaIniziale = BigDecimal.ZERO;
 
-    public AstaInversaDto(Long idAsta, CategoriaAstaShallowDto categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow, BigDecimal sogliaIniziale) {
-        super(idAsta, categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, notificheAssociateShallow, proprietarioShallow);
+    public AstaInversaDto(Long idAsta, CategoriaAstaShallowDto categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow, Set<OffertaShallowDto> offerteRicevuteShallow, BigDecimal sogliaIniziale) {
+        super(idAsta, categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, notificheAssociateShallow, proprietarioShallow, offerteRicevuteShallow);
         this.sogliaIniziale = sogliaIniziale;
     }
 

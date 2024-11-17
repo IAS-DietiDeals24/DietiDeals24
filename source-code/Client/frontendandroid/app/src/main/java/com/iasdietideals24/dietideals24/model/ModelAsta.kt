@@ -138,6 +138,7 @@ class ModelAsta(
                 CurrentUser.id,
                 CurrentUser.tipoAccount.name
             ),
+            setOf(),
             prezzo.value!!
         )
     }
@@ -158,6 +159,7 @@ class ModelAsta(
                 CurrentUser.id,
                 CurrentUser.tipoAccount.name
             ),
+            setOf(),
             prezzo.value!!
         )
     }
@@ -177,7 +179,8 @@ class ModelAsta(
             AccountShallowDto(
                 CurrentUser.id,
                 CurrentUser.tipoAccount.name
-            )
+            ),
+            setOf()
         )
     }
 

@@ -26,12 +26,12 @@
         android:id="@+id/creazioneProfiloFase3_messaggioCorpo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:fontFamily="@font/fira_sans"
         android:text="@string/creazioneProfiloFase3_messaggioCorpo"
         android:textColor="@color/grigio"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="@+id/creazioneProfiloFase3_pulsanteIndietro"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/creazioneProfiloFase3_pulsanteIndietro"
         app:layout_constraintTop_toTopOf="@+id/creazioneProfiloFase3_pulsanteIndietro" />
 

@@ -1,5 +1,6 @@
 package com.iasdietideals24.dietideals24.utilities.dto;
 
+import com.iasdietideals24.dietideals24.utilities.data.Account;
 import com.iasdietideals24.dietideals24.utilities.data.AnteprimaProfilo;
 import com.iasdietideals24.dietideals24.utilities.data.Profilo;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto;
@@ -32,22 +33,6 @@ public class ProfiloDto {
     public ProfiloDto() {
     }
 
-    public byte[] getProfilePicture() {
-        return this.profilePicture;
-    }
-
-    public AnagraficaProfiloDto getAnagrafica() {
-        return this.anagrafica;
-    }
-
-    public LinksProfiloDto getLinks() {
-        return this.links;
-    }
-
-    public Set<AccountShallowDto> getAccountsShallow() {
-        return this.accountsShallow;
-    }
-
     public Profilo toProfilo() {
         return new Profilo(
                 accountsShallow.stream().findFirst().orElse(new AccountShallowDto()).getEmail(),
@@ -78,11 +63,36 @@ public class ProfiloDto {
         );
     }
 
+    public Account toAccount() {
+        return new Account(
+                "",
+                accountsShallow.stream().findFirst().orElse(new AccountShallowDto()).getEmail(),
+                "",
+                TipoAccount.valueOf(accountsShallow.stream().findFirst().orElse(new AccountShallowDto()).getTipoAccount().toUpperCase())
+        );
+    }
+
     public String getNomeUtente() {
         return this.nomeUtente;
     }
 
     public void setNomeUtente(String nomeUtente) {
         this.nomeUtente = nomeUtente;
+    }
+
+    public byte[] getProfilePicture() {
+        return this.profilePicture;
+    }
+
+    public AnagraficaProfiloDto getAnagrafica() {
+        return this.anagrafica;
+    }
+
+    public LinksProfiloDto getLinks() {
+        return this.links;
+    }
+
+    public Set<AccountShallowDto> getAccountsShallow() {
+        return this.accountsShallow;
     }
 }

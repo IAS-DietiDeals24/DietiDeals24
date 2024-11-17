@@ -1,8 +1,6 @@
 package com.iasdietideals24.dietideals24.controller
 
-import android.accounts.AccountManager
 import android.content.Context
-import androidx.lifecycle.lifecycleScope
 import com.facebook.AccessToken
 import com.facebook.LoginStatusCallback
 import com.facebook.login.LoginManager.Companion.getInstance
@@ -12,28 +10,15 @@ import com.iasdietideals24.dietideals24.activities.Home
 import com.iasdietideals24.dietideals24.databinding.SelezionetipoaccountBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
-import com.iasdietideals24.dietideals24.utilities.data.Account
-import com.iasdietideals24.dietideals24.utilities.dto.AccountDto
-import com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnHideBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnShowBackButton
-import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
-import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.tools.Logger
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.koin.android.ext.android.inject
 
 class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>() {
-
-    // Repositories
-    private val compratoreRepository: CompratoreRepository by inject()
-    private val venditoreRepository: VenditoreRepository by inject()
 
     // Listeners
     private var changeActivityListener: OnChangeActivity? = null
@@ -95,60 +80,6 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
                             .show()
                     }
                 })
-
-        // Recupera le credenziali di accesso salvate nell'AccountManager di Android
-        val accountManager = AccountManager.get(context)
-        val accounts = accountManager.getAccountsByType("com.iasdietideals24.dietideals24.account")
-
-        if (accounts.isNotEmpty()) {
-            val account = accounts[0]
-
-            val email: String = account.name
-            val password: String = accountManager.getPassword(account)
-            val tipoAccount: String = accountManager.getUserData(account, "TipoAccount")
-
-            CurrentUser.tipoAccount = when (tipoAccount) {
-                "COMPRATORE" -> TipoAccount.COMPRATORE
-                "VENDITORE" -> TipoAccount.VENDITORE
-                else -> TipoAccount.OSPITE
-            }
-
-            if (email != "" && password != "" && tipoAccount != "") {
-                lifecycleScope.launch {
-                    try {
-                        val returned: Account =
-                            withContext(Dispatchers.IO) { accedi(email, password).toAccount() }
-
-                        if (returned.email != "") {
-                            CurrentUser.id = returned.email
-
-                            accediAmplify(email, password)
-
-                            changeActivityListener?.onChangeActivity(Home::class.java)
-                        }
-                    } catch (e: Exception) {
-                        Snackbar.make(
-                            fragmentView,
-                            R.string.apiError,
-                            Snackbar.LENGTH_SHORT
-                        )
-                            .setBackgroundTint(resources.getColor(R.color.blu, null))
-                            .setTextColor(resources.getColor(R.color.grigio, null))
-                            .show()
-                    }
-                }
-            }
-        }
-    }
-
-    private suspend fun accedi(email: String, password: String): AccountDto {
-        return when (CurrentUser.tipoAccount) {
-            TipoAccount.COMPRATORE -> compratoreRepository.accediCompratore(email, password)
-
-            TipoAccount.VENDITORE -> venditoreRepository.accediVenditore(email, password)
-
-            else -> CompratoreDto()
-        }
     }
 
     @UIBuilder

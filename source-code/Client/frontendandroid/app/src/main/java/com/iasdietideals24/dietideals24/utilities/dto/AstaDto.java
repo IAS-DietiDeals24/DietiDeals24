@@ -2,8 +2,10 @@ package com.iasdietideals24.dietideals24.utilities.dto;
 
 import com.iasdietideals24.dietideals24.utilities.data.AnteprimaAsta;
 import com.iasdietideals24.dietideals24.utilities.data.Asta;
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto;
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.OffertaShallowDto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -27,7 +29,11 @@ abstract public class AstaDto {
 
     protected Set<NotificaShallowDto> notificheAssociateShallow = new HashSet<>();
 
-    public AstaDto(Long idAsta, CategoriaAstaShallowDto categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow) {
+    protected AccountShallowDto proprietarioShallow = new AccountShallowDto();
+
+    private Set<OffertaShallowDto> offerteRicevuteShallow = new HashSet<>();
+
+    public AstaDto(Long idAsta, CategoriaAstaShallowDto categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow, Set<OffertaShallowDto> offerteRicevuteShallow) {
         this.idAsta = idAsta;
         this.categoriaShallow = categoria;
         this.nome = nome;
@@ -36,6 +42,8 @@ abstract public class AstaDto {
         this.oraScadenza = oraScadenza;
         this.immagine = immagine;
         this.notificheAssociateShallow = notificheAssociateShallow;
+        this.proprietarioShallow = proprietarioShallow;
+        this.offerteRicevuteShallow = offerteRicevuteShallow;
     }
 
     public AstaDto() {
@@ -99,5 +107,13 @@ abstract public class AstaDto {
 
     public Set<NotificaShallowDto> getNotificheAssociateShallow() {
         return notificheAssociateShallow;
+    }
+
+    public AccountShallowDto getProprietarioShallow() {
+        return this.proprietarioShallow;
+    }
+
+    public Set<OffertaShallowDto> getOfferteRicevuteShallow() {
+        return offerteRicevuteShallow;
     }
 }

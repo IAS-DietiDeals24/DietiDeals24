@@ -1,10 +1,8 @@
 package com.iasdietideals24.dietideals24.utilities.dto.exceptional;
 
-import com.iasdietideals24.dietideals24.utilities.data.Account;
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.AnagraficaProfiloDto;
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.LinksProfiloDto;
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.TokensAccountDto;
-import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount;
 
 public class PutProfiloDto {
 
@@ -38,31 +36,6 @@ public class PutProfiloDto {
     public PutProfiloDto() {
     }
 
-    public byte[] getProfilePicture() {
-        return profilePicture;
-    }
-
-    public AnagraficaProfiloDto getAnagrafica() {
-        return anagrafica;
-    }
-
-    public LinksProfiloDto getLinks() {
-        return links;
-    }
-
-    public TokensAccountDto getTokens() {
-        return tokens;
-    }
-
-    public Account toAccount() {
-        return new Account(
-                tokens.getIdFacebook(),
-                email,
-                password,
-                TipoAccount.valueOf(tipoAccount.toUpperCase())
-        );
-    }
-
     public String getNomeUtente() {
         return this.nomeUtente;
     }
@@ -93,5 +66,21 @@ public class PutProfiloDto {
 
     public void setTipoAccount(String tipoAccount) {
         this.tipoAccount = tipoAccount;
+    }
+
+    public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public AnagraficaProfiloDto getAnagrafica() {
+        return anagrafica;
+    }
+
+    public LinksProfiloDto getLinks() {
+        return links;
+    }
+
+    public TokensAccountDto getTokens() {
+        return tokens;
     }
 }

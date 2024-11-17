@@ -5,6 +5,7 @@ import com.iasdietideals24.dietideals24.utilities.data.Asta;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto;
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.OffertaShallowDto;
 import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta;
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta;
 
@@ -17,8 +18,8 @@ public class AstaTempoFissoDto extends AstaDiVenditoreDto {
 
     private BigDecimal sogliaMinima = BigDecimal.ZERO;
 
-    public AstaTempoFissoDto(Long idAsta, CategoriaAstaShallowDto categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow, BigDecimal sogliaMinima) {
-        super(idAsta, categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, notificheAssociateShallow, proprietarioShallow);
+    public AstaTempoFissoDto(Long idAsta, CategoriaAstaShallowDto categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow, Set<OffertaShallowDto> offerteRicevuteShallow, BigDecimal sogliaMinima) {
+        super(idAsta, categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, notificheAssociateShallow, proprietarioShallow, offerteRicevuteShallow);
         this.sogliaMinima = sogliaMinima;
     }
 

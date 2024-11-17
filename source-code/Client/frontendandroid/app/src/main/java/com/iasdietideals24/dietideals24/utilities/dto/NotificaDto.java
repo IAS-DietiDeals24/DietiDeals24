@@ -29,22 +29,6 @@ public class NotificaDto {
     public NotificaDto() {
     }
 
-    public AstaShallowDto getAstaAssociataShallow() {
-        return this.astaAssociataShallow;
-    }
-
-    public Set<AccountShallowDto> getDestinatariShallow() {
-        return this.destinatariShallow;
-    }
-
-    public AccountShallowDto getMittenteShallow() {
-        return this.mittenteShallow;
-    }
-
-    public String getMessaggio() {
-        return this.messaggio;
-    }
-
     public Notifica toNotifica() {
         return new Notifica(astaAssociataShallow.getIdAsta(), TipoAsta.valueOf(astaAssociataShallow.getTipoAstaSpecifica()),
                 mittenteShallow.getEmail(), "", new byte[]{}, messaggio, dataInvio, oraInvio);
@@ -68,5 +52,21 @@ public class NotificaDto {
 
     public void setOraInvio(LocalTime oraInvio) {
         this.oraInvio = oraInvio;
+    }
+
+    public String getMessaggio() {
+        return this.messaggio;
+    }
+
+    public AccountShallowDto getMittenteShallow() {
+        return this.mittenteShallow;
+    }
+
+    public Set<AccountShallowDto> getDestinatariShallow() {
+        return this.destinatariShallow;
+    }
+
+    public AstaShallowDto getAstaAssociataShallow() {
+        return this.astaAssociataShallow;
     }
 }

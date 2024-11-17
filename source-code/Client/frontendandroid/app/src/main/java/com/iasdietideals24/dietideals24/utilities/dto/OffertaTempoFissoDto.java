@@ -12,18 +12,11 @@ import java.time.LocalTime;
 
 public class OffertaTempoFissoDto extends OffertaDiCompratoreDto {
 
-    private AstaShallowDto astaRiferimentoShallow = new AstaShallowDto();
-
     public OffertaTempoFissoDto(Long idOfferta, LocalDate dataInvio, LocalTime oraInvio, BigDecimal valore, AccountShallowDto compratoreCollegatoShallow, AstaShallowDto astaRiferimentoShallow) {
-        super(idOfferta, dataInvio, oraInvio, valore, compratoreCollegatoShallow);
-        this.astaRiferimentoShallow = astaRiferimentoShallow;
+        super(idOfferta, dataInvio, oraInvio, valore, compratoreCollegatoShallow, astaRiferimentoShallow);
     }
 
     public OffertaTempoFissoDto() {
-    }
-
-    public AstaShallowDto getAstaRiferimentoShallow() {
-        return this.astaRiferimentoShallow;
     }
 
     public Offerta toOfferta() {

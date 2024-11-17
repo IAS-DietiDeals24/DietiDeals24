@@ -2,6 +2,7 @@ package com.iasdietideals24.dietideals24.utilities.services
 
 import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
 import com.iasdietideals24.dietideals24.utilities.dto.exceptional.PutProfiloDto
+import com.iasdietideals24.dietideals24.utilities.tools.Page
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -19,7 +20,7 @@ interface ProfiloService : Service {
     @GET("profili")
     suspend fun caricaProfiloDaAccount(
         @Query("email") accountEmail: String
-    ): Response<ProfiloDto>
+    ): Response<Page<ProfiloDto>>
 
     /**
      * Il metodo recupera il profilo con il nome utente specificato.
@@ -47,11 +48,11 @@ interface ProfiloService : Service {
      * Crea un nuovo account e profilo associato con le credenziali indicate.
      * @param nomeUtente Nome utente del profilo da creare.
      * @param accountProfilo Wrapper con le informazioni necessarie a creare il nuovo account e profilo.
-     * @return [PutProfiloDto] appena creato. Se non è stato creato, viene restituito un account vuoto.
+     * @return [ProfiloDto] appena creato. Se non è stato creato, viene restituito un account vuoto.
      */
     @PUT("profili/{nomeUtente}")
     suspend fun creazioneAccountProfilo(
         @Path("nomeUtente") nomeUtente: String,
         @Body accountProfilo: PutProfiloDto
-    ): Response<PutProfiloDto>
+    ): Response<ProfiloDto>
 }

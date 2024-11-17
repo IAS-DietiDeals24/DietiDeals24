@@ -19,7 +19,7 @@ class OffertaTempoFissoPagingSource(
             LoadResult.Page(
                 data = data.body()!!.content,
                 prevKey = if (page == 0L) null else page - 1,
-                nextKey = if (data.body()!!.last) null else page + 1
+                nextKey = if (data.body()!!.isLast) null else page + 1
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

@@ -79,6 +79,15 @@ public class ProfiloServiceImpl implements ProfiloService {
     }
 
     @Override
+    public Optional<ProfiloDto> findOneByEmail(String email) {
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        Optional<Profilo> foundProfilo = profiloRepository.findByAccountsEmail(email);
+
+        return foundProfilo.map(profiloMapper::toDto);
+    }
+
+    @Override
     public boolean isExists(String nomeUtente) {
 
         // Verifichiamo che esista un'entità con l'id passato per parametro

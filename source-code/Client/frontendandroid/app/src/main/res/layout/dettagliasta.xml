@@ -16,7 +16,8 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingEnd="48dp">
 
         <ImageButton
             android:id="@+id/dettagliAsta_pulsanteIndietro"

@@ -1,8 +1,6 @@
 package com.iasdietideals24.dietideals24.controller
 
-import android.accounts.AccountManager
 import android.content.Context
-import android.os.Bundle
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.facebook.CallbackManager
@@ -147,8 +145,6 @@ class ControllerAccesso : Controller<AccessoBinding>() {
 
                                 accediAmplify(returned.email, returned.password)
 
-                                accessoAccountManager()
-
                                 listenerChangeActivity?.onChangeActivity(Home::class.java)
                             }
                         }
@@ -228,8 +224,6 @@ class ControllerAccesso : Controller<AccessoBinding>() {
 
                         accediAmplify(returned.email, returned.password)
 
-                        accessoAccountManager()
-
                         listenerChangeActivity?.onChangeActivity(Home::class.java)
                     }
                 }
@@ -262,19 +256,5 @@ class ControllerAccesso : Controller<AccessoBinding>() {
 
             else -> CompratoreDto()
         }
-    }
-
-    private fun accessoAccountManager() {
-        val accountManager = AccountManager.get(context)
-
-        val accountData = Bundle()
-        accountData.putString("TipoAccount", viewModel.tipoAccount.value.toString())
-
-        val account = android.accounts.Account(
-            viewModel.email.value,
-            "com.iasdietideals24.dietideals24.account"
-        )
-
-        accountManager.addAccountExplicitly(account, viewModel.password.value, accountData)
     }
 }

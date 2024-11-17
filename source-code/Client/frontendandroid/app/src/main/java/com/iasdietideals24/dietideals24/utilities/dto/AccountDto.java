@@ -1,7 +1,9 @@
 package com.iasdietideals24.dietideals24.utilities.dto;
 
 import com.iasdietideals24.dietideals24.utilities.data.Account;
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto;
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.OffertaShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.ProfiloShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.TokensAccountDto;
 
@@ -22,8 +24,14 @@ public abstract class AccountDto {
 
     protected Set<NotificaShallowDto> notificheRicevuteShallow = new HashSet<>();
 
+    protected Set<AstaShallowDto> astePosseduteShallow = new HashSet<>();
+
+    protected Set<OffertaShallowDto> offerteCollegateShallow = new HashSet<>();
+
     public AccountDto() {
     }
+
+    public abstract Account toAccount();
 
     public String getEmail() {
         return email;
@@ -32,8 +40,6 @@ public abstract class AccountDto {
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public abstract Account toAccount();
 
     public String getPassword() {
         return this.password;
@@ -57,5 +63,13 @@ public abstract class AccountDto {
 
     public Set<NotificaShallowDto> getNotificheRicevuteShallow() {
         return this.notificheRicevuteShallow;
+    }
+
+    public Set<AstaShallowDto> getAstePosseduteShallow() {
+        return this.astePosseduteShallow;
+    }
+
+    public Set<OffertaShallowDto> getOfferteCollegateShallow() {
+        return this.offerteCollegateShallow;
     }
 }
