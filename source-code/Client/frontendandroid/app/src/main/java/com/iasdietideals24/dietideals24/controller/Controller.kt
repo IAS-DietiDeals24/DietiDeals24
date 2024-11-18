@@ -2,7 +2,6 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,15 +9,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewbinding.ViewBinding
-import com.amplifyframework.auth.AuthUserAttribute
-import com.amplifyframework.auth.AuthUserAttributeKey
-import com.amplifyframework.auth.options.AuthSignUpOptions
-import com.amplifyframework.core.Amplify
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.annotations.Utility
-import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import java.lang.reflect.ParameterizedType
 
 abstract class Controller<bindingType : ViewBinding> : Fragment() {
@@ -181,96 +175,5 @@ abstract class Controller<bindingType : ViewBinding> : Fragment() {
     protected fun erroreCampo(messaggioErrore: Int, vararg campoErrore: TextInputLayout) {
         for (campo in campoErrore)
             campo.error = getString(messaggioErrore)
-    }
-
-    protected fun accediAmplify(email: String, password: String) {
-        Amplify.Auth.signIn(
-            email,
-            password,
-            {
-                Log.d("Amplify", "Login successful")
-            },
-            {
-                Log.d(
-                    "Amplify",
-                    "Login failed: ${it.message}; ${it.cause}; ${it.recoverySuggestion}"
-                )
-            }
-        )
-    }
-
-    protected fun registraAmplify(attributi: Map<String, String>) {
-        Amplify.Auth.signUp(
-            attributi["email"]!!,
-            attributi["password"]!!,
-            AuthSignUpOptions.builder().userAttributes(
-                listOf(
-                    AuthUserAttribute(AuthUserAttributeKey.birthdate(), attributi["dataNascita"]!!),
-                    AuthUserAttribute(
-                        AuthUserAttributeKey.preferredUsername(),
-                        attributi["nomeUtente"]!!
-                    ),
-                    AuthUserAttribute(AuthUserAttributeKey.email(), attributi["email"]!!),
-                    AuthUserAttribute(AuthUserAttributeKey.givenName(), attributi["nome"]!!),
-                    AuthUserAttribute(AuthUserAttributeKey.familyName(), attributi["cognome"]!!)
-                )
-            ).build(),
-            {
-                Log.d("Amplify", "Sign up successful")
-            },
-            {
-                Log.d(
-                    "Amplify",
-                    "Sign up failed: ${it.message}; ${it.cause}; ${it.recoverySuggestion}"
-                )
-            }
-        )
-    }
-
-    protected fun cancellaAmplify() {
-        Amplify.Auth.deleteUser(
-            {
-                Log.d("Amplify", "Deletion successful")
-            },
-            {
-                Log.d(
-                    "Amplify",
-                    "Deletion failed: ${it.message}; ${it.cause}; ${it.recoverySuggestion}"
-                )
-            }
-        )
-
-        esciAmplify()
-    }
-
-    protected fun esciAmplify() {
-        Amplify.Auth.signOut {
-            Log.d("Amplify", "Sign out successful")
-            CurrentUser.accessToken = ""
-        }
-    }
-
-    protected fun aggiornaAttributiAmplify(attributi: Map<String, String>) {
-        Amplify.Auth.updateUserAttributes(
-            listOf(
-                AuthUserAttribute(AuthUserAttributeKey.birthdate(), attributi["dataNascita"]!!),
-                AuthUserAttribute(
-                    AuthUserAttributeKey.preferredUsername(),
-                    attributi["nomeUtente"]!!
-                ),
-                AuthUserAttribute(AuthUserAttributeKey.email(), attributi["email"]!!),
-                AuthUserAttribute(AuthUserAttributeKey.givenName(), attributi["nome"]!!),
-                AuthUserAttribute(AuthUserAttributeKey.familyName(), attributi["cognome"]!!)
-            ),
-            {
-                Log.d("Amplify", "Update successful")
-            },
-            {
-                Log.d(
-                    "Amplify",
-                    "Update failed: ${it.message}; ${it.cause}; ${it.recoverySuggestion}"
-                )
-            }
-        )
     }
 }

@@ -105,17 +105,6 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
 
                     CurrentUser.id = account.email
 
-                    aggiornaAttributiAmplify(
-                        mapOf(
-                            "email" to viewModel.email.value!!,
-                            "password" to viewModel.password.value!!,
-                            "dataNascita" to viewModel.dataNascita.value!!.toString(),
-                            "nomeUtente" to viewModel.nomeUtente.value!!,
-                            "nome" to viewModel.nome.value!!,
-                            "cognome" to viewModel.cognome.value!!
-                        )
-                    )
-
                     listenerChangeActivity?.onChangeActivity(Home::class.java)
                 }
             } catch (_: Exception) {

@@ -282,6 +282,7 @@ class ModelRegistrazione(
             throw EccezioneCampiNonCompilati("Password non compilata.")
         if (password.value?.length!! < 8 ||
             password.value?.contains(Regex("[A-Z]")) == false ||
+            password.value?.contains(Regex("[a-z]")) == false ||
             password.value?.contains(Regex("[0-9]")) == false ||
             password.value?.contains(Regex("[!@#\$%^{}&*]")) == false
         )

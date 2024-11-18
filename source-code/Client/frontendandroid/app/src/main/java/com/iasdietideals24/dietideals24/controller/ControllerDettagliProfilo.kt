@@ -130,19 +130,19 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
     private suspend fun caricaAccount(): AccountDto {
         return when (CurrentUser.tipoAccount) {
             TipoAccount.COMPRATORE -> {
-                compratoreRepository.caricaAccountCompratore(viewModel.email.value!!)
+                compratoreRepository.caricaAccountCompratore(args.id)
             }
 
             TipoAccount.VENDITORE -> {
-                venditoreRepository.caricaAccountVenditore(viewModel.email.value!!)
+                venditoreRepository.caricaAccountVenditore(args.id)
             }
 
             else -> {
                 val account =
-                    compratoreRepository.caricaAccountCompratore(viewModel.email.value!!)
+                    compratoreRepository.caricaAccountCompratore(args.id)
 
                 if (account.email == "")
-                    venditoreRepository.caricaAccountVenditore(viewModel.email.value!!)
+                    venditoreRepository.caricaAccountVenditore(args.id)
                 else
                     account
             }
@@ -191,6 +191,11 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
             binding.dettagliProfiloCognome.text = newCognome
         }
         viewModel.cognome.observe(viewLifecycleOwner, cognomeObserver)
+
+        val emailObserver = Observer<String> { newEmail ->
+            binding.dettagliProfiloEmail.text = newEmail
+        }
+        viewModel.email.observe(viewLifecycleOwner, emailObserver)
 
         val dataNascitaObserver = Observer<LocalDate> { newData ->
             binding.dettagliProfiloDataNascita.text = newData.toLocalStringShort()

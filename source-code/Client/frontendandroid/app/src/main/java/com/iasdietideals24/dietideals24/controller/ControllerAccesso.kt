@@ -143,8 +143,6 @@ class ControllerAccesso : Controller<AccessoBinding>() {
 
                                 CurrentUser.id = returned.email
 
-                                accediAmplify(returned.email, returned.password)
-
                                 listenerChangeActivity?.onChangeActivity(Home::class.java)
                             }
                         }
@@ -221,8 +219,6 @@ class ControllerAccesso : Controller<AccessoBinding>() {
                         Logger.log("Sign-in successful")
 
                         CurrentUser.id = returned.email
-
-                        accediAmplify(returned.email, returned.password)
 
                         listenerChangeActivity?.onChangeActivity(Home::class.java)
                     }

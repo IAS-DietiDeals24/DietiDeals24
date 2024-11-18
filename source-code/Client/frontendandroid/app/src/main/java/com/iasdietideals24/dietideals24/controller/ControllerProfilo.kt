@@ -1,6 +1,5 @@
 package com.iasdietideals24.dietideals24.controller
 
-import android.accounts.AccountManager
 import android.content.Context
 import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
@@ -182,20 +181,6 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
 
         // Esci da Facebook
         LoginManager.getInstance().logOut()
-
-        // Esci da Cognito
-        esciAmplify()
-
-        // Esci dall'account nell'AccountManager
-        val accountManager = AccountManager.get(context)
-        val accounts =
-            accountManager.getAccountsByType("com.iasdietideals24.dietideals24.account")
-
-        if (accounts.isNotEmpty()) {
-            val account = accounts[0]
-
-            accountManager.removeAccountExplicitly(account)
-        }
 
         listenerChangeActivity?.onChangeActivity(ScelteIniziali::class.java)
     }

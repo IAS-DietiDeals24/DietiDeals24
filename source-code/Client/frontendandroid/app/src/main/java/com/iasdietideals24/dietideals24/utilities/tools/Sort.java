@@ -6,7 +6,8 @@ public class Sort {
     private boolean sorted = false;
     private boolean empty = true;
 
-    public Sort() {}
+    public Sort() {
+    }
 
     public Sort(boolean unsorted, boolean sorted, boolean empty) {
         this.unsorted = unsorted;

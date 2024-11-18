@@ -2,13 +2,9 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import com.amplifyframework.core.Amplify
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -16,11 +12,8 @@ import com.facebook.FacebookException
 import com.facebook.GraphRequest
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.RegistrazioneBinding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
@@ -35,7 +28,6 @@ import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezionePasswordNonSicura
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
-import com.iasdietideals24.dietideals24.utilities.kscripts.OnEmailVerification
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnSkipStep
 import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
@@ -51,7 +43,7 @@ import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class ControllerRegistrazione : Controller<RegistrazioneBinding>(), OnEmailVerification {
+class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
 
     // ViewModel
     private val viewModel: ModelRegistrazione by activityViewModel()
@@ -102,6 +94,8 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>(), OnEmailVerif
                     R.string.placeholder,
                     stringaTipoAccount
                 )
+
+                viewModel.tipoAccount.value = TipoAccount.COMPRATORE
             }
 
             TipoAccount.VENDITORE -> {
@@ -110,6 +104,8 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>(), OnEmailVerif
                     R.string.placeholder,
                     stringaTipoAccount
                 )
+
+                viewModel.tipoAccount.value = TipoAccount.VENDITORE
             }
 
             else -> {
@@ -159,18 +155,7 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>(), OnEmailVerif
 
                         when (returned.email) {
                             "" -> { // non esiste un account associato a questo account Facebook con questo tipo, registrati
-                                registraAmplify(
-                                    mapOf(
-                                        "email" to viewModel.email.value!!,
-                                        "password" to viewModel.password.value!!,
-                                        "dataNascita" to "01-01-1970",
-                                        "nomeUtente" to "temp",
-                                        "nome" to "temp",
-                                        "cognome" to "temp"
-                                    )
-                                )
-
-                                confermaEmail(true)
+                                scegliAssociaCreaProfilo()
                             }
 
                             else -> { // esiste un account associato a questo account Facebook con questo tipo
@@ -276,90 +261,34 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>(), OnEmailVerif
         viewModel.password.value = estraiTestoDaElemento(binding.registrazionePassword)
         viewModel.tipoAccount.value = CurrentUser.tipoAccount
 
-        try {
-            viewModel.validateAccount()
+        lifecycleScope.launch {
+            try {
+                viewModel.validateAccount()
 
-            registraAmplify(
-                mapOf(
-                    "email" to viewModel.email.value!!,
-                    "password" to viewModel.password.value!!,
-                    "dataNascita" to "01-01-1970",
-                    "nomeUtente" to "temp",
-                    "nome" to "temp",
-                    "cognome" to "temp"
+                scegliAssociaCreaProfilo()
+            } catch (_: EccezioneCampiNonCompilati) {
+                erroreCampo(
+                    R.string.registrazione_erroreCampiObbligatoriNonCompilati,
+                    binding.registrazioneCampoEmail,
+                    binding.registrazioneCampoPassword
                 )
-            )
-
-            confermaEmail(false)
-        } catch (_: EccezioneCampiNonCompilati) {
-            erroreCampo(
-                R.string.registrazione_erroreCampiObbligatoriNonCompilati,
-                binding.registrazioneCampoEmail,
-                binding.registrazioneCampoPassword
-            )
-        } catch (_: EccezioneEmailNonValida) {
-            erroreCampo(
-                R.string.registrazione_erroreFormatoEmail,
-                binding.registrazioneCampoEmail
-            )
-        } catch (_: EccezionePasswordNonSicura) {
-            erroreCampo(
-                R.string.registrazione_errorePasswordNonSicura,
-                binding.registrazioneCampoPassword
-            )
-        } catch (_: Exception) {
-            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
-        }
-    }
-
-    private fun confermaEmail(facebookLogin: Boolean) {
-        val viewInflated: View = LayoutInflater.from(context)
-            .inflate(R.layout.popupconfermaemail, view as ViewGroup?, false)
-        val codice: TextInputEditText = viewInflated.findViewById(R.id.popupConfermaEmail_codice)
-        val campoCodice: TextInputLayout =
-            viewInflated.findViewById(R.id.popupConfermaEmail_campoCodice)
-        val pulsante: MaterialButton = viewInflated.findViewById(R.id.popupConfermaEmail_pulsante)
-        codice.addTextChangedListener {
-            rimuoviErroreCampo(campoCodice)
-        }
-
-        val dialog = MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
-            .setTitle(getString(R.string.popupConfermaEmail_titolo))
-            .setIcon(R.drawable.icona_aiuto_arancione)
-            .setMessage(getString(R.string.popupConfermaEmail_messaggio))
-            .setView(viewInflated)
-            .setNegativeButton(getString(R.string.annulla)) { _, _ ->
-                onEmailNotConfirmed(facebookLogin)
-            }
-            .create()
-
-        pulsante.setOnClickListener {
-            if (codice.text.toString().isEmpty()) {
-                fragmentActivity.runOnUiThread {
-                    erroreCampo(R.string.popupConfermaEmail_codiceNonInserito, campoCodice)
-                }
-            } else {
-                Amplify.Auth.confirmSignUp(
-                    viewModel.email.value!!,
-                    codice.text.toString(),
-                    {
-                        dialog.dismiss()
-
-                        onEmailConfirmed(facebookLogin)
-                    },
-                    {
-                        fragmentActivity.runOnUiThread {
-                            erroreCampo(R.string.popupConfermaEmail_codiceErrato, campoCodice)
-                        }
-                    }
+            } catch (_: EccezioneEmailNonValida) {
+                erroreCampo(
+                    R.string.registrazione_erroreFormatoEmail,
+                    binding.registrazioneCampoEmail
                 )
+            } catch (_: EccezionePasswordNonSicura) {
+                erroreCampo(
+                    R.string.registrazione_errorePasswordNonSicura,
+                    binding.registrazioneCampoPassword
+                )
+            } catch (_: Exception) {
+                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
             }
         }
-
-        dialog.show()
     }
 
     private suspend fun scegliAssociaCreaProfilo() {
@@ -391,7 +320,7 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>(), OnEmailVerif
             viewModel.facebookAccountID.postValue(obj?.optString("id"))
             viewModel.email.postValue(obj?.optString("email"))
             viewModel.password.postValue(
-                RandomStringGenerator.Builder().withinRange(33, 122).get().generate(16)
+                RandomStringGenerator.Builder().withinRange(33, 122).get().generate(64)
             )
             viewModel.nomeUtente.postValue(obj?.optString("name"))
             viewModel.nome.postValue(
@@ -425,27 +354,5 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>(), OnEmailVerif
         )
         request.parameters = parameters
         request.executeAndWait()
-    }
-
-    override fun onEmailConfirmed(facebookLogin: Boolean) {
-        accediAmplify(viewModel.email.value!!, viewModel.password.value!!)
-
-        if (facebookLogin) {
-            Logger.log("Facebook sign-up successful")
-        } else {
-            viewModel.validateAccount()
-        }
-
-        lifecycleScope.launch {
-            scegliAssociaCreaProfilo()
-        }
-    }
-
-    override fun onEmailNotConfirmed(facebookLogin: Boolean) {
-        if (facebookLogin) {
-            LoginManager.getInstance().logOut()
-        }
-
-        cancellaAmplify()
     }
 }

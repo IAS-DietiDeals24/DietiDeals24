@@ -9,7 +9,8 @@ public class Pageable {
     private boolean unpaged = false;
     private boolean paged = true;
 
-    public Pageable() {}
+    public Pageable() {
+    }
 
     public Pageable(int pageNumber, int pageSize, Sort sort, int offset, boolean unpaged, boolean paged) {
         this.pageNumber = pageNumber;

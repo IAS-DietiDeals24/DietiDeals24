@@ -126,8 +126,6 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
             LoginManager.getInstance().logOut()
         }
 
-        cancellaAmplify()
-
         listenerBackButton?.onBackButton()
     }
 

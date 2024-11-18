@@ -69,8 +69,6 @@ dependencies {
     implementation(libs.commons.text)
     implementation(libs.paging.runtime.ktx)
     implementation(libs.kotlin.reflect)
-    implementation(libs.amplify)
-    implementation(libs.aws.auth.cognito)
     implementation(libs.jackson.datatype.jsr310)
     coreLibraryDesugaring(libs.desugar)
 }

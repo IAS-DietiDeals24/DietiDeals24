@@ -16,7 +16,8 @@ public class Page<T> {
     private Sort sort = new Sort();
     private boolean empty = true;
 
-    public Page() {}
+    public Page() {
+    }
 
     public Page(List<T> content, Pageable pageable, int totalElements, int totalPages, boolean last,
                 int numberOfElements, boolean first, int size, int number, Sort sort, boolean empty) {
