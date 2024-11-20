@@ -16,4 +16,8 @@ class VenditoreRepository(private val service: VenditoreService) {
     suspend fun caricaAccountVenditore(accountEmail: String): VenditoreDto {
         return service.caricaAccountVenditore(accountEmail).body() ?: VenditoreDto()
     }
+
+    suspend fun creaAccountVenditore(accountEmail: String, account: VenditoreDto): VenditoreDto {
+        return service.creaAccountVenditore(accountEmail, account).body() ?: VenditoreDto()
+    }
 }

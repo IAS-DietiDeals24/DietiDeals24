@@ -5,11 +5,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
-import com.iasdietideals24.dietideals24.utilities.dto.CategoriaAstaDto
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
-import com.iasdietideals24.dietideals24.utilities.repositories.CategoriaAstaRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,8 +17,7 @@ import kotlinx.coroutines.flow.merge
 class ModelHome(
     private val inverseRepository: AstaInversaRepository,
     private val tempoFissoRepository: AstaTempoFissoRepository,
-    private val silenziosaRepository: AstaSilenziosaRepository,
-    private val categoriaAstaRepository: CategoriaAstaRepository
+    private val silenziosaRepository: AstaSilenziosaRepository
 ) : ViewModel() {
 
     private val _searchText = MutableStateFlow("")
@@ -41,10 +38,6 @@ class ModelHome(
 
     private val flowSilenzioseTutte by lazy {
         silenziosaRepository.recuperaAsteSilenziose().cachedIn(viewModelScope)
-    }
-
-    private val flowCategorieAsta by lazy {
-        categoriaAstaRepository.recuperaCategorieAsta().cachedIn(viewModelScope)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -93,9 +86,5 @@ class ModelHome(
                 else
                     merge(flowInverseRicerca, flowTempoFissoRicerca, flowSilenzioseRicerca)
                 ) as Flow<PagingData<AstaDto>>
-    }
-
-    fun getFlowsCategorieAsta(): Flow<PagingData<CategoriaAstaDto>> {
-        return flowCategorieAsta
     }
 }

@@ -2,7 +2,9 @@ package com.iasdietideals24.dietideals24.utilities.services
 
 import com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -40,5 +42,17 @@ interface CompratoreService : Service {
     @GET("accounts/compratori/{email}")
     suspend fun caricaAccountCompratore(
         @Path("email") accountEmail: String,
+    ): Response<CompratoreDto>
+
+    /**
+     * Il metodo crea un account compratore con i dati specificati.
+     * @param accountEmail Email dell'account.
+     * @param account Oggetto [CompratoreDto] che contiene i dati necessari alla creazione.
+     * @return [CompratoreDto] appena creato. Se non è stato creato, viene restituito un account vuoto.
+     */
+    @PUT("accounts/compratori/{email}")
+    suspend fun creaAccountCompratore(
+        @Path("email") accountEmail: String,
+        @Body account: CompratoreDto
     ): Response<CompratoreDto>
 }

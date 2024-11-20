@@ -2,7 +2,9 @@ package com.iasdietideals24.dietideals24.utilities.services
 
 import com.iasdietideals24.dietideals24.utilities.dto.VenditoreDto
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -40,5 +42,17 @@ interface VenditoreService : Service {
     @GET("accounts/venditori/{email}")
     suspend fun caricaAccountVenditore(
         @Path("email") accountEmail: String,
+    ): Response<VenditoreDto>
+
+    /**
+     * Il metodo crea un account venditore con i dati specificati.
+     * @param accountEmail Email dell'account.
+     * @param account Oggetto [VenditoreDto] che contiene i dati necessari alla creazione.
+     * @return [VenditoreDto] appena creato. Se non è stato creato, viene restituito un account vuoto.
+     */
+    @PUT("accounts/venditori/{email}")
+    suspend fun creaAccountVenditore(
+        @Path("email") accountEmail: String,
+        @Body account: VenditoreDto
     ): Response<VenditoreDto>
 }

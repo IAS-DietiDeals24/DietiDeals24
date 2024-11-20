@@ -4,6 +4,7 @@ import android.content.Context
 import android.icu.util.Calendar
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.facebook.AccessToken
 import com.facebook.login.LoginManager
 import com.google.android.material.datepicker.CalendarConstraints
@@ -22,6 +23,9 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep
 import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalDate
 import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.kscripts.toMillis
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.time.LocalDate
 
@@ -81,6 +85,13 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
             rimuoviErroreCampo(binding.creazioneProfiloFase1CampoCognome)
             rimuoviErroreCampo(binding.creazioneProfiloFase1CampoDataNascita)
         }
+
+        binding.creazioneProfiloFase1DataNascita.addTextChangedListener {
+            rimuoviErroreCampo(binding.creazioneProfiloFase1CampoNomeUtente)
+            rimuoviErroreCampo(binding.creazioneProfiloFase1CampoNome)
+            rimuoviErroreCampo(binding.creazioneProfiloFase1CampoCognome)
+            rimuoviErroreCampo(binding.creazioneProfiloFase1CampoDataNascita)
+        }
     }
 
     @UIBuilder
@@ -107,16 +118,6 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
                 binding.creazioneProfiloFase1DataNascita.setText("")
         }
         viewModel.dataNascita.observe(viewLifecycleOwner, dataNascitaObserver)
-
-        val eccezioneObserver = Observer<Exception> { newException ->
-            if (newException.javaClass == EccezioneNomeUtenteUsato::class.java) {
-                erroreCampo(
-                    R.string.registrazione_erroreNomeUtenteGiàUsato,
-                    binding.creazioneProfiloFase1CampoNomeUtente
-                )
-            }
-        }
-        viewModel.eccezione.observe(viewLifecycleOwner, eccezioneObserver)
     }
 
     @EventHandler
@@ -136,23 +137,30 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
         viewModel.nome.value = estraiTestoDaElemento(binding.creazioneProfiloFase1Nome)
         viewModel.cognome.value = estraiTestoDaElemento(binding.creazioneProfiloFase1Cognome)
 
-        try {
-            viewModel.validateProfile()
+        lifecycleScope.launch {
+            try {
+                withContext(Dispatchers.IO) { viewModel.validateProfile() }
 
-            listenerNextStep?.onNextStep(this::class)
-        } catch (_: EccezioneCampiNonCompilati) {
-            erroreCampo(
-                R.string.registrazione_erroreCampiObbligatoriNonCompilati,
-                binding.creazioneProfiloFase1CampoNomeUtente,
-                binding.creazioneProfiloFase1CampoNome,
-                binding.creazioneProfiloFase1CampoCognome,
-                binding.creazioneProfiloFase1CampoDataNascita
-            )
-        } catch (_: Exception) {
-            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
+                listenerNextStep?.onNextStep(ControllerCreazioneProfiloFase1::class)
+            } catch (_: EccezioneCampiNonCompilati) {
+                erroreCampo(
+                    R.string.registrazione_erroreCampiObbligatoriNonCompilati,
+                    binding.creazioneProfiloFase1CampoNomeUtente,
+                    binding.creazioneProfiloFase1CampoNome,
+                    binding.creazioneProfiloFase1CampoCognome,
+                    binding.creazioneProfiloFase1CampoDataNascita
+                )
+            } catch (_: EccezioneNomeUtenteUsato) {
+                erroreCampo(
+                    R.string.registrazione_erroreNomeUtenteGiàUsato,
+                    binding.creazioneProfiloFase1CampoNomeUtente
+                )
+            } catch (_: Exception) {
+                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+            }
         }
     }
 

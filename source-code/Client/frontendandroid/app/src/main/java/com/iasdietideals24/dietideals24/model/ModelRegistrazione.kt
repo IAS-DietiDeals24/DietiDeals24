@@ -2,7 +2,6 @@ package com.iasdietideals24.dietideals24.model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
 import com.iasdietideals24.dietideals24.utilities.dto.exceptional.PutProfiloDto
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.AnagraficaProfiloDto
@@ -17,9 +16,6 @@ import com.iasdietideals24.dietideals24.utilities.exceptions.EccezionePasswordNo
 import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 class ModelRegistrazione(
@@ -149,13 +145,6 @@ class ModelRegistrazione(
     val linkX: MutableLiveData<String>
         get() = _linkX
 
-    private val _eccezione: MutableLiveData<Exception> by lazy {
-        MutableLiveData<Exception>(Exception())
-    }
-
-    val eccezione: MutableLiveData<Exception>
-        get() = _eccezione
-
     fun clear() {
         _facebookAccountID.value = ""
         _email.value = ""
@@ -243,14 +232,14 @@ class ModelRegistrazione(
         EccezioneCampiNonCompilati::class, EccezioneEmailNonValida::class,
         EccezioneEmailUsata::class, EccezionePasswordNonSicura::class
     )
-    fun validateAccount() {
+    suspend fun validateAccount() {
         email()
         password()
     }
 
     @Validation
     @Throws(EccezioneCampiNonCompilati::class)
-    fun validateProfile() {
+    suspend fun validateProfile() {
         nomeUtente()
         nome()
         cognome()
@@ -262,18 +251,13 @@ class ModelRegistrazione(
         EccezioneCampiNonCompilati::class, EccezioneEmailNonValida::class,
         EccezioneEmailUsata::class
     )
-    private fun email() {
+    private suspend fun email() {
         if (email.value?.isEmpty() == true)
             throw EccezioneCampiNonCompilati("Email non compilata.")
         if (email.value?.contains(Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) == false)
             throw EccezioneEmailNonValida("Email non valida.")
-
-        viewModelScope.launch {
-            val returned = withContext(Dispatchers.IO) { esisteEmail() }
-
-            if (returned)
-                eccezione.value = EccezioneEmailUsata("Email già usata.")
-        }
+        if (esisteEmail())
+            throw EccezioneEmailUsata("Email già usata.")
     }
 
     @Throws(EccezioneCampiNonCompilati::class, EccezionePasswordNonSicura::class)
@@ -298,16 +282,11 @@ class ModelRegistrazione(
 
     @Validation
     @Throws(EccezioneCampiNonCompilati::class)
-    private fun nomeUtente() {
+    private suspend fun nomeUtente() {
         if (nomeUtente.value?.isEmpty() == true)
             throw EccezioneCampiNonCompilati("Nome utente non compilato.")
-
-        viewModelScope.launch {
-            val returned = withContext(Dispatchers.IO) { esisteNomeUtente() }
-
-            if (returned)
-                eccezione.value = EccezioneNomeUtenteUsato("Nome utente già usato.")
-        }
+        if (esisteNomeUtente())
+            throw EccezioneNomeUtenteUsato("Nome utente già usato.")
     }
 
     private suspend fun esisteNomeUtente(): Boolean {

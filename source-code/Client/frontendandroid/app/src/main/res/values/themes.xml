@@ -61,6 +61,7 @@
         <item name="colorOnPrimary">@color/blu</item>
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">15.dp</item>
+        <item name="android:layout_height">200dp</item>
     </style>
 
     <style name="Dialog" parent="@style/ThemeOverlay.Material3.MaterialAlertDialog">

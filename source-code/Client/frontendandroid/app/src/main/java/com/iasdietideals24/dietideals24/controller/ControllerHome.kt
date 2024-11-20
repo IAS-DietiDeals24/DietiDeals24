@@ -5,7 +5,6 @@ import android.text.TextWatcher
 import android.widget.ArrayAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
@@ -14,14 +13,17 @@ import com.iasdietideals24.dietideals24.model.ModelHome
 import com.iasdietideals24.dietideals24.utilities.adapters.AdapterHome
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.repositories.CategoriaAstaRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.tools.Logger
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import org.koin.core.parameter.parametersOf
@@ -30,6 +32,9 @@ class ControllerHome : Controller<HomeBinding>() {
 
     // ViewModel
     private val viewModel: ModelHome by activityViewModel()
+
+    // Repositories
+    private val categoriaAstaRepository: CategoriaAstaRepository by inject()
 
     // PagingAdapter
     private val adapterHome: AdapterHome by inject { parametersOf(resources) }
@@ -120,9 +125,9 @@ class ControllerHome : Controller<HomeBinding>() {
         lifecycleScope.launch {
             val categorieAsta: MutableList<String> = mutableListOf()
 
-            viewModel.getFlowsCategorieAsta().collect { pagingData ->
-                pagingData.map { categoriaAstaDto ->
-                    categorieAsta.add(categoriaAstaDto.nome)
+            withContext(Dispatchers.IO) {
+                categoriaAstaRepository.recuperaCategorieAsta().forEach {
+                    categorieAsta.add(it.nome)
                 }
             }
 

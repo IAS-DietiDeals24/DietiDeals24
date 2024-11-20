@@ -52,11 +52,11 @@ class ModelAsta(
     val nomeCreatore: MutableLiveData<String>
         get() = _nomeCreatore
 
-    private val _tipo: MutableLiveData<TipoAsta> by lazy {
-        MutableLiveData<TipoAsta>(TipoAsta.TEMPO_FISSO)
+    private val _tipo: MutableLiveData<TipoAsta?> by lazy {
+        MutableLiveData<TipoAsta?>(null)
     }
 
-    val tipo: MutableLiveData<TipoAsta>
+    val tipo: MutableLiveData<TipoAsta?>
         get() = _tipo
 
     private val _dataFine: MutableLiveData<LocalDate> by lazy {
@@ -80,11 +80,11 @@ class ModelAsta(
     val prezzo: MutableLiveData<BigDecimal>
         get() = _prezzo
 
-    private val _immagine: MutableLiveData<ByteArray> by lazy {
-        MutableLiveData<ByteArray>(ByteArray(0))
+    private val _immagine: MutableLiveData<ByteArray?> by lazy {
+        MutableLiveData<ByteArray?>(ByteArray(0))
     }
 
-    val immagine: MutableLiveData<ByteArray>
+    val immagine: MutableLiveData<ByteArray?>
         get() = _immagine
 
     private val _nome: MutableLiveData<String> by lazy {
@@ -126,13 +126,13 @@ class ModelAsta(
         return AstaInversaDto(
             idAsta.value!!,
             CategoriaAstaShallowDto(
-                tipo.value!!.name,
+                CategoriaAsta.fromEnumToString(categoria.value!!),
             ),
             nome.value!!,
             descrizione.value!!,
             dataFine.value!!,
             oraFine.value!!,
-            immagine.value!!,
+            immagine.value ?: ByteArray(0),
             setOf(),
             AccountShallowDto(
                 CurrentUser.id,
@@ -147,13 +147,13 @@ class ModelAsta(
         return AstaTempoFissoDto(
             idAsta.value!!,
             CategoriaAstaShallowDto(
-                tipo.value!!.name,
+                CategoriaAsta.fromEnumToString(categoria.value!!),
             ),
             nome.value!!,
             descrizione.value!!,
             dataFine.value!!,
             oraFine.value!!,
-            immagine.value!!,
+            immagine.value ?: ByteArray(0),
             setOf(),
             AccountShallowDto(
                 CurrentUser.id,
@@ -168,13 +168,13 @@ class ModelAsta(
         return AstaSilenziosaDto(
             idAsta.value!!,
             CategoriaAstaShallowDto(
-                tipo.value!!.name,
+                CategoriaAsta.fromEnumToString(categoria.value!!),
             ),
             nome.value!!,
             descrizione.value!!,
             dataFine.value!!,
             oraFine.value!!,
-            immagine.value!!,
+            immagine.value ?: ByteArray(0),
             setOf(),
             AccountShallowDto(
                 CurrentUser.id,
@@ -224,7 +224,7 @@ class ModelAsta(
     @Validation
     @Throws(EccezioneCampiNonCompilati::class)
     private fun categoria() {
-        if (categoria.value != CategoriaAsta.ND) {
+        if (categoria.value == CategoriaAsta.ND) {
             throw EccezioneCampiNonCompilati("Categoria non compilata.")
         }
     }

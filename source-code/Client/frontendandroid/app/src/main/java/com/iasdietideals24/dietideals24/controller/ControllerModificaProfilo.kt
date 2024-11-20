@@ -3,6 +3,7 @@ package com.iasdietideals24.dietideals24.controller
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.READ_MEDIA_IMAGES
 import android.content.Context
+import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
@@ -14,6 +15,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import coil.load
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -26,7 +30,9 @@ import com.iasdietideals24.dietideals24.utilities.data.Profilo
 import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToProfile
+import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalDate
 import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
+import com.iasdietideals24.dietideals24.utilities.kscripts.toMillis
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.tools.Logger
@@ -80,6 +86,8 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
         binding.modificaProfiloGithub.setOnClickListener { clickGitHub() }
 
         binding.modificaProfiloX.setOnClickListener { clickX() }
+
+        binding.modificaProfiloCampoDataNascita.setEndIconOnClickListener { clickDataNascita() }
     }
 
     @UIBuilder
@@ -105,7 +113,7 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
         }
         viewModel.nomeUtente.observe(viewLifecycleOwner, nomeUtenteObserver)
 
-        val immagineObserver = Observer<ByteArray> { newByteArray: ByteArray? ->
+        val immagineObserver = Observer { newByteArray: ByteArray? ->
             when {
                 newByteArray == null || newByteArray.isEmpty() -> {
                     binding.modificaProfiloImmagineUtente.scaleType =
@@ -133,6 +141,11 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
             binding.modificaProfiloCognome.setText(newCognome)
         }
         viewModel.cognome.observe(viewLifecycleOwner, cognomeObserver)
+
+        val emailObserver = Observer<String> { newEmail ->
+            binding.modificaProfiloEmail.text = newEmail
+        }
+        viewModel.email.observe(viewLifecycleOwner, emailObserver)
 
         val dataNascitaObserver = Observer<LocalDate> { newData ->
             binding.modificaProfiloDataNascita.setText(newData.toLocalStringShort())
@@ -175,6 +188,14 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
 
     @EventHandler
     private fun clickConferma() {
+        viewModel.nome.value = estraiTestoDaElemento(binding.modificaProfiloNome)
+        viewModel.cognome.value = estraiTestoDaElemento(binding.modificaProfiloCognome)
+        viewModel.genere.value = estraiTestoDaElemento(binding.modificaProfiloGenere)
+        viewModel.areaGeografica.value =
+            estraiTestoDaElemento(binding.modificaProfiloAreaGeografica)
+        viewModel.biografia.value = estraiTestoDaElemento(binding.modificaProfiloBiografia)
+        viewModel.linkPersonale.value = estraiTestoDaElemento(binding.modificaProfiloLinkPersonale)
+
         lifecycleScope.launch {
             try {
                 viewModel.validate()
@@ -251,7 +272,7 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
     private fun clickFacebook() {
         val viewInflated: View = LayoutInflater.from(context)
             .inflate(R.layout.popuplinksocial, view as ViewGroup?, false)
-        val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_campoLink)
+        val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_link)
         input.setText(viewModel.linkFacebook.value)
 
         MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
@@ -268,7 +289,7 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
     private fun clickInstagram() {
         val viewInflated: View = LayoutInflater.from(context)
             .inflate(R.layout.popuplinksocial, view as ViewGroup?, false)
-        val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_campoLink)
+        val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_link)
         input.setText(viewModel.linkInstagram.value)
 
         MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
@@ -285,7 +306,7 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
     private fun clickGitHub() {
         val viewInflated: View = LayoutInflater.from(context)
             .inflate(R.layout.popuplinksocial, view as ViewGroup?, false)
-        val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_campoLink)
+        val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_link)
         input.setText(viewModel.linkGitHub.value)
 
         MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
@@ -302,7 +323,7 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
     private fun clickX() {
         val viewInflated: View = LayoutInflater.from(context)
             .inflate(R.layout.popuplinksocial, view as ViewGroup?, false)
-        val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_campoLink)
+        val input: TextInputEditText = viewInflated.findViewById(R.id.popupLinkSocial_link)
         input.setText(viewModel.linkX.value)
 
         MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
@@ -313,6 +334,37 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
             }
             .setNegativeButton(R.string.annulla) { _, _ -> }
             .show()
+    }
+
+    @EventHandler
+    private fun clickDataNascita() {
+        val calendarConstraints = CalendarConstraints.Builder()
+            .setValidator(DateValidatorPointBackward.now())
+            .setFirstDayOfWeek(Calendar.MONDAY)
+
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText(R.string.creazioneProfiloFase1_titoloPopupData)
+            .setCalendarConstraints(calendarConstraints.build())
+            .setSelection(
+                if (viewModel.dataNascita.value == LocalDate.MIN)
+                    MaterialDatePicker.todayInUtcMilliseconds()
+                else
+                    viewModel.dataNascita.value?.toMillis()
+            )
+            .setTheme(R.style.DatePicker)
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener {
+            if (datePicker.selection != null) {
+                val localDate = datePicker.selection!!.toLocalDate()
+
+                viewModel.dataNascita.value = localDate
+
+                binding.modificaProfiloDataNascita.setText(localDate.toLocalStringShort())
+            }
+        }
+
+        datePicker.show(requireActivity().supportFragmentManager, "datePicker")
     }
 
     private fun apriGalleria(results: Map<String, Boolean>) {

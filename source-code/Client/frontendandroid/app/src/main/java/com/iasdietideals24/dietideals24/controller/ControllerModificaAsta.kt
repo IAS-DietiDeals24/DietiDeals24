@@ -282,7 +282,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
         }
         viewModel.prezzo.observe(viewLifecycleOwner, prezzoObserver)
 
-        val immagineObserver = Observer<ByteArray> { newByteArray: ByteArray? ->
+        val immagineObserver = Observer { newByteArray: ByteArray? ->
             when {
                 newByteArray == null || newByteArray.isEmpty() -> {
                     binding.modificaCampoFoto.setImageResource(R.drawable.icona_fotocamera)
@@ -303,7 +303,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
         viewModel.nome.observe(viewLifecycleOwner, nomeObserver)
 
         val categoriaObserver = Observer<CategoriaAsta> { newCategoria ->
-            binding.modificaCategoria.setText(newCategoria.name)
+            binding.modificaCategoria.setText(CategoriaAsta.fromEnumToString(newCategoria))
         }
         viewModel.categoria.observe(viewLifecycleOwner, categoriaObserver)
 
@@ -329,6 +329,11 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
 
     @EventHandler
     private fun clickModifica() {
+        viewModel.nome.value = estraiTestoDaElemento(binding.modificaNome)
+        viewModel.categoria.value =
+            CategoriaAsta.fromStringToEnum(estraiTestoDaElemento(binding.modificaCategoria))
+        viewModel.descrizione.value = estraiTestoDaElemento(binding.modificaDescrizione)
+
         lifecycleScope.launch {
             try {
                 viewModel.validate()

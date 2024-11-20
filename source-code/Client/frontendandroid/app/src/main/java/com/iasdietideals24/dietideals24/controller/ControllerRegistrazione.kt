@@ -3,7 +3,6 @@ package com.iasdietideals24.dietideals24.controller
 import android.content.Context
 import android.os.Bundle
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
@@ -147,7 +146,7 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
                     try {
                         withContext(Dispatchers.IO) { queryFacebookGraph(result.accessToken) }
 
-                        viewModel.validateAccount()
+                        withContext(Dispatchers.IO) { viewModel.validateAccount() }
 
                         val returned: Account = withContext(Dispatchers.IO) {
                             accountFacebook(result.accessToken.userId).toAccount()
@@ -176,6 +175,11 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
                                 LoginManager.getInstance().logOut()
                             }
                         }
+                    } catch (_: EccezioneEmailUsata) {
+                        erroreCampo(
+                            R.string.registrazione_erroreEmailGiàUsata,
+                            binding.registrazioneCampoEmail
+                        )
                     } catch (_: Exception) {
                         Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                             .setBackgroundTint(resources.getColor(R.color.arancione, null))
@@ -226,19 +230,6 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
         }
     }
 
-    @UIBuilder
-    override fun impostaOsservatori() {
-        val eccezioneObserver = Observer<Exception> { newException ->
-            if (newException.javaClass == EccezioneEmailUsata::class.java) {
-                erroreCampo(
-                    R.string.registrazione_erroreEmailGiàUsata,
-                    binding.registrazioneCampoEmail
-                )
-            }
-        }
-        viewModel.eccezione.observe(viewLifecycleOwner, eccezioneObserver)
-    }
-
     @EventHandler
     private fun clickInfoPassword() {
         MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
@@ -263,7 +254,7 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
 
         lifecycleScope.launch {
             try {
-                viewModel.validateAccount()
+                withContext(Dispatchers.IO) { viewModel.validateAccount() }
 
                 scegliAssociaCreaProfilo()
             } catch (_: EccezioneCampiNonCompilati) {
@@ -275,6 +266,11 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
             } catch (_: EccezioneEmailNonValida) {
                 erroreCampo(
                     R.string.registrazione_erroreFormatoEmail,
+                    binding.registrazioneCampoEmail
+                )
+            } catch (_: EccezioneEmailUsata) {
+                erroreCampo(
+                    R.string.registrazione_erroreEmailGiàUsata,
                     binding.registrazioneCampoEmail
                 )
             } catch (_: EccezionePasswordNonSicura) {

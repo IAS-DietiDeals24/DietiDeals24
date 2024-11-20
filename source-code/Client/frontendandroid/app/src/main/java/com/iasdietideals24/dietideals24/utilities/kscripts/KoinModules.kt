@@ -24,7 +24,6 @@ import com.iasdietideals24.dietideals24.utilities.dto.OffertaDto
 import com.iasdietideals24.dietideals24.utilities.paging.AstaInversaPagingSource
 import com.iasdietideals24.dietideals24.utilities.paging.AstaSilenziosaPagingSource
 import com.iasdietideals24.dietideals24.utilities.paging.AstaTempoFissoPagingSource
-import com.iasdietideals24.dietideals24.utilities.paging.CategoriaAstaPagingSource
 import com.iasdietideals24.dietideals24.utilities.paging.NotificaPagingSource
 import com.iasdietideals24.dietideals24.utilities.paging.OffertaInversaPagingSource
 import com.iasdietideals24.dietideals24.utilities.paging.OffertaSilenziosaPagingSource
@@ -115,7 +114,6 @@ val pagingSourceModule = module {
     factory { params -> OffertaInversaPagingSource(get(), params.get()) }
     factory { params -> OffertaSilenziosaPagingSource(get(), params.get()) }
     factory { params -> OffertaTempoFissoPagingSource(get(), params.get()) }
-    factory { CategoriaAstaPagingSource(get()) }
 }
 
 val comparatorsModule = module {
@@ -138,7 +136,7 @@ val viewModelModule = module {
     viewModel { ModelAsta(get(), get(), get()) }
     viewModel { ModelProfilo() }
     viewModel { ModelAsteCreate(get(), get(), get()) }
-    viewModel { ModelHome(get(), get(), get(), get()) }
+    viewModel { ModelHome(get(), get(), get()) }
     viewModel { ModelNotifiche(get()) }
     viewModel { ModelPartecipazioni(get(), get(), get()) }
 }

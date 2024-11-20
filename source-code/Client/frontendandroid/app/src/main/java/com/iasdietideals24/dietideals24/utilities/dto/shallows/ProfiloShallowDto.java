@@ -4,6 +4,10 @@ public class ProfiloShallowDto {
 
     private String nomeUtente = "";
 
+    public ProfiloShallowDto(String nomeUtente) {
+        this.nomeUtente = nomeUtente;
+    }
+
     public ProfiloShallowDto() {
     }
 

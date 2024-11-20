@@ -10,10 +10,15 @@ import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.data.Account
-import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
+import com.iasdietideals24.dietideals24.utilities.dto.AccountDto
+import com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto
+import com.iasdietideals24.dietideals24.utilities.dto.VenditoreDto
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.ProfiloShallowDto
+import com.iasdietideals24.dietideals24.utilities.dto.utilities.TokensAccountDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
-import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +33,8 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
     private val viewModel: ModelRegistrazione by activityViewModel()
 
     // Repositories
-    private val profiloRepository: ProfiloRepository by inject()
+    private val compratoreRepository: CompratoreRepository by inject()
+    private val venditoreRepository: VenditoreRepository by inject()
 
     // Listeners
     private var listenerChangeActivity: OnChangeActivity? = null
@@ -79,19 +85,49 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
         }
     }
 
-    private suspend fun associazioneProfilo(): ProfiloDto {
+    private suspend fun associazioneProfilo(): AccountDto {
+        val nomeUtente = when (CurrentUser.tipoAccount) {
+            TipoAccount.COMPRATORE ->
+                venditoreRepository.caricaAccountVenditore(viewModel.email.value!!).profiloShallow.nomeUtente
+
+            TipoAccount.VENDITORE ->
+                compratoreRepository.caricaAccountCompratore(viewModel.email.value!!).profiloShallow.nomeUtente
+
+            else -> ""
+        }
+
         return when (CurrentUser.tipoAccount) {
-            TipoAccount.COMPRATORE -> profiloRepository.creazioneAccountProfilo(
-                viewModel.nomeUtente.value!!,
-                viewModel.toAccountCompratore()
+            TipoAccount.COMPRATORE -> compratoreRepository.creaAccountCompratore(
+                viewModel.email.value!!,
+                CompratoreDto(
+                    viewModel.email.value!!,
+                    viewModel.password.value!!,
+                    TokensAccountDto(
+                        viewModel.facebookAccountID.value!!,
+                        "",
+                        "",
+                        ""
+                    ),
+                    ProfiloShallowDto(nomeUtente)
+                )
             )
 
-            TipoAccount.VENDITORE -> profiloRepository.creazioneAccountProfilo(
-                viewModel.nomeUtente.value!!,
-                viewModel.toAccountVenditore()
+            TipoAccount.VENDITORE -> venditoreRepository.creaAccountVenditore(
+                viewModel.email.value!!,
+                VenditoreDto(
+                    viewModel.email.value!!,
+                    viewModel.password.value!!,
+                    TokensAccountDto(
+                        viewModel.facebookAccountID.value!!,
+                        "",
+                        "",
+                        ""
+                    ),
+                    ProfiloShallowDto(nomeUtente)
+                )
             )
 
-            else -> ProfiloDto()
+            else -> CompratoreDto()
         }
     }
 }

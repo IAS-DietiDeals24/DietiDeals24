@@ -17,4 +17,8 @@ class CompratoreRepository(private val service: CompratoreService) {
     suspend fun caricaAccountCompratore(accountEmail: String): CompratoreDto {
         return service.caricaAccountCompratore(accountEmail).body() ?: CompratoreDto()
     }
+
+    suspend fun creaAccountCompratore(accountEmail: String, account: CompratoreDto): CompratoreDto {
+        return service.creaAccountCompratore(accountEmail, account).body() ?: CompratoreDto()
+    }
 }

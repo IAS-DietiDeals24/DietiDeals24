@@ -90,8 +90,7 @@
     <ScrollView
         android:id="@+id/modificaProfilo_scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="50dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/modificaProfilo_linearLayout4"
@@ -138,7 +137,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/modificaProfilo_campoNome"
-                android:layout_width="320dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@color/bianco"
                 app:boxCornerRadiusBottomEnd="30dp"
@@ -204,7 +203,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/modificaProfilo_campoCognome"
-                android:layout_width="320dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@color/bianco"
                 app:boxCornerRadiusBottomEnd="30dp"
@@ -317,7 +316,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/modificaProfilo_campoDataNascita"
-                android:layout_width="320dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@color/bianco"
                 app:boxCornerRadiusBottomEnd="30dp"
@@ -377,7 +376,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/modificaProfilo_campoGenere"
-                android:layout_width="320dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@color/bianco"
                 app:boxCornerRadiusBottomEnd="30dp"
@@ -434,7 +433,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/modificaProfilo_campoAreaGeografica"
-                android:layout_width="320dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@color/bianco"
                 app:boxCornerRadiusBottomEnd="30dp"
@@ -491,7 +490,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/modificaProfilo_campoBiografia"
-                android:layout_width="320dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@color/bianco"
                 app:boxCornerRadiusBottomEnd="30dp"
@@ -611,7 +610,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/modificaProfilo_campoLinkPersonale"
-                android:layout_width="320dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundColor="@color/bianco"
                 app:boxCornerRadiusBottomEnd="30dp"

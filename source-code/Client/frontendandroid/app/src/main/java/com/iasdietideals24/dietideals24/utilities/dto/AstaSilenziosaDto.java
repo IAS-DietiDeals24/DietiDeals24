@@ -29,6 +29,6 @@ public class AstaSilenziosaDto extends AstaDiVenditoreDto {
     }
 
     public Asta toAsta() {
-        return new Asta(idAsta, proprietarioShallow.getEmail(), TipoAsta.SILENZIOSA, dataScadenza, oraScadenza, new BigDecimal("0.0"), immagine, nome, CategoriaAsta.valueOf(categoriaShallow.getNome()), descrizione);
+        return new Asta(idAsta, proprietarioShallow.getEmail(), TipoAsta.SILENZIOSA, dataScadenza, oraScadenza, new BigDecimal("0.0"), immagine, nome, CategoriaAsta.Companion.fromStringToEnum(categoriaShallow.getNome()), descrizione);
     }
 }

@@ -222,7 +222,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
     @UIBuilder
     override fun impostaOsservatori() {
-        val tipoObserver = Observer<TipoAsta> { newTipoAsta ->
+        val tipoObserver = Observer<TipoAsta?> { newTipoAsta ->
             binding.dettagliAstaTipoAsta.text = getString(
                 R.string.crea_tipoAsta,
                 when (newTipoAsta) {
@@ -236,6 +236,10 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
                     TipoAsta.INVERSA -> {
                         getString(R.string.tipoAsta_astaInversa)
+                    }
+
+                    null -> {
+                        // Non fare niente
                     }
                 }
             )
@@ -262,10 +266,16 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         }
         viewModel.categoria.observe(viewLifecycleOwner, categoriaObserver)
 
-        val immagineObserver = Observer<ByteArray> { newByteArray ->
-            if (newByteArray.isNotEmpty()) {
-                binding.dettagliAstaCampoFoto.load(newByteArray) {
-                    crossfade(true)
+        val immagineObserver = Observer { newByteArray: ByteArray? ->
+            when {
+                newByteArray == null || newByteArray.isEmpty() -> {
+                    binding.dettagliAstaCampoFoto.setImageResource(R.drawable.icona_fotocamera)
+                }
+
+                else -> {
+                    binding.dettagliAstaCampoFoto.load(newByteArray) {
+                        crossfade(true)
+                    }
                 }
             }
         }

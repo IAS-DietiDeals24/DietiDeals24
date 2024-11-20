@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
 import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
-import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.AnagraficaProfiloDto
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.LinksProfiloDto
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
@@ -26,11 +25,11 @@ class ModelProfilo : ViewModel() {
     val nomeUtente: MutableLiveData<String>
         get() = _nomeUtente
 
-    private val _immagineProfilo: MutableLiveData<ByteArray> by lazy {
-        MutableLiveData<ByteArray>(ByteArray(0))
+    private val _immagineProfilo: MutableLiveData<ByteArray?> by lazy {
+        MutableLiveData<ByteArray?>(ByteArray(0))
     }
 
-    val immagineProfilo: MutableLiveData<ByteArray>
+    val immagineProfilo: MutableLiveData<ByteArray?>
         get() = _immagineProfilo
 
     private val _nome: MutableLiveData<String> by lazy {
@@ -121,7 +120,7 @@ class ModelProfilo : ViewModel() {
     fun toProfilo(): ProfiloDto {
         return ProfiloDto(
             nomeUtente.value!!,
-            immagineProfilo.value!!,
+            immagineProfilo.value ?: ByteArray(0),
             AnagraficaProfiloDto(
                 nome.value!!,
                 cognome.value!!,
@@ -137,16 +136,7 @@ class ModelProfilo : ViewModel() {
                 linkGitHub.value!!,
                 linkX.value!!
             ),
-            setOf(
-                AccountShallowDto(
-                    email.value!!,
-                    "Compratore"
-                ),
-                AccountShallowDto(
-                    email.value!!,
-                    "Venditore"
-                )
-            )
+            null
         )
     }
 

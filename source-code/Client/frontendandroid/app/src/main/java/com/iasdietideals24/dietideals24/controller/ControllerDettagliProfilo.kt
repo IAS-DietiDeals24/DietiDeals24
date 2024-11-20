@@ -172,12 +172,21 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
         }
         viewModel.nomeUtente.observe(viewLifecycleOwner, nomeUtenteObserver)
 
-        val immagineObserver = Observer<ByteArray> { newByteArray ->
-            if (newByteArray.isNotEmpty()) {
-                binding.dettagliProfiloImmagineUtente.load(newByteArray) {
-                    crossfade(true)
+        val immagineObserver = Observer { newByteArray: ByteArray? ->
+            when {
+                newByteArray == null || newByteArray.isEmpty() -> {
+                    binding.dettagliProfiloImmagineUtente.scaleType =
+                        ImageView.ScaleType.CENTER_INSIDE
+                    binding.dettagliProfiloImmagineUtente.setImageResource(R.drawable.icona_profilo)
                 }
-                binding.dettagliProfiloImmagineUtente.scaleType = ImageView.ScaleType.CENTER_CROP
+
+                else -> {
+                    binding.dettagliProfiloImmagineUtente.load(newByteArray) {
+                        crossfade(true)
+                    }
+                    binding.dettagliProfiloImmagineUtente.scaleType =
+                        ImageView.ScaleType.CENTER_CROP
+                }
             }
         }
         viewModel.immagineProfilo.observe(viewLifecycleOwner, immagineObserver)

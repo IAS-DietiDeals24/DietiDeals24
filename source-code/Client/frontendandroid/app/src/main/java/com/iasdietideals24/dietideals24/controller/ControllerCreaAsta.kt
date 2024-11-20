@@ -7,6 +7,7 @@ import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -15,7 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -39,6 +40,7 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.toMillis
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.CategoriaAstaRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.tools.ImageHandler
 import com.iasdietideals24.dietideals24.utilities.tools.Logger
@@ -60,6 +62,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
     private val astaInversaRepository: AstaInversaRepository by inject()
     private val astaSilenziosaRepository: AstaSilenziosaRepository by inject()
     private val astaTempoFissoRepository: AstaTempoFissoRepository by inject()
+    private val categoriaAstaRepository: CategoriaAstaRepository by inject()
 
     // Listeners
     private var listenerGoToHome: OnGoToHome? = null
@@ -102,7 +105,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
             ) { _, which ->
                 selezionato = which
             }
-            .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
+            .setPositiveButton(getString(R.string.ok)) { _, _ ->
                 when (CurrentUser.tipoAccount) {
                     TipoAccount.COMPRATORE -> viewModel.tipo.value = TipoAsta.INVERSA
 
@@ -118,46 +121,11 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
                     }
                 }
             }
+            .setNegativeButton(getString(R.string.annulla)) { _, _ ->
+                listenerGoToHome?.onGoToHome()
+            }
+            .setCancelable(false)
             .show()
-    }
-
-    @UIBuilder
-    override fun impostaMessaggiCorpo() {
-        when (viewModel.tipo.value) {
-            TipoAsta.INVERSA -> {
-                binding.creaTipoAsta.text = getString(
-                    R.string.crea_tipoAsta,
-                    getString(R.string.tipoAsta_astaInversa)
-                )
-                binding.creaEtichettaPrezzo.text = getString(
-                    R.string.crea_prezzo,
-                    getString(R.string.crea_prezzoPartenza)
-                )
-            }
-
-            TipoAsta.TEMPO_FISSO -> {
-                binding.creaTipoAsta.text = getString(
-                    R.string.crea_tipoAsta,
-                    getString(R.string.tipoAsta_astaTempoFisso)
-                )
-                binding.creaEtichettaPrezzo.text = getString(
-                    R.string.crea_prezzo,
-                    getString(R.string.crea_prezzoMinimo)
-                )
-            }
-
-            TipoAsta.SILENZIOSA -> {
-                binding.creaTipoAsta.text = getString(
-                    R.string.crea_tipoAsta,
-                    getString(R.string.tipoAsta_astaSilenziosa)
-                )
-                binding.creaConstraintLayout5.visibility = ConstraintLayout.GONE
-            }
-
-            else -> {
-                // Non fare niente
-            }
-        }
     }
 
     @UIBuilder
@@ -228,6 +196,24 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
         selectPhoto = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             viewModel.immagine.value = ImageHandler.encodeImage(uri, fragmentContext)
         }
+
+        lifecycleScope.launch {
+            val categorieAsta: MutableList<String> = mutableListOf()
+
+            withContext(Dispatchers.IO) {
+                categoriaAstaRepository.recuperaCategorieAsta().forEach {
+                    categorieAsta.add(it.nome)
+                }
+            }
+
+            val adapter: ArrayAdapter<String> = ArrayAdapter(
+                fragmentContext,
+                android.R.layout.simple_dropdown_item_1line,
+                categorieAsta
+            )
+
+            binding.creaCategoria.setAdapter(adapter)
+        }
     }
 
     private fun apriGalleria(results: Map<String, Boolean>) {
@@ -262,6 +248,45 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
 
     @UIBuilder
     override fun impostaOsservatori() {
+        val tipoAstaObserver = Observer<TipoAsta?> { newTipoAsta ->
+            when (newTipoAsta) {
+                TipoAsta.INVERSA -> {
+                    binding.creaTipoAsta.text = getString(
+                        R.string.crea_tipoAsta,
+                        getString(R.string.tipoAsta_astaInversa)
+                    )
+                    binding.creaEtichettaPrezzo.text = getString(
+                        R.string.crea_prezzo,
+                        getString(R.string.crea_prezzoPartenza)
+                    )
+                }
+
+                TipoAsta.TEMPO_FISSO -> {
+                    binding.creaTipoAsta.text = getString(
+                        R.string.crea_tipoAsta,
+                        getString(R.string.tipoAsta_astaTempoFisso)
+                    )
+                    binding.creaEtichettaPrezzo.text = getString(
+                        R.string.crea_prezzo,
+                        getString(R.string.crea_prezzoMinimo)
+                    )
+                }
+
+                TipoAsta.SILENZIOSA -> {
+                    binding.creaTipoAsta.text = getString(
+                        R.string.crea_tipoAsta,
+                        getString(R.string.tipoAsta_astaSilenziosa)
+                    )
+                    binding.creaConstraintLayout3.visibility = ConstraintLayout.GONE
+                }
+
+                else -> {
+                    // Non fare niente
+                }
+            }
+        }
+        viewModel.tipo.observe(viewLifecycleOwner, tipoAstaObserver)
+
         val dataFineObserver = Observer<LocalDate> { newData ->
             if (newData != LocalDate.MIN)
                 binding.creaDataScadenza.setText(newData.toLocalStringShort())
@@ -286,7 +311,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
         }
         viewModel.prezzo.observe(viewLifecycleOwner, prezzoObserver)
 
-        val immagineObserver = Observer<ByteArray> { newByteArray: ByteArray? ->
+        val immagineObserver = Observer { newByteArray: ByteArray? ->
             when {
                 newByteArray == null || newByteArray.isEmpty() -> {
                     binding.creaCampoFoto.setImageResource(R.drawable.icona_fotocamera)
@@ -307,7 +332,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
         viewModel.nome.observe(viewLifecycleOwner, nomeObserver)
 
         val categoriaObserver = Observer<CategoriaAsta> { newCategoria ->
-            binding.creaCategoria.setText(newCategoria.name)
+            binding.creaCategoria.setText(CategoriaAsta.fromEnumToString(newCategoria))
         }
         viewModel.categoria.observe(viewLifecycleOwner, categoriaObserver)
 
@@ -319,6 +344,11 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
 
     @EventHandler
     private fun clickCrea() {
+        viewModel.nome.value = estraiTestoDaElemento(binding.creaNome)
+        viewModel.categoria.value =
+            CategoriaAsta.fromStringToEnum(estraiTestoDaElemento(binding.creaCategoria))
+        viewModel.descrizione.value = estraiTestoDaElemento(binding.creaDescrizione)
+
         lifecycleScope.launch {
             try {
                 viewModel.validate()
@@ -386,7 +416,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
     @EventHandler
     private fun clickDataScadenza() {
         val calendarConstraints = CalendarConstraints.Builder()
-            .setValidator(DateValidatorPointBackward.now())
+            .setValidator(DateValidatorPointForward.now())
             .setFirstDayOfWeek(Calendar.MONDAY)
 
         val datePicker = MaterialDatePicker.Builder.datePicker()

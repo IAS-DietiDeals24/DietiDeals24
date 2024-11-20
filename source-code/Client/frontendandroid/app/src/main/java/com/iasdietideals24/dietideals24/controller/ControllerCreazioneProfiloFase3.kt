@@ -95,6 +95,15 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
 
     @EventHandler
     private fun clickFine() {
+        viewModel.linkFacebook.value =
+            estraiTestoDaElemento(binding.creazioneProfiloFase3LinkFacebook)
+        viewModel.linkGitHub.value = estraiTestoDaElemento(binding.creazioneProfiloFase3LinkGitHub)
+        viewModel.linkInstagram.value =
+            estraiTestoDaElemento(binding.creazioneProfiloFase3LinkInstagram)
+        viewModel.linkX.value = estraiTestoDaElemento(binding.creazioneProfiloFase3LinkX)
+        viewModel.linkPersonale.value =
+            estraiTestoDaElemento(binding.creazioneProfiloFase3LinkPersonale)
+
         lifecycleScope.launch {
             try {
                 val account: Account =
