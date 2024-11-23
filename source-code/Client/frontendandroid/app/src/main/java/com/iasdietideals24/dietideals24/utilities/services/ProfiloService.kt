@@ -2,26 +2,14 @@ package com.iasdietideals24.dietideals24.utilities.services
 
 import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
 import com.iasdietideals24.dietideals24.utilities.dto.exceptional.PutProfiloDto
-import com.iasdietideals24.dietideals24.utilities.tools.Page
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.PUT
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface ProfiloService : Service {
-    /**
-     * Carica tutti i dati di un profilo associato a un account.
-     * @param accountEmail Email dell'account del quale recuperare il profilo.
-     * @return [ProfiloDto] richiesto. Se non esiste, viene restituito un profilo vuoto.
-     */
-    @GET("profili")
-    suspend fun caricaProfiloDaAccount(
-        @Query("email") accountEmail: String
-    ): Response<Page<ProfiloDto>>
-
     /**
      * Il metodo recupera il profilo con il nome utente specificato.
      * @param nomeUtente Nome utente del profilo che si vuole recuperare.

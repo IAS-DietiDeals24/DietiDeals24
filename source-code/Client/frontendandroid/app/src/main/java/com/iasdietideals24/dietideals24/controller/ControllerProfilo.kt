@@ -13,6 +13,8 @@ import com.iasdietideals24.dietideals24.databinding.ProfiloBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.data.AnteprimaProfilo
+import com.iasdietideals24.dietideals24.utilities.dto.AccountDto
+import com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto
 import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
@@ -20,7 +22,9 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToCreatedAuctions
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToHelp
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToParticipation
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToProfile
+import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +35,9 @@ import org.koin.android.ext.android.inject
 class ControllerProfilo : Controller<ProfiloBinding>() {
 
     // Repositories
-    private val repositoryProfilo: ProfiloRepository by inject()
+    private val compratoreRepository: CompratoreRepository by inject()
+    private val venditoreRepository: VenditoreRepository by inject()
+    private val profiloRepository: ProfiloRepository by inject()
 
     // Listeners
     private var listenerProfile: OnGoToProfile? = null
@@ -75,8 +81,10 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
         lifecycleScope.launch {
             try {
                 if (CurrentUser.id != "") {
+                    val account: AccountDto = withContext(Dispatchers.IO) { caricaAccount() }
+                    val nomeUtente = account.profiloShallow.nomeUtente
                     val result: AnteprimaProfilo =
-                        withContext(Dispatchers.IO) { recuperaProfilo().toAnteprimaProfilo() }
+                        withContext(Dispatchers.IO) { caricaProfilo(nomeUtente).toAnteprimaProfilo() }
 
                     if (result.nome != "") {
                         when (result.tipoAccount) {
@@ -130,8 +138,22 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
         }
     }
 
-    private suspend fun recuperaProfilo(): ProfiloDto {
-        return repositoryProfilo.caricaProfiloDaAccount(CurrentUser.id)
+    private suspend fun caricaAccount(): AccountDto {
+        return when (CurrentUser.tipoAccount) {
+            TipoAccount.COMPRATORE -> {
+                compratoreRepository.caricaAccountCompratore(CurrentUser.id)
+            }
+
+            TipoAccount.VENDITORE -> {
+                venditoreRepository.caricaAccountVenditore(CurrentUser.id)
+            }
+
+            else -> CompratoreDto()
+        }
+    }
+
+    private suspend fun caricaProfilo(nomeUtente: String): ProfiloDto {
+        return profiloRepository.caricaProfilo(nomeUtente)
     }
 
     @UIBuilder

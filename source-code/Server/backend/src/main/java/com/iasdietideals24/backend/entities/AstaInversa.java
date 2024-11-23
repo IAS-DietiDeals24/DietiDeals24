@@ -23,7 +23,7 @@ import org.hibernate.annotations.Check;
 @Check(constraints = "soglia_iniziale >= 0")
 public class AstaInversa extends AstaDiCompratore {
     @NonNull
-    @Column(name = "soglia_iniziale", nullable = false, scale = 2, precision = 2)
+    @Column(name = "soglia_iniziale", nullable = false, scale = 2, precision = 10)
     private BigDecimal sogliaIniziale;
 
     @OneToMany(mappedBy = "astaRiferimento", cascade = CascadeType.ALL, orphanRemoval = true)

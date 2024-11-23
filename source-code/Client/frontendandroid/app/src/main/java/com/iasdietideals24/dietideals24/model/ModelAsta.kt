@@ -15,6 +15,7 @@ import com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShal
 import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneDataPassata
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaInversaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaTempoFissoRepository
@@ -74,7 +75,7 @@ class ModelAsta(
         get() = _oraFine
 
     private val _prezzo: MutableLiveData<BigDecimal> by lazy {
-        MutableLiveData<BigDecimal>(BigDecimal(0.0))
+        MutableLiveData<BigDecimal>(BigDecimal("0.0"))
     }
 
     val prezzo: MutableLiveData<BigDecimal>
@@ -136,7 +137,7 @@ class ModelAsta(
             setOf(),
             AccountShallowDto(
                 CurrentUser.id,
-                CurrentUser.tipoAccount.name
+                "Compratore"
             ),
             setOf(),
             prezzo.value!!
@@ -157,7 +158,7 @@ class ModelAsta(
             setOf(),
             AccountShallowDto(
                 CurrentUser.id,
-                CurrentUser.tipoAccount.name
+                "Venditore"
             ),
             setOf(),
             prezzo.value!!
@@ -178,14 +179,14 @@ class ModelAsta(
             setOf(),
             AccountShallowDto(
                 CurrentUser.id,
-                CurrentUser.tipoAccount.name
+                "Venditore"
             ),
             setOf()
         )
     }
 
     @Validation
-    @Throws(EccezioneCampiNonCompilati::class)
+    @Throws(EccezioneCampiNonCompilati::class, EccezioneDataPassata::class)
     fun validate() {
         dataFine()
         oraFine()
@@ -205,10 +206,12 @@ class ModelAsta(
     }
 
     @Validation
-    @Throws(EccezioneCampiNonCompilati::class)
+    @Throws(EccezioneCampiNonCompilati::class, EccezioneDataPassata::class)
     private fun oraFine() {
         if (oraFine.value == null) {
             throw EccezioneCampiNonCompilati("Ora di fine non compilata.")
+        } else if (dataFine.value!! == LocalDate.now() && oraFine.value!! <= LocalTime.now()) {
+            throw EccezioneDataPassata("La data e ora inserite sono nel passato.")
         }
     }
 
@@ -243,8 +246,8 @@ class ModelAsta(
         if (prezzo.value?.toDouble() == 0.0) {
             throw EccezioneCampiNonCompilati("Prezzo non compilato.")
         }
-        if (prezzo.toString().toDouble() < 0.0 || !prezzo.toString()
-                .matches(Regex("^\\d+\\.\\d{2}\$"))
+        if (prezzo.value?.toDouble()!! < 0.0 || !prezzo.value.toString()
+                .matches(Regex("^\\d+\\.\\d{2}$"))
         ) {
             throw EccezioneCampiNonCompilati("Prezzo non valido")
         }

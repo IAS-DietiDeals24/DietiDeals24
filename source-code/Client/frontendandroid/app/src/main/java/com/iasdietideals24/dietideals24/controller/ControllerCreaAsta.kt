@@ -33,6 +33,7 @@ import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneDataPassata
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToHome
 import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalDate
 import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
@@ -344,6 +345,8 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
 
     @EventHandler
     private fun clickCrea() {
+        viewModel.prezzo.value =
+            BigDecimal(estraiTestoDaElemento(binding.creaPrezzo).replace(",", "."))
         viewModel.nome.value = estraiTestoDaElemento(binding.creaNome)
         viewModel.categoria.value =
             CategoriaAsta.fromStringToEnum(estraiTestoDaElemento(binding.creaCategoria))
@@ -384,6 +387,12 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
                         listenerGoToHome?.onGoToHome()
                     }
                 }
+            } catch (_: EccezioneDataPassata) {
+                erroreCampo(
+                    R.string.registrazione_erroreDataPassata,
+                    binding.creaCampoDataScadenza,
+                    binding.creaCampoOra
+                )
             } catch (_: EccezioneCampiNonCompilati) {
                 erroreCampo(
                     R.string.registrazione_erroreCampiObbligatoriNonCompilati,

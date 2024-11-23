@@ -28,11 +28,14 @@ import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.data.Asta
 import com.iasdietideals24.dietideals24.utilities.data.Profilo
+import com.iasdietideals24.dietideals24.utilities.dto.AccountDto
 import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
 import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
+import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneDataPassata
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToDetails
 import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalDate
 import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
@@ -40,7 +43,9 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.toMillis
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
@@ -62,6 +67,8 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
     private val repositoryAstaSilenziosa: AstaSilenziosaRepository by inject()
     private val repositoryAstaTempoFisso: AstaTempoFissoRepository by inject()
     private val repositoryProfilo: ProfiloRepository by inject()
+    private val compratoreRepository: CompratoreRepository by inject()
+    private val venditoreRepository: VenditoreRepository by inject()
 
     // ViewModel
     private val viewModel: ModelAsta by activityViewModel()
@@ -191,8 +198,13 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
             lifecycleScope.launch {
                 try {
                     val asta: Asta = withContext(Dispatchers.IO) { caricaAsta().toAsta() }
+                    var userName: String
+                    withContext(Dispatchers.IO) {
+                        val returned = caricaAccount()
+                        userName = returned.profiloShallow.nomeUtente
+                    }
                     val creatoreAsta: Profilo =
-                        withContext(Dispatchers.IO) { caricaProfilo(asta.idCreatore).toProfilo() }
+                        withContext(Dispatchers.IO) { caricaProfilo(userName).toProfilo() }
 
                     if (asta.idAsta != 0L && creatoreAsta.nomeUtente != "") {
                         viewModel.idAsta.value = asta.idAsta
@@ -227,8 +239,30 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
         }
     }
 
-    private suspend fun caricaProfilo(idCreatore: String): ProfiloDto {
-        return repositoryProfilo.caricaProfiloDaAccount(idCreatore)
+    private suspend fun caricaAccount(): AccountDto {
+        return when (CurrentUser.tipoAccount) {
+            TipoAccount.COMPRATORE -> {
+                compratoreRepository.caricaAccountCompratore(viewModel.idCreatore.value!!)
+            }
+
+            TipoAccount.VENDITORE -> {
+                venditoreRepository.caricaAccountVenditore(viewModel.idCreatore.value!!)
+            }
+
+            else -> {
+                val account =
+                    compratoreRepository.caricaAccountCompratore(viewModel.idCreatore.value!!)
+
+                if (account.email == "")
+                    venditoreRepository.caricaAccountVenditore(viewModel.idCreatore.value!!)
+                else
+                    account
+            }
+        }
+    }
+
+    private suspend fun caricaProfilo(nomeUtente: String): ProfiloDto {
+        return repositoryProfilo.caricaProfilo(nomeUtente)
     }
 
     private fun apriGalleria(results: Map<String, Boolean>) {
@@ -373,6 +407,12 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
                         )
                     }
                 }
+            } catch (_: EccezioneDataPassata) {
+                erroreCampo(
+                    R.string.registrazione_erroreDataPassata,
+                    binding.modificaCampoDataScadenza,
+                    binding.modificaCampoOra
+                )
             } catch (_: EccezioneCampiNonCompilati) {
                 erroreCampo(
                     R.string.registrazione_erroreCampiObbligatoriNonCompilati,

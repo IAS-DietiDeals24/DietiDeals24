@@ -20,6 +20,7 @@ import com.iasdietideals24.dietideals24.utilities.enumerations.StatoOfferta
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToProfile
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnRefresh
 import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
+import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 import com.iasdietideals24.dietideals24.utilities.tools.Logger
@@ -43,6 +44,7 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
         OffertaSilenziosaRepository::class.java
     )
     private val profiloRepository: ProfiloRepository by inject(ProfiloRepository::class.java)
+    private val compratoreRepository: CompratoreRepository by inject(CompratoreRepository::class.java)
 
     // Listeners
     private var immagineListener: OnGoToProfile? = null
@@ -144,7 +146,8 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
     }
 
     private suspend fun recuperaOfferente(currentOfferta: OffertaRicevuta): ProfiloDto {
-        return profiloRepository.caricaProfiloDaAccount(currentOfferta.idOfferente)
+        val account = compratoreRepository.caricaAccountCompratore(currentOfferta.idOfferente)
+        return profiloRepository.caricaProfilo(account.profiloShallow.nomeUtente)
     }
 
     @EventHandler

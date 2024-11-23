@@ -50,7 +50,7 @@ enum class CategoriaAsta {
                 PETS_SUPPLIES -> return "Scorte animali domestici"
                 BODYCARE_AND_BEAUTY -> return "Cura del corpo e bellezza"
                 SPORTS_AND_HOBBIES -> return "Sport e tempo libero"
-                CLOTHINGS_AND_WEARABLES -> return "Abiti e propose"
+                CLOTHINGS_AND_WEARABLES -> return "Abiti e indossabili"
                 HOME_AND_FURNITURES -> return "Casa e arredamenti"
                 VEHICLES -> return "Veicoli"
                 OTHER -> return "Altro"

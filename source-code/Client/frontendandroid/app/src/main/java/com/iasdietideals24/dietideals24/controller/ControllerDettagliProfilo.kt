@@ -93,10 +93,14 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
     override fun elaborazioneAggiuntiva() {
         lifecycleScope.launch {
             try {
-                val account: Account =
-                    withContext(Dispatchers.IO) { caricaAccount().toAccount() }
+                var userName: String
+                val account: Account = withContext(Dispatchers.IO) {
+                    val returned = caricaAccount()
+                    userName = returned.profiloShallow.nomeUtente
+                    returned.toAccount()
+                }
                 val profilo: Profilo =
-                    withContext(Dispatchers.IO) { caricaProfiloDaAccount().toProfilo() }
+                    withContext(Dispatchers.IO) { caricaProfilo(userName).toProfilo() }
 
                 if (profilo.nomeUtente != "") {
                     viewModel.tipoAccount.value = account.tipoAccount.name
@@ -117,6 +121,14 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
 
                     if (CurrentUser.id != viewModel.email.value)
                         binding.dettagliProfiloPulsanteModifica.visibility = View.GONE
+                    if (viewModel.linkInstagram.value == "")
+                        binding.dettagliProfiloInstagram.visibility = View.GONE
+                    if (viewModel.linkFacebook.value == "")
+                        binding.dettagliProfiloFacebook.visibility = View.GONE
+                    if (viewModel.linkGitHub.value == "")
+                        binding.dettagliProfiloGithub.visibility = View.GONE
+                    if (viewModel.linkX.value == "")
+                        binding.dettagliProfiloX.visibility = View.GONE
                 }
             } catch (_: Exception) {
                 Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
@@ -149,8 +161,8 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
         }
     }
 
-    private suspend fun caricaProfiloDaAccount(): ProfiloDto {
-        return profiloRepository.caricaProfiloDaAccount(if (args.id == "") CurrentUser.id else args.id)
+    private suspend fun caricaProfilo(nomeUtente: String): ProfiloDto {
+        return profiloRepository.caricaProfilo(nomeUtente)
     }
 
     @UIBuilder
@@ -248,25 +260,25 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
 
     @EventHandler
     private fun clickFacebook() {
-        if (viewModel.linkFacebook.value != null)
+        if (viewModel.linkFacebook.value != "")
             listenerOpenUrl?.onOpenUrl(viewModel.linkFacebook.value!!)
     }
 
     @EventHandler
     private fun clickInstagram() {
-        if (viewModel.linkInstagram.value != null)
+        if (viewModel.linkInstagram.value != "")
             listenerOpenUrl?.onOpenUrl(viewModel.linkInstagram.value!!)
     }
 
     @EventHandler
     private fun clickGitHub() {
-        if (viewModel.linkGitHub.value != null)
+        if (viewModel.linkGitHub.value != "")
             listenerOpenUrl?.onOpenUrl(viewModel.linkGitHub.value!!)
     }
 
     @EventHandler
     private fun clickX() {
-        if (viewModel.linkX.value != null)
+        if (viewModel.linkX.value != "")
             listenerOpenUrl?.onOpenUrl(viewModel.linkX.value!!)
     }
 

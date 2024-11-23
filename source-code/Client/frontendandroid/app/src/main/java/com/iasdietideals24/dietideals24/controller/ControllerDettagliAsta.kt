@@ -22,11 +22,13 @@ import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.data.Asta
 import com.iasdietideals24.dietideals24.utilities.data.Offerta
 import com.iasdietideals24.dietideals24.utilities.data.Profilo
+import com.iasdietideals24.dietideals24.utilities.dto.AccountDto
 import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaDto
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaSilenziosaDto
 import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnEditButton
@@ -37,10 +39,12 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaInversaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaTempoFissoRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
@@ -67,6 +71,8 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
     private val offertaInversaRepository: OffertaInversaRepository by inject()
     private val offertaTempoFissoRepository: OffertaTempoFissoRepository by inject()
     private val offertaSilenziosaRepository: OffertaSilenziosaRepository by inject()
+    private val compratoreRepository: CompratoreRepository by inject()
+    private val venditoreRepository: VenditoreRepository by inject()
 
     // Listeners
     private var listenerBackButton: OnBackButton? = null
@@ -129,8 +135,13 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         lifecycleScope.launch {
             try {
                 val asta: Asta = withContext(Dispatchers.IO) { caricaAsta().toAsta() }
+                var userName: String
+                withContext(Dispatchers.IO) {
+                    val returned = caricaAccount()
+                    userName = returned.profiloShallow.nomeUtente
+                }
                 val creatoreAsta: Profilo =
-                    withContext(Dispatchers.IO) { caricaProfilo(asta.idCreatore).toProfilo() }
+                    withContext(Dispatchers.IO) { caricaProfilo(userName).toProfilo() }
                 val offerta: Offerta =
                     withContext(Dispatchers.IO) {
                         recuperaOfferta(asta.idAsta, asta.tipo).toOfferta()
@@ -200,8 +211,30 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         }
     }
 
-    private suspend fun caricaProfilo(idCreatore: String): ProfiloDto {
-        return profiloRepository.caricaProfiloDaAccount(idCreatore)
+    private suspend fun caricaAccount(): AccountDto {
+        return when (CurrentUser.tipoAccount) {
+            TipoAccount.COMPRATORE -> {
+                compratoreRepository.caricaAccountCompratore(viewModel.idCreatore.value!!)
+            }
+
+            TipoAccount.VENDITORE -> {
+                venditoreRepository.caricaAccountVenditore(viewModel.idCreatore.value!!)
+            }
+
+            else -> {
+                val account =
+                    compratoreRepository.caricaAccountCompratore(viewModel.idCreatore.value!!)
+
+                if (account.email == "")
+                    venditoreRepository.caricaAccountVenditore(viewModel.idCreatore.value!!)
+                else
+                    account
+            }
+        }
+    }
+
+    private suspend fun caricaProfilo(nomeUtente: String): ProfiloDto {
+        return profiloRepository.caricaProfilo(nomeUtente)
     }
 
     private suspend fun recuperaOfferta(idAsta: Long, tipo: TipoAsta): OffertaDto {

@@ -33,7 +33,7 @@ public abstract class Offerta {
     private LocalTime oraInvio;
 
     @NonNull
-    @Column(name = "valore", nullable = false, scale = 2, precision = 2)
+    @Column(name = "valore", nullable = false, scale = 2, precision = 10)
     private BigDecimal valore;
 
     // AllArgsConstructor

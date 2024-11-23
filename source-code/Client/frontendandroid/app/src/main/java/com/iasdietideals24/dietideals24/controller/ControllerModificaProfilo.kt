@@ -276,10 +276,10 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
         input.setText(viewModel.linkFacebook.value)
 
         MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
-            .setTitle(R.string.crea_titoloPopupTipoAsta)
+            .setTitle(R.string.modifica_titoloPopupLinkSocial)
             .setView(viewInflated)
             .setPositiveButton(R.string.ok) { _, _ ->
-                viewModel.linkFacebook.value = input.getText().toString()
+                viewModel.linkFacebook.value = estraiTestoDaElemento(input)
             }
             .setNegativeButton(R.string.annulla) { _, _ -> }
             .show()
@@ -293,10 +293,10 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
         input.setText(viewModel.linkInstagram.value)
 
         MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
-            .setTitle(R.string.crea_titoloPopupTipoAsta)
+            .setTitle(R.string.modifica_titoloPopupLinkSocial)
             .setView(viewInflated)
             .setPositiveButton(R.string.ok) { _, _ ->
-                viewModel.linkInstagram.value = input.getText().toString()
+                viewModel.linkInstagram.value = estraiTestoDaElemento(input)
             }
             .setNegativeButton(R.string.annulla) { _, _ -> }
             .show()
@@ -310,10 +310,10 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
         input.setText(viewModel.linkGitHub.value)
 
         MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
-            .setTitle(R.string.crea_titoloPopupTipoAsta)
+            .setTitle(R.string.modifica_titoloPopupLinkSocial)
             .setView(viewInflated)
             .setPositiveButton(R.string.ok) { _, _ ->
-                viewModel.linkGitHub.value = input.getText().toString()
+                viewModel.linkGitHub.value = estraiTestoDaElemento(input)
             }
             .setNegativeButton(R.string.annulla) { _, _ -> }
             .show()
@@ -327,10 +327,10 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
         input.setText(viewModel.linkX.value)
 
         MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
-            .setTitle(R.string.crea_titoloPopupTipoAsta)
+            .setTitle(R.string.modifica_titoloPopupLinkSocial)
             .setView(viewInflated)
             .setPositiveButton(R.string.ok) { _, _ ->
-                viewModel.linkX.value = input.getText().toString()
+                viewModel.linkX.value = estraiTestoDaElemento(input)
             }
             .setNegativeButton(R.string.annulla) { _, _ -> }
             .show()

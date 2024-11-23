@@ -251,4 +251,6 @@
     <string name="popupConfermaEmail_codiceErrato">The code is invalid. Please, retry.</string>
     <string name="maschio">Male</string>
     <string name="femmina">Female</string>
+    <string name="modifica_titoloPopupLinkSocial">Social link</string>
+    <string name="registrazione_erroreDataPassata">The selected date and time are in the past.</string>
 </resources>

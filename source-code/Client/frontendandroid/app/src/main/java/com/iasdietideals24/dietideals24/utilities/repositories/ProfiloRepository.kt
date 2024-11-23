@@ -5,10 +5,6 @@ import com.iasdietideals24.dietideals24.utilities.dto.exceptional.PutProfiloDto
 import com.iasdietideals24.dietideals24.utilities.services.ProfiloService
 
 class ProfiloRepository(private val service: ProfiloService) {
-    suspend fun caricaProfiloDaAccount(accountEmail: String): ProfiloDto {
-        return service.caricaProfiloDaAccount(accountEmail).body()?.content?.get(0) ?: ProfiloDto()
-    }
-
     suspend fun caricaProfilo(nomeUtente: String): ProfiloDto {
         return service.caricaProfilo(nomeUtente).body() ?: ProfiloDto()
     }

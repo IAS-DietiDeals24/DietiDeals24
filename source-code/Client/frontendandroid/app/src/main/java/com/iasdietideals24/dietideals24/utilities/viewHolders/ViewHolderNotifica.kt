@@ -10,11 +10,16 @@ import com.iasdietideals24.dietideals24.databinding.NotificaBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.data.Notifica
 import com.iasdietideals24.dietideals24.utilities.data.Profilo
+import com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto
 import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToDetails
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToProfile
 import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
+import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
+import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +38,8 @@ class ViewHolderNotifica(private val binding: NotificaBinding) :
 
     // Repositories
     private val profiloRepository: ProfiloRepository by inject(ProfiloRepository::class.java)
+    private val compratoreRepository: CompratoreRepository by inject(CompratoreRepository::class.java)
+    private val venditoreRepository: VenditoreRepository by inject(VenditoreRepository::class.java)
 
     // Listeners
     private var listenerGoToDetails: OnGoToDetails? = null
@@ -91,7 +98,12 @@ class ViewHolderNotifica(private val binding: NotificaBinding) :
     }
 
     private suspend fun recuperaMittente(currentNotifica: Notifica): ProfiloDto {
-        return profiloRepository.caricaProfiloDaAccount(currentNotifica.idMittente)
+        val account = when (CurrentUser.tipoAccount) {
+            TipoAccount.VENDITORE -> compratoreRepository.caricaAccountCompratore(currentNotifica.idMittente)
+            TipoAccount.COMPRATORE -> venditoreRepository.caricaAccountVenditore(currentNotifica.idMittente)
+            else -> CompratoreDto()
+        }
+        return profiloRepository.caricaProfilo(account.profiloShallow.nomeUtente)
     }
 
     fun cleanListeners() {

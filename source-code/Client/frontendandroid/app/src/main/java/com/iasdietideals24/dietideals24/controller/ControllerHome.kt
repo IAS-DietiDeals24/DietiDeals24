@@ -123,7 +123,7 @@ class ControllerHome : Controller<HomeBinding>() {
         binding.homeRecyclerView.layoutManager = LinearLayoutManager(fragmentContext)
 
         lifecycleScope.launch {
-            val categorieAsta: MutableList<String> = mutableListOf()
+            val categorieAsta: MutableList<String> = mutableListOf("")
 
             withContext(Dispatchers.IO) {
                 categoriaAstaRepository.recuperaCategorieAsta().forEach {

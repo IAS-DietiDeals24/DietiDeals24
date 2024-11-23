@@ -33,9 +33,9 @@ abstract public class AstaDto {
 
     private Set<OffertaShallowDto> offerteRicevuteShallow = new HashSet<>();
 
-    public AstaDto(Long idAsta, CategoriaAstaShallowDto categoria, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow, Set<OffertaShallowDto> offerteRicevuteShallow) {
+    public AstaDto(Long idAsta, CategoriaAstaShallowDto categoriaShallow, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow, Set<OffertaShallowDto> offerteRicevuteShallow) {
         this.idAsta = idAsta;
-        this.categoriaShallow = categoria;
+        this.categoriaShallow = categoriaShallow;
         this.nome = nome;
         this.descrizione = descrizione;
         this.dataScadenza = dataScadenza;
@@ -61,12 +61,8 @@ abstract public class AstaDto {
         this.idAsta = idAsta;
     }
 
-    public CategoriaAstaShallowDto getCategoria() {
+    public CategoriaAstaShallowDto getCategoriaShallow() {
         return this.categoriaShallow;
-    }
-
-    public void setCategoria(CategoriaAstaShallowDto categoria) {
-        this.categoriaShallow = categoria;
     }
 
     public String getNome() {
@@ -91,10 +87,6 @@ abstract public class AstaDto {
 
     public void setImmagine(byte[] immagine) {
         this.immagine = immagine;
-    }
-
-    public CategoriaAstaShallowDto getCategoriaShallow() {
-        return categoriaShallow;
     }
 
     public LocalDate getDataScadenza() {
