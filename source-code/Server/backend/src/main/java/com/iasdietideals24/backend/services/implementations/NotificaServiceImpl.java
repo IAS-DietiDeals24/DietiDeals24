@@ -122,7 +122,7 @@ public class NotificaServiceImpl implements NotificaService {
     @Override
     public void checkFieldsValid(NotificaDto notificaDto) throws InvalidParameterException {
         checkDataInvioValid(notificaDto.getDataInvio());
-        checkOraInvioValid(notificaDto.getOraInvio());
+        checkOraInvioValid(notificaDto.getDataInvio(), notificaDto.getOraInvio());
         checkMessaggioValid(notificaDto.getMessaggio());
         checkMittenteDestinatarioValid(notificaDto.getMittenteShallow());
         checkDestinatariValid(notificaDto.getDestinatariShallow());
@@ -136,11 +136,11 @@ public class NotificaServiceImpl implements NotificaService {
             throw new InvalidParameterException("La data di invio non può essere successiva alla data odierna!");
     }
 
-    private void checkOraInvioValid(LocalTime oraInvio) throws InvalidParameterException {
+    private void checkOraInvioValid(LocalDate dataInvio, LocalTime oraInvio) throws InvalidParameterException {
         if (oraInvio == null)
             throw new InvalidParameterException("L'ora di invio non può essere null!");
-        else if (oraInvio.isAfter(LocalTime.now()))
-            throw new InvalidParameterException("L'ora di invio non può essere successiva all'ora odierna!");
+        else if (dataInvio.isEqual(LocalDate.now()) && oraInvio.isAfter(LocalTime.now()))
+            throw new InvalidParameterException("L'ora di invio non può essere successiva all'ora attuale!");
     }
 
     private void checkMessaggioValid(String messaggio) throws InvalidParameterException {
@@ -237,7 +237,7 @@ public class NotificaServiceImpl implements NotificaService {
 
     private void ifPresentUpdateOraInvio(LocalTime updatedOraInvio, Notifica existingNotifica) throws InvalidParameterException {
         if (updatedOraInvio != null) {
-            this.checkOraInvioValid(updatedOraInvio);
+            this.checkOraInvioValid(existingNotifica.getDataInvio(), updatedOraInvio);
             existingNotifica.setOraInvio(updatedOraInvio);
         }
     }

@@ -31,7 +31,7 @@ public class AstaServiceImpl implements AstaService {
         checkNomeValid(astaDto.getNome());
         checkDescrizioneValid(astaDto.getDescrizione());
         checkDataScadenzaValid(astaDto.getDataScadenza());
-        checkOraScadenzaValid(astaDto.getOraScadenza());
+        checkOraScadenzaValid(astaDto.getDataScadenza(), astaDto.getOraScadenza());
         checkCategoriaValid(astaDto.getCategoriaShallow());
     }
 
@@ -61,10 +61,10 @@ public class AstaServiceImpl implements AstaService {
             throw new InvalidParameterException("La data di scadenza non può essere precedente alla data odierna!");
     }
 
-    private void checkOraScadenzaValid(LocalTime oraScadenza) throws InvalidParameterException {
+    private void checkOraScadenzaValid(LocalDate dataScadenza, LocalTime oraScadenza) throws InvalidParameterException {
         if (oraScadenza == null)
             throw new InvalidParameterException("L'ora di scadenza non può essere null!");
-        else if (oraScadenza.isBefore(LocalTime.now()))
+        else if (dataScadenza.isEqual(LocalDate.now()) && oraScadenza.isBefore(LocalTime.now()))
             throw new InvalidParameterException("L'ora di scadenza non può essere precedente all'ora attuale!");
     }
 
@@ -121,7 +121,7 @@ public class AstaServiceImpl implements AstaService {
 
     private void ifPresentUpdateOraScadenza(LocalTime updatedOraScadenza, Asta existingAsta) throws InvalidParameterException {
         if (updatedOraScadenza != null) {
-            checkOraScadenzaValid(updatedOraScadenza);
+            checkOraScadenzaValid(existingAsta.getDataScadenza(), updatedOraScadenza);
             existingAsta.setOraScadenza(updatedOraScadenza);
         }
     }

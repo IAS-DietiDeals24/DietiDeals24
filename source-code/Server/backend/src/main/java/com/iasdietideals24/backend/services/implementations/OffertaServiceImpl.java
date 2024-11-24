@@ -15,7 +15,7 @@ public class OffertaServiceImpl implements OffertaService {
     @Override
     public void checkFieldsValid(OffertaDto offertaDto) throws InvalidParameterException {
         checkDataInvioValid(offertaDto.getDataInvio());
-        checkOraInvioValid(offertaDto.getOraInvio());
+        checkOraInvioValid(offertaDto.getDataInvio(), offertaDto.getOraInvio());
         checkValoreValid(offertaDto.getValore());
     }
 
@@ -26,10 +26,10 @@ public class OffertaServiceImpl implements OffertaService {
             throw new InvalidParameterException("La data di invio non può essere successiva alla data odierna!");
     }
 
-    private void checkOraInvioValid(LocalTime oraInvio) throws InvalidParameterException {
+    private void checkOraInvioValid(LocalDate dataInvio, LocalTime oraInvio) throws InvalidParameterException {
         if (oraInvio == null)
             throw new InvalidParameterException("L'ora di invio non può essere null!");
-        else if (oraInvio.isAfter(LocalTime.now()))
+        else if (dataInvio.isEqual(LocalDate.now()) && oraInvio.isAfter(LocalTime.now()))
             throw new InvalidParameterException("L'ora di invio non può essere successiva all'ora attuale!");
     }
 
@@ -61,7 +61,7 @@ public class OffertaServiceImpl implements OffertaService {
 
     private void ifPresentUpdateOraInvio(LocalTime updatedOraInvio, Offerta existingOfferta) throws InvalidParameterException {
         if (updatedOraInvio != null) {
-            checkOraInvioValid(updatedOraInvio);
+            checkOraInvioValid(existingOfferta.getDataInvio(), updatedOraInvio);
             existingOfferta.setOraInvio(updatedOraInvio);
         }
     }
