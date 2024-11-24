@@ -6,8 +6,6 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
-import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.HomeBinding
 import com.iasdietideals24.dietideals24.model.ModelHome
 import com.iasdietideals24.dietideals24.utilities.adapters.AdapterHome
@@ -20,7 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -121,6 +119,7 @@ class ControllerHome : Controller<HomeBinding>() {
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
         binding.homeRecyclerView.layoutManager = LinearLayoutManager(fragmentContext)
+        binding.homeRecyclerView.adapter = adapterHome
 
         lifecycleScope.launch {
             val categorieAsta: MutableList<String> = mutableListOf("")
@@ -144,32 +143,31 @@ class ControllerHome : Controller<HomeBinding>() {
     private suspend fun recuperaAste() {
         when (CurrentUser.tipoAccount) {
             TipoAccount.COMPRATORE -> {
-                viewModel.getCompratoreFlows().collectLatest { pagingData ->
+                merge(
+                    viewModel.getAsteTempoFissoFlows(),
+                    viewModel.getAsteSilenzioseFlows()
+                ).collectLatest { pagingData ->
                     adapterHome.submitData(pagingData)
                 }
             }
 
             TipoAccount.VENDITORE -> {
-                viewModel.getVenditoreFlows().collectLatest { pagingData ->
+                viewModel.getAsteInverseFlows().collectLatest { pagingData ->
                     adapterHome.submitData(pagingData)
                 }
             }
 
             else -> {
-                viewModel.getFlows().collectLatest { pagingData ->
+                merge(
+                    viewModel.getAsteTempoFissoFlows(),
+                    viewModel.getAsteSilenzioseFlows(),
+                    viewModel.getAsteInverseFlows()
+                ).collectLatest { pagingData ->
                     adapterHome.submitData(pagingData)
                 }
             }
         }
 
         Logger.log("Performing auction research")
-
-        if (viewModel.getFlows().count() != 0)
-            binding.homeRecyclerView.adapter = adapterHome
-        else
-            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
     }
 }

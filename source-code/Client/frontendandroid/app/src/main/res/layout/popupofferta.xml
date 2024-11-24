@@ -74,4 +74,18 @@
         android:textColor="@color/rosso"
         android:textSize="20sp"
         app:fontFamily="@font/fira_sans_medium" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/popupOfferta_inviaOfferta"
+        style="@style/BottoneArancionePiccolo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20sp"
+        android:backgroundTint="@color/materialbuttonbackground2"
+        android:text="@string/dettagliAsta_pulsanteOfferta"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </LinearLayout>

@@ -5,14 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import coil.load
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textview.MaterialTextView
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.DettagliastaBinding
@@ -28,12 +29,12 @@ import com.iasdietideals24.dietideals24.utilities.dto.OffertaDto
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaSilenziosaDto
 import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
-import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnEditButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToBids
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToProfile
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnHideMaterialDivider
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnRefresh
 import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
@@ -51,6 +52,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
@@ -61,7 +63,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
     private val args: ControllerDettagliAstaArgs by navArgs()
 
     // ViewModel
-    private val viewModel: ModelAsta by activityViewModels()
+    private val viewModel: ModelAsta by activityViewModel()
 
     // Repositiories
     private val astaTempoFissoRepository: AstaTempoFissoRepository by inject()
@@ -80,6 +82,13 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
     private var listenerEditButton: OnEditButton? = null
     private var listenerBids: OnGoToBids? = null
     private var listenerRefresh: OnRefresh? = null
+    private var listerMaterialDivider: OnHideMaterialDivider? = null
+
+    override fun onPause() {
+        super.onPause()
+
+        listerMaterialDivider?.onHideMaterialDivider(false)
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -99,6 +108,9 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         if (requireContext() is OnRefresh) {
             listenerRefresh = requireContext() as OnRefresh
         }
+        if (requireContext() is OnHideMaterialDivider) {
+            listerMaterialDivider = requireContext() as OnHideMaterialDivider
+        }
     }
 
     override fun onDetach() {
@@ -109,6 +121,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         listenerEditButton = null
         listenerBids = null
         listenerRefresh = null
+        listerMaterialDivider = null
     }
 
     @UIBuilder
@@ -132,12 +145,14 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
+        listerMaterialDivider?.onHideMaterialDivider(true)
+
         lifecycleScope.launch {
             try {
                 val asta: Asta = withContext(Dispatchers.IO) { caricaAsta().toAsta() }
                 var userName: String
                 withContext(Dispatchers.IO) {
-                    val returned = caricaAccount()
+                    val returned = caricaAccount(asta.idCreatore)
                     userName = returned.profiloShallow.nomeUtente
                 }
                 val creatoreAsta: Profilo =
@@ -147,10 +162,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                         recuperaOfferta(asta.idAsta, asta.tipo).toOfferta()
                     }
 
-                if (asta.idAsta != 0L && creatoreAsta.nomeUtente != "" &&
-                    (offerta.offerta != BigDecimal(0.0) && asta.tipo != TipoAsta.SILENZIOSA) ||
-                    (asta.tipo == TipoAsta.SILENZIOSA)
-                ) {
+                if (asta.idAsta != 0L && creatoreAsta.nomeUtente != "") {
                     viewModel.idAsta.value = asta.idAsta
                     viewModel.idCreatore.value = asta.idCreatore
                     viewModel.nomeCreatore.value = creatoreAsta.nome
@@ -163,13 +175,19 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                     viewModel.descrizione.value = asta.descrizione
                     viewModel.prezzo.value = offerta.offerta
 
-                    binding.dettagliAstaOfferta.text = getString(
-                        R.string.placeholder_prezzo,
-                        if (viewModel.tipo.value != TipoAsta.SILENZIOSA)
-                            offerta.offerta.toString()
+                    binding.dettagliAstaTestoOfferta.text =
+                        if (viewModel.tipo.value == TipoAsta.INVERSA)
+                            getString(R.string.dettagliAsta_testoOfferta2)
                         else
-                            "???"
-                    )
+                            getString(R.string.dettagliAsta_testoOfferta1)
+
+                    val offertaAsta = if (viewModel.tipo.value != TipoAsta.SILENZIOSA)
+                        offerta.offerta.toString()
+                    else
+                        "???"
+
+                    binding.dettagliAstaOfferta.text =
+                        getString(R.string.placeholder_prezzo, offertaAsta)
 
                     if (creatoreAsta.immagineProfilo.isNotEmpty()) {
                         binding.dettagliAstaCampoFoto.load(creatoreAsta.immagineProfilo) {
@@ -181,9 +199,9 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                         binding.dettagliAstaPulsanteOfferta.isEnabled = false
                     } else if (CurrentUser.id == asta.idCreatore) {
                         binding.dettagliAstaPulsanteOfferta.visibility = View.GONE
-                        binding.dettagliAstaPulsanteModifica.visibility = View.GONE
-                        binding.dettagliAstaPulsanteElimina.visibility = View.GONE
-                        binding.dettagliAstaPulsanteElencoOfferte.visibility = View.GONE
+                        binding.dettagliAstaPulsanteModifica.visibility = View.VISIBLE
+                        binding.dettagliAstaPulsanteElimina.visibility = View.VISIBLE
+                        binding.dettagliAstaPulsanteElencoOfferte.visibility = View.VISIBLE
                     }
                 }
             } catch (_: Exception) {
@@ -211,26 +229,13 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         }
     }
 
-    private suspend fun caricaAccount(): AccountDto {
-        return when (CurrentUser.tipoAccount) {
-            TipoAccount.COMPRATORE -> {
-                compratoreRepository.caricaAccountCompratore(viewModel.idCreatore.value!!)
-            }
+    private suspend fun caricaAccount(idCreatore: String): AccountDto {
+        val account = compratoreRepository.caricaAccountCompratore(idCreatore)
 
-            TipoAccount.VENDITORE -> {
-                venditoreRepository.caricaAccountVenditore(viewModel.idCreatore.value!!)
-            }
+        if (account.email == "")
+            venditoreRepository.caricaAccountVenditore(idCreatore)
 
-            else -> {
-                val account =
-                    compratoreRepository.caricaAccountCompratore(viewModel.idCreatore.value!!)
-
-                if (account.email == "")
-                    venditoreRepository.caricaAccountVenditore(viewModel.idCreatore.value!!)
-                else
-                    account
-            }
-        }
+        return account
     }
 
     private suspend fun caricaProfilo(nomeUtente: String): ProfiloDto {
@@ -295,7 +300,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         viewModel.nome.observe(viewLifecycleOwner, nomeObserver)
 
         val categoriaObserver = Observer<CategoriaAsta> { newCategoria ->
-            binding.dettagliAstaCategoria.text = newCategoria.toString()
+            binding.dettagliAstaCategoria.text = CategoriaAsta.fromEnumToString(newCategoria)
         }
         viewModel.categoria.observe(viewLifecycleOwner, categoriaObserver)
 
@@ -378,13 +383,18 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
         val viewInflated: View = LayoutInflater.from(context)
             .inflate(R.layout.popupofferta, view as ViewGroup?, false)
-        val input: TextInputEditText = viewInflated.findViewById(R.id.popupOfferta_offerta)
+        val campoOfferta: TextInputLayout =
+            viewInflated.findViewById(R.id.popupOfferta_campoOfferta)
+        val valoreOfferta: TextInputEditText = viewInflated.findViewById(R.id.popupOfferta_offerta)
         val testoOfferta: MaterialTextView =
             viewInflated.findViewById(R.id.popupOfferta_testoOfferta)
         val testoValore: MaterialTextView =
             viewInflated.findViewById(R.id.popupOfferta_valoreOfferta)
-        input.addTextChangedListener {
-            input.error = null
+        val pulsanteOfferta: MaterialButton =
+            viewInflated.findViewById(R.id.popupOfferta_inviaOfferta)
+
+        valoreOfferta.addTextChangedListener {
+            rimuoviErroreCampo(campoOfferta)
         }
 
         testoOfferta.text = when (viewModel.tipo.value!!) {
@@ -412,23 +422,24 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
             .setTitle(R.string.dettagliAsta_titoloPopupOfferta)
             .setView(viewInflated)
-            .setPositiveButton(R.string.ok) { _, _ ->
-                clickPositiveButton(input)
-            }
             .setNegativeButton(R.string.annulla) { _, _ -> }
             .show()
+
+        pulsanteOfferta.setOnClickListener {
+            controlloOfferta(campoOfferta)
+        }
     }
 
-    private fun clickPositiveButton(input: TextInputEditText) {
-        if (isPriceInvalid(input.text.toString())) {
+    private fun controlloOfferta(campoOfferta: TextInputLayout) {
+        if (isPriceInvalid(campoOfferta.editText?.text.toString())) {
             when (viewModel.tipo.value!!) {
-                TipoAsta.TEMPO_FISSO -> input.error =
+                TipoAsta.TEMPO_FISSO -> campoOfferta.error =
                     getString(R.string.dettagliAsta_erroreOffertaTempoFisso)
 
-                TipoAsta.INVERSA -> input.error =
+                TipoAsta.INVERSA -> campoOfferta.error =
                     getString(R.string.dettagliAsta_erroreOffertaInversa)
 
-                TipoAsta.SILENZIOSA -> input.error =
+                TipoAsta.SILENZIOSA -> campoOfferta.error =
                     getString(R.string.dettagliAsta_erroreOffertaSilenziosa)
             }
         } else {
@@ -438,9 +449,9 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                         inviaOfferta(
                             Offerta(
                                 0L,
-                                0L,
+                                viewModel.idAsta.value!!,
                                 CurrentUser.id,
-                                input.text.toString().toBigDecimal(),
+                                campoOfferta.editText?.text.toString().toBigDecimal(),
                                 LocalDate.now(),
                                 LocalTime.now()
                             )
@@ -510,8 +521,8 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
     }
 
     private fun isPriceInvalid(price: String): Boolean {
-        val bigDecimal = price.toBigDecimal()
-        val regex = Regex("^\\d+\\.\\d{2}\$")
+        val bigDecimal = if (price.isEmpty()) BigDecimal("0.00") else price.toBigDecimal()
+        val regex = Regex("^\\d+(\\.\\d{1,2})?\$")
 
         return when (viewModel.tipo.value!!) {
             TipoAsta.TEMPO_FISSO -> {
@@ -536,7 +547,11 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
     private fun clickModifica() {
         Logger.log("Editing auction")
 
-        listenerEditButton?.onEditButton(sender = this::class)
+        listenerEditButton?.onEditButton(
+            viewModel.idAsta.value!!,
+            viewModel.tipo.value!!,
+            this::class
+        )
     }
 
     @EventHandler

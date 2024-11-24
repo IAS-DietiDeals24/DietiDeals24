@@ -10,7 +10,6 @@ import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRep
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.merge
 
 class ModelAsteCreate(
     private val inverseRepository: AstaInversaRepository,
@@ -31,12 +30,18 @@ class ModelAsteCreate(
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun getVenditoreFlows(): Flow<PagingData<AstaDto>> {
+    fun getAsteInverseFlows(): Flow<PagingData<AstaDto>> {
         return flowInverse as Flow<PagingData<AstaDto>>
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun getCompratoreFlows(): Flow<PagingData<AstaDto>> {
-        return merge(flowTempoFisso, flowSilenziose) as Flow<PagingData<AstaDto>>
+    fun getAsteTempoFissoFlows(): Flow<PagingData<AstaDto>> {
+        return flowTempoFisso as Flow<PagingData<AstaDto>>
     }
+
+    @Suppress("UNCHECKED_CAST")
+    fun getAsteSilenzioseFlows(): Flow<PagingData<AstaDto>> {
+        return flowSilenziose as Flow<PagingData<AstaDto>>
+    }
+
 }

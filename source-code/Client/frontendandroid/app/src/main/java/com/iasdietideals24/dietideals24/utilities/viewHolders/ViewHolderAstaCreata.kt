@@ -9,7 +9,6 @@ import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.AstaBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.data.AnteprimaAsta
-import com.iasdietideals24.dietideals24.utilities.data.Offerta
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnEditButton
@@ -28,7 +27,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
 
@@ -107,15 +105,6 @@ class ViewHolderAstaCreata(private val binding: AstaBinding) :
 
         binding.astaNome.text = currentAsta.nome
 
-        binding.astaOfferta.text = resources.getString(
-            R.string.placeholder_prezzo,
-            {
-                val offerta: Offerta = runBlocking { recuperaOfferta(currentAsta).toOfferta() }
-
-                offerta.offerta.toString()
-            }
-        )
-
         binding.astaLinearLayout3.setOnClickListener {
             Logger.log("Showing auction details")
 
@@ -125,7 +114,7 @@ class ViewHolderAstaCreata(private val binding: AstaBinding) :
         binding.astaModificaAsta.setOnClickListener {
             Logger.log("Editing acution")
 
-            listenerEditButton?.onEditButton(currentAsta.id, this::class)
+            listenerEditButton?.onEditButton(currentAsta.id, currentAsta.tipoAsta, this::class)
         }
 
         binding.astaEliminaAsta.setOnClickListener {
@@ -139,8 +128,9 @@ class ViewHolderAstaCreata(private val binding: AstaBinding) :
                         withContext(Dispatchers.IO) { clickConferma(currentAsta) }
 
                         listenerRefresh?.onRefresh(
-                            tipo = currentAsta.tipoAsta,
-                            sender = this::class
+                            currentAsta.id,
+                            currentAsta.tipoAsta,
+                            this::class
                         )
                     }
                 }
@@ -152,6 +142,15 @@ class ViewHolderAstaCreata(private val binding: AstaBinding) :
             Logger.log("Showing auction bids")
 
             listenerGoToBids?.onGoToBids(currentAsta.id, currentAsta.tipoAsta, this::class)
+        }
+
+        scope.launch {
+            val valoreOfferta = withContext(Dispatchers.IO) {
+                recuperaOfferta(currentAsta).toOfferta().offerta.toString()
+            }
+
+            binding.astaOfferta.text =
+                resources.getString(R.string.placeholder_prezzo, valoreOfferta)
         }
     }
 

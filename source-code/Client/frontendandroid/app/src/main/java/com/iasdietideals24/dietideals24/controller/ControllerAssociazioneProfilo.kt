@@ -1,6 +1,7 @@
 package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
@@ -12,9 +13,6 @@ import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.data.Account
 import com.iasdietideals24.dietideals24.utilities.dto.AccountDto
 import com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto
-import com.iasdietideals24.dietideals24.utilities.dto.VenditoreDto
-import com.iasdietideals24.dietideals24.utilities.dto.shallows.ProfiloShallowDto
-import com.iasdietideals24.dietideals24.utilities.dto.utilities.TokensAccountDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
@@ -76,7 +74,8 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
                         listenerChangeActivity?.onChangeActivity(Home::class.java)
                     }
                 }
-            } catch (_: Exception) {
+            } catch (e: Exception) {
+                Log.d("Debug", e.message.toString())
                 Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                     .setBackgroundTint(resources.getColor(R.color.blu, null))
                     .setTextColor(resources.getColor(R.color.grigio, null))
@@ -86,45 +85,27 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
     }
 
     private suspend fun associazioneProfilo(): AccountDto {
-        val nomeUtente = when (CurrentUser.tipoAccount) {
-            TipoAccount.COMPRATORE ->
-                venditoreRepository.caricaAccountVenditore(viewModel.email.value!!).profiloShallow.nomeUtente
+        viewModel.nomeUtente.postValue(
+            when (CurrentUser.tipoAccount) {
+                TipoAccount.COMPRATORE ->
+                    venditoreRepository.caricaAccountVenditore(viewModel.email.value!!).profiloShallow.nomeUtente
 
-            TipoAccount.VENDITORE ->
-                compratoreRepository.caricaAccountCompratore(viewModel.email.value!!).profiloShallow.nomeUtente
+                TipoAccount.VENDITORE ->
+                    compratoreRepository.caricaAccountCompratore(viewModel.email.value!!).profiloShallow.nomeUtente
 
-            else -> ""
-        }
+                else -> ""
+            }
+        )
 
         return when (CurrentUser.tipoAccount) {
             TipoAccount.COMPRATORE -> compratoreRepository.creaAccountCompratore(
                 viewModel.email.value!!,
-                CompratoreDto(
-                    viewModel.email.value!!,
-                    viewModel.password.value!!,
-                    TokensAccountDto(
-                        viewModel.facebookAccountID.value!!,
-                        "",
-                        "",
-                        ""
-                    ),
-                    ProfiloShallowDto(nomeUtente)
-                )
+                viewModel.toAccountCompratore()
             )
 
             TipoAccount.VENDITORE -> venditoreRepository.creaAccountVenditore(
                 viewModel.email.value!!,
-                VenditoreDto(
-                    viewModel.email.value!!,
-                    viewModel.password.value!!,
-                    TokensAccountDto(
-                        viewModel.facebookAccountID.value!!,
-                        "",
-                        "",
-                        ""
-                    ),
-                    ProfiloShallowDto(nomeUtente)
-                )
+                viewModel.toAccountVenditore()
             )
 
             else -> CompratoreDto()

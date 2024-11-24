@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grigio"
+    android:orientation="vertical"
     tools:context=".activities.Home">
 
     <androidx.fragment.app.FragmentContainerView
@@ -13,41 +14,29 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_weight="1"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@id/activity_home_linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/navigation_home"
         tools:layout="@layout/home" />
 
-    <LinearLayout
-        android:id="@+id/activity_home_linearLayout"
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/activity_home_materialDivider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        android:layout_weight="0"
+        app:dividerColor="@color/grigioScuro"
+        app:dividerThickness="2dp" />
 
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/activity_home_materialDivider"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:dividerColor="@color/grigioScuro"
-            app:dividerThickness="2dp" />
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/activity_home_bottomNavigationView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:theme="@style/BottomNavigationView"
-            app:backgroundTint="@color/grigio"
-            app:itemIconSize="30dp"
-            app:itemIconTint="@color/bottomnavigationviewselector"
-            app:itemTextColor="@color/bottomnavigationviewselector"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/menuhome" />
-
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/activity_home_bottomNavigationView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:theme="@style/BottomNavigationView"
+        app:backgroundTint="@color/grigio"
+        app:itemIconSize="30dp"
+        app:itemIconTint="@color/bottomnavigationviewselector"
+        app:itemTextColor="@color/bottomnavigationviewselector"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/menuhome" />
+</LinearLayout>

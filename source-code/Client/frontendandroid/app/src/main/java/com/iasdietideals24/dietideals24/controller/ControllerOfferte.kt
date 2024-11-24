@@ -4,8 +4,6 @@ import android.content.Context
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
-import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.OfferteBinding
 import com.iasdietideals24.dietideals24.model.ModelAsta
 import com.iasdietideals24.dietideals24.utilities.adapters.AdapterOfferte
@@ -16,7 +14,6 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToDetails
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -86,6 +83,7 @@ class ControllerOfferte : Controller<OfferteBinding>() {
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
         binding.offerteRecyclerView.layoutManager = LinearLayoutManager(fragmentContext)
+        binding.offerteRecyclerView.adapter = adapterOfferte
     }
 
     private suspend fun aggiornaOfferte() {
@@ -108,13 +106,5 @@ class ControllerOfferte : Controller<OfferteBinding>() {
                 }
             }
         }
-
-        if (viewModel.getFlows().count() != 0)
-            binding.offerteRecyclerView.adapter = adapterOfferte
-        else
-            Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(resources.getColor(R.color.blu, null))
-                .setTextColor(resources.getColor(R.color.grigio, null))
-                .show()
     }
 }

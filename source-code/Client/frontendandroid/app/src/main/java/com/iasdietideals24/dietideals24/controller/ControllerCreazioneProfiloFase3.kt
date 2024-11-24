@@ -129,12 +129,12 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
         return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
             profiloRepository.creazioneAccountProfilo(
                 viewModel.nomeUtente.value!!,
-                viewModel.toAccountCompratore()
+                viewModel.toPutAccountCompratore()
             )
         } else {
             profiloRepository.creazioneAccountProfilo(
                 viewModel.nomeUtente.value!!,
-                viewModel.toAccountVenditore()
+                viewModel.toPutAccountVenditore()
             )
         }
     }

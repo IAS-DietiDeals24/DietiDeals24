@@ -28,7 +28,7 @@
         app:cursorErrorColor="@color/rosso"
         app:endIconDrawable="@drawable/icona_lente"
         app:endIconMode="custom"
-        app:endIconTint="@color/blu"
+        app:endIconTint="@null"
         app:errorIconTint="@color/rosso"
         app:errorTextColor="@color/arancione"
         app:hintTextColor="@color/arancione">
@@ -62,7 +62,7 @@
         app:cursorErrorColor="@color/rosso"
         app:endIconDrawable="@drawable/icona_filtro"
         app:endIconMode="dropdown_menu"
-        app:endIconTint="@color/blu"
+        app:endIconTint="@null"
         app:errorIconTint="@color/rosso"
         app:errorTextColor="@color/arancione"
         app:hintTextColor="@color/arancione">

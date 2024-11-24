@@ -129,7 +129,7 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
                     binding.profiloPulsanteEsci.icon =
                         ResourcesCompat.getDrawable(resources, R.drawable.icona_porta, null)
                 }
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                     .setBackgroundTint(resources.getColor(R.color.blu, null))
                     .setTextColor(resources.getColor(R.color.grigio, null))

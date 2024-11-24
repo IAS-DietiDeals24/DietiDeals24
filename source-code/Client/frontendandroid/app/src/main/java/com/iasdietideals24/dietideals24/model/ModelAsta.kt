@@ -21,7 +21,6 @@ import com.iasdietideals24.dietideals24.utilities.repositories.OffertaSilenziosa
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaTempoFissoRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.merge
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
@@ -116,7 +115,7 @@ class ModelAsta(
         _tipo.value = TipoAsta.TEMPO_FISSO
         _dataFine.value = LocalDate.MIN
         _oraFine.value = LocalTime.MIN
-        _prezzo.value = BigDecimal(0.0)
+        _prezzo.value = BigDecimal("0.0")
         _immagine.value = ByteArray(0)
         _nome.value = ""
         _categoria.value = CategoriaAsta.ND
@@ -247,7 +246,7 @@ class ModelAsta(
             throw EccezioneCampiNonCompilati("Prezzo non compilato.")
         }
         if (prezzo.value?.toDouble()!! < 0.0 || !prezzo.value.toString()
-                .matches(Regex("^\\d+\\.\\d{2}$"))
+                .matches(Regex("^\\d+(\\.\\d{1,2})?$"))
         ) {
             throw EccezioneCampiNonCompilati("Prezzo non valido")
         }
@@ -278,10 +277,5 @@ class ModelAsta(
     @Suppress("UNCHECKED_CAST")
     fun getSilenzioseFlows(): Flow<PagingData<OffertaDto>> {
         return flowSilenziose as Flow<PagingData<OffertaDto>>
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    fun getFlows(): Flow<PagingData<OffertaDto>> {
-        return merge(flowInverse, flowTempoFisso, flowSilenziose) as Flow<PagingData<OffertaDto>>
     }
 }

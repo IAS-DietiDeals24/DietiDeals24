@@ -3,6 +3,7 @@ package com.iasdietideals24.dietideals24.activities
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -44,6 +45,7 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToHelp
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToHome
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToParticipation
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToProfile
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnHideMaterialDivider
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnOpenUrl
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnRefresh
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
@@ -57,7 +59,7 @@ import kotlin.reflect.KClass
 
 class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToProfile, OnEditButton,
     OnGoToBids, OnRefresh, OnOpenUrl, OnGoToDetails, OnGoToParticipation, OnChangeActivity,
-    OnGoToHome, OnGoToCreatedAuctions, OnGoToHelp {
+    OnGoToHome, OnGoToCreatedAuctions, OnGoToHelp, OnHideMaterialDivider {
 
     private val viewModelAsta by viewModel<ModelAsta>()
     private val viewModelProfilo by viewModel<ModelProfilo>()
@@ -181,7 +183,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
         }
     }
 
-    override fun onEditButton(id: Long, sender: KClass<*>) {
+    override fun onEditButton(id: Long, tipo: TipoAsta, sender: KClass<*>) {
         val navController = getNavController()
 
         when (sender) {
@@ -193,14 +195,16 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
 
             ControllerDettagliAsta::class -> {
                 val action =
-                    ControllerDettagliAstaDirections.actionControllerDettagliAstaToControllerModificaAsta()
+                    ControllerDettagliAstaDirections.actionControllerDettagliAstaToControllerModificaAsta(
+                        id, tipo, false
+                    )
                 navController.navigate(action)
             }
 
             ViewHolderAstaCreata::class -> {
                 val action =
                     ControllerAsteCreateDirections.actionControllerAsteCreateToControllerModificaAsta(
-                        id
+                        id, tipo, false
                     )
                 navController.navigate(action)
             }
@@ -294,5 +298,9 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
         val navController = getNavController()
 
         navController.navigate(R.id.controllerAiuto)
+    }
+
+    override fun onHideMaterialDivider(hide: Boolean) {
+        binding.activityHomeMaterialDivider.visibility = if (hide) View.GONE else View.VISIBLE
     }
 }

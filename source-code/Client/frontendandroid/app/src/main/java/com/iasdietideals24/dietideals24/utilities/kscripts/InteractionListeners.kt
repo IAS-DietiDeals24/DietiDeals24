@@ -25,7 +25,7 @@ fun interface OnShowBackButton {
 }
 
 interface OnEditButton {
-    fun onEditButton(id: Long = 0L, sender: KClass<*>)
+    fun onEditButton(id: Long = 0L, tipo: TipoAsta = TipoAsta.TEMPO_FISSO, sender: KClass<*>)
 }
 
 fun interface OnGoToHome {
@@ -65,5 +65,9 @@ fun interface OnGoToBids {
 }
 
 interface OnRefresh {
-    fun onRefresh(id: Long = 0L, tipo: TipoAsta, sender: KClass<*>)
+    fun onRefresh(id: Long = 0L, tipo: TipoAsta = TipoAsta.TEMPO_FISSO, sender: KClass<*>)
+}
+
+fun interface OnHideMaterialDivider {
+    fun onHideMaterialDivider(hide: Boolean)
 }

@@ -3,7 +3,10 @@ package com.iasdietideals24.dietideals24.model
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
+import com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto
+import com.iasdietideals24.dietideals24.utilities.dto.VenditoreDto
 import com.iasdietideals24.dietideals24.utilities.dto.exceptional.PutProfiloDto
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.ProfiloShallowDto
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.AnagraficaProfiloDto
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.LinksProfiloDto
 import com.iasdietideals24.dietideals24.utilities.dto.utilities.TokensAccountDto
@@ -165,7 +168,7 @@ class ModelRegistrazione(
         _linkX.value = ""
     }
 
-    fun toAccountCompratore(): PutProfiloDto {
+    fun toPutAccountCompratore(): PutProfiloDto {
         return PutProfiloDto(
             nomeUtente.value,
             immagineProfilo.value,
@@ -196,7 +199,7 @@ class ModelRegistrazione(
         )
     }
 
-    fun toAccountVenditore(): PutProfiloDto {
+    fun toPutAccountVenditore(): PutProfiloDto {
         return PutProfiloDto(
             nomeUtente.value,
             immagineProfilo.value,
@@ -224,6 +227,34 @@ class ModelRegistrazione(
                 ""
             ),
             "Venditore"
+        )
+    }
+
+    fun toAccountCompratore(): CompratoreDto {
+        return CompratoreDto(
+            email.value!!,
+            password.value!!,
+            TokensAccountDto(
+                facebookAccountID.value!!,
+                "",
+                "",
+                ""
+            ),
+            ProfiloShallowDto(nomeUtente.value)
+        )
+    }
+
+    fun toAccountVenditore(): VenditoreDto {
+        return VenditoreDto(
+            email.value!!,
+            password.value!!,
+            TokensAccountDto(
+                facebookAccountID.value!!,
+                "",
+                "",
+                ""
+            ),
+            ProfiloShallowDto(nomeUtente.value)
         )
     }
 

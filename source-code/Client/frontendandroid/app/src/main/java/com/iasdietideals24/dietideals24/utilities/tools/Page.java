@@ -34,7 +34,6 @@ public class Page<T> {
         this.empty = empty;
     }
 
-    // Getters for all properties
     public List<T> getContent() {
         return content;
     }

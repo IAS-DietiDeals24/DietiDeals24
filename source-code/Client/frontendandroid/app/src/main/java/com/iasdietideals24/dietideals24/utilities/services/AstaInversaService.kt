@@ -63,7 +63,7 @@ interface AstaInversaService : Service {
      * @param idAsta Identificativo dell'asta da aggiornare.
      * @return L'[AstaInversaDto] appena modificata. Se non è stata modificata, viene restituita l' asta originale.
      */
-    @PATCH("aste/di-venditori/inverse/{idAsta}")
+    @PATCH("aste/di-compratori/inverse/{idAsta}")
     suspend fun aggiornaAstaInversa(
         @Body asta: AstaInversaDto,
         @Path("idAsta") idAsta: Long
@@ -98,7 +98,7 @@ interface AstaInversaService : Service {
      * @return [Page] di [AstaInversaDto] con un certo numero di aste da mostrare nella home dopo
      * la ricerca e/o il filtraggio. Se non esistono, viene restituita una pagina vuota.
      */
-    @GET("aste/di-venditori/inverse")
+    @GET("aste/di-compratori/inverse")
     suspend fun ricercaAsteInverse(
         @Query("ricerca") ricerca: String,
         @Query("filtro") filtro: String,

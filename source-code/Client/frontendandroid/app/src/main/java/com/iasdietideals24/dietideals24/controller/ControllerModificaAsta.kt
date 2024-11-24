@@ -6,6 +6,7 @@ import android.content.Context
 import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Build
+import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -30,12 +31,14 @@ import com.iasdietideals24.dietideals24.utilities.data.Asta
 import com.iasdietideals24.dietideals24.utilities.data.Profilo
 import com.iasdietideals24.dietideals24.utilities.dto.AccountDto
 import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
+import com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto
 import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneDataPassata
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToDetails
 import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalDate
 import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
@@ -43,6 +46,7 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.toMillis
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.CategoriaAstaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
@@ -69,12 +73,14 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
     private val repositoryProfilo: ProfiloRepository by inject()
     private val compratoreRepository: CompratoreRepository by inject()
     private val venditoreRepository: VenditoreRepository by inject()
+    private val categoriaAstaRepository: CategoriaAstaRepository by inject()
 
     // ViewModel
     private val viewModel: ModelAsta by activityViewModel()
 
     // Listeners
     private var listenerDetails: OnGoToDetails? = null
+    private var listenerBackButton: OnBackButton? = null
 
     private lateinit var requestPermissions: ActivityResultLauncher<Array<String>>
     private lateinit var selectPhoto: ActivityResultLauncher<String>
@@ -85,12 +91,16 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
         if (requireContext() is OnGoToDetails) {
             listenerDetails = requireContext() as OnGoToDetails
         }
+        if (requireContext() is OnBackButton) {
+            listenerBackButton = requireContext() as OnBackButton
+        }
     }
 
     override fun onDetach() {
         super.onDetach()
 
         listenerDetails = null
+        listenerBackButton = null
     }
 
     @UIBuilder
@@ -194,13 +204,31 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
                 )
         }
 
+        lifecycleScope.launch {
+            val categorieAsta: MutableList<String> = mutableListOf()
+
+            withContext(Dispatchers.IO) {
+                categoriaAstaRepository.recuperaCategorieAsta().forEach {
+                    categorieAsta.add(it.nome)
+                }
+            }
+
+            val adapter: ArrayAdapter<String> = ArrayAdapter(
+                fragmentContext,
+                android.R.layout.simple_dropdown_item_1line,
+                categorieAsta
+            )
+
+            binding.modificaCategoria.setAdapter(adapter)
+        }
+
         if (args.id != 0L) {
             lifecycleScope.launch {
                 try {
                     val asta: Asta = withContext(Dispatchers.IO) { caricaAsta().toAsta() }
                     var userName: String
                     withContext(Dispatchers.IO) {
-                        val returned = caricaAccount()
+                        val returned = caricaAccount(asta.idCreatore)
                         userName = returned.profiloShallow.nomeUtente
                     }
                     val creatoreAsta: Profilo =
@@ -230,7 +258,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
     }
 
     private suspend fun caricaAsta(): AstaDto {
-        return when (viewModel.tipo.value!!) {
+        return when (args.tipo) {
             TipoAsta.INVERSA -> repositoryAstaInversa.caricaAstaInversa(args.id)
 
             TipoAsta.SILENZIOSA -> repositoryAstaSilenziosa.caricaAstaSilenziosa(args.id)
@@ -239,25 +267,17 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
         }
     }
 
-    private suspend fun caricaAccount(): AccountDto {
+    private suspend fun caricaAccount(idCreatore: String): AccountDto {
         return when (CurrentUser.tipoAccount) {
             TipoAccount.COMPRATORE -> {
-                compratoreRepository.caricaAccountCompratore(viewModel.idCreatore.value!!)
+                compratoreRepository.caricaAccountCompratore(idCreatore)
             }
 
             TipoAccount.VENDITORE -> {
-                venditoreRepository.caricaAccountVenditore(viewModel.idCreatore.value!!)
+                venditoreRepository.caricaAccountVenditore(idCreatore)
             }
 
-            else -> {
-                val account =
-                    compratoreRepository.caricaAccountCompratore(viewModel.idCreatore.value!!)
-
-                if (account.email == "")
-                    venditoreRepository.caricaAccountVenditore(viewModel.idCreatore.value!!)
-                else
-                    account
-            }
+            else -> CompratoreDto()
         }
     }
 
@@ -297,6 +317,45 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
 
     @UIBuilder
     override fun impostaOsservatori() {
+        val tipoAstaObserver = Observer<TipoAsta?> { newTipoAsta ->
+            when (newTipoAsta) {
+                TipoAsta.INVERSA -> {
+                    binding.modificaTipoAsta.text = getString(
+                        R.string.crea_tipoAsta,
+                        getString(R.string.tipoAsta_astaInversa)
+                    )
+                    binding.modificaEtichettaPrezzo.text = getString(
+                        R.string.crea_prezzo,
+                        getString(R.string.crea_prezzoPartenza)
+                    )
+                }
+
+                TipoAsta.TEMPO_FISSO -> {
+                    binding.modificaTipoAsta.text = getString(
+                        R.string.crea_tipoAsta,
+                        getString(R.string.tipoAsta_astaTempoFisso)
+                    )
+                    binding.modificaEtichettaPrezzo.text = getString(
+                        R.string.crea_prezzo,
+                        getString(R.string.crea_prezzoMinimo)
+                    )
+                }
+
+                TipoAsta.SILENZIOSA -> {
+                    binding.modificaTipoAsta.text = getString(
+                        R.string.crea_tipoAsta,
+                        getString(R.string.tipoAsta_astaSilenziosa)
+                    )
+                    binding.modificaConstraintLayout3.visibility = ConstraintLayout.GONE
+                }
+
+                else -> {
+                    // Non fare niente
+                }
+            }
+        }
+        viewModel.tipo.observe(viewLifecycleOwner, tipoAstaObserver)
+
         val dataFineObserver = Observer<LocalDate> { newData ->
             if (newData != LocalDate.MIN)
                 binding.modificaDataScadenza.setText(newData.toLocalStringShort())
@@ -354,8 +413,10 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
             .setMessage(R.string.modifica_testoConfermaIndietro)
             .setPositiveButton(R.string.ok) { _, _ ->
                 val idAsta = viewModel.idAsta.value!!
+                val tipoAsta = viewModel.tipo.value!!
                 viewModel.clear()
-                listenerDetails?.onGoToDetails(idAsta, viewModel.tipo.value!!, this::class)
+                if (args.fromDetails) listenerDetails?.onGoToDetails(idAsta, tipoAsta, this::class)
+                else listenerBackButton?.onBackButton()
             }
             .setNegativeButton(R.string.annulla) { _, _ -> }
             .show()
@@ -387,8 +448,6 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
                         .show()
 
                     else -> {
-                        viewModel.clear()
-
                         Snackbar.make(
                             fragmentView,
                             R.string.crea_astaModificataConSuccesso,
@@ -400,11 +459,13 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
 
                         Logger.log("Auction created successfully")
 
-                        listenerDetails?.onGoToDetails(
-                            viewModel.idAsta.value!!,
-                            viewModel.tipo.value!!,
-                            this::class
-                        )
+                        if (args.fromDetails)
+                            listenerDetails?.onGoToDetails(
+                                viewModel.idAsta.value!!,
+                                viewModel.tipo.value!!,
+                                ControllerModificaAsta::class
+                            )
+                        else listenerBackButton?.onBackButton()
                     }
                 }
             } catch (_: EccezioneDataPassata) {

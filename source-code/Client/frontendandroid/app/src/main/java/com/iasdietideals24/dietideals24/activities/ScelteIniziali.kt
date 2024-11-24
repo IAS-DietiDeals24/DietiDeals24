@@ -16,12 +16,10 @@ import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.controller.ControllerSelezioneTipoAccount
 import com.iasdietideals24.dietideals24.controller.ControllerSelezioneTipoAccountDirections
 import com.iasdietideals24.dietideals24.databinding.ActivityScelteInizialiBinding
-import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnHideBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnShowBackButton
-import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import kotlin.reflect.KClass
 
 
@@ -31,8 +29,6 @@ class ScelteIniziali : DietiDeals24Activity<ActivityScelteInizialiBinding>(), On
     override fun onCreate(savedInstanceState: Bundle?) {
         val accessToken: AccessToken? = AccessToken.getCurrentAccessToken()
         if (accessToken != null && !accessToken.isExpired) {
-            CurrentUser.id = "andrylook14@gmail.com"
-            CurrentUser.tipoAccount = TipoAccount.COMPRATORE
             startActivity(Intent(baseContext, Home::class.java))
         } else {
             LoginManager.getInstance().logOut()

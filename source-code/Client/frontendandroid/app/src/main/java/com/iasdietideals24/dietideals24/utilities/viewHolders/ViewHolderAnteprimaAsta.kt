@@ -9,7 +9,6 @@ import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.AstaBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.data.AnteprimaAsta
-import com.iasdietideals24.dietideals24.utilities.data.Offerta
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToDetails
@@ -81,20 +80,6 @@ class ViewHolderAnteprimaAsta(private val binding: AstaBinding) :
             }
 
         binding.astaNome.text = currentAsta.nome
-
-        binding.astaOfferta.text = resources.getString(
-            R.string.placeholder_prezzo,
-            if (currentAsta.tipoAsta != TipoAsta.SILENZIOSA) {
-                scope.launch {
-                    val offerta: Offerta =
-                        withContext(Dispatchers.IO) { recuperaOfferta(currentAsta).toOfferta() }
-
-                    offerta.toString()
-                }
-            } else
-                "???"
-        )
-
         binding.astaModificaAsta.visibility = View.GONE
         binding.astaEliminaAsta.visibility = View.GONE
         binding.astaElencoOfferte.visibility = View.GONE
@@ -103,6 +88,19 @@ class ViewHolderAnteprimaAsta(private val binding: AstaBinding) :
             Logger.log("Showing auction details")
 
             listenerGoToDetails?.onGoToDetails(currentAsta.id, currentAsta.tipoAsta, this::class)
+        }
+
+        scope.launch {
+            val valoreOfferta: String = if (currentAsta.tipoAsta != TipoAsta.SILENZIOSA) {
+                withContext(Dispatchers.IO) {
+                    recuperaOfferta(currentAsta).toOfferta().offerta.toString()
+                }
+            } else {
+                "???"
+            }
+
+            binding.astaOfferta.text =
+                resources.getString(R.string.placeholder_prezzo, valoreOfferta)
         }
     }
 

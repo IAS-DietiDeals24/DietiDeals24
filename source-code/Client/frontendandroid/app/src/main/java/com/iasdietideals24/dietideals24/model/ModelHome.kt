@@ -12,7 +12,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.merge
 
 class ModelHome(
     private val inverseRepository: AstaInversaRepository,
@@ -59,7 +58,7 @@ class ModelHome(
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun getVenditoreFlows(): Flow<PagingData<AstaDto>> {
+    fun getAsteInverseFlows(): Flow<PagingData<AstaDto>> {
         return (
                 if (searchText.value.isEmpty() && filter.value.isEmpty())
                     flowInverseTutte
@@ -69,22 +68,22 @@ class ModelHome(
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun getCompratoreFlows(): Flow<PagingData<AstaDto>> {
+    fun getAsteTempoFissoFlows(): Flow<PagingData<AstaDto>> {
         return (
                 if (searchText.value.isEmpty() && filter.value.isEmpty())
-                    merge(flowTempoFissoTutte, flowSilenzioseTutte)
+                    flowTempoFissoTutte
                 else
-                    merge(flowTempoFissoRicerca, flowSilenzioseRicerca)
+                    flowTempoFissoRicerca
                 ) as Flow<PagingData<AstaDto>>
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun getFlows(): Flow<PagingData<AstaDto>> {
+    fun getAsteSilenzioseFlows(): Flow<PagingData<AstaDto>> {
         return (
                 if (searchText.value.isEmpty() && filter.value.isEmpty())
-                    merge(flowInverseTutte, flowTempoFissoTutte, flowSilenzioseTutte)
+                    flowSilenzioseTutte
                 else
-                    merge(flowInverseRicerca, flowTempoFissoRicerca, flowSilenzioseRicerca)
+                    flowSilenzioseRicerca
                 ) as Flow<PagingData<AstaDto>>
     }
 }
