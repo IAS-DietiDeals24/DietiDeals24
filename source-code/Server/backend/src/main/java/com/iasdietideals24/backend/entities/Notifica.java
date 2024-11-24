@@ -37,7 +37,7 @@ public class Notifica {
     @Column(name = "messaggio", nullable = false)
     private String messaggio;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "account_email", nullable = false)
     @NonNull
     private Account mittente;
@@ -51,7 +51,7 @@ public class Notifica {
     @Setter(AccessLevel.NONE)
     private Set<Account> destinatari = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "asta_id_asta", nullable = false)
     @NonNull
     private Asta astaAssociata;

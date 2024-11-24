@@ -13,7 +13,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Entity(name = "offerta_tempo_fisso")
 public class OffertaTempoFisso extends OffertaDiCompratore {
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "asta_tempo_fisso_id_asta", nullable = false)
     @NonNull
     private AstaTempoFisso astaRiferimento;

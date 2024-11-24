@@ -27,7 +27,7 @@ public abstract class Account {
     @Embedded
     private TokensAccount tokens;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "profilo_nome_utente", nullable = false)
     @NonNull
     private Profilo profilo;

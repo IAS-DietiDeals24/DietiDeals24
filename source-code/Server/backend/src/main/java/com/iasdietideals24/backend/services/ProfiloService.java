@@ -17,8 +17,6 @@ public interface ProfiloService {
 
     Optional<ProfiloDto> findOne(String nomeUtente);
 
-    Optional<ProfiloDto> findOneByEmail(String email);
-
     boolean isExists(String nomeUtente);
 
     ProfiloDto fullUpdate(String nomeUtente, PutProfiloDto updatedProfiloDto) throws InvalidParameterException;

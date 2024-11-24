@@ -40,10 +40,7 @@ public class ProfiloController {
 
     @GetMapping(path = "/profili/{nomeUtente}")
     public ResponseEntity<ProfiloDto> getProfilo(@PathVariable("nomeUtente") String nomeUtente) {
-        Optional<ProfiloDto> foundProfiloDto;
-
-        if (!nomeUtente.matches("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")) foundProfiloDto = profiloService.findOne(nomeUtente);
-        else foundProfiloDto = profiloService.findOneByEmail(nomeUtente);
+        Optional<ProfiloDto> foundProfiloDto = profiloService.findOne(nomeUtente);
 
         if (foundProfiloDto.isPresent()) {
             return new ResponseEntity<>(foundProfiloDto.get(), HttpStatus.OK);
