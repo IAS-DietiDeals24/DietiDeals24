@@ -16,11 +16,11 @@ public interface CompratoreService {
 
     Optional<CompratoreDto> findOne(Long idAccount);
 
-    Optional<CompratoreDto> findOneByTokensIdFacebook(String token);
+    Page<CompratoreDto> findByTokensIdFacebook(String token, Pageable pageable);
 
-    Optional<CompratoreDto> findOneByEmail(String email);
+    Page<CompratoreDto> findByEmail(String email, Pageable pageable);
 
-    Optional<CompratoreDto> findOneByEmailAndPassword(String email, String password);
+    Page<CompratoreDto> findByEmailAndPassword(String email, String password, Pageable pageable);
 
     boolean isExists(Long idAccount);
 

@@ -1,18 +1,18 @@
 package com.iasdietideals24.backend.repositories;
 
 import com.iasdietideals24.backend.entities.Compratore;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
 public interface CompratoreRepository extends CrudRepository<Compratore, Long>, PagingAndSortingRepository<Compratore, Long> {
 
-    Optional<Compratore> findOneByTokensIdFacebook(String idFacebook);
+    Page<Compratore> findByTokensIdFacebook(String idFacebook, Pageable pageable);
 
-    Optional<Compratore> findOneByEmail(String email);
+    Page<Compratore> findByEmail(String email, Pageable pageable);
 
-    Optional<Compratore> findOneByEmailAndPassword(String email, String password);
+    Page<Compratore> findByEmailAndPassword(String email, String password, Pageable pageable);
 }

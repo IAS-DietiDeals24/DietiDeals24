@@ -72,56 +72,62 @@ public class CompratoreServiceImpl implements CompratoreService {
     }
 
     @Override
-    public Optional<CompratoreDto> findOneByTokensIdFacebook(String idFacebook) {
+    public Page<CompratoreDto> findByTokensIdFacebook(String token, Pageable pageable) {
 
         // Recuperiamo l'entità con l'id passato per parametro
-        Optional<Compratore> foundVenditore = compratoreRepository.findOneByTokensIdFacebook(idFacebook);
-
-        return foundVenditore.map(compratoreMapper::toDto);
-    }
-
-    @Override
-    public Optional<CompratoreDto> findOne(String email) {
-
-        // Recuperiamo l'entità con l'id passato per parametro
-        Optional<Compratore> foundCompratore = compratoreRepository.findById(email);
+        Page<Compratore> foundCompratore = compratoreRepository.findByTokensIdFacebook(token, pageable);
 
         return foundCompratore.map(compratoreMapper::toDto);
     }
 
     @Override
-    public Optional<CompratoreDto> findOneByEmailAndPassword(String email, String password) {
-        // Recuperiamo l'entità con l'id e password passati per parametro
-        Optional<Compratore> foundVenditore = compratoreRepository.findOneByEmailAndPassword(email, password);
-
-        return foundVenditore.map(compratoreMapper::toDto);
-    }
-
-    @Override
-    public boolean isExists(String email) {
-
-        // Verifichiamo che esista un'entità con l'id passato per parametro
-        return compratoreRepository.existsById(email);
-    }
-
-    @Override
-    public CompratoreDto fullUpdate(String email, CompratoreDto updatedCompratoreDto) throws InvalidParameterException {
-
-        // L'implementazione di fullUpdate e create sono identiche, dato che utilizziamo lo stesso metodo "save" della repository
-        return this.create(email, updatedCompratoreDto);
-    }
-
-    @Override
-    public CompratoreDto partialUpdate(String email, CompratoreDto updatedCompratoreDto) throws InvalidParameterException {
+    public Page<CompratoreDto> findByEmail(String email, Pageable pageable) {
 
         // Recuperiamo l'entità con l'id passato per parametro
-        updatedCompratoreDto.setEmail(email);
-        Optional<Compratore> foundCompratore = compratoreRepository.findById(email);
+        Page<Compratore> foundCompratore = compratoreRepository.findByEmail(email, pageable);
 
-        if (foundCompratore.isEmpty())
-            throw new UpdateRuntimeException("L'email \"" + email + "\" non corrisponde a nessun compratore esistente!");
+        return foundCompratore.map(compratoreMapper::toDto);
+    }
+
+    @Override
+    public Page<CompratoreDto> findByEmailAndPassword(String email, String password, Pageable pageable) {
+
+        // Recuperiamo l'entità con l'id e password passati per parametro
+        Page<Compratore> foundCompratore = compratoreRepository.findByEmailAndPassword(email, password, pageable);
+
+        return foundCompratore.map(compratoreMapper::toDto);
+    }
+
+    @Override
+    public boolean isExists(Long idAccount) {
+
+        // Verifichiamo che esista un'entità con l'id passato per parametro
+        return compratoreRepository.existsById(idAccount);
+    }
+
+    @Override
+    public CompratoreDto fullUpdate(Long idAccount, CompratoreDto updatedCompratoreDto) throws InvalidParameterException {
+
+        updatedCompratoreDto.setIdAccount(idAccount);
+
+        if (!compratoreRepository.existsById(idAccount))
+            throw new UpdateRuntimeException("L'id account \"" + idAccount + "\" non corrisponde a nessun account esistente!");
         else {
+            // L'implementazione di fullUpdate e create sono identiche, dato che utilizziamo lo stesso metodo "save" della repository
+            return this.create(updatedCompratoreDto);
+        }
+    }
 
+    @Override
+    public CompratoreDto partialUpdate(Long idAccount, CompratoreDto updatedCompratoreDto) throws InvalidParameterException {
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        updatedCompratoreDto.setIdAccount(idAccount);
+
+        Optional<Compratore> foundCompratore = compratoreRepository.findById(idAccount);
+        if (foundCompratore.isEmpty())
+            throw new UpdateRuntimeException("L'id account \"" + idAccount + "\" non corrisponde a nessun compratore esistente!");
+        else {
             // Recuperiamo l'entità dal wrapping Optional
             Compratore existingCompratore = foundCompratore.get();
 

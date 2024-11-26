@@ -36,10 +36,9 @@ public class VenditoreServiceImpl implements VenditoreService {
     }
 
     @Override
-    public VenditoreDto create(String email, VenditoreDto nuovoVenditoreDto) throws InvalidParameterException {
+    public VenditoreDto create(VenditoreDto nuovoVenditoreDto) throws InvalidParameterException {
 
         // Verifichiamo l'integrità dei dati
-        nuovoVenditoreDto.setEmail(email);
         checkFieldsValid(nuovoVenditoreDto);
 
         // Convertiamo a entità
@@ -64,57 +63,71 @@ public class VenditoreServiceImpl implements VenditoreService {
     }
 
     @Override
-    public Optional<VenditoreDto> findOne(String email) {
+    public Optional<VenditoreDto> findOne(Long idAccount) {
 
         // Recuperiamo l'entità con l'id passato per parametro
-        Optional<Venditore> foundVenditore = venditoreRepository.findById(email);
+        Optional<Venditore> foundVenditore = venditoreRepository.findById(idAccount);
 
         return foundVenditore.map(venditoreMapper::toDto);
     }
 
     @Override
-    public Optional<VenditoreDto> findOneByTokensIdFacebook(String idFacebook) {
+    public Page<VenditoreDto> findByTokensIdFacebook(String token, Pageable pageable) {
 
         // Recuperiamo l'entità con l'id passato per parametro
-        Optional<Venditore> foundVenditore = venditoreRepository.findOneByTokensIdFacebook(idFacebook);
+        Page<Venditore> foundVenditore = venditoreRepository.findByTokensIdFacebook(token, pageable);
 
         return foundVenditore.map(venditoreMapper::toDto);
     }
 
     @Override
-    public Optional<VenditoreDto> findOneWithPassword(String email, String password) {
+    public Page<VenditoreDto> findByEmail(String email, Pageable pageable) {
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        Page<Venditore> foundVenditore = venditoreRepository.findByEmail(email, pageable);
+
+        return foundVenditore.map(venditoreMapper::toDto);
+    }
+
+    @Override
+    public Page<VenditoreDto> findByEmailAndPassword(String email, String password, Pageable pageable) {
 
         // Recuperiamo l'entità con l'id e password passati per parametro
-        Optional<Venditore> foundVenditore = venditoreRepository.findOneByEmailAndPassword(email, password);
+        Page<Venditore> foundVenditore = venditoreRepository.findByEmailAndPassword(email, password, pageable);
 
         return foundVenditore.map(venditoreMapper::toDto);
     }
 
     @Override
-    public boolean isExists(String email) {
+    public boolean isExists(Long idAccount) {
 
         // Verifichiamo che esista un'entità con l'id passato per parametro
-        return venditoreRepository.existsById(email);
+        return venditoreRepository.existsById(idAccount);
     }
 
     @Override
-    public VenditoreDto fullUpdate(String email, VenditoreDto updatedVenditoreDto) throws InvalidParameterException {
+    public VenditoreDto fullUpdate(Long idAccount, VenditoreDto updatedVenditoreDto) throws InvalidParameterException {
 
-        // L'implementazione di fullUpdate e create sono identiche, dato che utilizziamo lo stesso metodo "save" della repository
-        return this.create(email, updatedVenditoreDto);
+        updatedVenditoreDto.setIdAccount(idAccount);
+
+        if (!venditoreRepository.existsById(idAccount))
+            throw new UpdateRuntimeException("L'id account \"" + idAccount + "\" non corrisponde a nessun account esistente!");
+        else {
+            // L'implementazione di fullUpdate e create sono identiche, dato che utilizziamo lo stesso metodo "save" della repository
+            return this.create(updatedVenditoreDto);
+        }
     }
 
     @Override
-    public VenditoreDto partialUpdate(String email, VenditoreDto updatedVenditoreDto) throws InvalidParameterException {
+    public VenditoreDto partialUpdate(Long idAccount, VenditoreDto updatedVenditoreDto) throws InvalidParameterException {
 
         // Recuperiamo l'entità con l'id passato per parametro
-        updatedVenditoreDto.setEmail(email);
-        Optional<Venditore> foundVenditore = venditoreRepository.findById(email);
+        updatedVenditoreDto.setIdAccount(idAccount);
 
+        Optional<Venditore> foundVenditore = venditoreRepository.findById(idAccount);
         if (foundVenditore.isEmpty())
-            throw new UpdateRuntimeException("L'email \"" + email + "\" non corrisponde a nessun venditore esistente!");
+            throw new UpdateRuntimeException("L'id account \"" + idAccount + "\" non corrisponde a nessun venditore esistente!");
         else {
-
             // Recuperiamo l'entità dal wrapping Optional
             Venditore existingVenditore = foundVenditore.get();
 

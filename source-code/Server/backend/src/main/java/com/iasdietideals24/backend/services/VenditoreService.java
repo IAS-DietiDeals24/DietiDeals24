@@ -2,6 +2,7 @@ package com.iasdietideals24.backend.services;
 
 import com.iasdietideals24.backend.entities.Venditore;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
+import com.iasdietideals24.backend.mapstruct.dto.CompratoreDto;
 import com.iasdietideals24.backend.mapstruct.dto.VenditoreDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,11 +17,11 @@ public interface VenditoreService {
 
     Optional<VenditoreDto> findOne(Long idAccount);
 
-    Optional<VenditoreDto> findOneByTokensIdFacebook(String token);
+    Page<VenditoreDto> findByTokensIdFacebook(String token, Pageable pageable);
 
-    Optional<VenditoreDto> findOneByEmail(String email);
+    Page<VenditoreDto> findByEmail(String email, Pageable pageable);
 
-    Optional<VenditoreDto> findOneByEmailAndPassword(String email, String password);
+    Page<VenditoreDto> findByEmailAndPassword(String email, String password, Pageable pageable);
 
     boolean isExists(Long idAccount);
 
