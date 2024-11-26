@@ -8,9 +8,11 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface VenditoreRepository extends CrudRepository<Venditore, String>, PagingAndSortingRepository<Venditore, String> {
+public interface VenditoreRepository extends CrudRepository<Venditore, Long>, PagingAndSortingRepository<Venditore, Long> {
 
-    Optional<Venditore> findByTokensIdFacebook(String idFacebook);
+    Optional<Venditore> findOneByTokensIdFacebook(String idFacebook);
 
-    Optional<Venditore> findByEmailAndPassword(String email, String password);
+    Optional<Venditore> findOneByEmail(String email);
+
+    Optional<Venditore> findOneByEmailAndPassword(String email, String password);
 }

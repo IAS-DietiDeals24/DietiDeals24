@@ -39,7 +39,7 @@ public class CompratoreController {
 
     @GetMapping(path = "/accounts/compratori/facebook/{idFacebook}")
     public ResponseEntity<CompratoreDto> getCompratoreFacebook(@PathVariable("idFacebook") String idFacebook) {
-        Optional<CompratoreDto> foundCompratoreDto = compratoreService.findByIdFacebook(idFacebook);
+        Optional<CompratoreDto> foundCompratoreDto = compratoreService.findOneByTokensIdFacebook(idFacebook);
         if (foundCompratoreDto.isPresent()) {
             return new ResponseEntity<>(foundCompratoreDto.get(), HttpStatus.OK);
         } else {
@@ -56,7 +56,7 @@ public class CompratoreController {
         if (password.isEmpty())
              foundCompratoreDto = compratoreService.findOne(email);
         else
-            foundCompratoreDto = compratoreService.findOneWithPassword(email, password);
+            foundCompratoreDto = compratoreService.findOneByEmailAndPassword(email, password);
         if (foundCompratoreDto.isPresent()) {
             return new ResponseEntity<>(foundCompratoreDto.get(), HttpStatus.OK);
         } else {

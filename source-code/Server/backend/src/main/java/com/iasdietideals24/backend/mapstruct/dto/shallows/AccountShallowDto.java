@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AccountShallowDto {
 
-    private String email;
+    private Long idAccount;
 
     private String tipoAccount;
 }

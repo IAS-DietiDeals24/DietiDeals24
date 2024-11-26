@@ -10,23 +10,25 @@ import java.util.Optional;
 
 public interface CompratoreService {
 
-    CompratoreDto create(String email, CompratoreDto nuovoCompratoreDto) throws InvalidParameterException;
+    CompratoreDto create(CompratoreDto nuovoCompratoreDto) throws InvalidParameterException;
 
     Page<CompratoreDto> findAll(Pageable pageable);
 
-    Optional<CompratoreDto> findByIdFacebook(String email);
+    Optional<CompratoreDto> findOne(Long idAccount);
 
-    Optional<CompratoreDto> findOne(String email);
+    Optional<CompratoreDto> findOneByTokensIdFacebook(String token);
 
-    Optional<CompratoreDto> findOneWithPassword(String email, String password);
+    Optional<CompratoreDto> findOneByEmail(String email);
 
-    boolean isExists(String email);
+    Optional<CompratoreDto> findOneByEmailAndPassword(String email, String password);
 
-    CompratoreDto fullUpdate(String email, CompratoreDto updatedCompratoreDto) throws InvalidParameterException;
+    boolean isExists(Long idAccount);
 
-    CompratoreDto partialUpdate(String email, CompratoreDto updatedCompratoreDto) throws InvalidParameterException;
+    CompratoreDto fullUpdate(Long idAccount, CompratoreDto updatedCompratoreDto) throws InvalidParameterException;
 
-    void delete(String email) throws InvalidParameterException;
+    CompratoreDto partialUpdate(Long idAccount, CompratoreDto updatedCompratoreDto) throws InvalidParameterException;
+
+    void delete(Long idAccount) throws InvalidParameterException;
 
     void checkFieldsValid(CompratoreDto compratoreDto) throws InvalidParameterException;
 

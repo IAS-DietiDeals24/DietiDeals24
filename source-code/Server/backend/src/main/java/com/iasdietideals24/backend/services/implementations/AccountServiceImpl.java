@@ -176,10 +176,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean isLastProfiloAccount(Account account) throws InvalidParameterException {
+    public boolean isLastAccountOfProfilo(Account account) throws InvalidParameterException {
         Profilo profiloAssociato = account.getProfilo();
         if (profiloAssociato == null)
-            throw new InvalidParameterException("Il profilo associato all'account \"" + account.getEmail() + "\" è null!");
+            throw new InvalidParameterException("Il profilo associato all'account \"" + account.getIdAccount() + "\" è null!");
 
         return (profiloAssociato.getAccounts().size() == 1);
     }

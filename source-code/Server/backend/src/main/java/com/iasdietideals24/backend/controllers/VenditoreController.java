@@ -39,7 +39,7 @@ public class VenditoreController {
 
     @GetMapping(path = "/accounts/venditori/facebook/{idFacebook}")
     public ResponseEntity<VenditoreDto> getVenditoreFacebook(@PathVariable("idFacebook") String idFacebook) {
-        Optional<VenditoreDto> foundVenditoreDto = venditoreService.findByIdFacebook(idFacebook);
+        Optional<VenditoreDto> foundVenditoreDto = venditoreService.findOneByTokensIdFacebook(idFacebook);
         if (foundVenditoreDto.isPresent()) {
             return new ResponseEntity<>(foundVenditoreDto.get(), HttpStatus.OK);
         } else {

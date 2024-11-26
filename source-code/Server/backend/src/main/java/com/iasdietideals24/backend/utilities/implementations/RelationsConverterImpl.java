@@ -221,15 +221,15 @@ public class RelationsConverterImpl implements RelationsConverter {
 
         if (accountShallowDto != null) {
             if (accountShallowDto.getTipoAccount().equals(Compratore.class.getSimpleName())) {
-                Optional<Compratore> foundCompratore = compratoreRepository.findById(accountShallowDto.getEmail());
+                Optional<Compratore> foundCompratore = compratoreRepository.findById(accountShallowDto.getIdAccount());
                 if (foundCompratore.isEmpty())
-                    throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_EMAIL + accountShallowDto.getEmail() + FINE_MESSAGGIO_ERRORE_EMAIL + "compratore!");
+                    throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_EMAIL + accountShallowDto.getIdAccount() + FINE_MESSAGGIO_ERRORE_EMAIL + "compratore!");
                 account = foundCompratore.get();
 
             } else if (accountShallowDto.getTipoAccount().equals(Venditore.class.getSimpleName())) {
-                Optional<Venditore> foundVenditore = venditoreRepository.findById(accountShallowDto.getEmail());
+                Optional<Venditore> foundVenditore = venditoreRepository.findById(accountShallowDto.getIdAccount());
                 if (foundVenditore.isEmpty())
-                    throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_EMAIL + accountShallowDto.getEmail() + FINE_MESSAGGIO_ERRORE_EMAIL + "venditore!");
+                    throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_EMAIL + accountShallowDto.getIdAccount() + FINE_MESSAGGIO_ERRORE_EMAIL + "venditore!");
                 account = foundVenditore.get();
 
             } else {

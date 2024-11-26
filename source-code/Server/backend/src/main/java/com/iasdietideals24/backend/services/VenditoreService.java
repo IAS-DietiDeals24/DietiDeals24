@@ -10,23 +10,25 @@ import java.util.Optional;
 
 public interface VenditoreService {
 
-    VenditoreDto create(String email, VenditoreDto nuovoVenditoreDto) throws InvalidParameterException;
+    VenditoreDto create(VenditoreDto nuovoVenditoreDto) throws InvalidParameterException;
 
     Page<VenditoreDto> findAll(Pageable pageable);
 
-    Optional<VenditoreDto> findOne(String email);
+    Optional<VenditoreDto> findOne(Long idAccount);
 
-    Optional<VenditoreDto> findByIdFacebook(String idFacebook);
+    Optional<VenditoreDto> findOneByTokensIdFacebook(String token);
 
-    Optional<VenditoreDto> findOneWithPassword(String idFacebook, String password);
+    Optional<VenditoreDto> findOneByEmail(String email);
 
-    boolean isExists(String email);
+    Optional<VenditoreDto> findOneByEmailAndPassword(String email, String password);
 
-    VenditoreDto fullUpdate(String email, VenditoreDto updatedVenditoreDto) throws InvalidParameterException;
+    boolean isExists(Long idAccount);
 
-    VenditoreDto partialUpdate(String email, VenditoreDto updatedVenditoreDto) throws InvalidParameterException;
+    VenditoreDto fullUpdate(Long idAccount, VenditoreDto updatedVenditoreDto) throws InvalidParameterException;
 
-    void delete(String email) throws InvalidParameterException;
+    VenditoreDto partialUpdate(Long idAccount, VenditoreDto updatedVenditoreDto) throws InvalidParameterException;
+
+    void delete(Long idAccount) throws InvalidParameterException;
 
     void checkFieldsValid(VenditoreDto venditoreDto) throws InvalidParameterException;
 

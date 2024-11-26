@@ -36,10 +36,9 @@ public class CompratoreServiceImpl implements CompratoreService {
     }
 
     @Override
-    public CompratoreDto create(String email, CompratoreDto nuovoCompratoreDto) throws InvalidParameterException {
+    public CompratoreDto create(CompratoreDto nuovoCompratoreDto) throws InvalidParameterException {
 
         // Verifichiamo l'integrità dei dati
-        nuovoCompratoreDto.setEmail(email);
         checkFieldsValid(nuovoCompratoreDto);
 
         // Convertiamo a entità
@@ -64,10 +63,19 @@ public class CompratoreServiceImpl implements CompratoreService {
     }
 
     @Override
-    public Optional<CompratoreDto> findByIdFacebook(String idFacebook) {
+    public Optional<CompratoreDto> findOne(Long idAccount) {
 
         // Recuperiamo l'entità con l'id passato per parametro
-        Optional<Compratore> foundVenditore = compratoreRepository.findByTokensIdFacebook(idFacebook);
+        Optional<Compratore> foundCompratore = compratoreRepository.findById(idAccount);
+
+        return foundCompratore.map(compratoreMapper::toDto);
+    }
+
+    @Override
+    public Optional<CompratoreDto> findOneByTokensIdFacebook(String idFacebook) {
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        Optional<Compratore> foundVenditore = compratoreRepository.findOneByTokensIdFacebook(idFacebook);
 
         return foundVenditore.map(compratoreMapper::toDto);
     }
@@ -82,9 +90,9 @@ public class CompratoreServiceImpl implements CompratoreService {
     }
 
     @Override
-    public Optional<CompratoreDto> findOneWithPassword(String email, String password) {
+    public Optional<CompratoreDto> findOneByEmailAndPassword(String email, String password) {
         // Recuperiamo l'entità con l'id e password passati per parametro
-        Optional<Compratore> foundVenditore = compratoreRepository.findByEmailAndPassword(email, password);
+        Optional<Compratore> foundVenditore = compratoreRepository.findOneByEmailAndPassword(email, password);
 
         return foundVenditore.map(compratoreMapper::toDto);
     }
@@ -125,15 +133,15 @@ public class CompratoreServiceImpl implements CompratoreService {
     }
 
     @Override
-    public void delete(String email) throws InvalidParameterException {
+    public void delete(Long idAccount) throws InvalidParameterException {
 
-        Optional<Compratore> existingCompratore = compratoreRepository.findById(email);
-        if (existingCompratore.isPresent() && accountService.isLastProfiloAccount(existingCompratore.get())) {
+        Optional<Compratore> existingCompratore = compratoreRepository.findById(idAccount);
+        if (existingCompratore.isPresent() && accountService.isLastAccountOfProfilo(existingCompratore.get())) {
             throw new IllegalDeleteRequestException("Non puoi eliminare l'unico account associato al profilo!");
         }
 
         // Eliminiamo l'entità con l'id passato per parametro
-        compratoreRepository.deleteById(email);
+        compratoreRepository.deleteById(idAccount);
     }
 
     @Override

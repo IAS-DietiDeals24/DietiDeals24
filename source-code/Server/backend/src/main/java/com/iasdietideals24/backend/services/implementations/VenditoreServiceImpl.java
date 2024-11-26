@@ -73,10 +73,10 @@ public class VenditoreServiceImpl implements VenditoreService {
     }
 
     @Override
-    public Optional<VenditoreDto> findByIdFacebook(String idFacebook) {
+    public Optional<VenditoreDto> findOneByTokensIdFacebook(String idFacebook) {
 
         // Recuperiamo l'entità con l'id passato per parametro
-        Optional<Venditore> foundVenditore = venditoreRepository.findByTokensIdFacebook(idFacebook);
+        Optional<Venditore> foundVenditore = venditoreRepository.findOneByTokensIdFacebook(idFacebook);
 
         return foundVenditore.map(venditoreMapper::toDto);
     }
@@ -85,7 +85,7 @@ public class VenditoreServiceImpl implements VenditoreService {
     public Optional<VenditoreDto> findOneWithPassword(String email, String password) {
 
         // Recuperiamo l'entità con l'id e password passati per parametro
-        Optional<Venditore> foundVenditore = venditoreRepository.findByEmailAndPassword(email, password);
+        Optional<Venditore> foundVenditore = venditoreRepository.findOneByEmailAndPassword(email, password);
 
         return foundVenditore.map(venditoreMapper::toDto);
     }
@@ -126,15 +126,15 @@ public class VenditoreServiceImpl implements VenditoreService {
     }
 
     @Override
-    public void delete(String email) throws InvalidParameterException {
+    public void delete(Long idAccount) throws InvalidParameterException {
 
-        Optional<Venditore> existingVenditore = venditoreRepository.findById(email);
-        if (existingVenditore.isPresent() && accountService.isLastProfiloAccount(existingVenditore.get())) {
+        Optional<Venditore> existingVenditore = venditoreRepository.findById(idAccount);
+        if (existingVenditore.isPresent() && accountService.isLastAccountOfProfilo(existingVenditore.get())) {
             throw new IllegalDeleteRequestException("Non puoi eliminare l'unico account associato al profilo!");
         }
 
         // Eliminiamo l'entità con l'id passato per parametro
-        venditoreRepository.deleteById(email);
+        venditoreRepository.deleteById(idAccount);
     }
 
     @Override
