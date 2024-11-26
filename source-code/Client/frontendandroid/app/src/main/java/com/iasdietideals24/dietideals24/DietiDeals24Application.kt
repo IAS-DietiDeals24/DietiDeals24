@@ -2,7 +2,6 @@ package com.iasdietideals24.dietideals24
 
 import android.app.Application
 import com.iasdietideals24.dietideals24.utilities.kscripts.adapterModule
-import com.iasdietideals24.dietideals24.utilities.kscripts.comparatorsModule
 import com.iasdietideals24.dietideals24.utilities.kscripts.facebookModule
 import com.iasdietideals24.dietideals24.utilities.kscripts.pagingSourceModule
 import com.iasdietideals24.dietideals24.utilities.kscripts.repositoryModule
@@ -22,7 +21,6 @@ class DietiDeals24Application : Application() {
                 serviceModule,
                 repositoryModule,
                 pagingSourceModule,
-                comparatorsModule,
                 adapterModule,
                 viewModelModule,
                 facebookModule

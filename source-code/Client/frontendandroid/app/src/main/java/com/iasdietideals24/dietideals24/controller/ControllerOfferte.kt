@@ -10,6 +10,7 @@ import com.iasdietideals24.dietideals24.utilities.adapters.AdapterOfferte
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
+import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToDetails
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -35,6 +36,7 @@ class ControllerOfferte : Controller<OfferteBinding>() {
 
     // Listeners
     private var listenerDetails: OnGoToDetails? = null
+    private var listenerBackButton: OnBackButton? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -42,12 +44,16 @@ class ControllerOfferte : Controller<OfferteBinding>() {
         if (requireContext() is OnGoToDetails) {
             listenerDetails = requireContext() as OnGoToDetails
         }
+        if (requireContext() is OnBackButton) {
+            listenerBackButton = requireContext() as OnBackButton
+        }
     }
 
     override fun onDetach() {
         super.onDetach()
 
         listenerDetails = null
+        listenerBackButton = null
     }
 
     override fun onPause() {
@@ -61,6 +67,8 @@ class ControllerOfferte : Controller<OfferteBinding>() {
 
         jobOfferte = lifecycleScope.launch {
             while (isActive) {
+                viewModel.invalidate()
+
                 aggiornaOfferte()
 
                 delay(15000)
@@ -77,17 +85,24 @@ class ControllerOfferte : Controller<OfferteBinding>() {
 
     @EventHandler
     private fun clickIndietro() {
-        listenerDetails?.onGoToDetails(args.id, viewModel.tipo.value!!, this::class)
+        if (args.fromDetails) listenerDetails?.onGoToDetails(
+            args.id,
+            args.tipo,
+            this::class
+        )
+        else listenerBackButton?.onBackButton()
     }
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
         binding.offerteRecyclerView.layoutManager = LinearLayoutManager(fragmentContext)
         binding.offerteRecyclerView.adapter = adapterOfferte
+
+        viewModel.idAsta.value = args.id
     }
 
     private suspend fun aggiornaOfferte() {
-        when (viewModel.tipo.value!!) {
+        when (args.tipo) {
             TipoAsta.TEMPO_FISSO -> {
                 viewModel.getTempoFissoFlows().collectLatest { pagingData ->
                     adapterOfferte.submitData(pagingData)

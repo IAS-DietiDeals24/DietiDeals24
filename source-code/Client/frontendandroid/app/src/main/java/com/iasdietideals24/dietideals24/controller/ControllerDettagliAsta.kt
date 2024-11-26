@@ -230,10 +230,10 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
     }
 
     private suspend fun caricaAccount(idCreatore: String): AccountDto {
-        val account = compratoreRepository.caricaAccountCompratore(idCreatore)
+        var account: AccountDto = compratoreRepository.caricaAccountCompratore(idCreatore)
 
         if (account.email == "")
-            venditoreRepository.caricaAccountVenditore(idCreatore)
+            account = venditoreRepository.caricaAccountVenditore(idCreatore)
 
         return account
     }

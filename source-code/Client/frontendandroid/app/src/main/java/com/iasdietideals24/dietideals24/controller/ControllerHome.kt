@@ -51,6 +51,8 @@ class ControllerHome : Controller<HomeBinding>() {
         if (binding.homeRicerca.text.isNullOrEmpty()) {
             jobRecupero = lifecycleScope.launch {
                 while (isActive) {
+                    viewModel.invalidate()
+
                     recuperaAste()
 
                     delay(10000)
@@ -79,6 +81,8 @@ class ControllerHome : Controller<HomeBinding>() {
                         delay(1000)
 
                         while (isActive) {
+                            viewModel.invalidate()
+
                             recuperaAste()
 
                             delay(10000)
@@ -87,6 +91,8 @@ class ControllerHome : Controller<HomeBinding>() {
                 } else if (s.isNullOrEmpty() && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                     jobRecupero = lifecycleScope.launch {
                         while (isActive) {
+                            viewModel.invalidate()
+
                             recuperaAste()
 
                             delay(10000)

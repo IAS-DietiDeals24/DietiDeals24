@@ -2,12 +2,18 @@ package com.iasdietideals24.dietideals24.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
+import com.iasdietideals24.dietideals24.utilities.paging.AstaInversaPagingSource
+import com.iasdietideals24.dietideals24.utilities.paging.AstaSilenziosaPagingSource
+import com.iasdietideals24.dietideals24.utilities.paging.AstaTempoFissoPagingSource
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
+import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,34 +33,175 @@ class ModelHome(
 
     val filter: MutableStateFlow<String> get() = _filter
 
+    private var pagingSourceInverseTutte: AstaInversaPagingSource? = null
+
+    private val pagerInverseTutte by lazy {
+        Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                pagingSourceInverseTutte = AstaInversaPagingSource(
+                    repository = inverseRepository,
+                    email = CurrentUser.id,
+                    api = AstaInversaRepository.ApiCall.TUTTE
+                )
+
+                pagingSourceInverseTutte!!
+            }
+        )
+    }
+
+    private var pagingSourceTempoFissoTutte: AstaTempoFissoPagingSource? = null
+
+    private val pagerTempoFissoTutte by lazy {
+        Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                pagingSourceTempoFissoTutte = AstaTempoFissoPagingSource(
+                    repository = tempoFissoRepository,
+                    email = CurrentUser.id,
+                    api = AstaTempoFissoRepository.ApiCall.TUTTE
+                )
+
+                pagingSourceTempoFissoTutte!!
+            }
+        )
+    }
+
+    private var pagingSourceSilenzioseTutte: AstaSilenziosaPagingSource? = null
+
+    private val pagerSilenzioseTutte by lazy {
+        Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                pagingSourceSilenzioseTutte = AstaSilenziosaPagingSource(
+                    repository = silenziosaRepository,
+                    email = CurrentUser.id,
+                    api = AstaSilenziosaRepository.ApiCall.TUTTE
+                )
+
+                pagingSourceSilenzioseTutte!!
+            }
+        )
+    }
+
     private val flowInverseTutte by lazy {
-        inverseRepository.recuperaAsteInverse().cachedIn(viewModelScope)
+        pagerInverseTutte.flow.cachedIn(viewModelScope)
     }
 
     private val flowTempoFissoTutte by lazy {
-        tempoFissoRepository.recuperaAsteTempoFisso().cachedIn(viewModelScope)
+        pagerTempoFissoTutte.flow.cachedIn(viewModelScope)
     }
 
     private val flowSilenzioseTutte by lazy {
-        silenziosaRepository.recuperaAsteSilenziose().cachedIn(viewModelScope)
+        pagerSilenzioseTutte.flow.cachedIn(viewModelScope)
+    }
+
+    private fun invalidateInverseTutte() {
+        pagingSourceInverseTutte?.invalidate()
+    }
+
+    private fun invalidateTempoFissoTutte() {
+        pagingSourceTempoFissoTutte?.invalidate()
+    }
+
+    private fun invalidateSilenzioseTutte() {
+        pagingSourceSilenzioseTutte?.invalidate()
+    }
+
+    private fun invalidateTutte() {
+        invalidateInverseTutte()
+        invalidateTempoFissoTutte()
+        invalidateSilenzioseTutte()
+    }
+
+    private var pagingSourceInverseRicerca: AstaInversaPagingSource? = null
+
+    private val pagerInverseRicerca by lazy {
+        Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                pagingSourceInverseRicerca = AstaInversaPagingSource(
+                    repository = inverseRepository,
+                    email = CurrentUser.id,
+                    ricerca = searchText.value,
+                    filtro = filter.value,
+                    api = AstaInversaRepository.ApiCall.RICERCA
+                )
+
+                pagingSourceInverseRicerca!!
+            }
+        )
+    }
+
+    private var pagingSourceTempoFissoRicerca: AstaTempoFissoPagingSource? = null
+
+    private val pagerTempoFissoRicerca by lazy {
+        Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                pagingSourceTempoFissoRicerca = AstaTempoFissoPagingSource(
+                    repository = tempoFissoRepository,
+                    email = CurrentUser.id,
+                    ricerca = searchText.value,
+                    filtro = filter.value,
+                    api = AstaTempoFissoRepository.ApiCall.RICERCA
+                )
+
+                pagingSourceTempoFissoRicerca!!
+            }
+        )
+    }
+
+    private var pagingSourceSilenzioseRicerca: AstaSilenziosaPagingSource? = null
+
+    private val pagerSilenzioseRicerca by lazy {
+        Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                pagingSourceSilenzioseRicerca = AstaSilenziosaPagingSource(
+                    repository = silenziosaRepository,
+                    email = CurrentUser.id,
+                    ricerca = searchText.value,
+                    filtro = filter.value,
+                    api = AstaSilenziosaRepository.ApiCall.RICERCA
+                )
+
+                pagingSourceSilenzioseRicerca!!
+            }
+        )
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val flowInverseRicerca = searchText.flatMapLatest { _ ->
-        inverseRepository.ricercaAsteInverse(searchText.value, filter.value)
-            .cachedIn(viewModelScope)
+        pagerInverseRicerca.flow.cachedIn(viewModelScope)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val flowTempoFissoRicerca = searchText.flatMapLatest { _ ->
-        tempoFissoRepository.ricercaAsteTempoFisso(searchText.value, filter.value)
-            .cachedIn(viewModelScope)
+        pagerTempoFissoRicerca.flow.cachedIn(viewModelScope)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private val flowSilenzioseRicerca = searchText.flatMapLatest { _ ->
-        silenziosaRepository.ricercaAsteSilenziose(searchText.value, filter.value)
-            .cachedIn(viewModelScope)
+        pagerSilenzioseRicerca.flow.cachedIn(viewModelScope)
+    }
+
+    private fun invalidateInverseRicerca() {
+        pagingSourceInverseRicerca?.invalidate()
+    }
+
+    private fun invalidateTempoFissoRicerca() {
+        pagingSourceTempoFissoRicerca?.invalidate()
+    }
+
+    private fun invalidateSilenzioseRicerca() {
+        pagingSourceSilenzioseRicerca?.invalidate()
+    }
+
+    private fun invalidateRicerca() {
+        invalidateInverseRicerca()
+        invalidateTempoFissoRicerca()
+        invalidateSilenzioseRicerca()
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -85,5 +232,10 @@ class ModelHome(
                 else
                     flowSilenzioseRicerca
                 ) as Flow<PagingData<AstaDto>>
+    }
+
+    fun invalidate() {
+        invalidateTutte()
+        invalidateRicerca()
     }
 }

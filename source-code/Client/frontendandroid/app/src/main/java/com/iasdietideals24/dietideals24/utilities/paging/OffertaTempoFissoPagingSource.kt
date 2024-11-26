@@ -3,10 +3,10 @@ package com.iasdietideals24.dietideals24.utilities.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaTempoFissoDto
-import com.iasdietideals24.dietideals24.utilities.services.OffertaTempoFissoService
+import com.iasdietideals24.dietideals24.utilities.repositories.OffertaTempoFissoRepository
 
 class OffertaTempoFissoPagingSource(
-    private val service: OffertaTempoFissoService,
+    private val repository: OffertaTempoFissoRepository,
     private val idAsta: Long = 0L
 ) : PagingSource<Long, OffertaTempoFissoDto>() {
     override suspend fun load(params: LoadParams<Long>): LoadResult<Long, OffertaTempoFissoDto> {
@@ -14,12 +14,12 @@ class OffertaTempoFissoPagingSource(
         val size = params.loadSize.toLong()
 
         return try {
-            val data = service.recuperaOfferteTempoFisso(idAsta, size, 0)
+            val data = repository.recuperaOfferteTempoFisso(idAsta, size, 0)
 
             LoadResult.Page(
-                data = data.body()!!.content,
+                data = data.content,
                 prevKey = if (page == 0L) null else page - 1,
-                nextKey = if (data.body()!!.isLast) null else page + 1
+                nextKey = if (data.isLast) null else page + 1
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

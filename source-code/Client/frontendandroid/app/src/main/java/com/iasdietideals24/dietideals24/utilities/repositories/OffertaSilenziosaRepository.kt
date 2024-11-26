@@ -1,12 +1,8 @@
 package com.iasdietideals24.dietideals24.utilities.repositories
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaSilenziosaDto
-import com.iasdietideals24.dietideals24.utilities.paging.OffertaSilenziosaPagingSource
 import com.iasdietideals24.dietideals24.utilities.services.OffertaSilenziosaService
-import kotlinx.coroutines.flow.Flow
+import com.iasdietideals24.dietideals24.utilities.tools.Page
 
 class OffertaSilenziosaRepository(private val service: OffertaSilenziosaService) {
     suspend fun recuperaOffertaPersonalePiuAltaSilenziosa(
@@ -25,11 +21,13 @@ class OffertaSilenziosaRepository(private val service: OffertaSilenziosaService)
             ?: OffertaSilenziosaDto()
     }
 
-    fun recuperaOfferteSilenziose(idAsta: Long): Flow<PagingData<OffertaSilenziosaDto>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = { OffertaSilenziosaPagingSource(service, idAsta) }
-        ).flow
+    suspend fun recuperaOfferteSilenziose(
+        idAsta: Long,
+        size: Long,
+        page: Long
+    ): Page<OffertaSilenziosaDto> {
+        return service.recuperaOfferteSilenziose(idAsta, size, page).body()
+            ?: Page<OffertaSilenziosaDto>()
     }
 
     suspend fun accettaOfferta(offerta: OffertaSilenziosaDto, idOfferta: Long): Boolean {

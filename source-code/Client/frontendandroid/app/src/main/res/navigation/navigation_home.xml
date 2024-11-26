@@ -106,9 +106,7 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@id/controllerDettagliAsta"
-            app:popUpToInclusive="true" />
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_controllerDettagliAsta_to_controllerOfferte"
             app:destination="@id/controllerOfferte"
@@ -218,6 +216,10 @@
         <argument
             android:name="tipo"
             app:argType="com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta" />
+        <argument
+            android:name="fromDetails"
+            android:defaultValue="true"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/controllerPartecipazioni"

@@ -1,6 +1,5 @@
 package com.iasdietideals24.dietideals24.utilities.kscripts
 
-import androidx.recyclerview.widget.DiffUtil
 import com.facebook.CallbackManager.Factory.create
 import com.iasdietideals24.dietideals24.model.ModelAccesso
 import com.iasdietideals24.dietideals24.model.ModelAsta
@@ -18,9 +17,6 @@ import com.iasdietideals24.dietideals24.utilities.adapters.AdapterPartecipazioni
 import com.iasdietideals24.dietideals24.utilities.comparators.AstaDtoComparator
 import com.iasdietideals24.dietideals24.utilities.comparators.NotificaDtoComparator
 import com.iasdietideals24.dietideals24.utilities.comparators.OffertaDtoComparator
-import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
-import com.iasdietideals24.dietideals24.utilities.dto.NotificaDto
-import com.iasdietideals24.dietideals24.utilities.dto.OffertaDto
 import com.iasdietideals24.dietideals24.utilities.paging.AstaInversaPagingSource
 import com.iasdietideals24.dietideals24.utilities.paging.AstaSilenziosaPagingSource
 import com.iasdietideals24.dietideals24.utilities.paging.AstaTempoFissoPagingSource
@@ -116,18 +112,12 @@ val pagingSourceModule = module {
     factory { params -> OffertaTempoFissoPagingSource(get(), params.get()) }
 }
 
-val comparatorsModule = module {
-    single<DiffUtil.ItemCallback<AstaDto>> { AstaDtoComparator }
-    single<DiffUtil.ItemCallback<NotificaDto>> { NotificaDtoComparator }
-    single<DiffUtil.ItemCallback<OffertaDto>> { OffertaDtoComparator }
-}
-
 val adapterModule = module {
-    factory { params -> AdapterAsteCreate(get(), params.get()) }
-    factory { params -> AdapterHome(get(), params.get()) }
-    factory { params -> AdapterNotifiche(get(), params.get()) }
-    factory { params -> AdapterPartecipazioni(get(), params.get()) }
-    factory { params -> AdapterOfferte(get(), params.get()) }
+    factory { params -> AdapterAsteCreate(AstaDtoComparator, params.get()) }
+    factory { params -> AdapterHome(AstaDtoComparator, params.get()) }
+    factory { params -> AdapterNotifiche(NotificaDtoComparator, params.get()) }
+    factory { params -> AdapterPartecipazioni(AstaDtoComparator, params.get()) }
+    factory { params -> AdapterOfferte(OffertaDtoComparator, params.get()) }
 }
 
 val viewModelModule = module {

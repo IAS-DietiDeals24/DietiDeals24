@@ -2,6 +2,7 @@ package com.iasdietideals24.dietideals24.utilities.viewHolders
 
 import android.content.Context
 import android.content.res.Resources
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.iasdietideals24.dietideals24.R
@@ -80,24 +81,22 @@ class ViewHolderPartecipazione(private val binding: AstaBinding) :
             }
 
         binding.astaNome.text = currentAsta.nome
-
-        binding.astaOfferta.text = resources.getString(
-            R.string.placeholder_prezzo,
-            if (currentAsta.tipoAsta != TipoAsta.SILENZIOSA) {
-                scope.launch {
-                    val offerta: Offerta =
-                        withContext(Dispatchers.IO) { recuperaOffertaPersonale(currentAsta).toOfferta() }
-
-                    offerta.offerta.toString()
-                }
-            } else
-                "???"
-        )
+        binding.astaModificaAsta.visibility = View.GONE
+        binding.astaEliminaAsta.visibility = View.GONE
+        binding.astaElencoOfferte.visibility = View.GONE
 
         binding.astaLinearLayout3.setOnClickListener {
             Logger.log("Showing auction details")
 
             listenerGoToDetails?.onGoToDetails(currentAsta.id, currentAsta.tipoAsta, this::class)
+        }
+
+        scope.launch {
+            val valoreOfferta: Offerta =
+                withContext(Dispatchers.IO) { recuperaOffertaPersonale(currentAsta).toOfferta() }
+
+            binding.astaOfferta.text =
+                resources.getString(R.string.placeholder_prezzo, valoreOfferta.offerta)
         }
     }
 

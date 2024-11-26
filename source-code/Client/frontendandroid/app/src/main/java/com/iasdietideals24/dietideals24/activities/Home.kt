@@ -240,7 +240,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
             ControllerDettagliAsta::class -> {
                 val action =
                     ControllerDettagliAstaDirections.actionControllerDettagliAstaToControllerOfferte(
-                        tipo, id
+                        tipo, id, true
                     )
                 navController.navigate(action)
             }
@@ -248,7 +248,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
             ViewHolderAstaCreata::class -> {
                 val action =
                     ControllerAsteCreateDirections.actionControllerAsteCreateToControllerOfferte(
-                        tipo, id
+                        tipo, id, false
                     )
                 navController.navigate(action)
             }
@@ -260,21 +260,18 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
 
         when (sender) {
             ControllerDettagliAsta::class -> {
-                navController.popBackStack()
                 val action =
                     ControllerDettagliAstaDirections.actionControllerDettagliAstaSelf(tipo, id)
                 navController.navigate(action)
             }
 
             ViewHolderOfferta::class -> {
-                navController.popBackStack()
                 val action =
                     ControllerOfferteDirections.actionControllerOfferteSelf(tipo, id)
                 navController.navigate(action)
             }
 
             ViewHolderAstaCreata::class -> {
-                navController.popBackStack()
                 val action =
                     ControllerAsteCreateDirections.actionControllerAsteCreateSelf()
                 navController.navigate(action)

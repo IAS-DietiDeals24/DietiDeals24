@@ -1,12 +1,8 @@
 package com.iasdietideals24.dietideals24.utilities.repositories
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaTempoFissoDto
-import com.iasdietideals24.dietideals24.utilities.paging.OffertaTempoFissoPagingSource
 import com.iasdietideals24.dietideals24.utilities.services.OffertaTempoFissoService
-import kotlinx.coroutines.flow.Flow
+import com.iasdietideals24.dietideals24.utilities.tools.Page
 
 class OffertaTempoFissoRepository(private val service: OffertaTempoFissoService) {
     suspend fun recuperaOffertaPiuAlta(idAsta: Long): OffertaTempoFissoDto {
@@ -29,10 +25,12 @@ class OffertaTempoFissoRepository(private val service: OffertaTempoFissoService)
             ?: OffertaTempoFissoDto()
     }
 
-    fun recuperaOfferteTempoFisso(idAsta: Long): Flow<PagingData<OffertaTempoFissoDto>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = { OffertaTempoFissoPagingSource(service, idAsta) }
-        ).flow
+    suspend fun recuperaOfferteTempoFisso(
+        idAsta: Long,
+        size: Long,
+        page: Long
+    ): Page<OffertaTempoFissoDto> {
+        return service.recuperaOfferteTempoFisso(idAsta, size, page).body()
+            ?: Page<OffertaTempoFissoDto>()
     }
 }

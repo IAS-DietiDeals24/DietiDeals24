@@ -42,6 +42,8 @@ class ControllerAsteCreate : Controller<AstecreateBinding>() {
         super.onResume()
 
         jobRecupero = lifecycleScope.launch {
+            viewModel.invalidate()
+
             recuperaAsteCreate()
         }
     }

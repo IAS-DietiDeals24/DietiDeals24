@@ -42,6 +42,8 @@ class ControllerPartecipazioni : Controller<PartecipazioniBinding>() {
         super.onResume()
 
         jobRecupero = lifecycleScope.launch {
+            viewModel.invalidate()
+
             recuperaPartecipazioni()
         }
     }

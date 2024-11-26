@@ -1,25 +1,17 @@
 package com.iasdietideals24.dietideals24.utilities.repositories
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import com.iasdietideals24.dietideals24.utilities.dto.AstaTempoFissoDto
-import com.iasdietideals24.dietideals24.utilities.paging.AstaTempoFissoPagingSource
 import com.iasdietideals24.dietideals24.utilities.services.AstaTempoFissoService
-import kotlinx.coroutines.flow.Flow
+import com.iasdietideals24.dietideals24.utilities.tools.Page
 
 class AstaTempoFissoRepository(private val service: AstaTempoFissoService) {
-    fun recuperaAsteCreateTempoFisso(accountEmail: String): Flow<PagingData<AstaTempoFissoDto>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = {
-                AstaTempoFissoPagingSource(
-                    service,
-                    email = accountEmail,
-                    api = ApiCall.CREATE
-                )
-            }
-        ).flow
+    suspend fun recuperaAsteCreateTempoFisso(
+        accountEmail: String,
+        size: Long,
+        page: Long
+    ): Page<AstaTempoFissoDto> {
+        return service.recuperaAsteCreateTempoFisso(accountEmail, size, page).body()
+            ?: Page<AstaTempoFissoDto>()
     }
 
     suspend fun creaAstaTempoFisso(asta: AstaTempoFissoDto): AstaTempoFissoDto {
@@ -38,41 +30,27 @@ class AstaTempoFissoRepository(private val service: AstaTempoFissoService) {
         return service.aggiornaAstaTempoFisso(asta, idAsta).body() ?: AstaTempoFissoDto()
     }
 
-    fun recuperaAsteTempoFisso(): Flow<PagingData<AstaTempoFissoDto>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = { AstaTempoFissoPagingSource(service, api = ApiCall.TUTTE) }
-        ).flow
+    suspend fun recuperaAsteTempoFisso(size: Long, page: Long): Page<AstaTempoFissoDto> {
+        return service.recuperaAsteTempoFisso(size, page).body() ?: Page<AstaTempoFissoDto>()
     }
 
-    fun ricercaAsteTempoFisso(
+    suspend fun ricercaAsteTempoFisso(
         ricerca: String,
-        filtro: String
-    ): Flow<PagingData<AstaTempoFissoDto>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = {
-                AstaTempoFissoPagingSource(
-                    service,
-                    ricerca = ricerca,
-                    filtro = filtro,
-                    api = ApiCall.RICERCA
-                )
-            }
-        ).flow
+        filtro: String,
+        size: Long,
+        page: Long
+    ): Page<AstaTempoFissoDto> {
+        return service.ricercaAsteTempoFisso(ricerca, filtro, size, page).body()
+            ?: Page<AstaTempoFissoDto>()
     }
 
-    fun recuperaPartecipazioniTempoFisso(email: String): Flow<PagingData<AstaTempoFissoDto>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = {
-                AstaTempoFissoPagingSource(
-                    service,
-                    email = email,
-                    api = ApiCall.PARTECIPAZIONI
-                )
-            }
-        ).flow
+    suspend fun recuperaPartecipazioniTempoFisso(
+        accountEmail: String,
+        size: Long,
+        page: Long
+    ): Page<AstaTempoFissoDto> {
+        return service.recuperaPartecipazioniTempoFisso(accountEmail, size, page).body()
+            ?: Page<AstaTempoFissoDto>()
     }
 
     enum class ApiCall { CREATE, TUTTE, RICERCA, PARTECIPAZIONI }

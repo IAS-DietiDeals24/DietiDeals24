@@ -3,11 +3,11 @@ package com.iasdietideals24.dietideals24.utilities.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.iasdietideals24.dietideals24.utilities.dto.AstaInversaDto
+import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository.ApiCall
-import com.iasdietideals24.dietideals24.utilities.services.AstaInversaService
 
 class AstaInversaPagingSource(
-    private val service: AstaInversaService,
+    private val repository: AstaInversaRepository,
     private val email: String = "",
     private val ricerca: String = "",
     private val filtro: String = "",
@@ -19,16 +19,16 @@ class AstaInversaPagingSource(
 
         return try {
             val data = when (api) {
-                ApiCall.CREATE -> service.recuperaAsteCreateInverse(email, size, 0)
-                ApiCall.TUTTE -> service.recuperaAsteInverse(size, 0)
-                ApiCall.RICERCA -> service.ricercaAsteInverse(ricerca, filtro, size, 0)
-                ApiCall.PARTECIPAZIONI -> service.recuperaPartecipazioniInverse(email, size, 0)
+                ApiCall.CREATE -> repository.recuperaAsteCreateInverse(email, size, 0)
+                ApiCall.TUTTE -> repository.recuperaAsteInverse(size, 0)
+                ApiCall.RICERCA -> repository.ricercaAsteInverse(ricerca, filtro, size, 0)
+                ApiCall.PARTECIPAZIONI -> repository.recuperaPartecipazioniInverse(email, size, 0)
             }
 
             LoadResult.Page(
-                data = data.body()!!.content,
+                data = data.content,
                 prevKey = if (page == 0L) null else page - 1,
-                nextKey = if (data.body()!!.isLast) null else page + 1
+                nextKey = if (data.isLast) null else page + 1
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

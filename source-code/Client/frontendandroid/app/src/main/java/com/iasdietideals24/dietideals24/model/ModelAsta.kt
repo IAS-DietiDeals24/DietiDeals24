@@ -3,6 +3,8 @@ package com.iasdietideals24.dietideals24.model
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
@@ -16,6 +18,9 @@ import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneDataPassata
+import com.iasdietideals24.dietideals24.utilities.paging.OffertaInversaPagingSource
+import com.iasdietideals24.dietideals24.utilities.paging.OffertaSilenziosaPagingSource
+import com.iasdietideals24.dietideals24.utilities.paging.OffertaTempoFissoPagingSource
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaInversaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaTempoFissoRepository
@@ -252,16 +257,63 @@ class ModelAsta(
         }
     }
 
+    private var pagingSourceInverse: OffertaInversaPagingSource? = null
+
+    private val pagerInverse by lazy {
+        Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                pagingSourceInverse = OffertaInversaPagingSource(
+                    repository = inverseRepository,
+                    idAsta = idAsta.value!!
+                )
+
+                pagingSourceInverse!!
+            }
+        )
+    }
+
+    private var pagingSourceTempoFisso: OffertaTempoFissoPagingSource? = null
+
+    private val pagerTempoFisso by lazy {
+        Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                pagingSourceTempoFisso = OffertaTempoFissoPagingSource(
+                    repository = tempoFissoRepository,
+                    idAsta = idAsta.value!!
+                )
+
+                pagingSourceTempoFisso!!
+            }
+        )
+    }
+
+    private var pagingSourceSilenziose: OffertaSilenziosaPagingSource? = null
+
+    private val pagerSilenziose by lazy {
+        Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                pagingSourceSilenziose = OffertaSilenziosaPagingSource(
+                    repository = silenziosaRepository,
+                    idAsta = idAsta.value!!
+                )
+
+                pagingSourceSilenziose!!
+            }
+        )
+    }
     private val flowInverse by lazy {
-        inverseRepository.recuperaOfferteInverse(idAsta.value!!).cachedIn(viewModelScope)
+        pagerInverse.flow.cachedIn(viewModelScope)
     }
 
     private val flowTempoFisso by lazy {
-        tempoFissoRepository.recuperaOfferteTempoFisso(idAsta.value!!).cachedIn(viewModelScope)
+        pagerTempoFisso.flow.cachedIn(viewModelScope)
     }
 
     private val flowSilenziose by lazy {
-        silenziosaRepository.recuperaOfferteSilenziose(idAsta.value!!).cachedIn(viewModelScope)
+        pagerSilenziose.flow.cachedIn(viewModelScope)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -277,5 +329,23 @@ class ModelAsta(
     @Suppress("UNCHECKED_CAST")
     fun getSilenzioseFlows(): Flow<PagingData<OffertaDto>> {
         return flowSilenziose as Flow<PagingData<OffertaDto>>
+    }
+
+    private fun invalidateInverse() {
+        pagingSourceInverse?.invalidate()
+    }
+
+    private fun invalidateTempoFisso() {
+        pagingSourceTempoFisso?.invalidate()
+    }
+
+    private fun invalidateSilenziose() {
+        pagingSourceSilenziose?.invalidate()
+    }
+
+    fun invalidate() {
+        invalidateInverse()
+        invalidateTempoFisso()
+        invalidateSilenziose()
     }
 }

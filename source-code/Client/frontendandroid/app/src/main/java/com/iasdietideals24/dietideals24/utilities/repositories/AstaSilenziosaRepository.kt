@@ -1,25 +1,17 @@
 package com.iasdietideals24.dietideals24.utilities.repositories
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import com.iasdietideals24.dietideals24.utilities.dto.AstaSilenziosaDto
-import com.iasdietideals24.dietideals24.utilities.paging.AstaSilenziosaPagingSource
 import com.iasdietideals24.dietideals24.utilities.services.AstaSilenziosaService
-import kotlinx.coroutines.flow.Flow
+import com.iasdietideals24.dietideals24.utilities.tools.Page
 
 class AstaSilenziosaRepository(private val service: AstaSilenziosaService) {
-    fun recuperaAsteCreateSilenziose(accountEmail: String): Flow<PagingData<AstaSilenziosaDto>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = {
-                AstaSilenziosaPagingSource(
-                    service,
-                    email = accountEmail,
-                    api = ApiCall.CREATE
-                )
-            }
-        ).flow
+    suspend fun recuperaAsteCreateSilenziose(
+        accountEmail: String,
+        size: Long,
+        page: Long
+    ): Page<AstaSilenziosaDto> {
+        return service.recuperaAsteCreateSilenziose(accountEmail, size, page).body()
+            ?: Page<AstaSilenziosaDto>()
     }
 
     suspend fun creaAstaSilenziosa(asta: AstaSilenziosaDto): AstaSilenziosaDto {
@@ -38,41 +30,27 @@ class AstaSilenziosaRepository(private val service: AstaSilenziosaService) {
         return service.aggiornaAstaSilenziosa(asta, idAsta).body() ?: AstaSilenziosaDto()
     }
 
-    fun recuperaAsteSilenziose(): Flow<PagingData<AstaSilenziosaDto>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = { AstaSilenziosaPagingSource(service, api = ApiCall.TUTTE) }
-        ).flow
+    suspend fun recuperaAsteSilenziose(size: Long, page: Long): Page<AstaSilenziosaDto> {
+        return service.recuperaAsteSilenziose(size, page).body() ?: Page<AstaSilenziosaDto>()
     }
 
-    fun ricercaAsteSilenziose(
+    suspend fun ricercaAsteSilenziose(
         ricerca: String,
-        filtro: String
-    ): Flow<PagingData<AstaSilenziosaDto>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = {
-                AstaSilenziosaPagingSource(
-                    service,
-                    ricerca = ricerca,
-                    filtro = filtro,
-                    api = ApiCall.RICERCA
-                )
-            }
-        ).flow
+        filtro: String,
+        size: Long,
+        page: Long
+    ): Page<AstaSilenziosaDto> {
+        return service.ricercaAsteSilenziose(ricerca, filtro, size, page).body()
+            ?: Page<AstaSilenziosaDto>()
     }
 
-    fun recuperaPartecipazioniSilenziose(email: String): Flow<PagingData<AstaSilenziosaDto>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = {
-                AstaSilenziosaPagingSource(
-                    service,
-                    email = email,
-                    api = ApiCall.PARTECIPAZIONI
-                )
-            }
-        ).flow
+    suspend fun recuperaPartecipazioniSilenziose(
+        accountEmail: String,
+        size: Long,
+        page: Long
+    ): Page<AstaSilenziosaDto> {
+        return service.recuperaPartecipazioniSilenziose(accountEmail, size, page).body()
+            ?: Page<AstaSilenziosaDto>()
     }
 
     enum class ApiCall { CREATE, TUTTE, RICERCA, PARTECIPAZIONI }
