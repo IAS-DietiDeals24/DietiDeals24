@@ -2,7 +2,6 @@ package com.iasdietideals24.backend.services;
 
 import com.iasdietideals24.backend.entities.Venditore;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
-import com.iasdietideals24.backend.mapstruct.dto.CompratoreDto;
 import com.iasdietideals24.backend.mapstruct.dto.VenditoreDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -44,7 +44,7 @@ class CompratoreRepositoryIntegrationTests {
         underTest.save(compratore);
 
         // Recupero oggetto dal database
-        Optional<Compratore> result = underTest.findById(compratore.getEmail());
+        Optional<Compratore> result = underTest.findById(compratore.getIdAccount());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
@@ -91,7 +91,7 @@ class CompratoreRepositoryIntegrationTests {
         underTest.save(compratore);
 
         // Recupero l'oggetto dal database
-        Optional<Compratore> result = underTest.findById(compratore.getEmail());
+        Optional<Compratore> result = underTest.findById(compratore.getIdAccount());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
@@ -108,10 +108,10 @@ class CompratoreRepositoryIntegrationTests {
         underTest.save(compratore);
 
         // Rimozione dell'oggetto dal database
-        underTest.deleteById(compratore.getEmail());
+        underTest.deleteById(compratore.getIdAccount());
 
         // Recupero l'oggetto dal database
-        Optional<Compratore> result = underTest.findById(compratore.getEmail());
+        Optional<Compratore> result = underTest.findById(compratore.getIdAccount());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions

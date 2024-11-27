@@ -50,7 +50,7 @@ public abstract class AccountMapper {
     }
 
     @BeanMapping(ignoreByDefault = true)
-    @Mapping(source = "idAccount;", target = "idAccount")
+    @Mapping(source = "idAccount", target = "idAccount")
     public abstract Compratore toCompratore(AccountShallowDto accountShallowDto);
 
     @BeanMapping(ignoreByDefault = true)

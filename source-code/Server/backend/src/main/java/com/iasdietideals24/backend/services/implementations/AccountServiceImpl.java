@@ -75,9 +75,9 @@ public class AccountServiceImpl implements AccountService {
 
         if (convertedProfilo != null) {
             if (nuovoAccount instanceof Compratore && convertedProfilo.getCompratore() != null)
-                throw new InvalidParameterException("Il profilo \"" + "\" è già associato a un account compratore! Eliminare prima quello precedente.");
+                throw new InvalidParameterException("Il profilo \"" + convertedProfilo.getNomeUtente() + "\" è già associato a un account compratore! Eliminare prima quello precedente.");
             else if (nuovoAccount instanceof Venditore && convertedProfilo.getVenditore() != null)
-                throw new InvalidParameterException("Il profilo \"" + "\" è già associato a un account venditore! Eliminare prima quello precedente.");
+                throw new InvalidParameterException("Il profilo \"" + convertedProfilo.getNomeUtente() + "\" è già associato a un account venditore! Eliminare prima quello precedente.");
             else {
                 nuovoAccount.setProfilo(convertedProfilo);
                 convertedProfilo.addAccount(nuovoAccount);

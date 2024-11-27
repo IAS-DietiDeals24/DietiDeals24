@@ -90,6 +90,6 @@ public abstract class Account {
         }
         listIdNotificheRicevute.append("]");
 
-        return "Account(email=" + this.getEmail() + ", password=" + this.getPassword() + "tokens=" + this.getTokens() + ", profilo=" + this.getProfilo().getNomeUtente() + ", notificheInviate=" + listIdNotificheInviate + ", notificheRicevute=" + listIdNotificheRicevute + ")";
+        return "Account(idAccount=" + this.getIdAccount() + ", email=" + this.getEmail() + ", password=" + this.getPassword() + "tokens=" + this.getTokens() + ", profilo=" + this.getProfilo().getNomeUtente() + ", notificheInviate=" + listIdNotificheInviate + ", notificheRicevute=" + listIdNotificheRicevute + ")";
     }
 }

@@ -20,15 +20,10 @@ public class CompratoreController {
         this.compratoreService = compratoreService;
     }
 
-    @PutMapping(path = "/accounts/compratori/{email}")
-    public ResponseEntity<CompratoreDto> createOrFullUpadateCompratore(@PathVariable("email") String email, @RequestBody CompratoreDto receivedCompratoreDto) throws InvalidParameterException {
-        if (compratoreService.isExists(email)) {
-            CompratoreDto updatedCompratoreDto = compratoreService.fullUpdate(email, receivedCompratoreDto);
-            return new ResponseEntity<>(updatedCompratoreDto, HttpStatus.OK);
-        } else {
-            CompratoreDto createdCompratoreDto = compratoreService.create(email, receivedCompratoreDto);
-            return new ResponseEntity<>(createdCompratoreDto, HttpStatus.CREATED);
-        }
+    @PostMapping(path = "/accounts/compratori")
+    public ResponseEntity<CompratoreDto> createCompratore(@RequestBody CompratoreDto receivedCompratoreDto) throws InvalidParameterException {
+        CompratoreDto createdCompratoreDto = compratoreService.create(receivedCompratoreDto);
+        return new ResponseEntity<>(createdCompratoreDto, HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/accounts/compratori")
@@ -37,6 +32,17 @@ public class CompratoreController {
         return new ResponseEntity<>(foundCompratoriDto, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/accounts/compratori/{idAccount}")
+    public ResponseEntity<CompratoreDto> getCompratore(@PathVariable("idAccount") Long idAccount) {
+        Optional<CompratoreDto> foundCompratoreDto = compratoreService.findOne(idAccount);
+        if (foundCompratoreDto.isPresent()) {
+            return new ResponseEntity<>(foundCompratoreDto.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    /*
     @GetMapping(path = "/accounts/compratori/facebook/{idFacebook}")
     public ResponseEntity<CompratoreDto> getCompratoreFacebook(@PathVariable("idFacebook") String idFacebook) {
         Optional<CompratoreDto> foundCompratoreDto = compratoreService.findByTokensIdFacebook(idFacebook, );
@@ -63,20 +69,31 @@ public class CompratoreController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+     */
 
-    @PatchMapping(path = "/accounts/compratori/{email}")
-    public ResponseEntity<CompratoreDto> partialUpdateCompratore(@PathVariable("email") String email, @RequestBody CompratoreDto receivedCompratoreDto) throws InvalidParameterException {
-        if (compratoreService.isExists(email)) {
-            CompratoreDto updatedCompratoreDto = compratoreService.partialUpdate(email, receivedCompratoreDto);
+    @PutMapping(path = "/accounts/compratori/{idAccount}")
+    public ResponseEntity<CompratoreDto> fullUpadateCompratore(@PathVariable("idAccount") Long idAccount, @RequestBody CompratoreDto receivedCompratoreDto) throws InvalidParameterException {
+        if (compratoreService.isExists(idAccount)) {
+            CompratoreDto updatedCompratoreDto = compratoreService.fullUpdate(idAccount, receivedCompratoreDto);
             return new ResponseEntity<>(updatedCompratoreDto, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping(path = "/accounts/compratori/{email}")
-    public ResponseEntity<CompratoreDto> deleteCompratore(@PathVariable("email") String email) throws InvalidParameterException {
-        compratoreService.delete(email);
+    @PatchMapping(path = "/accounts/compratori/{idAccount}")
+    public ResponseEntity<CompratoreDto> partialUpdateCompratore(@PathVariable("idAccount") Long idAccount, @RequestBody CompratoreDto receivedCompratoreDto) throws InvalidParameterException {
+        if (compratoreService.isExists(idAccount)) {
+            CompratoreDto updatedCompratoreDto = compratoreService.partialUpdate(idAccount, receivedCompratoreDto);
+            return new ResponseEntity<>(updatedCompratoreDto, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping(path = "/accounts/compratori/{idAccount}")
+    public ResponseEntity<CompratoreDto> deleteCompratore(@PathVariable("idAccount") Long idAccount) throws InvalidParameterException {
+        compratoreService.delete(idAccount);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
