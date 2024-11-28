@@ -2,14 +2,13 @@ package com.iasdietideals24.backend.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Check;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import org.hibernate.annotations.Check;
 
 @EqualsAndHashCode
 @Getter

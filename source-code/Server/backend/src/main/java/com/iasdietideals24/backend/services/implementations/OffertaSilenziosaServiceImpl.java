@@ -88,9 +88,9 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
         updatedOffertaSilenziosaDto.setIdOfferta(idOfferta);
 
         if (!offertaSilenziosaRepository.existsById(idOfferta))
-            throw new UpdateRuntimeException("L'id offerta \"" + idOfferta + "\" non corrisponde a nessuna offerta silenziosa esistente!");
+            throw new UpdateRuntimeException("L'id offerta '" + idOfferta + "' non corrisponde a nessuna offerta silenziosa esistente!");
         else {
-           return this.create(updatedOffertaSilenziosaDto);
+            return this.create(updatedOffertaSilenziosaDto);
         }
     }
 
@@ -102,7 +102,7 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
 
         Optional<OffertaSilenziosa> foundOffertaSilenziosa = offertaSilenziosaRepository.findById(idOfferta);
         if (foundOffertaSilenziosa.isEmpty())
-            throw new UpdateRuntimeException("L'id offerta \"" + idOfferta + "\" non corrisponde a nessuna offerta silenziosa esistente!");
+            throw new UpdateRuntimeException("L'id offerta '" + idOfferta + "' non corrisponde a nessuna offerta silenziosa esistente!");
         else {
             // Recuperiamo l'entità dal wrapping Optional
             OffertaSilenziosa existingOffertaSilenziosa = foundOffertaSilenziosa.get();

@@ -1,6 +1,8 @@
 package com.iasdietideals24.backend.services.implementations;
 
-import com.iasdietideals24.backend.entities.*;
+import com.iasdietideals24.backend.entities.Account;
+import com.iasdietideals24.backend.entities.Notifica;
+import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.entities.utilities.TokensAccount;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.mapstruct.dto.AccountDto;
@@ -74,15 +76,25 @@ public class AccountServiceImpl implements AccountService {
         Profilo convertedProfilo = relationsConverter.convertProfiloShallowRelation(profiloShallowDto);
 
         if (convertedProfilo != null) {
-            if (nuovoAccount instanceof Compratore && convertedProfilo.getCompratore() != null)
-                throw new InvalidParameterException("Il profilo \"" + "\" è già associato a un account compratore! Eliminare prima quello precedente.");
-            else if (nuovoAccount instanceof Venditore && convertedProfilo.getVenditore() != null)
-                throw new InvalidParameterException("Il profilo \"" + "\" è già associato a un account venditore! Eliminare prima quello precedente.");
-            else {
-                nuovoAccount.setProfilo(convertedProfilo);
-                convertedProfilo.addAccount(nuovoAccount);
+
+            for (Account accountAssociato : convertedProfilo.getAccounts()) {
+                checkNuovoAccountTypeNotAlreadyPresent(accountAssociato, nuovoAccount);
+                checkNuovoAccountCohesionWithOtherAccounts(accountAssociato, nuovoAccount);
             }
+
+            nuovoAccount.setProfilo(convertedProfilo);
+            convertedProfilo.addAccount(nuovoAccount);
         }
+    }
+
+    private void checkNuovoAccountTypeNotAlreadyPresent(Account accountAssociato, Account nuovoAccount) throws InvalidParameterException {
+        if (accountAssociato != null && nuovoAccount.getClass().equals(accountAssociato.getClass()))
+            throw new InvalidParameterException("Non puoi associare l'account con email '" + nuovoAccount.getEmail() + "' a un profilo che è già associato a un account '" + accountAssociato.getClass().getSimpleName() + "'! Eliminare prima quello precedente.");
+    }
+
+    private void checkNuovoAccountCohesionWithOtherAccounts(Account accountAssociato, Account nuovoAccount) throws InvalidParameterException {
+        if (accountAssociato != null && !nuovoAccount.getEmail().equals(accountAssociato.getEmail()))
+            throw new InvalidParameterException("Non puoi associare l'account con email '" + nuovoAccount.getEmail() + "' a un profilo che è associato a un account '" + accountAssociato.getClass().getSimpleName() + "' con un'email diversa!");
     }
 
     private void convertNotificheInviateShallow(Set<NotificaShallowDto> notificheInviateShallowDto, Account nuovoAccount) throws InvalidParameterException {
@@ -176,10 +188,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public boolean isLastProfiloAccount(Account account) throws InvalidParameterException {
+    public boolean isLastAccountOfProfilo(Account account) throws InvalidParameterException {
         Profilo profiloAssociato = account.getProfilo();
         if (profiloAssociato == null)
-            throw new InvalidParameterException("Il profilo associato all'account \"" + account.getEmail() + "\" è null!");
+            throw new InvalidParameterException("Il profilo associato all'account '" + account.getIdAccount() + "' è null!");
 
         return (profiloAssociato.getAccounts().size() == 1);
     }

@@ -84,9 +84,9 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
         updatedOffertaTempoFissoDto.setIdOfferta(idOfferta);
 
         if (!offertaTempoFissoRepository.existsById(idOfferta))
-            throw new UpdateRuntimeException("L'id offerta \"" + idOfferta + "\" non corrisponde a nessuna offerta a tempo fisso esistente!");
+            throw new UpdateRuntimeException("L'id offerta '" + idOfferta + "' non corrisponde a nessuna offerta a tempo fisso esistente!");
         else {
-           return this.create(updatedOffertaTempoFissoDto);
+            return this.create(updatedOffertaTempoFissoDto);
         }
     }
 
@@ -98,7 +98,7 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
 
         Optional<OffertaTempoFisso> foundOffertaTempoFisso = offertaTempoFissoRepository.findById(idOfferta);
         if (foundOffertaTempoFisso.isEmpty())
-            throw new UpdateRuntimeException("L'id offerta \"" + idOfferta + "\" non corrisponde a nessuna offerta a tempo fisso esistente!");
+            throw new UpdateRuntimeException("L'id offerta '" + idOfferta + "' non corrisponde a nessuna offerta a tempo fisso esistente!");
         else {
             // Recuperiamo l'entità dal wrapping Optional
             OffertaTempoFisso existingOffertaTempoFisso = foundOffertaTempoFisso.get();

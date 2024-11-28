@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.*;
+import org.hibernate.annotations.Check;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,8 +13,6 @@ import java.time.LocalTime;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import org.hibernate.annotations.Check;
 
 @EqualsAndHashCode(callSuper = true)
 @Getter

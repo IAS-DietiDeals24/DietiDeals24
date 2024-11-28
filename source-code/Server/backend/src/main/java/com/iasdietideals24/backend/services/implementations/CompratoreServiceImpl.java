@@ -36,10 +36,9 @@ public class CompratoreServiceImpl implements CompratoreService {
     }
 
     @Override
-    public CompratoreDto create(String email, CompratoreDto nuovoCompratoreDto) throws InvalidParameterException {
+    public CompratoreDto create(CompratoreDto nuovoCompratoreDto) throws InvalidParameterException {
 
         // Verifichiamo l'integrità dei dati
-        nuovoCompratoreDto.setEmail(email);
         checkFieldsValid(nuovoCompratoreDto);
 
         // Convertiamo a entità
@@ -64,56 +63,71 @@ public class CompratoreServiceImpl implements CompratoreService {
     }
 
     @Override
-    public Optional<CompratoreDto> findByIdFacebook(String idFacebook) {
+    public Optional<CompratoreDto> findOne(Long idAccount) {
 
         // Recuperiamo l'entità con l'id passato per parametro
-        Optional<Compratore> foundVenditore = compratoreRepository.findByTokensIdFacebook(idFacebook);
-
-        return foundVenditore.map(compratoreMapper::toDto);
-    }
-
-    @Override
-    public Optional<CompratoreDto> findOne(String email) {
-
-        // Recuperiamo l'entità con l'id passato per parametro
-        Optional<Compratore> foundCompratore = compratoreRepository.findById(email);
+        Optional<Compratore> foundCompratore = compratoreRepository.findById(idAccount);
 
         return foundCompratore.map(compratoreMapper::toDto);
     }
 
     @Override
-    public Optional<CompratoreDto> findOneWithPassword(String email, String password) {
-        // Recuperiamo l'entità con l'id e password passati per parametro
-        Optional<Compratore> foundVenditore = compratoreRepository.findByEmailAndPassword(email, password);
-
-        return foundVenditore.map(compratoreMapper::toDto);
-    }
-
-    @Override
-    public boolean isExists(String email) {
-
-        // Verifichiamo che esista un'entità con l'id passato per parametro
-        return compratoreRepository.existsById(email);
-    }
-
-    @Override
-    public CompratoreDto fullUpdate(String email, CompratoreDto updatedCompratoreDto) throws InvalidParameterException {
-
-        // L'implementazione di fullUpdate e create sono identiche, dato che utilizziamo lo stesso metodo "save" della repository
-        return this.create(email, updatedCompratoreDto);
-    }
-
-    @Override
-    public CompratoreDto partialUpdate(String email, CompratoreDto updatedCompratoreDto) throws InvalidParameterException {
+    public Page<CompratoreDto> findByTokensIdFacebook(String token, Pageable pageable) {
 
         // Recuperiamo l'entità con l'id passato per parametro
-        updatedCompratoreDto.setEmail(email);
-        Optional<Compratore> foundCompratore = compratoreRepository.findById(email);
+        Page<Compratore> foundCompratore = compratoreRepository.findByTokensIdFacebook(token, pageable);
 
-        if (foundCompratore.isEmpty())
-            throw new UpdateRuntimeException("L'email \"" + email + "\" non corrisponde a nessun compratore esistente!");
+        return foundCompratore.map(compratoreMapper::toDto);
+    }
+
+    @Override
+    public Page<CompratoreDto> findByEmail(String email, Pageable pageable) {
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        Page<Compratore> foundCompratore = compratoreRepository.findByEmail(email, pageable);
+
+        return foundCompratore.map(compratoreMapper::toDto);
+    }
+
+    @Override
+    public Page<CompratoreDto> findByEmailAndPassword(String email, String password, Pageable pageable) {
+
+        // Recuperiamo l'entità con l'id e password passati per parametro
+        Page<Compratore> foundCompratore = compratoreRepository.findByEmailAndPassword(email, password, pageable);
+
+        return foundCompratore.map(compratoreMapper::toDto);
+    }
+
+    @Override
+    public boolean isExists(Long idAccount) {
+
+        // Verifichiamo che esista un'entità con l'id passato per parametro
+        return compratoreRepository.existsById(idAccount);
+    }
+
+    @Override
+    public CompratoreDto fullUpdate(Long idAccount, CompratoreDto updatedCompratoreDto) throws InvalidParameterException {
+
+        updatedCompratoreDto.setIdAccount(idAccount);
+
+        if (!compratoreRepository.existsById(idAccount))
+            throw new UpdateRuntimeException("L'id account '" + idAccount + "' non corrisponde a nessun account esistente!");
         else {
+            // L'implementazione di fullUpdate e create sono identiche, dato che utilizziamo lo stesso metodo "save" della repository
+            return this.create(updatedCompratoreDto);
+        }
+    }
 
+    @Override
+    public CompratoreDto partialUpdate(Long idAccount, CompratoreDto updatedCompratoreDto) throws InvalidParameterException {
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        updatedCompratoreDto.setIdAccount(idAccount);
+
+        Optional<Compratore> foundCompratore = compratoreRepository.findById(idAccount);
+        if (foundCompratore.isEmpty())
+            throw new UpdateRuntimeException("L'id account '" + idAccount + "' non corrisponde a nessun compratore esistente!");
+        else {
             // Recuperiamo l'entità dal wrapping Optional
             Compratore existingCompratore = foundCompratore.get();
 
@@ -125,15 +139,15 @@ public class CompratoreServiceImpl implements CompratoreService {
     }
 
     @Override
-    public void delete(String email) throws InvalidParameterException {
+    public void delete(Long idAccount) throws InvalidParameterException {
 
-        Optional<Compratore> existingCompratore = compratoreRepository.findById(email);
-        if (existingCompratore.isPresent() && accountService.isLastProfiloAccount(existingCompratore.get())) {
+        Optional<Compratore> existingCompratore = compratoreRepository.findById(idAccount);
+        if (existingCompratore.isPresent() && accountService.isLastAccountOfProfilo(existingCompratore.get())) {
             throw new IllegalDeleteRequestException("Non puoi eliminare l'unico account associato al profilo!");
         }
 
         // Eliminiamo l'entità con l'id passato per parametro
-        compratoreRepository.deleteById(email);
+        compratoreRepository.deleteById(idAccount);
     }
 
     @Override

@@ -91,7 +91,7 @@ public class CategoriaAstaServiceImpl implements CategoriaAstaService {
         Optional<CategoriaAsta> foundCategoriaAsta = categoriaAstaRepository.findById(nome);
 
         if (foundCategoriaAsta.isEmpty())
-            throw new UpdateRuntimeException("Il nome \"" + nome + "\" non corrisponde a nessuna categoria asta esistente!");
+            throw new UpdateRuntimeException("Il nome '" + nome + "' non corrisponde a nessuna categoria asta esistente!");
         else {
 
             // Recuperiamo l'entità dal wrapping Optional
