@@ -2,12 +2,11 @@ package com.iasdietideals24.backend.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Check;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-
-import org.hibernate.annotations.Check;
 
 @EqualsAndHashCode
 @Getter

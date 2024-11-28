@@ -86,7 +86,7 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
         if (!offertaTempoFissoRepository.existsById(idOfferta))
             throw new UpdateRuntimeException("L'id offerta '" + idOfferta + "' non corrisponde a nessuna offerta a tempo fisso esistente!");
         else {
-           return this.create(updatedOffertaTempoFissoDto);
+            return this.create(updatedOffertaTempoFissoDto);
         }
     }
 

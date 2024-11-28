@@ -1,9 +1,8 @@
 package com.iasdietideals24.backend.entities;
 
+import com.iasdietideals24.backend.entities.utilities.StatoOffertaSilenziosa;
 import jakarta.persistence.*;
 import lombok.*;
-
-import com.iasdietideals24.backend.entities.utilities.StatoOffertaSilenziosa;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -90,7 +90,7 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
         if (!offertaSilenziosaRepository.existsById(idOfferta))
             throw new UpdateRuntimeException("L'id offerta '" + idOfferta + "' non corrisponde a nessuna offerta silenziosa esistente!");
         else {
-           return this.create(updatedOffertaSilenziosaDto);
+            return this.create(updatedOffertaSilenziosaDto);
         }
     }
 

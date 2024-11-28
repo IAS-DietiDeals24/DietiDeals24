@@ -5,10 +5,9 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.*;
+import org.hibernate.annotations.Check;
 
 import java.time.LocalDate;
-
-import org.hibernate.annotations.Check;
 
 @EqualsAndHashCode
 @Getter

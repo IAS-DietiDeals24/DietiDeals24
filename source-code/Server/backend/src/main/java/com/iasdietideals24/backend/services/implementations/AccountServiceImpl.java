@@ -1,6 +1,8 @@
 package com.iasdietideals24.backend.services.implementations;
 
-import com.iasdietideals24.backend.entities.*;
+import com.iasdietideals24.backend.entities.Account;
+import com.iasdietideals24.backend.entities.Notifica;
+import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.entities.utilities.TokensAccount;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.mapstruct.dto.AccountDto;
