@@ -73,12 +73,26 @@ public class AccountServiceImpl implements AccountService {
 
         Profilo convertedProfilo = relationsConverter.convertProfiloShallowRelation(profiloShallowDto);
 
-        if (convertedProfilo != null) {
-            if (nuovoAccount instanceof Compratore && convertedProfilo.getCompratore() != null)
-                throw new InvalidParameterException("Il profilo \"" + convertedProfilo.getNomeUtente() + "\" è già associato a un account compratore! Eliminare prima quello precedente.");
-            else if (nuovoAccount instanceof Venditore && convertedProfilo.getVenditore() != null)
-                throw new InvalidParameterException("Il profilo \"" + convertedProfilo.getNomeUtente() + "\" è già associato a un account venditore! Eliminare prima quello precedente.");
-            else {
+        if (convertedProfilo != null) { // Se vogliamo associare l'account a un profilo
+
+            Compratore compratoreAssociato = convertedProfilo.getCompratore();
+            Venditore venditoreAssociato = convertedProfilo.getVenditore();
+
+            if (nuovoAccount instanceof Compratore) { // Se l'account da associare è un compratore
+                if (compratoreAssociato != null) // Verifichiamo che non ci sia già un compratore associato
+                    throw new InvalidParameterException("Il profilo \"" + convertedProfilo.getNomeUtente() + "\" è già associato a un account compratore! Eliminare prima quello precedente.");
+                if (venditoreAssociato != null) { // Se c'è già un venditore associato, devono avere la stessa email
+                    if (!nuovoAccount.getEmail().equals(venditoreAssociato.getEmail()))
+                        throw new InvalidParameterException("Il profilo \"" + convertedProfilo.getNomeUtente() + "\" è già associato a un account venditore con un'email diversa!");
+                }
+            } else if (nuovoAccount instanceof Venditore) { // Se l'account da associare è un venditore
+                if (venditoreAssociato != null) // Verifichiamo che non ci sia già un venditore associato
+                    throw new InvalidParameterException("Il profilo \"" + convertedProfilo.getNomeUtente() + "\" è già associato a un account venditore! Eliminare prima quello precedente.");
+                if (compratoreAssociato != null) { // Se c'è già un compratore associato, devono avere la stessa email
+                    if (!nuovoAccount.getEmail().equals(compratoreAssociato.getEmail()))
+                        throw new InvalidParameterException("Il profilo \"" + convertedProfilo.getNomeUtente() + "\" è già associato a un account compratore con un'email diversa!");
+                }
+            } else {
                 nuovoAccount.setProfilo(convertedProfilo);
                 convertedProfilo.addAccount(nuovoAccount);
             }
