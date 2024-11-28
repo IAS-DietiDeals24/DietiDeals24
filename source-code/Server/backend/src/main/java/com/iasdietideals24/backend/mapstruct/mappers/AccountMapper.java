@@ -31,7 +31,7 @@ public abstract class AccountMapper {
             accountShallowDto.setTipoAccount(null);
         }
 
-        accountShallowDto.setEmail(account.getEmail());
+        accountShallowDto.setIdAccount(account.getIdAccount());
 
         return accountShallowDto;
     }
@@ -50,11 +50,11 @@ public abstract class AccountMapper {
     }
 
     @BeanMapping(ignoreByDefault = true)
-    @Mapping(source = "email", target = "email")
+    @Mapping(source = "idAccount", target = "idAccount")
     public abstract Compratore toCompratore(AccountShallowDto accountShallowDto);
 
     @BeanMapping(ignoreByDefault = true)
-    @Mapping(source = "email", target = "email")
+    @Mapping(source = "idAccount", target = "idAccount")
     public abstract Venditore toVenditore(AccountShallowDto accountShallowDto);
 
     public abstract Set<AccountShallowDto> toShallowDto(Set<Account> accounts);

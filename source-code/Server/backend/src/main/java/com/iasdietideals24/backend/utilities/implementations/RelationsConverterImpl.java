@@ -93,7 +93,6 @@ public class RelationsConverterImpl implements RelationsConverter {
         Asta asta = null;
 
         if (astaShallowDto != null) {
-
             if (astaShallowDto.getTipoAstaPerAccount().equals(AstaDiCompratore.class.getSimpleName())) {
                 asta = convertAstaDiCompratoreShallowRelation(astaShallowDto);
 
@@ -111,23 +110,25 @@ public class RelationsConverterImpl implements RelationsConverter {
     private Asta convertAstaDiCompratoreShallowRelation(AstaShallowDto astaShallowDto) throws IdNotFoundException, InvalidTypeException {
         Asta asta = null;
 
-        if (!astaShallowDto.getTipoAstaPerAccount().equals(AstaDiCompratore.class.getSimpleName()))
-            throw new InvalidTypeException("L'asta non è di tipo asta di compratore!");
+        if (astaShallowDto != null) {
+            if (!astaShallowDto.getTipoAstaPerAccount().equals(AstaDiCompratore.class.getSimpleName()))
+                throw new InvalidTypeException("L'asta non è di tipo asta di compratore!");
 
-        if (astaShallowDto.getTipoAstaSpecifica().equals(AstaSilenziosa.class.getSimpleName())) {
-            Optional<AstaSilenziosa> foundAstaSilenziosa = astaSilenziosaRepository.findById(astaShallowDto.getIdAsta());
-            if (foundAstaSilenziosa.isEmpty())
-                throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_IDASTA + astaShallowDto.getIdAsta() + FINE_MESSAGGIO_ERRORE_IDASTA + "silenziosa!");
-            asta = foundAstaSilenziosa.get();
+            if (astaShallowDto.getTipoAstaSpecifica().equals(AstaSilenziosa.class.getSimpleName())) {
+                Optional<AstaSilenziosa> foundAstaSilenziosa = astaSilenziosaRepository.findById(astaShallowDto.getIdAsta());
+                if (foundAstaSilenziosa.isEmpty())
+                    throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_IDASTA + astaShallowDto.getIdAsta() + FINE_MESSAGGIO_ERRORE_IDASTA + "silenziosa!");
+                asta = foundAstaSilenziosa.get();
 
-        } else if (astaShallowDto.getTipoAstaSpecifica().equals(AstaTempoFisso.class.getSimpleName())) {
-            Optional<AstaTempoFisso> foundAstaTempoFisso = astaTempoFissoRepository.findById(astaShallowDto.getIdAsta());
-            if (foundAstaTempoFisso.isEmpty())
-                throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_IDASTA + astaShallowDto.getIdAsta() + FINE_MESSAGGIO_ERRORE_IDASTA + "tempo fisso!");
-            asta = foundAstaTempoFisso.get();
+            } else if (astaShallowDto.getTipoAstaSpecifica().equals(AstaTempoFisso.class.getSimpleName())) {
+                Optional<AstaTempoFisso> foundAstaTempoFisso = astaTempoFissoRepository.findById(astaShallowDto.getIdAsta());
+                if (foundAstaTempoFisso.isEmpty())
+                    throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_IDASTA + astaShallowDto.getIdAsta() + FINE_MESSAGGIO_ERRORE_IDASTA + "tempo fisso!");
+                asta = foundAstaTempoFisso.get();
 
-        } else {
-            throw new InvalidTypeException(INIZIO_MESSAGGIO_ERRORE_TIPO + astaShallowDto.getTipoAstaSpecifica() + FINE_MESSAGGIO_ERRORE_TIPO);
+            } else {
+                throw new InvalidTypeException(INIZIO_MESSAGGIO_ERRORE_TIPO + astaShallowDto.getTipoAstaSpecifica() + FINE_MESSAGGIO_ERRORE_TIPO);
+            }
         }
 
         return asta;
@@ -136,17 +137,19 @@ public class RelationsConverterImpl implements RelationsConverter {
     private Asta convertAstaDiVenditoreShallowRelation(AstaShallowDto astaShallowDto) throws IdNotFoundException, InvalidTypeException {
         Asta asta = null;
 
-        if (!astaShallowDto.getTipoAstaPerAccount().equals(AstaDiVenditore.class.getSimpleName()))
-            throw new InvalidTypeException("L'asta non è di tipo asta di venditore!");
+        if (astaShallowDto != null) {
+            if (!astaShallowDto.getTipoAstaPerAccount().equals(AstaDiVenditore.class.getSimpleName()))
+                throw new InvalidTypeException("L'asta non è di tipo asta di venditore!");
 
-        if (astaShallowDto.getTipoAstaSpecifica().equals(AstaInversa.class.getSimpleName())) {
-            Optional<AstaInversa> foundAstaInversa = astaInversaRepository.findById(astaShallowDto.getIdAsta());
-            if (foundAstaInversa.isEmpty())
-                throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_IDASTA + astaShallowDto.getIdAsta() + FINE_MESSAGGIO_ERRORE_IDASTA + "inversa!");
-            asta = foundAstaInversa.get();
+            if (astaShallowDto.getTipoAstaSpecifica().equals(AstaInversa.class.getSimpleName())) {
+                Optional<AstaInversa> foundAstaInversa = astaInversaRepository.findById(astaShallowDto.getIdAsta());
+                if (foundAstaInversa.isEmpty())
+                    throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_IDASTA + astaShallowDto.getIdAsta() + FINE_MESSAGGIO_ERRORE_IDASTA + "inversa!");
+                asta = foundAstaInversa.get();
 
-        } else {
-            throw new InvalidTypeException(INIZIO_MESSAGGIO_ERRORE_TIPO + astaShallowDto.getTipoAstaSpecifica() + FINE_MESSAGGIO_ERRORE_TIPO);
+            } else {
+                throw new InvalidTypeException(INIZIO_MESSAGGIO_ERRORE_TIPO + astaShallowDto.getTipoAstaSpecifica() + FINE_MESSAGGIO_ERRORE_TIPO);
+            }
         }
 
         return asta;
@@ -174,23 +177,25 @@ public class RelationsConverterImpl implements RelationsConverter {
     private Offerta convertOffertaDiCompratoreShallowRelation(OffertaShallowDto offertaShallowDto) throws IdNotFoundException, InvalidTypeException {
         Offerta offerta = null;
 
-        if (!offertaShallowDto.getTipoOffertaPerAccount().equals(OffertaDiCompratore.class.getSimpleName()))
-            throw new InvalidTypeException("L'offerta non è di tipo offerta di compratore!");
+        if (offertaShallowDto != null) {
+            if (!offertaShallowDto.getTipoOffertaPerAccount().equals(OffertaDiCompratore.class.getSimpleName()))
+                throw new InvalidTypeException("L'offerta non è di tipo offerta di compratore!");
 
-        if (offertaShallowDto.getTipoOffertaSpecifica().equals(OffertaSilenziosa.class.getSimpleName())) {
-            Optional<OffertaSilenziosa> foundOffertaSilenziosa = offertaSilenziosaRepository.findById(offertaShallowDto.getIdOfferta());
-            if (foundOffertaSilenziosa.isEmpty())
-                throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_IDOFFERTA + offertaShallowDto.getIdOfferta() + FINE_MESSAGGIO_ERRORE_IDOFFERTA + "silenziosa!");
-            offerta = foundOffertaSilenziosa.get();
+            if (offertaShallowDto.getTipoOffertaSpecifica().equals(OffertaSilenziosa.class.getSimpleName())) {
+                Optional<OffertaSilenziosa> foundOffertaSilenziosa = offertaSilenziosaRepository.findById(offertaShallowDto.getIdOfferta());
+                if (foundOffertaSilenziosa.isEmpty())
+                    throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_IDOFFERTA + offertaShallowDto.getIdOfferta() + FINE_MESSAGGIO_ERRORE_IDOFFERTA + "silenziosa!");
+                offerta = foundOffertaSilenziosa.get();
 
-        } else if (offertaShallowDto.getTipoOffertaSpecifica().equals(OffertaTempoFisso.class.getSimpleName())) {
-            Optional<OffertaTempoFisso> foundOffertaTempoFisso = offertaTempoFissoRepository.findById(offertaShallowDto.getIdOfferta());
-            if (foundOffertaTempoFisso.isEmpty())
-                throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_IDOFFERTA + offertaShallowDto.getIdOfferta() + FINE_MESSAGGIO_ERRORE_IDOFFERTA + "tempo fisso!");
-            offerta = foundOffertaTempoFisso.get();
+            } else if (offertaShallowDto.getTipoOffertaSpecifica().equals(OffertaTempoFisso.class.getSimpleName())) {
+                Optional<OffertaTempoFisso> foundOffertaTempoFisso = offertaTempoFissoRepository.findById(offertaShallowDto.getIdOfferta());
+                if (foundOffertaTempoFisso.isEmpty())
+                    throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_IDOFFERTA + offertaShallowDto.getIdOfferta() + FINE_MESSAGGIO_ERRORE_IDOFFERTA + "tempo fisso!");
+                offerta = foundOffertaTempoFisso.get();
 
-        } else {
-            throw new InvalidTypeException(INIZIO_MESSAGGIO_ERRORE_TIPO + offertaShallowDto.getTipoOffertaSpecifica() + FINE_MESSAGGIO_ERRORE_TIPO);
+            } else {
+                throw new InvalidTypeException(INIZIO_MESSAGGIO_ERRORE_TIPO + offertaShallowDto.getTipoOffertaSpecifica() + FINE_MESSAGGIO_ERRORE_TIPO);
+            }
         }
 
         return offerta;
@@ -199,17 +204,19 @@ public class RelationsConverterImpl implements RelationsConverter {
     private Offerta convertOffertaDiVenditoreShallowRelation(OffertaShallowDto offertaShallowDto) throws IdNotFoundException, InvalidTypeException {
         Offerta offerta = null;
 
-        if (!offertaShallowDto.getTipoOffertaPerAccount().equals(OffertaDiVenditore.class.getSimpleName()))
-            throw new InvalidTypeException("L'offerta non è di tipo offerta di venditore!");
+        if (offertaShallowDto != null) {
+            if (!offertaShallowDto.getTipoOffertaPerAccount().equals(OffertaDiVenditore.class.getSimpleName()))
+                throw new InvalidTypeException("L'offerta non è di tipo offerta di venditore!");
 
-        if (offertaShallowDto.getTipoOffertaSpecifica().equals(OffertaInversa.class.getSimpleName())) {
-            Optional<OffertaInversa> foundOffertaInversa = offertaInversaRepository.findById(offertaShallowDto.getIdOfferta());
-            if (foundOffertaInversa.isEmpty())
-                throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_IDOFFERTA + offertaShallowDto.getIdOfferta() + FINE_MESSAGGIO_ERRORE_IDOFFERTA + "inversa!");
-            offerta = foundOffertaInversa.get();
+            if (offertaShallowDto.getTipoOffertaSpecifica().equals(OffertaInversa.class.getSimpleName())) {
+                Optional<OffertaInversa> foundOffertaInversa = offertaInversaRepository.findById(offertaShallowDto.getIdOfferta());
+                if (foundOffertaInversa.isEmpty())
+                    throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_IDOFFERTA + offertaShallowDto.getIdOfferta() + FINE_MESSAGGIO_ERRORE_IDOFFERTA + "inversa!");
+                offerta = foundOffertaInversa.get();
 
-        } else {
-            throw new InvalidTypeException(INIZIO_MESSAGGIO_ERRORE_TIPO + offertaShallowDto.getTipoOffertaSpecifica() + FINE_MESSAGGIO_ERRORE_TIPO);
+            } else {
+                throw new InvalidTypeException(INIZIO_MESSAGGIO_ERRORE_TIPO + offertaShallowDto.getTipoOffertaSpecifica() + FINE_MESSAGGIO_ERRORE_TIPO);
+            }
         }
 
         return offerta;
@@ -221,15 +228,15 @@ public class RelationsConverterImpl implements RelationsConverter {
 
         if (accountShallowDto != null) {
             if (accountShallowDto.getTipoAccount().equals(Compratore.class.getSimpleName())) {
-                Optional<Compratore> foundCompratore = compratoreRepository.findById(accountShallowDto.getEmail());
+                Optional<Compratore> foundCompratore = compratoreRepository.findById(accountShallowDto.getIdAccount());
                 if (foundCompratore.isEmpty())
-                    throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_EMAIL + accountShallowDto.getEmail() + FINE_MESSAGGIO_ERRORE_EMAIL + "compratore!");
+                    throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_EMAIL + accountShallowDto.getIdAccount() + FINE_MESSAGGIO_ERRORE_EMAIL + "compratore!");
                 account = foundCompratore.get();
 
             } else if (accountShallowDto.getTipoAccount().equals(Venditore.class.getSimpleName())) {
-                Optional<Venditore> foundVenditore = venditoreRepository.findById(accountShallowDto.getEmail());
+                Optional<Venditore> foundVenditore = venditoreRepository.findById(accountShallowDto.getIdAccount());
                 if (foundVenditore.isEmpty())
-                    throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_EMAIL + accountShallowDto.getEmail() + FINE_MESSAGGIO_ERRORE_EMAIL + "venditore!");
+                    throw new IdNotFoundException(INIZIO_MESSAGGIO_ERRORE_EMAIL + accountShallowDto.getIdAccount() + FINE_MESSAGGIO_ERRORE_EMAIL + "venditore!");
                 account = foundVenditore.get();
 
             } else {

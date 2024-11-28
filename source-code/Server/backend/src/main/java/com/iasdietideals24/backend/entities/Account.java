@@ -16,6 +16,10 @@ import java.util.Set;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Account {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_id_seq")
+    @Column(name = "id_account", nullable = false)
+    private Long idAccount;
+
     @NonNull
     @Column(name = "email", nullable = false)
     private String email;
@@ -86,6 +90,6 @@ public abstract class Account {
         }
         listIdNotificheRicevute.append("]");
 
-        return "Account(email=" + this.getEmail() + ", password=" + this.getPassword() + "tokens=" + this.getTokens() + ", profilo=" + this.getProfilo().getNomeUtente() + ", notificheInviate=" + listIdNotificheInviate + ", notificheRicevute=" + listIdNotificheRicevute + ")";
+        return "Account(idAccount=" + this.getIdAccount() + ", email=" + this.getEmail() + ", password=" + this.getPassword() + "tokens=" + this.getTokens() + ", profilo=" + this.getProfilo().getNomeUtente() + ", notificheInviate=" + listIdNotificheInviate + ", notificheRicevute=" + listIdNotificheRicevute + ")";
     }
 }

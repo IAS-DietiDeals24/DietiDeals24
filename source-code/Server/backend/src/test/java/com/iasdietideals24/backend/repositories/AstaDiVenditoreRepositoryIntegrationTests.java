@@ -1,6 +1,11 @@
 package com.iasdietideals24.backend.repositories;
 
+import com.iasdietideals24.backend.datautil.TestDataAstaSilenziosa;
+import com.iasdietideals24.backend.datautil.TestDataAstaTempoFisso;
+import com.iasdietideals24.backend.datautil.TestDataCategoriaAsta;
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
+import com.iasdietideals24.backend.entities.AstaDiVenditore;
+import com.iasdietideals24.backend.entities.CategoriaAsta;
 import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.entities.Venditore;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
@@ -24,94 +29,106 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class VenditoreRepositoryIntegrationTests {
+class AstaDiVenditoreRepositoryIntegrationTests {
 
-    private final VenditoreRepository underTest;
+    private final AstaDiVenditoreRepository underTest;
 
     @Autowired
-    public VenditoreRepositoryIntegrationTests(VenditoreRepository underTest) {
+    public AstaDiVenditoreRepositoryIntegrationTests(AstaDiVenditoreRepository underTest) {
         this.underTest = underTest;
     }
 
     @Test
     @Transactional
-    void testVenditoreCanBeCreatedAndRecalled() throws InvalidTypeException {
+    void testAstaDiVenditoreCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreC();
         Venditore venditore = profiloVenditore.getVenditore();
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaM();
+        AstaDiVenditore astaDiVenditore = TestDataAstaSilenziosa.createAstaSilenziosaA(categoriaAsta, venditore);
 
         // Salvataggio oggetto nel database
-        underTest.save(venditore);
+        underTest.save(astaDiVenditore);
 
         // Recupero oggetto dal database
-        Optional<Venditore> result = underTest.findById(venditore.getIdAccount());
+        Optional<AstaDiVenditore> result = underTest.findById(astaDiVenditore.getIdAsta());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
         assertTrue(result.isPresent());
-        assertEquals(venditore, result.get());
+        assertEquals(astaDiVenditore, result.get());
     }
 
     @Test
     @Transactional
-    void testMultipleVenditoreCanBeCreatedAndRecalled() throws InvalidTypeException {
+    void testMultipleAstaDiVenditoreCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloVenditoreA = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditoreA = profiloVenditoreA.getVenditore();
+        CategoriaAsta categoriaAstaA = TestDataCategoriaAsta.createCategoriaAstaM();
+        AstaDiVenditore astaDiVenditoreA = TestDataAstaTempoFisso.createAstaTempoFissoA(categoriaAstaA, venditoreA);
 
         Profilo profiloVenditoreB = TestDataProfilo.createProfiloVenditoreB();
         Venditore venditoreB = profiloVenditoreB.getVenditore();
+        CategoriaAsta categoriaAstaB = TestDataCategoriaAsta.createCategoriaAstaB();
+        AstaDiVenditore astaDiVenditoreB = TestDataAstaSilenziosa.createAstaSilenziosaB(categoriaAstaB, venditoreB);
 
         Profilo profiloVenditoreC = TestDataProfilo.createProfiloVenditoreC();
         Venditore venditoreC = profiloVenditoreC.getVenditore();
+        CategoriaAsta categoriaAstaC = TestDataCategoriaAsta.createCategoriaAstaC();
+        AstaDiVenditore astaDiVenditoreC = TestDataAstaTempoFisso.createAstaTempoFissoC(categoriaAstaC, venditoreC);
 
         // Salvataggio oggetti nel database
-        underTest.save(venditoreA);
-        underTest.save(venditoreB);
-        underTest.save(venditoreC);
+        underTest.save(astaDiVenditoreA);
+        underTest.save(astaDiVenditoreB);
+        underTest.save(astaDiVenditoreC);
 
         // Recupero oggetti dal database
-        List<Venditore> result = StreamSupport.stream(underTest.findAll().spliterator(), false).toList();
+        List<AstaDiVenditore> result = StreamSupport.stream(underTest.findAll().spliterator(), false).toList();
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
-        assertTrue(result.size() == 3 && result.contains(venditoreA) && result.contains(venditoreB) && result.contains(venditoreC));
+        assertTrue(result.size() == 3 && result.contains(astaDiVenditoreA) && result.contains(astaDiVenditoreB) && result.contains(astaDiVenditoreC));
     }
 
     @Test
     @Transactional
-    void testVenditoreCanBeUpdated() throws InvalidTypeException {
+    void testAstaDiVenditoreCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditore = profiloVenditore.getVenditore();
-        underTest.save(venditore);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaC();
+        AstaDiVenditore astaDiVenditore = TestDataAstaSilenziosa.createAstaSilenziosaC(categoriaAsta, venditore);
+        underTest.save(astaDiVenditore);
 
         // Modifica e salvataggio dell'oggetto nel database
-        venditore.setEmail("UPDATED");
-        underTest.save(venditore);
+        astaDiVenditore.setNome("UPDATED");
+        underTest.save(astaDiVenditore);
 
         // Recupero l'oggetto dal database
-        Optional<Venditore> result = underTest.findById(venditore.getIdAccount());
+        Optional<AstaDiVenditore> result = underTest.findById(astaDiVenditore.getIdAsta());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions
         assertTrue(result.isPresent());
-        assertEquals(venditore, result.get());
+        assertEquals(astaDiVenditore, result.get());
     }
 
     @Test
     @Transactional
-    void testVenditoreCanBeDeleted() throws InvalidTypeException {
+    void testAstaDiVenditoreCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
         Venditore venditore = profiloVenditore.getVenditore();
-        underTest.save(venditore);
+        CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaB();
+        AstaDiVenditore astaDiVenditore = TestDataAstaTempoFisso.createAstaTempoFissoB(categoriaAsta, venditore);
+        underTest.save(astaDiVenditore);
 
         // Rimozione dell'oggetto dal database
-        underTest.deleteById(venditore.getIdAccount());
+        underTest.deleteById(astaDiVenditore.getIdAsta());
 
         // Recupero l'oggetto dal database
-        Optional<Venditore> result = underTest.findById(venditore.getIdAccount());
+        Optional<AstaDiVenditore> result = underTest.findById(astaDiVenditore.getIdAsta());
         log.trace("Oggetti recuperati: {}", result);
 
         // Assertions

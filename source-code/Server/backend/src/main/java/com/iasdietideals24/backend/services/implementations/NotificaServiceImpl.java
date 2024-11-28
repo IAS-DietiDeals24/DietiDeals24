@@ -162,17 +162,6 @@ public class NotificaServiceImpl implements NotificaService {
     private void checkMittenteDestinatarioValid(AccountShallowDto accountShallowDto) throws InvalidParameterException {
         if (accountShallowDto == null)
             throw new InvalidParameterException("L'account mittente/destinatario non può essere null!");
-
-        checkEmailValid(accountShallowDto.getEmail());
-    }
-
-    private void checkEmailValid(String email) throws InvalidParameterException {
-        if (email == null)
-            throw new InvalidParameterException("L'email non può essere null!");
-        else if (email.isBlank())
-            throw new InvalidParameterException("L'email non può essere vuota!");
-        else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$"))
-            throw new InvalidParameterException("Formato email non valido!");
     }
 
     private void checkAstaAssociataShallow(AstaShallowDto astaAssociataShallow) throws InvalidParameterException {
@@ -221,14 +210,14 @@ public class NotificaServiceImpl implements NotificaService {
 
     @Override
     public void updatePresentFields(NotificaDto updatedNotificaDto, Notifica existingNotifica) throws InvalidParameterException {
-        ifPresentUpdatDataInvio(updatedNotificaDto.getDataInvio(), existingNotifica);
+        ifPresentUpdateDataInvio(updatedNotificaDto.getDataInvio(), existingNotifica);
         ifPresentUpdateOraInvio(updatedNotificaDto.getOraInvio(), existingNotifica);
         ifPresentUpdateMessaggio(updatedNotificaDto.getMessaggio(), existingNotifica);
 
         // Non è possibile modificare le associazioni "mittente", "destinatari", "astaAssociata" tramite la risorsa "notifiche"
     }
 
-    private void ifPresentUpdatDataInvio(LocalDate updatedDataInvio, Notifica existingNotifica) throws InvalidParameterException {
+    private void ifPresentUpdateDataInvio(LocalDate updatedDataInvio, Notifica existingNotifica) throws InvalidParameterException {
         if (updatedDataInvio != null) {
             this.checkDataInvioValid(updatedDataInvio);
             existingNotifica.setDataInvio(updatedDataInvio);
