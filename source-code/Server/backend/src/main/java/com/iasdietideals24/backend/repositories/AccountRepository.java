@@ -1,7 +1,6 @@
 package com.iasdietideals24.backend.repositories;
 
 import com.iasdietideals24.backend.entities.Account;
-import com.iasdietideals24.backend.entities.Venditore;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;

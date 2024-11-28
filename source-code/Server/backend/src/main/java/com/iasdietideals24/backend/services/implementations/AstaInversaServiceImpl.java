@@ -86,7 +86,7 @@ public class AstaInversaServiceImpl implements AstaInversaService {
         updatedAstaInversaDto.setIdAsta(idAsta);
 
         if (!astaInversaRepository.existsById(idAsta))
-            throw new UpdateRuntimeException("L'id asta \"" + idAsta + "\" non corrisponde a nessuna asta inversa esistente!");
+            throw new UpdateRuntimeException("L'id asta '" + idAsta + "' non corrisponde a nessuna asta inversa esistente!");
         else {
             return this.create(updatedAstaInversaDto);
         }
@@ -100,7 +100,7 @@ public class AstaInversaServiceImpl implements AstaInversaService {
 
         Optional<AstaInversa> foundAstaInversa = astaInversaRepository.findById(idAsta);
         if (foundAstaInversa.isEmpty())
-            throw new UpdateRuntimeException("L'id asta \"" + idAsta + "\" non corrisponde a nessuna asta inversa esistente!");
+            throw new UpdateRuntimeException("L'id asta '" + idAsta + "' non corrisponde a nessuna asta inversa esistente!");
         else {
             // Recuperiamo l'entità dal wrapping Optional
             AstaInversa existingAstaInversa = foundAstaInversa.get();

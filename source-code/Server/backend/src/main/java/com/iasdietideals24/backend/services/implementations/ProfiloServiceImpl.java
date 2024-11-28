@@ -100,7 +100,7 @@ public class ProfiloServiceImpl implements ProfiloService {
         Optional<Profilo> foundProfilo = profiloRepository.findById(nomeUtente);
 
         if (foundProfilo.isEmpty())
-            throw new UpdateRuntimeException("Il nome \"" + nomeUtente + "\" utente non corrisponde a nessun profilo esistente!");
+            throw new UpdateRuntimeException("Il nome '" + nomeUtente + "' utente non corrisponde a nessun profilo esistente!");
         else {
 
             // Recuperiamo l'entità dal wrapping Optional

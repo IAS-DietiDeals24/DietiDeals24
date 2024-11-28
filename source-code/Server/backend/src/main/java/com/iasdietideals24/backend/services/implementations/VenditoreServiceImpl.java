@@ -111,7 +111,7 @@ public class VenditoreServiceImpl implements VenditoreService {
         updatedVenditoreDto.setIdAccount(idAccount);
 
         if (!venditoreRepository.existsById(idAccount))
-            throw new UpdateRuntimeException("L'id account \"" + idAccount + "\" non corrisponde a nessun account esistente!");
+            throw new UpdateRuntimeException("L'id account '" + idAccount + "' non corrisponde a nessun account esistente!");
         else {
             // L'implementazione di fullUpdate e create sono identiche, dato che utilizziamo lo stesso metodo "save" della repository
             return this.create(updatedVenditoreDto);
@@ -126,7 +126,7 @@ public class VenditoreServiceImpl implements VenditoreService {
 
         Optional<Venditore> foundVenditore = venditoreRepository.findById(idAccount);
         if (foundVenditore.isEmpty())
-            throw new UpdateRuntimeException("L'id account \"" + idAccount + "\" non corrisponde a nessun venditore esistente!");
+            throw new UpdateRuntimeException("L'id account '" + idAccount + "' non corrisponde a nessun venditore esistente!");
         else {
             // Recuperiamo l'entità dal wrapping Optional
             Venditore existingVenditore = foundVenditore.get();

@@ -111,7 +111,7 @@ public class CompratoreServiceImpl implements CompratoreService {
         updatedCompratoreDto.setIdAccount(idAccount);
 
         if (!compratoreRepository.existsById(idAccount))
-            throw new UpdateRuntimeException("L'id account \"" + idAccount + "\" non corrisponde a nessun account esistente!");
+            throw new UpdateRuntimeException("L'id account '" + idAccount + "' non corrisponde a nessun account esistente!");
         else {
             // L'implementazione di fullUpdate e create sono identiche, dato che utilizziamo lo stesso metodo "save" della repository
             return this.create(updatedCompratoreDto);
@@ -126,7 +126,7 @@ public class CompratoreServiceImpl implements CompratoreService {
 
         Optional<Compratore> foundCompratore = compratoreRepository.findById(idAccount);
         if (foundCompratore.isEmpty())
-            throw new UpdateRuntimeException("L'id account \"" + idAccount + "\" non corrisponde a nessun compratore esistente!");
+            throw new UpdateRuntimeException("L'id account '" + idAccount + "' non corrisponde a nessun compratore esistente!");
         else {
             // Recuperiamo l'entità dal wrapping Optional
             Compratore existingCompratore = foundCompratore.get();

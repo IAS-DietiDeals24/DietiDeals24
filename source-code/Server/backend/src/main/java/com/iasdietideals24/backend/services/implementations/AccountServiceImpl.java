@@ -73,30 +73,26 @@ public class AccountServiceImpl implements AccountService {
 
         Profilo convertedProfilo = relationsConverter.convertProfiloShallowRelation(profiloShallowDto);
 
-        if (convertedProfilo != null) { // Se vogliamo associare l'account a un profilo
+        if (convertedProfilo != null) {
 
-            Compratore compratoreAssociato = convertedProfilo.getCompratore();
-            Venditore venditoreAssociato = convertedProfilo.getVenditore();
-
-            if (nuovoAccount instanceof Compratore) { // Se l'account da associare è un compratore
-                if (compratoreAssociato != null) // Verifichiamo che non ci sia già un compratore associato
-                    throw new InvalidParameterException("Il profilo \"" + convertedProfilo.getNomeUtente() + "\" è già associato a un account compratore! Eliminare prima quello precedente.");
-                if (venditoreAssociato != null) { // Se c'è già un venditore associato, devono avere la stessa email
-                    if (!nuovoAccount.getEmail().equals(venditoreAssociato.getEmail()))
-                        throw new InvalidParameterException("Il profilo \"" + convertedProfilo.getNomeUtente() + "\" è già associato a un account venditore con un'email diversa!");
-                }
-            } else if (nuovoAccount instanceof Venditore) { // Se l'account da associare è un venditore
-                if (venditoreAssociato != null) // Verifichiamo che non ci sia già un venditore associato
-                    throw new InvalidParameterException("Il profilo \"" + convertedProfilo.getNomeUtente() + "\" è già associato a un account venditore! Eliminare prima quello precedente.");
-                if (compratoreAssociato != null) { // Se c'è già un compratore associato, devono avere la stessa email
-                    if (!nuovoAccount.getEmail().equals(compratoreAssociato.getEmail()))
-                        throw new InvalidParameterException("Il profilo \"" + convertedProfilo.getNomeUtente() + "\" è già associato a un account compratore con un'email diversa!");
-                }
-            } else {
-                nuovoAccount.setProfilo(convertedProfilo);
-                convertedProfilo.addAccount(nuovoAccount);
+            for (Account accountAssociato : convertedProfilo.getAccounts()) {
+                checkNuovoAccountTypeNotAlreadyPresent(accountAssociato, nuovoAccount);
+                checkNuovoAccountCohesionWithOtherAccounts(accountAssociato, nuovoAccount);
             }
+
+            nuovoAccount.setProfilo(convertedProfilo);
+            convertedProfilo.addAccount(nuovoAccount);
         }
+    }
+
+    private void checkNuovoAccountTypeNotAlreadyPresent(Account accountAssociato, Account nuovoAccount) throws InvalidParameterException {
+        if (accountAssociato != null && nuovoAccount.getClass().equals(accountAssociato.getClass()))
+            throw new InvalidParameterException("Non puoi associare l'account con email '" + nuovoAccount.getEmail() + "' a un profilo che è già associato a un account '" + accountAssociato.getClass().getSimpleName() + "'! Eliminare prima quello precedente.");
+    }
+
+    private void checkNuovoAccountCohesionWithOtherAccounts(Account accountAssociato, Account nuovoAccount) throws InvalidParameterException {
+        if (accountAssociato != null && !nuovoAccount.getEmail().equals(accountAssociato.getEmail()))
+            throw new InvalidParameterException("Non puoi associare l'account con email '" + nuovoAccount.getEmail() + "' a un profilo che è associato a un account '" + accountAssociato.getClass().getSimpleName() + "' con un'email diversa!");
     }
 
     private void convertNotificheInviateShallow(Set<NotificaShallowDto> notificheInviateShallowDto, Account nuovoAccount) throws InvalidParameterException {
@@ -193,7 +189,7 @@ public class AccountServiceImpl implements AccountService {
     public boolean isLastAccountOfProfilo(Account account) throws InvalidParameterException {
         Profilo profiloAssociato = account.getProfilo();
         if (profiloAssociato == null)
-            throw new InvalidParameterException("Il profilo associato all'account \"" + account.getIdAccount() + "\" è null!");
+            throw new InvalidParameterException("Il profilo associato all'account '" + account.getIdAccount() + "' è null!");
 
         return (profiloAssociato.getAccounts().size() == 1);
     }
