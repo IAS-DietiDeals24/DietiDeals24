@@ -172,6 +172,18 @@ E' possibile configurare un file `.env` per inserire dati sensibili. Per fare ci
 
 Una volta eseguiti i containers, possiamo accedere alla REST API come `localhost`, alla porta specificata dal file `.env` (development: `DEV_BACKEND_PORT` (default: `55511`) | production: `55501`).
 
+#### AWS Cognito
+
+E' necessario settare anche le informazioni necessarie per permettere alla REST API di autenticare gli utenti tramite AWS Cognito. Tutte le informazioni devono essere recuperate dalla dashboard di [AWS Cognito](https://eu-north-1.console.aws.amazon.com/cognito/v2/idp/user-pools?region=eu-north-1).
+
+Nel file `.env` settare:
+
+- `AUTH_COGNITO_URI`, ottenibile dalla sezione `Branding -> Domain`, alla voce `Cognito domain`
+- `OAUTH2_JWT_JWK_SET_URI`, ottenibile dalla sezione `Overview`, alla voce `Token signing key URL`.
+- `OAUTH2_JWT_ISSUER_URI` è `OAUTH2_JWT_JWK_SET_URI` ma senza la parte finale dell'URL (`/.well-known/jwks.json`)
+- `OAUTH2_JWT_CLIENTID`, ottenibile dalla sezione `Applications -> App clients`, cliccando sull'app client di cui si vuole ottenere l'ID, alla voce `Client ID`
+- `OAUTH2_JWT_CLIENTSECRET`, ottenibile dalla sezione `App clients`, cliccando sull'app client di cui si vuole ottenere il secret, alla voce `Client secret`
+
 #### pgAdmin
 
 Possiamo accedere al database Postgres tramite pgAdmin allo stesso modo della REST API, alla porta specificata dal file `.env` (development: `PGADMIN_PORT` (default: `55512`) | production: `Non disponibile`). pgAdmin verrà automaticamente configurato con la connessione corretta al database tramite il file `source-code/Server/database/servers.json`.
