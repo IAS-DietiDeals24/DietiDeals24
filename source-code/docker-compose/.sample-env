@@ -2,8 +2,14 @@
 DEV_BACKEND_PORT=
 PGADMIN_PORT=
 
-#BACKEND CONFIG
+#BACKEND API CONFIG
 SONAR_TOKEN=
+
+AUTH_COGNITO_URI=https://ias-dietideals24.auth.eu-north-1.amazoncognito.com
+OAUTH2_JWT_JWK_SET_URI=https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_k9pRZYifW/.well-known/jwks.json
+OAUTH2_JWT_ISSUER_URI=https://cognito-idp.eu-north-1.amazonaws.com/eu-north-1_k9pRZYifW
+OAUTH2_JWT_CLIENTID=
+OAUTH2_JWT_CLIENTSECRET=
 
 #DB CONFIG
 POSTGRES_PASSWORD=

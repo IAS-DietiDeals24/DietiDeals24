@@ -15,6 +15,11 @@ services:
     restart: unless-stopped
     environment:
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-admin} # default: admin
+      AUTH_COGNITO_URI: ${AUTH_COGNITO_URI}
+      OAUTH2_JWT_JWK_SET_URI: ${OAUTH2_JWT_JWK_SET_URI}
+      OAUTH2_JWT_ISSUER_URI: ${OAUTH2_JWT_ISSUER_URI}
+      OAUTH2_JWT_CLIENTID: ${OAUTH2_JWT_CLIENTID}
+      OAUTH2_JWT_CLIENTSECRET: ${OAUTH2_JWT_CLIENTSECRET}
     networks:
       - backendNetwork
 

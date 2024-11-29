@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iasdietideals24.backend.mapstruct.dto.auth.CognitoTokenResponseDto;
 import com.iasdietideals24.backend.mapstruct.dto.auth.TokenDto;
 import com.iasdietideals24.backend.mapstruct.dto.auth.UrlDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ import java.util.Base64;
  * Il controller "AuthController" si occupa di gestire l'autenticazione di un nuovo utente tramite AWS Cognito.
  */
 
+@Slf4j
 @RestController
 public class AuthController {
 
@@ -39,27 +41,34 @@ public class AuthController {
     private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 
     // Generiamo l'URL a cui il frontend deve accedere per fare il login su Cognito
+    // Una volta fatto il login, il frontend avrà un Codice che servirà per l'autenticazione
     @GetMapping("/auth/url")
     public ResponseEntity<UrlDto> auth() {
 
+        // Potrebbe essere necessario cambiare l'url generato (lo scope o redirect_uri) in base al client API
+        // Documentazione: https://docs.aws.amazon.com/cognito/latest/developerguide/authorization-endpoint.html
         String url = cognitoUri +
                 "/oauth2/authorize?" +
-                "response_type=code" +
-                "&client_id=" + clientId +
-                "&scope=email+openid+profile";
+                "client_id=" + clientId +
+                "&response_type=code" +
+                "&scope=email+openid+phone" +
+                "&redirect_uri=https://d84l1y8p4kdic.cloudfront.net";
 
         return new ResponseEntity<>(new UrlDto(url), HttpStatus.OK);
     }
 
-    // Validiamo il codice e restituiamo il JWT
+    // Validiamo il Codice ricevuto dal frontend e restituiamo il JWT
+    // Il JWT dovrà essere inserito nell'header di ogni richiesta che necessita di autorizzazione
     @GetMapping("/auth/callback")
     public ResponseEntity<TokenDto> callback(@RequestParam("code") String code) {
 
-        // Creiamo l'URI di Cognito
-        String urlStr = cognitoUri + "/oauth2/token?"
-                + "grant_type=authorization_code" +
+        // Creiamo l'URI per l'autenticazione del codice tramite Cognito
+        // Documentazione: https://docs.aws.amazon.com/cognito/latest/developerguide/token-endpoint.html
+        String urlStr = cognitoUri + "/oauth2/token?" +
+                "grant_type=authorization_code" +
                 "&client_id=" + clientId +
-                "&code=" + code;
+                "&code=" + code +
+                "&redirect_uri=https://d84l1y8p4kdic.cloudfront.net";
 
         // Recuperiamo l'ID e Secret per autenticare il backend in Cognito
         String authenticationInfo = clientId + ":" + clientSecret;
@@ -86,6 +95,8 @@ public class AuthController {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Unable to request Cognito");
         }
+
+        log.trace("Cognito response:\n- Status code: {}\n- Body: {}", response.statusCode(), response.body());
 
         if (response.statusCode() != 200) {
             throw new RuntimeException("Authentication failed");

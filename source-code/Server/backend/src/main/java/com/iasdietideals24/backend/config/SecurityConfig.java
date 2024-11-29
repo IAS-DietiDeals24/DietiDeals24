@@ -22,32 +22,17 @@ public class SecurityConfig {
 
     // Configuriamo lo Spring Security
     @Bean
-    public CorsConfigurationSource cors() {
-        CorsConfiguration configuration = new CorsConfiguration();
-
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")); // Definiamo i metodi permessi
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type")); // Definiamo gli headers permessi
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // Appplichiamo la configurazione a tutti gli endpoint
-        return source;
-    }
-
-    // Configuriamo i permessi
-    @Bean
     public SecurityFilterChain security(HttpSecurity http) throws Exception {
 
         http
-                .cors(c -> c.configurationSource(cors())) // Aggiungiamo la cors configuration
                 .csrf(c -> c.disable()) // Disabilitiamo il csrf
                 .exceptionHandling(c -> c.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))) // Nel caso di eccezione restituiamo un codice 401
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers("/auth/**", "/public/**").permitAll()
-                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        authorize.requestMatchers("/auth/**", "/profili/**").permitAll()
                                 .anyRequest().authenticated()
                 ) // Configuriamo gli authorization routes
-                .oauth2ResourceServer(c -> c.jwt(Customizer.withDefaults())); // Configuriamo l' OAuth 2.0 Resource Server
+                .oauth2ResourceServer(c -> c.jwt(Customizer.withDefaults())); // Configuriamo l'OAuth 2.0 Resource Server
 
         return http.build();
     }

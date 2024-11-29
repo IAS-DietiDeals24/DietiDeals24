@@ -3,7 +3,7 @@
 name: dietideals24-prodcompose
 
 services:
- 
+
   backend:
     container_name: dietideals24-backend-app-prod
     build:
