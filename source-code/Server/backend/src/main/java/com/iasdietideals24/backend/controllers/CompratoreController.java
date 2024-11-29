@@ -3,6 +3,7 @@ package com.iasdietideals24.backend.controllers;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.mapstruct.dto.CompratoreDto;
 import com.iasdietideals24.backend.services.CompratoreService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+@Slf4j
 @RestController
 public class CompratoreController {
 
@@ -93,7 +95,13 @@ public class CompratoreController {
 
     @DeleteMapping(path = "/accounts/compratori/{idAccount}")
     public ResponseEntity<CompratoreDto> deleteCompratore(@PathVariable("idAccount") Long idAccount) throws InvalidParameterException {
+
+        log.trace("CONTROLLER: Id account da eliminare: {}", idAccount);
+
         compratoreService.delete(idAccount);
+
+        log.trace("CONTROLLER: Account eliminato");
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
