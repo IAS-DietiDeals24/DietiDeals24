@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .exceptionHandling(c -> c.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))) // Nel caso di eccezione restituiamo un codice 401
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers("/auth/**", "/profili/**").permitAll()
+                        authorize.requestMatchers("/auth/**", "/**").permitAll()
                                 .anyRequest().authenticated()
                 ) // Configuriamo gli authorization routes
                 .oauth2ResourceServer(c -> c.jwt(Customizer.withDefaults())); // Configuriamo l'OAuth 2.0 Resource Server
