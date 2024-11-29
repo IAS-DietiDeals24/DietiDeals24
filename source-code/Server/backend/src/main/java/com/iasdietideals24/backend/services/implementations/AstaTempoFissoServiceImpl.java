@@ -49,6 +49,9 @@ public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
         // Convertiamo a entità
         AstaTempoFisso nuovaAstaTempoFisso = astaTempoFissoMapper.toEntity(nuovaAstaTempoFissoDto);
 
+        // Recuperiamo le associazioni
+        convertRelations(nuovaAstaTempoFissoDto, nuovaAstaTempoFisso);
+
         // Registriamo l'entità
         AstaTempoFisso savedAstaTempoFisso = astaTempoFissoRepository.save(nuovaAstaTempoFisso);
 

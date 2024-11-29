@@ -51,6 +51,9 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
         // Convertiamo a entità
         OffertaSilenziosa nuovaOffertaSilenziosa = offertaSilenziosaMapper.toEntity(nuovaOffertaSilenziosaDto);
 
+        // Recuperiamo le associazioni
+        convertRelations(nuovaOffertaSilenziosaDto, nuovaOffertaSilenziosa);
+
         // Registriamo l'entità
         OffertaSilenziosa savedOffertaSilenziosa = offertaSilenziosaRepository.save(nuovaOffertaSilenziosa);
 

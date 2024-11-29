@@ -47,6 +47,9 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
         // Convertiamo a entità
         OffertaTempoFisso nuovaOffertaTempoFisso = offertaTempoFissoMapper.toEntity(nuovaOffertaTempoFissoDto);
 
+        // Recuperiamo le associazioni
+        convertRelations(nuovaOffertaTempoFissoDto, nuovaOffertaTempoFisso);
+
         // Registriamo l'entità
         OffertaTempoFisso savedOffertaTempoFisso = offertaTempoFissoRepository.save(nuovaOffertaTempoFisso);
 

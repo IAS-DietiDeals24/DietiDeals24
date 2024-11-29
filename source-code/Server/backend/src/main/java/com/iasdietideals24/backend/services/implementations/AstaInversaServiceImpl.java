@@ -49,6 +49,9 @@ public class AstaInversaServiceImpl implements AstaInversaService {
         // Convertiamo a entità
         AstaInversa nuovaAstaInversa = astaInversaMapper.toEntity(nuovaAstaInversaDto);
 
+        // Recuperiamo le associazioni
+        convertRelations(nuovaAstaInversaDto, nuovaAstaInversa);
+
         // Registriamo l'entità
         AstaInversa savedAstaInversa = astaInversaRepository.save(nuovaAstaInversa);
 
