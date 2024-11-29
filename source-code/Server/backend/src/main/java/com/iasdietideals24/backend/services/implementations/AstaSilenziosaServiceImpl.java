@@ -48,6 +48,9 @@ public class AstaSilenziosaServiceImpl implements AstaSilenziosaService {
         // Convertiamo a entità
         AstaSilenziosa nuovaAstaSilenziosa = astaSilenziosaMapper.toEntity(nuovaAstaSilenziosaDto);
 
+        // Recuperiamo le associazioni
+        convertRelations(nuovaAstaSilenziosaDto, nuovaAstaSilenziosa);
+
         // Registriamo l'entità
         AstaSilenziosa savedAstaSilenziosa = astaSilenziosaRepository.save(nuovaAstaSilenziosa);
 

@@ -47,6 +47,9 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
         // Convertiamo a entità
         OffertaInversa nuovaOffertaInversa = offertaInversaMapper.toEntity(nuovaOffertaInversaDto);
 
+        // Recuperiamo le associazioni
+        convertRelations(nuovaOffertaInversaDto, nuovaOffertaInversa);
+
         // Registriamo l'entità
         OffertaInversa savedOffertaInversa = offertaInversaRepository.save(nuovaOffertaInversa);
 
