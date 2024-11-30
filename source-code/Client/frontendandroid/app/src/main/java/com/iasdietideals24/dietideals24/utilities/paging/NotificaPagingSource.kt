@@ -7,14 +7,14 @@ import com.iasdietideals24.dietideals24.utilities.repositories.NotificaRepositor
 
 class NotificaPagingSource(
     private val repository: NotificaRepository,
-    private val email: String = ""
+    private val idAccount: Long = 0L
 ) : PagingSource<Long, NotificaDto>() {
     override suspend fun load(params: LoadParams<Long>): LoadResult<Long, NotificaDto> {
         val page = params.key ?: 0
         val size = params.loadSize.toLong()
 
         return try {
-            val data = repository.recuperaNotifiche(email, size, 0)
+            val data = repository.recuperaNotifiche(idAccount, size, 0)
 
             LoadResult.Page(
                 data = data.content,

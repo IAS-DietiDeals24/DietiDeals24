@@ -23,6 +23,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
+import java.math.BigDecimal
 
 class ViewHolderAnteprimaAsta(private val binding: AstaBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -91,12 +92,24 @@ class ViewHolderAnteprimaAsta(private val binding: AstaBinding) :
         }
 
         scope.launch {
-            val valoreOfferta: String = if (currentAsta.tipoAsta != TipoAsta.SILENZIOSA) {
-                withContext(Dispatchers.IO) {
-                    recuperaOfferta(currentAsta).toOfferta().offerta.toString()
+            val valoreOfferta: String = when (currentAsta.tipoAsta) {
+                TipoAsta.TEMPO_FISSO -> {
+                    withContext(Dispatchers.IO) {
+                        recuperaOfferta(currentAsta).toOfferta().offerta.toString()
+                    }
                 }
-            } else {
-                "???"
+
+                TipoAsta.INVERSA -> {
+                    withContext(Dispatchers.IO) {
+                        val offerta = recuperaOfferta(currentAsta).toOfferta().offerta
+                        if (offerta == BigDecimal("0.00"))
+                            currentAsta.offerta.toString()
+                        else
+                            offerta.toString()
+                    }
+                }
+
+                else -> "???"
             }
 
             binding.astaOfferta.text =

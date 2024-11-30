@@ -24,7 +24,7 @@ class ModelNotifiche(
             pagingSourceFactory = {
                 pagingSourceNotifiche = NotificaPagingSource(
                     repository = notificaRepository,
-                    email = CurrentUser.id
+                    idAccount = CurrentUser.id
                 )
 
                 pagingSourceNotifiche!!

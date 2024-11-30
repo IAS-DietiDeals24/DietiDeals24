@@ -80,7 +80,7 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
     override fun impostaMessaggiCorpo() {
         lifecycleScope.launch {
             try {
-                if (CurrentUser.id != "") {
+                if (CurrentUser.id != 0L) {
                     val account: AccountDto = withContext(Dispatchers.IO) { caricaAccount() }
                     val nomeUtente = account.profiloShallow.nomeUtente
                     val result: AnteprimaProfilo =

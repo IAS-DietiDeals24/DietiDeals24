@@ -267,7 +267,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
         }
     }
 
-    private suspend fun caricaAccount(idCreatore: String): AccountDto {
+    private suspend fun caricaAccount(idCreatore: Long): AccountDto {
         return when (CurrentUser.tipoAccount) {
             TipoAccount.COMPRATORE -> {
                 compratoreRepository.caricaAccountCompratore(idCreatore)

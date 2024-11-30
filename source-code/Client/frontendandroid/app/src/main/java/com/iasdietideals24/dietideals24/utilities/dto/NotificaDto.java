@@ -1,5 +1,6 @@
 package com.iasdietideals24.dietideals24.utilities.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iasdietideals24.dietideals24.utilities.data.Notifica;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto;
@@ -12,6 +13,7 @@ import java.util.Set;
 
 public class NotificaDto {
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long idNotifica = 0L;
 
     private LocalDate dataInvio = LocalDate.now();
@@ -29,9 +31,19 @@ public class NotificaDto {
     public NotificaDto() {
     }
 
+    public NotificaDto(Long idNotifica, LocalDate dataInvio, LocalTime oraInvio, String messaggio, AccountShallowDto mittenteShallow, Set<AccountShallowDto> destinatariShallow, AstaShallowDto astaAssociataShallow) {
+        this.idNotifica = idNotifica;
+        this.dataInvio = dataInvio;
+        this.oraInvio = oraInvio;
+        this.messaggio = messaggio;
+        this.mittenteShallow = mittenteShallow;
+        this.destinatariShallow = destinatariShallow;
+        this.astaAssociataShallow = astaAssociataShallow;
+    }
+
     public Notifica toNotifica() {
         return new Notifica(astaAssociataShallow.getIdAsta(), TipoAsta.valueOf(astaAssociataShallow.getTipoAstaSpecifica()),
-                mittenteShallow.getEmail(), "", new byte[]{}, messaggio, dataInvio, oraInvio);
+                mittenteShallow.getIdAccount(), "", new byte[]{}, messaggio, dataInvio, oraInvio);
     }
 
     public Long getIdNotifica() {

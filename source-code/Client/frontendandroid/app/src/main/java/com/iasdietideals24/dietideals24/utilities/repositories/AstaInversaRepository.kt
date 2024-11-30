@@ -6,11 +6,11 @@ import com.iasdietideals24.dietideals24.utilities.tools.Page
 
 class AstaInversaRepository(private val service: AstaInversaService) {
     suspend fun recuperaAsteCreateInverse(
-        accountEmail: String,
+        idAccount: Long,
         size: Long,
         page: Long
     ): Page<AstaInversaDto> {
-        return service.recuperaAsteCreateInverse(accountEmail, size, page).body()
+        return service.recuperaAsteCreateInverse(idAccount, size, page).body()
             ?: Page<AstaInversaDto>()
     }
 
@@ -45,11 +45,11 @@ class AstaInversaRepository(private val service: AstaInversaService) {
     }
 
     suspend fun recuperaPartecipazioniInverse(
-        accountEmail: String,
+        idAccount: Long,
         size: Long,
         page: Long
     ): Page<AstaInversaDto> {
-        return service.recuperaPartecipazioniInverse(accountEmail, size, page).body()
+        return service.recuperaPartecipazioniInverse(idAccount, size, page).body()
             ?: Page<AstaInversaDto>()
     }
 

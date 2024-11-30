@@ -102,6 +102,7 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
                     withContext(Dispatchers.IO) { caricaProfilo(userName).toProfilo() }
 
                 if (profilo.nomeUtente != "") {
+                    viewModel.idAccount.value = account.idAccount
                     viewModel.tipoAccount.value = account.tipoAccount.name
                     viewModel.nomeUtente.value = profilo.nomeUtente
                     viewModel.immagineProfilo.value = profilo.immagineProfilo
@@ -118,7 +119,7 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
                     viewModel.linkX.value = profilo.linkX
                     viewModel.linkPersonale.value = profilo.linkPersonale
 
-                    if (CurrentUser.id != viewModel.email.value)
+                    if (CurrentUser.id != viewModel.idAccount.value)
                         binding.dettagliProfiloPulsanteModifica.visibility = View.GONE
                     if (viewModel.linkInstagram.value == "")
                         binding.dettagliProfiloInstagram.visibility = View.GONE
@@ -141,7 +142,7 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
     private suspend fun caricaAccount(): AccountDto {
         var account: AccountDto = compratoreRepository.caricaAccountCompratore(args.id)
 
-        if (account.email == "")
+        if (account.idAccount == 0L)
             account = venditoreRepository.caricaAccountVenditore(args.id)
 
         return account

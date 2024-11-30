@@ -29,6 +29,12 @@ import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.data.Asta
 import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
+import com.iasdietideals24.dietideals24.utilities.dto.OffertaDto
+import com.iasdietideals24.dietideals24.utilities.dto.OffertaInversaDto
+import com.iasdietideals24.dietideals24.utilities.dto.OffertaSilenziosaDto
+import com.iasdietideals24.dietideals24.utilities.dto.OffertaTempoFissoDto
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
@@ -42,6 +48,8 @@ import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaReposi
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.CategoriaAstaRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.OffertaInversaRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.OffertaTempoFissoRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.tools.ImageHandler
 import com.iasdietideals24.dietideals24.utilities.tools.Logger
@@ -64,6 +72,8 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
     private val astaSilenziosaRepository: AstaSilenziosaRepository by inject()
     private val astaTempoFissoRepository: AstaTempoFissoRepository by inject()
     private val categoriaAstaRepository: CategoriaAstaRepository by inject()
+    private val offertaInversaRepository: OffertaInversaRepository by inject()
+    private val offertaTempoFissoRepository: OffertaTempoFissoRepository by inject()
 
     // Listeners
     private var listenerGoToHome: OnGoToHome? = null
@@ -371,6 +381,8 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
                         .show()
 
                     else -> {
+                        withContext(Dispatchers.IO) { primaOfferta(returned.idAsta) }
+
                         viewModel.clear()
 
                         Snackbar.make(
@@ -419,6 +431,50 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
             TipoAsta.TEMPO_FISSO -> astaTempoFissoRepository.creaAstaTempoFisso(viewModel.toAstaTempoFisso())
 
             TipoAsta.SILENZIOSA -> astaSilenziosaRepository.creaAstaSilenziosa(viewModel.toAstaSilenziosa())
+        }
+    }
+
+    private suspend fun primaOfferta(idAsta: Long): OffertaDto {
+        return when (viewModel.tipo.value!!) {
+            TipoAsta.INVERSA -> offertaInversaRepository.inviaOffertaInversa(
+                OffertaInversaDto(
+                    0L,
+                    LocalDate.now(),
+                    LocalTime.now(),
+                    viewModel.prezzo.value!!,
+                    AccountShallowDto(
+                        CurrentUser.id,
+                        "Compratore"
+                    ),
+                    AstaShallowDto(
+                        idAsta,
+                        "AstaInversa",
+                        "AstaDiCompratore"
+                    )
+                )
+            )
+
+            TipoAsta.TEMPO_FISSO -> offertaTempoFissoRepository.inviaOffertaTempoFisso(
+                OffertaTempoFissoDto(
+                    0L,
+                    LocalDate.now(),
+                    LocalTime.now(),
+                    viewModel.prezzo.value!!,
+                    AccountShallowDto(
+                        CurrentUser.id,
+                        "Venditore"
+                    ),
+                    AstaShallowDto(
+                        idAsta,
+                        "AstaTempoFisso",
+                        "AstaDiVenditore"
+                    )
+                )
+            )
+
+            TipoAsta.SILENZIOSA -> {
+                OffertaSilenziosaDto()
+            }
         }
     }
 

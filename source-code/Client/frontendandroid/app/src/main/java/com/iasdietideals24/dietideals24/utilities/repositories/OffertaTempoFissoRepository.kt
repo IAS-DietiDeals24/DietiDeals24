@@ -11,18 +11,14 @@ class OffertaTempoFissoRepository(private val service: OffertaTempoFissoService)
 
     suspend fun recuperaOffertaPersonalePiuAltaTempoFisso(
         idAsta: Long,
-        accountEmail: String
+        idAccount: Long
     ): OffertaTempoFissoDto {
-        return service.recuperaOffertaPersonalePiuAltaTempoFisso(idAsta, accountEmail)
+        return service.recuperaOffertaPersonalePiuAltaTempoFisso(idAsta, idAccount)
             .body() ?: OffertaTempoFissoDto()
     }
 
-    suspend fun inviaOffertaTempoFisso(
-        offerta: OffertaTempoFissoDto,
-        idAsta: Long
-    ): OffertaTempoFissoDto {
-        return service.inviaOffertaTempoFisso(offerta, idAsta).body()
-            ?: OffertaTempoFissoDto()
+    suspend fun inviaOffertaTempoFisso(offerta: OffertaTempoFissoDto): OffertaTempoFissoDto {
+        return service.inviaOffertaTempoFisso(offerta).body() ?: OffertaTempoFissoDto()
     }
 
     suspend fun recuperaOfferteTempoFisso(

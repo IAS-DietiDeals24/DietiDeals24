@@ -1,5 +1,6 @@
 package com.iasdietideals24.dietideals24.utilities.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iasdietideals24.dietideals24.utilities.data.Account;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto;
@@ -11,6 +12,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public abstract class AccountDto {
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    protected Long idAccount = 0L;
 
     protected String email = "";
 
@@ -32,6 +36,15 @@ public abstract class AccountDto {
     }
 
     public abstract Account toAccount();
+
+    public Long getIdAccount() {
+        return this.idAccount;
+    }
+
+    public void setIdAccount(Long idAccount) {
+        this.idAccount = idAccount;
+    }
+
 
     public String getEmail() {
         return email;

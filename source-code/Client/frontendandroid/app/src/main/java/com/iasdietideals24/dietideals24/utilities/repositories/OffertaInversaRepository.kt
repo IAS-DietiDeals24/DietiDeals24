@@ -11,14 +11,14 @@ class OffertaInversaRepository(private val service: OffertaInversaService) {
 
     suspend fun recuperaOffertaPersonalePiuBassaInversa(
         idAsta: Long,
-        accountEmail: String
+        idAccount: Long
     ): OffertaInversaDto {
-        return service.recuperaOffertaPersonalePiuBassaInversa(idAsta, accountEmail)
+        return service.recuperaOffertaPersonalePiuBassaInversa(idAsta, idAccount)
             .body() ?: OffertaInversaDto()
     }
 
-    suspend fun inviaOffertaInversa(offerta: OffertaInversaDto, idAsta: Long): OffertaInversaDto {
-        return service.inviaOffertaInversa(offerta, idAsta).body() ?: OffertaInversaDto()
+    suspend fun inviaOffertaInversa(offerta: OffertaInversaDto): OffertaInversaDto {
+        return service.inviaOffertaInversa(offerta).body() ?: OffertaInversaDto()
     }
 
     suspend fun recuperaOfferteInverse(

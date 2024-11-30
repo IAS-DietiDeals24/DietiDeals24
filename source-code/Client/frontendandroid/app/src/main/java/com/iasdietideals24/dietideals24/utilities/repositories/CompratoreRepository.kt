@@ -14,11 +14,11 @@ class CompratoreRepository(private val service: CompratoreService) {
             ?: CompratoreDto()
     }
 
-    suspend fun caricaAccountCompratore(accountEmail: String): CompratoreDto {
-        return service.caricaAccountCompratore(accountEmail).body() ?: CompratoreDto()
+    suspend fun caricaAccountCompratore(idAccount: Long): CompratoreDto {
+        return service.caricaAccountCompratore(idAccount).body() ?: CompratoreDto()
     }
 
-    suspend fun creaAccountCompratore(accountEmail: String, account: CompratoreDto): CompratoreDto {
-        return service.creaAccountCompratore(accountEmail, account).body() ?: CompratoreDto()
+    suspend fun creaAccountCompratore(account: CompratoreDto): CompratoreDto {
+        return service.creaAccountCompratore(account).body() ?: CompratoreDto()
     }
 }

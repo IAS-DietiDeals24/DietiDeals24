@@ -112,7 +112,7 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
                 if (account.email != "") {
                     Logger.log("Profile creation successful")
 
-                    CurrentUser.id = account.email
+                    CurrentUser.id = account.idAccount
 
                     listenerChangeActivity?.onChangeActivity(Home::class.java)
                 }

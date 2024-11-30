@@ -23,7 +23,7 @@ public class OffertaInversaDto extends OffertaDiVenditoreDto {
         return new Offerta(
                 idOfferta,
                 astaRiferimentoShallow.getIdAsta(),
-                venditoreCollegatoShallow.getEmail(),
+                venditoreCollegatoShallow.getIdAccount(),
                 valore,
                 dataInvio,
                 oraInvio
@@ -35,7 +35,7 @@ public class OffertaInversaDto extends OffertaDiVenditoreDto {
                 idOfferta,
                 astaRiferimentoShallow.getIdAsta(),
                 TipoAsta.valueOf(astaRiferimentoShallow.getTipoAstaSpecifica()),
-                venditoreCollegatoShallow.getEmail(),
+                venditoreCollegatoShallow.getIdAccount(),
                 "",
                 new byte[]{},
                 valore,

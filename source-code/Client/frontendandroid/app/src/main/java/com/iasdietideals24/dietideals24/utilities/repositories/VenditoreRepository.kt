@@ -13,11 +13,11 @@ class VenditoreRepository(private val service: VenditoreService) {
             ?: VenditoreDto()
     }
 
-    suspend fun caricaAccountVenditore(accountEmail: String): VenditoreDto {
-        return service.caricaAccountVenditore(accountEmail).body() ?: VenditoreDto()
+    suspend fun caricaAccountVenditore(idAccount: Long): VenditoreDto {
+        return service.caricaAccountVenditore(idAccount).body() ?: VenditoreDto()
     }
 
-    suspend fun creaAccountVenditore(accountEmail: String, account: VenditoreDto): VenditoreDto {
-        return service.creaAccountVenditore(accountEmail, account).body() ?: VenditoreDto()
+    suspend fun creaAccountVenditore(account: VenditoreDto): VenditoreDto {
+        return service.creaAccountVenditore(account).body() ?: VenditoreDto()
     }
 }

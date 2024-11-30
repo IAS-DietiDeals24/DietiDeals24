@@ -6,11 +6,11 @@ import com.iasdietideals24.dietideals24.utilities.tools.Page
 
 class AstaSilenziosaRepository(private val service: AstaSilenziosaService) {
     suspend fun recuperaAsteCreateSilenziose(
-        accountEmail: String,
+        idAccount: Long,
         size: Long,
         page: Long
     ): Page<AstaSilenziosaDto> {
-        return service.recuperaAsteCreateSilenziose(accountEmail, size, page).body()
+        return service.recuperaAsteCreateSilenziose(idAccount, size, page).body()
             ?: Page<AstaSilenziosaDto>()
     }
 
@@ -45,11 +45,11 @@ class AstaSilenziosaRepository(private val service: AstaSilenziosaService) {
     }
 
     suspend fun recuperaPartecipazioniSilenziose(
-        accountEmail: String,
+        idAccount: Long,
         size: Long,
         page: Long
     ): Page<AstaSilenziosaDto> {
-        return service.recuperaPartecipazioniSilenziose(accountEmail, size, page).body()
+        return service.recuperaPartecipazioniSilenziose(idAccount, size, page).body()
             ?: Page<AstaSilenziosaDto>()
     }
 

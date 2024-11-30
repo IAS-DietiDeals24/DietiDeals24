@@ -25,10 +25,10 @@ public class AstaSilenziosaDto extends AstaDiVenditoreDto {
 
     public AnteprimaAsta toAnteprimaAsta() {
         return new AnteprimaAsta(idAsta, TipoAsta.SILENZIOSA, dataScadenza, oraScadenza, immagine,
-                nome, new BigDecimal("0.0"));
+                nome, new BigDecimal("0.00"));
     }
 
     public Asta toAsta() {
-        return new Asta(idAsta, proprietarioShallow.getEmail(), TipoAsta.SILENZIOSA, dataScadenza, oraScadenza, new BigDecimal("0.0"), immagine, nome, CategoriaAsta.Companion.fromStringToEnum(categoriaShallow.getNome()), descrizione);
+        return new Asta(idAsta, proprietarioShallow.getIdAccount(), TipoAsta.SILENZIOSA, dataScadenza, oraScadenza, new BigDecimal("0.00"), immagine, nome, CategoriaAsta.Companion.fromStringToEnum(categoriaShallow.getNome()), descrizione);
     }
 }

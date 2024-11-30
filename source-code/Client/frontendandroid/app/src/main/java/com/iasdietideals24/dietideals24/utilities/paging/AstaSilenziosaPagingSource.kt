@@ -8,7 +8,7 @@ import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRep
 
 class AstaSilenziosaPagingSource(
     private val repository: AstaSilenziosaRepository,
-    private val email: String = "",
+    private val idAccount: Long = 0L,
     private val ricerca: String = "",
     private val filtro: String = "",
     private val api: ApiCall = ApiCall.TUTTE
@@ -19,11 +19,11 @@ class AstaSilenziosaPagingSource(
 
         return try {
             val data = when (api) {
-                ApiCall.CREATE -> repository.recuperaAsteCreateSilenziose(email, size, 0)
+                ApiCall.CREATE -> repository.recuperaAsteCreateSilenziose(idAccount, size, 0)
                 ApiCall.TUTTE -> repository.recuperaAsteSilenziose(size, 0)
                 ApiCall.RICERCA -> repository.ricercaAsteSilenziose(ricerca, filtro, size, 0)
                 ApiCall.PARTECIPAZIONI -> repository.recuperaPartecipazioniSilenziose(
-                    email,
+                    idAccount,
                     size,
                     0
                 )

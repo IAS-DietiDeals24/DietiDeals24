@@ -30,7 +30,7 @@ class ModelPartecipazioni(
             pagingSourceFactory = {
                 pagingSourceInverse = AstaInversaPagingSource(
                     repository = inverseRepository,
-                    email = CurrentUser.id,
+                    idAccount = CurrentUser.id,
                     api = AstaInversaRepository.ApiCall.PARTECIPAZIONI
                 )
 
@@ -47,7 +47,7 @@ class ModelPartecipazioni(
             pagingSourceFactory = {
                 pagingSourceTempoFisso = AstaTempoFissoPagingSource(
                     repository = tempoFissoRepository,
-                    email = CurrentUser.id,
+                    idAccount = CurrentUser.id,
                     api = AstaTempoFissoRepository.ApiCall.PARTECIPAZIONI
                 )
 
@@ -64,7 +64,7 @@ class ModelPartecipazioni(
             pagingSourceFactory = {
                 pagingSourceSilenziose = AstaSilenziosaPagingSource(
                     repository = silenziosaRepository,
-                    email = CurrentUser.id,
+                    idAccount = CurrentUser.id,
                     api = AstaSilenziosaRepository.ApiCall.PARTECIPAZIONI
                 )
 

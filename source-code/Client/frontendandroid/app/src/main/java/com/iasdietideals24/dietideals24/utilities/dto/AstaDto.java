@@ -1,5 +1,6 @@
 package com.iasdietideals24.dietideals24.utilities.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iasdietideals24.dietideals24.utilities.data.AnteprimaAsta;
 import com.iasdietideals24.dietideals24.utilities.data.Asta;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto;
@@ -13,6 +14,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 abstract public class AstaDto {
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     protected Long idAsta = 0L;
 
     protected CategoriaAstaShallowDto categoriaShallow = new CategoriaAstaShallowDto();

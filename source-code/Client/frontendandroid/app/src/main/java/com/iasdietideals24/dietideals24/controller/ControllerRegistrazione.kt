@@ -301,11 +301,12 @@ class ControllerRegistrazione : Controller<RegistrazioneBinding>() {
         }
     }
 
+    // TODO: modificare dopo aver implementato trova account per email
     private suspend fun associaCreaProfilo(): AccountDto {
         return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
-            venditoreRepository.caricaAccountVenditore(viewModel.email.value!!)
+            venditoreRepository.caricaAccountVenditore(0L)
         } else {
-            compratoreRepository.caricaAccountCompratore(viewModel.email.value!!)
+            compratoreRepository.caricaAccountCompratore(0L)
         }
     }
 

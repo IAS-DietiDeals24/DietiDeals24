@@ -4,7 +4,7 @@ import com.iasdietideals24.dietideals24.utilities.dto.VenditoreDto
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.PUT
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -16,7 +16,7 @@ interface VenditoreService : Service {
      * @return [VenditoreDto] associato a questo account Facebook. Se non esiste, viene restituito un
      * account vuoto.
      */
-    @GET("accounts/venditori/facebook/{idFacebook}")
+    @GET("accounts/venditori/facebook/{idFacebook}") //TODO ancora da implementare su backend
     suspend fun accountFacebookVenditore(
         @Path("idFacebook") idFacebook: String
     ): Response<VenditoreDto>
@@ -28,7 +28,7 @@ interface VenditoreService : Service {
      * @return [VenditoreDto] che ha effettuato l'accesso. Se non esiste, viene restituito un account
      * vuoto.
      */
-    @GET("accounts/venditori/{email}")
+    @GET("accounts/venditori/{email}") //TODO ancora da implementare su backend
     suspend fun accediVenditore(
         @Path("email") accountEmail: String,
         @Query("password") accountPassword: String
@@ -36,23 +36,21 @@ interface VenditoreService : Service {
 
     /**
      * Il metodo recupera l'account venditore specificato.
-     * @param accountEmail Email dell'account.
+     * @param idAccount Id dell'account.
      * @return [VenditoreDto] richiesto. Se non esiste, viene restituito un account vuoto.
      */
-    @GET("accounts/venditori/{email}")
+    @GET("accounts/venditori/{idAccount}")
     suspend fun caricaAccountVenditore(
-        @Path("email") accountEmail: String,
+        @Path("idAccount") idAccount: Long,
     ): Response<VenditoreDto>
 
     /**
      * Il metodo crea un account venditore con i dati specificati.
-     * @param accountEmail Email dell'account.
      * @param account Oggetto [VenditoreDto] che contiene i dati necessari alla creazione.
      * @return [VenditoreDto] appena creato. Se non è stato creato, viene restituito un account vuoto.
      */
-    @PUT("accounts/venditori/{email}")
+    @POST("accounts/venditori")
     suspend fun creaAccountVenditore(
-        @Path("email") accountEmail: String,
         @Body account: VenditoreDto
     ): Response<VenditoreDto>
 }

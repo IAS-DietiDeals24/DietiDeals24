@@ -43,11 +43,11 @@ class ModelAsta(
     val idAsta: MutableLiveData<Long>
         get() = _idAsta
 
-    private val _idCreatore: MutableLiveData<String> by lazy {
-        MutableLiveData<String>("")
+    private val _idCreatore: MutableLiveData<Long> by lazy {
+        MutableLiveData<Long>(0L)
     }
 
-    val idCreatore: MutableLiveData<String>
+    val idCreatore: MutableLiveData<Long>
         get() = _idCreatore
 
     private val _nomeCreatore: MutableLiveData<String> by lazy {
@@ -79,7 +79,7 @@ class ModelAsta(
         get() = _oraFine
 
     private val _prezzo: MutableLiveData<BigDecimal> by lazy {
-        MutableLiveData<BigDecimal>(BigDecimal("0.0"))
+        MutableLiveData<BigDecimal>(BigDecimal("0.00"))
     }
 
     val prezzo: MutableLiveData<BigDecimal>
@@ -115,12 +115,12 @@ class ModelAsta(
 
     fun clear() {
         _idAsta.value = 0L
-        _idCreatore.value = ""
+        _idCreatore.value = 0L
         _nomeCreatore.value = ""
         _tipo.value = TipoAsta.TEMPO_FISSO
         _dataFine.value = LocalDate.MIN
         _oraFine.value = LocalTime.MIN
-        _prezzo.value = BigDecimal("0.0")
+        _prezzo.value = BigDecimal("0.00")
         _immagine.value = ByteArray(0)
         _nome.value = ""
         _categoria.value = CategoriaAsta.ND

@@ -8,7 +8,7 @@ import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRep
 
 class AstaTempoFissoPagingSource(
     private val repository: AstaTempoFissoRepository,
-    private val email: String = "",
+    private val idAccount: Long = 0L,
     private val ricerca: String = "",
     private val filtro: String = "",
     private val api: ApiCall = ApiCall.TUTTE
@@ -19,11 +19,11 @@ class AstaTempoFissoPagingSource(
 
         return try {
             val data = when (api) {
-                ApiCall.CREATE -> repository.recuperaAsteCreateTempoFisso(email, size, 0)
+                ApiCall.CREATE -> repository.recuperaAsteCreateTempoFisso(idAccount, size, 0)
                 ApiCall.TUTTE -> repository.recuperaAsteTempoFisso(size, 0)
                 ApiCall.RICERCA -> repository.ricercaAsteTempoFisso(ricerca, filtro, size, 0)
                 ApiCall.PARTECIPAZIONI -> repository.recuperaPartecipazioniTempoFisso(
-                    email,
+                    idAccount,
                     size,
                     0
                 )

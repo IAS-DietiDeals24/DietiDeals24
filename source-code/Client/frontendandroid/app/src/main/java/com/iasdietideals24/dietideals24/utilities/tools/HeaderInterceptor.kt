@@ -8,7 +8,6 @@ import okio.Buffer
 object HeaderInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request().newBuilder()
-            .addHeader("Authorization", "Bearer ${CurrentUser.accessToken}")
             .build()
 
         val buffer = Buffer()

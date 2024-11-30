@@ -83,7 +83,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
 
         binding.activityHomeBottomNavigationView.setupWithNavController(getNavController())
 
-        if (CurrentUser.id == "") {
+        if (CurrentUser.id == 0L) {
             binding.activityHomeBottomNavigationView.menu.getItem(1).isEnabled = false
             binding.activityHomeBottomNavigationView.menu.getItem(2).isEnabled = false
         }
@@ -145,7 +145,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
         }
     }
 
-    override fun onGoToProfile(id: String, sender: KClass<*>) {
+    override fun onGoToProfile(id: Long, sender: KClass<*>) {
         val navController = getNavController()
 
         when (sender) {

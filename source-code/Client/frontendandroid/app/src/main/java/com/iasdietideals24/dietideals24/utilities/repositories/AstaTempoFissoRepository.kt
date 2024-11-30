@@ -6,11 +6,11 @@ import com.iasdietideals24.dietideals24.utilities.tools.Page
 
 class AstaTempoFissoRepository(private val service: AstaTempoFissoService) {
     suspend fun recuperaAsteCreateTempoFisso(
-        accountEmail: String,
+        idAccount: Long,
         size: Long,
         page: Long
     ): Page<AstaTempoFissoDto> {
-        return service.recuperaAsteCreateTempoFisso(accountEmail, size, page).body()
+        return service.recuperaAsteCreateTempoFisso(idAccount, size, page).body()
             ?: Page<AstaTempoFissoDto>()
     }
 
@@ -45,11 +45,11 @@ class AstaTempoFissoRepository(private val service: AstaTempoFissoService) {
     }
 
     suspend fun recuperaPartecipazioniTempoFisso(
-        accountEmail: String,
+        idAccount: Long,
         size: Long,
         page: Long
     ): Page<AstaTempoFissoDto> {
-        return service.recuperaPartecipazioniTempoFisso(accountEmail, size, page).body()
+        return service.recuperaPartecipazioniTempoFisso(idAccount, size, page).body()
             ?: Page<AstaTempoFissoDto>()
     }
 

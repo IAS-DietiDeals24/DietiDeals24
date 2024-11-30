@@ -12,5 +12,5 @@ data class AnteprimaAsta(
     val oraScadenza: LocalTime = LocalTime.MIN,
     val foto: ByteArray = ByteArray(0),
     val nome: String = "",
-    val offerta: BigDecimal = BigDecimal(0.0)
+    val offerta: BigDecimal = BigDecimal("0.00")
 )

@@ -141,7 +141,7 @@ class ControllerAccesso : Controller<AccessoBinding>() {
                             else -> {
                                 Logger.log("Facebook sign-in successful")
 
-                                CurrentUser.id = returned.email
+                                CurrentUser.id = returned.idAccount
 
                                 listenerChangeActivity?.onChangeActivity(Home::class.java)
                             }
@@ -212,13 +212,13 @@ class ControllerAccesso : Controller<AccessoBinding>() {
 
                 val returned: Account = withContext(Dispatchers.IO) { accedi().toAccount() }
 
-                when (returned.email) {
-                    "" -> throw EccezioneAccountNonEsistente("Account non esistente.")
+                when (returned.idAccount) {
+                    0L -> throw EccezioneAccountNonEsistente("Account non esistente.")
 
                     else -> {
                         Logger.log("Sign-in successful")
 
-                        CurrentUser.id = returned.email
+                        CurrentUser.id = returned.idAccount
 
                         listenerChangeActivity?.onChangeActivity(Home::class.java)
                     }
@@ -238,6 +238,7 @@ class ControllerAccesso : Controller<AccessoBinding>() {
         }
     }
 
+    //TODO: modificare dopo aver implementato trova account per email
     private suspend fun accedi(): AccountDto {
         return when (CurrentUser.tipoAccount) {
             TipoAccount.COMPRATORE -> compratoreRepository.accediCompratore(

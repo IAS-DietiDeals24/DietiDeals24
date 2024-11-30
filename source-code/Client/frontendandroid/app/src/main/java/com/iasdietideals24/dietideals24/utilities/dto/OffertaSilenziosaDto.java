@@ -27,7 +27,7 @@ public class OffertaSilenziosaDto extends OffertaDiCompratoreDto {
         return new Offerta(
                 idOfferta,
                 astaRiferimentoShallow.getIdAsta(),
-                compratoreCollegatoShallow.getEmail(),
+                compratoreCollegatoShallow.getIdAccount(),
                 valore,
                 dataInvio,
                 oraInvio
@@ -39,7 +39,7 @@ public class OffertaSilenziosaDto extends OffertaDiCompratoreDto {
                 idOfferta,
                 astaRiferimentoShallow.getIdAsta(),
                 TipoAsta.valueOf(astaRiferimentoShallow.getTipoAstaSpecifica()),
-                compratoreCollegatoShallow.getEmail(),
+                compratoreCollegatoShallow.getIdAccount(),
                 "",
                 new byte[]{},
                 valore,

@@ -7,18 +7,14 @@ import com.iasdietideals24.dietideals24.utilities.tools.Page
 class OffertaSilenziosaRepository(private val service: OffertaSilenziosaService) {
     suspend fun recuperaOffertaPersonalePiuAltaSilenziosa(
         idAsta: Long,
-        accountEmail: String
+        idAccount: Long
     ): OffertaSilenziosaDto {
-        return service.recuperaOffertaPersonalePiuAltaSilenziosa(idAsta, accountEmail)
+        return service.recuperaOffertaPersonalePiuAltaSilenziosa(idAsta, idAccount)
             .body() ?: OffertaSilenziosaDto()
     }
 
-    suspend fun inviaOffertaSilenziosa(
-        offerta: OffertaSilenziosaDto,
-        idAsta: Long
-    ): OffertaSilenziosaDto {
-        return service.inviaOffertaSilenziosa(offerta, idAsta).body()
-            ?: OffertaSilenziosaDto()
+    suspend fun inviaOffertaSilenziosa(offerta: OffertaSilenziosaDto): OffertaSilenziosaDto {
+        return service.inviaOffertaSilenziosa(offerta).body() ?: OffertaSilenziosaDto()
     }
 
     suspend fun recuperaOfferteSilenziose(

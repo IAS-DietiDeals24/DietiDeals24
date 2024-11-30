@@ -8,7 +8,7 @@ import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaReposi
 
 class AstaInversaPagingSource(
     private val repository: AstaInversaRepository,
-    private val email: String = "",
+    private val idAccount: Long = 0L,
     private val ricerca: String = "",
     private val filtro: String = "",
     private val api: ApiCall = ApiCall.TUTTE
@@ -19,10 +19,14 @@ class AstaInversaPagingSource(
 
         return try {
             val data = when (api) {
-                ApiCall.CREATE -> repository.recuperaAsteCreateInverse(email, size, 0)
+                ApiCall.CREATE -> repository.recuperaAsteCreateInverse(idAccount, size, 0)
                 ApiCall.TUTTE -> repository.recuperaAsteInverse(size, 0)
                 ApiCall.RICERCA -> repository.ricercaAsteInverse(ricerca, filtro, size, 0)
-                ApiCall.PARTECIPAZIONI -> repository.recuperaPartecipazioniInverse(email, size, 0)
+                ApiCall.PARTECIPAZIONI -> repository.recuperaPartecipazioniInverse(
+                    idAccount,
+                    size,
+                    0
+                )
             }
 
             LoadResult.Page(

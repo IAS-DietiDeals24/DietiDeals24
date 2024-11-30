@@ -14,15 +14,15 @@ import retrofit2.http.Query
 interface AstaSilenziosaService : Service {
     /**
      * Recupera l'elenco di tutte le aste silenziose create dal venditore che ha effettualo l'accesso.
-     * @param accountEmail L'email dell'account che ha effettuato l'accesso.
+     * @param idAccount Id dell'account che ha effettuato l'accesso.
      * @param size Il numero massimo di aste da recuperare.
      * @param page Il numero della pagina da recuperare.
      * @return [Page] di [AstaSilenziosaDto] che contiene un certo numero di aste create. Se non
      * esistono, viene creata una pagina vuota.
      */
-    @GET("aste/di-venditori/silenziose")
+    @GET("aste/di-venditori/silenziose") //TODO ancora da implementare su backend
     suspend fun recuperaAsteCreateSilenziose(
-        @Query("email") accountEmail: String,
+        @Query("idAccount") idAccount: Long,
         @Query("size") size: Long,
         @Query("page") page: Long
     ): Response<Page<AstaSilenziosaDto>>
@@ -98,7 +98,7 @@ interface AstaSilenziosaService : Service {
      * @return [Page] di [AstaSilenziosaDto] con un certo numero di aste da mostrare nella home dopo
      * la ricerca e/o il filtraggio. Se non esistono, viene restituita una pagina vuota.
      */
-    @GET("aste/di-venditori/silenziose")
+    @GET("aste/di-venditori/silenziose") //TODO ancora da implementare su backend
     suspend fun ricercaAsteSilenziose(
         @Query("ricerca") ricerca: String,
         @Query("filtro") filtro: String,
@@ -108,15 +108,15 @@ interface AstaSilenziosaService : Service {
 
     /**
      * Recupera l'elenco di tutte le aste silenziose alle quali il compratore ha inviato almeno un'offerta.
-     * @param email Identificativo dell'account che ha effettuato l'accesso.
+     * @param idAccount Identificativo dell'account che ha effettuato l'accesso.
      * @param size Il numero massimo di aste da recuperare.
      * @param page Il numero della pagina da recuperare.
      * @return [Page] di [AstaSilenziosaDto] con un certo numero di aste alle quali l'utente ha
      * partecipato. Se non esistono, viene restituita una pagina vuota.
      */
-    @GET("aste/di-venditori/silenziose")
+    @GET("aste/di-venditori/silenziose") //TODO ancora da implementare su backend
     suspend fun recuperaPartecipazioniSilenziose(
-        @Query("email") email: String,
+        @Query("idAccount") idAccount: Long,
         @Query("size") size: Long,
         @Query("page") page: Long
     ): Response<Page<AstaSilenziosaDto>>

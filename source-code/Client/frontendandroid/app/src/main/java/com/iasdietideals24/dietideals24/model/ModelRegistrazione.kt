@@ -27,6 +27,13 @@ class ModelRegistrazione(
     private val compratoreRepository: CompratoreRepository
 ) : ViewModel() {
 
+    private val _idAccount: MutableLiveData<Long> by lazy {
+        MutableLiveData<Long>(0)
+    }
+
+    val idAccount: MutableLiveData<Long>
+        get() = _idAccount
+
     private val _facebookAccountID: MutableLiveData<String> by lazy {
         MutableLiveData<String>("")
     }
@@ -232,6 +239,7 @@ class ModelRegistrazione(
 
     fun toAccountCompratore(): CompratoreDto {
         return CompratoreDto(
+            0L,
             email.value!!,
             password.value!!,
             TokensAccountDto(
@@ -246,6 +254,7 @@ class ModelRegistrazione(
 
     fun toAccountVenditore(): VenditoreDto {
         return VenditoreDto(
+            0L,
             email.value!!,
             password.value!!,
             TokensAccountDto(
@@ -304,11 +313,12 @@ class ModelRegistrazione(
             throw EccezionePasswordNonSicura("Password non sicura.")
     }
 
+    // TODO: modificare dopo aver implementato trova account per email
     private suspend fun esisteEmail(): Boolean {
         return if (tipoAccount.value == TipoAccount.COMPRATORE)
-            compratoreRepository.caricaAccountCompratore(email.value!!).email.isNotEmpty()
+            compratoreRepository.caricaAccountCompratore(0L).email.isNotEmpty()
         else
-            venditoreRepository.caricaAccountVenditore(email.value!!).email.isNotEmpty()
+            venditoreRepository.caricaAccountVenditore(0L).email.isNotEmpty()
     }
 
     @Validation

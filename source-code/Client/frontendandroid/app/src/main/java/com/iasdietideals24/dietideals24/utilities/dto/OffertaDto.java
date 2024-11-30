@@ -1,5 +1,6 @@
 package com.iasdietideals24.dietideals24.utilities.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iasdietideals24.dietideals24.utilities.data.Offerta;
 import com.iasdietideals24.dietideals24.utilities.data.OffertaRicevuta;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto;
@@ -10,13 +11,14 @@ import java.time.LocalTime;
 
 public abstract class OffertaDto {
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     protected Long idOfferta = 0L;
 
     protected LocalDate dataInvio = LocalDate.now();
 
     protected LocalTime oraInvio = LocalTime.now();
 
-    protected BigDecimal valore = BigDecimal.ZERO;
+    protected BigDecimal valore = new BigDecimal("0.00");
 
     protected AstaShallowDto astaRiferimentoShallow = new AstaShallowDto();
 

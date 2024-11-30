@@ -45,7 +45,7 @@ fun interface OnGoToDetails {
 }
 
 fun interface OnGoToProfile {
-    fun onGoToProfile(id: String, sender: KClass<*>)
+    fun onGoToProfile(id: Long, sender: KClass<*>)
 }
 
 fun interface OnGoToParticipation {

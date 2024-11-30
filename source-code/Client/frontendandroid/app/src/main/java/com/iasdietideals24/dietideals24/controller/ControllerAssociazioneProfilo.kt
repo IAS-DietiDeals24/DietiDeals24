@@ -69,7 +69,7 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
                     else -> {
                         Logger.log("Profile linking successful")
 
-                        CurrentUser.id = returned.email
+                        CurrentUser.id = returned.idAccount
 
                         listenerChangeActivity?.onChangeActivity(Home::class.java)
                     }
@@ -84,14 +84,15 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
         }
     }
 
+    // TODO: modificare dopo aver implementato trova account per email
     private suspend fun associazioneProfilo(): AccountDto {
         viewModel.nomeUtente.postValue(
             when (CurrentUser.tipoAccount) {
                 TipoAccount.COMPRATORE ->
-                    venditoreRepository.caricaAccountVenditore(viewModel.email.value!!).profiloShallow.nomeUtente
+                    venditoreRepository.caricaAccountVenditore(0L).profiloShallow.nomeUtente
 
                 TipoAccount.VENDITORE ->
-                    compratoreRepository.caricaAccountCompratore(viewModel.email.value!!).profiloShallow.nomeUtente
+                    compratoreRepository.caricaAccountCompratore(0L).profiloShallow.nomeUtente
 
                 else -> ""
             }
@@ -99,12 +100,10 @@ class ControllerAssociazioneProfilo : Controller<AssociaprofiloBinding>() {
 
         return when (CurrentUser.tipoAccount) {
             TipoAccount.COMPRATORE -> compratoreRepository.creaAccountCompratore(
-                viewModel.email.value!!,
                 viewModel.toAccountCompratore()
             )
 
             TipoAccount.VENDITORE -> venditoreRepository.creaAccountVenditore(
-                viewModel.email.value!!,
                 viewModel.toAccountVenditore()
             )
 

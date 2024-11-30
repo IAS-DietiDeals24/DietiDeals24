@@ -16,7 +16,7 @@ import java.util.Set;
 
 public class AstaTempoFissoDto extends AstaDiVenditoreDto {
 
-    private BigDecimal sogliaMinima = BigDecimal.ZERO;
+    private BigDecimal sogliaMinima = new BigDecimal("0.00");
 
     public AstaTempoFissoDto(Long idAsta, CategoriaAstaShallowDto categoriaShallow, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow, Set<OffertaShallowDto> offerteRicevuteShallow, BigDecimal sogliaMinima) {
         super(idAsta, categoriaShallow, nome, descrizione, dataScadenza, oraScadenza, immagine, notificheAssociateShallow, proprietarioShallow, offerteRicevuteShallow);
@@ -28,11 +28,11 @@ public class AstaTempoFissoDto extends AstaDiVenditoreDto {
 
     public AnteprimaAsta toAnteprimaAsta() {
         return new AnteprimaAsta(idAsta, TipoAsta.TEMPO_FISSO, dataScadenza, oraScadenza, immagine,
-                nome, new BigDecimal("0.0"));
+                nome, sogliaMinima);
     }
 
     public Asta toAsta() {
-        return new Asta(idAsta, proprietarioShallow.getEmail(), TipoAsta.INVERSA, dataScadenza, oraScadenza, sogliaMinima, immagine, nome, CategoriaAsta.Companion.fromStringToEnum(categoriaShallow.getNome()), descrizione);
+        return new Asta(idAsta, proprietarioShallow.getIdAccount(), TipoAsta.INVERSA, dataScadenza, oraScadenza, sogliaMinima, immagine, nome, CategoriaAsta.Companion.fromStringToEnum(categoriaShallow.getNome()), descrizione);
     }
 
     public BigDecimal getSogliaMinima() {
