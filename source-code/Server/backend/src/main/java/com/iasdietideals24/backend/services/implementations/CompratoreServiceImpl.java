@@ -13,6 +13,7 @@ import com.iasdietideals24.backend.repositories.CompratoreRepository;
 import com.iasdietideals24.backend.services.AccountService;
 import com.iasdietideals24.backend.services.CompratoreService;
 import com.iasdietideals24.backend.utilities.RelationsConverter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Service
 public class CompratoreServiceImpl implements CompratoreService {
 
@@ -141,13 +143,19 @@ public class CompratoreServiceImpl implements CompratoreService {
     @Override
     public void delete(Long idAccount) throws InvalidParameterException {
 
+        log.debug("SERVICE: Verifico che l'account non sia l'ultimo account del profilo al quale è associato...");
+
         Optional<Compratore> existingCompratore = compratoreRepository.findById(idAccount);
         if (existingCompratore.isPresent() && accountService.isLastAccountOfProfilo(existingCompratore.get())) {
             throw new IllegalDeleteRequestException("Non puoi eliminare l'unico account associato al profilo!");
         }
 
+        log.debug("SERVICE: L'account non è l'ultimo account del profilo al quale è associato. Procedo con l'eliminazione...");
+        
         // Eliminiamo l'entità con l'id passato per parametro
         compratoreRepository.deleteById(idAccount);
+
+        log.debug("SERVICE: Account eliminato");
     }
 
     @Override

@@ -14,6 +14,7 @@ import com.iasdietideals24.backend.repositories.AstaInversaRepository;
 import com.iasdietideals24.backend.services.AstaDiCompratoreService;
 import com.iasdietideals24.backend.services.AstaInversaService;
 import com.iasdietideals24.backend.utilities.RelationsConverter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Service
 public class AstaInversaServiceImpl implements AstaInversaService {
 
@@ -43,17 +45,33 @@ public class AstaInversaServiceImpl implements AstaInversaService {
     @Override
     public AstaInversaDto create(AstaInversaDto nuovaAstaInversaDto) throws InvalidParameterException {
 
+        log.trace("SERVICE: nuovaAstaInversaDto: {}", nuovaAstaInversaDto);
+        log.debug("SERVICE: Verifico l'integrità dei dati...");
+
         // Verifichiamo l'integrità dei dati
         checkFieldsValid(nuovaAstaInversaDto);
+
+        log.debug("SERVICE: Integrità dei dati verificata, converto in entità...");
 
         // Convertiamo a entità
         AstaInversa nuovaAstaInversa = astaInversaMapper.toEntity(nuovaAstaInversaDto);
 
+        log.debug("SERVICE: DTO convertito in entità");
+        log.trace("SERVICE: nuovaAstaInversa: {}", nuovaAstaInversa);
+        log.debug("SERVICE: Recupero le associazioni...");
+
         // Recuperiamo le associazioni
         convertRelations(nuovaAstaInversaDto, nuovaAstaInversa);
 
+        log.debug("SERVICE: Associazioni recuperate");
+        log.trace("SERVICE: nuovaAstaInversa: {}", nuovaAstaInversa);
+        log.debug("SERVICE: Salviamo l'entità nel database...");
+
         // Registriamo l'entità
         AstaInversa savedAstaInversa = astaInversaRepository.save(nuovaAstaInversa);
+
+        log.trace("SERVICE: savedAstaInversa: {}", savedAstaInversa);
+        log.debug("SERVICE: Entità salvata correttamente nel database...");
 
         return astaInversaMapper.toDto(savedAstaInversa);
     }
