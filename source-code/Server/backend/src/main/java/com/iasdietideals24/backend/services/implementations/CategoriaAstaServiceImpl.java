@@ -2,6 +2,7 @@ package com.iasdietideals24.backend.services.implementations;
 
 import com.iasdietideals24.backend.entities.Asta;
 import com.iasdietideals24.backend.entities.CategoriaAsta;
+import com.iasdietideals24.backend.exceptions.IllegalDeleteRequestException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.exceptions.UpdateRuntimeException;
 import com.iasdietideals24.backend.mapstruct.dto.CategoriaAstaDto;
@@ -10,6 +11,7 @@ import com.iasdietideals24.backend.mapstruct.mappers.CategoriaAstaMapper;
 import com.iasdietideals24.backend.repositories.CategoriaAstaRepository;
 import com.iasdietideals24.backend.services.CategoriaAstaService;
 import com.iasdietideals24.backend.utilities.RelationsConverter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Service
 public class CategoriaAstaServiceImpl implements CategoriaAstaService {
 
@@ -105,10 +108,21 @@ public class CategoriaAstaServiceImpl implements CategoriaAstaService {
     }
 
     @Override
-    public void delete(String nome) {
+    public void delete(String nome) throws IllegalDeleteRequestException {
+
+        log.debug("SERVICE: Verifico che non ci sia nessun'asta associata alla categoria da eliminare...");
+
+        Optional<CategoriaAsta> existingCategoriaAsta = categoriaAstaRepository.findById(nome);
+        if (existingCategoriaAsta.isPresent() && (!existingCategoriaAsta.get().getAsteAssegnate().isEmpty())) {
+            throw new IllegalDeleteRequestException("Non puoi eliminare una categoria asta alla quale vi sono ancora aste associate! Elimina prima le aste associate...");
+        }
+
+        log.debug("SERVICE: Non ci sono aste associate alla categoria asta. Procedo con l'eliminazione...");
 
         // Eliminiamo l'entità con l'id passato per parametro
         categoriaAstaRepository.deleteById(nome);
+
+        log.debug("SERVICE: Categoria asta eliminata");
     }
 
     @Override

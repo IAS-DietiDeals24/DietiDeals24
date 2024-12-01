@@ -1,5 +1,6 @@
 package com.iasdietideals24.backend.controllers;
 
+import com.iasdietideals24.backend.exceptions.IllegalDeleteRequestException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.mapstruct.dto.CategoriaAstaDto;
 import com.iasdietideals24.backend.services.CategoriaAstaService;
@@ -58,7 +59,7 @@ public class CategoriaAstaController {
     }
 
     @DeleteMapping(path = "/categorie-asta/{nome}")
-    public ResponseEntity<CategoriaAstaDto> deleteCategoriaAsta(@PathVariable("nome") String nome) {
+    public ResponseEntity<CategoriaAstaDto> deleteCategoriaAsta(@PathVariable("nome") String nome) throws IllegalDeleteRequestException {
         categoriaAstaService.delete(nome);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
