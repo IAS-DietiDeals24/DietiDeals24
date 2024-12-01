@@ -1,6 +1,7 @@
 package com.iasdietideals24.backend.services.implementations;
 
 import com.iasdietideals24.backend.entities.Asta;
+import com.iasdietideals24.backend.entities.CategoriaAsta;
 import com.iasdietideals24.backend.entities.Notifica;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
@@ -68,6 +69,7 @@ public class AstaServiceImpl implements AstaService {
 
     @Override
     public void convertRelations(AstaDto astaDto, Asta asta) throws InvalidParameterException {
+        convertCategoriaAstaShallow(astaDto.getCategoriaShallow(), asta);
         convertNotificheAssociateShallow(astaDto.getNotificheAssociateShallow(), asta);
     }
 
@@ -82,6 +84,16 @@ public class AstaServiceImpl implements AstaService {
                     convertedNotifica.setAstaAssociata(asta);
                 }
             }
+        }
+    }
+
+    private void convertCategoriaAstaShallow(CategoriaAstaShallowDto categoriaAstaShallow, Asta asta) throws IdNotFoundException {
+
+        CategoriaAsta convertedCategoriaAsta = relationsConverter.convertCategoriaAstaShallowRelation(categoriaAstaShallow);
+
+        if (convertedCategoriaAsta != null) {
+            asta.setCategoria(convertedCategoriaAsta);
+            convertedCategoriaAsta.addAstaAssegnata(asta);
         }
     }
 

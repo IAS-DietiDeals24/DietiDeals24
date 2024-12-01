@@ -68,9 +68,9 @@ public class AuthController {
 
         log.info("Autenticazione in corso...");
 
-        log.debug("CONTROLLER: Costruisco il pacchetto da inviare ad AWS Cognito...");
-
         log.trace("CONTROLLER: Codice ricevuto: {}", code);
+
+        log.debug("CONTROLLER: Costruisco il pacchetto da inviare ad AWS Cognito...");
 
         // Creiamo l'URI per l'autenticazione del codice tramite Cognito
         // Documentazione: https://docs.aws.amazon.com/cognito/latest/developerguide/token-endpoint.html
@@ -96,7 +96,7 @@ public class AuthController {
             throw new RuntimeException("Costruzione del Cognito URL non riuscita");
         }
 
-        log.debug("CONTROLLER: Pacchetto costruito. Invio in corso...");
+        log.debug("CONTROLLER: Cognito request costruita. Invio in corso...");
 
         // Creiamo il client che manderà il pacchetto di richiesta di autenticazione del nuovo utente
         HttpClient client = HttpClient.newHttpClient();
@@ -108,7 +108,7 @@ public class AuthController {
             throw new RuntimeException("Impossibile inviare la Cognito request");
         }
 
-        log.debug("CONTROLLER: Pacchetto inviato.");
+        log.debug("CONTROLLER: Cognito request inviata.");
 
         log.trace("CONTROLLER: Cognito response: Status code: '{}'; Body: {}", response.statusCode(), response.body());
 
@@ -117,7 +117,7 @@ public class AuthController {
         }
 
         log.info("Autenticazione riuscita.");
-        
+
         log.info("Lettura della Cognito response in corso...");
 
         // Leggiamo la riposta di Cognito

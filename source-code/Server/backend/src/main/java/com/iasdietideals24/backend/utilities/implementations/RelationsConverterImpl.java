@@ -3,6 +3,7 @@ package com.iasdietideals24.backend.utilities.implementations;
 import com.iasdietideals24.backend.entities.*;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
+import com.iasdietideals24.backend.mapstruct.dto.CategoriaAstaDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.*;
 import com.iasdietideals24.backend.repositories.*;
 import com.iasdietideals24.backend.utilities.RelationsConverter;
@@ -18,17 +19,20 @@ public class RelationsConverterImpl implements RelationsConverter {
     private final AstaRepository astaRepository;
     private final OffertaRepository offertaRepository;
     private final AccountRepository accountRepository;
+    private final CategoriaAstaRepository categoriaAstaRepository;
 
     public RelationsConverterImpl(ProfiloRepository profiloRepository,
                                   NotificaRepository notificaRepository,
                                   AstaRepository astaRepository,
                                   OffertaRepository offertaRepository,
-                                  AccountRepository accountRepository) {
+                                  AccountRepository accountRepository,
+                                  CategoriaAstaRepository categoriaAstaRepository) {
         this.profiloRepository = profiloRepository;
         this.notificaRepository = notificaRepository;
         this.astaRepository = astaRepository;
         this.offertaRepository = offertaRepository;
         this.accountRepository = accountRepository;
+        this.categoriaAstaRepository = categoriaAstaRepository;
     }
 
     @Override
@@ -113,5 +117,21 @@ public class RelationsConverterImpl implements RelationsConverter {
         }
 
         return account;
+    }
+
+    @Override
+    public CategoriaAsta convertCategoriaAstaShallowRelation(CategoriaAstaShallowDto categoriaAstaShallowDto) throws IdNotFoundException {
+        CategoriaAsta categoriaAsta = null;
+
+        if (categoriaAstaShallowDto != null) {
+            Optional<CategoriaAsta> foundCategoriaAsta = categoriaAstaRepository.findById(categoriaAstaShallowDto.getNome());
+            if (foundCategoriaAsta.isEmpty()) {
+                throw new IdNotFoundException("Il nome '" + categoriaAstaShallowDto.getNome() + "' non corrisponde a nessuna categoria asta esistente!");
+            } else {
+                categoriaAsta = foundCategoriaAsta.get();
+            }
+        }
+
+        return categoriaAsta;
     }
 }

@@ -3,6 +3,7 @@ package com.iasdietideals24.backend.utilities;
 import com.iasdietideals24.backend.entities.*;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
+import com.iasdietideals24.backend.mapstruct.dto.CategoriaAstaDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.*;
 
 public interface RelationsConverter {
@@ -31,4 +32,9 @@ public interface RelationsConverter {
      * Converte uno Shallow DTO per Offerta nell'entità corrispondente effettivamente salvata nel persistance layer
      */
     Account convertAccountShallowRelation(AccountShallowDto accountShallowDto) throws IdNotFoundException, InvalidTypeException;
+
+    /**
+     * Converte uno Shallow DTO per Categoria Asta nell'entità corrispondente effettivamente salvata nel persistance layer
+     */
+    CategoriaAsta convertCategoriaAstaShallowRelation(CategoriaAstaShallowDto categoriaAstaShallowDto) throws IdNotFoundException;
 }
