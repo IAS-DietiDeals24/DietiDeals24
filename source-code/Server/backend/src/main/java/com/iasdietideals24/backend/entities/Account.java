@@ -31,17 +31,17 @@ public abstract class Account {
     @Embedded
     private TokensAccount tokens;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "profilo_nome_utente", nullable = false)
     @NonNull
     private Profilo profilo;
 
-    @OneToMany(mappedBy = "mittente", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "mittente", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true)
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     private Set<Notifica> notificheInviate = new HashSet<>();
 
-    @ManyToMany(mappedBy = "destinatari", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "destinatari", cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     private Set<Notifica> notificheRicevute = new HashSet<>();

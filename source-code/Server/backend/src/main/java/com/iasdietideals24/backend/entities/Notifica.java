@@ -36,12 +36,12 @@ public class Notifica {
     @Column(name = "messaggio", nullable = false)
     private String messaggio;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "account_email", nullable = false)
     @NonNull
     private Account mittente;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "destinatario",
             joinColumns = {@JoinColumn(name = "notifica_id_notifica", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "account_email", nullable = false)})
@@ -50,7 +50,7 @@ public class Notifica {
     @Setter(AccessLevel.NONE)
     private Set<Account> destinatari = new HashSet<>();
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "asta_id_asta", nullable = false)
     @NonNull
     private Asta astaAssociata;

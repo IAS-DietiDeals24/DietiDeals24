@@ -25,7 +25,7 @@ public class AstaTempoFisso extends AstaDiVenditore {
     @Column(name = "soglia_minima", nullable = false, scale = 2, precision = 10)
     private BigDecimal sogliaMinima;
 
-    @OneToMany(mappedBy = "astaRiferimento", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "astaRiferimento", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true)
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     private Set<OffertaTempoFisso> offerteRicevute = new LinkedHashSet<>();

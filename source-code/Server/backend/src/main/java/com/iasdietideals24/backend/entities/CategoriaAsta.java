@@ -18,7 +18,7 @@ public class CategoriaAsta {
     @Column(name = "nome", nullable = false)
     private String nome;
 
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "categoria", cascade = {CascadeType.MERGE, CascadeType.REFRESH}, orphanRemoval = true)
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     private Set<Asta> asteAssegnate = new HashSet<>();

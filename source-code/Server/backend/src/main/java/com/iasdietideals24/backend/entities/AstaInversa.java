@@ -25,7 +25,7 @@ public class AstaInversa extends AstaDiCompratore {
     @Column(name = "soglia_iniziale", nullable = false, scale = 2, precision = 10)
     private BigDecimal sogliaIniziale;
 
-    @OneToMany(mappedBy = "astaRiferimento", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "astaRiferimento", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true)
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     private Set<OffertaInversa> offerteRicevute = new LinkedHashSet<>();
