@@ -24,22 +24,45 @@ public class CompratoreController {
 
     @PostMapping(path = "/accounts/compratori")
     public ResponseEntity<CompratoreDto> createCompratore(@RequestBody CompratoreDto receivedCompratoreDto) throws InvalidParameterException {
+
+        log.info("Creazione account compratore in corso...");
+
         CompratoreDto createdCompratoreDto = compratoreService.create(receivedCompratoreDto);
+
+        log.info("Account compratore creato. Invio in corso...");
+
         return new ResponseEntity<>(createdCompratoreDto, HttpStatus.CREATED);
     }
 
     @GetMapping(path = "/accounts/compratori")
     public ResponseEntity<Page<CompratoreDto>> listCompratori(Pageable pageable) {
+
+        log.info("Recupero degli account compratori in corso...");
+
         Page<CompratoreDto> foundCompratoriDto = compratoreService.findAll(pageable);
+
+        log.info("Account compratori recuperati. Invio in corso...");
+
         return new ResponseEntity<>(foundCompratoriDto, HttpStatus.OK);
     }
 
     @GetMapping(path = "/accounts/compratori/{idAccount}")
     public ResponseEntity<CompratoreDto> getCompratore(@PathVariable("idAccount") Long idAccount) {
+
+        log.info("Recupero dell'account compratore in corso...");
+
+        log.trace("CONTROLLER: Id account da recuperare: {}", idAccount);
+
         Optional<CompratoreDto> foundCompratoreDto = compratoreService.findOne(idAccount);
         if (foundCompratoreDto.isPresent()) {
+
+            log.info("Account compratore recuperato. Invio in corso...");
+
             return new ResponseEntity<>(foundCompratoreDto.get(), HttpStatus.OK);
         } else {
+
+            log.info("Account compratore non trovato.");
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -74,21 +97,43 @@ public class CompratoreController {
      */
 
     @PutMapping(path = "/accounts/compratori/{idAccount}")
-    public ResponseEntity<CompratoreDto> fullUpadateCompratore(@PathVariable("idAccount") Long idAccount, @RequestBody CompratoreDto receivedCompratoreDto) throws InvalidParameterException {
+    public ResponseEntity<CompratoreDto> fullUpdateCompratore(@PathVariable("idAccount") Long idAccount, @RequestBody CompratoreDto receivedCompratoreDto) throws InvalidParameterException {
+
+        log.info("Sostituzione dell'account compratore in corso...");
+
+        log.trace("CONTROLLER: Id account da sostituire: {}", idAccount);
+
         if (compratoreService.isExists(idAccount)) {
             CompratoreDto updatedCompratoreDto = compratoreService.fullUpdate(idAccount, receivedCompratoreDto);
+
+            log.info("Account compratore sostituito. Invio in corso...");
+
             return new ResponseEntity<>(updatedCompratoreDto, HttpStatus.OK);
         } else {
+
+            log.info("Account compratore non trovato.");
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PatchMapping(path = "/accounts/compratori/{idAccount}")
     public ResponseEntity<CompratoreDto> partialUpdateCompratore(@PathVariable("idAccount") Long idAccount, @RequestBody CompratoreDto receivedCompratoreDto) throws InvalidParameterException {
+
+        log.info("Aggiornamento dell'account compratore in corso...");
+
+        log.trace("CONTROLLER: Id account da aggiornare: {}", idAccount);
+
         if (compratoreService.isExists(idAccount)) {
             CompratoreDto updatedCompratoreDto = compratoreService.partialUpdate(idAccount, receivedCompratoreDto);
+
+            log.info("Account compratore aggiornato. Invio in corso...");
+
             return new ResponseEntity<>(updatedCompratoreDto, HttpStatus.OK);
         } else {
+
+            log.info("Account compratore non trovato.");
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -96,11 +141,13 @@ public class CompratoreController {
     @DeleteMapping(path = "/accounts/compratori/{idAccount}")
     public ResponseEntity<CompratoreDto> deleteCompratore(@PathVariable("idAccount") Long idAccount) throws InvalidParameterException {
 
+        log.info("Eliminazione dell'account compratore in corso...");
+
         log.trace("CONTROLLER: Id account da eliminare: {}", idAccount);
 
         compratoreService.delete(idAccount);
 
-        log.trace("CONTROLLER: Account eliminato");
+        log.info("Account compratore eliminato. Invio in corso...");
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

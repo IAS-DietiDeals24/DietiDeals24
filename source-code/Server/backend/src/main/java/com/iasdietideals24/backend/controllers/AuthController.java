@@ -45,6 +45,8 @@ public class AuthController {
     @GetMapping("/auth/url")
     public ResponseEntity<UrlDto> auth() {
 
+        log.debug("CONTROLLER: Costruisco l'URL...");
+
         // Potrebbe essere necessario cambiare l'url generato (lo scope o redirect_uri) in base al client API
         // Documentazione: https://docs.aws.amazon.com/cognito/latest/developerguide/authorization-endpoint.html
         String url = cognitoUri +
@@ -54,6 +56,8 @@ public class AuthController {
                 "&scope=email+openid+phone" +
                 "&redirect_uri=https://d84l1y8p4kdic.cloudfront.net";
 
+        log.debug("CONTROLLER: URL costruito. Invio in corso...");
+
         return new ResponseEntity<>(new UrlDto(url), HttpStatus.OK);
     }
 
@@ -61,6 +65,12 @@ public class AuthController {
     // Il JWT dovrà essere inserito nell'header di ogni richiesta che necessita di autorizzazione
     @GetMapping("/auth/callback")
     public ResponseEntity<TokenDto> callback(@RequestParam("code") String code) {
+
+        log.info("Autenticazione in corso...");
+
+        log.debug("CONTROLLER: Costruisco il pacchetto da inviare ad AWS Cognito...");
+
+        log.trace("CONTROLLER: Codice ricevuto: {}", code);
 
         // Creiamo l'URI per l'autenticazione del codice tramite Cognito
         // Documentazione: https://docs.aws.amazon.com/cognito/latest/developerguide/token-endpoint.html
@@ -83,8 +93,10 @@ public class AuthController {
                     .POST(HttpRequest.BodyPublishers.noBody())
                     .build();
         } catch (URISyntaxException e) {
-            throw new RuntimeException("Unable to build Cognito URL");
+            throw new RuntimeException("Costruzione del Cognito URL non riuscita");
         }
+
+        log.debug("CONTROLLER: Pacchetto costruito. Invio in corso...");
 
         // Creiamo il client che manderà il pacchetto di richiesta di autenticazione del nuovo utente
         HttpClient client = HttpClient.newHttpClient();
@@ -93,22 +105,30 @@ public class AuthController {
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString()); // Mandiamo la richiesta a Cognito
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Unable to request Cognito");
+            throw new RuntimeException("Impossibile inviare la Cognito request");
         }
 
-        log.trace("Cognito response:\n- Status code: {}\n- Body: {}", response.statusCode(), response.body());
+        log.debug("CONTROLLER: Pacchetto inviato.");
+
+        log.trace("CONTROLLER: Cognito response: Status code: '{}'; Body: {}", response.statusCode(), response.body());
 
         if (response.statusCode() != 200) {
-            throw new RuntimeException("Authentication failed");
+            throw new RuntimeException("Autenticazione fallita");
         }
+
+        log.info("Autenticazione riuscita.");
+        
+        log.info("Lettura della Cognito response in corso...");
 
         // Leggiamo la riposta di Cognito
         CognitoTokenResponseDto token;
         try {
             token = JSON_MAPPER.readValue(response.body(), CognitoTokenResponseDto.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Unable to decode Cognito response");
+            throw new RuntimeException("Lettura della Cognito response fallita");
         }
+
+        log.info("Cognito response letta correttamente. Invio in corso...");
 
         return new ResponseEntity<>(new TokenDto(token.id_token()), HttpStatus.OK);
     }
