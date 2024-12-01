@@ -16,6 +16,8 @@ import java.util.Optional;
 @RestController
 public class CompratoreController {
 
+    public static final String LOG_ACCOUNT_COMPRATORE_NON_TROVATO = "Account compratore non trovato.";
+
     private final CompratoreService compratoreService;
 
     public CompratoreController(CompratoreService compratoreService) {
@@ -46,12 +48,24 @@ public class CompratoreController {
         return new ResponseEntity<>(foundCompratoriDto, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/accounts/compratori", params = "email")
+    public ResponseEntity<Page<CompratoreDto>> listCompratoriByEmail(@RequestParam("email") String email, Pageable pageable) {
+
+        log.info("Recupero degli account compratori in corso...");
+
+        Page<CompratoreDto> foundCompratoriDto = compratoreService.findByEmail(email, pageable);
+
+        log.info("Account compratori recuperati. Invio in corso...");
+
+        return new ResponseEntity<>(foundCompratoriDto, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/accounts/compratori/{idAccount}")
     public ResponseEntity<CompratoreDto> getCompratore(@PathVariable("idAccount") Long idAccount) {
 
         log.info("Recupero dell'account compratore in corso...");
 
-        log.trace("CONTROLLER: Id account da recuperare: {}", idAccount);
+        log.trace("Id account da recuperare: {}", idAccount);
 
         Optional<CompratoreDto> foundCompratoreDto = compratoreService.findOne(idAccount);
         if (foundCompratoreDto.isPresent()) {
@@ -61,47 +75,18 @@ public class CompratoreController {
             return new ResponseEntity<>(foundCompratoreDto.get(), HttpStatus.OK);
         } else {
 
-            log.info("Account compratore non trovato.");
+            log.info(LOG_ACCOUNT_COMPRATORE_NON_TROVATO);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    /*
-    @GetMapping(path = "/accounts/compratori/facebook/{idFacebook}")
-    public ResponseEntity<CompratoreDto> getCompratoreFacebook(@PathVariable("idFacebook") String idFacebook) {
-        Optional<CompratoreDto> foundCompratoreDto = compratoreService.findByTokensIdFacebook(idFacebook, );
-        if (foundCompratoreDto.isPresent()) {
-            return new ResponseEntity<>(foundCompratoreDto.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-    
-    @GetMapping(path = "/accounts/compratori/{email}")
-    public ResponseEntity<CompratoreDto> getCompratore(
-            @PathVariable("email") String email,
-            @RequestParam(name = "password", required = false, defaultValue = "") String password
-    ) {
-        Optional<CompratoreDto> foundCompratoreDto;
-        if (password.isEmpty())
-             foundCompratoreDto = compratoreService.findOne(email);
-        else
-            foundCompratoreDto = compratoreService.findByEmailAndPassword(email, password, );
-        if (foundCompratoreDto.isPresent()) {
-            return new ResponseEntity<>(foundCompratoreDto.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-     */
 
     @PutMapping(path = "/accounts/compratori/{idAccount}")
     public ResponseEntity<CompratoreDto> fullUpdateCompratore(@PathVariable("idAccount") Long idAccount, @RequestBody CompratoreDto receivedCompratoreDto) throws InvalidParameterException {
 
         log.info("Sostituzione dell'account compratore in corso...");
 
-        log.trace("CONTROLLER: Id account da sostituire: {}", idAccount);
+        log.trace("Id account da sostituire: {}", idAccount);
 
         if (compratoreService.isExists(idAccount)) {
             CompratoreDto updatedCompratoreDto = compratoreService.fullUpdate(idAccount, receivedCompratoreDto);
@@ -111,7 +96,7 @@ public class CompratoreController {
             return new ResponseEntity<>(updatedCompratoreDto, HttpStatus.OK);
         } else {
 
-            log.info("Account compratore non trovato.");
+            log.info(LOG_ACCOUNT_COMPRATORE_NON_TROVATO);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -122,7 +107,7 @@ public class CompratoreController {
 
         log.info("Aggiornamento dell'account compratore in corso...");
 
-        log.trace("CONTROLLER: Id account da aggiornare: {}", idAccount);
+        log.trace("Id account da aggiornare: {}", idAccount);
 
         if (compratoreService.isExists(idAccount)) {
             CompratoreDto updatedCompratoreDto = compratoreService.partialUpdate(idAccount, receivedCompratoreDto);
@@ -132,7 +117,7 @@ public class CompratoreController {
             return new ResponseEntity<>(updatedCompratoreDto, HttpStatus.OK);
         } else {
 
-            log.info("Account compratore non trovato.");
+            log.info(LOG_ACCOUNT_COMPRATORE_NON_TROVATO);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -143,7 +128,7 @@ public class CompratoreController {
 
         log.info("Eliminazione dell'account compratore in corso...");
 
-        log.trace("CONTROLLER: Id account da eliminare: {}", idAccount);
+        log.trace("Id account da eliminare: {}", idAccount);
 
         compratoreService.delete(idAccount);
 

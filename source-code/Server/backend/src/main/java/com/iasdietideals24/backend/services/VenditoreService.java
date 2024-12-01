@@ -16,11 +16,7 @@ public interface VenditoreService {
 
     Optional<VenditoreDto> findOne(Long idAccount);
 
-    Page<VenditoreDto> findByTokensIdFacebook(String token, Pageable pageable);
-
     Page<VenditoreDto> findByEmail(String email, Pageable pageable);
-
-    Page<VenditoreDto> findByEmailAndPassword(String email, String password, Pageable pageable);
 
     boolean isExists(Long idAccount);
 

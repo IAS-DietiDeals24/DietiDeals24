@@ -12,10 +12,12 @@ import com.iasdietideals24.backend.mapstruct.dto.utilities.TokensAccountDto;
 import com.iasdietideals24.backend.mapstruct.mappers.TokensAccountMapper;
 import com.iasdietideals24.backend.services.AccountService;
 import com.iasdietideals24.backend.utilities.RelationsConverter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
+@Slf4j
 @Service
 public class AccountServiceImpl implements AccountService {
 
@@ -29,49 +31,81 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void checkFieldsValid(AccountDto accountDto) throws InvalidParameterException {
+
+        log.debug("Verifico l'integrità dei dati di account...");
+
         checkEmailValid(accountDto.getEmail());
         checkPasswordValid(accountDto.getPassword());
         checkProfiloShallowValid(accountDto.getProfiloShallow());
+
+        log.debug("Integrità dei dati di account verificata.");
     }
 
     private void checkEmailValid(String email) throws InvalidParameterException {
+
+        log.trace("Controllo che 'email' sia valido...");
+
         if (email == null)
             throw new InvalidParameterException("L'email non può essere null!");
         else if (email.isBlank())
             throw new InvalidParameterException("L'email non può essere vuota!");
         else if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$"))
             throw new InvalidParameterException("Formato email non valido!");
+
+        log.trace("'email' valido.");
     }
 
     private void checkPasswordValid(String password) throws InvalidParameterException {
+
+        log.trace("Controllo che 'password' sia valido...");
+
         if (password == null)
             throw new InvalidParameterException("La password non può essere null!");
         else if (password.isBlank())
             throw new InvalidParameterException("La password non può essere vuota!");
+
+        log.trace("'password' valido.");
     }
 
     private void checkProfiloShallowValid(ProfiloShallowDto profiloShallow) throws InvalidParameterException {
+
+        log.trace("Controllo che 'profiloShallow' sia valido...");
+
         if (profiloShallow == null)
             throw new InvalidParameterException();
 
         checkNomeUtenteValid(profiloShallow.getNomeUtente());
+
+        log.trace("'profiloShallow' valido.");
     }
 
     private void checkNomeUtenteValid(String nomeUtente) throws InvalidParameterException {
+
+        log.trace("Controllo che 'nomeUtente' sia valido...");
+
         if (nomeUtente == null)
             throw new InvalidParameterException("Il nome utente non può essere null!");
         else if (nomeUtente.isBlank())
             throw new InvalidParameterException("Il nome utente non può essere vuoto!");
+
+        log.trace("'nomeUtente' valido.");
     }
 
     @Override
     public void convertRelations(AccountDto accountDto, Account account) throws InvalidParameterException {
+
+        log.debug("Recupero le associazioni di account...");
+
         convertProfiloShallow(accountDto.getProfiloShallow(), account);
         convertNotificheInviateShallow(accountDto.getNotificheInviateShallow(), account);
         convertNotificheRicevuteShallow(accountDto.getNotificheRicevuteShallow(), account);
+
+        log.debug("Associazioni di account recuperate.");
     }
 
     private void convertProfiloShallow(ProfiloShallowDto profiloShallowDto, Account nuovoAccount) throws InvalidParameterException {
+
+        log.trace("Converto l'associazione 'profilo'...");
 
         Profilo convertedProfilo = relationsConverter.convertProfiloShallowRelation(profiloShallowDto);
 
@@ -85,6 +119,8 @@ public class AccountServiceImpl implements AccountService {
             nuovoAccount.setProfilo(convertedProfilo);
             convertedProfilo.addAccount(nuovoAccount);
         }
+
+        log.trace("'profilo' convertita correttamente.");
     }
 
     private void checkNuovoAccountTypeNotAlreadyPresent(Account accountAssociato, Account nuovoAccount) throws InvalidParameterException {
@@ -98,6 +134,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     private void convertNotificheInviateShallow(Set<NotificaShallowDto> notificheInviateShallowDto, Account nuovoAccount) throws InvalidParameterException {
+
+        log.trace("Converto l'associazione 'notificheInviate'...");
+
         if (notificheInviateShallowDto != null) {
             for (NotificaShallowDto notificaShallowDto : notificheInviateShallowDto) {
 
@@ -109,9 +148,14 @@ public class AccountServiceImpl implements AccountService {
                 }
             }
         }
+
+        log.trace("'notificheInviate' convertita correttamente.");
     }
 
     private void convertNotificheRicevuteShallow(Set<NotificaShallowDto> notificheRicevuteShallowDto, Account nuovoAccount) throws InvalidParameterException {
+
+        log.trace("Converto l'associazione 'notificheRicevute'...");
+
         if (notificheRicevuteShallowDto != null) {
             for (NotificaShallowDto notificaShallowDto : notificheRicevuteShallowDto) {
 
@@ -123,32 +167,52 @@ public class AccountServiceImpl implements AccountService {
                 }
             }
         }
+
+        log.trace("'notificheRicevute' convertita correttamente.");
     }
 
     @Override
     public void updatePresentFields(AccountDto updatedAccountDto, Account existingAccount) throws InvalidParameterException {
+
+        log.debug("Effettuo le modifiche di account richieste...");
+
         ifPresentUpdateEmail(updatedAccountDto.getEmail(), existingAccount);
         ifPresentUpdatePassword(updatedAccountDto.getPassword(), existingAccount);
         ifPresentUpdateTokens(updatedAccountDto.getTokens(), existingAccount);
+
+        log.debug("Modifiche di account effettuate correttamente.");
 
         // Non è possibile modificare le associazioni "profilo", "notificheInviate", "notificheRicevute" tramite la risorsa "accounts"
     }
 
     private void ifPresentUpdateEmail(String updatedEmail, Account existingAccount) throws InvalidParameterException {
+
+        log.trace("Effettuo la modifica di 'email'...");
+
         if (updatedEmail != null) {
             checkEmailValid(updatedEmail);
             existingAccount.setEmail(updatedEmail);
         }
+
+        log.trace("'email' modificato correttamente.");
     }
 
     private void ifPresentUpdatePassword(String updatedPassword, Account existingAccount) throws InvalidParameterException {
+
+        log.trace("Effettuo la modifica di 'password'...");
+
         if (updatedPassword != null) {
             checkPasswordValid(updatedPassword);
             existingAccount.setPassword(updatedPassword);
         }
+
+        log.trace("'password' modificato correttamente.");
     }
 
     private void ifPresentUpdateTokens(TokensAccountDto updatedTokensDto, Account existingAccount) {
+
+        log.trace("Effettuo la modifica di 'tokens'...");
+
         TokensAccount existingTokens = existingAccount.getTokens();
 
         if (updatedTokensDto != null) {
@@ -161,30 +225,52 @@ public class AccountServiceImpl implements AccountService {
                 ifPresentUpdateIdGitHub(updatedTokensDto.getIdGitHub(), existingTokens);
             }
         }
+
+        log.trace("'tokens' modificato correttamente.");
     }
 
     private void ifPresentUpdateIdFacebook(String updatedIdFacebook, TokensAccount existingTokens) {
+
+        log.trace("Effettuo la modifica di 'idFacebook'...");
+
         if (updatedIdFacebook != null) {
             existingTokens.setIdFacebook(updatedIdFacebook);
         }
+
+        log.trace("'idFacebook' modificato correttamente.");
     }
 
     private void ifPresentUpdateIdGoogle(String updatedIdGoogle, TokensAccount existingTokens) {
+
+        log.trace("Effettuo la modifica di 'idGoogle'...");
+
         if (updatedIdGoogle != null) {
             existingTokens.setIdGoogle(updatedIdGoogle);
         }
+
+        log.trace("'idGoogle' modificato correttamente.");
     }
 
     private void ifPresentUpdateIdX(String updatedIdX, TokensAccount existingTokens) {
+
+        log.trace("Effettuo la modifica di 'idX'...");
+
         if (updatedIdX != null) {
             existingTokens.setIdX(updatedIdX);
         }
+
+        log.trace("'idX' modificato correttamente.");
     }
 
     private void ifPresentUpdateIdGitHub(String updatedIdGitHub, TokensAccount existingTokens) {
+
+        log.trace("Effettuo la modifica di 'idGitHub'...");
+
         if (updatedIdGitHub != null) {
             existingTokens.setIdGitHub(updatedIdGitHub);
         }
+
+        log.trace("'idGitHub' modificato correttamente.");
     }
 
     @Override

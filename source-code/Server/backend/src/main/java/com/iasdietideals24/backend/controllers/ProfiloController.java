@@ -17,6 +17,8 @@ import java.util.Optional;
 @RestController
 public class ProfiloController {
 
+    public static final String LOG_PROFILO_NON_TROVATO = "Profilo non trovato.";
+
     private final ProfiloService profiloService;
 
     public ProfiloController(ProfiloService profiloService) {
@@ -28,7 +30,7 @@ public class ProfiloController {
 
         log.info("Creazione o sostituzione del profilo in corso...");
 
-        log.trace("CONTROLLER: Nome utente profilo da creare o sostituire: {}", nomeUtente);
+        log.trace("Nome utente profilo da creare o sostituire: {}", nomeUtente);
 
         if (profiloService.isExists(nomeUtente)) {
             ProfiloDto updatedProfiloDto = profiloService.fullUpdate(nomeUtente, receivedProfiloDto);
@@ -62,7 +64,7 @@ public class ProfiloController {
 
         log.info("Recupero del profilo in corso...");
 
-        log.trace("CONTROLLER: Nome utente profilo da recuperare: {}", nomeUtente);
+        log.trace("Nome utente profilo da recuperare: {}", nomeUtente);
 
         Optional<ProfiloDto> foundProfiloDto = profiloService.findOne(nomeUtente);
 
@@ -73,7 +75,7 @@ public class ProfiloController {
             return new ResponseEntity<>(foundProfiloDto.get(), HttpStatus.OK);
         } else {
 
-            log.info("Profilo non trovata.");
+            log.info(LOG_PROFILO_NON_TROVATO);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -84,7 +86,7 @@ public class ProfiloController {
 
         log.info("Aggiornamento del profilo in corso...");
 
-        log.trace("CONTROLLER: Nome utente profilo da aggiornare: {}", nomeUtente);
+        log.trace("Nome utente profilo da aggiornare: {}", nomeUtente);
 
         if (profiloService.isExists(nomeUtente)) {
             ProfiloDto updatedProfiloDto = profiloService.partialUpdate(nomeUtente, receivedProfiloDto);
@@ -94,7 +96,7 @@ public class ProfiloController {
             return new ResponseEntity<>(updatedProfiloDto, HttpStatus.OK);
         } else {
 
-            log.info("Profilo non trovata.");
+            log.info(LOG_PROFILO_NON_TROVATO);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -105,7 +107,7 @@ public class ProfiloController {
 
         log.info("Eliminazione del profilo in corso...");
 
-        log.trace("CONTROLLER: Nome utente profilo da eliminare: {}", nomeUtente);
+        log.trace("Nome utente profilo da eliminare: {}", nomeUtente);
 
         profiloService.delete(nomeUtente);
 

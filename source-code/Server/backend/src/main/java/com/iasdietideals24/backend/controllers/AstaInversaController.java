@@ -16,6 +16,8 @@ import java.util.Optional;
 @RestController
 public class AstaInversaController {
 
+    public static final String LOG_ASTA_INVERSA_NON_TROVATA = "Asta inversa non trovata.";
+
     private final AstaInversaService astaInversaService;
 
     public AstaInversaController(AstaInversaService astaInversaService) {
@@ -51,7 +53,7 @@ public class AstaInversaController {
 
         log.info("Recupero dell'asta inversa in corso...");
 
-        log.trace("CONTROLLER: Id asta da recuperare: {}", idAsta);
+        log.trace("Id asta da recuperare: {}", idAsta);
 
         Optional<AstaInversaDto> foundAstaInversaDto = astaInversaService.findOne(idAsta);
         if (foundAstaInversaDto.isPresent()) {
@@ -61,7 +63,7 @@ public class AstaInversaController {
             return new ResponseEntity<>(foundAstaInversaDto.get(), HttpStatus.OK);
         } else {
 
-            log.info("Asta inversa non trovata.");
+            log.info(LOG_ASTA_INVERSA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -72,7 +74,7 @@ public class AstaInversaController {
 
         log.info("Sostituzione dell'asta inversa in corso...");
 
-        log.trace("CONTROLLER: Id asta da sostituire: {}", idAsta);
+        log.trace("Id asta da sostituire: {}", idAsta);
 
         if (astaInversaService.isExists(idAsta)) {
             AstaInversaDto updatedAstaInversaDto = astaInversaService.fullUpdate(idAsta, receivedAstaInversaDto);
@@ -82,7 +84,7 @@ public class AstaInversaController {
             return new ResponseEntity<>(updatedAstaInversaDto, HttpStatus.OK);
         } else {
 
-            log.info("Asta inversa non trovata.");
+            log.info(LOG_ASTA_INVERSA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -93,7 +95,7 @@ public class AstaInversaController {
 
         log.info("Aggiornamento dell'asta inversa in corso...");
 
-        log.trace("CONTROLLER: Id asta da sostituire: {}", idAsta);
+        log.trace("Id asta da aggiornare: {}", idAsta);
 
         if (astaInversaService.isExists(idAsta)) {
             AstaInversaDto updatedAstaInversaDto = astaInversaService.partialUpdate(idAsta, receivedAstaInversaDto);
@@ -103,7 +105,7 @@ public class AstaInversaController {
             return new ResponseEntity<>(updatedAstaInversaDto, HttpStatus.OK);
         } else {
 
-            log.info("Asta inversa non trovata.");
+            log.info(LOG_ASTA_INVERSA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -114,7 +116,7 @@ public class AstaInversaController {
 
         log.info("Eliminazione dell'asta inversa in corso...");
 
-        log.trace("CONTROLLER: Id asta da sostituire: {}", idAsta);
+        log.trace("Id asta da eliminare: {}", idAsta);
 
         astaInversaService.delete(idAsta);
 

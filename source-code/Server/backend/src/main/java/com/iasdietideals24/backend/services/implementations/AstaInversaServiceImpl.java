@@ -27,6 +27,10 @@ import java.util.Set;
 @Service
 public class AstaInversaServiceImpl implements AstaInversaService {
 
+    public static final String LOG_RECUPERO_ASTA_INVERSA = "Recupero l'asta inversa dal database...";
+    public static final String LOG_FOUND_ASTA_INVERSA = "foundAstaInversa: {}";
+    public static final String LOG_ASTA_INVERSA_RECUPERATA = "Asta inversa recuperata dal database.";
+
     private final AstaDiCompratoreService astaDiCompratoreService;
     private final AstaInversaMapper astaInversaMapper;
     private final AstaInversaRepository astaInversaRepository;
@@ -45,33 +49,29 @@ public class AstaInversaServiceImpl implements AstaInversaService {
     @Override
     public AstaInversaDto create(AstaInversaDto nuovaAstaInversaDto) throws InvalidParameterException {
 
-        log.trace("SERVICE: nuovaAstaInversaDto: {}", nuovaAstaInversaDto);
-        log.debug("SERVICE: Verifico l'integrità dei dati...");
-
         // Verifichiamo l'integrità dei dati
         checkFieldsValid(nuovaAstaInversaDto);
 
-        log.debug("SERVICE: Integrità dei dati verificata, converto in entità...");
+        log.debug("Converto il DTO in entità...");
 
         // Convertiamo a entità
         AstaInversa nuovaAstaInversa = astaInversaMapper.toEntity(nuovaAstaInversaDto);
 
-        log.debug("SERVICE: DTO convertito in entità");
-        log.trace("SERVICE: nuovaAstaInversa: {}", nuovaAstaInversa);
-        log.debug("SERVICE: Recupero le associazioni...");
+        log.debug("DTO convertito correttamente.");
+        log.trace("nuovaAstaInversa: {}", nuovaAstaInversa);
 
         // Recuperiamo le associazioni
         convertRelations(nuovaAstaInversaDto, nuovaAstaInversa);
 
-        log.debug("SERVICE: Associazioni recuperate");
-        log.trace("SERVICE: nuovaAstaInversa: {}", nuovaAstaInversa);
-        log.debug("SERVICE: Salviamo l'entità nel database...");
+        log.trace("nuovaAstaInversa: {}", nuovaAstaInversa);
+
+        log.debug("Salvo l'asta inversa nel database...");
 
         // Registriamo l'entità
         AstaInversa savedAstaInversa = astaInversaRepository.save(nuovaAstaInversa);
 
-        log.trace("SERVICE: savedAstaInversa: {}", savedAstaInversa);
-        log.debug("SERVICE: Entità salvata correttamente nel database...");
+        log.trace("savedAstaInversa: {}", savedAstaInversa);
+        log.debug("Asta inversa salvata correttamente nel database con id asta {}...", savedAstaInversa.getIdAsta());
 
         return astaInversaMapper.toDto(savedAstaInversa);
     }
@@ -79,8 +79,13 @@ public class AstaInversaServiceImpl implements AstaInversaService {
     @Override
     public Page<AstaInversaDto> findAll(Pageable pageable) {
 
+        log.debug("Recupero le aste inverse dal database...");
+
         // Recuperiamo tutte le entità
         Page<AstaInversa> foundAsteInverse = astaInversaRepository.findAll(pageable);
+
+        log.trace("foundAsteInverse: {}", foundAsteInverse);
+        log.debug("Aste inverse recuperate dal database.");
 
         return foundAsteInverse.map(astaInversaMapper::toDto);
     }
@@ -88,8 +93,14 @@ public class AstaInversaServiceImpl implements AstaInversaService {
     @Override
     public Optional<AstaInversaDto> findOne(Long idAsta) {
 
+        log.trace("Id asta da recuperare: {}", idAsta);
+        log.debug(LOG_RECUPERO_ASTA_INVERSA);
+
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<AstaInversa> foundAstaInversa = astaInversaRepository.findById(idAsta);
+
+        log.trace(LOG_FOUND_ASTA_INVERSA, foundAstaInversa);
+        log.debug(LOG_ASTA_INVERSA_RECUPERATA);
 
         return foundAstaInversa.map(astaInversaMapper::toDto);
     }
@@ -104,6 +115,8 @@ public class AstaInversaServiceImpl implements AstaInversaService {
     @Override
     public AstaInversaDto fullUpdate(Long idAsta, AstaInversaDto updatedAstaInversaDto) throws InvalidParameterException {
 
+        log.trace("Id asta da sostituire: {}", idAsta);
+
         updatedAstaInversaDto.setIdAsta(idAsta);
 
         if (!astaInversaRepository.existsById(idAsta))
@@ -116,10 +129,18 @@ public class AstaInversaServiceImpl implements AstaInversaService {
     @Override
     public AstaInversaDto partialUpdate(Long idAsta, AstaInversaDto updatedAstaInversaDto) throws InvalidParameterException {
 
-        // Recuperiamo l'entità con l'id passato per parametro
+        log.trace("Id asta da aggiornare: {}", idAsta);
+
         updatedAstaInversaDto.setIdAsta(idAsta);
 
+        log.debug(LOG_RECUPERO_ASTA_INVERSA);
+
+        // Recuperiamo l'entità con l'id passato per parametro
         Optional<AstaInversa> foundAstaInversa = astaInversaRepository.findById(idAsta);
+
+        log.trace(LOG_FOUND_ASTA_INVERSA, foundAstaInversa);
+        log.debug(LOG_ASTA_INVERSA_RECUPERATA);
+
         if (foundAstaInversa.isEmpty())
             throw new UpdateRuntimeException("L'id asta '" + idAsta + "' non corrisponde a nessuna asta inversa esistente!");
         else {
@@ -136,30 +157,53 @@ public class AstaInversaServiceImpl implements AstaInversaService {
     @Override
     public void delete(Long idAsta) {
 
+        log.trace("Id asta da eliminare: {}", idAsta);
+        log.debug("Elimino l'asta inversa dal database...");
+
         // Eliminiamo l'entità con l'id passato per parametro
         astaInversaRepository.deleteById(idAsta);
+
+        log.debug("Asta inversa eliminata dal database.");
     }
 
     @Override
     public void checkFieldsValid(AstaInversaDto astaInversaDto) throws InvalidParameterException {
+
+        log.debug("Verifico l'integrità dei dati di asta inversa...");
+
         astaDiCompratoreService.checkFieldsValid(astaInversaDto);
         checkSogliaInizialeValid(astaInversaDto.getSogliaIniziale());
+
+        log.debug("Integrità dei dati di asta inversa verificata.");
     }
 
     private void checkSogliaInizialeValid(BigDecimal sogliaIniziale) throws InvalidParameterException {
+
+        log.trace("Controllo che 'sogliaIniziale' sia valido...");
+
         if (sogliaIniziale == null)
             throw new InvalidParameterException("La soglia iniziale non può essere null!");
         else if (sogliaIniziale.compareTo(BigDecimal.ZERO) <= 0)
             throw new InvalidParameterException("La soglia iniziale deve essere positiva!");
+
+        log.trace("'sogliaIniziale' valido.");
     }
 
     @Override
     public void convertRelations(AstaInversaDto astaInversaDto, AstaInversa astaInversa) throws InvalidParameterException {
+
+        log.debug("Recupero le associazioni di asta inversa...");
+
         astaDiCompratoreService.convertRelations(astaInversaDto, astaInversa);
         convertOfferteRicevute(astaInversaDto.getOfferteRicevuteShallow(), astaInversa);
+
+        log.debug("Associazioni di asta inversa recuperate.");
     }
 
     private void convertOfferteRicevute(Set<OffertaShallowDto> offerteRicevuteShallow, AstaInversa astaInversa) throws IdNotFoundException, InvalidTypeException {
+
+        log.trace("Converto l'associazione 'offerteRicevute'...");
+
         if (offerteRicevuteShallow != null) {
             for (OffertaShallowDto offertaShallowDto : offerteRicevuteShallow) {
 
@@ -173,20 +217,32 @@ public class AstaInversaServiceImpl implements AstaInversaService {
                 }
             }
         }
+
+        log.trace("'offerteRicevute' convertita correttamente.");
     }
 
     @Override
     public void updatePresentFields(AstaInversaDto updatedAstaInversaDto, AstaInversa existingAstaInversa) throws InvalidParameterException {
+
+        log.debug("Effettuo le modifiche di asta inversa richieste...");
+
         astaDiCompratoreService.updatePresentFields(updatedAstaInversaDto, existingAstaInversa);
         ifPresentUpdateSogliaIniziale(updatedAstaInversaDto.getSogliaIniziale(), existingAstaInversa);
+
+        log.debug("Modifiche di asta inversa effettuate correttamente.");
 
         // Non è possibile modificare l'associazione "offerteRicevute" tramite la risorsa "aste/di-compratori/inverse"
     }
 
     private void ifPresentUpdateSogliaIniziale(BigDecimal updatedSogliaIniziale, AstaInversa existingAstaInversa) throws InvalidParameterException {
+
+        log.trace("Effettuo la modifica di 'sogliaIniziale'...");
+
         if (updatedSogliaIniziale != null) {
             this.checkSogliaInizialeValid(updatedSogliaIniziale);
             existingAstaInversa.setSogliaIniziale(updatedSogliaIniziale);
         }
+
+        log.trace("'sogliaIniziale' modificato correttamente.");
     }
 }

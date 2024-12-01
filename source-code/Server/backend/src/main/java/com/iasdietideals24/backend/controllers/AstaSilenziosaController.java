@@ -16,6 +16,8 @@ import java.util.Optional;
 @RestController
 public class AstaSilenziosaController {
 
+    public static final String LOG_ASTA_SILENZIOSA_NON_TROVATA = "Asta silenziosa non trovata.";
+
     private final AstaSilenziosaService astaSilenziosaService;
 
     public AstaSilenziosaController(AstaSilenziosaService astaSilenziosaService) {
@@ -51,7 +53,7 @@ public class AstaSilenziosaController {
 
         log.info("Recupero dell'asta silenziosa in corso...");
 
-        log.trace("CONTROLLER: Id asta da recuperare: {}", idAsta);
+        log.trace("Id asta da recuperare: {}", idAsta);
 
         Optional<AstaSilenziosaDto> foundAstaSilenziosaDto = astaSilenziosaService.findOne(idAsta);
         if (foundAstaSilenziosaDto.isPresent()) {
@@ -61,7 +63,7 @@ public class AstaSilenziosaController {
             return new ResponseEntity<>(foundAstaSilenziosaDto.get(), HttpStatus.OK);
         } else {
 
-            log.info("Asta silenziosa non trovata.");
+            log.info(LOG_ASTA_SILENZIOSA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -72,7 +74,7 @@ public class AstaSilenziosaController {
 
         log.info("Sostituzione dell'asta silenziosa in corso...");
 
-        log.trace("CONTROLLER: Id asta da sostituire: {}", idAsta);
+        log.trace("Id asta da sostituire: {}", idAsta);
 
         if (astaSilenziosaService.isExists(idAsta)) {
             AstaSilenziosaDto updatedAstaSilenziosaDto = astaSilenziosaService.fullUpdate(idAsta, receivedAstaSilenziosaDto);
@@ -82,7 +84,7 @@ public class AstaSilenziosaController {
             return new ResponseEntity<>(updatedAstaSilenziosaDto, HttpStatus.OK);
         } else {
 
-            log.info("Asta silenziosa non trovata.");
+            log.info(LOG_ASTA_SILENZIOSA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -93,7 +95,7 @@ public class AstaSilenziosaController {
 
         log.info("Aggiornamento dell'asta silenziosa in corso...");
 
-        log.trace("CONTROLLER: Id asta da sostituire: {}", idAsta);
+        log.trace("Id asta da aggiornare: {}", idAsta);
 
         if (astaSilenziosaService.isExists(idAsta)) {
             AstaSilenziosaDto updatedAstaSilenziosaDto = astaSilenziosaService.partialUpdate(idAsta, receivedAstaSilenziosaDto);
@@ -103,7 +105,7 @@ public class AstaSilenziosaController {
             return new ResponseEntity<>(updatedAstaSilenziosaDto, HttpStatus.OK);
         } else {
 
-            log.info("Asta silenziosa non trovata.");
+            log.info(LOG_ASTA_SILENZIOSA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -114,7 +116,7 @@ public class AstaSilenziosaController {
 
         log.info("Eliminazione dell'asta silenziosa in corso...");
 
-        log.trace("CONTROLLER: Id asta da sostituire: {}", idAsta);
+        log.trace("Id asta da eliminare: {}", idAsta);
 
         astaSilenziosaService.delete(idAsta);
 

@@ -10,9 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VenditoreRepository extends CrudRepository<Venditore, Long>, PagingAndSortingRepository<Venditore, Long> {
 
-    Page<Venditore> findByTokensIdFacebook(String idFacebook, Pageable pageable);
-
     Page<Venditore> findByEmail(String email, Pageable pageable);
-
-    Page<Venditore> findByEmailAndPassword(String email, String password, Pageable pageable);
 }

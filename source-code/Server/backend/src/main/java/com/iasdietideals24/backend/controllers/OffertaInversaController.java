@@ -16,6 +16,8 @@ import java.util.Optional;
 @RestController
 public class OffertaInversaController {
 
+    public static final String LOG_OFFERTA_INVERSA_NON_TROVATA = "Offerta inversa non trovata.";
+
     private final OffertaInversaService offertaInversaService;
 
     public OffertaInversaController(OffertaInversaService offertaInversaService) {
@@ -51,7 +53,7 @@ public class OffertaInversaController {
 
         log.info("Recupero dell'offerta inversa in corso...");
 
-        log.trace("CONTROLLER: Id offerta da recuperare: {}", idOfferta);
+        log.trace("Id offerta da recuperare: {}", idOfferta);
 
         Optional<OffertaInversaDto> foundOffertaInversaDto = offertaInversaService.findOne(idOfferta);
         if (foundOffertaInversaDto.isPresent()) {
@@ -61,7 +63,7 @@ public class OffertaInversaController {
             return new ResponseEntity<>(foundOffertaInversaDto.get(), HttpStatus.OK);
         } else {
 
-            log.info("Offerta inversa non trovata.");
+            log.info(LOG_OFFERTA_INVERSA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -72,7 +74,7 @@ public class OffertaInversaController {
 
         log.info("Sostituzione dell'offerta inversa in corso...");
 
-        log.trace("CONTROLLER: Id offerta da sostituire: {}", idOfferta);
+        log.trace("Id offerta da sostituire: {}", idOfferta);
 
         if (offertaInversaService.isExists(idOfferta)) {
             OffertaInversaDto updatedOffertaInversaDto = offertaInversaService.fullUpdate(idOfferta, receivedOffertaInversaDto);
@@ -82,7 +84,7 @@ public class OffertaInversaController {
             return new ResponseEntity<>(updatedOffertaInversaDto, HttpStatus.OK);
         } else {
 
-            log.info("Offerta inversa non trovata.");
+            log.info(LOG_OFFERTA_INVERSA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -93,7 +95,7 @@ public class OffertaInversaController {
 
         log.info("Aggiornamento dell'offerta inversa in corso...");
 
-        log.trace("CONTROLLER: Id offerta da sostituire: {}", idOfferta);
+        log.trace("Id offerta da aggiornare: {}", idOfferta);
 
         if (offertaInversaService.isExists(idOfferta)) {
             OffertaInversaDto updatedOffertaInversaDto = offertaInversaService.partialUpdate(idOfferta, receivedOffertaInversaDto);
@@ -103,7 +105,7 @@ public class OffertaInversaController {
             return new ResponseEntity<>(updatedOffertaInversaDto, HttpStatus.OK);
         } else {
 
-            log.info("Offerta inversa non trovata.");
+            log.info(LOG_OFFERTA_INVERSA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -114,7 +116,7 @@ public class OffertaInversaController {
 
         log.info("Eliminazione dell'offerta inversa in corso...");
 
-        log.trace("CONTROLLER: Id offerta da sostituire: {}", idOfferta);
+        log.trace("Id offerta da eliminare: {}", idOfferta);
 
         offertaInversaService.delete(idOfferta);
 

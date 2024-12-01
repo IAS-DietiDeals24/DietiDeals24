@@ -3,7 +3,6 @@ package com.iasdietideals24.backend.utilities;
 import com.iasdietideals24.backend.entities.*;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
-import com.iasdietideals24.backend.mapstruct.dto.CategoriaAstaDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.*;
 
 public interface RelationsConverter {

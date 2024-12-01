@@ -16,6 +16,8 @@ import java.util.Optional;
 @RestController
 public class OffertaSilenziosaController {
 
+    public static final String LOG_OFFERTA_SILENZIOSA_NON_TROVATA = "Offerta silenziosa non trovata.";
+
     private final OffertaSilenziosaService offertaSilenziosaService;
 
     public OffertaSilenziosaController(OffertaSilenziosaService offertaSilenziosaService) {
@@ -51,7 +53,7 @@ public class OffertaSilenziosaController {
 
         log.info("Recupero dell'offerta silenziosa in corso...");
 
-        log.trace("CONTROLLER: Id offerta da recuperare: {}", idOfferta);
+        log.trace("Id offerta da recuperare: {}", idOfferta);
 
         Optional<OffertaSilenziosaDto> foundOffertaSilenziosaDto = offertaSilenziosaService.findOne(idOfferta);
         if (foundOffertaSilenziosaDto.isPresent()) {
@@ -61,7 +63,7 @@ public class OffertaSilenziosaController {
             return new ResponseEntity<>(foundOffertaSilenziosaDto.get(), HttpStatus.OK);
         } else {
 
-            log.info("Offerta silenziosa non trovata.");
+            log.info(LOG_OFFERTA_SILENZIOSA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -72,7 +74,7 @@ public class OffertaSilenziosaController {
 
         log.info("Sostituzione dell'offerta silenziosa in corso...");
 
-        log.trace("CONTROLLER: Id offerta da sostituire: {}", idOfferta);
+        log.trace("Id offerta da sostituire: {}", idOfferta);
 
         if (offertaSilenziosaService.isExists(idOfferta)) {
             OffertaSilenziosaDto updatedOffertaSilenziosaDto = offertaSilenziosaService.fullUpdate(idOfferta, receivedOffertaSilenziosaDto);
@@ -82,7 +84,7 @@ public class OffertaSilenziosaController {
             return new ResponseEntity<>(updatedOffertaSilenziosaDto, HttpStatus.OK);
         } else {
 
-            log.info("Offerta silenziosa non trovata.");
+            log.info(LOG_OFFERTA_SILENZIOSA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -93,7 +95,7 @@ public class OffertaSilenziosaController {
 
         log.info("Aggiornamento dell'offerta silenziosa in corso...");
 
-        log.trace("CONTROLLER: Id offerta da sostituire: {}", idOfferta);
+        log.trace("Id offerta da aggiornare: {}", idOfferta);
 
         if (offertaSilenziosaService.isExists(idOfferta)) {
             OffertaSilenziosaDto updatedOffertaSilenziosaDto = offertaSilenziosaService.partialUpdate(idOfferta, receivedOffertaSilenziosaDto);
@@ -103,7 +105,7 @@ public class OffertaSilenziosaController {
             return new ResponseEntity<>(updatedOffertaSilenziosaDto, HttpStatus.OK);
         } else {
 
-            log.info("Offerta silenziosa non trovata.");
+            log.info(LOG_OFFERTA_SILENZIOSA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -114,7 +116,7 @@ public class OffertaSilenziosaController {
 
         log.info("Eliminazione dell'offerta silenziosa in corso...");
 
-        log.trace("CONTROLLER: Id offerta da sostituire: {}", idOfferta);
+        log.trace("Id offerta da eliminare: {}", idOfferta);
 
         offertaSilenziosaService.delete(idOfferta);
 

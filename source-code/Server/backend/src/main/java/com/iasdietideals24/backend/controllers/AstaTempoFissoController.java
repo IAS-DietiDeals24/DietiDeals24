@@ -16,6 +16,8 @@ import java.util.Optional;
 @RestController
 public class AstaTempoFissoController {
 
+    public static final String LOG_ASTA_A_TEMPO_FISSO_NON_TROVATA = "Asta a tempo fisso non trovata.";
+
     private final AstaTempoFissoService astaTempoFissoService;
 
     public AstaTempoFissoController(AstaTempoFissoService astaTempoFissoService) {
@@ -51,7 +53,7 @@ public class AstaTempoFissoController {
 
         log.info("Recupero dell'asta a tempo fisso in corso...");
 
-        log.trace("CONTROLLER: Id asta da recuperare: {}", idAsta);
+        log.trace("Id asta da recuperare: {}", idAsta);
 
         Optional<AstaTempoFissoDto> foundAstaTempoFissoDto = astaTempoFissoService.findOne(idAsta);
         if (foundAstaTempoFissoDto.isPresent()) {
@@ -61,7 +63,7 @@ public class AstaTempoFissoController {
             return new ResponseEntity<>(foundAstaTempoFissoDto.get(), HttpStatus.OK);
         } else {
 
-            log.info("Asta a tempo fisso non trovata.");
+            log.info(LOG_ASTA_A_TEMPO_FISSO_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -72,7 +74,7 @@ public class AstaTempoFissoController {
 
         log.info("Sostituzione dell'asta a tempo fisso in corso...");
 
-        log.trace("CONTROLLER: Id asta da sostituire: {}", idAsta);
+        log.trace("Id asta da sostituire: {}", idAsta);
 
         if (astaTempoFissoService.isExists(idAsta)) {
             AstaTempoFissoDto updatedAstaTempoFissoDto = astaTempoFissoService.fullUpdate(idAsta, receivedAstaTempoFissoDto);
@@ -82,7 +84,7 @@ public class AstaTempoFissoController {
             return new ResponseEntity<>(updatedAstaTempoFissoDto, HttpStatus.OK);
         } else {
 
-            log.info("Asta a tempo fisso non trovata.");
+            log.info(LOG_ASTA_A_TEMPO_FISSO_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -93,7 +95,7 @@ public class AstaTempoFissoController {
 
         log.info("Aggiornamento dell'asta a tempo fisso in corso...");
 
-        log.trace("CONTROLLER: Id asta da sostituire: {}", idAsta);
+        log.trace("Id asta da aggiornare: {}", idAsta);
 
         if (astaTempoFissoService.isExists(idAsta)) {
             AstaTempoFissoDto updatedAstaTempoFissoDto = astaTempoFissoService.partialUpdate(idAsta, receivedAstaTempoFissoDto);
@@ -103,7 +105,7 @@ public class AstaTempoFissoController {
             return new ResponseEntity<>(updatedAstaTempoFissoDto, HttpStatus.OK);
         } else {
 
-            log.info("Asta a tempo fisso non trovata.");
+            log.info(LOG_ASTA_A_TEMPO_FISSO_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -114,7 +116,7 @@ public class AstaTempoFissoController {
 
         log.info("Eliminazione dell'asta a tempo fisso in corso...");
 
-        log.trace("CONTROLLER: Id asta da sostituire: {}", idAsta);
+        log.trace("Id asta da eliminare: {}", idAsta);
 
         astaTempoFissoService.delete(idAsta);
 

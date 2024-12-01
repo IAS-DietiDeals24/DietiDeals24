@@ -16,11 +16,7 @@ public interface CompratoreService {
 
     Optional<CompratoreDto> findOne(Long idAccount);
 
-    Page<CompratoreDto> findByTokensIdFacebook(String token, Pageable pageable);
-
     Page<CompratoreDto> findByEmail(String email, Pageable pageable);
-
-    Page<CompratoreDto> findByEmailAndPassword(String email, String password, Pageable pageable);
 
     boolean isExists(Long idAccount);
 

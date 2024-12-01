@@ -16,6 +16,8 @@ import java.util.Optional;
 @RestController
 public class OffertaTempoFissoController {
 
+    public static final String LOG_OFFERTA_A_TEMPO_FISSO_NON_TROVATA = "Offerta a tempo fisso non trovata.";
+
     private final OffertaTempoFissoService offertaTempoFissoService;
 
     public OffertaTempoFissoController(OffertaTempoFissoService offertaTempoFissoService) {
@@ -51,7 +53,7 @@ public class OffertaTempoFissoController {
 
         log.info("Recupero dell'offerta a tempo fisso in corso...");
 
-        log.trace("CONTROLLER: Id offerta da recuperare: {}", idOfferta);
+        log.trace("Id offerta da recuperare: {}", idOfferta);
 
         Optional<OffertaTempoFissoDto> foundOffertaTempoFissoDto = offertaTempoFissoService.findOne(idOfferta);
         if (foundOffertaTempoFissoDto.isPresent()) {
@@ -61,7 +63,7 @@ public class OffertaTempoFissoController {
             return new ResponseEntity<>(foundOffertaTempoFissoDto.get(), HttpStatus.OK);
         } else {
 
-            log.info("Offerta a tempo fisso non trovata.");
+            log.info(LOG_OFFERTA_A_TEMPO_FISSO_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -72,7 +74,7 @@ public class OffertaTempoFissoController {
 
         log.info("Sostituzione dell'offerta a tempo fisso in corso...");
 
-        log.trace("CONTROLLER: Id offerta da sostituire: {}", idOfferta);
+        log.trace("Id offerta da sostituire: {}", idOfferta);
 
         if (offertaTempoFissoService.isExists(idOfferta)) {
             OffertaTempoFissoDto updatedOffertaTempoFissoDto = offertaTempoFissoService.fullUpdate(idOfferta, receivedOffertaTempoFissoDto);
@@ -82,7 +84,7 @@ public class OffertaTempoFissoController {
             return new ResponseEntity<>(updatedOffertaTempoFissoDto, HttpStatus.OK);
         } else {
 
-            log.info("Offerta a tempo fisso non trovata.");
+            log.info(LOG_OFFERTA_A_TEMPO_FISSO_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -93,7 +95,7 @@ public class OffertaTempoFissoController {
 
         log.info("Aggiornamento dell'offerta a tempo fisso in corso...");
 
-        log.trace("CONTROLLER: Id offerta da sostituire: {}", idOfferta);
+        log.trace("Id offerta da aggiornare: {}", idOfferta);
 
         if (offertaTempoFissoService.isExists(idOfferta)) {
             OffertaTempoFissoDto updatedOffertaTempoFissoDto = offertaTempoFissoService.partialUpdate(idOfferta, receivedOffertaTempoFissoDto);
@@ -103,7 +105,7 @@ public class OffertaTempoFissoController {
             return new ResponseEntity<>(updatedOffertaTempoFissoDto, HttpStatus.OK);
         } else {
 
-            log.info("Offerta a tempo fisso non trovata.");
+            log.info(LOG_OFFERTA_A_TEMPO_FISSO_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -114,7 +116,7 @@ public class OffertaTempoFissoController {
 
         log.info("Eliminazione dell'offerta a tempo fisso in corso...");
 
-        log.trace("CONTROLLER: Id offerta da sostituire: {}", idOfferta);
+        log.trace("Id offerta da eliminare: {}", idOfferta);
 
         offertaTempoFissoService.delete(idOfferta);
 

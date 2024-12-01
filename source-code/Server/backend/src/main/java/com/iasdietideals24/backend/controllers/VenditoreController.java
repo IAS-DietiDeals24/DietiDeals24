@@ -16,6 +16,8 @@ import java.util.Optional;
 @RestController
 public class VenditoreController {
 
+    public static final String LOG_ACCOUNT_VENDITORE_NON_TROVATO = "Account venditore non trovato.";
+
     private final VenditoreService venditoreService;
 
     public VenditoreController(VenditoreService venditoreService) {
@@ -46,12 +48,24 @@ public class VenditoreController {
         return new ResponseEntity<>(foundVenditoriDto, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/accounts/venditori", params = "email")
+    public ResponseEntity<Page<VenditoreDto>> listVenditoriByEmail(@RequestParam("email") String email, Pageable pageable) {
+
+        log.info("Recupero degli account venditori in corso...");
+
+        Page<VenditoreDto> foundVenditoriDto = venditoreService.findByEmail(email, pageable);
+
+        log.info("Account venditori recuperati. Invio in corso...");
+
+        return new ResponseEntity<>(foundVenditoriDto, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/accounts/venditori/{idAccount}")
     public ResponseEntity<VenditoreDto> getVenditore(@PathVariable("idAccount") Long idAccount) {
 
         log.info("Recupero dell'account venditore in corso...");
 
-        log.trace("CONTROLLER: Id account da recuperare: {}", idAccount);
+        log.trace("Id account da recuperare: {}", idAccount);
 
         Optional<VenditoreDto> foundVenditoreDto = venditoreService.findOne(idAccount);
         if (foundVenditoreDto.isPresent()) {
@@ -61,47 +75,18 @@ public class VenditoreController {
             return new ResponseEntity<>(foundVenditoreDto.get(), HttpStatus.OK);
         } else {
 
-            log.info("Account venditore non trovato.");
+            log.info(LOG_ACCOUNT_VENDITORE_NON_TROVATO);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    /*
-    @GetMapping(path = "/accounts/venditori/facebook/{idFacebook}")
-    public ResponseEntity<VenditoreDto> getVenditoreFacebook(@PathVariable("idFacebook") String idFacebook) {
-        Optional<VenditoreDto> foundVenditoreDto = venditoreService.findByTokensIdFacebook(idFacebook, );
-        if (foundVenditoreDto.isPresent()) {
-            return new ResponseEntity<>(foundVenditoreDto.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-    
-    @GetMapping(path = "/accounts/venditori/{email}")
-    public ResponseEntity<VenditoreDto> getVenditore(
-            @PathVariable("email") String email,
-            @RequestParam(name = "password", required = false, defaultValue = "") String password
-    ) {
-        Optional<VenditoreDto> foundVenditoreDto;
-        if (password.isEmpty())
-             foundVenditoreDto = venditoreService.findOne(email);
-        else
-            foundVenditoreDto = venditoreService.findByEmailAndPassword(email, password, );
-        if (foundVenditoreDto.isPresent()) {
-            return new ResponseEntity<>(foundVenditoreDto.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-     */
 
     @PutMapping(path = "/accounts/venditori/{idAccount}")
     public ResponseEntity<VenditoreDto> fullUpdateVenditore(@PathVariable("idAccount") Long idAccount, @RequestBody VenditoreDto receivedVenditoreDto) throws InvalidParameterException {
 
         log.info("Sostituzione dell'account venditore in corso...");
 
-        log.trace("CONTROLLER: Id account da sostituire: {}", idAccount);
+        log.trace("Id account da sostituire: {}", idAccount);
 
         if (venditoreService.isExists(idAccount)) {
             VenditoreDto updatedVenditoreDto = venditoreService.fullUpdate(idAccount, receivedVenditoreDto);
@@ -111,7 +96,7 @@ public class VenditoreController {
             return new ResponseEntity<>(updatedVenditoreDto, HttpStatus.OK);
         } else {
 
-            log.info("Account venditore non trovato.");
+            log.info(LOG_ACCOUNT_VENDITORE_NON_TROVATO);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -122,7 +107,7 @@ public class VenditoreController {
 
         log.info("Aggiornamento dell'account venditore in corso...");
 
-        log.trace("CONTROLLER: Id account da aggiornare: {}", idAccount);
+        log.trace("Id account da aggiornare: {}", idAccount);
 
         if (venditoreService.isExists(idAccount)) {
             VenditoreDto updatedVenditoreDto = venditoreService.partialUpdate(idAccount, receivedVenditoreDto);
@@ -132,7 +117,7 @@ public class VenditoreController {
             return new ResponseEntity<>(updatedVenditoreDto, HttpStatus.OK);
         } else {
 
-            log.info("Account venditore non trovato.");
+            log.info(LOG_ACCOUNT_VENDITORE_NON_TROVATO);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -143,7 +128,7 @@ public class VenditoreController {
 
         log.info("Eliminazione dell'account venditore in corso...");
 
-        log.trace("CONTROLLER: Id account da eliminare: {}", idAccount);
+        log.trace("Id account da eliminare: {}", idAccount);
 
         venditoreService.delete(idAccount);
 

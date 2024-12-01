@@ -16,6 +16,8 @@ import java.util.Optional;
 @RestController
 public class NotificaController {
 
+    public static final String LOG_NOTIFICA_NON_TROVATA = "Notifica non trovata.";
+
     private final NotificaService notificaService;
 
     public NotificaController(NotificaService notificaService) {
@@ -51,7 +53,7 @@ public class NotificaController {
 
         log.info("Recupero della notifica in corso...");
 
-        log.trace("CONTROLLER: Id notifica da recuperare: {}", idNotifica);
+        log.trace("Id notifica da recuperare: {}", idNotifica);
 
         Optional<NotificaDto> foundNotificaDto = notificaService.findOne(idNotifica);
         if (foundNotificaDto.isPresent()) {
@@ -61,7 +63,7 @@ public class NotificaController {
             return new ResponseEntity<>(foundNotificaDto.get(), HttpStatus.OK);
         } else {
 
-            log.info("Notifica non trovata.");
+            log.info(LOG_NOTIFICA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -72,7 +74,7 @@ public class NotificaController {
 
         log.info("Sostituzione della notifica in corso...");
 
-        log.trace("CONTROLLER: Id notifica da sostituire: {}", idNotifica);
+        log.trace("Id notifica da sostituire: {}", idNotifica);
 
         if (notificaService.isExists(idNotifica)) {
             NotificaDto updatedNotificaDto = notificaService.fullUpdate(idNotifica, receivedNotificaDto);
@@ -82,7 +84,7 @@ public class NotificaController {
             return new ResponseEntity<>(updatedNotificaDto, HttpStatus.OK);
         } else {
 
-            log.info("Notifica non trovata.");
+            log.info(LOG_NOTIFICA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -93,7 +95,7 @@ public class NotificaController {
 
         log.info("Aggiornamento della notifica in corso...");
 
-        log.trace("CONTROLLER: Id notifica da sostituire: {}", idNotifica);
+        log.trace("Id notifica da aggiornare: {}", idNotifica);
 
         if (notificaService.isExists(idNotifica)) {
             NotificaDto updatedNotificaDto = notificaService.partialUpdate(idNotifica, receivedNotificaDto);
@@ -103,7 +105,7 @@ public class NotificaController {
             return new ResponseEntity<>(updatedNotificaDto, HttpStatus.OK);
         } else {
 
-            log.info("Notifica non trovata.");
+            log.info(LOG_NOTIFICA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -114,7 +116,7 @@ public class NotificaController {
 
         log.info("Eliminazione della notifica in corso...");
 
-        log.trace("CONTROLLER: Id asta da sostituire: {}", idNotifica);
+        log.trace("Id asta da eliminare: {}", idNotifica);
 
         notificaService.delete(idNotifica);
 

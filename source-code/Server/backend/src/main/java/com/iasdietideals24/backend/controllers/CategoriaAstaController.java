@@ -17,6 +17,8 @@ import java.util.Optional;
 @RestController
 public class CategoriaAstaController {
 
+    public static final String LOG_CATEGORIA_ASTA_NON_TROVATA = "Categoria asta non trovata.";
+
     private final CategoriaAstaService categoriaAstaService;
 
     public CategoriaAstaController(CategoriaAstaService categoriaAstaService) {
@@ -28,7 +30,7 @@ public class CategoriaAstaController {
 
         log.info("Creazione o sostituzione della categoria asta in corso...");
 
-        log.trace("CONTROLLER: Nome categoria asta da creare o sostituire: {}", nome);
+        log.trace("Nome categoria asta da creare o sostituire: {}", nome);
 
         if (categoriaAstaService.isExists(nome)) {
             CategoriaAstaDto updatedCategoriaAstaDto = categoriaAstaService.fullUpdate(nome, receivedCategoriaAstaDto);
@@ -62,7 +64,7 @@ public class CategoriaAstaController {
 
         log.info("Recupero della categoria asta in corso...");
 
-        log.trace("CONTROLLER: Nome categoria asta da recuperare: {}", nome);
+        log.trace("Nome categoria asta da recuperare: {}", nome);
 
         Optional<CategoriaAstaDto> foundCategoriaAstaDto = categoriaAstaService.findOne(nome);
         if (foundCategoriaAstaDto.isPresent()) {
@@ -72,7 +74,7 @@ public class CategoriaAstaController {
             return new ResponseEntity<>(foundCategoriaAstaDto.get(), HttpStatus.OK);
         } else {
 
-            log.info("Categoria asta non trovata.");
+            log.info(LOG_CATEGORIA_ASTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -83,7 +85,7 @@ public class CategoriaAstaController {
 
         log.info("Aggiornamento della categoria asta in corso...");
 
-        log.trace("CONTROLLER: Nome categoria asta da aggiornare: {}", nome);
+        log.trace("Nome categoria asta da aggiornare: {}", nome);
 
         if (categoriaAstaService.isExists(nome)) {
             CategoriaAstaDto updatedCategoriaAstaDto = categoriaAstaService.partialUpdate(nome, receivedCategoriaAstaDto);
@@ -93,7 +95,7 @@ public class CategoriaAstaController {
             return new ResponseEntity<>(updatedCategoriaAstaDto, HttpStatus.OK);
         } else {
 
-            log.info("Categoria asta non trovata.");
+            log.info(LOG_CATEGORIA_ASTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -104,7 +106,7 @@ public class CategoriaAstaController {
 
         log.info("Eliminazione della categoria asta in corso...");
 
-        log.trace("CONTROLLER: Nome categoria asta da aggiornare: {}", nome);
+        log.trace("Nome categoria asta da eliminare: {}", nome);
 
         categoriaAstaService.delete(nome);
 
