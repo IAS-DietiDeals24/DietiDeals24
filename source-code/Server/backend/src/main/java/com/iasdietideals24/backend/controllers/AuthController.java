@@ -42,16 +42,18 @@ public class AuthController {
     @Value("${auth.cognitoUri}") // Leggiamo il valore dall'application.properties
     private String cognitoUri;
 
-    private final String defaultRedirectUrl = "https://d84l1y8p4kdic.cloudfront.net";
+    private final String defaultRedirectUri = "https://d84l1y8p4kdic.cloudfront.net";
 
     private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 
     // Generiamo l'URL a cui il frontend deve accedere per fare il login su Cognito
     // Una volta fatto il login, il frontend avrà un Codice che servirà per l'autenticazione
     @GetMapping("/auth/url")
-    public ResponseEntity<UrlDto> auth(@RequestParam(defaultValue = defaultRedirectUrl) String redirectUrl) {
+    public ResponseEntity<UrlDto> auth(@RequestParam(name = "redirect_uri", defaultValue = defaultRedirectUri) String redirectUri) {
 
         log.debug("Costruisco l'URL...");
+
+        log.trace("Redirect URI ricevuto: {}", redirectUri);
 
         // Potrebbe essere necessario cambiare l'url generato (lo scope o redirect_uri) in base al client API
         // Documentazione: https://docs.aws.amazon.com/cognito/latest/developerguide/authorization-endpoint.html
@@ -60,7 +62,7 @@ public class AuthController {
                 "client_id=" + clientId +
                 "&response_type=code" +
                 "&scope=email+openid+phone" +
-                "&redirect_uri=" + redirectUrl;
+                "&redirect_uri=" + redirectUri;
 
         log.debug("URL costruito. Invio in corso...");
 
@@ -70,11 +72,12 @@ public class AuthController {
     // Validiamo il Codice ricevuto dal frontend e restituiamo il JWT
     // Il JWT dovrà essere inserito nell'header di ogni richiesta che necessita di autorizzazione
     @GetMapping("/auth/callback")
-    public ResponseEntity<TokenDto> callback(@RequestParam("code") String code) {
-
+    public ResponseEntity<TokenDto> callback(@RequestParam("code") String code,
+                                             @RequestParam(name = "redirect_uri", defaultValue = defaultRedirectUri) String redirectUri) {
         log.info("Autenticazione in corso...");
 
         log.trace("Codice ricevuto: {}", code);
+        log.trace("Redirect URI ricevuto: {}", redirectUri);
 
         log.debug("Costruisco il pacchetto da inviare ad AWS Cognito...");
 
@@ -84,7 +87,7 @@ public class AuthController {
                 "grant_type=authorization_code" +
                 "&client_id=" + clientId +
                 "&code=" + code +
-                "&redirect_uri=https://d84l1y8p4kdic.cloudfront.net";
+                "&redirect_uri=" + redirectUri;
 
         // Recuperiamo l'ID e Secret per autenticare il backend in Cognito
         String authenticationInfo = clientId + ":" + clientSecret;
