@@ -15,14 +15,20 @@ import com.iasdietideals24.backend.repositories.OffertaSilenziosaRepository;
 import com.iasdietideals24.backend.services.OffertaDiCompratoreService;
 import com.iasdietideals24.backend.services.OffertaSilenziosaService;
 import com.iasdietideals24.backend.utilities.RelationsConverter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
+
+    public static final String LOG_RECUPERO_OFFERTA_SILENZIOSA = "Recupero l'offerta silenziosa dal database...";
+    public static final String LOG_FOUND_OFFERTA_SILENZIOSA = "foundOffertaSilenziosa: {}";
+    public static final String LOG_OFFERTA_SILENZIOSA_RECUPERATA = "Offerta silenziosa recuperata dal database.";
 
     private final OffertaDiCompratoreService offertaDiCompratoreService;
     private final StatoOffertaSilenziosaMapper statoOffertaSilenziosaMapper;
@@ -48,14 +54,26 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
         // Verifichiamo l'integrità dei dati
         checkFieldsValid(nuovaOffertaSilenziosaDto);
 
+        log.debug("Converto il DTO in entità...");
+
         // Convertiamo a entità
         OffertaSilenziosa nuovaOffertaSilenziosa = offertaSilenziosaMapper.toEntity(nuovaOffertaSilenziosaDto);
+
+        log.debug("DTO convertito correttamente.");
+        log.trace("nuovaOffertaSilenziosa: {}", nuovaOffertaSilenziosa);
 
         // Recuperiamo le associazioni
         convertRelations(nuovaOffertaSilenziosaDto, nuovaOffertaSilenziosa);
 
+        log.trace("nuovaOffertaSilenziosa: {}", nuovaOffertaSilenziosa);
+
+        log.debug("Salvo l'offerta silenziosa nel database...");
+
         // Registriamo l'entità
         OffertaSilenziosa savedOffertaSilenziosa = offertaSilenziosaRepository.save(nuovaOffertaSilenziosa);
+
+        log.trace("savedOffertaSilenziosa: {}", savedOffertaSilenziosa);
+        log.debug("Offerta silenziosa salvata correttamente nel database con id offerta {}...", savedOffertaSilenziosa.getIdOfferta());
 
         return offertaSilenziosaMapper.toDto(savedOffertaSilenziosa);
     }
@@ -63,8 +81,13 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
     @Override
     public Page<OffertaSilenziosaDto> findAll(Pageable pageable) {
 
+        log.debug("Recupero le offerte silenziose dal database...");
+
         // Recuperiamo tutte le entità
         Page<OffertaSilenziosa> foundOfferteSilenziose = offertaSilenziosaRepository.findAll(pageable);
+
+        log.trace("foundOfferteSilenziose: {}", foundOfferteSilenziose);
+        log.debug("Offerte silenziose recuperate dal database.");
 
         return foundOfferteSilenziose.map(offertaSilenziosaMapper::toDto);
     }
@@ -72,8 +95,14 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
     @Override
     public Optional<OffertaSilenziosaDto> findOne(Long idOfferta) {
 
+        log.trace("Id offerta da recuperare: {}", idOfferta);
+        log.debug(LOG_RECUPERO_OFFERTA_SILENZIOSA);
+
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<OffertaSilenziosa> foundOffertaSilenziosa = offertaSilenziosaRepository.findById(idOfferta);
+
+        log.trace(LOG_FOUND_OFFERTA_SILENZIOSA, foundOffertaSilenziosa);
+        log.debug(LOG_OFFERTA_SILENZIOSA_RECUPERATA);
 
         return foundOffertaSilenziosa.map(offertaSilenziosaMapper::toDto);
     }
@@ -88,6 +117,8 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
     @Override
     public OffertaSilenziosaDto fullUpdate(Long idOfferta, OffertaSilenziosaDto updatedOffertaSilenziosaDto) throws InvalidParameterException {
 
+        log.trace("Id offerta da sostituire: {}", idOfferta);
+
         updatedOffertaSilenziosaDto.setIdOfferta(idOfferta);
 
         if (!offertaSilenziosaRepository.existsById(idOfferta))
@@ -100,10 +131,18 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
     @Override
     public OffertaSilenziosaDto partialUpdate(Long idOfferta, OffertaSilenziosaDto updatedOffertaSilenziosaDto) throws InvalidParameterException {
 
-        // Recuperiamo l'entità con l'id passato per parametro
+        log.trace("Id offerta da aggiornare: {}", idOfferta);
+
         updatedOffertaSilenziosaDto.setIdOfferta(idOfferta);
 
+        log.debug(LOG_RECUPERO_OFFERTA_SILENZIOSA);
+
+        // Recuperiamo l'entità con l'id passato per parametro
         Optional<OffertaSilenziosa> foundOffertaSilenziosa = offertaSilenziosaRepository.findById(idOfferta);
+
+        log.trace(LOG_FOUND_OFFERTA_SILENZIOSA, foundOffertaSilenziosa);
+        log.debug(LOG_OFFERTA_SILENZIOSA_RECUPERATA);
+
         if (foundOffertaSilenziosa.isEmpty())
             throw new UpdateRuntimeException("L'id offerta '" + idOfferta + "' non corrisponde a nessuna offerta silenziosa esistente!");
         else {
@@ -120,36 +159,64 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
     @Override
     public void delete(Long idOfferta) {
 
+        log.trace("Id offerta da eliminare: {}", idOfferta);
+        log.debug("Elimino l'offerta silenziosa dal database...");
+
         // Eliminiamo l'entità con l'id passato per parametro
         offertaSilenziosaRepository.deleteById(idOfferta);
+
+        log.debug("Offerta silenziosa eliminata dal database.");
     }
 
     @Override
     public void checkFieldsValid(OffertaSilenziosaDto offertaSilenziosaDto) throws InvalidParameterException {
+
+        log.debug("Verifico l'integrità dei dati di offerta silenziosa...");
+
         offertaDiCompratoreService.checkFieldsValid(offertaSilenziosaDto);
         checkStatoValid(offertaSilenziosaDto.getStato());
         checkAstaRiferimentoValid(offertaSilenziosaDto.getAstaRiferimentoShallow());
+
+        log.debug("Integrità dei dati di offerta silenziosa verificata.");
     }
 
     private void checkStatoValid(String stato) throws InvalidParameterException {
+
+        log.trace("Controllo che 'stato' sia valido...");
+
         if (stato == null)
             throw new InvalidParameterException("Lo stato non può essere null!");
         else if (stato.isBlank())
             throw new InvalidParameterException("Lo stato non può essere vuoto!");
+
+        log.trace("'stato' valido.");
     }
 
     private void checkAstaRiferimentoValid(AstaShallowDto astaRiferimentoShallow) throws InvalidParameterException {
+
+        log.trace("Controllo che 'astaRiferimento' sia valido...");
+
         if (astaRiferimentoShallow == null)
             throw new InvalidParameterException("L'asta riferimento non può essere null!");
+
+        log.trace("'astaRiferimento' valido.");
     }
 
     @Override
     public void convertRelations(OffertaSilenziosaDto offertaSilenziosaDto, OffertaSilenziosa offertaSilenziosa) throws InvalidParameterException {
+
+        log.debug("Recupero le associazioni di offerta silenziosa...");
+
         offertaDiCompratoreService.convertRelations(offertaSilenziosaDto, offertaSilenziosa);
         convertAstaRiferimentoShallow(offertaSilenziosaDto.getAstaRiferimentoShallow(), offertaSilenziosa);
+
+        log.debug("Associazioni di offerta silenziosa recuperate.");
     }
 
     private void convertAstaRiferimentoShallow(AstaShallowDto astaRiferimentoShallow, OffertaSilenziosa offertaSilenziosa) throws IdNotFoundException, InvalidTypeException {
+
+        log.trace("Converto l'associazione 'astaRiferimento'...");
+
         Asta convertedAsta = relationsConverter.convertAstaShallowRelation(astaRiferimentoShallow);
 
         if (convertedAsta != null) {
@@ -160,20 +227,32 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
                 throw new InvalidTypeException("Un'offerta silenziosa può riferirsi solo ad aste silenziose!");
             }
         }
+
+        log.trace("'astaRiferimento' convertita correttamente.");
     }
 
     @Override
     public void updatePresentFields(OffertaSilenziosaDto updatedOffertaSilenziosaDto, OffertaSilenziosa existingOffertaSilenziosa) throws InvalidParameterException {
+
+        log.debug("Effettuo le modifiche di offerta silenziosa richieste...");
+
         offertaDiCompratoreService.updatePresentFields(updatedOffertaSilenziosaDto, existingOffertaSilenziosa);
         ifPresentUpdateStato(updatedOffertaSilenziosaDto.getStato(), existingOffertaSilenziosa);
+
+        log.debug("Modifiche di offerta silenziosa effettuate correttamente.");
 
         // Non è possibile modificare l'associazione "astaRiferimento" tramite la risorsa "offerte/di-compratori/silenziose"
     }
 
     private void ifPresentUpdateStato(String stato, OffertaSilenziosa existingOffertaSilenziosa) throws InvalidParameterException {
+
+        log.trace("Effettuo la modifica di 'stato'...");
+
         if (stato != null) {
             checkStatoValid(stato);
             existingOffertaSilenziosa.setStato(statoOffertaSilenziosaMapper.toEntity(stato));
         }
+
+        log.trace("'stato' modificato correttamente.");
     }
 }

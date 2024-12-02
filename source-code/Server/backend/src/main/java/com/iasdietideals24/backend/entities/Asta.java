@@ -44,12 +44,12 @@ public abstract class Asta {
     @Column(name = "immagine")
     private byte[] immagine;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "categoria_asta_nome", nullable = false)
     @NonNull
     private CategoriaAsta categoria;
 
-    @OneToMany(mappedBy = "astaAssociata", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "astaAssociata", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true)
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     private Set<Notifica> notificheAssociate = new HashSet<>();

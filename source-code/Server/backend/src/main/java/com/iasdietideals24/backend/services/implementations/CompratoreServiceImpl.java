@@ -25,6 +25,10 @@ import java.util.Set;
 @Service
 public class CompratoreServiceImpl implements CompratoreService {
 
+    public static final String LOG_RECUPERO_ACCOUNT_COMPRATORE = "Recupero l'account compratore dal database...";
+    public static final String LOG_FOUND_COMPRATORE = "foundCompratore: {}";
+    public static final String LOG_ACCOUNT_COMPRATORE_RECUPERATO = "Account compratore recuperato dal database.";
+
     private final AccountService accountService;
     private final CompratoreMapper compratoreMapper;
     private final CompratoreRepository compratoreRepository;
@@ -43,14 +47,26 @@ public class CompratoreServiceImpl implements CompratoreService {
         // Verifichiamo l'integrità dei dati
         checkFieldsValid(nuovoCompratoreDto);
 
+        log.debug("Converto il DTO in entità...");
+
         // Convertiamo a entità
         Compratore nuovoCompratore = compratoreMapper.toEntity(nuovoCompratoreDto);
+
+        log.debug("DTO convertito correttamente.");
+        log.trace("nuovoCompratore: {}", nuovoCompratore);
 
         // Recuperiamo le associazioni
         convertRelations(nuovoCompratoreDto, nuovoCompratore);
 
+        log.trace("nuovoCompratore: {}", nuovoCompratore);
+
+        log.debug("Salvo l'account compratore nel database...");
+
         // Registriamo l'entità
         Compratore savedCompratore = compratoreRepository.save(nuovoCompratore);
+
+        log.trace("savedCompratore: {}", savedCompratore);
+        log.debug("Account compratore salvato correttamente nel database con id account {}...", savedCompratore.getIdAccount());
 
         return compratoreMapper.toDto(savedCompratore);
     }
@@ -58,8 +74,13 @@ public class CompratoreServiceImpl implements CompratoreService {
     @Override
     public Page<CompratoreDto> findAll(Pageable pageable) {
 
+        log.debug("Recupero gli accounts compratori dal database...");
+
         // Recuperiamo tutte le entità
         Page<Compratore> foundCompratori = compratoreRepository.findAll(pageable);
+
+        log.trace("foundCompratori: {}", foundCompratori);
+        log.debug("Accounts compratori recuperati dal database.");
 
         return foundCompratori.map(compratoreMapper::toDto);
     }
@@ -67,17 +88,14 @@ public class CompratoreServiceImpl implements CompratoreService {
     @Override
     public Optional<CompratoreDto> findOne(Long idAccount) {
 
+        log.trace("Id account da recuperare: {}", idAccount);
+        log.debug(LOG_RECUPERO_ACCOUNT_COMPRATORE);
+
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<Compratore> foundCompratore = compratoreRepository.findById(idAccount);
 
-        return foundCompratore.map(compratoreMapper::toDto);
-    }
-
-    @Override
-    public Page<CompratoreDto> findByTokensIdFacebook(String token, Pageable pageable) {
-
-        // Recuperiamo l'entità con l'id passato per parametro
-        Page<Compratore> foundCompratore = compratoreRepository.findByTokensIdFacebook(token, pageable);
+        log.trace(LOG_FOUND_COMPRATORE, foundCompratore);
+        log.debug(LOG_ACCOUNT_COMPRATORE_RECUPERATO);
 
         return foundCompratore.map(compratoreMapper::toDto);
     }
@@ -85,17 +103,14 @@ public class CompratoreServiceImpl implements CompratoreService {
     @Override
     public Page<CompratoreDto> findByEmail(String email, Pageable pageable) {
 
+        log.trace("Email account da recuperare: {}", email);
+        log.debug(LOG_RECUPERO_ACCOUNT_COMPRATORE);
+
         // Recuperiamo l'entità con l'id passato per parametro
         Page<Compratore> foundCompratore = compratoreRepository.findByEmail(email, pageable);
 
-        return foundCompratore.map(compratoreMapper::toDto);
-    }
-
-    @Override
-    public Page<CompratoreDto> findByEmailAndPassword(String email, String password, Pageable pageable) {
-
-        // Recuperiamo l'entità con l'id e password passati per parametro
-        Page<Compratore> foundCompratore = compratoreRepository.findByEmailAndPassword(email, password, pageable);
+        log.trace(LOG_FOUND_COMPRATORE, foundCompratore);
+        log.debug(LOG_ACCOUNT_COMPRATORE_RECUPERATO);
 
         return foundCompratore.map(compratoreMapper::toDto);
     }
@@ -110,6 +125,8 @@ public class CompratoreServiceImpl implements CompratoreService {
     @Override
     public CompratoreDto fullUpdate(Long idAccount, CompratoreDto updatedCompratoreDto) throws InvalidParameterException {
 
+        log.trace("Id account da sostituire: {}", idAccount);
+
         updatedCompratoreDto.setIdAccount(idAccount);
 
         if (!compratoreRepository.existsById(idAccount))
@@ -123,10 +140,18 @@ public class CompratoreServiceImpl implements CompratoreService {
     @Override
     public CompratoreDto partialUpdate(Long idAccount, CompratoreDto updatedCompratoreDto) throws InvalidParameterException {
 
-        // Recuperiamo l'entità con l'id passato per parametro
+        log.trace("Id account da aggiornare: {}", idAccount);
+
         updatedCompratoreDto.setIdAccount(idAccount);
 
+        log.debug(LOG_RECUPERO_ACCOUNT_COMPRATORE);
+
+        // Recuperiamo l'entità con l'id passato per parametro
         Optional<Compratore> foundCompratore = compratoreRepository.findById(idAccount);
+
+        log.trace(LOG_FOUND_COMPRATORE, foundCompratore);
+        log.debug(LOG_ACCOUNT_COMPRATORE_RECUPERATO);
+
         if (foundCompratore.isEmpty())
             throw new UpdateRuntimeException("L'id account '" + idAccount + "' non corrisponde a nessun compratore esistente!");
         else {
@@ -143,31 +168,46 @@ public class CompratoreServiceImpl implements CompratoreService {
     @Override
     public void delete(Long idAccount) throws InvalidParameterException {
 
-        log.debug("SERVICE: Verifico che l'account non sia l'ultimo account del profilo al quale è associato...");
+        log.trace("Id account da eliminare: {}", idAccount);
+        log.debug("Elimino l'account compratore dal database...");
+
+        log.debug("Verifico che l'account non sia l'ultimo account del profilo al quale è associato...");
 
         Optional<Compratore> existingCompratore = compratoreRepository.findById(idAccount);
         if (existingCompratore.isPresent() && accountService.isLastAccountOfProfilo(existingCompratore.get())) {
+            log.warn("Non puoi eliminare l'unico account associato al profilo!");
+
             throw new IllegalDeleteRequestException("Non puoi eliminare l'unico account associato al profilo!");
         }
 
-        log.debug("SERVICE: L'account non è l'ultimo account del profilo al quale è associato. Procedo con l'eliminazione...");
+        log.debug("L'account non è l'ultimo account del profilo al quale è associato. Elimino l'account compratore dal database...");
         
         // Eliminiamo l'entità con l'id passato per parametro
         compratoreRepository.deleteById(idAccount);
 
-        log.debug("SERVICE: Account eliminato");
+        log.debug("Account compratore eliminato dal database.");
     }
 
     @Override
     public void checkFieldsValid(CompratoreDto compratoreDto) throws InvalidParameterException {
+
+        log.debug("Verifico l'integrità dei dati di account compratore...");
+
         accountService.checkFieldsValid(compratoreDto);
+
+        log.debug("Integrità dei dati di account compratore verificata.");
     }
 
     @Override
     public void convertRelations(CompratoreDto compratoreDto, Compratore compratore) throws InvalidParameterException {
+
+        log.debug("Recupero le associazioni di account compratore...");
+
         accountService.convertRelations(compratoreDto, compratore);
         convertAstePosseduteShallow(compratoreDto.getAstePosseduteShallow(), compratore);
         convertOfferteCollegateShallow(compratoreDto.getOfferteCollegateShallow(), compratore);
+
+        log.debug("Associazioni di account compratore recuperate.");
     }
 
     private void convertAstePosseduteShallow(Set<AstaShallowDto> astePosseduteShallowDto, Compratore compratore) throws InvalidParameterException {
@@ -189,6 +229,9 @@ public class CompratoreServiceImpl implements CompratoreService {
     }
 
     private void convertOfferteCollegateShallow(Set<OffertaShallowDto> offerteCollegateShallowDto, Compratore compratore) throws InvalidParameterException {
+
+        log.trace("Converto l'associazione 'offerteCollegate'...");
+
         if (offerteCollegateShallowDto != null) {
             for (OffertaShallowDto offertaShallowDto : offerteCollegateShallowDto) {
 
@@ -204,11 +247,18 @@ public class CompratoreServiceImpl implements CompratoreService {
                 }
             }
         }
+
+        log.trace("'offerteCollegate' convertita correttamente.");
     }
 
     @Override
     public void updatePresentFields(CompratoreDto updatedCompratoreDto, Compratore existingCompratore) throws InvalidParameterException {
+
+        log.debug("Effettuo le modifiche di account compratore richieste...");
+
         accountService.updatePresentFields(updatedCompratoreDto, existingCompratore);
+
+        log.debug("Modifiche di account compratore effettuate correttamente.");
 
         // Non è possibile modificare le associazioni "astePossedute", "offerteCollegate" tramite la risorsa "accounts/compratori"
     }

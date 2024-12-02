@@ -13,6 +13,7 @@ import com.iasdietideals24.backend.repositories.VenditoreRepository;
 import com.iasdietideals24.backend.services.AccountService;
 import com.iasdietideals24.backend.services.VenditoreService;
 import com.iasdietideals24.backend.utilities.RelationsConverter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,13 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Service
 public class VenditoreServiceImpl implements VenditoreService {
+
+    public static final String LOG_RECUPERO_ACCOUNT_VENDITORE = "Recupero l'account venditore dal database...";
+    public static final String LOG_FOUND_VENDITORE = "foundVenditore: {}";
+    public static final String LOG_ACCOUNT_VENDITORE_RECUPERATO = "Account venditore recuperato dal database.";
 
     private final AccountService accountService;
     private final VenditoreMapper venditoreMapper;
@@ -41,14 +47,26 @@ public class VenditoreServiceImpl implements VenditoreService {
         // Verifichiamo l'integrità dei dati
         checkFieldsValid(nuovoVenditoreDto);
 
+        log.debug("Converto il DTO in entità...");
+
         // Convertiamo a entità
         Venditore nuovoVenditore = venditoreMapper.toEntity(nuovoVenditoreDto);
+
+        log.debug("DTO convertito correttamente.");
+        log.trace("nuovoVenditore: {}", nuovoVenditore);
 
         // Recuperiamo le associazioni
         convertRelations(nuovoVenditoreDto, nuovoVenditore);
 
+        log.trace("nuovoVenditore: {}", nuovoVenditore);
+
+        log.debug("Salvo l'account venditore nel database...");
+
         // Registriamo l'entità
         Venditore savedVenditore = venditoreRepository.save(nuovoVenditore);
+
+        log.trace("savedVenditore: {}", savedVenditore);
+        log.debug("Account venditore salvato correttamente nel database con id account {}...", savedVenditore.getIdAccount());
 
         return venditoreMapper.toDto(savedVenditore);
     }
@@ -56,8 +74,13 @@ public class VenditoreServiceImpl implements VenditoreService {
     @Override
     public Page<VenditoreDto> findAll(Pageable pageable) {
 
+        log.debug("Recupero gli accounts venditori dal database...");
+
         // Recuperiamo tutte le entità
         Page<Venditore> foundVenditori = venditoreRepository.findAll(pageable);
+
+        log.trace("foundVenditori: {}", foundVenditori);
+        log.debug("Accounts venditori recuperati dal database.");
 
         return foundVenditori.map(venditoreMapper::toDto);
     }
@@ -65,17 +88,14 @@ public class VenditoreServiceImpl implements VenditoreService {
     @Override
     public Optional<VenditoreDto> findOne(Long idAccount) {
 
+        log.trace("Id account da recuperare: {}", idAccount);
+        log.debug(LOG_RECUPERO_ACCOUNT_VENDITORE);
+
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<Venditore> foundVenditore = venditoreRepository.findById(idAccount);
 
-        return foundVenditore.map(venditoreMapper::toDto);
-    }
-
-    @Override
-    public Page<VenditoreDto> findByTokensIdFacebook(String token, Pageable pageable) {
-
-        // Recuperiamo l'entità con l'id passato per parametro
-        Page<Venditore> foundVenditore = venditoreRepository.findByTokensIdFacebook(token, pageable);
+        log.trace(LOG_FOUND_VENDITORE, foundVenditore);
+        log.debug(LOG_ACCOUNT_VENDITORE_RECUPERATO);
 
         return foundVenditore.map(venditoreMapper::toDto);
     }
@@ -83,17 +103,14 @@ public class VenditoreServiceImpl implements VenditoreService {
     @Override
     public Page<VenditoreDto> findByEmail(String email, Pageable pageable) {
 
+        log.trace("Email account da recuperare: {}", email);
+        log.debug(LOG_RECUPERO_ACCOUNT_VENDITORE);
+
         // Recuperiamo l'entità con l'id passato per parametro
         Page<Venditore> foundVenditore = venditoreRepository.findByEmail(email, pageable);
 
-        return foundVenditore.map(venditoreMapper::toDto);
-    }
-
-    @Override
-    public Page<VenditoreDto> findByEmailAndPassword(String email, String password, Pageable pageable) {
-
-        // Recuperiamo l'entità con l'id e password passati per parametro
-        Page<Venditore> foundVenditore = venditoreRepository.findByEmailAndPassword(email, password, pageable);
+        log.trace(LOG_FOUND_VENDITORE, foundVenditore);
+        log.debug(LOG_ACCOUNT_VENDITORE_RECUPERATO);
 
         return foundVenditore.map(venditoreMapper::toDto);
     }
@@ -108,6 +125,8 @@ public class VenditoreServiceImpl implements VenditoreService {
     @Override
     public VenditoreDto fullUpdate(Long idAccount, VenditoreDto updatedVenditoreDto) throws InvalidParameterException {
 
+        log.trace("Id account da sostituire: {}", idAccount);
+
         updatedVenditoreDto.setIdAccount(idAccount);
 
         if (!venditoreRepository.existsById(idAccount))
@@ -121,10 +140,18 @@ public class VenditoreServiceImpl implements VenditoreService {
     @Override
     public VenditoreDto partialUpdate(Long idAccount, VenditoreDto updatedVenditoreDto) throws InvalidParameterException {
 
-        // Recuperiamo l'entità con l'id passato per parametro
+        log.trace("Id account da aggiornare: {}", idAccount);
+
         updatedVenditoreDto.setIdAccount(idAccount);
 
+        log.debug(LOG_RECUPERO_ACCOUNT_VENDITORE);
+
+        // Recuperiamo l'entità con l'id passato per parametro
         Optional<Venditore> foundVenditore = venditoreRepository.findById(idAccount);
+
+        log.trace(LOG_FOUND_VENDITORE, foundVenditore);
+        log.debug(LOG_ACCOUNT_VENDITORE_RECUPERATO);
+
         if (foundVenditore.isEmpty())
             throw new UpdateRuntimeException("L'id account '" + idAccount + "' non corrisponde a nessun venditore esistente!");
         else {
@@ -141,25 +168,46 @@ public class VenditoreServiceImpl implements VenditoreService {
     @Override
     public void delete(Long idAccount) throws InvalidParameterException {
 
+        log.trace("Id account da eliminare: {}", idAccount);
+        log.debug("Elimino l'account venditore dal database...");
+
+        log.debug("Verifico che l'account non sia l'ultimo account del profilo al quale è associato...");
+
         Optional<Venditore> existingVenditore = venditoreRepository.findById(idAccount);
         if (existingVenditore.isPresent() && accountService.isLastAccountOfProfilo(existingVenditore.get())) {
+            log.warn("Non puoi eliminare l'unico account associato al profilo!");
+
             throw new IllegalDeleteRequestException("Non puoi eliminare l'unico account associato al profilo!");
         }
 
+        log.debug("L'account non è l'ultimo account del profilo al quale è associato. Elimino l'account venditore dal database...");
+
         // Eliminiamo l'entità con l'id passato per parametro
         venditoreRepository.deleteById(idAccount);
+
+        log.debug("Account venditore eliminato dal database.");
     }
 
     @Override
     public void checkFieldsValid(VenditoreDto venditoreDto) throws InvalidParameterException {
+
+        log.debug("Verifico l'integrità dei dati di account venditore...");
+
         accountService.checkFieldsValid(venditoreDto);
+
+        log.debug("Integrità dei dati di account venditore verificata.");
     }
 
     @Override
     public void convertRelations(VenditoreDto venditoreDto, Venditore venditore) throws InvalidParameterException {
+
+        log.debug("Recupero le associazioni di account venditore...");
+
         accountService.convertRelations(venditoreDto, venditore);
         convertAstePosseduteShallow(venditoreDto.getAstePosseduteShallow(), venditore);
         convertOfferteCollegateShallow(venditoreDto.getOfferteCollegateShallow(), venditore);
+
+        log.debug("Associazioni di account venditore recuperate.");
     }
 
     private void convertAstePosseduteShallow(Set<AstaShallowDto> astePosseduteShallowDto, Venditore venditore) throws InvalidParameterException {
@@ -181,6 +229,9 @@ public class VenditoreServiceImpl implements VenditoreService {
     }
 
     private void convertOfferteCollegateShallow(Set<OffertaShallowDto> offerteCollegateShallowDto, Venditore venditore) throws InvalidParameterException {
+
+        log.trace("Converto l'associazione 'offerteCollegate'...");
+
         if (offerteCollegateShallowDto != null) {
             for (OffertaShallowDto offertaShallowDto : offerteCollegateShallowDto) {
 
@@ -196,11 +247,18 @@ public class VenditoreServiceImpl implements VenditoreService {
                 }
             }
         }
+
+        log.trace("'offerteCollegate' convertita correttamente.");
     }
 
     @Override
     public void updatePresentFields(VenditoreDto updatedVenditoreDto, Venditore existingVenditore) throws InvalidParameterException {
+
+        log.debug("Effettuo le modifiche di account venditore richieste...");
+
         accountService.updatePresentFields(updatedVenditoreDto, existingVenditore);
+
+        log.debug("Modifiche di account venditore effettuate correttamente.");
 
         // Non è possibile modificare le associazioni "astePossedute", "offerteCollegate" tramite la risorsa "accounts/venditori"
     }

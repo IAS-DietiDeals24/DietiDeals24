@@ -20,12 +20,16 @@ public class GlobalExceptionHandlerController extends ResponseEntityExceptionHan
     @ExceptionHandler(value = {InvalidParameterException.class})
     protected ResponseEntity<Object> handleInvalidParameterException(InvalidParameterException e, HttpServletRequest request) {
 
-        log.info("Request {} raised excelption {}", request.getRequestURI(), e.getClass().getSimpleName());
+        log.trace("Request '{} {}' raised exception '{}'", request.getMethod(), request.getRequestURI(), e.getClass().getSimpleName());
+
+        log.debug("Costruzione del pacchetto di errore in corso...");
 
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
         ErrorDto errorDto = toDto(e);
         errorDto.setStatusCode(String.valueOf(httpStatus.value()));
+
+        log.debug("Pacchetto di errore costruito correttamente. Invio in corso...");
 
         return new ResponseEntity<>(errorDto, httpStatus);
     }

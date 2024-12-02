@@ -14,14 +14,20 @@ import com.iasdietideals24.backend.repositories.OffertaInversaRepository;
 import com.iasdietideals24.backend.services.OffertaDiVenditoreService;
 import com.iasdietideals24.backend.services.OffertaInversaService;
 import com.iasdietideals24.backend.utilities.RelationsConverter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class OffertaInversaServiceImpl implements OffertaInversaService {
+
+    public static final String RECUPERO_OFFERTA_INVERSA = "Recupero l'offerta inversa dal database...";
+    public static final String LOG_FOUND_OFFERTA_INVERSA = "foundOffertaInversa: {}";
+    public static final String LOG_OFFERTA_INVERSA_RECUPERATA = "Offerta inversa recuperata dal database.";
 
     private final OffertaDiVenditoreService offertaDiVenditoreService;
     private final OffertaInversaMapper offertaInversaMapper;
@@ -44,14 +50,26 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
         // Verifichiamo l'integrità dei dati
         checkFieldsValid(nuovaOffertaInversaDto);
 
+        log.debug("Converto il DTO in entità...");
+
         // Convertiamo a entità
         OffertaInversa nuovaOffertaInversa = offertaInversaMapper.toEntity(nuovaOffertaInversaDto);
+
+        log.debug("DTO convertito correttamente.");
+        log.trace("nuovaOffertaInversa: {}", nuovaOffertaInversa);
 
         // Recuperiamo le associazioni
         convertRelations(nuovaOffertaInversaDto, nuovaOffertaInversa);
 
+        log.trace("nuovaOffertaInversa: {}", nuovaOffertaInversa);
+
+        log.debug("Salvo l'offerta inversa nel database...");
+
         // Registriamo l'entità
         OffertaInversa savedOffertaInversa = offertaInversaRepository.save(nuovaOffertaInversa);
+
+        log.trace("savedOffertaInversa: {}", savedOffertaInversa);
+        log.debug("Offerta inversa salvata correttamente nel database con id offerta {}...", savedOffertaInversa.getIdOfferta());
 
         return offertaInversaMapper.toDto(savedOffertaInversa);
     }
@@ -59,8 +77,13 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
     @Override
     public Page<OffertaInversaDto> findAll(Pageable pageable) {
 
+        log.debug("Recupero le offerte inverse dal database...");
+
         // Recuperiamo tutte le entità
         Page<OffertaInversa> foundOfferteInverse = offertaInversaRepository.findAll(pageable);
+
+        log.trace("foundOfferteInverse: {}", foundOfferteInverse);
+        log.debug("Offerte inverse recuperate dal database.");
 
         return foundOfferteInverse.map(offertaInversaMapper::toDto);
     }
@@ -68,8 +91,14 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
     @Override
     public Optional<OffertaInversaDto> findOne(Long idOfferta) {
 
+        log.trace("Id offerta da recuperare: {}", idOfferta);
+        log.debug(RECUPERO_OFFERTA_INVERSA);
+
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<OffertaInversa> foundOffertaInversa = offertaInversaRepository.findById(idOfferta);
+
+        log.trace(LOG_FOUND_OFFERTA_INVERSA, foundOffertaInversa);
+        log.debug(LOG_OFFERTA_INVERSA_RECUPERATA);
 
         return foundOffertaInversa.map(offertaInversaMapper::toDto);
     }
@@ -84,6 +113,8 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
     @Override
     public OffertaInversaDto fullUpdate(Long idOfferta, OffertaInversaDto updatedOffertaInversaDto) throws InvalidParameterException {
 
+        log.trace("Id offerta da sostituire: {}", idOfferta);
+
         updatedOffertaInversaDto.setIdOfferta(idOfferta);
 
         if (!offertaInversaRepository.existsById(idOfferta))
@@ -96,10 +127,18 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
     @Override
     public OffertaInversaDto partialUpdate(Long idOfferta, OffertaInversaDto updatedOffertaInversaDto) throws InvalidParameterException {
 
-        // Recuperiamo l'entità con l'id passato per parametro
+        log.trace("Id offerta da aggiornare: {}", idOfferta);
+
         updatedOffertaInversaDto.setIdOfferta(idOfferta);
 
+        log.debug(RECUPERO_OFFERTA_INVERSA);
+
+        // Recuperiamo l'entità con l'id passato per parametro
         Optional<OffertaInversa> foundOffertaInversa = offertaInversaRepository.findById(idOfferta);
+
+        log.trace(LOG_FOUND_OFFERTA_INVERSA, foundOffertaInversa);
+        log.debug(LOG_OFFERTA_INVERSA_RECUPERATA);
+
         if (foundOffertaInversa.isEmpty())
             throw new UpdateRuntimeException("L'id offerta '" + idOfferta + "' non corrisponde a nessuna offerta inversa esistente!");
         else {
@@ -116,28 +155,51 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
     @Override
     public void delete(Long idOfferta) {
 
+        log.trace("Id offerta da eliminare: {}", idOfferta);
+        log.debug("Elimino l'offerta inversa dal database...");
+
         // Eliminiamo l'entità con l'id passato per parametro
         offertaInversaRepository.deleteById(idOfferta);
+
+        log.debug("Offerta inversa eliminata dal database.");
     }
 
     @Override
     public void checkFieldsValid(OffertaInversaDto offertaInversaDto) throws InvalidParameterException {
+
+        log.debug("Verifico l'integrità dei dati di offerta inversa...");
+
         offertaDiVenditoreService.checkFieldsValid(offertaInversaDto);
         checkAstaRiferimentoValid(offertaInversaDto.getAstaRiferimentoShallow());
+
+        log.debug("Integrità dei dati di offerta inversa verificata.");
     }
 
     private void checkAstaRiferimentoValid(AstaShallowDto astaRiferimentoShallow) throws InvalidParameterException {
+
+        log.trace("Controllo che 'astaRiferimento' sia valido...");
+
         if (astaRiferimentoShallow == null)
             throw new InvalidParameterException("L'asta riferimento non può essere null!");
+
+        log.trace("'astaRiferimento' valido.");
     }
 
     @Override
     public void convertRelations(OffertaInversaDto offertaInversaDto, OffertaInversa offertaInversa) throws InvalidParameterException {
+
+        log.debug("Recupero le associazioni di offerta inversa...");
+
         offertaDiVenditoreService.convertRelations(offertaInversaDto, offertaInversa);
         convertAstaRiferimentoShallow(offertaInversaDto.getAstaRiferimentoShallow(), offertaInversa);
+
+        log.debug("Associazioni di offerta inversa recuperate.");
     }
 
     private void convertAstaRiferimentoShallow(AstaShallowDto astaRiferimentoShallow, OffertaInversa offertaInversa) throws IdNotFoundException, InvalidTypeException {
+
+        log.trace("Converto l'associazione 'astaRiferimento'...");
+
         Asta convertedAsta = relationsConverter.convertAstaShallowRelation(astaRiferimentoShallow);
 
         if (convertedAsta != null) {
@@ -148,11 +210,18 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
                 throw new InvalidTypeException("Un'offerta inversa può riferirsi solo ad aste inverse!");
             }
         }
+
+        log.trace("'astaRiferimento' convertita correttamente.");
     }
 
     @Override
     public void updatePresentFields(OffertaInversaDto updatedOffertaInversaDto, OffertaInversa existingOffertaInversa) throws InvalidParameterException {
+
+        log.debug("Effettuo le modifiche di offerta inversa richieste...");
+
         offertaDiVenditoreService.updatePresentFields(updatedOffertaInversaDto, existingOffertaInversa);
+
+        log.debug("Modifiche di offerta inversa effettuate correttamente.");
 
         // Non è possibile modificare l'associazione "astaRiferimento" tramite la risorsa "offerte/di-venditori/inverse"
     }

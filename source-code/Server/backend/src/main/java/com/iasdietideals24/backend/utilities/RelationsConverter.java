@@ -31,4 +31,9 @@ public interface RelationsConverter {
      * Converte uno Shallow DTO per Offerta nell'entità corrispondente effettivamente salvata nel persistance layer
      */
     Account convertAccountShallowRelation(AccountShallowDto accountShallowDto) throws IdNotFoundException, InvalidTypeException;
+
+    /**
+     * Converte uno Shallow DTO per Categoria Asta nell'entità corrispondente effettivamente salvata nel persistance layer
+     */
+    CategoriaAsta convertCategoriaAstaShallowRelation(CategoriaAstaShallowDto categoriaAstaShallowDto) throws IdNotFoundException;
 }

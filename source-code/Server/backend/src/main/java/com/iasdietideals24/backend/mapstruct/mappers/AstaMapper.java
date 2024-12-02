@@ -3,6 +3,7 @@ package com.iasdietideals24.backend.mapstruct.mappers;
 import com.iasdietideals24.backend.entities.*;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
+import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -10,6 +11,7 @@ import org.mapstruct.Mapping;
 
 import java.util.Set;
 
+@Slf4j
 @Mapper(componentModel = "spring",
         injectionStrategy = InjectionStrategy.SETTER)
 public abstract class AstaMapper {
@@ -55,7 +57,8 @@ public abstract class AstaMapper {
         } else if (astaShallowDto.getTipoAstaPerAccount().equals(AstaDiVenditore.class.getSimpleName())) {
             return toAstaDiVenditore(astaShallowDto);
         } else {
-            throw new InvalidTypeException();
+            log.warn("Impossibile mappare ad asta! Non esiste un'asta di tipo per account '{}'", astaShallowDto.getTipoAstaPerAccount());
+            throw new InvalidTypeException("Impossibile mappare ad asta! Tipo per account non valido.");
         }
     }
 
@@ -67,7 +70,8 @@ public abstract class AstaMapper {
         if (astaShallowDto.getTipoAstaSpecifica().equals(AstaInversa.class.getSimpleName())) {
             return toAstaInversa(astaShallowDto);
         } else {
-            throw new InvalidTypeException();
+            log.warn("Impossibile mappare ad asta! Non esiste un'asta di tipo specifico '{}'", astaShallowDto.getTipoAstaSpecifica());
+            throw new InvalidTypeException("Impossibile mappare ad asta! Tipo specifico non valido.");
         }
     }
 
@@ -81,7 +85,8 @@ public abstract class AstaMapper {
         } else if (astaShallowDto.getTipoAstaSpecifica().equals(AstaSilenziosa.class.getSimpleName())) {
             return toAstaSilenziosa(astaShallowDto);
         } else {
-            throw new InvalidTypeException();
+            log.warn("Impossibile mappare ad asta! Non esiste un'asta di tipo specifico '{}'", astaShallowDto.getTipoAstaSpecifica());
+            throw new InvalidTypeException("Impossibile mappare ad asta! Tipo specifico non valido.");
         }
     }
 

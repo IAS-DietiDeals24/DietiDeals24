@@ -5,6 +5,7 @@ import com.iasdietideals24.backend.entities.Compratore;
 import com.iasdietideals24.backend.entities.Venditore;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
+import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -12,6 +13,7 @@ import org.mapstruct.Mapping;
 
 import java.util.Set;
 
+@Slf4j
 @Mapper(componentModel = "spring",
         injectionStrategy = InjectionStrategy.SETTER)
 public abstract class AccountMapper {
@@ -45,7 +47,8 @@ public abstract class AccountMapper {
         } else if (accountShallowDto.getTipoAccount().equals(Venditore.class.getSimpleName())) {
             return toVenditore(accountShallowDto);
         } else {
-            throw new InvalidTypeException();
+            log.warn("Impossibile mappare ad account! Non esiste un account di tipo '{}'", accountShallowDto.getTipoAccount());
+            throw new InvalidTypeException("Impossibile mappare ad account! Tipo account non valido.");
         }
     }
 

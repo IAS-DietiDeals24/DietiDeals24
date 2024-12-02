@@ -34,7 +34,7 @@ public class Profilo {
     @Embedded
     private LinksProfilo links;
 
-    @OneToMany(mappedBy = "profilo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "profilo", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true)
     @NonNull
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude

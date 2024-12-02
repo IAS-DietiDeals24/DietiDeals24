@@ -16,7 +16,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Entity(name = "offerta_di_compratore")
 public abstract class OffertaDiCompratore extends Offerta {
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "compratore_email", nullable = false)
     @NonNull
     private Compratore compratoreCollegato;

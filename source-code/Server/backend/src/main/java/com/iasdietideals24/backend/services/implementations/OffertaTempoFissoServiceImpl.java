@@ -14,14 +14,20 @@ import com.iasdietideals24.backend.repositories.OffertaTempoFissoRepository;
 import com.iasdietideals24.backend.services.OffertaDiCompratoreService;
 import com.iasdietideals24.backend.services.OffertaTempoFissoService;
 import com.iasdietideals24.backend.utilities.RelationsConverter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
+
+    public static final String LOG_RECUPERO_OFFERTA_TEMPO_FISSO = "Recupero l'offerta a tempo fisso dal database...";
+    public static final String LOG_FOUND_OFFERTA_TEMPO_FISSO = "foundOffertaTempoFisso: {}";
+    public static final String LOG_OFFERTA_TEMPO_FISSO_RECUPERATA = "Offerta a tempo fisso recuperata dal database.";
 
     private final OffertaDiCompratoreService offertaDiCompratoreService;
     private final OffertaTempoFissoMapper offertaTempoFissoMapper;
@@ -29,9 +35,9 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
     private final RelationsConverter relationsConverter;
 
     public OffertaTempoFissoServiceImpl(OffertaDiCompratoreService offertaDiCompratoreService,
-                                        OffertaTempoFissoMapper offertaTempoFissoMapper,
-                                        OffertaTempoFissoRepository offertaTempoFissoRepository,
-                                        RelationsConverter relationsConverter) {
+                                     OffertaTempoFissoMapper offertaTempoFissoMapper,
+                                     OffertaTempoFissoRepository offertaTempoFissoRepository,
+                                     RelationsConverter relationsConverter) {
         this.offertaDiCompratoreService = offertaDiCompratoreService;
         this.offertaTempoFissoMapper = offertaTempoFissoMapper;
         this.offertaTempoFissoRepository = offertaTempoFissoRepository;
@@ -44,14 +50,26 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
         // Verifichiamo l'integrità dei dati
         checkFieldsValid(nuovaOffertaTempoFissoDto);
 
+        log.debug("Converto il DTO in entità...");
+
         // Convertiamo a entità
         OffertaTempoFisso nuovaOffertaTempoFisso = offertaTempoFissoMapper.toEntity(nuovaOffertaTempoFissoDto);
+
+        log.debug("DTO convertito correttamente.");
+        log.trace("nuovaOffertaTempoFisso: {}", nuovaOffertaTempoFisso);
 
         // Recuperiamo le associazioni
         convertRelations(nuovaOffertaTempoFissoDto, nuovaOffertaTempoFisso);
 
+        log.trace("nuovaOffertaTempoFisso: {}", nuovaOffertaTempoFisso);
+
+        log.debug("Salvo l'offerta a tempo fisso nel database...");
+
         // Registriamo l'entità
         OffertaTempoFisso savedOffertaTempoFisso = offertaTempoFissoRepository.save(nuovaOffertaTempoFisso);
+
+        log.trace("savedOffertaTempoFisso: {}", savedOffertaTempoFisso);
+        log.debug("Offerta a tempo fisso salvata correttamente nel database con id offerta {}...", savedOffertaTempoFisso.getIdOfferta());
 
         return offertaTempoFissoMapper.toDto(savedOffertaTempoFisso);
     }
@@ -59,8 +77,13 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
     @Override
     public Page<OffertaTempoFissoDto> findAll(Pageable pageable) {
 
+        log.debug("Recupero le offerte a tempo fisso dal database...");
+
         // Recuperiamo tutte le entità
         Page<OffertaTempoFisso> foundOfferteTempoFisso = offertaTempoFissoRepository.findAll(pageable);
+
+        log.trace("foundOfferteTempoFisso: {}", foundOfferteTempoFisso);
+        log.debug("Offerte a tempo fisso recuperate dal database.");
 
         return foundOfferteTempoFisso.map(offertaTempoFissoMapper::toDto);
     }
@@ -68,8 +91,14 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
     @Override
     public Optional<OffertaTempoFissoDto> findOne(Long idOfferta) {
 
+        log.trace("Id offerta da recuperare: {}", idOfferta);
+        log.debug(LOG_RECUPERO_OFFERTA_TEMPO_FISSO);
+
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<OffertaTempoFisso> foundOffertaTempoFisso = offertaTempoFissoRepository.findById(idOfferta);
+
+        log.trace(LOG_FOUND_OFFERTA_TEMPO_FISSO, foundOffertaTempoFisso);
+        log.debug(LOG_OFFERTA_TEMPO_FISSO_RECUPERATA);
 
         return foundOffertaTempoFisso.map(offertaTempoFissoMapper::toDto);
     }
@@ -84,6 +113,8 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
     @Override
     public OffertaTempoFissoDto fullUpdate(Long idOfferta, OffertaTempoFissoDto updatedOffertaTempoFissoDto) throws InvalidParameterException {
 
+        log.trace("Id offerta da sostituire: {}", idOfferta);
+
         updatedOffertaTempoFissoDto.setIdOfferta(idOfferta);
 
         if (!offertaTempoFissoRepository.existsById(idOfferta))
@@ -96,10 +127,18 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
     @Override
     public OffertaTempoFissoDto partialUpdate(Long idOfferta, OffertaTempoFissoDto updatedOffertaTempoFissoDto) throws InvalidParameterException {
 
-        // Recuperiamo l'entità con l'id passato per parametro
+        log.trace("Id offerta da aggiornare: {}", idOfferta);
+
         updatedOffertaTempoFissoDto.setIdOfferta(idOfferta);
 
+        log.debug(LOG_RECUPERO_OFFERTA_TEMPO_FISSO);
+
+        // Recuperiamo l'entità con l'id passato per parametro
         Optional<OffertaTempoFisso> foundOffertaTempoFisso = offertaTempoFissoRepository.findById(idOfferta);
+
+        log.trace(LOG_FOUND_OFFERTA_TEMPO_FISSO, foundOffertaTempoFisso);
+        log.debug(LOG_OFFERTA_TEMPO_FISSO_RECUPERATA);
+
         if (foundOffertaTempoFisso.isEmpty())
             throw new UpdateRuntimeException("L'id offerta '" + idOfferta + "' non corrisponde a nessuna offerta a tempo fisso esistente!");
         else {
@@ -116,28 +155,51 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
     @Override
     public void delete(Long idOfferta) {
 
+        log.trace("Id offerta da eliminare: {}", idOfferta);
+        log.debug("Elimino l'offerta a tempo fisso dal database...");
+
         // Eliminiamo l'entità con l'id passato per parametro
         offertaTempoFissoRepository.deleteById(idOfferta);
+
+        log.debug("Offerta a tempo fisso eliminata dal database.");
     }
 
     @Override
     public void checkFieldsValid(OffertaTempoFissoDto offertaTempoFissoDto) throws InvalidParameterException {
+
+        log.debug("Verifico l'integrità dei dati di offerta a tempo fisso...");
+
         offertaDiCompratoreService.checkFieldsValid(offertaTempoFissoDto);
         checkAstaRiferimentoValid(offertaTempoFissoDto.getAstaRiferimentoShallow());
+
+        log.debug("Integrità dei dati di offerta a tempo fisso verificata.");
     }
 
     private void checkAstaRiferimentoValid(AstaShallowDto astaRiferimentoShallow) throws InvalidParameterException {
+
+        log.trace("Controllo che 'astaRiferimento' sia valido...");
+
         if (astaRiferimentoShallow == null)
             throw new InvalidParameterException("L'asta riferimento non può essere null!");
+
+        log.trace("'astaRiferimento' valido.");
     }
 
     @Override
     public void convertRelations(OffertaTempoFissoDto offertaTempoFissoDto, OffertaTempoFisso offertaTempoFisso) throws InvalidParameterException {
+
+        log.debug("Recupero le associazioni di offerta a tempo fisso...");
+
         offertaDiCompratoreService.convertRelations(offertaTempoFissoDto, offertaTempoFisso);
         convertAstaRiferimentoShallow(offertaTempoFissoDto.getAstaRiferimentoShallow(), offertaTempoFisso);
+
+        log.debug("Associazioni di offerta a tempo fisso recuperate.");
     }
 
     private void convertAstaRiferimentoShallow(AstaShallowDto astaRiferimentoShallow, OffertaTempoFisso offertaTempoFisso) throws IdNotFoundException, InvalidTypeException {
+
+        log.trace("Converto l'associazione 'astaRiferimento'...");
+
         Asta convertedAsta = relationsConverter.convertAstaShallowRelation(astaRiferimentoShallow);
 
         if (convertedAsta != null) {
@@ -148,11 +210,18 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
                 throw new InvalidTypeException("Un'offerta a tempo fisso può riferirsi solo ad aste a tempo fisso!");
             }
         }
+
+        log.trace("'astaRiferimento' convertita correttamente.");
     }
 
     @Override
     public void updatePresentFields(OffertaTempoFissoDto updatedOffertaTempoFissoDto, OffertaTempoFisso existingOffertaTempoFisso) throws InvalidParameterException {
+
+        log.debug("Effettuo le modifiche di offerta a tempo fisso richieste...");
+
         offertaDiCompratoreService.updatePresentFields(updatedOffertaTempoFissoDto, existingOffertaTempoFisso);
+
+        log.debug("Modifiche di offerta a tempo fisso effettuate correttamente.");
 
         // Non è possibile modificare l'associazione "astaRiferimento" tramite la risorsa "offerte/di-compratori/tempo-fisso"
     }

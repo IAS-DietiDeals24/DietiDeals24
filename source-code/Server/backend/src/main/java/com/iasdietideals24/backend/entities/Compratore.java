@@ -16,12 +16,12 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity(name = "compratore")
 public class Compratore extends Account {
-    @OneToMany(mappedBy = "proprietario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "proprietario", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true)
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     private Set<AstaDiCompratore> astePossedute = new HashSet<>();
 
-    @OneToMany(mappedBy = "compratoreCollegato", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "compratoreCollegato", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true)
     @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Exclude
     private Set<OffertaDiCompratore> offerteCollegate = new HashSet<>();

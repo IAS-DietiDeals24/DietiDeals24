@@ -3,6 +3,7 @@ package com.iasdietideals24.backend.mapstruct.mappers;
 import com.iasdietideals24.backend.entities.*;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.OffertaShallowDto;
+import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -10,6 +11,7 @@ import org.mapstruct.Mapping;
 
 import java.util.Set;
 
+@Slf4j
 @Mapper(componentModel = "spring",
         injectionStrategy = InjectionStrategy.SETTER)
 public abstract class OffertaMapper {
@@ -55,7 +57,8 @@ public abstract class OffertaMapper {
         } else if (offertaShallowDto.getTipoOffertaPerAccount().equals(OffertaDiVenditore.class.getSimpleName())) {
             return toOffertaDiVenditore(offertaShallowDto);
         } else {
-            throw new InvalidTypeException();
+            log.warn("Impossibile mappare ad offerta! Non esiste un'offerta di tipo per account '{}'", offertaShallowDto.getTipoOffertaPerAccount());
+            throw new InvalidTypeException("Impossibile mappare ad offerta! Tipo per account non valido.");
         }
     }
 
@@ -66,7 +69,8 @@ public abstract class OffertaMapper {
         if (offertaShallowDto.getTipoOffertaSpecifica().equals(OffertaInversa.class.getSimpleName())) {
             return toOffertaInversa(offertaShallowDto);
         } else {
-            throw new InvalidTypeException();
+            log.warn("Impossibile mappare ad offerta! Non esiste un'offerta di tipo specifico '{}'", offertaShallowDto.getTipoOffertaSpecifica());
+            throw new InvalidTypeException("Impossibile mappare ad offerta! Tipo specifico non valido.");
         }
     }
 
@@ -79,7 +83,8 @@ public abstract class OffertaMapper {
         } else if (offertaShallowDto.getTipoOffertaSpecifica().equals(OffertaSilenziosa.class.getSimpleName())) {
             return toOffertaSilenziosa(offertaShallowDto);
         } else {
-            throw new InvalidTypeException();
+            log.warn("Impossibile mappare ad offerta! Non esiste un'offerta di tipo specifico '{}'", offertaShallowDto.getTipoOffertaSpecifica());
+            throw new InvalidTypeException("Impossibile mappare ad offerta! Tipo specifico non valido.");
         }
     }
 
