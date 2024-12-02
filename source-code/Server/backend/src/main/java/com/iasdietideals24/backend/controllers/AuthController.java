@@ -42,12 +42,14 @@ public class AuthController {
     @Value("${auth.cognitoUri}") // Leggiamo il valore dall'application.properties
     private String cognitoUri;
 
+    private final String defaultRedirectUrl = "https://d84l1y8p4kdic.cloudfront.net";
+
     private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 
     // Generiamo l'URL a cui il frontend deve accedere per fare il login su Cognito
     // Una volta fatto il login, il frontend avrà un Codice che servirà per l'autenticazione
     @GetMapping("/auth/url")
-    public ResponseEntity<UrlDto> auth() {
+    public ResponseEntity<UrlDto> auth(@RequestParam(defaultValue = defaultRedirectUrl) String redirectUrl) {
 
         log.debug("Costruisco l'URL...");
 
@@ -58,7 +60,7 @@ public class AuthController {
                 "client_id=" + clientId +
                 "&response_type=code" +
                 "&scope=email+openid+phone" +
-                "&redirect_uri=https://d84l1y8p4kdic.cloudfront.net";
+                "&redirect_uri=" + redirectUrl;
 
         log.debug("URL costruito. Invio in corso...");
 

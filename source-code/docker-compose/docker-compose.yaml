@@ -14,7 +14,7 @@ services:
         condition: service_healthy # In questo modo, il backend non sarà avviato finché non sarà verificata la condizione di definita da "healthcheck"
     restart: unless-stopped
     environment:
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-admin} # default: admin
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin} # default: admin
       AUTH_COGNITO_URI: ${AUTH_COGNITO_URI}
       OAUTH2_JWT_JWK_SET_URI: ${OAUTH2_JWT_JWK_SET_URI}
       OAUTH2_JWT_ISSUER_URI: ${OAUTH2_JWT_ISSUER_URI}
