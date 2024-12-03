@@ -31,5 +31,7 @@ public interface ProfiloService {
 
     void convertRelations(PutProfiloDto profiloDto, Profilo profilo);
 
+    void convertRelations(ProfiloDto profiloDto, Profilo profilo) throws InvalidParameterException;
+
     void updatePresentFields(ProfiloDto updatedProfiloDto, Profilo existingProfilo) throws InvalidParameterException;
 }

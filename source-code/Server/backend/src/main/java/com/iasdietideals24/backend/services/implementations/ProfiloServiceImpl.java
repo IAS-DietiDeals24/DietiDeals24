@@ -1,9 +1,11 @@
 package com.iasdietideals24.backend.services.implementations;
 
-import com.iasdietideals24.backend.entities.Profilo;
+import com.iasdietideals24.backend.entities.*;
 import com.iasdietideals24.backend.entities.utilities.AnagraficaProfilo;
 import com.iasdietideals24.backend.entities.utilities.LinksProfilo;
+import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
+import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import com.iasdietideals24.backend.exceptions.UpdateRuntimeException;
 import com.iasdietideals24.backend.mapstruct.dto.ProfiloDto;
 import com.iasdietideals24.backend.mapstruct.dto.exceptional.PutProfiloDto;
@@ -14,8 +16,10 @@ import com.iasdietideals24.backend.mapstruct.mappers.AnagraficaProfiloMapper;
 import com.iasdietideals24.backend.mapstruct.mappers.LinksProfiloMapper;
 import com.iasdietideals24.backend.mapstruct.mappers.ProfiloMapper;
 import com.iasdietideals24.backend.mapstruct.mappers.PutProfiloMapper;
+import com.iasdietideals24.backend.repositories.AccountRepository;
 import com.iasdietideals24.backend.repositories.ProfiloRepository;
 import com.iasdietideals24.backend.services.ProfiloService;
+import com.iasdietideals24.backend.utilities.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,13 +42,21 @@ public class ProfiloServiceImpl implements ProfiloService {
     private final AnagraficaProfiloMapper anagraficaProfiloMapper;
     private final LinksProfiloMapper linksProfiloMapper;
     private final ProfiloRepository profiloRepository;
+    private final RelationsConverter relationsConverter;
 
-    public ProfiloServiceImpl(ProfiloMapper profiloMapper, PutProfiloMapper putProfiloMapper, AnagraficaProfiloMapper anagraficaProfiloMapper, LinksProfiloMapper linksProfiloMapper, ProfiloRepository profiloRepository) {
+    public ProfiloServiceImpl(ProfiloMapper profiloMapper,
+                              PutProfiloMapper putProfiloMapper,
+                              AnagraficaProfiloMapper anagraficaProfiloMapper,
+                              LinksProfiloMapper linksProfiloMapper,
+                              ProfiloRepository profiloRepository,
+                              AccountRepository accountRepository,
+                              RelationsConverter relationsConverter) {
         this.profiloMapper = profiloMapper;
         this.putProfiloMapper = putProfiloMapper;
         this.anagraficaProfiloMapper = anagraficaProfiloMapper;
         this.linksProfiloMapper = linksProfiloMapper;
         this.profiloRepository = profiloRepository;
+        this.relationsConverter = relationsConverter;
     }
 
     @Override
@@ -314,6 +326,72 @@ public class ProfiloServiceImpl implements ProfiloService {
         // Non ci sono relazioni
 
         log.debug("Associazioni della creazione profilo recuperate.");
+    }
+
+//    private void convertAccounts(Set<Account> accounts, Profilo profilo) throws IdNotFoundException, InvalidTypeException {
+//
+//        log.trace("Converto l'associazione 'accounts'...");
+//
+//        if (accounts != null) {
+//
+//            for (Account account : accounts) {
+//
+//                Optional<Account> foundAccount = accountRepository.findByEmail(account.getEmail(), page);
+//                if (foundAccount.isEmpty()) {
+//                    log.warn("L'id account '{}' non corrisponde a nessun account esistente!", accountShallowDto.getIdAccount());
+//                    throw new IdNotFoundException("L'id account '" + accountShallowDto.getIdAccount() + "' non corrisponde a nessun account esistente!");
+//                } else {
+//                    account = foundAccount.get();
+//                    if (!accountShallowDto.getTipoAccount().equals(account.getClass().getSimpleName())) {
+//                        log.warn("L'id account '{}' non corrisponde a nessun account di tipo '{}'!", accountShallowDto.getIdAccount(), accountShallowDto.getTipoAccount());
+//                        throw new InvalidTypeException("L'id account '" + accountShallowDto.getIdAccount() + "' non corrisponde a nessun account di tipo '" + accountShallowDto.getTipoAccount() + "'!");
+//                    }
+//                }
+//
+//                Account convertedAccount = relationsConverter.convertAccountShallowRelation(accountShallowDto);
+//
+//                if (convertedAccount != null) {
+//                    profilo.addAccount(convertedAccount);
+//                    convertedAccount.setProfilo(profilo);
+//                }
+//            }
+//        }
+//
+//        profilo.getAccounts().clear();
+//
+//        log.trace("'accounts' convertita correttamente.");
+//    }
+
+    @Override
+    public void convertRelations(ProfiloDto profiloDto, Profilo profilo) throws InvalidParameterException {
+
+        log.debug("Recupero le associazioni del profilo...");
+
+        convertAccounts(profiloDto.getAccountsShallow(), profilo);
+
+        log.debug("Associazioni del profilo recuperate.");
+    }
+
+    private void convertAccounts(Set<AccountShallowDto> accountShallow, Profilo profilo) throws IdNotFoundException, InvalidTypeException {
+
+        log.trace("Converto l'associazione 'accounts'...");
+
+        profilo.getAccounts().clear();
+
+        if (accountShallow != null) {
+
+            for (AccountShallowDto accountShallowDto : accountShallow) {
+
+                Account convertedAccount = relationsConverter.convertAccountShallowRelation(accountShallowDto);
+
+                if (convertedAccount != null) {
+                    profilo.addAccount(convertedAccount);
+                    convertedAccount.setProfilo(profilo);
+                }
+            }
+        }
+
+        log.trace("'accounts' convertita correttamente.");
     }
 
     @Override
