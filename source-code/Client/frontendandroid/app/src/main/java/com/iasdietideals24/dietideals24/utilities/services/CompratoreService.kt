@@ -1,6 +1,7 @@
 package com.iasdietideals24.dietideals24.utilities.services
 
 import com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto
+import com.iasdietideals24.dietideals24.utilities.tools.Page
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -24,15 +25,13 @@ interface CompratoreService : Service {
     /**
      * Il metodo recupera l'account compratore che ha effettuato l'accesso.
      * @param accountEmail Email dell'account che sta tentando di accedere.
-     * @param accountPassword Password dell'account che sta tentando di accedere.
      * @return [CompratoreDto] che ha effettuato l'accesso. Se non esiste, viene restituito un account
      * vuoto.
      */
-    @GET("accounts/compratori/{email}") //TODO ancora da implementare su backend
+    @GET("accounts/compratori")
     suspend fun accediCompratore(
-        @Path("email") accountEmail: String,
-        @Query("password") accountPassword: String
-    ): Response<CompratoreDto>
+        @Query("email") accountEmail: String,
+    ): Response<Page<CompratoreDto>>
 
     /**
      * Il metodo recupera l'account compratore specificato.

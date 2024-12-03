@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.facebook.AccessToken
@@ -16,21 +17,28 @@ import com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFas
 import com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFase1Directions
 import com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFase2
 import com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFase2Directions
-import com.iasdietideals24.dietideals24.controller.ControllerRegistrazione
-import com.iasdietideals24.dietideals24.controller.ControllerRegistrazioneDirections
 import com.iasdietideals24.dietideals24.databinding.ActivityRegistrazioneBinding
 import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep
-import com.iasdietideals24.dietideals24.utilities.kscripts.OnSkipStep
+import com.iasdietideals24.dietideals24.utilities.repositories.AuthRepository
+import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.tools.JWT
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.reflect.KClass
 
 class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(), OnChangeActivity,
-    OnBackButton, OnNextStep, OnSkipStep {
+    OnBackButton, OnNextStep {
 
     private val viewModel by viewModel<ModelRegistrazione>()
+
+    // Repositories
+    private val authRepository: AuthRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +51,42 @@ class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(), OnCh
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+
+        if (intent.extras?.getBoolean("skip") != true &&
+            intent.data?.scheme == "ias" &&
+            intent.data?.host == "com.iasdietideals24.dietideals24" &&
+            intent.data?.path == "/signup"
+        ) {
+
+            val code = intent.data?.getQueryParameter("code") ?: ""
+
+            lifecycleScope.launch {
+                CurrentUser.jwt = withContext(Dispatchers.IO) {
+                    authRepository.recuperaJWT(
+                        code,
+                        "ias://com.iasdietideals24.dietideals24/signup"
+                    )
+                }
+
+                withContext(Dispatchers.IO) {
+                    authRepository.scriviJWT(CurrentUser.jwt)
+                }
+
+                if (CurrentUser.jwt != "") {
+                    JWT.getUserEmail(CurrentUser.jwt)
+
+                    Intent(
+                        baseContext,
+                        ScelteIniziali::class.java
+                    )
+
+                    finish()
+                }
+            }
+        } else {
+            viewModel.email.value = intent.extras?.getString("email") ?: ""
+            viewModel.password.value = intent.extras?.getString("email") ?: ""
         }
     }
 
@@ -81,12 +125,6 @@ class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(), OnCh
         val navController = getNavController()
 
         when (sender) {
-            ControllerRegistrazione::class -> {
-                val action =
-                    ControllerRegistrazioneDirections.actionControllerRegistrazioneToControllerCreazioneProfiloFase1()
-                navController.navigate(action)
-            }
-
             ControllerCreazioneProfiloFase1::class -> {
                 val action =
                     ControllerCreazioneProfiloFase1Directions.actionControllerCreazioneProfiloFase1ToControllerCreazioneProfiloFase2()
@@ -96,18 +134,6 @@ class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(), OnCh
             ControllerCreazioneProfiloFase2::class -> {
                 val action =
                     ControllerCreazioneProfiloFase2Directions.actionControllerCreazioneProfiloFase2ToControllerCreazioneProfiloFase3()
-                navController.navigate(action)
-            }
-        }
-    }
-
-    override fun onSkipStep(sender: KClass<*>) {
-        val navController = getNavController()
-
-        when {
-            sender == ControllerRegistrazione::class -> {
-                val action =
-                    ControllerRegistrazioneDirections.actionControllerRegistrazioneToControllerAssociazioneProfilo()
                 navController.navigate(action)
             }
         }

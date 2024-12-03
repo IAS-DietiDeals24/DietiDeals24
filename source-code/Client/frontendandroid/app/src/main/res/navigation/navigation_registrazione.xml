@@ -3,28 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_registrazione"
-    app:startDestination="@id/controllerRegistrazione">
+    app:startDestination="@id/controllerCreazioneProfiloFase1">
 
-    <fragment
-        android:id="@+id/controllerRegistrazione"
-        android:name="com.iasdietideals24.dietideals24.controller.ControllerRegistrazione"
-        android:label="ControllerRegistrazione"
-        tools:layout="@layout/registrazione">
-        <action
-            android:id="@+id/action_controllerRegistrazione_to_controllerCreazioneProfiloFase1"
-            app:destination="@id/controllerCreazioneProfiloFase1"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-        <action
-            android:id="@+id/action_controllerRegistrazione_to_controllerAssociazioneProfilo"
-            app:destination="@id/controllerAssociazioneProfilo"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-    </fragment>
     <fragment
         android:id="@+id/controllerCreazioneProfiloFase1"
         android:name="com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFase1"
@@ -56,9 +36,4 @@
         android:name="com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFase3"
         android:label="ControllerCreazioneProfiloFase3"
         tools:layout="@layout/creazioneprofilofase3" />
-    <fragment
-        android:id="@+id/controllerAssociazioneProfilo"
-        android:name="com.iasdietideals24.dietideals24.controller.ControllerAssociazioneProfilo"
-        android:label="ControllerAssociazioneProfilo"
-        tools:layout="@layout/associaprofilo" />
 </navigation>

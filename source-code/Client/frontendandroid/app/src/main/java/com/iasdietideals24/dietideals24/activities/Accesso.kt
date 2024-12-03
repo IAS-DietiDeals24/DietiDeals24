@@ -3,18 +3,30 @@ package com.iasdietideals24.dietideals24.activities
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.iasdietideals24.dietideals24.databinding.ActivityAccessoBinding
-import com.iasdietideals24.dietideals24.model.ModelAccesso
-import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
-import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
+import com.iasdietideals24.dietideals24.utilities.repositories.AuthRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
+import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.tools.JWT
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
 
-class Accesso : DietiDeals24Activity<ActivityAccessoBinding>(), OnChangeActivity, OnBackButton {
+class Accesso : DietiDeals24Activity<ActivityAccessoBinding>() {
 
-    private val viewModel by viewModel<ModelAccesso>()
+    // Repositories
+    private val authRepository: AuthRepository by inject()
+    private val compratoreRepository: CompratoreRepository by inject()
+    private val venditoreRepository: VenditoreRepository by inject()
+    private val profiloRepository: ProfiloRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,14 +36,64 @@ class Accesso : DietiDeals24Activity<ActivityAccessoBinding>(), OnChangeActivity
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-    }
 
-    override fun <Activity : AppCompatActivity> onChangeActivity(activity: Class<Activity>) {
-        startActivity(Intent(baseContext, activity))
-        finishAffinity()
-    }
+        if (intent.data?.scheme == "ias" &&
+            intent.data?.host == "com.iasdietideals24.dietideals24" &&
+            intent.data?.path == "/signin"
+        ) {
 
-    override fun onBackButton() {
-        finish()
+            val code = intent.data?.getQueryParameter("code") ?: ""
+
+            lifecycleScope.launch {
+                CurrentUser.jwt = withContext(Dispatchers.IO) {
+                    authRepository.recuperaJWT(
+                        code,
+                        "ias://com.iasdietideals24.dietideals24/signin"
+                    )
+                }
+
+                withContext(Dispatchers.IO) {
+                    authRepository.scriviJWT(CurrentUser.jwt)
+                }
+
+                if (CurrentUser.jwt != "") {
+                    val userEmail = JWT.getUserEmail(CurrentUser.jwt)
+
+                    val account = withContext(Dispatchers.IO) {
+                        when (CurrentUser.tipoAccount) {
+                            TipoAccount.COMPRATORE -> compratoreRepository.accediCompratore(
+                                userEmail
+                            )
+
+                            TipoAccount.VENDITORE -> venditoreRepository.accediVenditore(userEmail)
+
+                            else -> CompratoreDto()
+                        }
+                    }
+
+                    CurrentUser.id = account.idAccount
+
+                    val profilo = withContext(Dispatchers.IO) {
+                        profiloRepository.caricaProfilo(account.profiloShallow.nomeUtente)
+                    }
+
+                    if (profilo.nomeUtente == "") {
+                        startActivity(
+                            Intent(baseContext, Registrazione::class.java)
+                                .putExtra("skip", true)
+                                .putExtra("email", userEmail)
+                        )
+
+                        finish()
+                    } else {
+                        startActivity(
+                            Intent(baseContext, Home::class.java)
+                        )
+
+                        finish()
+                    }
+                }
+            }
+        }
     }
 }

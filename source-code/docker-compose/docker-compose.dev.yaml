@@ -20,8 +20,8 @@ services:
       SONAR_TOKEN: ${SONAR_TOKEN}
 
     # Update this to wherever you want VS Code to mount the folder of your project
-    # volumes:
-    #  - ../..:/myHostDir/DietiDeals24:cached  # mount our local backend folder to the dev container as its workspace folder
+    volumes:
+      - ../..:/myHostDir/DietiDeals24:cached  # mount our local backend folder to the dev container as its workspace folder
 
     ports:
       - ${DEV_BACKEND_PORT:-55511}:8080 # Mappa la porta 8080 del container con ${DEV_BACKEND_PORT} (default: 55511) nell'host (http://localhost:${DEV_BACKEND_PORT}/ ci farà accedere all'app)

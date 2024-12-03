@@ -8,8 +8,8 @@ class VenditoreRepository(private val service: VenditoreService) {
         return service.accountFacebookVenditore(idFacebook).body() ?: VenditoreDto()
     }
 
-    suspend fun accediVenditore(accountEmail: String, accountPassword: String): VenditoreDto {
-        return service.accediVenditore(accountEmail, accountPassword).body()
+    suspend fun accediVenditore(accountEmail: String): VenditoreDto {
+        return service.accediVenditore(accountEmail).body()?.content?.singleOrNull()
             ?: VenditoreDto()
     }
 

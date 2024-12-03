@@ -1,7 +1,10 @@
 package com.iasdietideals24.dietideals24.utilities.kscripts
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.facebook.CallbackManager.Factory.create
-import com.iasdietideals24.dietideals24.model.ModelAccesso
 import com.iasdietideals24.dietideals24.model.ModelAsta
 import com.iasdietideals24.dietideals24.model.ModelAsteCreate
 import com.iasdietideals24.dietideals24.model.ModelHome
@@ -27,6 +30,7 @@ import com.iasdietideals24.dietideals24.utilities.paging.OffertaTempoFissoPaging
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.AuthRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.CategoriaAstaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.NotificaRepository
@@ -38,6 +42,7 @@ import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreReposito
 import com.iasdietideals24.dietideals24.utilities.services.AstaInversaService
 import com.iasdietideals24.dietideals24.utilities.services.AstaSilenziosaService
 import com.iasdietideals24.dietideals24.utilities.services.AstaTempoFissoService
+import com.iasdietideals24.dietideals24.utilities.services.AuthService
 import com.iasdietideals24.dietideals24.utilities.services.CategoriaAstaService
 import com.iasdietideals24.dietideals24.utilities.services.CompratoreService
 import com.iasdietideals24.dietideals24.utilities.services.NotificaService
@@ -47,8 +52,15 @@ import com.iasdietideals24.dietideals24.utilities.services.OffertaTempoFissoServ
 import com.iasdietideals24.dietideals24.utilities.services.ProfiloService
 import com.iasdietideals24.dietideals24.utilities.services.VenditoreService
 import com.iasdietideals24.dietideals24.utilities.tools.RetrofitController
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
+
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "dd24settings")
+
+val dataStoreModule = module {
+    single<DataStore<Preferences>> { androidContext().dataStore }
+}
 
 val serviceModule = module {
     single<AstaInversaService> { RetrofitController.service() }
@@ -62,6 +74,7 @@ val serviceModule = module {
     single<ProfiloService> { RetrofitController.service() }
     single<VenditoreService> { RetrofitController.service() }
     single<CategoriaAstaService> { RetrofitController.service() }
+    single<AuthService> { RetrofitController.service() }
 }
 
 val repositoryModule = module {
@@ -76,6 +89,7 @@ val repositoryModule = module {
     single { ProfiloRepository(get()) }
     single { VenditoreRepository(get()) }
     single { CategoriaAstaRepository(get()) }
+    single { AuthRepository(get(), get()) }
 }
 
 val pagingSourceModule = module {
@@ -121,7 +135,6 @@ val adapterModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { ModelAccesso() }
     viewModel { ModelRegistrazione(get(), get(), get()) }
     viewModel { ModelAsta(get(), get(), get()) }
     viewModel { ModelProfilo() }

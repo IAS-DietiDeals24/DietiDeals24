@@ -9,8 +9,8 @@ class CompratoreRepository(private val service: CompratoreService) {
         return service.accountFacebookCompratore(idFacebook).body() ?: CompratoreDto()
     }
 
-    suspend fun accediCompratore(accountEmail: String, accountPassword: String): CompratoreDto {
-        return service.accediCompratore(accountEmail, accountPassword).body()
+    suspend fun accediCompratore(accountEmail: String): CompratoreDto {
+        return service.accediCompratore(accountEmail).body()?.content?.singleOrNull()
             ?: CompratoreDto()
     }
 

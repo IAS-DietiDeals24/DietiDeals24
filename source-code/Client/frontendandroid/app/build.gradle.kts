@@ -70,5 +70,7 @@ dependencies {
     implementation(libs.paging.runtime.ktx)
     implementation(libs.kotlin.reflect)
     implementation(libs.jackson.datatype.jsr310)
+    implementation(libs.browser)
+    implementation(libs.datastore)
     coreLibraryDesugaring(libs.desugar)
 }

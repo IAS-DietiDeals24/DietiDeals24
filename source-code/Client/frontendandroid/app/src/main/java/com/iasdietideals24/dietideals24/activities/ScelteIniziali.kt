@@ -7,31 +7,71 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import com.facebook.AccessToken
-import com.facebook.login.LoginManager
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.controller.ControllerSelezioneTipoAccount
 import com.iasdietideals24.dietideals24.controller.ControllerSelezioneTipoAccountDirections
 import com.iasdietideals24.dietideals24.databinding.ActivityScelteInizialiBinding
+import com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnHideBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnShowBackButton
+import com.iasdietideals24.dietideals24.utilities.repositories.AuthRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
+import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.tools.JWT
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
 import kotlin.reflect.KClass
 
 
 class ScelteIniziali : DietiDeals24Activity<ActivityScelteInizialiBinding>(), OnChangeActivity,
     OnHideBackButton, OnShowBackButton, OnNextStep {
 
+    // Repositories
+    private val authRepository: AuthRepository by inject()
+    private val compratoreRepository: CompratoreRepository by inject()
+    private val venditoreRepository: VenditoreRepository by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        val accessToken: AccessToken? = AccessToken.getCurrentAccessToken()
-        if (accessToken != null && !accessToken.isExpired) {
-            startActivity(Intent(baseContext, Home::class.java))
-        } else {
-            LoginManager.getInstance().logOut()
+        lifecycleScope.launch {
+            val jwt = withContext(Dispatchers.IO) {
+                authRepository.leggiJWT()
+            }
+            val ruolo = withContext(Dispatchers.IO) {
+                authRepository.leggiRuolo()
+            }
+
+            if (jwt != "" && ruolo != TipoAccount.OSPITE) {
+                if (JWT.getExpirationDate(jwt) < System.currentTimeMillis()) {
+                    val userEmail = JWT.getUserEmail(jwt)
+
+                    val account = withContext(Dispatchers.IO) {
+                        when (ruolo) {
+                            TipoAccount.COMPRATORE -> compratoreRepository.accediCompratore(
+                                userEmail
+                            )
+
+                            TipoAccount.VENDITORE -> venditoreRepository.accediVenditore(userEmail)
+
+                            else -> CompratoreDto()
+                        }
+                    }
+
+                    CurrentUser.id = account.idAccount
+                    CurrentUser.tipoAccount = ruolo
+
+                    startActivity(Intent(baseContext, Home::class.java))
+                }
+            }
         }
 
         super.onCreate(savedInstanceState)

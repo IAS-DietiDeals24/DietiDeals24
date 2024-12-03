@@ -19,5 +19,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/navigation_registrazione"
-        tools:layout="@layout/registrazione" />
+        tools:layout="@layout/creazioneprofilofase1" />
 </androidx.constraintlayout.widget.ConstraintLayout>
