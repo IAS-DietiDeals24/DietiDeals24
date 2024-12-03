@@ -14,6 +14,8 @@ public interface NotificaService {
 
     Page<NotificaDto> findAll(Pageable pageable);
 
+    Page<NotificaDto> findByDestinatario(Long idAccount, Pageable pageable);
+
     Optional<NotificaDto> findOne(Long idNotifica);
 
     boolean isExists(Long idNotifica);

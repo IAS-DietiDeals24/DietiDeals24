@@ -31,6 +31,6 @@ public abstract class OffertaDiCompratore extends Offerta {
 
     @Override
     public String toString() {
-        return "OffertaDiCompratore(compratoreCollegato=" + this.getCompratoreCollegato().getEmail() + ") is a " + super.toString();
+        return "OffertaDiCompratore(compratoreCollegato=" + this.getCompratoreCollegato().getIdAccount() + ") is a " + super.toString();
     }
 }

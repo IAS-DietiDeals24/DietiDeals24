@@ -10,9 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountRepository extends CrudRepository<Account, Long>, PagingAndSortingRepository<Account, Long> {
 
-    Page<Account> findByTokensIdFacebook(String idFacebook, Pageable pageable);
-
     Page<Account> findByEmail(String email, Pageable pageable);
-
-    Page<Account> findByEmailAndPassword(String email, String password, Pageable pageable);
 }

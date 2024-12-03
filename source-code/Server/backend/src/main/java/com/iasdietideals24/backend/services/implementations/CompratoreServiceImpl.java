@@ -211,6 +211,11 @@ public class CompratoreServiceImpl implements CompratoreService {
     }
 
     private void convertAstePosseduteShallow(Set<AstaShallowDto> astePosseduteShallowDto, Compratore compratore) throws InvalidParameterException {
+
+        log.trace("Converto l'associazione 'astePossedute'...");
+
+        compratore.getAstePossedute().clear();
+
         if (astePosseduteShallowDto != null) {
             for (AstaShallowDto astaShallowDto : astePosseduteShallowDto) {
 
@@ -226,11 +231,15 @@ public class CompratoreServiceImpl implements CompratoreService {
                 }
             }
         }
+
+        log.trace("'astePossedute' convertita correttamente.");
     }
 
     private void convertOfferteCollegateShallow(Set<OffertaShallowDto> offerteCollegateShallowDto, Compratore compratore) throws InvalidParameterException {
 
         log.trace("Converto l'associazione 'offerteCollegate'...");
+
+        compratore.getOfferteCollegate().clear();
 
         if (offerteCollegateShallowDto != null) {
             for (OffertaShallowDto offertaShallowDto : offerteCollegateShallowDto) {

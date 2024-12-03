@@ -137,6 +137,8 @@ public class AccountServiceImpl implements AccountService {
 
         log.trace("Converto l'associazione 'notificheInviate'...");
 
+        nuovoAccount.getNotificheInviate().clear();
+
         if (notificheInviateShallowDto != null) {
             for (NotificaShallowDto notificaShallowDto : notificheInviateShallowDto) {
 
@@ -155,6 +157,8 @@ public class AccountServiceImpl implements AccountService {
     private void convertNotificheRicevuteShallow(Set<NotificaShallowDto> notificheRicevuteShallowDto, Account nuovoAccount) throws InvalidParameterException {
 
         log.trace("Converto l'associazione 'notificheRicevute'...");
+
+        nuovoAccount.getNotificheRicevute().clear();
 
         if (notificheRicevuteShallowDto != null) {
             for (NotificaShallowDto notificaShallowDto : notificheRicevuteShallowDto) {

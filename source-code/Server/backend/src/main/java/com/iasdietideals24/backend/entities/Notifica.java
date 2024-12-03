@@ -42,7 +42,7 @@ public class Notifica {
     private Account mittente;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinTable(name = "destinatario",
+    @JoinTable(name = "destinatari",
             joinColumns = {@JoinColumn(name = "notifica_id_notifica", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "account_email", nullable = false)})
     @NonNull
@@ -86,10 +86,10 @@ public class Notifica {
         StringBuilder listEmailDestinatari = new StringBuilder();
         listEmailDestinatari.append("[");
         while (itrDestinatario.hasNext()) {
-            listEmailDestinatari.append(itrDestinatario.next().getEmail()).append(", ");
+            listEmailDestinatari.append(itrDestinatario.next().getIdAccount()).append(", ");
         }
         listEmailDestinatari.append("]");
 
-        return "Notifica(idNotifica=" + this.getIdNotifica() + ", dataInvio=" + this.getDataInvio() + ", oraInvio=" + this.getOraInvio() + ", messaggio=" + this.getMessaggio() + ", mittente=" + this.getMittente().getEmail() + ", destinatari=" + listEmailDestinatari + ", astaAssociata=" + this.getAstaAssociata().getIdAsta() + ")";
+        return "Notifica(idNotifica=" + this.getIdNotifica() + ", dataInvio=" + this.getDataInvio() + ", oraInvio=" + this.getOraInvio() + ", messaggio=" + this.getMessaggio() + ", mittente=" + this.getMittente().getIdAccount() + ", destinatari=" + listEmailDestinatari + ", astaAssociata=" + this.getAstaAssociata().getIdAsta() + ")";
     }
 }

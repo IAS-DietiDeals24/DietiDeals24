@@ -42,7 +42,7 @@ public class AuthController {
     @Value("${auth.cognitoUri}") // Leggiamo il valore dall'application.properties
     private String cognitoUri;
 
-    private final String defaultRedirectUri = "https://d84l1y8p4kdic.cloudfront.net";
+    private static final String defaultRedirectUri = "https://d84l1y8p4kdic.cloudfront.net";
 
     private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 

@@ -48,6 +48,44 @@ public class AstaInversaController {
         return new ResponseEntity<>(foundAsteInverseDto, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/aste/di-compratori/inverse", params = "proprietario")
+    public ResponseEntity<Page<AstaInversaDto>> listAsteInverseByIdAccountProprietario(@RequestParam("proprietario") Long idAccount, Pageable pageable) {
+
+        log.info("Recupero delle aste inverse in corso...");
+
+        Page<AstaInversaDto> foundAsteInverseDto = astaInversaService.findByIdAccountProprietario(idAccount, pageable);
+
+        log.info("Aste inverse recuperate. Invio in corso...");
+
+        return new ResponseEntity<>(foundAsteInverseDto, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/aste/di-compratori/inverse", params = {"nome", "categoria"})
+    public ResponseEntity<Page<AstaInversaDto>> listAsteInverseByNomeAstaContainingAndNomeCategoria(@RequestParam(name = "nome", defaultValue = "%") String nomeAsta,
+                                                                                                    @RequestParam("categoria") String nomeCategoria,
+                                                                                                    Pageable pageable) {
+
+        log.info("Recupero delle aste inverse in corso...");
+
+        Page<AstaInversaDto> foundAsteInverseDto = astaInversaService.findByNomeAstaContainingAndNomeCategoria("%" + nomeAsta + "%", nomeCategoria, pageable);
+
+        log.info("Aste inverse recuperate. Invio in corso...");
+
+        return new ResponseEntity<>(foundAsteInverseDto, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/aste/di-compratori/inverse", params = "offerente")
+    public ResponseEntity<Page<AstaInversaDto>> listAsteInverseByIdAccountOfferente(@RequestParam("offerente") Long idAccount, Pageable pageable) {
+
+        log.info("Recupero delle aste inverse in corso...");
+
+        Page<AstaInversaDto> foundAsteInverseDto = astaInversaService.findByOfferente(idAccount, pageable);
+
+        log.info("Aste inverse recuperate. Invio in corso...");
+
+        return new ResponseEntity<>(foundAsteInverseDto, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/aste/di-compratori/inverse/{idAsta}")
     public ResponseEntity<AstaInversaDto> getAstaInversa(@PathVariable("idAsta") Long idAsta) {
 
