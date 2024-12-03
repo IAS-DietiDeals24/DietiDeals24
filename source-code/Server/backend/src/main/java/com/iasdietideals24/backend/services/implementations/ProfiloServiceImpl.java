@@ -20,12 +20,14 @@ import com.iasdietideals24.backend.repositories.AccountRepository;
 import com.iasdietideals24.backend.repositories.ProfiloRepository;
 import com.iasdietideals24.backend.services.ProfiloService;
 import com.iasdietideals24.backend.utilities.RelationsConverter;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -42,6 +44,7 @@ public class ProfiloServiceImpl implements ProfiloService {
     private final AnagraficaProfiloMapper anagraficaProfiloMapper;
     private final LinksProfiloMapper linksProfiloMapper;
     private final ProfiloRepository profiloRepository;
+    private final AccountRepository accountRepository;
     private final RelationsConverter relationsConverter;
 
     public ProfiloServiceImpl(ProfiloMapper profiloMapper,
@@ -56,6 +59,7 @@ public class ProfiloServiceImpl implements ProfiloService {
         this.anagraficaProfiloMapper = anagraficaProfiloMapper;
         this.linksProfiloMapper = linksProfiloMapper;
         this.profiloRepository = profiloRepository;
+        this.accountRepository = accountRepository;
         this.relationsConverter = relationsConverter;
     }
 
@@ -79,6 +83,12 @@ public class ProfiloServiceImpl implements ProfiloService {
         // Recuperiamo le associazioni
         convertRelations(nuovoProfiloDto, nuovoProfilo);
 
+        log.debug("Verifico che l'email scelta non sia già utilizzata nell'account di altri profili...");
+
+        checkEmailNonUsata(nuovoProfiloDto.getEmail());
+
+        log.debug("L'email non è utilizzata in account di altri profili.");
+
         log.trace("nuovoProfilo: {}", nuovoProfilo);
 
         log.debug("Salvo il profilo nel database...");
@@ -90,6 +100,19 @@ public class ProfiloServiceImpl implements ProfiloService {
         log.debug("Profilo salvato correttamente nel database con nome utente {}...", savedProfilo.getNomeUtente());
 
         return profiloMapper.toDto(savedProfilo);
+    }
+
+    private void checkEmailNonUsata(String email) throws InvalidParameterException {
+
+        List<Account> foundAccounts = accountRepository.findByEmail(email, Pageable.unpaged()).toList();
+
+        log.trace("foundAccounts: {}", foundAccounts);
+
+        if (!foundAccounts.isEmpty()) {
+            log.warn("Impossibile associare l'email '{}' all'account di questo profilo poichè è già associata all'account di un altro profilo!", email);
+
+            throw new InvalidParameterException("L'email '" + email + "' è già associata all'account di un altro profilo!");
+        }
     }
 
     @Override
@@ -129,9 +152,12 @@ public class ProfiloServiceImpl implements ProfiloService {
     }
 
     @Override
+    @Transactional
     public ProfiloDto fullUpdate(String nomeUtente, PutProfiloDto updatedProfiloDto) throws InvalidParameterException {
 
         log.trace("Nome utente profilo da sostituire: {}", nomeUtente);
+
+        this.delete(nomeUtente);
 
         // L'implementazione di fullUpdate e create sono identiche, dato che utilizziamo lo stesso metodo "save" della repository
         return this.create(nomeUtente, updatedProfiloDto);
@@ -152,9 +178,11 @@ public class ProfiloServiceImpl implements ProfiloService {
         log.trace(LOG_FOUND_PROFILO, foundProfilo);
         log.debug(LOG_PROFILO_RECUPERATO);
 
-        if (foundProfilo.isEmpty())
-            throw new UpdateRuntimeException("Il nome '" + nomeUtente + "' utente non corrisponde a nessun profilo esistente!");
-        else {
+        if (foundProfilo.isEmpty()) {
+            log.warn("Il nome utente '{}' non corrisponde a nessun profilo esistente!", nomeUtente);
+
+            throw new UpdateRuntimeException("Il nome utente '" + nomeUtente + "' non corrisponde a nessun profilo esistente!");
+        } else {
 
             // Recuperiamo l'entità dal wrapping Optional
             Profilo existingProfilo = foundProfilo.get();
@@ -327,40 +355,6 @@ public class ProfiloServiceImpl implements ProfiloService {
 
         log.debug("Associazioni della creazione profilo recuperate.");
     }
-
-//    private void convertAccounts(Set<Account> accounts, Profilo profilo) throws IdNotFoundException, InvalidTypeException {
-//
-//        log.trace("Converto l'associazione 'accounts'...");
-//
-//        if (accounts != null) {
-//
-//            for (Account account : accounts) {
-//
-//                Optional<Account> foundAccount = accountRepository.findByEmail(account.getEmail(), page);
-//                if (foundAccount.isEmpty()) {
-//                    log.warn("L'id account '{}' non corrisponde a nessun account esistente!", accountShallowDto.getIdAccount());
-//                    throw new IdNotFoundException("L'id account '" + accountShallowDto.getIdAccount() + "' non corrisponde a nessun account esistente!");
-//                } else {
-//                    account = foundAccount.get();
-//                    if (!accountShallowDto.getTipoAccount().equals(account.getClass().getSimpleName())) {
-//                        log.warn("L'id account '{}' non corrisponde a nessun account di tipo '{}'!", accountShallowDto.getIdAccount(), accountShallowDto.getTipoAccount());
-//                        throw new InvalidTypeException("L'id account '" + accountShallowDto.getIdAccount() + "' non corrisponde a nessun account di tipo '" + accountShallowDto.getTipoAccount() + "'!");
-//                    }
-//                }
-//
-//                Account convertedAccount = relationsConverter.convertAccountShallowRelation(accountShallowDto);
-//
-//                if (convertedAccount != null) {
-//                    profilo.addAccount(convertedAccount);
-//                    convertedAccount.setProfilo(profilo);
-//                }
-//            }
-//        }
-//
-//        profilo.getAccounts().clear();
-//
-//        log.trace("'accounts' convertita correttamente.");
-//    }
 
     @Override
     public void convertRelations(ProfiloDto profiloDto, Profilo profilo) throws InvalidParameterException {

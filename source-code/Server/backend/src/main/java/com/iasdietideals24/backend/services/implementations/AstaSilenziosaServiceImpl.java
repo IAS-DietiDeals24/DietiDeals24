@@ -118,9 +118,11 @@ public class AstaSilenziosaServiceImpl implements AstaSilenziosaService {
 
         updatedAstaSilenziosaDto.setIdAsta(idAsta);
 
-        if (!astaSilenziosaRepository.existsById(idAsta))
+        if (!astaSilenziosaRepository.existsById(idAsta)) {
+            log.warn("L'id asta '{}' non corrisponde a nessuna asta silenziosa esistente!", idAsta);
+
             throw new UpdateRuntimeException("L'id asta '" + idAsta + "' non corrisponde a nessuna asta silenziosa esistente!");
-        else {
+        } else {
             return this.create(updatedAstaSilenziosaDto);
         }
     }

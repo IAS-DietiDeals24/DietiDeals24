@@ -117,9 +117,11 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
 
         updatedOffertaTempoFissoDto.setIdOfferta(idOfferta);
 
-        if (!offertaTempoFissoRepository.existsById(idOfferta))
+        if (!offertaTempoFissoRepository.existsById(idOfferta)) {
+            log.warn("L'id offerta '{}' non corrisponde a nessuna offerta a tempo fisso esistente!", idOfferta);
+
             throw new UpdateRuntimeException("L'id offerta '" + idOfferta + "' non corrisponde a nessuna offerta a tempo fisso esistente!");
-        else {
+        } else {
             return this.create(updatedOffertaTempoFissoDto);
         }
     }

@@ -129,9 +129,11 @@ public class VenditoreServiceImpl implements VenditoreService {
 
         updatedVenditoreDto.setIdAccount(idAccount);
 
-        if (!venditoreRepository.existsById(idAccount))
+        if (!venditoreRepository.existsById(idAccount)) {
+            log.warn("L'id account '{}' non corrisponde a nessun account esistente!", idAccount);
+
             throw new UpdateRuntimeException("L'id account '" + idAccount + "' non corrisponde a nessun account esistente!");
-        else {
+        } else {
             // L'implementazione di fullUpdate e create sono identiche, dato che utilizziamo lo stesso metodo "save" della repository
             return this.create(updatedVenditoreDto);
         }

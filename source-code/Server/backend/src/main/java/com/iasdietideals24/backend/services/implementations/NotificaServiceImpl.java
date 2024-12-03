@@ -130,9 +130,11 @@ public class NotificaServiceImpl implements NotificaService {
 
         updatedNotificaDto.setIdNotifica(idNotifica);
 
-        if (!notificaRepository.existsById(idNotifica))
+        if (!notificaRepository.existsById(idNotifica)) {
+            log.warn("L'id notifica '{}' non corrisponde a nessuna notifica esistente!", idNotifica);
+
             throw new UpdateRuntimeException("L'id notifica '" + idNotifica + "' non corrisponde a nessuna notifica esistente!");
-        else {
+        } else {
             // L'implementazione di fullUpdate e create sono identiche, dato che utilizziamo lo stesso metodo "save" della repository
             return this.create(updatedNotificaDto);
         }

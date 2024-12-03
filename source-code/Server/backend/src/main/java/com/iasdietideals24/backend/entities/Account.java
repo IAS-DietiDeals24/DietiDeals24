@@ -21,7 +21,7 @@ public abstract class Account {
     private Long idAccount;
 
     @NonNull
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @NonNull

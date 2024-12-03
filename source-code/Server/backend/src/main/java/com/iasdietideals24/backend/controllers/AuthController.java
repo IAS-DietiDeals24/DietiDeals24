@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.security.sasl.AuthenticationException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,6 +32,8 @@ public class AuthController {
 
     public static final String IMPOSSIBILE_INVIARE_COGNITO_REQUEST = "Impossibile inviare la Cognito request";
 
+    private static final String DEFAULT_REDIRECT_URI = "https://d84l1y8p4kdic.cloudfront.net";
+
     @Value("${spring.security.oauth2.resourceserver.jwt.clientId}") // Leggiamo il valore dall'application.properties
     private String clientId;
 
@@ -42,14 +43,12 @@ public class AuthController {
     @Value("${auth.cognitoUri}") // Leggiamo il valore dall'application.properties
     private String cognitoUri;
 
-    private static final String defaultRedirectUri = "https://d84l1y8p4kdic.cloudfront.net";
-
     private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 
     // Generiamo l'URL a cui il frontend deve accedere per fare il login su Cognito
     // Una volta fatto il login, il frontend avrà un Codice che servirà per l'autenticazione
     @GetMapping("/auth/url")
-    public ResponseEntity<UrlDto> auth(@RequestParam(name = "redirect_uri", defaultValue = defaultRedirectUri) String redirectUri) {
+    public ResponseEntity<UrlDto> auth(@RequestParam(name = "redirect_uri", defaultValue = DEFAULT_REDIRECT_URI) String redirectUri) {
 
         log.debug("Costruisco l'URL...");
 
@@ -73,7 +72,7 @@ public class AuthController {
     // Il JWT dovrà essere inserito nell'header di ogni richiesta che necessita di autorizzazione
     @GetMapping("/auth/callback")
     public ResponseEntity<TokenDto> callback(@RequestParam("code") String code,
-                                             @RequestParam(name = "redirect_uri", defaultValue = defaultRedirectUri) String redirectUri) {
+                                             @RequestParam(name = "redirect_uri", defaultValue = DEFAULT_REDIRECT_URI) String redirectUri) {
         log.info("Autenticazione in corso...");
 
         log.trace("Codice ricevuto: {}", code);
