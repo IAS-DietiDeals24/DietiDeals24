@@ -119,9 +119,11 @@ public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
 
         updatedAstaTempoFissoDto.setIdAsta(idAsta);
 
-        if (!astaTempoFissoRepository.existsById(idAsta))
+        if (!astaTempoFissoRepository.existsById(idAsta)) {
+            log.warn("L'id asta '{}' non corrisponde a nessuna asta a tempo fisso esistente!", idAsta);
+
             throw new UpdateRuntimeException("L'id asta '" + idAsta + "' non corrisponde a nessuna asta a tempo fisso esistente!");
-        else {
+        } else {
             return this.create(updatedAstaTempoFissoDto);
         }
     }

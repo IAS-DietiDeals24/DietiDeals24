@@ -121,9 +121,11 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
 
         updatedOffertaSilenziosaDto.setIdOfferta(idOfferta);
 
-        if (!offertaSilenziosaRepository.existsById(idOfferta))
+        if (!offertaSilenziosaRepository.existsById(idOfferta)) {
+            log.warn("L'id offerta '{}' non corrisponde a nessuna offerta silenziosa esistente!", idOfferta);
+
             throw new UpdateRuntimeException("L'id offerta '" + idOfferta + "' non corrisponde a nessuna offerta silenziosa esistente!");
-        else {
+        } else {
             return this.create(updatedOffertaSilenziosaDto);
         }
     }

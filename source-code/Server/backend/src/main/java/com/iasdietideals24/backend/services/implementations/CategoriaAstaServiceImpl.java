@@ -132,9 +132,11 @@ public class CategoriaAstaServiceImpl implements CategoriaAstaService {
         log.trace(LOG_FOUND_CATEGORIA_ASTA, foundCategoriaAsta);
         log.debug(LOG_CATEGORIA_ASTA_RECUPERATA);
 
-        if (foundCategoriaAsta.isEmpty())
+        if (foundCategoriaAsta.isEmpty()) {
+            log.warn("Il nome '{}' non corrisponde a nessuna categoria asta esistente!", nome);
+
             throw new UpdateRuntimeException("Il nome '" + nome + "' non corrisponde a nessuna categoria asta esistente!");
-        else {
+        } else {
 
             // Recuperiamo l'entità dal wrapping Optional
             CategoriaAsta existingCategoriaAsta = foundCategoriaAsta.get();

@@ -62,8 +62,10 @@ public class Profilo {
             this.addAccount(new Compratore(email, password, tokensAccount, this));
         else if (tipoAccount.equals(Venditore.class.getSimpleName()))
             this.addAccount(new Venditore(email, password, tokensAccount, this));
-        else
-            throw new InvalidTypeException();
+        else {
+            log.warn("Il tipo account '{}' non corrisponde a nessun tipo esistente!", tipoAccount);
+            throw new InvalidTypeException("Il tipo account '" + tipoAccount + "' non corrisponde a nessun tipo esistente!");
+        }
     }
 
     // Metodi per accounts

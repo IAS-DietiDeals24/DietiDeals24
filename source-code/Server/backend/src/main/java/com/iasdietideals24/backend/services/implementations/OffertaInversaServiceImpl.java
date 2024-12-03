@@ -117,9 +117,11 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
 
         updatedOffertaInversaDto.setIdOfferta(idOfferta);
 
-        if (!offertaInversaRepository.existsById(idOfferta))
+        if (!offertaInversaRepository.existsById(idOfferta)) {
+            log.warn("L'id offerta '{}' non corrisponde a nessuna offerta inversa esistente!", idOfferta);
+
             throw new UpdateRuntimeException("L'id offerta '" + idOfferta + "' non corrisponde a nessuna offerta inversa esistente!");
-        else {
+        } else {
             return this.create(updatedOffertaInversaDto);
         }
     }
