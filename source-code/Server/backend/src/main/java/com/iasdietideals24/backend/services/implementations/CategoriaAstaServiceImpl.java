@@ -203,6 +203,8 @@ public class CategoriaAstaServiceImpl implements CategoriaAstaService {
 
         log.trace("Converto l'associazione 'asteAssegnate'...");
 
+        categoriaAsta.getAsteAssegnate().clear();
+
         if (asteAssegnateShallow != null) {
             for (AstaShallowDto astaShallowDto : asteAssegnateShallow) {
 

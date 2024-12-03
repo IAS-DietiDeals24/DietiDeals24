@@ -91,6 +91,52 @@ public class AstaInversaServiceImpl implements AstaInversaService {
     }
 
     @Override
+    public Page<AstaInversaDto> findByIdAccountProprietario(Long idAccount, Pageable pageable) {
+
+        log.debug("Recupero le aste inverse dal database...");
+        log.trace("Id account proprietario da cercare: {}", idAccount);
+
+        // Recuperiamo tutte le entità
+        Page<AstaInversa> foundAsteInverse = astaInversaRepository.findByIdAccountProprietario(idAccount, pageable);
+
+        log.trace("foundAsteInverse: {}", foundAsteInverse);
+        log.debug("Aste inverse recuperate dal database.");
+
+        return foundAsteInverse.map(astaInversaMapper::toDto);
+    }
+
+    @Override
+    public Page<AstaInversaDto> findByNomeAstaContainingAndNomeCategoria(String nomeAsta, String nomeCategoria, Pageable pageable) {
+
+        log.debug("Recupero le aste inverse dal database...");
+        log.trace("Nome asta da cercare: {}", nomeAsta);
+        log.trace("Nome categoria da cercare: {}", nomeCategoria);
+
+        // Recuperiamo tutte le entità
+        Page<AstaInversa> foundAsteInverse = astaInversaRepository.findByNomeAstaContainingAndNomeCategoria(nomeAsta, nomeCategoria, pageable);
+
+        log.trace("foundAsteInverse: {}", foundAsteInverse);
+        log.debug("Aste inverse recuperate dal database.");
+
+        return foundAsteInverse.map(astaInversaMapper::toDto);
+    }
+
+    @Override
+    public Page<AstaInversaDto> findByOfferente(Long idAccount, Pageable pageable) {
+
+        log.debug("Recupero le aste inverse dal database...");
+        log.trace("Id account offerente da cercare: {}", idAccount);
+
+        // Recuperiamo tutte le entità
+        Page<AstaInversa> foundAsteInverse = astaInversaRepository.findByOfferente(idAccount, pageable);
+
+        log.trace("foundAsteInverse: {}", foundAsteInverse);
+        log.debug("Aste inverse recuperate dal database.");
+
+        return foundAsteInverse.map(astaInversaMapper::toDto);
+    }
+
+    @Override
     public Optional<AstaInversaDto> findOne(Long idAsta) {
 
         log.trace("Id asta da recuperare: {}", idAsta);
@@ -203,6 +249,8 @@ public class AstaInversaServiceImpl implements AstaInversaService {
     private void convertOfferteRicevute(Set<OffertaShallowDto> offerteRicevuteShallow, AstaInversa astaInversa) throws IdNotFoundException, InvalidTypeException {
 
         log.trace("Converto l'associazione 'offerteRicevute'...");
+
+        astaInversa.getOfferteRicevute().clear();
 
         if (offerteRicevuteShallow != null) {
             for (OffertaShallowDto offertaShallowDto : offerteRicevuteShallow) {

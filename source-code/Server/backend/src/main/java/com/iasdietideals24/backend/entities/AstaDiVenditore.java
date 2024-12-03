@@ -30,6 +30,6 @@ public abstract class AstaDiVenditore extends Asta {
 
     @Override
     public String toString() {
-        return "AstaDiVenditore(proprietario=" + this.getProprietario().getEmail() + ") + is a " + super.toString();
+        return "AstaDiVenditore(proprietario=" + this.getProprietario().getIdAccount() + ") + is a " + super.toString();
     }
 }

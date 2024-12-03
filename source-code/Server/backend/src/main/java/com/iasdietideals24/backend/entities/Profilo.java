@@ -118,7 +118,7 @@ public class Profilo {
         StringBuilder listEmailAccounts = new StringBuilder();
         listEmailAccounts.append("[");
         while (itrAccount.hasNext()) {
-            listEmailAccounts.append(itrAccount.next().getEmail()).append(", ");
+            listEmailAccounts.append(itrAccount.next().getIdAccount()).append(", ");
         }
         listEmailAccounts.append("]");
 

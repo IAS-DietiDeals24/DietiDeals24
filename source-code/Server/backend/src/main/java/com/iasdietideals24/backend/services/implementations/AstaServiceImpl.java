@@ -114,6 +114,8 @@ public class AstaServiceImpl implements AstaService {
 
         log.trace("Converto l'associazione 'notificheAssociate'...");
 
+        asta.getNotificheAssociate().clear();
+
         if (notificheAssociateShallow != null) {
             for (NotificaShallowDto notificaShallowDto : notificheAssociateShallow) {
 

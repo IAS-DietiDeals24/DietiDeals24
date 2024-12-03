@@ -87,6 +87,21 @@ public class NotificaServiceImpl implements NotificaService {
     }
 
     @Override
+    public Page<NotificaDto> findByDestinatario(Long idAccount, Pageable pageable) {
+
+        log.debug("Recupero le notifiche dal database...");
+        log.trace("Id account destinatario da cercare: {}", idAccount);
+
+        // Recuperiamo tutte le entità
+        Page<Notifica> foundNotifiche = notificaRepository.findByDestinatario(idAccount, pageable);
+
+        log.trace("foundNotifiche: {}", foundNotifiche);
+        log.debug("Notifiche recuperate dal database.");
+
+        return foundNotifiche.map(notificaMapper::toDto);
+    }
+
+    @Override
     public Optional<NotificaDto> findOne(Long idNotifica) {
 
         log.trace("Id notifica da recuperare: {}", idNotifica);
@@ -278,7 +293,10 @@ public class NotificaServiceImpl implements NotificaService {
 
         log.trace("Converto l'associazione 'destinatari'...");
 
+        notifica.getDestinatari().clear();
+
         if (destinatariShallowDto != null) {
+
             for (AccountShallowDto accountShallowDto : destinatariShallowDto) {
 
                 Account convertedAccount = relationsConverter.convertAccountShallowRelation(accountShallowDto);

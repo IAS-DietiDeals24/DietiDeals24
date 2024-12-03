@@ -190,6 +190,8 @@ public class AstaSilenziosaServiceImpl implements AstaSilenziosaService {
 
         log.trace("Converto l'associazione 'offerteRicevute'...");
 
+        astaSilenziosa.getOfferteRicevute().clear();
+
         if (offerteRicevuteShallow != null) {
             for (OffertaShallowDto offertaShallowDto : offerteRicevuteShallow) {
 

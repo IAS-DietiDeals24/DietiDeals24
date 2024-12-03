@@ -204,6 +204,8 @@ public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
 
         log.trace("Converto l'associazione 'offerteRicevute'...");
 
+        astaTempoFisso.getOfferteRicevute().clear();
+
         if (offerteRicevuteShallow != null) {
             for (OffertaShallowDto offertaShallowDto : offerteRicevuteShallow) {
 

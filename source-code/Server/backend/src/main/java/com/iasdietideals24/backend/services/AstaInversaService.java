@@ -14,6 +14,12 @@ public interface AstaInversaService {
 
     Page<AstaInversaDto> findAll(Pageable pageable);
 
+    Page<AstaInversaDto> findByIdAccountProprietario(Long idAccount, Pageable pageable);
+
+    Page<AstaInversaDto> findByNomeAstaContainingAndNomeCategoria(String nomeAsta, String nomeCategoria, Pageable pageable);
+
+    Page<AstaInversaDto> findByOfferente(Long idAccount, Pageable pageable);
+
     Optional<AstaInversaDto> findOne(Long idAsta);
 
     boolean isExists(Long idAsta);
