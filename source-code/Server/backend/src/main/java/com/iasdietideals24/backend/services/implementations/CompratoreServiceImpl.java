@@ -25,9 +25,9 @@ import java.util.Set;
 @Service
 public class CompratoreServiceImpl implements CompratoreService {
 
-    public static final String LOG_RECUPERO_ACCOUNT_COMPRATORE = "Recupero l'account compratore dal database...";
-    public static final String LOG_FOUND_COMPRATORE = "foundCompratore: {}";
-    public static final String LOG_ACCOUNT_COMPRATORE_RECUPERATO = "Account compratore recuperato dal database.";
+    public static final String LOG_RECUPERO_ACCOUNT = "Recupero l'account compratore dal database...";
+    public static final String LOG_FOUND_ACCOUNT = "foundCompratore: {}";
+    public static final String LOG_ACCOUNT_RECUPERATO = "Account compratore recuperato dal database.";
 
     private final AccountService accountService;
     private final CompratoreMapper compratoreMapper;
@@ -88,29 +88,29 @@ public class CompratoreServiceImpl implements CompratoreService {
     @Override
     public Optional<CompratoreDto> findOne(Long idAccount) {
 
+        log.debug(LOG_RECUPERO_ACCOUNT);
         log.trace("Id account da recuperare: {}", idAccount);
-        log.debug(LOG_RECUPERO_ACCOUNT_COMPRATORE);
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<Compratore> foundCompratore = compratoreRepository.findById(idAccount);
 
-        log.trace(LOG_FOUND_COMPRATORE, foundCompratore);
-        log.debug(LOG_ACCOUNT_COMPRATORE_RECUPERATO);
+        log.trace(LOG_FOUND_ACCOUNT, foundCompratore);
+        log.debug(LOG_ACCOUNT_RECUPERATO);
 
         return foundCompratore.map(compratoreMapper::toDto);
     }
 
     @Override
-    public Page<CompratoreDto> findByEmail(String email, Pageable pageable) {
+    public Page<CompratoreDto> findByEmailIs(String email, Pageable pageable) {
 
         log.trace("Email account da recuperare: {}", email);
-        log.debug(LOG_RECUPERO_ACCOUNT_COMPRATORE);
+        log.debug(LOG_RECUPERO_ACCOUNT);
 
         // Recuperiamo l'entità con l'id passato per parametro
-        Page<Compratore> foundCompratore = compratoreRepository.findByEmail(email, pageable);
+        Page<Compratore> foundCompratore = compratoreRepository.findByEmailIs(email, pageable);
 
-        log.trace(LOG_FOUND_COMPRATORE, foundCompratore);
-        log.debug(LOG_ACCOUNT_COMPRATORE_RECUPERATO);
+        log.trace(LOG_FOUND_ACCOUNT, foundCompratore);
+        log.debug(LOG_ACCOUNT_RECUPERATO);
 
         return foundCompratore.map(compratoreMapper::toDto);
     }
@@ -146,13 +146,13 @@ public class CompratoreServiceImpl implements CompratoreService {
 
         updatedCompratoreDto.setIdAccount(idAccount);
 
-        log.debug(LOG_RECUPERO_ACCOUNT_COMPRATORE);
+        log.debug(LOG_RECUPERO_ACCOUNT);
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<Compratore> foundCompratore = compratoreRepository.findById(idAccount);
 
-        log.trace(LOG_FOUND_COMPRATORE, foundCompratore);
-        log.debug(LOG_ACCOUNT_COMPRATORE_RECUPERATO);
+        log.trace(LOG_FOUND_ACCOUNT, foundCompratore);
+        log.debug(LOG_ACCOUNT_RECUPERATO);
 
         if (foundCompratore.isEmpty())
             throw new UpdateRuntimeException("L'id account '" + idAccount + "' non corrisponde a nessun compratore esistente!");

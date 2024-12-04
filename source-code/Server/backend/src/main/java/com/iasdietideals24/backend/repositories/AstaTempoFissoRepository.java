@@ -12,11 +12,11 @@ import org.springframework.stereotype.Repository;
 public interface AstaTempoFissoRepository extends CrudRepository<AstaTempoFisso, Long>, PagingAndSortingRepository<AstaTempoFisso, Long> {
 
     @Query(value = "select a from asta_tempo_fisso a where a.proprietario.idAccount = ?1")
-    Page<AstaTempoFisso> findByIdAccountProprietario(Long idAccount, Pageable pageable);
+    Page<AstaTempoFisso> findByProprietario_IdAccountIs(Long idAccount, Pageable pageable);
 
     @Query(value = "select a from asta_tempo_fisso a where a.nome like ?1 and a.categoria.nome = ?2")
-    Page<AstaTempoFisso> findByNomeAstaLikeAndNomeCategoria(String nomeAsta, String nomeCategoria, Pageable pageable);
+    Page<AstaTempoFisso> findByNomeLikeAndCategoria_NomeIs(String nomeAsta, String nomeCategoria, Pageable pageable);
 
     @Query(value = "select a from asta_tempo_fisso a join a.offerteRicevute o where o.compratoreCollegato.idAccount = ?1")
-    Page<AstaTempoFisso> findByOfferente(Long idAccount, Pageable pageable);
+    Page<AstaTempoFisso> findByOfferente_IdAccountIs(Long idAccount, Pageable pageable);
 }

@@ -27,9 +27,12 @@ import java.util.Set;
 @Service
 public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
 
-    public static final String LOG_RECUPERO_ASTA_TEMPO_FISSO = "Recupero l'asta a tempo fisso dal database...";
-    public static final String LOG_FOUND_ASTA_TEMPO_FISSO = "foundAstaTempoFisso: {}";
-    public static final String LOG_ASTA_TEMPO_FISSO_RECUPERATA = "Asta a tempo fisso recuperata dal database.";
+    public static final String LOG_RECUPERO_ASTE_IN_CORSO = "Recupero le aste a tempo fisso dal database...";
+    public static final String LOG_FOUND_ASTE = "foundAsteTempoFisso: {}";
+    public static final String LOG_ASTE_RECUPERATE = "Aste a tempo fisso recuperate dal database.";
+    public static final String LOG_RECUPERO_ASTA = "Recupero l'asta a tempo fisso dal database...";
+    public static final String LOG_FOUND_ASTA = "foundAstaTempoFisso: {}";
+    public static final String LOG_ASTA_RECUPERATA = "Asta a tempo fisso recuperata dal database.";
 
     private final AstaDiVenditoreService astaDiVenditoreService;
     private final AstaTempoFissoMapper astaTempoFissoMapper;
@@ -79,13 +82,59 @@ public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
     @Override
     public Page<AstaTempoFissoDto> findAll(Pageable pageable) {
 
-        log.debug("Recupero le aste a tempo fisso dal database...");
+        log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
 
         // Recuperiamo tutte le entità
         Page<AstaTempoFisso> foundAsteTempoFisso = astaTempoFissoRepository.findAll(pageable);
 
-        log.trace("foundAsteTempoFisso: {}", foundAsteTempoFisso);
-        log.debug("Aste a tempo fisso recuperate dal database.");
+        log.trace(LOG_FOUND_ASTE, foundAsteTempoFisso);
+        log.debug(LOG_ASTE_RECUPERATE);
+
+        return foundAsteTempoFisso.map(astaTempoFissoMapper::toDto);
+    }
+
+    @Override
+    public Page<AstaTempoFissoDto> findByProprietarioIdAccountIs(Long idAccount, Pageable pageable) {
+
+        log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
+        log.trace("Id account proprietario da cercare: {}", idAccount);
+
+        // Recuperiamo tutte le entità
+        Page<AstaTempoFisso> foundAsteTempoFisso = astaTempoFissoRepository.findByProprietario_IdAccountIs(idAccount, pageable);
+
+        log.trace(LOG_FOUND_ASTE, foundAsteTempoFisso);
+        log.debug(LOG_ASTE_RECUPERATE);
+
+        return foundAsteTempoFisso.map(astaTempoFissoMapper::toDto);
+    }
+
+    @Override
+    public Page<AstaTempoFissoDto> findByNomeLikeAndCategoriaNomeIs(String nomeAsta, String nomeCategoria, Pageable pageable) {
+
+        log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
+        log.trace("Nome asta da cercare: {}", nomeAsta);
+        log.trace("Nome categoria da cercare: {}", nomeCategoria);
+
+        // Recuperiamo tutte le entità
+        Page<AstaTempoFisso> foundAsteTempoFisso = astaTempoFissoRepository.findByNomeLikeAndCategoria_NomeIs(nomeAsta, nomeCategoria, pageable);
+
+        log.trace(LOG_FOUND_ASTE, foundAsteTempoFisso);
+        log.debug(LOG_ASTE_RECUPERATE);
+
+        return foundAsteTempoFisso.map(astaTempoFissoMapper::toDto);
+    }
+
+    @Override
+    public Page<AstaTempoFissoDto> findByOfferenteIdAccountIs(Long idAccount, Pageable pageable) {
+
+        log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
+        log.trace("Id account offerente da cercare: {}", idAccount);
+
+        // Recuperiamo tutte le entità
+        Page<AstaTempoFisso> foundAsteTempoFisso = astaTempoFissoRepository.findByOfferente_IdAccountIs(idAccount, pageable);
+
+        log.trace(LOG_FOUND_ASTE, foundAsteTempoFisso);
+        log.debug(LOG_ASTE_RECUPERATE);
 
         return foundAsteTempoFisso.map(astaTempoFissoMapper::toDto);
     }
@@ -94,13 +143,13 @@ public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
     public Optional<AstaTempoFissoDto> findOne(Long idAsta) {
 
         log.trace("Id asta da recuperare: {}", idAsta);
-        log.debug(LOG_RECUPERO_ASTA_TEMPO_FISSO);
+        log.debug(LOG_RECUPERO_ASTA);
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<AstaTempoFisso> foundAstaTempoFisso = astaTempoFissoRepository.findById(idAsta);
 
-        log.trace(LOG_FOUND_ASTA_TEMPO_FISSO, foundAstaTempoFisso);
-        log.debug(LOG_ASTA_TEMPO_FISSO_RECUPERATA);
+        log.trace(LOG_FOUND_ASTA, foundAstaTempoFisso);
+        log.debug(LOG_ASTA_RECUPERATA);
 
         return foundAstaTempoFisso.map(astaTempoFissoMapper::toDto);
     }
@@ -135,13 +184,13 @@ public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
 
         updatedAstaTempoFissoDto.setIdAsta(idAsta);
 
-        log.debug(LOG_RECUPERO_ASTA_TEMPO_FISSO);
+        log.debug(LOG_RECUPERO_ASTA);
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<AstaTempoFisso> foundAstaTempoFisso = astaTempoFissoRepository.findById(idAsta);
 
-        log.trace(LOG_FOUND_ASTA_TEMPO_FISSO, foundAstaTempoFisso);
-        log.debug(LOG_ASTA_TEMPO_FISSO_RECUPERATA);
+        log.trace(LOG_FOUND_ASTA, foundAstaTempoFisso);
+        log.debug(LOG_ASTA_RECUPERATA);
 
         if (foundAstaTempoFisso.isEmpty())
             throw new UpdateRuntimeException("L'id asta '" + idAsta + "' non corrisponde a nessuna asta a tempo fisso esistente!");

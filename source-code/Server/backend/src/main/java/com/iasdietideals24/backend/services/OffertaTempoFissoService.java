@@ -14,7 +14,13 @@ public interface OffertaTempoFissoService {
 
     Page<OffertaTempoFissoDto> findAll(Pageable pageable);
 
+    Page<OffertaTempoFissoDto> findByAstaRiferimentoIdAsta(Long idAsta, Pageable pageable);
+
     Optional<OffertaTempoFissoDto> findOne(Long idOfferta);
+
+    Optional<OffertaTempoFissoDto> findMaxByValoreAndAstaRiferimentoIdAstaIs(Long idAsta);
+
+    Optional<OffertaTempoFissoDto> findMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(Long idAsta, Long idAccount);
 
     boolean isExists(Long idOfferta);
 

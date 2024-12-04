@@ -14,7 +14,13 @@ public interface OffertaSilenziosaService {
 
     Page<OffertaSilenziosaDto> findAll(Pageable pageable);
 
+    Page<OffertaSilenziosaDto> findByAstaRiferimentoIdAsta(Long idAsta, Pageable pageable);
+
     Optional<OffertaSilenziosaDto> findOne(Long idOfferta);
+
+    Optional<OffertaSilenziosaDto> findMaxByValoreAndAstaRiferimentoIdAstaIs(Long idAsta);
+
+    Optional<OffertaSilenziosaDto> findMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(Long idAsta, Long idAccount);
 
     boolean isExists(Long idOfferta);
 

@@ -26,9 +26,12 @@ import java.util.Set;
 @Service
 public class AstaSilenziosaServiceImpl implements AstaSilenziosaService {
 
-    public static final String LOG_RECUPERO_ASTA_SILENZIOSA = "Recupero l'asta silenziosa dal database...";
-    public static final String LOG_FOUND_ASTA_SILENZIOSA = "foundAstaSilenziosa: {}";
-    public static final String LOG_ASTA_SILENZIOSA_RECUPERATA = "Asta silenziosa recuperata dal database.";
+    public static final String LOG_RECUPERO_ASTE_IN_CORSO = "Recupero le aste silenziose dal database...";
+    public static final String LOG_FOUND_ASTE = "foundAsteSilenziose: {}";
+    public static final String LOG_ASTE_RECUPERATE = "Aste silenziose recuperate dal database.";
+    public static final String LOG_RECUPERO_ASTA = "Recupero l'asta silenziosa dal database...";
+    public static final String LOG_FOUND_ASTA = "foundAstaSilenziosa: {}";
+    public static final String LOG_ASTA_RECUPERATA = "Asta silenziosa recuperata dal database.";
 
     private final AstaDiVenditoreService astaDiVenditoreService;
     private final AstaSilenziosaMapper astaSilenziosaMapper;
@@ -78,13 +81,59 @@ public class AstaSilenziosaServiceImpl implements AstaSilenziosaService {
     @Override
     public Page<AstaSilenziosaDto> findAll(Pageable pageable) {
 
-        log.debug("Recupero le aste silenziose dal database...");
+        log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
 
         // Recuperiamo tutte le entità
         Page<AstaSilenziosa> foundAsteSilenziose = astaSilenziosaRepository.findAll(pageable);
 
-        log.trace("foundAsteSilenziose: {}", foundAsteSilenziose);
-        log.debug("Aste silenziose recuperate dal database.");
+        log.trace(LOG_FOUND_ASTE, foundAsteSilenziose);
+        log.debug(LOG_ASTE_RECUPERATE);
+
+        return foundAsteSilenziose.map(astaSilenziosaMapper::toDto);
+    }
+
+    @Override
+    public Page<AstaSilenziosaDto> findByProprietarioIdAccountIs(Long idAccount, Pageable pageable) {
+
+        log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
+        log.trace("Id account proprietario da cercare: {}", idAccount);
+
+        // Recuperiamo tutte le entità
+        Page<AstaSilenziosa> foundAsteSilenziose = astaSilenziosaRepository.findByProprietario_IdAccountIs(idAccount, pageable);
+
+        log.trace(LOG_FOUND_ASTE, foundAsteSilenziose);
+        log.debug(LOG_ASTE_RECUPERATE);
+
+        return foundAsteSilenziose.map(astaSilenziosaMapper::toDto);
+    }
+
+    @Override
+    public Page<AstaSilenziosaDto> findByNomeLikeAndCategoriaNomeIs(String nomeAsta, String nomeCategoria, Pageable pageable) {
+
+        log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
+        log.trace("Nome asta da cercare: {}", nomeAsta);
+        log.trace("Nome categoria da cercare: {}", nomeCategoria);
+
+        // Recuperiamo tutte le entità
+        Page<AstaSilenziosa> foundAsteSilenziose = astaSilenziosaRepository.findByNomeLikeAndCategoria_NomeIs(nomeAsta, nomeCategoria, pageable);
+
+        log.trace(LOG_FOUND_ASTE, foundAsteSilenziose);
+        log.debug(LOG_ASTE_RECUPERATE);
+
+        return foundAsteSilenziose.map(astaSilenziosaMapper::toDto);
+    }
+
+    @Override
+    public Page<AstaSilenziosaDto> findByOfferenteIdAccountIs(Long idAccount, Pageable pageable) {
+
+        log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
+        log.trace("Id account offerente da cercare: {}", idAccount);
+
+        // Recuperiamo tutte le entità
+        Page<AstaSilenziosa> foundAsteSilenziose = astaSilenziosaRepository.findByOfferente_IdAccountIs(idAccount, pageable);
+
+        log.trace(LOG_FOUND_ASTE, foundAsteSilenziose);
+        log.debug(LOG_ASTE_RECUPERATE);
 
         return foundAsteSilenziose.map(astaSilenziosaMapper::toDto);
     }
@@ -93,13 +142,13 @@ public class AstaSilenziosaServiceImpl implements AstaSilenziosaService {
     public Optional<AstaSilenziosaDto> findOne(Long idAsta) {
 
         log.trace("Id asta da recuperare: {}", idAsta);
-        log.debug(LOG_RECUPERO_ASTA_SILENZIOSA);
+        log.debug(LOG_RECUPERO_ASTA);
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<AstaSilenziosa> foundAstaSilenziosa = astaSilenziosaRepository.findById(idAsta);
 
-        log.trace(LOG_FOUND_ASTA_SILENZIOSA, foundAstaSilenziosa);
-        log.debug(LOG_ASTA_SILENZIOSA_RECUPERATA);
+        log.trace(LOG_FOUND_ASTA, foundAstaSilenziosa);
+        log.debug(LOG_ASTA_RECUPERATA);
 
         return foundAstaSilenziosa.map(astaSilenziosaMapper::toDto);
     }
@@ -134,13 +183,13 @@ public class AstaSilenziosaServiceImpl implements AstaSilenziosaService {
 
         updatedAstaSilenziosaDto.setIdAsta(idAsta);
 
-        log.debug(LOG_RECUPERO_ASTA_SILENZIOSA);
+        log.debug(LOG_RECUPERO_ASTA);
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<AstaSilenziosa> foundAstaSilenziosa = astaSilenziosaRepository.findById(idAsta);
 
-        log.trace(LOG_FOUND_ASTA_SILENZIOSA, foundAstaSilenziosa);
-        log.debug(LOG_ASTA_SILENZIOSA_RECUPERATA);
+        log.trace(LOG_FOUND_ASTA, foundAstaSilenziosa);
+        log.debug(LOG_ASTA_RECUPERATA);
 
         if (foundAstaSilenziosa.isEmpty())
             throw new UpdateRuntimeException("L'id asta '" + idAsta + "' non corrisponde a nessuna asta silenziosa esistente!");

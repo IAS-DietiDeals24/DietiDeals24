@@ -16,9 +16,9 @@ import java.util.Optional;
 @RestController
 public class AstaInversaController {
 
-    public static final String LOG_ASTA_INVERSA_NON_TROVATA = "Asta inversa non trovata.";
-    public static final String LOG_RECUPERO_ASTE_INVERSE_IN_CORSO = "Recupero delle aste inverse in corso...";
-    public static final String LOG_ASTE_INVERSE_RECUPERATE = "Aste inverse recuperate. Invio in corso...";
+    public static final String LOG_ASTA_NON_TROVATA = "Asta inversa non trovata.";
+    public static final String LOG_RECUPERO_ASTE_IN_CORSO = "Recupero delle aste inverse in corso...";
+    public static final String LOG_ASTE_RECUPERATE = "Aste inverse recuperate. Invio in corso...";
 
     private final AstaInversaService astaInversaService;
 
@@ -41,49 +41,49 @@ public class AstaInversaController {
     @GetMapping(path = "/aste/di-compratori/inverse")
     public ResponseEntity<Page<AstaInversaDto>> listAsteInverse(Pageable pageable) {
 
-        log.info(LOG_RECUPERO_ASTE_INVERSE_IN_CORSO);
+        log.info(LOG_RECUPERO_ASTE_IN_CORSO);
 
         Page<AstaInversaDto> foundAsteInverseDto = astaInversaService.findAll(pageable);
 
-        log.info(LOG_ASTE_INVERSE_RECUPERATE);
+        log.info(LOG_ASTE_RECUPERATE);
 
         return new ResponseEntity<>(foundAsteInverseDto, HttpStatus.OK);
     }
 
     @GetMapping(path = "/aste/di-compratori/inverse", params = "proprietario")
-    public ResponseEntity<Page<AstaInversaDto>> listAsteInverseByIdAccountProprietario(@RequestParam("proprietario") Long idAccount, Pageable pageable) {
+    public ResponseEntity<Page<AstaInversaDto>> listAsteInverseByProprietarioIdAccountIs(@RequestParam("proprietario") Long idAccount, Pageable pageable) {
 
-        log.info(LOG_RECUPERO_ASTE_INVERSE_IN_CORSO);
+        log.info(LOG_RECUPERO_ASTE_IN_CORSO);
 
-        Page<AstaInversaDto> foundAsteInverseDto = astaInversaService.findByIdAccountProprietario(idAccount, pageable);
+        Page<AstaInversaDto> foundAsteInverseDto = astaInversaService.findByProprietarioIdAccountIs(idAccount, pageable);
 
-        log.info(LOG_ASTE_INVERSE_RECUPERATE);
+        log.info(LOG_ASTE_RECUPERATE);
 
         return new ResponseEntity<>(foundAsteInverseDto, HttpStatus.OK);
     }
 
     @GetMapping(path = "/aste/di-compratori/inverse", params = {"nome", "categoria"})
-    public ResponseEntity<Page<AstaInversaDto>> listAsteInverseByNomeAstaContainingAndNomeCategoria(@RequestParam(name = "nome", defaultValue = "%") String nomeAsta,
+    public ResponseEntity<Page<AstaInversaDto>> listAsteInverseByNomeLikeAndCategoriaNomeIs(@RequestParam(name = "nome", defaultValue = "%") String nomeAsta,
                                                                                                     @RequestParam("categoria") String nomeCategoria,
                                                                                                     Pageable pageable) {
 
-        log.info(LOG_RECUPERO_ASTE_INVERSE_IN_CORSO);
+        log.info(LOG_RECUPERO_ASTE_IN_CORSO);
 
-        Page<AstaInversaDto> foundAsteInverseDto = astaInversaService.findByNomeAstaContainingAndNomeCategoria("%" + nomeAsta + "%", nomeCategoria, pageable);
+        Page<AstaInversaDto> foundAsteInverseDto = astaInversaService.findByNomeLikeAndCategoriaNomeIs("%" + nomeAsta + "%", nomeCategoria, pageable);
 
-        log.info(LOG_ASTE_INVERSE_RECUPERATE);
+        log.info(LOG_ASTE_RECUPERATE);
 
         return new ResponseEntity<>(foundAsteInverseDto, HttpStatus.OK);
     }
 
     @GetMapping(path = "/aste/di-compratori/inverse", params = "offerente")
-    public ResponseEntity<Page<AstaInversaDto>> listAsteInverseByIdAccountOfferente(@RequestParam("offerente") Long idAccount, Pageable pageable) {
+    public ResponseEntity<Page<AstaInversaDto>> listAsteInverseByOfferenteIdAccountIs(@RequestParam("offerente") Long idAccount, Pageable pageable) {
 
-        log.info(LOG_RECUPERO_ASTE_INVERSE_IN_CORSO);
+        log.info(LOG_RECUPERO_ASTE_IN_CORSO);
 
-        Page<AstaInversaDto> foundAsteInverseDto = astaInversaService.findByOfferente(idAccount, pageable);
+        Page<AstaInversaDto> foundAsteInverseDto = astaInversaService.findByOfferenteIdAccountIs(idAccount, pageable);
 
-        log.info(LOG_ASTE_INVERSE_RECUPERATE);
+        log.info(LOG_ASTE_RECUPERATE);
 
         return new ResponseEntity<>(foundAsteInverseDto, HttpStatus.OK);
     }
@@ -103,7 +103,7 @@ public class AstaInversaController {
             return new ResponseEntity<>(foundAstaInversaDto.get(), HttpStatus.OK);
         } else {
 
-            log.info(LOG_ASTA_INVERSA_NON_TROVATA);
+            log.info(LOG_ASTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -124,7 +124,7 @@ public class AstaInversaController {
             return new ResponseEntity<>(updatedAstaInversaDto, HttpStatus.OK);
         } else {
 
-            log.info(LOG_ASTA_INVERSA_NON_TROVATA);
+            log.info(LOG_ASTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -145,7 +145,7 @@ public class AstaInversaController {
             return new ResponseEntity<>(updatedAstaInversaDto, HttpStatus.OK);
         } else {
 
-            log.info(LOG_ASTA_INVERSA_NON_TROVATA);
+            log.info(LOG_ASTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

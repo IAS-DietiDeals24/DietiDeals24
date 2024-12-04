@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountRepository extends CrudRepository<Account, Long>, PagingAndSortingRepository<Account, Long> {
 
-    Page<Account> findByEmail(String email, Pageable pageable);
+    Page<Account> findByEmailIs(String email, Pageable pageable);
 }

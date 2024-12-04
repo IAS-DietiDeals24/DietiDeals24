@@ -12,5 +12,5 @@ import org.springframework.stereotype.Repository;
 public interface AstaRepository extends CrudRepository<Asta, Long>, PagingAndSortingRepository<Asta, Long> {
 
     @Query(value = "select a from asta a where a.nome like ?1 and a.categoria.nome = ?2")
-    Page<Asta> findByNomeAstaLikeAndNomeCategoria(String nomeAsta, String nomeCategoria, Pageable pageable);
+    Page<Asta> findByNomeLikeAndCategoria_NomeIs(String nomeAsta, String nomeCategoria, Pageable pageable);
 }

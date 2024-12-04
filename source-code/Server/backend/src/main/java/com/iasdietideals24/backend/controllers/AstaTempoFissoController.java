@@ -16,7 +16,9 @@ import java.util.Optional;
 @RestController
 public class AstaTempoFissoController {
 
-    public static final String LOG_ASTA_A_TEMPO_FISSO_NON_TROVATA = "Asta a tempo fisso non trovata.";
+    public static final String LOG_ASTA_NON_TROVATA = "Asta a tempo fisso non trovata.";
+    public static final String LOG_RECUPERO_ASTE_IN_CORSO = "Recupero delle aste a tempo fisso in corso...";
+    public static final String LOG_ASTE_RECUPERATE = "Aste a tempo fisso recuperate. Invio in corso...";
 
     private final AstaTempoFissoService astaTempoFissoService;
 
@@ -39,11 +41,49 @@ public class AstaTempoFissoController {
     @GetMapping(path = "/aste/di-venditori/tempo-fisso")
     public ResponseEntity<Page<AstaTempoFissoDto>> listAsteTempoFisso(Pageable pageable) {
 
-        log.info("Recupero delle aste a tempo fisso in corso...");
+        log.info(LOG_RECUPERO_ASTE_IN_CORSO);
 
         Page<AstaTempoFissoDto> foundAsteTempoFissoDto = astaTempoFissoService.findAll(pageable);
 
-        log.info("Aste a tempo fisso recuperate. Invio in corso...");
+        log.info(LOG_ASTE_RECUPERATE);
+
+        return new ResponseEntity<>(foundAsteTempoFissoDto, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/aste/di-venditori/tempo-fisso", params = "proprietario")
+    public ResponseEntity<Page<AstaTempoFissoDto>> listAsteTempoFissoByProprietarioIdAccountIs(@RequestParam("proprietario") Long idAccount, Pageable pageable) {
+
+        log.info(LOG_RECUPERO_ASTE_IN_CORSO);
+
+        Page<AstaTempoFissoDto> foundAsteTempoFissoDto = astaTempoFissoService.findByProprietarioIdAccountIs(idAccount, pageable);
+
+        log.info(LOG_ASTE_RECUPERATE);
+
+        return new ResponseEntity<>(foundAsteTempoFissoDto, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/aste/di-venditori/tempo-fisso", params = {"nome", "categoria"})
+    public ResponseEntity<Page<AstaTempoFissoDto>> listAsteTempoFissoByNomeLikeAndCategoriaNomeIs(@RequestParam(name = "nome", defaultValue = "%") String nomeAsta,
+                                                                                                  @RequestParam("categoria") String nomeCategoria,
+                                                                                                  Pageable pageable) {
+
+        log.info(LOG_RECUPERO_ASTE_IN_CORSO);
+
+        Page<AstaTempoFissoDto> foundAsteTempoFissoDto = astaTempoFissoService.findByNomeLikeAndCategoriaNomeIs("%" + nomeAsta + "%", nomeCategoria, pageable);
+
+        log.info(LOG_ASTE_RECUPERATE);
+
+        return new ResponseEntity<>(foundAsteTempoFissoDto, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/aste/di-venditori/tempo-fisso", params = "offerente")
+    public ResponseEntity<Page<AstaTempoFissoDto>> listAsteTempoFissoByOfferenteIdAccountIs(@RequestParam("offerente") Long idAccount, Pageable pageable) {
+
+        log.info(LOG_RECUPERO_ASTE_IN_CORSO);
+
+        Page<AstaTempoFissoDto> foundAsteTempoFissoDto = astaTempoFissoService.findByOfferenteIdAccountIs(idAccount, pageable);
+
+        log.info(LOG_ASTE_RECUPERATE);
 
         return new ResponseEntity<>(foundAsteTempoFissoDto, HttpStatus.OK);
     }
@@ -63,7 +103,7 @@ public class AstaTempoFissoController {
             return new ResponseEntity<>(foundAstaTempoFissoDto.get(), HttpStatus.OK);
         } else {
 
-            log.info(LOG_ASTA_A_TEMPO_FISSO_NON_TROVATA);
+            log.info(LOG_ASTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -84,7 +124,7 @@ public class AstaTempoFissoController {
             return new ResponseEntity<>(updatedAstaTempoFissoDto, HttpStatus.OK);
         } else {
 
-            log.info(LOG_ASTA_A_TEMPO_FISSO_NON_TROVATA);
+            log.info(LOG_ASTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -105,7 +145,7 @@ public class AstaTempoFissoController {
             return new ResponseEntity<>(updatedAstaTempoFissoDto, HttpStatus.OK);
         } else {
 
-            log.info(LOG_ASTA_A_TEMPO_FISSO_NON_TROVATA);
+            log.info(LOG_ASTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

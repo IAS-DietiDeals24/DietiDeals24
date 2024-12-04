@@ -16,7 +16,7 @@ import java.util.Optional;
 @RestController
 public class OffertaTempoFissoController {
 
-    public static final String LOG_OFFERTA_A_TEMPO_FISSO_NON_TROVATA = "Offerta a tempo fisso non trovata.";
+    public static final String LOG_OFFERTA_NON_TROVATA = "Offerta a tempo fisso non trovata.";
 
     private final OffertaTempoFissoService offertaTempoFissoService;
 
@@ -48,6 +48,19 @@ public class OffertaTempoFissoController {
         return new ResponseEntity<>(foundOfferteTempoFissoDto, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/offerte/di-compratori/tempo-fisso", params = "asta_riferimento")
+    public ResponseEntity<Page<OffertaTempoFissoDto>> listOfferteTempoFissoByAstaRiferimentoIdAsta(@RequestParam("asta_riferimento") Long idAsta, Pageable pageable) {
+
+        log.info("Recupero delle offerte a tempo fisso associate all'asta in corso...");
+        log.trace("Id asta delle offerta a tempo fisso da recuperare: {}", idAsta);
+
+        Page<OffertaTempoFissoDto> foundOfferteTempoFissoDto = offertaTempoFissoService.findByAstaRiferimentoIdAsta(idAsta, pageable);
+
+        log.info("Offerte a tempo fisso associate all'asta recuperate. Invio in corso...");
+
+        return new ResponseEntity<>(foundOfferteTempoFissoDto, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/offerte/di-compratori/tempo-fisso/{idOfferta}")
     public ResponseEntity<OffertaTempoFissoDto> getOffertaTempoFisso(@PathVariable("idOfferta") Long idOfferta) {
 
@@ -63,7 +76,50 @@ public class OffertaTempoFissoController {
             return new ResponseEntity<>(foundOffertaTempoFissoDto.get(), HttpStatus.OK);
         } else {
 
-            log.info(LOG_OFFERTA_A_TEMPO_FISSO_NON_TROVATA);
+            log.info(LOG_OFFERTA_NON_TROVATA);
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(path = "/offerte/di-compratori/tempo-fisso/most-value", params = "asta_riferimento")
+    public ResponseEntity<OffertaTempoFissoDto> findOffertaTempoFissoMaxByValoreAndAstaRiferimentoIdAstaIs(@RequestParam("asta_riferimento") Long idAsta) {
+
+        log.info("Recupero dell'offerta a tempo fisso massima in corso...");
+
+        log.trace("Id asta dell'offerta massima da recuperare: {}", idAsta);
+
+        Optional<OffertaTempoFissoDto> foundOffertaTempoFissoDto = offertaTempoFissoService.findMaxByValoreAndAstaRiferimentoIdAstaIs(idAsta);
+        if (foundOffertaTempoFissoDto.isPresent()) {
+
+            log.info("Offerta a tempo fisso massima recuperata. Invio in corso...");
+
+            return new ResponseEntity<>(foundOffertaTempoFissoDto.get(), HttpStatus.OK);
+        } else {
+
+            log.info(LOG_OFFERTA_NON_TROVATA);
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(path = "/offerte/di-compratori/tempo-fisso/most-value", params = {"asta_riferimento", "venditore_collegato"})
+    public ResponseEntity<OffertaTempoFissoDto> findOffertaTempoFissoMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(@RequestParam("asta_riferimento") Long idAsta, @RequestParam("venditore_collegato") Long idAccount) {
+
+        log.info("Recupero dell'offerta a tempo fisso massima del venditore in corso...");
+
+        log.trace("Id asta dell'offerta massima da recuperare: {}", idAsta);
+        log.trace("Id venditore dell'offerta massima da recuperare: {}", idAccount);
+
+        Optional<OffertaTempoFissoDto> foundOffertaTempoFissoDto = offertaTempoFissoService.findMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(idAsta, idAccount);
+        if (foundOffertaTempoFissoDto.isPresent()) {
+
+            log.info("Offerta a tempo fisso massima  del venditore recuperata. Invio in corso...");
+
+            return new ResponseEntity<>(foundOffertaTempoFissoDto.get(), HttpStatus.OK);
+        } else {
+
+            log.info(LOG_OFFERTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -84,7 +140,7 @@ public class OffertaTempoFissoController {
             return new ResponseEntity<>(updatedOffertaTempoFissoDto, HttpStatus.OK);
         } else {
 
-            log.info(LOG_OFFERTA_A_TEMPO_FISSO_NON_TROVATA);
+            log.info(LOG_OFFERTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -105,7 +161,7 @@ public class OffertaTempoFissoController {
             return new ResponseEntity<>(updatedOffertaTempoFissoDto, HttpStatus.OK);
         } else {
 
-            log.info(LOG_OFFERTA_A_TEMPO_FISSO_NON_TROVATA);
+            log.info(LOG_OFFERTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

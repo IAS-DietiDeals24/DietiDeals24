@@ -16,7 +16,7 @@ import java.util.Optional;
 @RestController
 public class OffertaSilenziosaController {
 
-    public static final String LOG_OFFERTA_SILENZIOSA_NON_TROVATA = "Offerta silenziosa non trovata.";
+    public static final String LOG_OFFERTA_NON_TROVATA = "Offerta silenziosa non trovata.";
 
     private final OffertaSilenziosaService offertaSilenziosaService;
 
@@ -48,6 +48,19 @@ public class OffertaSilenziosaController {
         return new ResponseEntity<>(foundOfferteSilenzioseDto, HttpStatus.OK);
     }
 
+    @GetMapping(path = "/offerte/di-compratori/silenziose", params = "asta_riferimento")
+    public ResponseEntity<Page<OffertaSilenziosaDto>> listOfferteSilenzioseByAstaRiferimentoIdAsta(@RequestParam("asta_riferimento") Long idAsta, Pageable pageable) {
+
+        log.info("Recupero delle offerte silenziose associate all'asta in corso...");
+        log.trace("Id asta delle offerta silenziose da recuperare: {}", idAsta);
+
+        Page<OffertaSilenziosaDto> foundOfferteSilenzioseDto = offertaSilenziosaService.findByAstaRiferimentoIdAsta(idAsta, pageable);
+
+        log.info("Offerte silenziose associate all'asta recuperate. Invio in corso...");
+
+        return new ResponseEntity<>(foundOfferteSilenzioseDto, HttpStatus.OK);
+    }
+
     @GetMapping(path = "/offerte/di-compratori/silenziose/{idOfferta}")
     public ResponseEntity<OffertaSilenziosaDto> getOffertaSilenziosa(@PathVariable("idOfferta") Long idOfferta) {
 
@@ -63,7 +76,50 @@ public class OffertaSilenziosaController {
             return new ResponseEntity<>(foundOffertaSilenziosaDto.get(), HttpStatus.OK);
         } else {
 
-            log.info(LOG_OFFERTA_SILENZIOSA_NON_TROVATA);
+            log.info(LOG_OFFERTA_NON_TROVATA);
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(path = "/offerte/di-compratori/silenziose/most-value", params = "asta_riferimento")
+    public ResponseEntity<OffertaSilenziosaDto> findOffertaSilenziosaMaxByValoreAndAstaRiferimentoIdAstaIs(@RequestParam("asta_riferimento") Long idAsta) {
+
+        log.info("Recupero dell'offerta silenziosa massima in corso...");
+
+        log.trace("Id asta dell'offerta massima da recuperare: {}", idAsta);
+
+        Optional<OffertaSilenziosaDto> foundOffertaSilenziosaDto = offertaSilenziosaService.findMaxByValoreAndAstaRiferimentoIdAstaIs(idAsta);
+        if (foundOffertaSilenziosaDto.isPresent()) {
+
+            log.info("Offerta silenziosa massima recuperata. Invio in corso...");
+
+            return new ResponseEntity<>(foundOffertaSilenziosaDto.get(), HttpStatus.OK);
+        } else {
+
+            log.info(LOG_OFFERTA_NON_TROVATA);
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping(path = "/offerte/di-compratori/silenziose/most-value", params = {"asta_riferimento", "venditore_collegato"})
+    public ResponseEntity<OffertaSilenziosaDto> findOffertaSilenziosaMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(@RequestParam("asta_riferimento") Long idAsta, @RequestParam("venditore_collegato") Long idAccount) {
+
+        log.info("Recupero dell'offerta silenziosa massima del venditore in corso...");
+
+        log.trace("Id asta dell'offerta massima da recuperare: {}", idAsta);
+        log.trace("Id venditore dell'offerta massima da recuperare: {}", idAccount);
+
+        Optional<OffertaSilenziosaDto> foundOffertaSilenziosaDto = offertaSilenziosaService.findMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(idAsta, idAccount);
+        if (foundOffertaSilenziosaDto.isPresent()) {
+
+            log.info("Offerta silenziosa massima  del venditore recuperata. Invio in corso...");
+
+            return new ResponseEntity<>(foundOffertaSilenziosaDto.get(), HttpStatus.OK);
+        } else {
+
+            log.info(LOG_OFFERTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -84,7 +140,7 @@ public class OffertaSilenziosaController {
             return new ResponseEntity<>(updatedOffertaSilenziosaDto, HttpStatus.OK);
         } else {
 
-            log.info(LOG_OFFERTA_SILENZIOSA_NON_TROVATA);
+            log.info(LOG_OFFERTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -105,7 +161,7 @@ public class OffertaSilenziosaController {
             return new ResponseEntity<>(updatedOffertaSilenziosaDto, HttpStatus.OK);
         } else {
 
-            log.info(LOG_OFFERTA_SILENZIOSA_NON_TROVATA);
+            log.info(LOG_OFFERTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

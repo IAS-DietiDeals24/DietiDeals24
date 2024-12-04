@@ -16,7 +16,7 @@ import java.util.Optional;
 @RestController
 public class OffertaInversaController {
 
-    public static final String LOG_OFFERTA_INVERSA_NON_TROVATA = "Offerta inversa non trovata.";
+    public static final String LOG_OFFERTA_NON_TROVATA = "Offerta inversa non trovata.";
 
     private final OffertaInversaService offertaInversaService;
 
@@ -49,12 +49,12 @@ public class OffertaInversaController {
     }
 
     @GetMapping(path = "/offerte/di-venditori/inverse", params = "asta_riferimento")
-    public ResponseEntity<Page<OffertaInversaDto>> listOfferteInverseByIdAstaRiferimento(@RequestParam("asta_riferimento") Long idAsta, Pageable pageable) {
+    public ResponseEntity<Page<OffertaInversaDto>> listOfferteInverseByAstaRiferimentoIdAsta(@RequestParam("asta_riferimento") Long idAsta, Pageable pageable) {
 
         log.info("Recupero delle offerte inverse associate all'asta in corso...");
-        log.trace("Id asta dell'offerta minima da recuperare: {}", idAsta);
+        log.trace("Id asta delle offerta inverse da recuperare: {}", idAsta);
 
-        Page<OffertaInversaDto> foundOfferteInverseDto = offertaInversaService.findByIdAstaRiferimento(idAsta, pageable);
+        Page<OffertaInversaDto> foundOfferteInverseDto = offertaInversaService.findByAstaRiferimentoIdAsta(idAsta, pageable);
 
         log.info("Offerte inverse associate all'asta recuperate. Invio in corso...");
 
@@ -76,20 +76,20 @@ public class OffertaInversaController {
             return new ResponseEntity<>(foundOffertaInversaDto.get(), HttpStatus.OK);
         } else {
 
-            log.info(LOG_OFFERTA_INVERSA_NON_TROVATA);
+            log.info(LOG_OFFERTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping(path = "/offerte/di-venditori/inverse/find-min", params = "asta_riferimento")
-    public ResponseEntity<OffertaInversaDto> findOffertaInversaMinByValoreAndAstaRiferimentoIs(@RequestParam("asta_riferimento") Long idAsta) {
+    @GetMapping(path = "/offerte/di-venditori/inverse/least-value", params = "asta_riferimento")
+    public ResponseEntity<OffertaInversaDto> findOffertaInversaMinByValoreAndAstaRiferimentoIdAstaIs(@RequestParam("asta_riferimento") Long idAsta) {
 
         log.info("Recupero dell'offerta inversa minima in corso...");
 
         log.trace("Id asta dell'offerta minima da recuperare: {}", idAsta);
 
-        Optional<OffertaInversaDto> foundOffertaInversaDto = offertaInversaService.findMinByValoreAndAstaRiferimentoIs(idAsta);
+        Optional<OffertaInversaDto> foundOffertaInversaDto = offertaInversaService.findMinByValoreAndAstaRiferimentoIdAstaIs(idAsta);
         if (foundOffertaInversaDto.isPresent()) {
 
             log.info("Offerta inversa minima recuperata. Invio in corso...");
@@ -97,21 +97,21 @@ public class OffertaInversaController {
             return new ResponseEntity<>(foundOffertaInversaDto.get(), HttpStatus.OK);
         } else {
 
-            log.info(LOG_OFFERTA_INVERSA_NON_TROVATA);
+            log.info(LOG_OFFERTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping(path = "/offerte/di-venditori/inverse/find-min", params = {"asta_riferimento", "venditore_collegato"})
-    public ResponseEntity<OffertaInversaDto> findOffertaInversaMinByValoreAndAstaRiferimentoIsAndVenditoreCollegatoIs(@RequestParam("asta_riferimento") Long idAsta, @RequestParam("venditore_collegato") Long idAccount) {
+    @GetMapping(path = "/offerte/di-venditori/inverse/least-value", params = {"asta_riferimento", "venditore_collegato"})
+    public ResponseEntity<OffertaInversaDto> findOffertaInversaMinByValoreAndAstaRiferimentoIdAstaIsAndVenditoreCollegatoIdAccountIs(@RequestParam("asta_riferimento") Long idAsta, @RequestParam("venditore_collegato") Long idAccount) {
 
         log.info("Recupero dell'offerta inversa minima del venditore in corso...");
 
         log.trace("Id asta dell'offerta minima da recuperare: {}", idAsta);
         log.trace("Id venditore dell'offerta minima da recuperare: {}", idAccount);
 
-        Optional<OffertaInversaDto> foundOffertaInversaDto = offertaInversaService.findMinByValoreAndAstaRiferimentoIsAndVenditoreCollegatoIs(idAsta, idAccount);
+        Optional<OffertaInversaDto> foundOffertaInversaDto = offertaInversaService.findMinByValoreAndAstaRiferimentoIdAstaIsAndVenditoreCollegatoIdAccountIs(idAsta, idAccount);
         if (foundOffertaInversaDto.isPresent()) {
 
             log.info("Offerta inversa minima  del venditore recuperata. Invio in corso...");
@@ -119,7 +119,7 @@ public class OffertaInversaController {
             return new ResponseEntity<>(foundOffertaInversaDto.get(), HttpStatus.OK);
         } else {
 
-            log.info(LOG_OFFERTA_INVERSA_NON_TROVATA);
+            log.info(LOG_OFFERTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -140,7 +140,7 @@ public class OffertaInversaController {
             return new ResponseEntity<>(updatedOffertaInversaDto, HttpStatus.OK);
         } else {
 
-            log.info(LOG_OFFERTA_INVERSA_NON_TROVATA);
+            log.info(LOG_OFFERTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -161,7 +161,7 @@ public class OffertaInversaController {
             return new ResponseEntity<>(updatedOffertaInversaDto, HttpStatus.OK);
         } else {
 
-            log.info(LOG_OFFERTA_INVERSA_NON_TROVATA);
+            log.info(LOG_OFFERTA_NON_TROVATA);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -25,9 +25,9 @@ import java.util.Set;
 @Service
 public class VenditoreServiceImpl implements VenditoreService {
 
-    public static final String LOG_RECUPERO_ACCOUNT_VENDITORE = "Recupero l'account venditore dal database...";
-    public static final String LOG_FOUND_VENDITORE = "foundVenditore: {}";
-    public static final String LOG_ACCOUNT_VENDITORE_RECUPERATO = "Account venditore recuperato dal database.";
+    public static final String LOG_RECUPERO_ACCOUNT = "Recupero l'account venditore dal database...";
+    public static final String LOG_FOUND_ACCOUNT = "foundVenditore: {}";
+    public static final String LOG_ACCOUNT_RECUPERATO = "Account venditore recuperato dal database.";
 
     private final AccountService accountService;
     private final VenditoreMapper venditoreMapper;
@@ -89,28 +89,28 @@ public class VenditoreServiceImpl implements VenditoreService {
     public Optional<VenditoreDto> findOne(Long idAccount) {
 
         log.trace("Id account da recuperare: {}", idAccount);
-        log.debug(LOG_RECUPERO_ACCOUNT_VENDITORE);
+        log.debug(LOG_RECUPERO_ACCOUNT);
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<Venditore> foundVenditore = venditoreRepository.findById(idAccount);
 
-        log.trace(LOG_FOUND_VENDITORE, foundVenditore);
-        log.debug(LOG_ACCOUNT_VENDITORE_RECUPERATO);
+        log.trace(LOG_FOUND_ACCOUNT, foundVenditore);
+        log.debug(LOG_ACCOUNT_RECUPERATO);
 
         return foundVenditore.map(venditoreMapper::toDto);
     }
 
     @Override
-    public Page<VenditoreDto> findByEmail(String email, Pageable pageable) {
+    public Page<VenditoreDto> findByEmailIs(String email, Pageable pageable) {
 
+        log.debug(LOG_RECUPERO_ACCOUNT);
         log.trace("Email account da recuperare: {}", email);
-        log.debug(LOG_RECUPERO_ACCOUNT_VENDITORE);
 
         // Recuperiamo l'entità con l'id passato per parametro
-        Page<Venditore> foundVenditore = venditoreRepository.findByEmail(email, pageable);
+        Page<Venditore> foundVenditore = venditoreRepository.findByEmailIs(email, pageable);
 
-        log.trace(LOG_FOUND_VENDITORE, foundVenditore);
-        log.debug(LOG_ACCOUNT_VENDITORE_RECUPERATO);
+        log.trace(LOG_FOUND_ACCOUNT, foundVenditore);
+        log.debug(LOG_ACCOUNT_RECUPERATO);
 
         return foundVenditore.map(venditoreMapper::toDto);
     }
@@ -146,13 +146,13 @@ public class VenditoreServiceImpl implements VenditoreService {
 
         updatedVenditoreDto.setIdAccount(idAccount);
 
-        log.debug(LOG_RECUPERO_ACCOUNT_VENDITORE);
+        log.debug(LOG_RECUPERO_ACCOUNT);
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<Venditore> foundVenditore = venditoreRepository.findById(idAccount);
 
-        log.trace(LOG_FOUND_VENDITORE, foundVenditore);
-        log.debug(LOG_ACCOUNT_VENDITORE_RECUPERATO);
+        log.trace(LOG_FOUND_ACCOUNT, foundVenditore);
+        log.debug(LOG_ACCOUNT_RECUPERATO);
 
         if (foundVenditore.isEmpty())
             throw new UpdateRuntimeException("L'id account '" + idAccount + "' non corrisponde a nessun venditore esistente!");

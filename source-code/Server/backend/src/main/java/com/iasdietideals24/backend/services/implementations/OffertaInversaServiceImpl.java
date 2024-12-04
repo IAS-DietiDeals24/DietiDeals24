@@ -25,9 +25,9 @@ import java.util.Optional;
 @Service
 public class OffertaInversaServiceImpl implements OffertaInversaService {
 
-    public static final String RECUPERO_OFFERTA_INVERSA = "Recupero l'offerta inversa dal database...";
-    public static final String LOG_FOUND_OFFERTA_INVERSA = "foundOffertaInversa: {}";
-    public static final String LOG_OFFERTA_INVERSA_RECUPERATA = "Offerta inversa recuperata dal database.";
+    public static final String LOG_RECUPERO_OFFERTA = "Recupero l'offerta inversa dal database...";
+    public static final String LOG_FOUND_OFFERTA = "foundOffertaInversa: {}";
+    public static final String LOG_OFFERTA_RECUPERATA = "Offerta inversa recuperata dal database.";
 
     private final OffertaDiVenditoreService offertaDiVenditoreService;
     private final OffertaInversaMapper offertaInversaMapper;
@@ -89,13 +89,13 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
     }
 
     @Override
-    public Page<OffertaInversaDto> findByIdAstaRiferimento(Long idAsta, Pageable pageable) {
+    public Page<OffertaInversaDto> findByAstaRiferimentoIdAsta(Long idAsta, Pageable pageable) {
 
         log.debug("Recupero le offerte inverse associate all'asta dal database...");
         log.trace("Id asta riferimento delle offerte da recuperare: {}", idAsta);
 
         // Recuperiamo tutte le entità
-        Page<OffertaInversa> foundOfferteInverse = offertaInversaRepository.findByIdAstaRiferimento(idAsta, pageable);
+        Page<OffertaInversa> foundOfferteInverse = offertaInversaRepository.findByAstaRiferimento_IdAsta(idAsta, pageable);
 
         log.trace("foundOfferteInverse: {}", foundOfferteInverse);
         log.debug("Offerte inverse recuperate dal database.");
@@ -106,45 +106,45 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
     @Override
     public Optional<OffertaInversaDto> findOne(Long idOfferta) {
 
-        log.debug(RECUPERO_OFFERTA_INVERSA);
+        log.debug(LOG_RECUPERO_OFFERTA);
         log.trace("Id offerta da recuperare: {}", idOfferta);
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<OffertaInversa> foundOffertaInversa = offertaInversaRepository.findById(idOfferta);
 
-        log.trace(LOG_FOUND_OFFERTA_INVERSA, foundOffertaInversa);
-        log.debug(LOG_OFFERTA_INVERSA_RECUPERATA);
+        log.trace(LOG_FOUND_OFFERTA, foundOffertaInversa);
+        log.debug(LOG_OFFERTA_RECUPERATA);
 
         return foundOffertaInversa.map(offertaInversaMapper::toDto);
     }
 
     @Override
-    public Optional<OffertaInversaDto> findMinByValoreAndAstaRiferimentoIs(Long idAsta) {
+    public Optional<OffertaInversaDto> findMinByValoreAndAstaRiferimentoIdAstaIs(Long idAsta) {
 
-        log.debug(RECUPERO_OFFERTA_INVERSA);
+        log.debug(LOG_RECUPERO_OFFERTA);
         log.trace("Id asta dell'offerta minima da recuperare: {}", idAsta);
 
         // Recuperiamo l'entità con l'id passato per parametro
-        Optional<OffertaInversa> foundOffertaInversa = offertaInversaRepository.findMinByValoreAndAstaRiferimentoIs(idAsta);
+        Optional<OffertaInversa> foundOffertaInversa = offertaInversaRepository.findMinByValoreAndAstaRiferimento_IdAstaIs(idAsta);
 
-        log.trace(LOG_FOUND_OFFERTA_INVERSA, foundOffertaInversa);
-        log.debug(LOG_OFFERTA_INVERSA_RECUPERATA);
+        log.trace(LOG_FOUND_OFFERTA, foundOffertaInversa);
+        log.debug(LOG_OFFERTA_RECUPERATA);
 
         return foundOffertaInversa.map(offertaInversaMapper::toDto);
     }
 
     @Override
-    public Optional<OffertaInversaDto> findMinByValoreAndAstaRiferimentoIsAndVenditoreCollegatoIs(Long idAsta, Long idAccount) {
+    public Optional<OffertaInversaDto> findMinByValoreAndAstaRiferimentoIdAstaIsAndVenditoreCollegatoIdAccountIs(Long idAsta, Long idAccount) {
 
-        log.debug(RECUPERO_OFFERTA_INVERSA);
+        log.debug(LOG_RECUPERO_OFFERTA);
         log.trace("Id asta dell'offerta minima da recuperare: {}", idAsta);
         log.trace("Id venditore dell'offerta minima da recuperare: {}", idAccount);
 
         // Recuperiamo l'entità con l'id passato per parametro
-        Optional<OffertaInversa> foundOffertaInversa = offertaInversaRepository.findMinByValoreAndAstaRiferimentoIsAndVenditoreCollegatoIs(idAsta, idAccount);
+        Optional<OffertaInversa> foundOffertaInversa = offertaInversaRepository.findMinByValoreAndAstaRiferimento_IdAstaIsAndVenditoreCollegato_IdAccountIs(idAsta, idAccount);
 
-        log.trace(LOG_FOUND_OFFERTA_INVERSA, foundOffertaInversa);
-        log.debug(LOG_OFFERTA_INVERSA_RECUPERATA);
+        log.trace(LOG_FOUND_OFFERTA, foundOffertaInversa);
+        log.debug(LOG_OFFERTA_RECUPERATA);
 
         return foundOffertaInversa.map(offertaInversaMapper::toDto);
     }
@@ -179,13 +179,13 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
 
         updatedOffertaInversaDto.setIdOfferta(idOfferta);
 
-        log.debug(RECUPERO_OFFERTA_INVERSA);
+        log.debug(LOG_RECUPERO_OFFERTA);
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<OffertaInversa> foundOffertaInversa = offertaInversaRepository.findById(idOfferta);
 
-        log.trace(LOG_FOUND_OFFERTA_INVERSA, foundOffertaInversa);
-        log.debug(LOG_OFFERTA_INVERSA_RECUPERATA);
+        log.trace(LOG_FOUND_OFFERTA, foundOffertaInversa);
+        log.debug(LOG_OFFERTA_RECUPERATA);
 
         if (foundOffertaInversa.isEmpty())
             throw new UpdateRuntimeException("L'id offerta '" + idOfferta + "' non corrisponde a nessuna offerta inversa esistente!");

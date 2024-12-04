@@ -14,7 +14,7 @@ public interface NotificaService {
 
     Page<NotificaDto> findAll(Pageable pageable);
 
-    Page<NotificaDto> findByDestinatario(Long idAccount, Pageable pageable);
+    Page<NotificaDto> findByDestinatariIdAccount(Long idAccount, Pageable pageable);
 
     Optional<NotificaDto> findOne(Long idNotifica);
 

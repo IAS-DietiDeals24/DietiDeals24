@@ -16,7 +16,7 @@ public interface CompratoreService {
 
     Optional<CompratoreDto> findOne(Long idAccount);
 
-    Page<CompratoreDto> findByEmail(String email, Pageable pageable);
+    Page<CompratoreDto> findByEmailIs(String email, Pageable pageable);
 
     boolean isExists(Long idAccount);
 

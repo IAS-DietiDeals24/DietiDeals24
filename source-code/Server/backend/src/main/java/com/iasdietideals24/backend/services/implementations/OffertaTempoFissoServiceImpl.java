@@ -25,9 +25,9 @@ import java.util.Optional;
 @Service
 public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
 
-    public static final String LOG_RECUPERO_OFFERTA_TEMPO_FISSO = "Recupero l'offerta a tempo fisso dal database...";
-    public static final String LOG_FOUND_OFFERTA_TEMPO_FISSO = "foundOffertaTempoFisso: {}";
-    public static final String LOG_OFFERTA_TEMPO_FISSO_RECUPERATA = "Offerta a tempo fisso recuperata dal database.";
+    public static final String LOG_RECUPERO_OFFERTA = "Recupero l'offerta a tempo fisso dal database...";
+    public static final String LOG_FOUND_OFFERTA = "foundOffertaTempoFisso: {}";
+    public static final String LOG_OFFERTA_RECUPERATA = "Offerta a tempo fisso recuperata dal database.";
 
     private final OffertaDiCompratoreService offertaDiCompratoreService;
     private final OffertaTempoFissoMapper offertaTempoFissoMapper;
@@ -89,16 +89,62 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
     }
 
     @Override
+    public Page<OffertaTempoFissoDto> findByAstaRiferimentoIdAsta(Long idAsta, Pageable pageable) {
+
+        log.debug("Recupero le offerte a tempo fisso associate all'asta dal database...");
+        log.trace("Id asta riferimento delle offerte da recuperare: {}", idAsta);
+
+        // Recuperiamo tutte le entità
+        Page<OffertaTempoFisso> foundOfferteTempoFisso = offertaTempoFissoRepository.findByAstaRiferimento_IdAsta(idAsta, pageable);
+
+        log.trace("foundOfferteTempoFisso: {}", foundOfferteTempoFisso);
+        log.debug("Offerte a tempo fisso recuperate dal database.");
+
+        return foundOfferteTempoFisso.map(offertaTempoFissoMapper::toDto);
+    }
+
+    @Override
     public Optional<OffertaTempoFissoDto> findOne(Long idOfferta) {
 
         log.trace("Id offerta da recuperare: {}", idOfferta);
-        log.debug(LOG_RECUPERO_OFFERTA_TEMPO_FISSO);
+        log.debug(LOG_RECUPERO_OFFERTA);
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<OffertaTempoFisso> foundOffertaTempoFisso = offertaTempoFissoRepository.findById(idOfferta);
 
-        log.trace(LOG_FOUND_OFFERTA_TEMPO_FISSO, foundOffertaTempoFisso);
-        log.debug(LOG_OFFERTA_TEMPO_FISSO_RECUPERATA);
+        log.trace(LOG_FOUND_OFFERTA, foundOffertaTempoFisso);
+        log.debug(LOG_OFFERTA_RECUPERATA);
+
+        return foundOffertaTempoFisso.map(offertaTempoFissoMapper::toDto);
+    }
+
+    @Override
+    public Optional<OffertaTempoFissoDto> findMaxByValoreAndAstaRiferimentoIdAstaIs(Long idAsta) {
+
+        log.debug(LOG_RECUPERO_OFFERTA);
+        log.trace("Id asta dell'offerta massima da recuperare: {}", idAsta);
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        Optional<OffertaTempoFisso> foundOffertaTempoFisso = offertaTempoFissoRepository.findMaxByValoreAndAstaRiferimento_IdAstaIs(idAsta);
+
+        log.trace(LOG_FOUND_OFFERTA, foundOffertaTempoFisso);
+        log.debug(LOG_OFFERTA_RECUPERATA);
+
+        return foundOffertaTempoFisso.map(offertaTempoFissoMapper::toDto);
+    }
+
+    @Override
+    public Optional<OffertaTempoFissoDto> findMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(Long idAsta, Long idAccount) {
+
+        log.debug(LOG_RECUPERO_OFFERTA);
+        log.trace("Id asta dell'offerta massima da recuperare: {}", idAsta);
+        log.trace("Id compratore dell'offerta massima da recuperare: {}", idAccount);
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        Optional<OffertaTempoFisso> foundOffertaTempoFisso = offertaTempoFissoRepository.findMaxByValoreAndAstaRiferimento_IdAstaIsAndCompratoreCollegato_IdAccountIs(idAsta, idAccount);
+
+        log.trace(LOG_FOUND_OFFERTA, foundOffertaTempoFisso);
+        log.debug(LOG_OFFERTA_RECUPERATA);
 
         return foundOffertaTempoFisso.map(offertaTempoFissoMapper::toDto);
     }
@@ -133,13 +179,13 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
 
         updatedOffertaTempoFissoDto.setIdOfferta(idOfferta);
 
-        log.debug(LOG_RECUPERO_OFFERTA_TEMPO_FISSO);
+        log.debug(LOG_RECUPERO_OFFERTA);
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<OffertaTempoFisso> foundOffertaTempoFisso = offertaTempoFissoRepository.findById(idOfferta);
 
-        log.trace(LOG_FOUND_OFFERTA_TEMPO_FISSO, foundOffertaTempoFisso);
-        log.debug(LOG_OFFERTA_TEMPO_FISSO_RECUPERATA);
+        log.trace(LOG_FOUND_OFFERTA, foundOffertaTempoFisso);
+        log.debug(LOG_OFFERTA_RECUPERATA);
 
         if (foundOffertaTempoFisso.isEmpty())
             throw new UpdateRuntimeException("L'id offerta '" + idOfferta + "' non corrisponde a nessuna offerta a tempo fisso esistente!");

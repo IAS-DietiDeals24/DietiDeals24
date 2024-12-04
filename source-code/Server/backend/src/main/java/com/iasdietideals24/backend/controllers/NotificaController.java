@@ -49,11 +49,11 @@ public class NotificaController {
     }
 
     @GetMapping(path = "/notifiche", params = "destinatario")
-    public ResponseEntity<Page<NotificaDto>> listNotificheByDestinatario(@RequestParam("destinatario") Long idAccount, Pageable pageable) {
+    public ResponseEntity<Page<NotificaDto>> listNotificheByDestinatariIdAccount(@RequestParam("destinatario") Long idAccount, Pageable pageable) {
 
         log.info("Recupero delle notifiche in corso...");
 
-        Page<NotificaDto> foundNotificheDto = notificaService.findByDestinatario(idAccount, pageable);
+        Page<NotificaDto> foundNotificheDto = notificaService.findByDestinatariIdAccount(idAccount, pageable);
 
         log.info("Notifiche recuperate. Invio in corso...");
 

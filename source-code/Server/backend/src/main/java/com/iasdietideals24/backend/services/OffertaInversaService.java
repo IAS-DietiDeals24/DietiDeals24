@@ -14,13 +14,13 @@ public interface OffertaInversaService {
 
     Page<OffertaInversaDto> findAll(Pageable pageable);
 
-    Page<OffertaInversaDto> findByIdAstaRiferimento(Long idAsta, Pageable pageable);
+    Page<OffertaInversaDto> findByAstaRiferimentoIdAsta(Long idAsta, Pageable pageable);
 
     Optional<OffertaInversaDto> findOne(Long idOfferta);
 
-    Optional<OffertaInversaDto> findMinByValoreAndAstaRiferimentoIs(Long idAsta);
+    Optional<OffertaInversaDto> findMinByValoreAndAstaRiferimentoIdAstaIs(Long idAsta);
 
-    Optional<OffertaInversaDto> findMinByValoreAndAstaRiferimentoIsAndVenditoreCollegatoIs(Long idAsta, Long idAccount);
+    Optional<OffertaInversaDto> findMinByValoreAndAstaRiferimentoIdAstaIsAndVenditoreCollegatoIdAccountIs(Long idAsta, Long idAccount);
 
     boolean isExists(Long idOfferta);
 

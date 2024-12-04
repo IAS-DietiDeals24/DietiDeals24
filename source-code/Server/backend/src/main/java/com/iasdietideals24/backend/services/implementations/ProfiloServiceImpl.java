@@ -85,7 +85,7 @@ public class ProfiloServiceImpl implements ProfiloService {
 
         log.debug("Verifico che l'email scelta non sia già utilizzata nell'account di altri profili...");
 
-        checkEmailNonUsata(nuovoProfiloDto.getEmail());
+        checkEmailNotAlreadyTaken(nuovoProfiloDto.getEmail());
 
         log.debug("L'email non è utilizzata in account di altri profili.");
 
@@ -102,12 +102,14 @@ public class ProfiloServiceImpl implements ProfiloService {
         return profiloMapper.toDto(savedProfilo);
     }
 
-    private void checkEmailNonUsata(String email) throws InvalidParameterException {
+    private void checkEmailNotAlreadyTaken(String email) throws InvalidParameterException {
 
-        List<Account> foundAccounts = accountRepository.findByEmail(email, Pageable.unpaged()).toList();
+        // Recupero la lista di account che hanno la stessa email
+        List<Account> foundAccounts = accountRepository.findByEmailIs(email, Pageable.unpaged()).toList();
 
         log.trace("foundAccounts: {}", foundAccounts);
 
+        // Se l'email è gia stata utilizzata, allora mando l'eccezione
         if (!foundAccounts.isEmpty()) {
             log.warn("Impossibile associare l'email '{}' all'account di questo profilo poichè è già associata all'account di un altro profilo!", email);
 

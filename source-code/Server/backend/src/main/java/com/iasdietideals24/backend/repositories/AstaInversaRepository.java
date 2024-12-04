@@ -12,11 +12,11 @@ import org.springframework.stereotype.Repository;
 public interface AstaInversaRepository extends CrudRepository<AstaInversa, Long>, PagingAndSortingRepository<AstaInversa, Long> {
 
     @Query(value = "select a from asta_inversa a where a.proprietario.idAccount = ?1")
-    Page<AstaInversa> findByIdAccountProprietario(Long idAccount, Pageable pageable);
+    Page<AstaInversa> findByProprietario_IdAccountIs(Long idAccount, Pageable pageable);
 
     @Query(value = "select a from asta_inversa a where a.nome like ?1 and a.categoria.nome = ?2")
-    Page<AstaInversa> findByNomeAstaContainingAndNomeCategoria(String nomeAsta, String nomeCategoria, Pageable pageable);
+    Page<AstaInversa> findByNomeLikeAndCategoria_NomeIs(String nomeAsta, String nomeCategoria, Pageable pageable);
 
     @Query(value = "select a from asta_inversa a join a.offerteRicevute o where o.venditoreCollegato.idAccount = ?1")
-    Page<AstaInversa> findByOfferente(Long idAccount, Pageable pageable);
+    Page<AstaInversa> findByOfferente_IdAccountIs(Long idAccount, Pageable pageable);
 }

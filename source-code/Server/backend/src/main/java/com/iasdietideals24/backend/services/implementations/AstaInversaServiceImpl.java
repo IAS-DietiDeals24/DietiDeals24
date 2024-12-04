@@ -27,12 +27,12 @@ import java.util.Set;
 @Service
 public class AstaInversaServiceImpl implements AstaInversaService {
 
-    public static final String LOG_RECUPERO_ASTA_INVERSA = "Recupero l'asta inversa dal database...";
-    public static final String LOG_FOUND_ASTA_INVERSA = "foundAstaInversa: {}";
-    public static final String LOG_ASTA_INVERSA_RECUPERATA = "Asta inversa recuperata dal database.";
-    public static final String LOG_ASTE_INVERSE_RECUPERATE = "Aste inverse recuperate dal database.";
-    public static final String LOG_FOUND_ASTE_INVERSE = "foundAsteInverse: {}";
-    public static final String LOG_RECUPERO_ASTE_INVERSE_IN_CORSO = "Recupero le aste inverse dal database...";
+    public static final String LOG_RECUPERO_ASTE_IN_CORSO = "Recupero le aste inverse dal database...";
+    public static final String LOG_FOUND_ASTE = "foundAsteInverse: {}";
+    public static final String LOG_ASTE_RECUPERATE = "Aste inverse recuperate dal database.";
+    public static final String LOG_RECUPERO_ASTA = "Recupero l'asta inversa dal database...";
+    public static final String LOG_FOUND_ASTA = "foundAstaInversa: {}";
+    public static final String LOG_ASTA_RECUPERATA = "Asta inversa recuperata dal database.";
 
     private final AstaDiCompratoreService astaDiCompratoreService;
     private final AstaInversaMapper astaInversaMapper;
@@ -82,59 +82,59 @@ public class AstaInversaServiceImpl implements AstaInversaService {
     @Override
     public Page<AstaInversaDto> findAll(Pageable pageable) {
 
-        log.debug(LOG_RECUPERO_ASTE_INVERSE_IN_CORSO);
+        log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
 
         // Recuperiamo tutte le entità
         Page<AstaInversa> foundAsteInverse = astaInversaRepository.findAll(pageable);
 
-        log.trace(LOG_FOUND_ASTE_INVERSE, foundAsteInverse);
-        log.debug(LOG_ASTE_INVERSE_RECUPERATE);
+        log.trace(LOG_FOUND_ASTE, foundAsteInverse);
+        log.debug(LOG_ASTE_RECUPERATE);
 
         return foundAsteInverse.map(astaInversaMapper::toDto);
     }
 
     @Override
-    public Page<AstaInversaDto> findByIdAccountProprietario(Long idAccount, Pageable pageable) {
+    public Page<AstaInversaDto> findByProprietarioIdAccountIs(Long idAccount, Pageable pageable) {
 
-        log.debug(LOG_RECUPERO_ASTE_INVERSE_IN_CORSO);
+        log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
         log.trace("Id account proprietario da cercare: {}", idAccount);
 
         // Recuperiamo tutte le entità
-        Page<AstaInversa> foundAsteInverse = astaInversaRepository.findByIdAccountProprietario(idAccount, pageable);
+        Page<AstaInversa> foundAsteInverse = astaInversaRepository.findByProprietario_IdAccountIs(idAccount, pageable);
 
-        log.trace(LOG_FOUND_ASTE_INVERSE, foundAsteInverse);
-        log.debug(LOG_ASTE_INVERSE_RECUPERATE);
+        log.trace(LOG_FOUND_ASTE, foundAsteInverse);
+        log.debug(LOG_ASTE_RECUPERATE);
 
         return foundAsteInverse.map(astaInversaMapper::toDto);
     }
 
     @Override
-    public Page<AstaInversaDto> findByNomeAstaContainingAndNomeCategoria(String nomeAsta, String nomeCategoria, Pageable pageable) {
+    public Page<AstaInversaDto> findByNomeLikeAndCategoriaNomeIs(String nomeAsta, String nomeCategoria, Pageable pageable) {
 
-        log.debug(LOG_RECUPERO_ASTE_INVERSE_IN_CORSO);
+        log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
         log.trace("Nome asta da cercare: {}", nomeAsta);
         log.trace("Nome categoria da cercare: {}", nomeCategoria);
 
         // Recuperiamo tutte le entità
-        Page<AstaInversa> foundAsteInverse = astaInversaRepository.findByNomeAstaContainingAndNomeCategoria(nomeAsta, nomeCategoria, pageable);
+        Page<AstaInversa> foundAsteInverse = astaInversaRepository.findByNomeLikeAndCategoria_NomeIs(nomeAsta, nomeCategoria, pageable);
 
-        log.trace(LOG_FOUND_ASTE_INVERSE, foundAsteInverse);
-        log.debug(LOG_ASTE_INVERSE_RECUPERATE);
+        log.trace(LOG_FOUND_ASTE, foundAsteInverse);
+        log.debug(LOG_ASTE_RECUPERATE);
 
         return foundAsteInverse.map(astaInversaMapper::toDto);
     }
 
     @Override
-    public Page<AstaInversaDto> findByOfferente(Long idAccount, Pageable pageable) {
+    public Page<AstaInversaDto> findByOfferenteIdAccountIs(Long idAccount, Pageable pageable) {
 
-        log.debug(LOG_RECUPERO_ASTE_INVERSE_IN_CORSO);
+        log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
         log.trace("Id account offerente da cercare: {}", idAccount);
 
         // Recuperiamo tutte le entità
-        Page<AstaInversa> foundAsteInverse = astaInversaRepository.findByOfferente(idAccount, pageable);
+        Page<AstaInversa> foundAsteInverse = astaInversaRepository.findByOfferente_IdAccountIs(idAccount, pageable);
 
-        log.trace(LOG_FOUND_ASTE_INVERSE, foundAsteInverse);
-        log.debug(LOG_ASTE_INVERSE_RECUPERATE);
+        log.trace(LOG_FOUND_ASTE, foundAsteInverse);
+        log.debug(LOG_ASTE_RECUPERATE);
 
         return foundAsteInverse.map(astaInversaMapper::toDto);
     }
@@ -143,13 +143,13 @@ public class AstaInversaServiceImpl implements AstaInversaService {
     public Optional<AstaInversaDto> findOne(Long idAsta) {
 
         log.trace("Id asta da recuperare: {}", idAsta);
-        log.debug(LOG_RECUPERO_ASTA_INVERSA);
+        log.debug(LOG_RECUPERO_ASTA);
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<AstaInversa> foundAstaInversa = astaInversaRepository.findById(idAsta);
 
-        log.trace(LOG_FOUND_ASTA_INVERSA, foundAstaInversa);
-        log.debug(LOG_ASTA_INVERSA_RECUPERATA);
+        log.trace(LOG_FOUND_ASTA, foundAstaInversa);
+        log.debug(LOG_ASTA_RECUPERATA);
 
         return foundAstaInversa.map(astaInversaMapper::toDto);
     }
@@ -184,13 +184,13 @@ public class AstaInversaServiceImpl implements AstaInversaService {
 
         updatedAstaInversaDto.setIdAsta(idAsta);
 
-        log.debug(LOG_RECUPERO_ASTA_INVERSA);
+        log.debug(LOG_RECUPERO_ASTA);
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<AstaInversa> foundAstaInversa = astaInversaRepository.findById(idAsta);
 
-        log.trace(LOG_FOUND_ASTA_INVERSA, foundAstaInversa);
-        log.debug(LOG_ASTA_INVERSA_RECUPERATA);
+        log.trace(LOG_FOUND_ASTA, foundAstaInversa);
+        log.debug(LOG_ASTA_RECUPERATA);
 
         if (foundAstaInversa.isEmpty())
             throw new UpdateRuntimeException("L'id asta '" + idAsta + "' non corrisponde a nessuna asta inversa esistente!");

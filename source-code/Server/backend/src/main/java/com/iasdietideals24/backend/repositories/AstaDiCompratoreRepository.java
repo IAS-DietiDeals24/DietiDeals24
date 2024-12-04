@@ -12,8 +12,8 @@ import org.springframework.stereotype.Repository;
 public interface AstaDiCompratoreRepository extends CrudRepository<AstaDiCompratore, Long>, PagingAndSortingRepository<AstaDiCompratore, Long> {
 
     @Query(value = "select a from asta_di_compratore a where a.proprietario.idAccount = ?1")
-    Page<AstaDiCompratore> findByIdAccountProprietario(Long idAccount, Pageable pageable);
+    Page<AstaDiCompratore> findByProprietario_IdAccountIs(Long idAccount, Pageable pageable);
 
     @Query(value = "select a from asta_di_compratore a where a.nome like ?1 and a.categoria.nome = ?2")
-    Page<AstaDiCompratore> findByNomeAstaLikeAndNomeCategoria(String nomeAsta, String nomeCategoria, Pageable pageable);
+    Page<AstaDiCompratore> findByNomeLikeAndCategoria_NomeIs(String nomeAsta, String nomeCategoria, Pageable pageable);
 }

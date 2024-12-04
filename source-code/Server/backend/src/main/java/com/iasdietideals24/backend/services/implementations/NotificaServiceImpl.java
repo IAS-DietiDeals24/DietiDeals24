@@ -87,13 +87,13 @@ public class NotificaServiceImpl implements NotificaService {
     }
 
     @Override
-    public Page<NotificaDto> findByDestinatario(Long idAccount, Pageable pageable) {
+    public Page<NotificaDto> findByDestinatariIdAccount(Long idAccount, Pageable pageable) {
 
         log.debug("Recupero le notifiche dal database...");
         log.trace("Id account destinatario da cercare: {}", idAccount);
 
         // Recuperiamo tutte le entità
-        Page<Notifica> foundNotifiche = notificaRepository.findByDestinatario(idAccount, pageable);
+        Page<Notifica> foundNotifiche = notificaRepository.findByDestinatari_IdAccount(idAccount, pageable);
 
         log.trace("foundNotifiche: {}", foundNotifiche);
         log.debug("Notifiche recuperate dal database.");

@@ -16,7 +16,7 @@ public interface VenditoreService {
 
     Optional<VenditoreDto> findOne(Long idAccount);
 
-    Page<VenditoreDto> findByEmail(String email, Pageable pageable);
+    Page<VenditoreDto> findByEmailIs(String email, Pageable pageable);
 
     boolean isExists(Long idAccount);
 

@@ -14,6 +14,12 @@ public interface AstaTempoFissoService {
 
     Page<AstaTempoFissoDto> findAll(Pageable pageable);
 
+    Page<AstaTempoFissoDto> findByProprietarioIdAccountIs(Long idAccount, Pageable pageable);
+
+    Page<AstaTempoFissoDto> findByNomeLikeAndCategoriaNomeIs(String nomeAsta, String nomeCategoria, Pageable pageable);
+
+    Page<AstaTempoFissoDto> findByOfferenteIdAccountIs(Long idAccount, Pageable pageable);
+
     Optional<AstaTempoFissoDto> findOne(Long idAsta);
 
     boolean isExists(Long idAsta);

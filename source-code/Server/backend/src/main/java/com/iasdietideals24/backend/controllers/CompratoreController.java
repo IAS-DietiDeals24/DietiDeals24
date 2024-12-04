@@ -16,7 +16,7 @@ import java.util.Optional;
 @RestController
 public class CompratoreController {
 
-    public static final String LOG_ACCOUNT_COMPRATORE_NON_TROVATO = "Account compratore non trovato.";
+    public static final String LOG_ACCOUNT_NON_TROVATO = "Account compratore non trovato.";
 
     private final CompratoreService compratoreService;
 
@@ -49,11 +49,11 @@ public class CompratoreController {
     }
 
     @GetMapping(path = "/accounts/compratori", params = "email")
-    public ResponseEntity<Page<CompratoreDto>> listCompratoriByEmail(@RequestParam("email") String email, Pageable pageable) {
+    public ResponseEntity<Page<CompratoreDto>> listCompratoriByEmailIs(@RequestParam("email") String email, Pageable pageable) {
 
         log.info("Recupero degli account compratori in corso...");
 
-        Page<CompratoreDto> foundCompratoriDto = compratoreService.findByEmail(email, pageable);
+        Page<CompratoreDto> foundCompratoriDto = compratoreService.findByEmailIs(email, pageable);
 
         log.info("Account compratori recuperati. Invio in corso...");
 
@@ -75,7 +75,7 @@ public class CompratoreController {
             return new ResponseEntity<>(foundCompratoreDto.get(), HttpStatus.OK);
         } else {
 
-            log.info(LOG_ACCOUNT_COMPRATORE_NON_TROVATO);
+            log.info(LOG_ACCOUNT_NON_TROVATO);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -96,7 +96,7 @@ public class CompratoreController {
             return new ResponseEntity<>(updatedCompratoreDto, HttpStatus.OK);
         } else {
 
-            log.info(LOG_ACCOUNT_COMPRATORE_NON_TROVATO);
+            log.info(LOG_ACCOUNT_NON_TROVATO);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -117,7 +117,7 @@ public class CompratoreController {
             return new ResponseEntity<>(updatedCompratoreDto, HttpStatus.OK);
         } else {
 
-            log.info(LOG_ACCOUNT_COMPRATORE_NON_TROVATO);
+            log.info(LOG_ACCOUNT_NON_TROVATO);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -13,12 +13,12 @@ import java.util.Optional;
 @Repository
 public interface OffertaInversaRepository extends CrudRepository<OffertaInversa, Long>, PagingAndSortingRepository<OffertaInversa, Long> {
 
+    @Query("select o from offerta_inversa o where o.astaRiferimento.idAsta = ?1")
+    Page<OffertaInversa> findByAstaRiferimento_IdAsta(Long idAsta, Pageable pageable);
+
     @Query("select o from offerta_inversa o where o.astaRiferimento.idAsta = ?1 and o.valore = (select min(o.valore) from offerta_inversa o where o.astaRiferimento.idAsta = ?1)")
-    Optional<OffertaInversa> findMinByValoreAndAstaRiferimentoIs(Long idAsta);
+    Optional<OffertaInversa> findMinByValoreAndAstaRiferimento_IdAstaIs(Long idAsta);
 
     @Query("select o from offerta_inversa o where o.astaRiferimento.idAsta = ?1 and o.venditoreCollegato.idAccount = ?2 and o.valore = (select min(o.valore) from offerta_inversa o where o.astaRiferimento.idAsta = ?1 and o.venditoreCollegato.idAccount = ?2)")
-    Optional<OffertaInversa> findMinByValoreAndAstaRiferimentoIsAndVenditoreCollegatoIs(Long idAsta, Long idAccount);
-
-    @Query("select o from offerta_inversa o where o.astaRiferimento.idAsta = ?1")
-    Page<OffertaInversa> findByIdAstaRiferimento(Long idAsta, Pageable pageable);
+    Optional<OffertaInversa> findMinByValoreAndAstaRiferimento_IdAstaIsAndVenditoreCollegato_IdAccountIs(Long idAsta, Long idAccount);
 }

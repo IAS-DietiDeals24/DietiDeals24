@@ -26,9 +26,9 @@ import java.util.Optional;
 @Service
 public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
 
-    public static final String LOG_RECUPERO_OFFERTA_SILENZIOSA = "Recupero l'offerta silenziosa dal database...";
-    public static final String LOG_FOUND_OFFERTA_SILENZIOSA = "foundOffertaSilenziosa: {}";
-    public static final String LOG_OFFERTA_SILENZIOSA_RECUPERATA = "Offerta silenziosa recuperata dal database.";
+    public static final String LOG_RECUPERO_OFFERTA = "Recupero l'offerta silenziosa dal database...";
+    public static final String LOG_FOUND_OFFERTA = "foundOffertaSilenziosa: {}";
+    public static final String LOG_OFFERTA_RECUPERATA = "Offerta silenziosa recuperata dal database.";
 
     private final OffertaDiCompratoreService offertaDiCompratoreService;
     private final StatoOffertaSilenziosaMapper statoOffertaSilenziosaMapper;
@@ -93,16 +93,62 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
     }
 
     @Override
+    public Page<OffertaSilenziosaDto> findByAstaRiferimentoIdAsta(Long idAsta, Pageable pageable) {
+
+        log.debug("Recupero le offerte silenziose associate all'asta dal database...");
+        log.trace("Id asta riferimento delle offerte da recuperare: {}", idAsta);
+
+        // Recuperiamo tutte le entità
+        Page<OffertaSilenziosa> foundOfferteSilenziose = offertaSilenziosaRepository.findByAstaRiferimento_IdAsta(idAsta, pageable);
+
+        log.trace("foundOfferteSilenziose: {}", foundOfferteSilenziose);
+        log.debug("Offerte silenziose recuperate dal database.");
+
+        return foundOfferteSilenziose.map(offertaSilenziosaMapper::toDto);
+    }
+
+    @Override
     public Optional<OffertaSilenziosaDto> findOne(Long idOfferta) {
 
         log.trace("Id offerta da recuperare: {}", idOfferta);
-        log.debug(LOG_RECUPERO_OFFERTA_SILENZIOSA);
+        log.debug(LOG_RECUPERO_OFFERTA);
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<OffertaSilenziosa> foundOffertaSilenziosa = offertaSilenziosaRepository.findById(idOfferta);
 
-        log.trace(LOG_FOUND_OFFERTA_SILENZIOSA, foundOffertaSilenziosa);
-        log.debug(LOG_OFFERTA_SILENZIOSA_RECUPERATA);
+        log.trace(LOG_FOUND_OFFERTA, foundOffertaSilenziosa);
+        log.debug(LOG_OFFERTA_RECUPERATA);
+
+        return foundOffertaSilenziosa.map(offertaSilenziosaMapper::toDto);
+    }
+
+    @Override
+    public Optional<OffertaSilenziosaDto> findMaxByValoreAndAstaRiferimentoIdAstaIs(Long idAsta) {
+
+        log.debug(LOG_RECUPERO_OFFERTA);
+        log.trace("Id asta dell'offerta massima da recuperare: {}", idAsta);
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        Optional<OffertaSilenziosa> foundOffertaSilenziosa = offertaSilenziosaRepository.findMaxByValoreAndAstaRiferimento_IdAstaIs(idAsta);
+
+        log.trace(LOG_FOUND_OFFERTA, foundOffertaSilenziosa);
+        log.debug(LOG_OFFERTA_RECUPERATA);
+
+        return foundOffertaSilenziosa.map(offertaSilenziosaMapper::toDto);
+    }
+
+    @Override
+    public Optional<OffertaSilenziosaDto> findMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(Long idAsta, Long idAccount) {
+
+        log.debug(LOG_RECUPERO_OFFERTA);
+        log.trace("Id asta dell'offerta massima da recuperare: {}", idAsta);
+        log.trace("Id compratore dell'offerta massima da recuperare: {}", idAccount);
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        Optional<OffertaSilenziosa> foundOffertaSilenziosa = offertaSilenziosaRepository.findMaxByValoreAndAstaRiferimento_IdAstaIsAndCompratoreCollegato_IdAccountIs(idAsta, idAccount);
+
+        log.trace(LOG_FOUND_OFFERTA, foundOffertaSilenziosa);
+        log.debug(LOG_OFFERTA_RECUPERATA);
 
         return foundOffertaSilenziosa.map(offertaSilenziosaMapper::toDto);
     }
@@ -137,13 +183,13 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
 
         updatedOffertaSilenziosaDto.setIdOfferta(idOfferta);
 
-        log.debug(LOG_RECUPERO_OFFERTA_SILENZIOSA);
+        log.debug(LOG_RECUPERO_OFFERTA);
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<OffertaSilenziosa> foundOffertaSilenziosa = offertaSilenziosaRepository.findById(idOfferta);
 
-        log.trace(LOG_FOUND_OFFERTA_SILENZIOSA, foundOffertaSilenziosa);
-        log.debug(LOG_OFFERTA_SILENZIOSA_RECUPERATA);
+        log.trace(LOG_FOUND_OFFERTA, foundOffertaSilenziosa);
+        log.debug(LOG_OFFERTA_RECUPERATA);
 
         if (foundOffertaSilenziosa.isEmpty())
             throw new UpdateRuntimeException("L'id offerta '" + idOfferta + "' non corrisponde a nessuna offerta silenziosa esistente!");

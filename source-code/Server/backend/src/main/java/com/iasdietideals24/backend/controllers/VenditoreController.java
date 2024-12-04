@@ -16,7 +16,7 @@ import java.util.Optional;
 @RestController
 public class VenditoreController {
 
-    public static final String LOG_ACCOUNT_VENDITORE_NON_TROVATO = "Account venditore non trovato.";
+    public static final String LOG_ACCOUNT_NON_TROVATO = "Account venditore non trovato.";
 
     private final VenditoreService venditoreService;
 
@@ -49,11 +49,11 @@ public class VenditoreController {
     }
 
     @GetMapping(path = "/accounts/venditori", params = "email")
-    public ResponseEntity<Page<VenditoreDto>> listVenditoriByEmail(@RequestParam("email") String email, Pageable pageable) {
+    public ResponseEntity<Page<VenditoreDto>> listVenditoriByEmailIs(@RequestParam("email") String email, Pageable pageable) {
 
         log.info("Recupero degli account venditori in corso...");
 
-        Page<VenditoreDto> foundVenditoriDto = venditoreService.findByEmail(email, pageable);
+        Page<VenditoreDto> foundVenditoriDto = venditoreService.findByEmailIs(email, pageable);
 
         log.info("Account venditori recuperati. Invio in corso...");
 
@@ -75,7 +75,7 @@ public class VenditoreController {
             return new ResponseEntity<>(foundVenditoreDto.get(), HttpStatus.OK);
         } else {
 
-            log.info(LOG_ACCOUNT_VENDITORE_NON_TROVATO);
+            log.info(LOG_ACCOUNT_NON_TROVATO);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -96,7 +96,7 @@ public class VenditoreController {
             return new ResponseEntity<>(updatedVenditoreDto, HttpStatus.OK);
         } else {
 
-            log.info(LOG_ACCOUNT_VENDITORE_NON_TROVATO);
+            log.info(LOG_ACCOUNT_NON_TROVATO);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -117,7 +117,7 @@ public class VenditoreController {
             return new ResponseEntity<>(updatedVenditoreDto, HttpStatus.OK);
         } else {
 
-            log.info(LOG_ACCOUNT_VENDITORE_NON_TROVATO);
+            log.info(LOG_ACCOUNT_NON_TROVATO);
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -14,6 +14,12 @@ public interface AstaSilenziosaService {
 
     Page<AstaSilenziosaDto> findAll(Pageable pageable);
 
+    Page<AstaSilenziosaDto> findByProprietarioIdAccountIs(Long idAccount, Pageable pageable);
+
+    Page<AstaSilenziosaDto> findByNomeLikeAndCategoriaNomeIs(String nomeAsta, String nomeCategoria, Pageable pageable);
+
+    Page<AstaSilenziosaDto> findByOfferenteIdAccountIs(Long idAccount, Pageable pageable);
+
     Optional<AstaSilenziosaDto> findOne(Long idAsta);
 
     boolean isExists(Long idAsta);
