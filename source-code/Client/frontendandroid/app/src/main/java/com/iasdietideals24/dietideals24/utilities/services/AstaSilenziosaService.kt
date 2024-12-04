@@ -22,7 +22,7 @@ interface AstaSilenziosaService : Service {
      */
     @GET("aste/di-venditori/silenziose")
     suspend fun recuperaAsteCreateSilenziose(
-        @Query("idAccount") idAccount: Long,
+        @Query("proprietario") idAccount: Long,
         @Query("size") size: Long,
         @Query("page") page: Long
     ): Response<Page<AstaSilenziosaDto>>
@@ -91,8 +91,8 @@ interface AstaSilenziosaService : Service {
      * solo il filtro.
      * Se entrambi i campi sono non vuoti, invece, verranno recuperate le aste che rispettano
      * entrambi i criteri.
-     * @param ricerca Stringa di ricerca specificata dall'utente.
-     * @param filtro Filtro specificato dall'utente.
+     * @param nome Stringa di ricerca specificata dall'utente.
+     * @param categoria Filtro specificato dall'utente.
      * @param size Il numero massimo di aste da recuperare.
      * @param page Il numero della pagina da recuperare.
      * @return [Page] di [AstaSilenziosaDto] con un certo numero di aste da mostrare nella home dopo
@@ -100,8 +100,8 @@ interface AstaSilenziosaService : Service {
      */
     @GET("aste/di-venditori/silenziose")
     suspend fun ricercaAsteSilenziose(
-        @Query("ricerca") ricerca: String,
-        @Query("filtro") filtro: String,
+        @Query("nome") nome: String,
+        @Query("categoria") categoria: String,
         @Query("size") size: Long,
         @Query("page") page: Long
     ): Response<Page<AstaSilenziosaDto>>
@@ -116,7 +116,7 @@ interface AstaSilenziosaService : Service {
      */
     @GET("aste/di-venditori/silenziose")
     suspend fun recuperaPartecipazioniSilenziose(
-        @Query("idAccount") idAccount: Long,
+        @Query("offerente") idAccount: Long,
         @Query("size") size: Long,
         @Query("page") page: Long
     ): Response<Page<AstaSilenziosaDto>>

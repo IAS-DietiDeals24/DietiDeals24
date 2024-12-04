@@ -22,7 +22,7 @@ interface AstaInversaService : Service {
      */
     @GET("aste/di-compratori/inverse")
     suspend fun recuperaAsteCreateInverse(
-        @Query("idAccount") idAccount: Long,
+        @Query("proprietario") idAccount: Long,
         @Query("size") size: Long,
         @Query("page") page: Long
     ): Response<Page<AstaInversaDto>>
@@ -116,7 +116,7 @@ interface AstaInversaService : Service {
      */
     @GET("aste/di-compratori/inverse")
     suspend fun recuperaPartecipazioniInverse(
-        @Query("idAccount") idAccount: Long,
+        @Query("offerente") idAccount: Long,
         @Query("size") size: Long,
         @Query("page") page: Long
     ): Response<Page<AstaInversaDto>>

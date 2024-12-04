@@ -17,10 +17,10 @@ interface OffertaSilenziosaService : Service {
      * @param idAccount Id dell'account dell'utente.
      * @return [OffertaSilenziosaDto] con il valore più alto. Se non esiste, viene restituita un'offerta vuota.
      */
-    @GET("offerte/di-compratori/silenziose/findMax")
+    @GET("offerte/di-compratori/silenziose/most-value")
     suspend fun recuperaOffertaPersonalePiuAltaSilenziosa(
-        @Query("idAsta") idAsta: Long,
-        @Query("idAccount") idAccount: Long
+        @Query("asta_riferimento") idAsta: Long,
+        @Query("compratore_collegato") idAccount: Long
     ): Response<OffertaSilenziosaDto>
 
     /**
@@ -44,7 +44,7 @@ interface OffertaSilenziosaService : Service {
      */
     @GET("offerte/di-compratori/silenziose")
     suspend fun recuperaOfferteSilenziose(
-        @Query("idAsta") idAsta: Long,
+        @Query("asta_riferimento") idAsta: Long,
         @Query("size") size: Long,
         @Query("page") page: Long
     ): Response<Page<OffertaSilenziosaDto>>

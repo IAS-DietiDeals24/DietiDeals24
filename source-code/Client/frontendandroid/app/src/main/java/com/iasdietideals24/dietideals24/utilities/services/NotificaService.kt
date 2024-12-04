@@ -19,7 +19,7 @@ interface NotificaService : Service {
      */
     @GET("notifiche")
     suspend fun recuperaNotifiche(
-        @Query("idAccount") idAccount: Long,
+        @Query("destinatario") idAccount: Long,
         @Query("size") size: Long,
         @Query("page") page: Long
     ): Response<Page<NotificaDto>>
