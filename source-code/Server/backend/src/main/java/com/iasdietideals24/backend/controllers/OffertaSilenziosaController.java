@@ -103,18 +103,18 @@ public class OffertaSilenziosaController {
         }
     }
 
-    @GetMapping(path = "/offerte/di-compratori/silenziose/most-value", params = {"asta_riferimento", "venditore_collegato"})
-    public ResponseEntity<OffertaSilenziosaDto> findOffertaSilenziosaMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(@RequestParam("asta_riferimento") Long idAsta, @RequestParam("venditore_collegato") Long idAccount) {
+    @GetMapping(path = "/offerte/di-compratori/silenziose/most-value", params = {"asta_riferimento", "compratore_collegato"})
+    public ResponseEntity<OffertaSilenziosaDto> findOffertaSilenziosaMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(@RequestParam("asta_riferimento") Long idAsta, @RequestParam("compratore_collegato") Long idAccount) {
 
-        log.info("Recupero dell'offerta silenziosa massima del venditore in corso...");
+        log.info("Recupero dell'offerta silenziosa massima del compratore in corso...");
 
         log.trace("Id asta dell'offerta massima da recuperare: {}", idAsta);
-        log.trace("Id venditore dell'offerta massima da recuperare: {}", idAccount);
+        log.trace("Id compratore dell'offerta massima da recuperare: {}", idAccount);
 
         Optional<OffertaSilenziosaDto> foundOffertaSilenziosaDto = offertaSilenziosaService.findMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(idAsta, idAccount);
         if (foundOffertaSilenziosaDto.isPresent()) {
 
-            log.info("Offerta silenziosa massima  del venditore recuperata. Invio in corso...");
+            log.info("Offerta silenziosa massima  del compratore recuperata. Invio in corso...");
 
             return new ResponseEntity<>(foundOffertaSilenziosaDto.get(), HttpStatus.OK);
         } else {

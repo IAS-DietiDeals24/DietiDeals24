@@ -64,8 +64,8 @@ public class AstaSilenziosaController {
 
     @GetMapping(path = "/aste/di-venditori/silenziose", params = {"nome", "categoria"})
     public ResponseEntity<Page<AstaSilenziosaDto>> listAsteSilenzioseByNomeLikeAndCategoriaNomeIs(@RequestParam(name = "nome", defaultValue = "%") String nomeAsta,
-                                                                                            @RequestParam("categoria") String nomeCategoria,
-                                                                                            Pageable pageable) {
+                                                                                                  @RequestParam("categoria") String nomeCategoria,
+                                                                                                  Pageable pageable) {
 
         log.info(LOG_RECUPERO_ASTE_IN_CORSO);
 

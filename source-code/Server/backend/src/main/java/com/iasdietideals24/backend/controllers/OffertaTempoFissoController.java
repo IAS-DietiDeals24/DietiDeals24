@@ -103,18 +103,18 @@ public class OffertaTempoFissoController {
         }
     }
 
-    @GetMapping(path = "/offerte/di-compratori/tempo-fisso/most-value", params = {"asta_riferimento", "venditore_collegato"})
-    public ResponseEntity<OffertaTempoFissoDto> findOffertaTempoFissoMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(@RequestParam("asta_riferimento") Long idAsta, @RequestParam("venditore_collegato") Long idAccount) {
+    @GetMapping(path = "/offerte/di-compratori/tempo-fisso/most-value", params = {"asta_riferimento", "compratore_collegato"})
+    public ResponseEntity<OffertaTempoFissoDto> findOffertaTempoFissoMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(@RequestParam("asta_riferimento") Long idAsta, @RequestParam("compratore_collegato") Long idAccount) {
 
-        log.info("Recupero dell'offerta a tempo fisso massima del venditore in corso...");
+        log.info("Recupero dell'offerta a tempo fisso massima del compratore in corso...");
 
         log.trace("Id asta dell'offerta massima da recuperare: {}", idAsta);
-        log.trace("Id venditore dell'offerta massima da recuperare: {}", idAccount);
+        log.trace("Id compratore dell'offerta massima da recuperare: {}", idAccount);
 
         Optional<OffertaTempoFissoDto> foundOffertaTempoFissoDto = offertaTempoFissoService.findMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(idAsta, idAccount);
         if (foundOffertaTempoFissoDto.isPresent()) {
 
-            log.info("Offerta a tempo fisso massima  del venditore recuperata. Invio in corso...");
+            log.info("Offerta a tempo fisso massima  del compratore recuperata. Invio in corso...");
 
             return new ResponseEntity<>(foundOffertaTempoFissoDto.get(), HttpStatus.OK);
         } else {
