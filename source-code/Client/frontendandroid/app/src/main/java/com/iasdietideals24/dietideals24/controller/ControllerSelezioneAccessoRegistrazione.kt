@@ -1,18 +1,29 @@
 package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
+import android.net.Uri
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.lifecycle.lifecycleScope
 import com.iasdietideals24.dietideals24.R
-import com.iasdietideals24.dietideals24.activities.Accesso
-import com.iasdietideals24.dietideals24.activities.Registrazione
 import com.iasdietideals24.dietideals24.databinding.SelezioneaccessoregistrazioneBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
+import com.iasdietideals24.dietideals24.utilities.repositories.AuthRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.tools.Logger
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
+
 
 class ControllerSelezioneAccessoRegistrazione : Controller<SelezioneaccessoregistrazioneBinding>() {
+
+    // Repositories
+    private val authRepository: AuthRepository by inject()
 
     // Listeners
     private var listener: OnChangeActivity? = null
@@ -71,13 +82,60 @@ class ControllerSelezioneAccessoRegistrazione : Controller<Selezioneaccessoregis
     private fun clickAccedi() {
         Logger.log("Sign-in selected")
 
-        listener?.onChangeActivity(Accesso::class.java)
+        lifecycleScope.launch {
+            val url = withContext(Dispatchers.IO) {
+                authRepository.recuperaUrlAutenticazione("ias://com.iasdietideals24.dietideals24/signin")
+                    .replace("/oauth2/authorize", "/login")
+            }
+            val intent = CustomTabsIntent.Builder()
+                .setShowTitle(false)
+                .setColorScheme(CustomTabsIntent.COLOR_SCHEME_SYSTEM)
+                .setDefaultColorSchemeParams(
+                    CustomTabColorSchemeParams.Builder()
+                        .setToolbarColor(
+                            resources.getColor(
+                                R.color.arancione,
+                                fragmentContext.theme
+                            )
+                        )
+                        .setNavigationBarColor(
+                            resources.getColor(
+                                R.color.arancione,
+                                fragmentContext.theme
+                            )
+                        )
+                        .build()
+                )
+                .build()
+            intent.launchUrl(fragmentContext, Uri.parse(url))
+        }
     }
 
     @EventHandler
     private fun clickRegistrati() {
         Logger.log("Sign-up selected")
 
-        listener?.onChangeActivity(Registrazione::class.java)
+        lifecycleScope.launch {
+            val url = withContext(Dispatchers.IO) {
+                authRepository.recuperaUrlAutenticazione("ias://com.iasdietideals24.dietideals24/signup")
+                    .replace("/oauth2/authorize", "/signup")
+            }
+            val intent = CustomTabsIntent.Builder()
+                .setShowTitle(false)
+                .setColorScheme(CustomTabsIntent.COLOR_SCHEME_SYSTEM)
+                .setDefaultColorSchemeParams(
+                    CustomTabColorSchemeParams.Builder()
+                        .setToolbarColor(resources.getColor(R.color.blu, fragmentContext.theme))
+                        .setNavigationBarColor(
+                            resources.getColor(
+                                R.color.blu,
+                                fragmentContext.theme
+                            )
+                        )
+                        .build()
+                )
+                .build()
+            intent.launchUrl(fragmentContext, Uri.parse(url))
+        }
     }
 }

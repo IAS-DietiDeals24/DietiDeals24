@@ -9,16 +9,16 @@ class CompratoreRepository(private val service: CompratoreService) {
         return service.accountFacebookCompratore(idFacebook).body() ?: CompratoreDto()
     }
 
-    suspend fun accediCompratore(accountEmail: String, accountPassword: String): CompratoreDto {
-        return service.accediCompratore(accountEmail, accountPassword).body()
+    suspend fun accediCompratore(accountEmail: String): CompratoreDto {
+        return service.accediCompratore(accountEmail).body()?.content?.singleOrNull()
             ?: CompratoreDto()
     }
 
-    suspend fun caricaAccountCompratore(accountEmail: String): CompratoreDto {
-        return service.caricaAccountCompratore(accountEmail).body() ?: CompratoreDto()
+    suspend fun caricaAccountCompratore(idAccount: Long): CompratoreDto {
+        return service.caricaAccountCompratore(idAccount).body() ?: CompratoreDto()
     }
 
-    suspend fun creaAccountCompratore(accountEmail: String, account: CompratoreDto): CompratoreDto {
-        return service.creaAccountCompratore(accountEmail, account).body() ?: CompratoreDto()
+    suspend fun creaAccountCompratore(account: CompratoreDto): CompratoreDto {
+        return service.creaAccountCompratore(account).body() ?: CompratoreDto()
     }
 }

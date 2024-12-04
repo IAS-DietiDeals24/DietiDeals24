@@ -130,7 +130,7 @@ class ViewHolderAstaCreata(private val binding: AstaBinding) :
                         listenerRefresh?.onRefresh(
                             currentAsta.id,
                             currentAsta.tipoAsta,
-                            this::class
+                            ViewHolderAstaCreata::class
                         )
                     }
                 }

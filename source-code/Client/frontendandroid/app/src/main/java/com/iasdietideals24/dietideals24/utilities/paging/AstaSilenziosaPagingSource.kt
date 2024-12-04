@@ -3,12 +3,12 @@ package com.iasdietideals24.dietideals24.utilities.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.iasdietideals24.dietideals24.utilities.dto.AstaSilenziosaDto
+import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository.ApiCall
-import com.iasdietideals24.dietideals24.utilities.services.AstaSilenziosaService
 
 class AstaSilenziosaPagingSource(
-    private val service: AstaSilenziosaService,
-    private val email: String = "",
+    private val repository: AstaSilenziosaRepository,
+    private val idAccount: Long = 0L,
     private val ricerca: String = "",
     private val filtro: String = "",
     private val api: ApiCall = ApiCall.TUTTE
@@ -19,16 +19,20 @@ class AstaSilenziosaPagingSource(
 
         return try {
             val data = when (api) {
-                ApiCall.CREATE -> service.recuperaAsteCreateSilenziose(email, size, 0)
-                ApiCall.TUTTE -> service.recuperaAsteSilenziose(size, 0)
-                ApiCall.RICERCA -> service.ricercaAsteSilenziose(ricerca, filtro, size, 0)
-                ApiCall.PARTECIPAZIONI -> service.recuperaPartecipazioniSilenziose(email, size, 0)
+                ApiCall.CREATE -> repository.recuperaAsteCreateSilenziose(idAccount, size, 0)
+                ApiCall.TUTTE -> repository.recuperaAsteSilenziose(size, 0)
+                ApiCall.RICERCA -> repository.ricercaAsteSilenziose(ricerca, filtro, size, 0)
+                ApiCall.PARTECIPAZIONI -> repository.recuperaPartecipazioniSilenziose(
+                    idAccount,
+                    size,
+                    0
+                )
             }
 
             LoadResult.Page(
-                data = data.body()!!.content,
+                data = data.content,
                 prevKey = if (page == 0L) null else page - 1,
-                nextKey = if (data.body()!!.isLast) null else page + 1
+                nextKey = if (data.isLast) null else page + 1
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

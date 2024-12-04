@@ -17,7 +17,6 @@ import com.iasdietideals24.dietideals24.utilities.data.Account
 import com.iasdietideals24.dietideals24.utilities.data.Profilo
 import com.iasdietideals24.dietideals24.utilities.dto.AccountDto
 import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
-import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnEditButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnOpenUrl
@@ -103,6 +102,7 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
                     withContext(Dispatchers.IO) { caricaProfilo(userName).toProfilo() }
 
                 if (profilo.nomeUtente != "") {
+                    viewModel.idAccount.value = account.idAccount
                     viewModel.tipoAccount.value = account.tipoAccount.name
                     viewModel.nomeUtente.value = profilo.nomeUtente
                     viewModel.immagineProfilo.value = profilo.immagineProfilo
@@ -119,7 +119,7 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
                     viewModel.linkX.value = profilo.linkX
                     viewModel.linkPersonale.value = profilo.linkPersonale
 
-                    if (CurrentUser.id != viewModel.email.value)
+                    if (CurrentUser.id != viewModel.idAccount.value)
                         binding.dettagliProfiloPulsanteModifica.visibility = View.GONE
                     if (viewModel.linkInstagram.value == "")
                         binding.dettagliProfiloInstagram.visibility = View.GONE
@@ -140,25 +140,12 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
     }
 
     private suspend fun caricaAccount(): AccountDto {
-        return when (CurrentUser.tipoAccount) {
-            TipoAccount.COMPRATORE -> {
-                compratoreRepository.caricaAccountCompratore(args.id)
-            }
+        var account: AccountDto = compratoreRepository.caricaAccountCompratore(args.id)
 
-            TipoAccount.VENDITORE -> {
-                venditoreRepository.caricaAccountVenditore(args.id)
-            }
+        if (account.idAccount == 0L)
+            account = venditoreRepository.caricaAccountVenditore(args.id)
 
-            else -> {
-                val account =
-                    compratoreRepository.caricaAccountCompratore(args.id)
-
-                if (account.email == "")
-                    venditoreRepository.caricaAccountVenditore(args.id)
-                else
-                    account
-            }
-        }
+        return account
     }
 
     private suspend fun caricaProfilo(nomeUtente: String): ProfiloDto {

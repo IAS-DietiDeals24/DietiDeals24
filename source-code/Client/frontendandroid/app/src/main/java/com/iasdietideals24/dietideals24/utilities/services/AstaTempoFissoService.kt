@@ -14,7 +14,7 @@ import retrofit2.http.Query
 interface AstaTempoFissoService : Service {
     /**
      * Recupera l'elenco di tutte le aste a tempo fisso create dal venditore che ha effettualo l'accesso.
-     * @param accountEmail L'email dell'account che ha effettuato l'accesso.
+     * @param idAccount Id dell'account che ha effettuato l'accesso.
      * @param size Il numero massimo di aste da recuperare.
      * @param page Il numero della pagina da recuperare.
      * @return [Page] di [AstaTempoFissoDto] che contiene un certo numero di aste create. Se non
@@ -22,7 +22,7 @@ interface AstaTempoFissoService : Service {
      */
     @GET("aste/di-venditori/tempo-fisso")
     suspend fun recuperaAsteCreateTempoFisso(
-        @Query("email") accountEmail: String,
+        @Query("idAccount") idAccount: Long,
         @Query("size") size: Long,
         @Query("page") page: Long
     ): Response<Page<AstaTempoFissoDto>>
@@ -108,7 +108,7 @@ interface AstaTempoFissoService : Service {
 
     /**
      * Recupera l'elenco di tutte le aste a tempo fisso alle quali il compratore ha inviato almeno un'offerta.
-     * @param email Identificativo dell'account che ha eff ettuato l'accesso.
+     * @param idAccount Identificativo dell'account che ha effettuato l'accesso.
      * @param size Il numero massimo di aste da recuperare.
      * @param page Il numero della pagina da recuperare.
      * @return [Page] di [AstaTempoFissoDto] con un certo numero di aste alle quali l'utente ha
@@ -116,7 +116,7 @@ interface AstaTempoFissoService : Service {
      */
     @GET("aste/di-venditori/tempo-fisso")
     suspend fun recuperaPartecipazioniTempoFisso(
-        @Query("email") email: String,
+        @Query("idAccount") idAccount: Long,
         @Query("size") size: Long,
         @Query("page") page: Long
     ): Response<Page<AstaTempoFissoDto>>

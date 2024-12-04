@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -26,8 +27,12 @@ import com.iasdietideals24.dietideals24.utilities.data.Profilo
 import com.iasdietideals24.dietideals24.utilities.dto.AccountDto
 import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaDto
+import com.iasdietideals24.dietideals24.utilities.dto.OffertaInversaDto
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaSilenziosaDto
+import com.iasdietideals24.dietideals24.utilities.dto.OffertaTempoFissoDto
 import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
+import com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
@@ -56,6 +61,7 @@ import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneOffset
 
 class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
@@ -173,7 +179,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                     viewModel.nome.value = asta.nome
                     viewModel.categoria.value = asta.categoria
                     viewModel.descrizione.value = asta.descrizione
-                    viewModel.prezzo.value = offerta.offerta
+                    viewModel.prezzo.value = asta.prezzo
 
                     binding.dettagliAstaTestoOfferta.text =
                         if (viewModel.tipo.value == TipoAsta.INVERSA)
@@ -181,10 +187,16 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                         else
                             getString(R.string.dettagliAsta_testoOfferta1)
 
-                    val offertaAsta = if (viewModel.tipo.value != TipoAsta.SILENZIOSA)
-                        offerta.offerta.toString()
-                    else
-                        "???"
+                    val offertaAsta = when (viewModel.tipo.value) {
+                        TipoAsta.TEMPO_FISSO -> offerta.offerta.toString()
+
+                        TipoAsta.INVERSA -> if (offerta.offerta == BigDecimal("0.00"))
+                            asta.prezzo
+                        else
+                            offerta.offerta.toString()
+
+                        else -> "???"
+                    }
 
                     binding.dettagliAstaOfferta.text =
                         getString(R.string.placeholder_prezzo, offertaAsta)
@@ -195,7 +207,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                         }
                     }
 
-                    if (CurrentUser.id == "") {
+                    if (CurrentUser.id == 0L) {
                         binding.dettagliAstaPulsanteOfferta.isEnabled = false
                     } else if (CurrentUser.id == asta.idCreatore) {
                         binding.dettagliAstaPulsanteOfferta.visibility = View.GONE
@@ -229,11 +241,11 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         }
     }
 
-    private suspend fun caricaAccount(idCreatore: String): AccountDto {
-        val account = compratoreRepository.caricaAccountCompratore(idCreatore)
+    private suspend fun caricaAccount(idCreatore: Long): AccountDto {
+        var account: AccountDto = compratoreRepository.caricaAccountCompratore(idCreatore)
 
         if (account.email == "")
-            venditoreRepository.caricaAccountVenditore(idCreatore)
+            account = venditoreRepository.caricaAccountVenditore(idCreatore)
 
         return account
     }
@@ -419,18 +431,18 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                 "???"
         )
 
-        MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
+        val dialog = MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
             .setTitle(R.string.dettagliAsta_titoloPopupOfferta)
             .setView(viewInflated)
             .setNegativeButton(R.string.annulla) { _, _ -> }
             .show()
 
         pulsanteOfferta.setOnClickListener {
-            controlloOfferta(campoOfferta)
+            controlloOfferta(campoOfferta, dialog)
         }
     }
 
-    private fun controlloOfferta(campoOfferta: TextInputLayout) {
+    private fun controlloOfferta(campoOfferta: TextInputLayout, dialog: AlertDialog) {
         if (isPriceInvalid(campoOfferta.editText?.text.toString())) {
             when (viewModel.tipo.value!!) {
                 TipoAsta.TEMPO_FISSO -> campoOfferta.error =
@@ -447,14 +459,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                 try {
                     val returned: Offerta = withContext(Dispatchers.IO) {
                         inviaOfferta(
-                            Offerta(
-                                0L,
-                                viewModel.idAsta.value!!,
-                                CurrentUser.id,
-                                campoOfferta.editText?.text.toString().toBigDecimal(),
-                                LocalDate.now(),
-                                LocalTime.now()
-                            )
+                            campoOfferta.editText?.text.toString().toBigDecimal()
                         ).toOfferta()
                     }
 
@@ -478,10 +483,12 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                                 .setTextColor(resources.getColor(R.color.grigio, null))
                                 .show()
 
+                            dialog.dismiss()
+
                             listenerRefresh?.onRefresh(
                                 viewModel.idAsta.value!!,
                                 viewModel.tipo.value!!,
-                                this::class
+                                ControllerDettagliAsta::class
                             )
                         }
                     }
@@ -495,26 +502,63 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         }
     }
 
-    private suspend fun inviaOfferta(offerta: Offerta): OffertaDto {
+    private suspend fun inviaOfferta(valoreOfferta: BigDecimal): OffertaDto {
         return when (viewModel.tipo.value!!) {
             TipoAsta.TEMPO_FISSO -> {
                 offertaTempoFissoRepository.inviaOffertaTempoFisso(
-                    offerta.toOffertaTempoFisso(),
-                    viewModel.idAsta.value!!
+                    OffertaTempoFissoDto(
+                        0L,
+                        LocalDate.now(ZoneOffset.UTC),
+                        LocalTime.now(ZoneOffset.UTC),
+                        valoreOfferta,
+                        AccountShallowDto(
+                            CurrentUser.id,
+                            "Compratore"
+                        ),
+                        AstaShallowDto(
+                            viewModel.idAsta.value!!,
+                            "AstaDiVenditore",
+                            "AstaTempoFisso"
+                        )
+                    )
                 )
             }
 
             TipoAsta.INVERSA -> {
                 offertaInversaRepository.inviaOffertaInversa(
-                    offerta.toOffertaInversa(),
-                    viewModel.idAsta.value!!
+                    OffertaInversaDto(
+                        0L,
+                        LocalDate.now(ZoneOffset.UTC),
+                        LocalTime.now(ZoneOffset.UTC),
+                        valoreOfferta,
+                        AccountShallowDto(
+                            CurrentUser.id,
+                            "Venditore"
+                        ),
+                        AstaShallowDto(
+                            viewModel.idAsta.value!!,
+                            "AstaDiCompratore",
+                            "AstaInversa"
+                        )
+                    )
                 )
             }
 
             TipoAsta.SILENZIOSA -> {
                 offertaSilenziosaRepository.inviaOffertaSilenziosa(
-                    offerta.toOffertaSilenziosa(),
-                    viewModel.idAsta.value!!
+                    OffertaSilenziosaDto(
+                        0L,
+                        LocalDate.now(ZoneOffset.UTC),
+                        LocalTime.now(ZoneOffset.UTC),
+                        valoreOfferta,
+                        AccountShallowDto(CurrentUser.id, "Venditore"),
+                        "Pending",
+                        AstaShallowDto(
+                            viewModel.idAsta.value!!,
+                            "AstaDiCompratore",
+                            "AstaSilenziosa"
+                        )
+                    )
                 )
             }
         }
@@ -526,19 +570,19 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
         return when (viewModel.tipo.value!!) {
             TipoAsta.TEMPO_FISSO -> {
-                bigDecimal <= viewModel.prezzo.value!! || bigDecimal < BigDecimal(0.0) || !price.matches(
+                bigDecimal <= viewModel.prezzo.value!! || bigDecimal <= BigDecimal("0.00") || !price.matches(
                     regex
                 )
             }
 
             TipoAsta.INVERSA -> {
-                bigDecimal >= viewModel.prezzo.value!! || bigDecimal < BigDecimal(0.0) || !price.matches(
+                bigDecimal >= viewModel.prezzo.value!! || bigDecimal <= BigDecimal("0.00") || !price.matches(
                     regex
                 )
             }
 
             TipoAsta.SILENZIOSA -> {
-                bigDecimal < BigDecimal(0.0) || !price.matches(regex)
+                bigDecimal < BigDecimal("0.00") || !price.matches(regex)
             }
         }
     }

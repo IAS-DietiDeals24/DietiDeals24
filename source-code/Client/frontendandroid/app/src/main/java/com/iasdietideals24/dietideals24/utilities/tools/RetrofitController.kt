@@ -16,7 +16,7 @@ object RetrofitController {
 
     inline fun <reified T : Service> service(): T {
         return Retrofit.Builder()
-            .baseUrl("http://ec2-15-160-144-38.eu-south-1.compute.amazonaws.com:55501")
+            .baseUrl("http://192.168.1.159:55511")
             .client(okHttpClient)
             .addConverterFactory(JacksonConverterFactory.create(objectMapper))
             .build()

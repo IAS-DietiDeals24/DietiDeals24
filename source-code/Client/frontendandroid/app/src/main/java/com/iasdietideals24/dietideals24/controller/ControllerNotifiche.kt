@@ -35,6 +35,8 @@ class ControllerNotifiche : Controller<NotificheBinding>() {
 
         jobNotifiche = lifecycleScope.launch {
             while (isActive) {
+                viewModel.invalidate()
+
                 aggiornaNotifiche()
 
                 delay(15000)
@@ -49,7 +51,7 @@ class ControllerNotifiche : Controller<NotificheBinding>() {
     }
 
     private suspend fun aggiornaNotifiche() {
-        viewModel.getFlowNotifiche().collect { pagingData ->
+        viewModel.getNotificheFlows().collect { pagingData ->
             adapterNotifiche.submitData(pagingData)
         }
     }

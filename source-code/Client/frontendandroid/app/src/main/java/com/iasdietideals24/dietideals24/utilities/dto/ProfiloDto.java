@@ -11,6 +11,8 @@ import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount;
 import java.util.HashSet;
 import java.util.Set;
 
+import kotlin.Pair;
+
 public class ProfiloDto {
     private String nomeUtente = "";
 
@@ -35,13 +37,16 @@ public class ProfiloDto {
 
     public Profilo toProfilo() {
         return new Profilo(
-                accountsShallow.stream().findFirst().orElse(new AccountShallowDto()).getEmail(),
+                new Pair<Long, Long>(
+                        accountsShallow.iterator().next().getIdAccount(),
+                        accountsShallow.iterator().next().getIdAccount()
+                ),
                 accountsShallow.stream().findFirst().orElse(new AccountShallowDto()).getTipoAccount(),
                 nomeUtente,
                 profilePicture,
                 anagrafica.getNome(),
                 anagrafica.getCognome(),
-                accountsShallow.stream().findFirst().orElse(new AccountShallowDto()).getEmail(),
+                "",
                 anagrafica.getDataNascita(),
                 anagrafica.getGenere(),
                 anagrafica.getAreaGeografica(),
@@ -57,16 +62,16 @@ public class ProfiloDto {
     public AnteprimaProfilo toAnteprimaProfilo() {
         return new AnteprimaProfilo(
                 nomeUtente,
-                TipoAccount.valueOf(accountsShallow.stream().findFirst().orElse(new AccountShallowDto())
-                        .getTipoAccount().toUpperCase()),
+                TipoAccount.OSPITE,
                 profilePicture
         );
     }
 
     public Account toAccount() {
         return new Account(
+                accountsShallow.stream().findFirst().orElse(new AccountShallowDto()).getIdAccount(),
                 "",
-                accountsShallow.stream().findFirst().orElse(new AccountShallowDto()).getEmail(),
+                "",
                 "",
                 TipoAccount.valueOf(accountsShallow.stream().findFirst().orElse(new AccountShallowDto()).getTipoAccount().toUpperCase())
         );

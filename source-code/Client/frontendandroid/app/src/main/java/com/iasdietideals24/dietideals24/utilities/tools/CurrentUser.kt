@@ -3,11 +3,11 @@ package com.iasdietideals24.dietideals24.utilities.tools
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 
 object CurrentUser {
-    private var _id: String = ""
+    private var _id: Long = 0L
     private var _tipoAccount: TipoAccount = TipoAccount.OSPITE
-    private var _accessToken: String = ""
+    private var _jwt: String = ""
 
-    var id: String
+    var id: Long
         get() = _id
         set(value) {
             _id = value
@@ -19,9 +19,9 @@ object CurrentUser {
             _tipoAccount = value
         }
 
-    var accessToken: String
-        get() = _accessToken
+    var jwt: String
+        get() = _jwt
         set(value) {
-            _accessToken = value
+            _jwt = value
         }
 }

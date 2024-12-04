@@ -11,6 +11,13 @@ import java.time.LocalDate
 
 class ModelProfilo : ViewModel() {
 
+    private val _idAccount: MutableLiveData<Long> by lazy {
+        MutableLiveData<Long>(0L)
+    }
+
+    val idAccount: MutableLiveData<Long>
+        get() = _idAccount
+
     private val _tipoAccount: MutableLiveData<String> by lazy {
         MutableLiveData<String>("")
     }

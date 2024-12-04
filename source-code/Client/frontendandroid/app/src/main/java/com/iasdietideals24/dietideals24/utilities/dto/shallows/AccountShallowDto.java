@@ -2,24 +2,24 @@ package com.iasdietideals24.dietideals24.utilities.dto.shallows;
 
 public class AccountShallowDto {
 
-    private String email = "";
+    private Long idAccount = 0L;
 
     private String tipoAccount = "";
 
-    public AccountShallowDto(String email, String tipoAccount) {
-        this.email = email;
+    public AccountShallowDto(Long idAccount, String tipoAccount) {
+        this.idAccount = idAccount;
         this.tipoAccount = tipoAccount;
     }
 
     public AccountShallowDto() {
     }
 
-    public String getEmail() {
-        return this.email;
+    public Long getIdAccount() {
+        return this.idAccount;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setIdAccount(Long idAccount) {
+        this.idAccount = idAccount;
     }
 
     public String getTipoAccount() {

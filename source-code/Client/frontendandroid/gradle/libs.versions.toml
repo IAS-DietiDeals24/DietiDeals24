@@ -10,21 +10,23 @@ converter-jackson = "2.11.0"
 facebook-login = "17.0.2"
 coil = "2.7.0"
 commons-text = "1.12.0"
-gradle = "8.7.2"
+gradle = "8.7.3"
 navigation-fragment-ktx = "2.8.4"
 navigation-ui-ktx = "2.8.4"
 lifecycle-common-jvm = "2.8.7"
 firebase-analytics = "22.1.2"
-kotlin-reflect = "2.0.21"
+kotlin-reflect = "2.1.0"
 firebase-perf = "21.0.2"
 paging-runtime-ktx = "3.3.4"
 koin = "4.0.0"
 desugar = "2.1.3"
 jackson-datatype-jsr310 = "2.18.1"
+browser = "1.8.0"
+datastore = "1.1.1"
 
 # Plugin
-android-application = "8.7.2"
-jetbrains-kotlin-android = "2.0.21"
+android-application = "8.7.3"
+jetbrains-kotlin-android = "2.1.0"
 androidx-navigation-safeargs-kotlin = "2.8.4"
 google-services = "4.4.2"
 google-firebase-crashlytics = "3.0.2"
@@ -52,6 +54,8 @@ paging-runtime-ktx = { group = "androidx.paging", name = "paging-runtime-ktx", v
 koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 desugar = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar" }
 jackson-datatype-jsr310 = { group = "com.fasterxml.jackson.datatype", name = "jackson-datatype-jsr310", version.ref = "jackson-datatype-jsr310"}
+browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
+datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-application" }

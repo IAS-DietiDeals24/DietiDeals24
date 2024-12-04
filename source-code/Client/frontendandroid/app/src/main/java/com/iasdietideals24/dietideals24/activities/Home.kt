@@ -83,7 +83,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
 
         binding.activityHomeBottomNavigationView.setupWithNavController(getNavController())
 
-        if (CurrentUser.id == "") {
+        if (CurrentUser.id == 0L) {
             binding.activityHomeBottomNavigationView.menu.getItem(1).isEnabled = false
             binding.activityHomeBottomNavigationView.menu.getItem(2).isEnabled = false
         }
@@ -145,7 +145,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
         }
     }
 
-    override fun onGoToProfile(id: String, sender: KClass<*>) {
+    override fun onGoToProfile(id: Long, sender: KClass<*>) {
         val navController = getNavController()
 
         when (sender) {
@@ -240,7 +240,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
             ControllerDettagliAsta::class -> {
                 val action =
                     ControllerDettagliAstaDirections.actionControllerDettagliAstaToControllerOfferte(
-                        tipo, id
+                        tipo, id, true
                     )
                 navController.navigate(action)
             }
@@ -248,7 +248,7 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
             ViewHolderAstaCreata::class -> {
                 val action =
                     ControllerAsteCreateDirections.actionControllerAsteCreateToControllerOfferte(
-                        tipo, id
+                        tipo, id, false
                     )
                 navController.navigate(action)
             }
@@ -260,21 +260,18 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
 
         when (sender) {
             ControllerDettagliAsta::class -> {
-                navController.popBackStack()
                 val action =
                     ControllerDettagliAstaDirections.actionControllerDettagliAstaSelf(tipo, id)
                 navController.navigate(action)
             }
 
             ViewHolderOfferta::class -> {
-                navController.popBackStack()
                 val action =
                     ControllerOfferteDirections.actionControllerOfferteSelf(tipo, id)
                 navController.navigate(action)
             }
 
             ViewHolderAstaCreata::class -> {
-                navController.popBackStack()
                 val action =
                     ControllerAsteCreateDirections.actionControllerAsteCreateSelf()
                 navController.navigate(action)

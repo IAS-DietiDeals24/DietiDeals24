@@ -36,16 +36,12 @@ fun interface OnNextStep {
     fun onNextStep(sender: KClass<*>)
 }
 
-fun interface OnSkipStep {
-    fun onSkipStep(sender: KClass<*>)
-}
-
 fun interface OnGoToDetails {
     fun onGoToDetails(id: Long, tipo: TipoAsta, sender: KClass<*>)
 }
 
 fun interface OnGoToProfile {
-    fun onGoToProfile(id: String, sender: KClass<*>)
+    fun onGoToProfile(id: Long, sender: KClass<*>)
 }
 
 fun interface OnGoToParticipation {

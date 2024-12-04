@@ -190,7 +190,7 @@
     <string name="offerta_offertaNonRifiutata">L\'asta non è stata rifiutata. Riprova.</string>
     <string name="offerta_confermaAccetta">Confermi di voler accettare questa offerta? Tutte le altre saranno rifiutate automaticamente.</string>
     <string name="offerta_confermaRifiuto">Confermi di voler rifiutare questa offerta?</string>
-    <string name="asta_messaggioPartecipazione">La tua ultima offerta è stata</string>
+    <string name="asta_messaggioPartecipazione">La tua ultima offerta è</string>
     <string name="astecreate_titolo">Aste create</string>
     <string name="aiuto_titolo">Aiuto</string>
     <string name="aiuto_pulsante1">Cos\'è un\'asta a tempo fisso?</string>
@@ -243,4 +243,5 @@
     <string name="femmina">Donna</string>
     <string name="modifica_titoloPopupLinkSocial">Link social</string>
     <string name="registrazione_erroreDataPassata">La data e ora selezionate sono nel passato.</string>
+    <string name="notificaOfferta">%1$s ha mandato un\'offerta alla tua asta "%2$s".</string>
 </resources>

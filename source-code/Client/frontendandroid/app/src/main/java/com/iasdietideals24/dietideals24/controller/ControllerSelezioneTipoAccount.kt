@@ -1,6 +1,7 @@
 package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
+import androidx.lifecycle.lifecycleScope
 import com.facebook.AccessToken
 import com.facebook.LoginStatusCallback
 import com.facebook.login.LoginManager.Companion.getInstance
@@ -15,10 +16,18 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnHideBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnShowBackButton
+import com.iasdietideals24.dietideals24.utilities.repositories.AuthRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.tools.Logger
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
 
 class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>() {
+
+    // Repositories
+    private val authRepository: AuthRepository by inject()
 
     // Listeners
     private var changeActivityListener: OnChangeActivity? = null
@@ -103,6 +112,11 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
 
         showBackButtonListener?.onShowBackButton()
         CurrentUser.tipoAccount = TipoAccount.COMPRATORE
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                authRepository.scriviRuolo(TipoAccount.COMPRATORE)
+            }
+        }
         nextStepListener?.onNextStep(this::class)
     }
 
@@ -112,6 +126,11 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
 
         showBackButtonListener?.onShowBackButton()
         CurrentUser.tipoAccount = TipoAccount.VENDITORE
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                authRepository.scriviRuolo(TipoAccount.VENDITORE)
+            }
+        }
         nextStepListener?.onNextStep(this::class)
     }
 
@@ -120,6 +139,11 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
         Logger.log("Guest selected")
 
         CurrentUser.tipoAccount = TipoAccount.OSPITE
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                authRepository.scriviRuolo(TipoAccount.OSPITE)
+            }
+        }
         changeActivityListener?.onChangeActivity(Home::class.java)
     }
 }

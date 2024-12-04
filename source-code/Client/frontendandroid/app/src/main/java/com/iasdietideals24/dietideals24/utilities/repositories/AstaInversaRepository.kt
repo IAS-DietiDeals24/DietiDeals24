@@ -1,21 +1,17 @@
 package com.iasdietideals24.dietideals24.utilities.repositories
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import com.iasdietideals24.dietideals24.utilities.dto.AstaInversaDto
-import com.iasdietideals24.dietideals24.utilities.paging.AstaInversaPagingSource
 import com.iasdietideals24.dietideals24.utilities.services.AstaInversaService
-import kotlinx.coroutines.flow.Flow
+import com.iasdietideals24.dietideals24.utilities.tools.Page
 
 class AstaInversaRepository(private val service: AstaInversaService) {
-    fun recuperaAsteCreateInverse(accountEmail: String): Flow<PagingData<AstaInversaDto>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = {
-                AstaInversaPagingSource(service, email = accountEmail, api = ApiCall.CREATE)
-            }
-        ).flow
+    suspend fun recuperaAsteCreateInverse(
+        idAccount: Long,
+        size: Long,
+        page: Long
+    ): Page<AstaInversaDto> {
+        return service.recuperaAsteCreateInverse(idAccount, size, page).body()
+            ?: Page<AstaInversaDto>()
     }
 
     suspend fun creaAstaInversa(asta: AstaInversaDto): AstaInversaDto {
@@ -34,33 +30,27 @@ class AstaInversaRepository(private val service: AstaInversaService) {
         return service.aggiornaAstaInversa(asta, idAsta).body() ?: AstaInversaDto()
     }
 
-    fun recuperaAsteInverse(): Flow<PagingData<AstaInversaDto>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = { AstaInversaPagingSource(service, api = ApiCall.TUTTE) }
-        ).flow
+    suspend fun recuperaAsteInverse(size: Long, page: Long): Page<AstaInversaDto> {
+        return service.recuperaAsteInverse(size, page).body() ?: Page<AstaInversaDto>()
     }
 
-    fun ricercaAsteInverse(ricerca: String, filtro: String): Flow<PagingData<AstaInversaDto>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = {
-                AstaInversaPagingSource(
-                    service, ricerca = ricerca, filtro = filtro, api = ApiCall.RICERCA
-                )
-            }
-        ).flow
+    suspend fun ricercaAsteInverse(
+        ricerca: String,
+        filtro: String,
+        size: Long,
+        page: Long
+    ): Page<AstaInversaDto> {
+        return service.ricercaAsteInverse(ricerca, filtro, size, page).body()
+            ?: Page<AstaInversaDto>()
     }
 
-    fun recuperaPartecipazioniInverse(email: String): Flow<PagingData<AstaInversaDto>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = {
-                AstaInversaPagingSource(
-                    service, email = email, api = ApiCall.PARTECIPAZIONI
-                )
-            }
-        ).flow
+    suspend fun recuperaPartecipazioniInverse(
+        idAccount: Long,
+        size: Long,
+        page: Long
+    ): Page<AstaInversaDto> {
+        return service.recuperaPartecipazioniInverse(idAccount, size, page).body()
+            ?: Page<AstaInversaDto>()
     }
 
     enum class ApiCall { CREATE, TUTTE, RICERCA, PARTECIPAZIONI }

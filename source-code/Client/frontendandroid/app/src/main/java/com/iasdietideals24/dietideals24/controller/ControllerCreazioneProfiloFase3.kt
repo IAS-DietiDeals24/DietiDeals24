@@ -11,11 +11,13 @@ import com.iasdietideals24.dietideals24.model.ModelRegistrazione
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.data.Account
+import com.iasdietideals24.dietideals24.utilities.dto.AccountDto
 import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
+import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +33,7 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
 
     // Services
     private val profiloRepository: ProfiloRepository by inject()
+    private val venditoreRepository: VenditoreRepository by inject()
 
     // Listeners
     private var listenerBackButton: OnBackButton? = null
@@ -106,13 +109,19 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
 
         lifecycleScope.launch {
             try {
-                val account: Account =
-                    withContext(Dispatchers.IO) { creazioneAccount().toAccount() }
+                val accountCompratore: Account =
+                    withContext(Dispatchers.IO) { creazioneAccountCompratore().toAccount() }
+                val accountVenditore: Account =
+                    withContext(Dispatchers.IO) { creazioneAccountVenditore().toAccount() }
 
-                if (account.email != "") {
+                if (accountCompratore.idAccount != 0L && accountVenditore.idAccount != 0L) {
                     Logger.log("Profile creation successful")
 
-                    CurrentUser.id = account.email
+                    CurrentUser.id = when (CurrentUser.tipoAccount) {
+                        TipoAccount.COMPRATORE -> accountCompratore.idAccount
+                        TipoAccount.VENDITORE -> accountVenditore.idAccount
+                        else -> 0L
+                    }
 
                     listenerChangeActivity?.onChangeActivity(Home::class.java)
                 }
@@ -125,17 +134,16 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
         }
     }
 
-    private suspend fun creazioneAccount(): ProfiloDto {
-        return if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
-            profiloRepository.creazioneAccountProfilo(
-                viewModel.nomeUtente.value!!,
-                viewModel.toPutAccountCompratore()
-            )
-        } else {
-            profiloRepository.creazioneAccountProfilo(
-                viewModel.nomeUtente.value!!,
-                viewModel.toPutAccountVenditore()
-            )
-        }
+    private suspend fun creazioneAccountCompratore(): ProfiloDto {
+        return profiloRepository.creazioneAccountProfilo(
+            viewModel.nomeUtente.value!!,
+            viewModel.toPutAccountCompratore()
+        )
+    }
+
+    private suspend fun creazioneAccountVenditore(): AccountDto {
+        return venditoreRepository.creaAccountVenditore(
+            viewModel.toAccountVenditore()
+        )
     }
 }

@@ -1,5 +1,6 @@
 package com.iasdietideals24.dietideals24.utilities.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iasdietideals24.dietideals24.utilities.data.AnteprimaAsta;
 import com.iasdietideals24.dietideals24.utilities.data.Asta;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto;
@@ -9,10 +10,13 @@ import com.iasdietideals24.dietideals24.utilities.dto.shallows.OffertaShallowDto
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.HashSet;
 import java.util.Set;
 
 abstract public class AstaDto {
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     protected Long idAsta = 0L;
 
     protected CategoriaAstaShallowDto categoriaShallow = new CategoriaAstaShallowDto();
@@ -21,9 +25,9 @@ abstract public class AstaDto {
 
     protected String descrizione = "";
 
-    protected LocalDate dataScadenza = LocalDate.now();
+    protected LocalDate dataScadenza = LocalDate.now(ZoneOffset.UTC);
 
-    protected LocalTime oraScadenza = LocalTime.now();
+    protected LocalTime oraScadenza = LocalTime.now(ZoneOffset.UTC);
 
     protected byte[] immagine = new byte[0];
 

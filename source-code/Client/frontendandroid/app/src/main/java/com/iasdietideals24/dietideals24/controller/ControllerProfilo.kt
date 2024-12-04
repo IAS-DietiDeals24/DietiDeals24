@@ -5,7 +5,6 @@ import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import coil.load
-import com.facebook.login.LoginManager
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.activities.ScelteIniziali
@@ -22,6 +21,7 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToCreatedAuctions
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToHelp
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToParticipation
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToProfile
+import com.iasdietideals24.dietideals24.utilities.repositories.AuthRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
@@ -35,6 +35,7 @@ import org.koin.android.ext.android.inject
 class ControllerProfilo : Controller<ProfiloBinding>() {
 
     // Repositories
+    private val authRepository: AuthRepository by inject()
     private val compratoreRepository: CompratoreRepository by inject()
     private val venditoreRepository: VenditoreRepository by inject()
     private val profiloRepository: ProfiloRepository by inject()
@@ -80,14 +81,14 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
     override fun impostaMessaggiCorpo() {
         lifecycleScope.launch {
             try {
-                if (CurrentUser.id != "") {
+                if (CurrentUser.id != 0L) {
                     val account: AccountDto = withContext(Dispatchers.IO) { caricaAccount() }
                     val nomeUtente = account.profiloShallow.nomeUtente
                     val result: AnteprimaProfilo =
                         withContext(Dispatchers.IO) { caricaProfilo(nomeUtente).toAnteprimaProfilo() }
 
                     if (result.nome != "") {
-                        when (result.tipoAccount) {
+                        when (CurrentUser.tipoAccount) {
                             TipoAccount.COMPRATORE -> binding.profiloTipoAccount.text = getString(
                                 R.string.profilo_tipoAccount,
                                 getString(R.string.tipoAccount_compratore)
@@ -201,8 +202,14 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
     private fun clickEsci() {
         Logger.log("Logging out")
 
-        // Esci da Facebook
-        LoginManager.getInstance().logOut()
+        // Cancella i dati di autenticazione memorizzati
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                CurrentUser.jwt = ""
+                authRepository.cancellaJWT()
+                authRepository.cancellaRuolo()
+            }
+        }
 
         listenerChangeActivity?.onChangeActivity(ScelteIniziali::class.java)
     }

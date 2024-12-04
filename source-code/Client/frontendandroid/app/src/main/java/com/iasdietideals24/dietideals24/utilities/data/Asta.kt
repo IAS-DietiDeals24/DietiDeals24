@@ -8,11 +8,11 @@ import java.time.LocalTime
 
 data class Asta(
     val idAsta: Long = 0L,
-    val idCreatore: String = "",
+    val idCreatore: Long = 0L,
     val tipo: TipoAsta = TipoAsta.TEMPO_FISSO,
     val dataFine: LocalDate = LocalDate.MIN,
     val oraFine: LocalTime? = LocalTime.MIN,
-    val prezzo: BigDecimal = BigDecimal(0.0),
+    val prezzo: BigDecimal = BigDecimal("0.00"),
     val immagine: ByteArray = ByteArray(0),
     val nome: String = "",
     val categoria: CategoriaAsta = CategoriaAsta.ND,

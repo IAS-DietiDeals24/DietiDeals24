@@ -1,12 +1,8 @@
 package com.iasdietideals24.dietideals24.utilities.repositories
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaInversaDto
-import com.iasdietideals24.dietideals24.utilities.paging.OffertaInversaPagingSource
 import com.iasdietideals24.dietideals24.utilities.services.OffertaInversaService
-import kotlinx.coroutines.flow.Flow
+import com.iasdietideals24.dietideals24.utilities.tools.Page
 
 class OffertaInversaRepository(private val service: OffertaInversaService) {
     suspend fun recuperaOffertaPiuBassa(idAsta: Long): OffertaInversaDto {
@@ -15,20 +11,22 @@ class OffertaInversaRepository(private val service: OffertaInversaService) {
 
     suspend fun recuperaOffertaPersonalePiuBassaInversa(
         idAsta: Long,
-        accountEmail: String
+        idAccount: Long
     ): OffertaInversaDto {
-        return service.recuperaOffertaPersonalePiuBassaInversa(idAsta, accountEmail)
+        return service.recuperaOffertaPersonalePiuBassaInversa(idAsta, idAccount)
             .body() ?: OffertaInversaDto()
     }
 
-    suspend fun inviaOffertaInversa(offerta: OffertaInversaDto, idAsta: Long): OffertaInversaDto {
-        return service.inviaOffertaInversa(offerta, idAsta).body() ?: OffertaInversaDto()
+    suspend fun inviaOffertaInversa(offerta: OffertaInversaDto): OffertaInversaDto {
+        return service.inviaOffertaInversa(offerta).body() ?: OffertaInversaDto()
     }
 
-    fun recuperaOfferteInverse(idAsta: Long): Flow<PagingData<OffertaInversaDto>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = { OffertaInversaPagingSource(service, idAsta) }
-        ).flow
+    suspend fun recuperaOfferteInverse(
+        idAsta: Long,
+        size: Long,
+        page: Long
+    ): Page<OffertaInversaDto> {
+        return service.recuperaOfferteInverse(idAsta, size, page).body()
+            ?: Page<OffertaInversaDto>()
     }
 }

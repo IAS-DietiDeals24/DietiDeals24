@@ -3,6 +3,8 @@ package com.iasdietideals24.dietideals24.model
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.iasdietideals24.dietideals24.utilities.annotations.Validation
@@ -16,6 +18,9 @@ import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneDataPassata
+import com.iasdietideals24.dietideals24.utilities.paging.OffertaInversaPagingSource
+import com.iasdietideals24.dietideals24.utilities.paging.OffertaSilenziosaPagingSource
+import com.iasdietideals24.dietideals24.utilities.paging.OffertaTempoFissoPagingSource
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaInversaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaTempoFissoRepository
@@ -24,6 +29,9 @@ import kotlinx.coroutines.flow.Flow
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 
 class ModelAsta(
     private val inverseRepository: OffertaInversaRepository,
@@ -38,11 +46,11 @@ class ModelAsta(
     val idAsta: MutableLiveData<Long>
         get() = _idAsta
 
-    private val _idCreatore: MutableLiveData<String> by lazy {
-        MutableLiveData<String>("")
+    private val _idCreatore: MutableLiveData<Long> by lazy {
+        MutableLiveData<Long>(0L)
     }
 
-    val idCreatore: MutableLiveData<String>
+    val idCreatore: MutableLiveData<Long>
         get() = _idCreatore
 
     private val _nomeCreatore: MutableLiveData<String> by lazy {
@@ -74,7 +82,7 @@ class ModelAsta(
         get() = _oraFine
 
     private val _prezzo: MutableLiveData<BigDecimal> by lazy {
-        MutableLiveData<BigDecimal>(BigDecimal("0.0"))
+        MutableLiveData<BigDecimal>(BigDecimal("0.00"))
     }
 
     val prezzo: MutableLiveData<BigDecimal>
@@ -110,12 +118,12 @@ class ModelAsta(
 
     fun clear() {
         _idAsta.value = 0L
-        _idCreatore.value = ""
+        _idCreatore.value = 0L
         _nomeCreatore.value = ""
         _tipo.value = TipoAsta.TEMPO_FISSO
         _dataFine.value = LocalDate.MIN
         _oraFine.value = LocalTime.MIN
-        _prezzo.value = BigDecimal("0.0")
+        _prezzo.value = BigDecimal("0.00")
         _immagine.value = ByteArray(0)
         _nome.value = ""
         _categoria.value = CategoriaAsta.ND
@@ -123,6 +131,12 @@ class ModelAsta(
     }
 
     fun toAstaInversa(): AstaInversaDto {
+        val local =
+            ZonedDateTime.of(this.dataFine.value!!, this.oraFine.value!!, ZoneId.systemDefault())
+        val utc = local.withZoneSameInstant(ZoneOffset.UTC)
+        val dataFine = utc.toLocalDate()
+        val oraFine = utc.toLocalTime()
+
         return AstaInversaDto(
             idAsta.value!!,
             CategoriaAstaShallowDto(
@@ -130,8 +144,8 @@ class ModelAsta(
             ),
             nome.value!!,
             descrizione.value!!,
-            dataFine.value!!,
-            oraFine.value!!,
+            dataFine,
+            oraFine,
             immagine.value ?: ByteArray(0),
             setOf(),
             AccountShallowDto(
@@ -144,6 +158,12 @@ class ModelAsta(
     }
 
     fun toAstaTempoFisso(): AstaTempoFissoDto {
+        val local =
+            ZonedDateTime.of(this.dataFine.value!!, this.oraFine.value!!, ZoneId.systemDefault())
+        val utc = local.withZoneSameInstant(ZoneOffset.UTC)
+        val dataFine = utc.toLocalDate()
+        val oraFine = utc.toLocalTime()
+
         return AstaTempoFissoDto(
             idAsta.value!!,
             CategoriaAstaShallowDto(
@@ -151,8 +171,8 @@ class ModelAsta(
             ),
             nome.value!!,
             descrizione.value!!,
-            dataFine.value!!,
-            oraFine.value!!,
+            dataFine,
+            oraFine,
             immagine.value ?: ByteArray(0),
             setOf(),
             AccountShallowDto(
@@ -165,6 +185,12 @@ class ModelAsta(
     }
 
     fun toAstaSilenziosa(): AstaSilenziosaDto {
+        val local =
+            ZonedDateTime.of(this.dataFine.value!!, this.oraFine.value!!, ZoneId.systemDefault())
+        val utc = local.withZoneSameInstant(ZoneOffset.UTC)
+        val dataFine = utc.toLocalDate()
+        val oraFine = utc.toLocalTime()
+
         return AstaSilenziosaDto(
             idAsta.value!!,
             CategoriaAstaShallowDto(
@@ -172,8 +198,8 @@ class ModelAsta(
             ),
             nome.value!!,
             descrizione.value!!,
-            dataFine.value!!,
-            oraFine.value!!,
+            dataFine,
+            oraFine,
             immagine.value ?: ByteArray(0),
             setOf(),
             AccountShallowDto(
@@ -252,16 +278,63 @@ class ModelAsta(
         }
     }
 
+    private var pagingSourceInverse: OffertaInversaPagingSource? = null
+
+    private val pagerInverse by lazy {
+        Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                pagingSourceInverse = OffertaInversaPagingSource(
+                    repository = inverseRepository,
+                    idAsta = idAsta.value!!
+                )
+
+                pagingSourceInverse!!
+            }
+        )
+    }
+
+    private var pagingSourceTempoFisso: OffertaTempoFissoPagingSource? = null
+
+    private val pagerTempoFisso by lazy {
+        Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                pagingSourceTempoFisso = OffertaTempoFissoPagingSource(
+                    repository = tempoFissoRepository,
+                    idAsta = idAsta.value!!
+                )
+
+                pagingSourceTempoFisso!!
+            }
+        )
+    }
+
+    private var pagingSourceSilenziose: OffertaSilenziosaPagingSource? = null
+
+    private val pagerSilenziose by lazy {
+        Pager(
+            config = PagingConfig(pageSize = 20),
+            pagingSourceFactory = {
+                pagingSourceSilenziose = OffertaSilenziosaPagingSource(
+                    repository = silenziosaRepository,
+                    idAsta = idAsta.value!!
+                )
+
+                pagingSourceSilenziose!!
+            }
+        )
+    }
     private val flowInverse by lazy {
-        inverseRepository.recuperaOfferteInverse(idAsta.value!!).cachedIn(viewModelScope)
+        pagerInverse.flow.cachedIn(viewModelScope)
     }
 
     private val flowTempoFisso by lazy {
-        tempoFissoRepository.recuperaOfferteTempoFisso(idAsta.value!!).cachedIn(viewModelScope)
+        pagerTempoFisso.flow.cachedIn(viewModelScope)
     }
 
     private val flowSilenziose by lazy {
-        silenziosaRepository.recuperaOfferteSilenziose(idAsta.value!!).cachedIn(viewModelScope)
+        pagerSilenziose.flow.cachedIn(viewModelScope)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -277,5 +350,23 @@ class ModelAsta(
     @Suppress("UNCHECKED_CAST")
     fun getSilenzioseFlows(): Flow<PagingData<OffertaDto>> {
         return flowSilenziose as Flow<PagingData<OffertaDto>>
+    }
+
+    private fun invalidateInverse() {
+        pagingSourceInverse?.invalidate()
+    }
+
+    private fun invalidateTempoFisso() {
+        pagingSourceTempoFisso?.invalidate()
+    }
+
+    private fun invalidateSilenziose() {
+        pagingSourceSilenziose?.invalidate()
+    }
+
+    fun invalidate() {
+        invalidateInverse()
+        invalidateTempoFisso()
+        invalidateSilenziose()
     }
 }

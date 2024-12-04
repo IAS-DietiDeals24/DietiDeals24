@@ -1,12 +1,8 @@
 package com.iasdietideals24.dietideals24.utilities.repositories
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaTempoFissoDto
-import com.iasdietideals24.dietideals24.utilities.paging.OffertaTempoFissoPagingSource
 import com.iasdietideals24.dietideals24.utilities.services.OffertaTempoFissoService
-import kotlinx.coroutines.flow.Flow
+import com.iasdietideals24.dietideals24.utilities.tools.Page
 
 class OffertaTempoFissoRepository(private val service: OffertaTempoFissoService) {
     suspend fun recuperaOffertaPiuAlta(idAsta: Long): OffertaTempoFissoDto {
@@ -15,24 +11,22 @@ class OffertaTempoFissoRepository(private val service: OffertaTempoFissoService)
 
     suspend fun recuperaOffertaPersonalePiuAltaTempoFisso(
         idAsta: Long,
-        accountEmail: String
+        idAccount: Long
     ): OffertaTempoFissoDto {
-        return service.recuperaOffertaPersonalePiuAltaTempoFisso(idAsta, accountEmail)
+        return service.recuperaOffertaPersonalePiuAltaTempoFisso(idAsta, idAccount)
             .body() ?: OffertaTempoFissoDto()
     }
 
-    suspend fun inviaOffertaTempoFisso(
-        offerta: OffertaTempoFissoDto,
-        idAsta: Long
-    ): OffertaTempoFissoDto {
-        return service.inviaOffertaTempoFisso(offerta, idAsta).body()
-            ?: OffertaTempoFissoDto()
+    suspend fun inviaOffertaTempoFisso(offerta: OffertaTempoFissoDto): OffertaTempoFissoDto {
+        return service.inviaOffertaTempoFisso(offerta).body() ?: OffertaTempoFissoDto()
     }
 
-    fun recuperaOfferteTempoFisso(idAsta: Long): Flow<PagingData<OffertaTempoFissoDto>> {
-        return Pager(
-            config = PagingConfig(pageSize = 20),
-            pagingSourceFactory = { OffertaTempoFissoPagingSource(service, idAsta) }
-        ).flow
+    suspend fun recuperaOfferteTempoFisso(
+        idAsta: Long,
+        size: Long,
+        page: Long
+    ): Page<OffertaTempoFissoDto> {
+        return service.recuperaOfferteTempoFisso(idAsta, size, page).body()
+            ?: Page<OffertaTempoFissoDto>()
     }
 }

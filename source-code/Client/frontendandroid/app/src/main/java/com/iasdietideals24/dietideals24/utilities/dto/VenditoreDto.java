@@ -7,9 +7,10 @@ import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount;
 
 public class VenditoreDto extends AccountDto {
 
-    public VenditoreDto(String email, String password, TokensAccountDto tokens, ProfiloShallowDto profiloShallow) {
+    public VenditoreDto(Long idAccount, String email, String password, TokensAccountDto tokens, ProfiloShallowDto profiloShallow) {
         super();
 
+        this.idAccount = idAccount;
         this.email = email;
         this.password = password;
         this.tokens = tokens;
@@ -20,6 +21,6 @@ public class VenditoreDto extends AccountDto {
     }
 
     public Account toAccount() {
-        return new Account(tokens.getIdFacebook(), email, password, TipoAccount.VENDITORE);
+        return new Account(idAccount, tokens.getIdFacebook(), email, password, TipoAccount.VENDITORE);
     }
 }

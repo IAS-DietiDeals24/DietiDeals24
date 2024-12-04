@@ -241,7 +241,7 @@
     <string name="modifica_titoloConfermaIndietro">Confirm leaving</string>
     <string name="modifica_testoConfermaIndietro">If you leave this page, the newly inserted data into the fields will be erased. You want to proceed?</string>
     <string name="elimina_titoloConfermaElimina">Confirm deletion</string>
-    <string name="elimina_testoConfermaElimina">Are you sure you want to delete this auciton? You won\'t be able to recover it.</string>
+    <string name="elimina_testoConfermaElimina">Are you sure you want to delete this auction? You won\'t be able to recover it.</string>
     <string name="responseError">Error</string>
     <string name="popupConfermaEmail_accessibilitàCodice">Code</string>
     <string name="popupConfermaEmail_pulsante">Check</string>
@@ -253,4 +253,5 @@
     <string name="femmina">Female</string>
     <string name="modifica_titoloPopupLinkSocial">Social link</string>
     <string name="registrazione_erroreDataPassata">The selected date and time are in the past.</string>
+    <string name="notificaOfferta">%1$s sent a bid to your "%2$s" auction.</string>
 </resources>

@@ -3,10 +3,10 @@ package com.iasdietideals24.dietideals24.utilities.paging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaSilenziosaDto
-import com.iasdietideals24.dietideals24.utilities.services.OffertaSilenziosaService
+import com.iasdietideals24.dietideals24.utilities.repositories.OffertaSilenziosaRepository
 
 class OffertaSilenziosaPagingSource(
-    private val service: OffertaSilenziosaService,
+    private val repository: OffertaSilenziosaRepository,
     private val idAsta: Long = 0L
 ) : PagingSource<Long, OffertaSilenziosaDto>() {
     override suspend fun load(params: LoadParams<Long>): LoadResult<Long, OffertaSilenziosaDto> {
@@ -14,12 +14,12 @@ class OffertaSilenziosaPagingSource(
         val size = params.loadSize.toLong()
 
         return try {
-            val data = service.recuperaOfferteSilenziose(idAsta, size, 0)
+            val data = repository.recuperaOfferteSilenziose(idAsta, size, 0)
 
             LoadResult.Page(
-                data = data.body()!!.content,
+                data = data.content,
                 prevKey = if (page == 0L) null else page - 1,
-                nextKey = if (data.body()!!.isLast) null else page + 1
+                nextKey = if (data.isLast) null else page + 1
             )
         } catch (e: Exception) {
             LoadResult.Error(e)
