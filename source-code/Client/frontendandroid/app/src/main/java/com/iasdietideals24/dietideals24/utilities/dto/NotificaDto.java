@@ -42,7 +42,7 @@ public class NotificaDto {
 
         return new Notifica(
                 astaAssociataShallow.getIdAsta(),
-                TipoAsta.valueOf(astaAssociataShallow.getTipoAstaSpecifica()),
+                TipoAsta.Companion.getEnum(astaAssociataShallow.getTipoAstaSpecifica()),
                 mittenteShallow.getIdAccount(),
                 "",
                 new byte[]{},

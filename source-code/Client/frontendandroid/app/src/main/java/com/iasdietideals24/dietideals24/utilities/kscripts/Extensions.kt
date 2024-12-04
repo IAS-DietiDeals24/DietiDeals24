@@ -2,6 +2,7 @@ package com.iasdietideals24.dietideals24.utilities.kscripts
 
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -12,6 +13,14 @@ import java.time.format.FormatStyle
  */
 fun LocalDate.toLocalStringShort(): String {
     return this.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT))
+}
+
+/**
+ * Formatta la [LocalTime] in una [String] con precisione al minuto.
+ * @return La [String] nel formato "HH:mm".
+ */
+fun LocalTime.toStringShort(): String {
+    return this.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
 }
 
 /**

@@ -47,7 +47,7 @@ public class OffertaInversaDto extends OffertaDiVenditoreDto {
         return new OffertaRicevuta(
                 idOfferta,
                 astaRiferimentoShallow.getIdAsta(),
-                TipoAsta.valueOf(astaRiferimentoShallow.getTipoAstaSpecifica()),
+                TipoAsta.Companion.getEnum(astaRiferimentoShallow.getTipoAstaSpecifica()),
                 venditoreCollegatoShallow.getIdAccount(),
                 "",
                 new byte[]{},

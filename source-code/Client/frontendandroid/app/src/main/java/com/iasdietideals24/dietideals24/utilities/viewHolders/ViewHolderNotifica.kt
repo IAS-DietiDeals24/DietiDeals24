@@ -16,6 +16,7 @@ import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToDetails
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToProfile
 import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
+import com.iasdietideals24.dietideals24.utilities.kscripts.toStringShort
 import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
@@ -73,8 +74,8 @@ class ViewHolderNotifica(private val binding: NotificaBinding) :
             binding.notificaTesto.text = currentNotifica.messaggio
 
             val tempoFa = when {
-                LocalDate.now() == currentNotifica.dataInvio -> currentNotifica.oraInvio.toString()
-                else -> currentNotifica.dataInvio.toLocalStringShort() + " " + currentNotifica.oraInvio.toString()
+                LocalDate.now() == currentNotifica.dataInvio -> currentNotifica.oraInvio.toStringShort()
+                else -> currentNotifica.dataInvio.toLocalStringShort() + " " + currentNotifica.oraInvio.toStringShort()
             }
 
             binding.notificaTempo.text = resources.getString(R.string.placeholder, tempoFa)

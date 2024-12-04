@@ -26,11 +26,17 @@ class OffertaSilenziosaRepository(private val service: OffertaSilenziosaService)
             ?: Page<OffertaSilenziosaDto>()
     }
 
-    suspend fun accettaOfferta(offerta: OffertaSilenziosaDto, idOfferta: Long): Boolean {
-        return service.accettaOfferta(offerta, idOfferta).body() ?: false
+    suspend fun accettaOfferta(
+        offerta: OffertaSilenziosaDto,
+        idOfferta: Long
+    ): OffertaSilenziosaDto {
+        return service.accettaOfferta(offerta, idOfferta).body() ?: OffertaSilenziosaDto()
     }
 
-    suspend fun rifiutaOfferta(offerta: OffertaSilenziosaDto, idOfferta: Long): Boolean {
-        return service.rifiutaOfferta(offerta, idOfferta).body() ?: false
+    suspend fun rifiutaOfferta(
+        offerta: OffertaSilenziosaDto,
+        idOfferta: Long
+    ): OffertaSilenziosaDto {
+        return service.rifiutaOfferta(offerta, idOfferta).body() ?: OffertaSilenziosaDto()
     }
 }

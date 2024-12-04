@@ -70,6 +70,24 @@ class ControllerHome : Controller<HomeBinding>() {
 
     @UIBuilder
     override fun impostaEventiDiCambiamentoCampi() {
+        binding.homeFiltro.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                jobRecupero = lifecycleScope.launch {
+                    while (isActive) {
+                        viewModel.invalidate()
+
+                        recuperaAste()
+
+                        delay(10000)
+                    }
+                }
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
         binding.homeRicerca.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 viewModel.searchText.value = s.toString()

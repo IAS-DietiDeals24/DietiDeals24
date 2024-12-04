@@ -20,6 +20,7 @@ import com.iasdietideals24.dietideals24.utilities.enumerations.StatoOfferta
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToProfile
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnRefresh
 import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
+import com.iasdietideals24.dietideals24.utilities.kscripts.toStringShort
 import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
@@ -79,8 +80,8 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
                 resources.getString(R.string.placeholder_prezzo, currentOfferta.offerta.toString())
 
             val tempoFa = when {
-                LocalDate.now() == currentOfferta.dataInvio -> currentOfferta.oraInvio.toString()
-                else -> currentOfferta.dataInvio.toLocalStringShort() + " " + currentOfferta.oraInvio.toString()
+                LocalDate.now() == currentOfferta.dataInvio -> currentOfferta.oraInvio.toStringShort()
+                else -> currentOfferta.dataInvio.toLocalStringShort() + " " + currentOfferta.oraInvio.toStringShort()
             }
 
             binding.offertaTempo.text = resources.getString(R.string.placeholder, tempoFa)
@@ -167,14 +168,14 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
             null
         )
 
-        val returned: Boolean = withContext(Dispatchers.IO) {
+        val returned: OffertaSilenziosaDto = withContext(Dispatchers.IO) {
             silenziosaRepository.accettaOfferta(
                 patchOfferta,
                 idOfferta
             )
         }
 
-        when (returned) {
+        when (returned.stato == StatoOfferta.ACCEPTED.name) {
             true -> {
                 Snackbar.make(
                     itemView,
@@ -218,7 +219,7 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
             null
         )
 
-        val returned: Boolean =
+        val returned: OffertaSilenziosaDto =
             withContext(Dispatchers.IO) {
                 silenziosaRepository.rifiutaOfferta(
                     patchOfferta,
@@ -226,7 +227,7 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
                 )
             }
 
-        when (returned) {
+        when (returned.stato == StatoOfferta.REJECTED.name) {
             true -> {
                 Snackbar.make(
                     itemView,

@@ -54,23 +54,23 @@ interface OffertaSilenziosaService : Service {
      * offerte per la stessa asta. Manda inoltre una notifica a chi ha avanzato le offerte per
      * avvisare dell'esito.
      * @param idOfferta Identificativo dell'offerta da accettare.
-     * @return Un [Boolean] che indica se l'operazione la transazione ha avuto successo.
+     * @return [OffertaSilenziosaDto] appena aggiornata.
      */
     @PATCH("offerte/di-compratori/silenziose/{idOfferta}")
     suspend fun accettaOfferta(
         @Body offerta: OffertaSilenziosaDto,
         @Path("idOfferta") idOfferta: Long
-    ): Response<Boolean>
+    ): Response<OffertaSilenziosaDto>
 
     /**
      * Rifiuta un'offerta di un'asta silenziosa. Manda inoltre una notifica a chi ha avanzato l'offerta
      * per avvisare dell'esito.
      * @param idOfferta Identificativo dell'offerta da accettare.
-     * @return Un [Boolean] che indica se l'operazione la transazione ha avuto successo.
+     * @return [OffertaSilenziosaDto] appena aggiornata.
      */
     @PATCH("offerte/di-compratori/silenziose/{idOfferta}")
     suspend fun rifiutaOfferta(
         @Body offerta: OffertaSilenziosaDto,
         @Path("idOfferta") idOfferta: Long
-    ): Response<Boolean>
+    ): Response<OffertaSilenziosaDto>
 }

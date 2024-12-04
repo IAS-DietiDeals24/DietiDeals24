@@ -103,7 +103,7 @@ class ViewHolderAnteprimaAsta(private val binding: AstaBinding) :
                     withContext(Dispatchers.IO) {
                         val offerta = recuperaOfferta(currentAsta).toOfferta().offerta
                         if (offerta == BigDecimal("0.00"))
-                            currentAsta.offerta.toString()
+                            currentAsta.prezzo.toString()
                         else
                             offerta.toString()
                     }

@@ -34,6 +34,7 @@ import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
+import com.iasdietideals24.dietideals24.utilities.enumerations.StatoOfferta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnEditButton
@@ -171,7 +172,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                 if (asta.idAsta != 0L && creatoreAsta.nomeUtente != "") {
                     viewModel.idAsta.value = asta.idAsta
                     viewModel.idCreatore.value = asta.idCreatore
-                    viewModel.nomeCreatore.value = creatoreAsta.nome
+                    viewModel.nomeCreatore.value = creatoreAsta.nomeUtente
                     viewModel.tipo.value = asta.tipo
                     viewModel.dataFine.value = asta.dataFine
                     viewModel.oraFine.value = asta.oraFine
@@ -207,7 +208,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                         }
                     }
 
-                    if (CurrentUser.id == 0L) {
+                    if (CurrentUser.id == 0L || CurrentUser.id != asta.idCreatore) {
                         binding.dettagliAstaPulsanteOfferta.isEnabled = false
                     } else if (CurrentUser.id == asta.idCreatore) {
                         binding.dettagliAstaPulsanteOfferta.visibility = View.GONE
@@ -551,11 +552,14 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                         LocalDate.now(ZoneOffset.UTC),
                         LocalTime.now(ZoneOffset.UTC),
                         valoreOfferta,
-                        AccountShallowDto(CurrentUser.id, "Venditore"),
-                        "Pending",
+                        AccountShallowDto(
+                            CurrentUser.id,
+                            "Compratore"
+                        ),
+                        StatoOfferta.PENDING.name,
                         AstaShallowDto(
                             viewModel.idAsta.value!!,
-                            "AstaDiCompratore",
+                            "AstaDiVenditore",
                             "AstaSilenziosa"
                         )
                     )
