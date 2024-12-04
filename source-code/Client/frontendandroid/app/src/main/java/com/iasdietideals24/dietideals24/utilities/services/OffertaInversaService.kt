@@ -14,7 +14,7 @@ interface OffertaInversaService : Service {
      * @param idAsta Identificativo dell'asta della quale recuperare l'offerta.
      * @return [OffertaInversaDto] con il valore più basso. Se non esiste, viene restituita un'offerta vuota.
      */
-    @GET("offerte/di-venditori/inverse/findMin") //TODO ancora da implementare su backend
+    @GET("offerte/di-venditori/inverse/findMin") 
     suspend fun recuperaOffertaPiuBassa(
         @Query("idAsta") idAsta: Long
     ): Response<OffertaInversaDto>
@@ -25,7 +25,7 @@ interface OffertaInversaService : Service {
      * @param idAccount Id dell'account dell'utente.
      * @return [OffertaInversaDto] con il valore più basso. Se non esiste, viene restituita un'offerta vuota.
      */
-    @GET("offerte/di-venditori/inverse/findMin")  //TODO ancora da implementare su backend
+    @GET("offerte/di-venditori/inverse/findMin")  
     suspend fun recuperaOffertaPersonalePiuBassaInversa(
         @Query("idAsta") idAsta: Long,
         @Query("idAccount") idAccount: Long
@@ -50,7 +50,7 @@ interface OffertaInversaService : Service {
      * @return [Page] di [OffertaInversaDto] con un certo numero di offerte dell'asta. Se non
      * esistono, viene restituita una pagina vuota.
      */
-    @GET("offerte/di-venditori/inverse") //TODO ancora da implementare su backend
+    @GET("offerte/di-venditori/inverse") 
     suspend fun recuperaOfferteInverse(
         @Query("idAsta") idAsta: Long,
         @Query("size") size: Long,

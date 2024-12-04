@@ -12,6 +12,9 @@ import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Set;
 
 public class AstaSilenziosaDto extends AstaDiVenditoreDto {
@@ -24,11 +27,38 @@ public class AstaSilenziosaDto extends AstaDiVenditoreDto {
     }
 
     public AnteprimaAsta toAnteprimaAsta() {
-        return new AnteprimaAsta(idAsta, TipoAsta.SILENZIOSA, dataScadenza, oraScadenza, immagine,
-                nome, new BigDecimal("0.00"));
+        ZonedDateTime utc = ZonedDateTime.of(this.dataScadenza, this.oraScadenza, ZoneOffset.UTC);
+        ZonedDateTime local = utc.withZoneSameInstant(ZoneId.systemDefault());
+        LocalDate dataScadenza = local.toLocalDate();
+        LocalTime oraScadenza = local.toLocalTime();
+
+        return new AnteprimaAsta(
+                idAsta, TipoAsta.SILENZIOSA,
+                dataScadenza,
+                oraScadenza,
+                immagine,
+                nome,
+                new BigDecimal("0.00")
+        );
     }
 
     public Asta toAsta() {
-        return new Asta(idAsta, proprietarioShallow.getIdAccount(), TipoAsta.SILENZIOSA, dataScadenza, oraScadenza, new BigDecimal("0.00"), immagine, nome, CategoriaAsta.Companion.fromStringToEnum(categoriaShallow.getNome()), descrizione);
+        ZonedDateTime utc = ZonedDateTime.of(this.dataScadenza, this.oraScadenza, ZoneOffset.UTC);
+        ZonedDateTime local = utc.withZoneSameInstant(ZoneId.systemDefault());
+        LocalDate dataScadenza = local.toLocalDate();
+        LocalTime oraScadenza = local.toLocalTime();
+
+        return new Asta(
+                idAsta,
+                proprietarioShallow.getIdAccount(),
+                TipoAsta.SILENZIOSA,
+                dataScadenza,
+                oraScadenza,
+                new BigDecimal("0.00"),
+                immagine,
+                nome,
+                CategoriaAsta.Companion.fromStringToEnum(categoriaShallow.getNome()),
+                descrizione
+        );
     }
 }

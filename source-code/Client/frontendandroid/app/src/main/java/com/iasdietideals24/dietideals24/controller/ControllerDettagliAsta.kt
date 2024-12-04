@@ -26,7 +26,6 @@ import com.iasdietideals24.dietideals24.utilities.data.Offerta
 import com.iasdietideals24.dietideals24.utilities.data.Profilo
 import com.iasdietideals24.dietideals24.utilities.dto.AccountDto
 import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
-import com.iasdietideals24.dietideals24.utilities.dto.NotificaDto
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaDto
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaInversaDto
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaSilenziosaDto
@@ -47,7 +46,6 @@ import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaReposi
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
-import com.iasdietideals24.dietideals24.utilities.repositories.NotificaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaInversaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.OffertaTempoFissoRepository
@@ -63,6 +61,7 @@ import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneOffset
 
 class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
@@ -82,7 +81,6 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
     private val offertaSilenziosaRepository: OffertaSilenziosaRepository by inject()
     private val compratoreRepository: CompratoreRepository by inject()
     private val venditoreRepository: VenditoreRepository by inject()
-    private val notificaRepository: NotificaRepository by inject()
 
     // Listeners
     private var listenerBackButton: OnBackButton? = null
@@ -476,8 +474,6 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                             .show()
 
                         else -> {
-                            withContext(Dispatchers.IO) { inviaNotifica() }
-
                             Snackbar.make(
                                 fragmentView,
                                 R.string.dettagliAsta_successoOfferta,
@@ -512,8 +508,8 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                 offertaTempoFissoRepository.inviaOffertaTempoFisso(
                     OffertaTempoFissoDto(
                         0L,
-                        LocalDate.now(),
-                        LocalTime.now().minusHours(1),
+                        LocalDate.now(ZoneOffset.UTC),
+                        LocalTime.now(ZoneOffset.UTC),
                         valoreOfferta,
                         AccountShallowDto(
                             CurrentUser.id,
@@ -532,8 +528,8 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                 offertaInversaRepository.inviaOffertaInversa(
                     OffertaInversaDto(
                         0L,
-                        LocalDate.now(),
-                        LocalTime.now().minusHours(1),
+                        LocalDate.now(ZoneOffset.UTC),
+                        LocalTime.now(ZoneOffset.UTC),
                         valoreOfferta,
                         AccountShallowDto(
                             CurrentUser.id,
@@ -552,8 +548,8 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                 offertaSilenziosaRepository.inviaOffertaSilenziosa(
                     OffertaSilenziosaDto(
                         0L,
-                        LocalDate.now(),
-                        LocalTime.now().minusHours(1),
+                        LocalDate.now(ZoneOffset.UTC),
+                        LocalTime.now(ZoneOffset.UTC),
                         valoreOfferta,
                         AccountShallowDto(CurrentUser.id, "Venditore"),
                         "Pending",
@@ -589,52 +585,6 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                 bigDecimal < BigDecimal("0.00") || !price.matches(regex)
             }
         }
-    }
-
-    private suspend fun inviaNotifica(): NotificaDto {
-        return notificaRepository.inviaNotifica(
-            NotificaDto(
-                viewModel.idAsta.value!!,
-                LocalDate.now(),
-                LocalTime.now().minusHours(1),
-                getString(
-                    R.string.notificaOfferta,
-                    viewModel.nomeCreatore.value!!,
-                    viewModel.nome.value!!
-                ),
-                AccountShallowDto(
-                    CurrentUser.id,
-                    when (viewModel.tipo.value!!) {
-                        TipoAsta.INVERSA -> "Venditore"
-                        TipoAsta.TEMPO_FISSO -> "Compratore"
-                        TipoAsta.SILENZIOSA -> "Compratore"
-                    }
-                ),
-                setOf(
-                    AccountShallowDto(
-                        viewModel.idCreatore.value!!,
-                        when (viewModel.tipo.value!!) {
-                            TipoAsta.INVERSA -> "Compratore"
-                            TipoAsta.TEMPO_FISSO -> "Venditore"
-                            TipoAsta.SILENZIOSA -> "Venditore"
-                        }
-                    )
-                ),
-                AstaShallowDto(
-                    viewModel.idAsta.value!!,
-                    when (viewModel.tipo.value!!) {
-                        TipoAsta.INVERSA -> "AstaDiCompratore"
-                        TipoAsta.TEMPO_FISSO -> "AstaDiVenditore"
-                        TipoAsta.SILENZIOSA -> "AstaDiVenditore"
-                    },
-                    when (viewModel.tipo.value!!) {
-                        TipoAsta.INVERSA -> "AstaInversa"
-                        TipoAsta.TEMPO_FISSO -> "AstaTempoFisso"
-                        TipoAsta.SILENZIOSA -> "AstaSilenziosa"
-                    }
-                )
-            )
-        )
     }
 
     @EventHandler

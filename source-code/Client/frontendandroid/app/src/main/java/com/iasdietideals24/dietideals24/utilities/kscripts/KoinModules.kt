@@ -135,7 +135,7 @@ val adapterModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { ModelRegistrazione(get(), get(), get()) }
+    viewModel { ModelRegistrazione(get()) }
     viewModel { ModelAsta(get(), get(), get()) }
     viewModel { ModelProfilo() }
     viewModel { ModelAsteCreate(get(), get(), get()) }

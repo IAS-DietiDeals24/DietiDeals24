@@ -8,15 +8,16 @@ import com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneOffset;
 
 public abstract class OffertaDto {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     protected Long idOfferta = 0L;
 
-    protected LocalDate dataInvio = LocalDate.now();
+    protected LocalDate dataInvio = LocalDate.now(ZoneOffset.UTC);
 
-    protected LocalTime oraInvio = LocalTime.now();
+    protected LocalTime oraInvio = LocalTime.now(ZoneOffset.UTC);
 
     protected BigDecimal valore = new BigDecimal("0.00");
 

@@ -10,8 +10,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.facebook.AccessToken
-import com.facebook.login.LoginManager
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFase1
 import com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFase1Directions
@@ -87,15 +85,6 @@ class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(), OnCh
         } else {
             viewModel.email.value = intent.extras?.getString("email") ?: ""
             viewModel.password.value = intent.extras?.getString("email") ?: ""
-        }
-    }
-
-    override fun onStop() {
-        super.onStop()
-
-        val accessToken: AccessToken? = AccessToken.getCurrentAccessToken()
-        if (accessToken != null && !accessToken.isExpired) {
-            LoginManager.getInstance().logOut()
         }
     }
 

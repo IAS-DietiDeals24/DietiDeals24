@@ -20,7 +20,7 @@ interface AstaInversaService : Service {
      * @return [Page] di [AstaInversaDto] che contiene un certo numero di aste create. Se non
      * esistono, viene creata una pagina vuota.
      */
-    @GET("aste/di-compratori/inverse") //TODO ancora da implementare su backend
+    @GET("aste/di-compratori/inverse")
     suspend fun recuperaAsteCreateInverse(
         @Query("idAccount") idAccount: Long,
         @Query("size") size: Long,
@@ -98,7 +98,7 @@ interface AstaInversaService : Service {
      * @return [Page] di [AstaInversaDto] con un certo numero di aste da mostrare nella home dopo
      * la ricerca e/o il filtraggio. Se non esistono, viene restituita una pagina vuota.
      */
-    @GET("aste/di-compratori/inverse") //TODO ancora da implementare su backend
+    @GET("aste/di-compratori/inverse")
     suspend fun ricercaAsteInverse(
         @Query("nome") nome: String,
         @Query("categoria") categoria: String,
@@ -114,7 +114,7 @@ interface AstaInversaService : Service {
      * @return [Page] di [AstaInversaDto] con un certo numero di aste alle quali l'utente ha
      * partecipato. Se non esistono, viene restituita una pagina vuota.
      */
-    @GET("aste/di-compratori/inverse") //TODO ancora da implementare su backend
+    @GET("aste/di-compratori/inverse")
     suspend fun recuperaPartecipazioniInverse(
         @Query("idAccount") idAccount: Long,
         @Query("size") size: Long,

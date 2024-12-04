@@ -17,7 +17,7 @@ interface CompratoreService : Service {
      * @return [CompratoreDto] associato a questo account Facebook. Se non esiste, viene restituito un
      * account vuoto.
      */
-    @GET("accounts/compratori/facebook/{idFacebook}") //TODO ancora da implementare su backend
+    @GET("accounts/compratori/facebook/{idFacebook}") 
     suspend fun accountFacebookCompratore(
         @Path("idFacebook") idFacebook: String
     ): Response<CompratoreDto>

@@ -1,6 +1,7 @@
 package com.iasdietideals24.dietideals24.utilities.dto.utilities;
 
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 
 public class AnagraficaProfiloDto {
 
@@ -8,7 +9,7 @@ public class AnagraficaProfiloDto {
 
     private String cognome = "";
 
-    private LocalDate dataNascita = LocalDate.now();
+    private LocalDate dataNascita = LocalDate.now(ZoneOffset.UTC);
 
     private String areaGeografica = "";
 

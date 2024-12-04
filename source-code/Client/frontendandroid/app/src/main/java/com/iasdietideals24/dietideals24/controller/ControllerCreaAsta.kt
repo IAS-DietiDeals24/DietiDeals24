@@ -61,6 +61,7 @@ import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneOffset
 
 class ControllerCreaAsta : Controller<CreaastaBinding>() {
 
@@ -439,8 +440,8 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
             TipoAsta.INVERSA -> offertaInversaRepository.inviaOffertaInversa(
                 OffertaInversaDto(
                     0L,
-                    LocalDate.now(),
-                    LocalTime.now(),
+                    LocalDate.now(ZoneOffset.UTC),
+                    LocalTime.now(ZoneOffset.UTC),
                     viewModel.prezzo.value!!,
                     AccountShallowDto(
                         CurrentUser.id,
@@ -457,8 +458,8 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
             TipoAsta.TEMPO_FISSO -> offertaTempoFissoRepository.inviaOffertaTempoFisso(
                 OffertaTempoFissoDto(
                     0L,
-                    LocalDate.now(),
-                    LocalTime.now(),
+                    LocalDate.now(ZoneOffset.UTC),
+                    LocalTime.now(ZoneOffset.UTC),
                     viewModel.prezzo.value!!,
                     AccountShallowDto(
                         CurrentUser.id,

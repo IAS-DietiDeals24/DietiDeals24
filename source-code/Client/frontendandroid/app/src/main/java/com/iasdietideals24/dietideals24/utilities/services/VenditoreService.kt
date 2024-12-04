@@ -17,7 +17,7 @@ interface VenditoreService : Service {
      * @return [VenditoreDto] associato a questo account Facebook. Se non esiste, viene restituito un
      * account vuoto.
      */
-    @GET("accounts/venditori/facebook/{idFacebook}") //TODO ancora da implementare su backend
+    @GET("accounts/venditori/facebook/{idFacebook}") 
     suspend fun accountFacebookVenditore(
         @Path("idFacebook") idFacebook: String
     ): Response<VenditoreDto>

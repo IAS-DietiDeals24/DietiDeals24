@@ -14,7 +14,7 @@ interface OffertaTempoFissoService : Service {
      * @param idAsta Identificativo dell'asta della quale recuperare l'offerta.
      * @return [OffertaTempoFissoDto] con il valore più alto. Se non esiste, viene restituita un'offerta vuota.
      */
-    @GET("offerte/di-compratori/tempo-fisso/findMax") //TODO ancora da implementare su backend
+    @GET("offerte/di-compratori/tempo-fisso/findMax") 
     suspend fun recuperaOffertaPiuAlta(
         @Query("idAsta") idAsta: Long
     ): Response<OffertaTempoFissoDto>
@@ -25,7 +25,7 @@ interface OffertaTempoFissoService : Service {
      * @param idAccount Id dell'account dell'utente.
      * @return [OffertaTempoFissoDto] con il valore più alto. Se non esiste, viene restituita un'offerta vuota.
      */
-    @GET("offerte/di-compratori/tempo-fisso/findMax") //TODO ancora da implementare su backend
+    @GET("offerte/di-compratori/tempo-fisso/findMax") 
     suspend fun recuperaOffertaPersonalePiuAltaTempoFisso(
         @Query("idAsta") idAsta: Long,
         @Query("idAccount") idAccount: Long
@@ -50,7 +50,7 @@ interface OffertaTempoFissoService : Service {
      * @return [Page] di [OffertaTempoFissoDto] con un certo numero di offerte dell'asta. Se non
      * esistono, viene restituita una pagina vuota.
      */
-    @GET("offerte/di-compratori/tempo-fisso") //TODO ancora da implementare su backend
+    @GET("offerte/di-compratori/tempo-fisso") 
     suspend fun recuperaOfferteTempoFisso(
         @Query("idAsta") idAsta: Long,
         @Query("size") size: Long,

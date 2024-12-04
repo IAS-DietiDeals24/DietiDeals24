@@ -29,6 +29,9 @@ import kotlinx.coroutines.flow.Flow
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 
 class ModelAsta(
     private val inverseRepository: OffertaInversaRepository,
@@ -128,6 +131,12 @@ class ModelAsta(
     }
 
     fun toAstaInversa(): AstaInversaDto {
+        val local =
+            ZonedDateTime.of(this.dataFine.value!!, this.oraFine.value!!, ZoneId.systemDefault())
+        val utc = local.withZoneSameInstant(ZoneOffset.UTC)
+        val dataFine = utc.toLocalDate()
+        val oraFine = utc.toLocalTime()
+
         return AstaInversaDto(
             idAsta.value!!,
             CategoriaAstaShallowDto(
@@ -135,8 +144,8 @@ class ModelAsta(
             ),
             nome.value!!,
             descrizione.value!!,
-            dataFine.value!!,
-            oraFine.value!!,
+            dataFine,
+            oraFine,
             immagine.value ?: ByteArray(0),
             setOf(),
             AccountShallowDto(
@@ -149,6 +158,12 @@ class ModelAsta(
     }
 
     fun toAstaTempoFisso(): AstaTempoFissoDto {
+        val local =
+            ZonedDateTime.of(this.dataFine.value!!, this.oraFine.value!!, ZoneId.systemDefault())
+        val utc = local.withZoneSameInstant(ZoneOffset.UTC)
+        val dataFine = utc.toLocalDate()
+        val oraFine = utc.toLocalTime()
+
         return AstaTempoFissoDto(
             idAsta.value!!,
             CategoriaAstaShallowDto(
@@ -156,8 +171,8 @@ class ModelAsta(
             ),
             nome.value!!,
             descrizione.value!!,
-            dataFine.value!!,
-            oraFine.value!!,
+            dataFine,
+            oraFine,
             immagine.value ?: ByteArray(0),
             setOf(),
             AccountShallowDto(
@@ -170,6 +185,12 @@ class ModelAsta(
     }
 
     fun toAstaSilenziosa(): AstaSilenziosaDto {
+        val local =
+            ZonedDateTime.of(this.dataFine.value!!, this.oraFine.value!!, ZoneId.systemDefault())
+        val utc = local.withZoneSameInstant(ZoneOffset.UTC)
+        val dataFine = utc.toLocalDate()
+        val oraFine = utc.toLocalTime()
+
         return AstaSilenziosaDto(
             idAsta.value!!,
             CategoriaAstaShallowDto(
@@ -177,8 +198,8 @@ class ModelAsta(
             ),
             nome.value!!,
             descrizione.value!!,
-            dataFine.value!!,
-            oraFine.value!!,
+            dataFine,
+            oraFine,
             immagine.value ?: ByteArray(0),
             setOf(),
             AccountShallowDto(

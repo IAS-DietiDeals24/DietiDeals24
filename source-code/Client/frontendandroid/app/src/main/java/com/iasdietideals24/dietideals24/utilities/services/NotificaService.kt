@@ -17,7 +17,7 @@ interface NotificaService : Service {
      * @return [Page] di [NotificaDto] con un certo numero di notifiche da mostrare all'utente.
      * Se non esistono, viene restituita una pagina vuota.
      */
-    @GET("notifiche") //TODO ancora da implementare su backend
+    @GET("notifiche") 
     suspend fun recuperaNotifiche(
         @Query("idAccount") idAccount: Long,
         @Query("size") size: Long,

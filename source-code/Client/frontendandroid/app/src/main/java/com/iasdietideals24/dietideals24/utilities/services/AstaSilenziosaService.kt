@@ -20,7 +20,7 @@ interface AstaSilenziosaService : Service {
      * @return [Page] di [AstaSilenziosaDto] che contiene un certo numero di aste create. Se non
      * esistono, viene creata una pagina vuota.
      */
-    @GET("aste/di-venditori/silenziose") //TODO ancora da implementare su backend
+    @GET("aste/di-venditori/silenziose") 
     suspend fun recuperaAsteCreateSilenziose(
         @Query("idAccount") idAccount: Long,
         @Query("size") size: Long,
@@ -98,7 +98,7 @@ interface AstaSilenziosaService : Service {
      * @return [Page] di [AstaSilenziosaDto] con un certo numero di aste da mostrare nella home dopo
      * la ricerca e/o il filtraggio. Se non esistono, viene restituita una pagina vuota.
      */
-    @GET("aste/di-venditori/silenziose") //TODO ancora da implementare su backend
+    @GET("aste/di-venditori/silenziose") 
     suspend fun ricercaAsteSilenziose(
         @Query("ricerca") ricerca: String,
         @Query("filtro") filtro: String,
@@ -114,7 +114,7 @@ interface AstaSilenziosaService : Service {
      * @return [Page] di [AstaSilenziosaDto] con un certo numero di aste alle quali l'utente ha
      * partecipato. Se non esistono, viene restituita una pagina vuota.
      */
-    @GET("aste/di-venditori/silenziose") //TODO ancora da implementare su backend
+    @GET("aste/di-venditori/silenziose") 
     suspend fun recuperaPartecipazioniSilenziose(
         @Query("idAccount") idAccount: Long,
         @Query("size") size: Long,
