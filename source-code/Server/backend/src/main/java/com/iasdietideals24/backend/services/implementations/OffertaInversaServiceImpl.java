@@ -89,13 +89,59 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
     }
 
     @Override
+    public Page<OffertaInversaDto> findByIdAstaRiferimento(Long idAsta, Pageable pageable) {
+
+        log.debug("Recupero le offerte inverse associate all'asta dal database...");
+        log.trace("Id asta riferimento delle offerte da recuperare: {}", idAsta);
+
+        // Recuperiamo tutte le entità
+        Page<OffertaInversa> foundOfferteInverse = offertaInversaRepository.findByIdAstaRiferimento(idAsta, pageable);
+
+        log.trace("foundOfferteInverse: {}", foundOfferteInverse);
+        log.debug("Offerte inverse recuperate dal database.");
+
+        return foundOfferteInverse.map(offertaInversaMapper::toDto);
+    }
+
+    @Override
     public Optional<OffertaInversaDto> findOne(Long idOfferta) {
 
-        log.trace("Id offerta da recuperare: {}", idOfferta);
         log.debug(RECUPERO_OFFERTA_INVERSA);
+        log.trace("Id offerta da recuperare: {}", idOfferta);
 
         // Recuperiamo l'entità con l'id passato per parametro
         Optional<OffertaInversa> foundOffertaInversa = offertaInversaRepository.findById(idOfferta);
+
+        log.trace(LOG_FOUND_OFFERTA_INVERSA, foundOffertaInversa);
+        log.debug(LOG_OFFERTA_INVERSA_RECUPERATA);
+
+        return foundOffertaInversa.map(offertaInversaMapper::toDto);
+    }
+
+    @Override
+    public Optional<OffertaInversaDto> findMinByValoreAndAstaRiferimentoIs(Long idAsta) {
+
+        log.debug(RECUPERO_OFFERTA_INVERSA);
+        log.trace("Id asta dell'offerta minima da recuperare: {}", idAsta);
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        Optional<OffertaInversa> foundOffertaInversa = offertaInversaRepository.findMinByValoreAndAstaRiferimentoIs(idAsta);
+
+        log.trace(LOG_FOUND_OFFERTA_INVERSA, foundOffertaInversa);
+        log.debug(LOG_OFFERTA_INVERSA_RECUPERATA);
+
+        return foundOffertaInversa.map(offertaInversaMapper::toDto);
+    }
+
+    @Override
+    public Optional<OffertaInversaDto> findMinByValoreAndAstaRiferimentoIsAndVenditoreCollegatoIs(Long idAsta, Long idAccount) {
+
+        log.debug(RECUPERO_OFFERTA_INVERSA);
+        log.trace("Id asta dell'offerta minima da recuperare: {}", idAsta);
+        log.trace("Id venditore dell'offerta minima da recuperare: {}", idAccount);
+
+        // Recuperiamo l'entità con l'id passato per parametro
+        Optional<OffertaInversa> foundOffertaInversa = offertaInversaRepository.findMinByValoreAndAstaRiferimentoIsAndVenditoreCollegatoIs(idAsta, idAccount);
 
         log.trace(LOG_FOUND_OFFERTA_INVERSA, foundOffertaInversa);
         log.debug(LOG_OFFERTA_INVERSA_RECUPERATA);
