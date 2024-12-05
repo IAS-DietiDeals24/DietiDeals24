@@ -75,6 +75,8 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
 
         log.trace("nuovaOffertaSilenziosa: {}", nuovaOffertaSilenziosa);
 
+        checkAstaActive(nuovaOffertaSilenziosa);
+
         log.debug("Salvo l'offerta silenziosa nel database...");
 
         // Registriamo l'entità
@@ -91,8 +93,22 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
         log.debug("Notifica inviata con successo.");
 
         doTasksForStatoOfferta(savedOffertaSilenziosa);
-        
+
         return offertaSilenziosaMapper.toDto(savedOffertaSilenziosa);
+    }
+
+    private void checkAstaActive(OffertaSilenziosa nuovaOffertaSilenziosa) throws InvalidParameterException {
+
+        if (nuovaOffertaSilenziosa != null) {
+
+            AstaSilenziosa astaSilenziosa = nuovaOffertaSilenziosa.getAstaRiferimento();
+
+            if (astaSilenziosa != null && astaSilenziosa.getStato().equals(StatoAsta.CLOSED)) {
+                log.warn("L'asta '{}' a cui si vuole fare l'offerta è già terminata!", astaSilenziosa.getIdAsta());
+
+                throw new InvalidParameterException("L'asta '" + astaSilenziosa.getIdAsta() + "' a cui si vuole fare l'offerta è già terminata!");
+            }
+        }
     }
 
     @Override
