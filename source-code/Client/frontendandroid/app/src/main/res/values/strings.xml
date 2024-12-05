@@ -257,4 +257,5 @@
     <string name="astaScaduta">EXPIRED</string>
     <string name="testoNotifica">%1$s (auction: "%2$s")</string>
     <string name="astaAggiudicata">WON</string>
+    <string name="astecreate_filtro">Filter by type</string>
 </resources>

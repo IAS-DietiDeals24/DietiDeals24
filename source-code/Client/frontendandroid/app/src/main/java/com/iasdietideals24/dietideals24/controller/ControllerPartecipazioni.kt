@@ -1,8 +1,11 @@
 package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
+import android.view.View
+import android.widget.ArrayAdapter
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.PartecipazioniBinding
 import com.iasdietideals24.dietideals24.model.ModelPartecipazioni
 import com.iasdietideals24.dietideals24.utilities.adapters.AdapterPartecipazioni
@@ -13,7 +16,6 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
@@ -67,6 +69,35 @@ class ControllerPartecipazioni : Controller<PartecipazioniBinding>() {
         binding.partecipazioniRecyclerView.layoutManager = LinearLayoutManager(fragmentContext)
         binding.partecipazioniRecyclerView.adapter = adapterPartecipazioni
 
+        if (CurrentUser.tipoAccount == TipoAccount.VENDITORE) {
+            binding.partecipazioniCampoFiltro.visibility = View.GONE
+        } else {
+            val categorieAsta: MutableList<String> = mutableListOf(
+                getString(R.string.tipoAsta_astaSilenziosa),
+                getString(R.string.tipoAsta_astaTempoFisso)
+            )
+
+            val adapter: ArrayAdapter<String> = ArrayAdapter(
+                fragmentContext,
+                android.R.layout.simple_dropdown_item_1line,
+                categorieAsta
+            )
+
+            binding.partecipazioniFiltro.setAdapter(adapter)
+
+            binding.partecipazioniFiltro.setOnItemClickListener { _, _, position, _ ->
+                viewModel.filtro = position
+
+                jobRecupero = lifecycleScope.launch {
+                    jobRecupero?.cancel()
+
+                    viewModel.invalidate()
+
+                    recuperaPartecipazioni()
+                }
+            }
+        }
+
         jobRecupero = lifecycleScope.launch {
             recuperaPartecipazioni()
         }
@@ -75,11 +106,14 @@ class ControllerPartecipazioni : Controller<PartecipazioniBinding>() {
     private suspend fun recuperaPartecipazioni() {
         when (CurrentUser.tipoAccount) {
             TipoAccount.COMPRATORE -> {
-                merge(
-                    viewModel.getAsteTempoFissoFlows(),
-                    viewModel.getAsteSilenzioseFlows()
-                ).collectLatest { pagingData ->
-                    adapterPartecipazioni.submitData(pagingData)
+                if (viewModel.filtro == 0) {
+                    viewModel.getAsteSilenzioseFlows().collectLatest { pagingData ->
+                        adapterPartecipazioni.submitData(pagingData)
+                    }
+                } else {
+                    viewModel.getAsteTempoFissoFlows().collectLatest { pagingData ->
+                        adapterPartecipazioni.submitData(pagingData)
+                    }
                 }
             }
 

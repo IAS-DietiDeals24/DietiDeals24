@@ -1,8 +1,11 @@
 package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
+import android.view.View
+import android.widget.ArrayAdapter
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.AstecreateBinding
 import com.iasdietideals24.dietideals24.model.ModelAsteCreate
 import com.iasdietideals24.dietideals24.utilities.adapters.AdapterAsteCreate
@@ -13,7 +16,6 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
@@ -67,6 +69,35 @@ class ControllerAsteCreate : Controller<AstecreateBinding>() {
         binding.astecreateRecyclerView.layoutManager = LinearLayoutManager(fragmentContext)
         binding.astecreateRecyclerView.adapter = adapterAsteCreate
 
+        if (CurrentUser.tipoAccount == TipoAccount.COMPRATORE) {
+            binding.astecreateCampoFiltro.visibility = View.GONE
+        } else {
+            val categorieAsta: MutableList<String> = mutableListOf(
+                getString(R.string.tipoAsta_astaSilenziosa),
+                getString(R.string.tipoAsta_astaTempoFisso)
+            )
+
+            val adapter: ArrayAdapter<String> = ArrayAdapter(
+                fragmentContext,
+                android.R.layout.simple_dropdown_item_1line,
+                categorieAsta
+            )
+
+            binding.astecreateFiltro.setAdapter(adapter)
+
+            binding.astecreateFiltro.setOnItemClickListener { _, _, position, _ ->
+                viewModel.filtro = position
+
+                jobRecupero = lifecycleScope.launch {
+                    jobRecupero?.cancel()
+
+                    viewModel.invalidate()
+
+                    recuperaAsteCreate()
+                }
+            }
+        }
+
         jobRecupero = lifecycleScope.launch {
             recuperaAsteCreate()
         }
@@ -81,11 +112,14 @@ class ControllerAsteCreate : Controller<AstecreateBinding>() {
             }
 
             TipoAccount.VENDITORE -> {
-                merge(
-                    viewModel.getAsteTempoFissoFlows(),
-                    viewModel.getAsteSilenzioseFlows()
-                ).collectLatest { pagingData ->
-                    adapterAsteCreate.submitData(pagingData)
+                if (viewModel.filtro == 0) {
+                    viewModel.getAsteSilenzioseFlows().collectLatest { pagingData ->
+                        adapterAsteCreate.submitData(pagingData)
+                    }
+                } else {
+                    viewModel.getAsteTempoFissoFlows().collectLatest { pagingData ->
+                        adapterAsteCreate.submitData(pagingData)
+                    }
                 }
             }
 

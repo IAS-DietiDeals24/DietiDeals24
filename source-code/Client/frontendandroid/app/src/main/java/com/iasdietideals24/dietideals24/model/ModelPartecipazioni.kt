@@ -21,6 +21,13 @@ class ModelPartecipazioni(
     private val tempoFissoRepository: AstaTempoFissoRepository,
     private val silenziosaRepository: AstaSilenziosaRepository
 ) : ViewModel() {
+    private var _filtro: Int = 0
+
+    var filtro: Int
+        get() = _filtro
+        set(value) {
+            _filtro = value
+        }
 
     private var pagingSourceInverse: AstaInversaPagingSource? = null
 

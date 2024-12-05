@@ -41,6 +41,41 @@
             app:fontFamily="@font/fira_sans_bold" />
     </LinearLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/partecipazioni_campoFiltro"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+
+        android:hint="@string/astecreate_filtro"
+        app:boxBackgroundColor="@color/bianco"
+        app:boxCornerRadiusBottomEnd="30dp"
+        app:boxCornerRadiusBottomStart="30dp"
+        app:boxCornerRadiusTopEnd="30dp"
+        app:boxCornerRadiusTopStart="30dp"
+        app:boxStrokeColor="@color/arancione"
+        app:boxStrokeErrorColor="@color/rosso"
+        app:boxStrokeWidth="1.5dp"
+        app:cursorColor="@color/arancione"
+        app:cursorErrorColor="@color/rosso"
+        app:endIconDrawable="@drawable/icona_filtro"
+        app:endIconMode="dropdown_menu"
+        app:endIconTint="@null"
+        app:errorIconTint="@color/rosso"
+        app:errorTextColor="@color/arancione"
+        app:hintTextColor="@color/arancione">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/partecipazioni_filtro"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:enabled="false"
+            android:paddingHorizontal="15dp"
+            android:textAppearance="@style/DropdownText"
+            android:textColor="@color/nero" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/partecipazioni_recyclerView"
         android:layout_width="wrap_content"

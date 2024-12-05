@@ -247,4 +247,5 @@
     <string name="astaScaduta">SCADUTA</string>
     <string name="testoNotifica">%1$s (asta: %2$s)</string>
     <string name="astaAggiudicata">AGGIUDICATA</string>
+    <string name="astecreate_filtro">Filtra per tipo</string>
 </resources>
