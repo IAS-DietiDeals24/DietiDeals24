@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
@@ -34,6 +35,7 @@ import com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
+import com.iasdietideals24.dietideals24.utilities.enumerations.StatoAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.StatoOfferta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
@@ -60,7 +62,6 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.math.BigDecimal
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
 
@@ -175,6 +176,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
                 if (asta.idAsta != 0L && creatoreAsta.nomeUtente != "") {
                     viewModel.idAsta.value = asta.idAsta
+                    viewModel.stato.value = asta.stato
                     viewModel.idCreatore.value = asta.idCreatore
                     viewModel.nomeCreatore.value = creatoreAsta.nomeUtente
                     viewModel.tipo.value = asta.tipo
@@ -207,13 +209,21 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                         getString(R.string.placeholder_prezzo, offertaAsta)
 
                     if (creatoreAsta.immagineProfilo.isNotEmpty()) {
-                        binding.dettagliAstaCampoFoto.load(creatoreAsta.immagineProfilo) {
+                        binding.dettagliAstaImmagineUtente.load(creatoreAsta.immagineProfilo) {
                             crossfade(true)
                         }
+                        binding.dettagliAstaImmagineUtente.scaleType =
+                            ImageView.ScaleType.CENTER_CROP
                     }
 
-                    if (CurrentUser.id == 0L || CurrentUser.id != asta.idCreatore ||
-                        (asta.dataFine.atTime(asta.oraFine).isAfter(LocalDateTime.now()))
+                    val idAltroAccount =
+                        if (creatoreAsta.idAccountCollegati.first == CurrentUser.id)
+                            creatoreAsta.idAccountCollegati.first
+                        else
+                            creatoreAsta.idAccountCollegati.second
+
+                    if (CurrentUser.id == 0L || viewModel.stato.value!! == StatoAsta.CLOSED ||
+                        CurrentUser.id == idAltroAccount
                     ) {
                         binding.dettagliAstaPulsanteOfferta.isEnabled = false
                     } else if (CurrentUser.id == asta.idCreatore) {

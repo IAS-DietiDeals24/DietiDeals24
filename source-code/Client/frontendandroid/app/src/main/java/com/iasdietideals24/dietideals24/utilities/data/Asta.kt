@@ -1,6 +1,7 @@
 package com.iasdietideals24.dietideals24.utilities.data
 
 import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
+import com.iasdietideals24.dietideals24.utilities.enumerations.StatoAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -8,6 +9,7 @@ import java.time.LocalTime
 
 data class Asta(
     val idAsta: Long = 0L,
+    val stato: StatoAsta = StatoAsta.ACTIVE,
     val idCreatore: Long = 0L,
     val tipo: TipoAsta = TipoAsta.TEMPO_FISSO,
     val dataFine: LocalDate = LocalDate.MIN,

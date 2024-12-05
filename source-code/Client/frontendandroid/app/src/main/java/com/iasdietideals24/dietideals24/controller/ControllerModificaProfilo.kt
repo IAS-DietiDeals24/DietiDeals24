@@ -2,6 +2,7 @@ package com.iasdietideals24.dietideals24.controller
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.READ_MEDIA_IMAGES
+import android.Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
 import android.content.Context
 import android.icu.util.Calendar
 import android.net.Uri
@@ -262,7 +263,9 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
 
     @EventHandler
     private fun clickPulsanteImmagine() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            requestPermissions.launch(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VISUAL_USER_SELECTED))
+        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
             requestPermissions.launch(arrayOf(READ_MEDIA_IMAGES))
         } else {
             requestPermissions.launch(arrayOf(READ_EXTERNAL_STORAGE))
@@ -370,7 +373,21 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
 
     private fun apriGalleria(results: Map<String, Boolean>) {
         when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> {
+                when {
+                    results.getOrDefault(READ_MEDIA_IMAGES, false) ||
+                            results.getOrDefault(READ_MEDIA_VISUAL_USER_SELECTED, false) ->
+                        selectPhoto.launch("image/*")
+
+                    else ->
+                        Snackbar.make(fragmentView, R.string.noMediaAccess, Snackbar.LENGTH_SHORT)
+                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
+                            .setTextColor(resources.getColor(R.color.grigio, null))
+                            .show()
+                }
+            }
+
+            Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU -> {
                 when {
                     results.getOrDefault(READ_MEDIA_IMAGES, false) ->
                         selectPhoto.launch("image/*")

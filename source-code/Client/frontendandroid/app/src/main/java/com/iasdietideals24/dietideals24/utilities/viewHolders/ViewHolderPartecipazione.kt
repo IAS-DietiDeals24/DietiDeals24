@@ -11,6 +11,8 @@ import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.data.AnteprimaAsta
 import com.iasdietideals24.dietideals24.utilities.data.Offerta
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaDto
+import com.iasdietideals24.dietideals24.utilities.dto.OffertaSilenziosaDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.StatoAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToDetails
 import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
@@ -26,7 +28,6 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
-import java.time.LocalDateTime
 
 class ViewHolderPartecipazione(private val binding: AstaBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -76,7 +77,7 @@ class ViewHolderPartecipazione(private val binding: AstaBinding) :
 
         binding.astaMessaggio.text = resources.getString(R.string.asta_messaggioPartecipazione)
 
-        if (currentAsta.dataScadenza.atTime(currentAsta.oraScadenza).isBefore(LocalDateTime.now())) {
+        if (currentAsta.stato == StatoAsta.CLOSED) {
             binding.astaDataScadenza.text = resources.getString(R.string.astaScaduta)
             binding.astaOraScadenza.visibility = View.GONE
             binding.astaScadenza.visibility = View.GONE
@@ -114,9 +115,17 @@ class ViewHolderPartecipazione(private val binding: AstaBinding) :
         scope.launch {
             val valoreOfferta: Offerta =
                 withContext(Dispatchers.IO) { recuperaOffertaPersonale(currentAsta).toOfferta() }
+            val offertaMigliore: Offerta =
+                withContext(Dispatchers.IO) { recuperaOffertaMigliore(currentAsta).toOfferta() }
 
             binding.astaOfferta.text =
                 resources.getString(R.string.placeholder_prezzo, valoreOfferta.offerta)
+
+            if (currentAsta.stato == StatoAsta.CLOSED &&
+                valoreOfferta.offerta == offertaMigliore.offerta
+            ) {
+                binding.astaDataScadenza.text = resources.getString(R.string.astaAggiudicata)
+            }
         }
     }
 
@@ -144,6 +153,21 @@ class ViewHolderPartecipazione(private val binding: AstaBinding) :
             }
         }
     }
+
+    private suspend fun recuperaOffertaMigliore(currentAsta: AnteprimaAsta): OffertaDto {
+        return when (currentAsta.tipoAsta) {
+            TipoAsta.INVERSA -> {
+                offertaInversaRepository.recuperaOffertaPiuBassa(currentAsta.id)
+            }
+
+            TipoAsta.TEMPO_FISSO -> {
+                offertaTempoFissoRepository.recuperaOffertaPiuAlta(currentAsta.id)
+            }
+
+            else -> OffertaSilenziosaDto()
+        }
+    }
+
 
     fun cleanListeners() {
         listenerGoToDetails = null

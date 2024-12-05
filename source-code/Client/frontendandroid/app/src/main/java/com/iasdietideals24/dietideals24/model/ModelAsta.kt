@@ -15,6 +15,7 @@ import com.iasdietideals24.dietideals24.utilities.dto.OffertaDto
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShallowDto
 import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
+import com.iasdietideals24.dietideals24.utilities.enumerations.StatoAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneDataPassata
@@ -45,6 +46,13 @@ class ModelAsta(
 
     val idAsta: MutableLiveData<Long>
         get() = _idAsta
+
+    private val _stato: MutableLiveData<StatoAsta> by lazy {
+        MutableLiveData<StatoAsta>(StatoAsta.ACTIVE)
+    }
+
+    val stato: MutableLiveData<StatoAsta>
+        get() = _stato
 
     private val _idCreatore: MutableLiveData<Long> by lazy {
         MutableLiveData<Long>(0L)
@@ -118,6 +126,7 @@ class ModelAsta(
 
     fun clear() {
         _idAsta.value = 0L
+        _stato.value = StatoAsta.ACTIVE
         _idCreatore.value = 0L
         _nomeCreatore.value = ""
         _tipo.value = TipoAsta.TEMPO_FISSO
@@ -139,6 +148,7 @@ class ModelAsta(
 
         return AstaInversaDto(
             idAsta.value!!,
+            stato.value!!.name,
             CategoriaAstaShallowDto(
                 CategoriaAsta.fromEnumToString(categoria.value!!),
             ),
@@ -166,6 +176,7 @@ class ModelAsta(
 
         return AstaTempoFissoDto(
             idAsta.value!!,
+            stato.value!!.name,
             CategoriaAstaShallowDto(
                 CategoriaAsta.fromEnumToString(categoria.value!!),
             ),
@@ -193,6 +204,7 @@ class ModelAsta(
 
         return AstaSilenziosaDto(
             idAsta.value!!,
+            stato.value!!.name,
             CategoriaAstaShallowDto(
                 CategoriaAsta.fromEnumToString(categoria.value!!),
             ),

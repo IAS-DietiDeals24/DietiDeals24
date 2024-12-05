@@ -7,6 +7,7 @@ import com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShal
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto;
 import com.iasdietideals24.dietideals24.utilities.dto.shallows.OffertaShallowDto;
 import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta;
+import com.iasdietideals24.dietideals24.utilities.enumerations.StatoAsta;
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta;
 
 import java.math.BigDecimal;
@@ -21,8 +22,8 @@ public class AstaTempoFissoDto extends AstaDiVenditoreDto {
 
     private BigDecimal sogliaMinima = new BigDecimal("0.00");
 
-    public AstaTempoFissoDto(Long idAsta, CategoriaAstaShallowDto categoriaShallow, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow, Set<OffertaShallowDto> offerteRicevuteShallow, BigDecimal sogliaMinima) {
-        super(idAsta, categoriaShallow, nome, descrizione, dataScadenza, oraScadenza, immagine, notificheAssociateShallow, proprietarioShallow, offerteRicevuteShallow);
+    public AstaTempoFissoDto(Long idAsta, String stato, CategoriaAstaShallowDto categoriaShallow, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow, Set<OffertaShallowDto> offerteRicevuteShallow, BigDecimal sogliaMinima) {
+        super(idAsta, stato, categoriaShallow, nome, descrizione, dataScadenza, oraScadenza, immagine, notificheAssociateShallow, proprietarioShallow, offerteRicevuteShallow);
         this.sogliaMinima = sogliaMinima;
     }
 
@@ -37,6 +38,7 @@ public class AstaTempoFissoDto extends AstaDiVenditoreDto {
 
         return new AnteprimaAsta(
                 idAsta,
+                StatoAsta.valueOf(stato),
                 TipoAsta.TEMPO_FISSO,
                 dataScadenza,
                 oraScadenza,
@@ -54,6 +56,7 @@ public class AstaTempoFissoDto extends AstaDiVenditoreDto {
 
         return new Asta(
                 idAsta,
+                StatoAsta.valueOf(stato),
                 proprietarioShallow.getIdAccount(),
                 TipoAsta.INVERSA, dataScadenza,
                 oraScadenza, sogliaMinima,

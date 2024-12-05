@@ -133,7 +133,7 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
     @EventHandler
     private fun clickAvanti() {
         viewModel.nomeUtente.value =
-            estraiTestoDaElemento(binding.creazioneProfiloFase1NomeUtente)
+            estraiTestoDaElemento(binding.creazioneProfiloFase1NomeUtente).replace(" ", "")
         viewModel.nome.value = estraiTestoDaElemento(binding.creazioneProfiloFase1Nome)
         viewModel.cognome.value = estraiTestoDaElemento(binding.creazioneProfiloFase1Cognome)
 

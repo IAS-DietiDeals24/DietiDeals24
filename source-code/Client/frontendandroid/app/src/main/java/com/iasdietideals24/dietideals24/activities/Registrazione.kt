@@ -72,14 +72,8 @@ class Registrazione : DietiDeals24Activity<ActivityRegistrazioneBinding>(), OnCh
                 }
 
                 if (CurrentUser.jwt != "") {
-                    JWT.getUserEmail(CurrentUser.jwt)
-
-                    Intent(
-                        baseContext,
-                        ScelteIniziali::class.java
-                    )
-
-                    finish()
+                    viewModel.email.value = JWT.getUserEmail(CurrentUser.jwt)
+                    viewModel.password.value = viewModel.email.value
                 }
             }
         } else {

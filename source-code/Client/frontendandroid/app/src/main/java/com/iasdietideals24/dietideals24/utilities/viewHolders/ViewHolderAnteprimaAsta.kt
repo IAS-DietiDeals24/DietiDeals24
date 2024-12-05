@@ -10,6 +10,7 @@ import com.iasdietideals24.dietideals24.databinding.AstaBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.data.AnteprimaAsta
 import com.iasdietideals24.dietideals24.utilities.dto.OffertaDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.StatoAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToDetails
 import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
@@ -24,7 +25,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
 import java.math.BigDecimal
-import java.time.LocalDateTime
 
 class ViewHolderAnteprimaAsta(private val binding: AstaBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -75,7 +75,7 @@ class ViewHolderAnteprimaAsta(private val binding: AstaBinding) :
             }
         }
 
-        if (currentAsta.dataScadenza.atTime(currentAsta.oraScadenza).isBefore(LocalDateTime.now())) {
+        if (currentAsta.stato == StatoAsta.CLOSED) {
             binding.astaDataScadenza.text = resources.getString(R.string.astaScaduta)
             binding.astaOraScadenza.visibility = View.GONE
             binding.astaScadenza.visibility = View.GONE

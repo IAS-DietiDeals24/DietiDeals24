@@ -96,7 +96,10 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
                     }
                 }
 
-                immagineListener?.onGoToProfile(currentOfferta.idOfferente, this::class)
+                immagineListener?.onGoToProfile(
+                    currentOfferta.idOfferente,
+                    ViewHolderOfferta::class
+                )
             }
 
             if (currentOfferta.stato == StatoOfferta.PENDING) {

@@ -19,6 +19,8 @@ abstract public class AstaDto {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     protected Long idAsta = 0L;
 
+    protected String stato = "ACTIVE";
+
     protected CategoriaAstaShallowDto categoriaShallow = new CategoriaAstaShallowDto();
 
     protected String nome = "";
@@ -37,8 +39,9 @@ abstract public class AstaDto {
 
     private Set<OffertaShallowDto> offerteRicevuteShallow = new HashSet<>();
 
-    public AstaDto(Long idAsta, CategoriaAstaShallowDto categoriaShallow, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow, Set<OffertaShallowDto> offerteRicevuteShallow) {
+    public AstaDto(Long idAsta, String stato, CategoriaAstaShallowDto categoriaShallow, String nome, String descrizione, LocalDate dataScadenza, LocalTime oraScadenza, byte[] immagine, Set<NotificaShallowDto> notificheAssociateShallow, AccountShallowDto proprietarioShallow, Set<OffertaShallowDto> offerteRicevuteShallow) {
         this.idAsta = idAsta;
+        this.stato = stato;
         this.categoriaShallow = categoriaShallow;
         this.nome = nome;
         this.descrizione = descrizione;
@@ -63,6 +66,10 @@ abstract public class AstaDto {
 
     public void setIdAsta(Long idAsta) {
         this.idAsta = idAsta;
+    }
+
+    public String getStato() {
+        return this.stato;
     }
 
     public CategoriaAstaShallowDto getCategoriaShallow() {

@@ -85,12 +85,7 @@ class ControllerOfferte : Controller<OfferteBinding>() {
 
     @EventHandler
     private fun clickIndietro() {
-        if (args.fromDetails) listenerDetails?.onGoToDetails(
-            args.id,
-            args.tipo,
-            this::class
-        )
-        else listenerBackButton?.onBackButton()
+        listenerBackButton?.onBackButton()
     }
 
     @UIBuilder

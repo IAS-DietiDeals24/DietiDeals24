@@ -9,6 +9,7 @@ import com.iasdietideals24.dietideals24.utilities.dto.utilities.LinksProfiloDto;
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import kotlin.Pair;
@@ -36,10 +37,11 @@ public class ProfiloDto {
     }
 
     public Profilo toProfilo() {
+        Iterator<AccountShallowDto> iterator = accountsShallow.iterator();
         return new Profilo(
-                new Pair<Long, Long>(
-                        accountsShallow.iterator().next().getIdAccount(),
-                        accountsShallow.iterator().next().getIdAccount()
+                new Pair<>(
+                        iterator.next().getIdAccount(),
+                        iterator.next().getIdAccount()
                 ),
                 accountsShallow.stream().findFirst().orElse(new AccountShallowDto()).getTipoAccount(),
                 nomeUtente,
