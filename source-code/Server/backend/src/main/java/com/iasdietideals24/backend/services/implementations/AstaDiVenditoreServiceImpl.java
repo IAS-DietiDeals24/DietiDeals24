@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class AstaDiVenditoreServiceImpl implements AstaDiVenditoreService {
 
     private final AstaService astaService;
+
     private final RelationsConverter relationsConverter;
 
     protected AstaDiVenditoreServiceImpl(AstaService astaService, RelationsConverter relationsConverter) {

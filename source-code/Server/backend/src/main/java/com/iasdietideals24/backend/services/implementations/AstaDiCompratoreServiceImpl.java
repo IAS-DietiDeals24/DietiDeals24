@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class AstaDiCompratoreServiceImpl implements AstaDiCompratoreService {
 
     private final AstaService astaService;
+
     private final RelationsConverter relationsConverter;
 
     protected AstaDiCompratoreServiceImpl(AstaService astaService, RelationsConverter relationsConverter) {

@@ -35,4 +35,6 @@ public interface AstaSilenziosaService {
     void convertRelations(AstaSilenziosaDto astaSilenziosaDto, AstaSilenziosa astaSilenziosa) throws InvalidParameterException;
 
     void updatePresentFields(AstaSilenziosaDto updatedAstaSilenziosaDto, AstaSilenziosa existingAstaSilenziosa) throws InvalidParameterException;
+
+    void closeAstaSilenziosa(AstaSilenziosa expiredAsta);
 }

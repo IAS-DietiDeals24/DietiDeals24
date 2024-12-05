@@ -35,4 +35,6 @@ public interface AstaInversaService {
     void convertRelations(AstaInversaDto astaInversaDto, AstaInversa astaInversa) throws InvalidParameterException;
 
     void updatePresentFields(AstaInversaDto updatedAstaInversaDto, AstaInversa existingAstaInversa) throws InvalidParameterException;
+
+    void closeAstaInversa(AstaInversa expiredAsta);
 }

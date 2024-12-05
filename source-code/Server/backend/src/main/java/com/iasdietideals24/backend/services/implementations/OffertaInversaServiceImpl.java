@@ -1,6 +1,7 @@
 package com.iasdietideals24.backend.services.implementations;
 
 import com.iasdietideals24.backend.entities.*;
+import com.iasdietideals24.backend.entities.utilities.StatoAsta;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
@@ -9,6 +10,7 @@ import com.iasdietideals24.backend.mapstruct.dto.OffertaInversaDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
 import com.iasdietideals24.backend.mapstruct.mappers.OffertaInversaMapper;
 import com.iasdietideals24.backend.repositories.OffertaInversaRepository;
+import com.iasdietideals24.backend.scheduled.AstaScheduler;
 import com.iasdietideals24.backend.services.OffertaDiVenditoreService;
 import com.iasdietideals24.backend.services.OffertaInversaService;
 import com.iasdietideals24.backend.services.helper.BuildNotice;
@@ -29,21 +31,26 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
     public static final String LOG_OFFERTA_RECUPERATA = "Offerta inversa recuperata dal database.";
 
     private final OffertaDiVenditoreService offertaDiVenditoreService;
+
     private final OffertaInversaMapper offertaInversaMapper;
     private final OffertaInversaRepository offertaInversaRepository;
+
     private final RelationsConverter relationsConverter;
     private final BuildNotice buildNotice;
+    private final AstaScheduler astaScheduler;
 
     public OffertaInversaServiceImpl(OffertaDiVenditoreService offertaDiVenditoreService,
                                      OffertaInversaMapper offertaInversaMapper,
                                      OffertaInversaRepository offertaInversaRepository,
                                      RelationsConverter relationsConverter,
-                                     BuildNotice buildNotice) {
+                                     BuildNotice buildNotice,
+                                     AstaScheduler astaScheduler) {
         this.offertaDiVenditoreService = offertaDiVenditoreService;
         this.offertaInversaMapper = offertaInversaMapper;
         this.offertaInversaRepository = offertaInversaRepository;
         this.relationsConverter = relationsConverter;
         this.buildNotice = buildNotice;
+        this.astaScheduler = astaScheduler;
     }
 
     @Override
@@ -64,6 +71,9 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
         convertRelations(nuovaOffertaInversaDto, nuovaOffertaInversa);
 
         log.trace("nuovaOffertaInversa: {}", nuovaOffertaInversa);
+
+        // Controlliamo che l'asta a cui voliamo riferirci sia attiva
+        checkAstaActive(nuovaOffertaInversa);
 
         log.debug("Salvo l'offerta inversa nel database...");
 
@@ -281,5 +291,21 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
         log.debug("Modifiche di offerta inversa effettuate correttamente.");
 
         // Non è possibile modificare l'associazione "astaRiferimento" tramite la risorsa "offerte/di-venditori/inverse"
+    }
+
+    private void checkAstaActive(OffertaInversa nuovaOffertaInversa) throws InvalidParameterException {
+
+        if (nuovaOffertaInversa != null) {
+
+            AstaInversa astaInversa = nuovaOffertaInversa.getAstaRiferimento();
+
+            astaScheduler.updateExpiredAste();
+
+            if (astaInversa != null && astaInversa.getStato().equals(StatoAsta.CLOSED)) {
+                log.warn("L'asta '{}' a cui si vuole fare l'offerta è già terminata!", astaInversa.getIdAsta());
+
+                throw new InvalidParameterException("L'asta '" + astaInversa.getIdAsta() + "' a cui si vuole fare l'offerta è già terminata!");
+            }
+        }
     }
 }

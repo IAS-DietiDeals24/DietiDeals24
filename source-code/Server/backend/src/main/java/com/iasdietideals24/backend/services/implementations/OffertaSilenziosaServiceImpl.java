@@ -14,6 +14,7 @@ import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
 import com.iasdietideals24.backend.mapstruct.mappers.OffertaSilenziosaMapper;
 import com.iasdietideals24.backend.mapstruct.mappers.StatoOffertaSilenziosaMapper;
 import com.iasdietideals24.backend.repositories.OffertaSilenziosaRepository;
+import com.iasdietideals24.backend.scheduled.AstaScheduler;
 import com.iasdietideals24.backend.services.OffertaDiCompratoreService;
 import com.iasdietideals24.backend.services.OffertaSilenziosaService;
 import com.iasdietideals24.backend.services.helper.BuildNotice;
@@ -36,24 +37,29 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
     public static final String LOG_OFFERTA_RECUPERATA = "Offerta silenziosa recuperata dal database.";
 
     private final OffertaDiCompratoreService offertaDiCompratoreService;
+
     private final StatoOffertaSilenziosaMapper statoOffertaSilenziosaMapper;
     private final OffertaSilenziosaMapper offertaSilenziosaMapper;
     private final OffertaSilenziosaRepository offertaSilenziosaRepository;
+
     private final RelationsConverter relationsConverter;
     private final BuildNotice buildNotice;
+    private final AstaScheduler astaScheduler;
 
     public OffertaSilenziosaServiceImpl(OffertaDiCompratoreService offertaDiCompratoreService,
                                         StatoOffertaSilenziosaMapper statoOffertaSilenziosaMapper,
                                         OffertaSilenziosaMapper offertaSilenziosaMapper,
                                         OffertaSilenziosaRepository offertaSilenziosaRepository,
                                         RelationsConverter relationsConverter,
-                                        BuildNotice buildNotice) {
+                                        BuildNotice buildNotice,
+                                        AstaScheduler astaScheduler) {
         this.offertaDiCompratoreService = offertaDiCompratoreService;
         this.statoOffertaSilenziosaMapper = statoOffertaSilenziosaMapper;
         this.offertaSilenziosaMapper = offertaSilenziosaMapper;
         this.offertaSilenziosaRepository = offertaSilenziosaRepository;
         this.relationsConverter = relationsConverter;
         this.buildNotice = buildNotice;
+        this.astaScheduler = astaScheduler;
     }
 
     @Override
@@ -75,6 +81,7 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
 
         log.trace("nuovaOffertaSilenziosa: {}", nuovaOffertaSilenziosa);
 
+        // Controlliamo che l'asta a cui voliamo riferirci sia attiva
         checkAstaActive(nuovaOffertaSilenziosa);
 
         log.debug("Salvo l'offerta silenziosa nel database...");
@@ -95,20 +102,6 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
         doTasksForStatoOfferta(savedOffertaSilenziosa);
 
         return offertaSilenziosaMapper.toDto(savedOffertaSilenziosa);
-    }
-
-    private void checkAstaActive(OffertaSilenziosa nuovaOffertaSilenziosa) throws InvalidParameterException {
-
-        if (nuovaOffertaSilenziosa != null) {
-
-            AstaSilenziosa astaSilenziosa = nuovaOffertaSilenziosa.getAstaRiferimento();
-
-            if (astaSilenziosa != null && astaSilenziosa.getStato().equals(StatoAsta.CLOSED)) {
-                log.warn("L'asta '{}' a cui si vuole fare l'offerta è già terminata!", astaSilenziosa.getIdAsta());
-
-                throw new InvalidParameterException("L'asta '" + astaSilenziosa.getIdAsta() + "' a cui si vuole fare l'offerta è già terminata!");
-            }
-        }
     }
 
     @Override
@@ -337,6 +330,22 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
         }
 
         log.trace("'stato' modificato correttamente.");
+    }
+
+    private void checkAstaActive(OffertaSilenziosa nuovaOffertaSilenziosa) throws InvalidParameterException {
+
+        if (nuovaOffertaSilenziosa != null) {
+
+            AstaSilenziosa astaSilenziosa = nuovaOffertaSilenziosa.getAstaRiferimento();
+
+            astaScheduler.updateExpiredAste();
+
+            if (astaSilenziosa != null && astaSilenziosa.getStato().equals(StatoAsta.CLOSED)) {
+                log.warn("L'asta '{}' a cui si vuole fare l'offerta è già terminata!", astaSilenziosa.getIdAsta());
+
+                throw new InvalidParameterException("L'asta '" + astaSilenziosa.getIdAsta() + "' a cui si vuole fare l'offerta è già terminata!");
+            }
+        }
     }
 
     private void doTasksForStatoOfferta(OffertaSilenziosa offertaSilenziosa) {

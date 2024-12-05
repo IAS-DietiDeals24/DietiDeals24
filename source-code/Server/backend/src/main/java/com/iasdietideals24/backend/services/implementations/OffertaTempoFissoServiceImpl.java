@@ -1,8 +1,7 @@
 package com.iasdietideals24.backend.services.implementations;
 
-import com.iasdietideals24.backend.entities.Asta;
-import com.iasdietideals24.backend.entities.AstaTempoFisso;
-import com.iasdietideals24.backend.entities.OffertaTempoFisso;
+import com.iasdietideals24.backend.entities.*;
+import com.iasdietideals24.backend.entities.utilities.StatoAsta;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
@@ -11,6 +10,7 @@ import com.iasdietideals24.backend.mapstruct.dto.OffertaTempoFissoDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
 import com.iasdietideals24.backend.mapstruct.mappers.OffertaTempoFissoMapper;
 import com.iasdietideals24.backend.repositories.OffertaTempoFissoRepository;
+import com.iasdietideals24.backend.scheduled.AstaScheduler;
 import com.iasdietideals24.backend.services.OffertaDiCompratoreService;
 import com.iasdietideals24.backend.services.OffertaTempoFissoService;
 import com.iasdietideals24.backend.services.helper.BuildNotice;
@@ -31,21 +31,26 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
     public static final String LOG_OFFERTA_RECUPERATA = "Offerta a tempo fisso recuperata dal database.";
 
     private final OffertaDiCompratoreService offertaDiCompratoreService;
+
     private final OffertaTempoFissoMapper offertaTempoFissoMapper;
     private final OffertaTempoFissoRepository offertaTempoFissoRepository;
+
     private final RelationsConverter relationsConverter;
     private final BuildNotice buildNotice;
+    private final AstaScheduler astaScheduler;
 
     public OffertaTempoFissoServiceImpl(OffertaDiCompratoreService offertaDiCompratoreService,
                                         OffertaTempoFissoMapper offertaTempoFissoMapper,
                                         OffertaTempoFissoRepository offertaTempoFissoRepository,
                                         RelationsConverter relationsConverter,
-                                        BuildNotice buildNotice) {
+                                        BuildNotice buildNotice,
+                                        AstaScheduler astaScheduler) {
         this.offertaDiCompratoreService = offertaDiCompratoreService;
         this.offertaTempoFissoMapper = offertaTempoFissoMapper;
         this.offertaTempoFissoRepository = offertaTempoFissoRepository;
         this.relationsConverter = relationsConverter;
         this.buildNotice = buildNotice;
+        this.astaScheduler = astaScheduler;
     }
 
     @Override
@@ -66,6 +71,9 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
         convertRelations(nuovaOffertaTempoFissoDto, nuovaOffertaTempoFisso);
 
         log.trace("nuovaOffertaTempoFisso: {}", nuovaOffertaTempoFisso);
+
+        // Controlliamo che l'asta a cui voliamo riferirci sia attiva
+        checkAstaActive(nuovaOffertaTempoFisso);
 
         log.debug("Salvo l'offerta a tempo fisso nel database...");
 
@@ -283,5 +291,21 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
         log.debug("Modifiche di offerta a tempo fisso effettuate correttamente.");
 
         // Non è possibile modificare l'associazione "astaRiferimento" tramite la risorsa "offerte/di-compratori/tempo-fisso"
+    }
+
+    private void checkAstaActive(OffertaTempoFisso nuovaOffertaTempoFisso) throws InvalidParameterException {
+
+        if (nuovaOffertaTempoFisso != null) {
+
+            AstaTempoFisso astaTempoFisso = nuovaOffertaTempoFisso.getAstaRiferimento();
+
+            astaScheduler.updateExpiredAste();
+
+            if (astaTempoFisso != null && astaTempoFisso.getStato().equals(StatoAsta.CLOSED)) {
+                log.warn("L'asta '{}' a cui si vuole fare l'offerta è già terminata!", astaTempoFisso.getIdAsta());
+
+                throw new InvalidParameterException("L'asta '" + astaTempoFisso.getIdAsta() + "' a cui si vuole fare l'offerta è già terminata!");
+            }
+        }
     }
 }

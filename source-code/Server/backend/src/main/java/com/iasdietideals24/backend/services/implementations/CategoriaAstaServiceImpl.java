@@ -29,6 +29,7 @@ public class CategoriaAstaServiceImpl implements CategoriaAstaService {
 
     private final CategoriaAstaMapper categoriaAstaMapper;
     private final CategoriaAstaRepository categoriaAstaRepository;
+
     private final RelationsConverter relationsConverter;
 
     public CategoriaAstaServiceImpl(CategoriaAstaMapper categoriaAstaMapper,

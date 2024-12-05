@@ -1,8 +1,8 @@
 package com.iasdietideals24.backend.services.implementations;
 
-import com.iasdietideals24.backend.entities.AstaSilenziosa;
-import com.iasdietideals24.backend.entities.Offerta;
-import com.iasdietideals24.backend.entities.OffertaSilenziosa;
+import com.iasdietideals24.backend.entities.*;
+import com.iasdietideals24.backend.entities.utilities.StatoAsta;
+import com.iasdietideals24.backend.entities.utilities.StatoOffertaSilenziosa;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
@@ -13,12 +13,14 @@ import com.iasdietideals24.backend.mapstruct.mappers.AstaSilenziosaMapper;
 import com.iasdietideals24.backend.repositories.AstaSilenziosaRepository;
 import com.iasdietideals24.backend.services.AstaDiVenditoreService;
 import com.iasdietideals24.backend.services.AstaSilenziosaService;
+import com.iasdietideals24.backend.services.helper.BuildNotice;
 import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -34,18 +36,23 @@ public class AstaSilenziosaServiceImpl implements AstaSilenziosaService {
     public static final String LOG_ASTA_RECUPERATA = "Asta silenziosa recuperata dal database.";
 
     private final AstaDiVenditoreService astaDiVenditoreService;
+
     private final AstaSilenziosaMapper astaSilenziosaMapper;
     private final AstaSilenziosaRepository astaSilenziosaRepository;
+
     private final RelationsConverter relationsConverter;
+    private final BuildNotice buildNotice;
 
     public AstaSilenziosaServiceImpl(AstaDiVenditoreService astaDiVenditoreService,
                                      AstaSilenziosaMapper astaSilenziosaMapper,
                                      AstaSilenziosaRepository astaSilenziosaRepository,
-                                     RelationsConverter relationsConverter) {
+                                     RelationsConverter relationsConverter,
+                                     BuildNotice buildNotice) {
         this.astaDiVenditoreService = astaDiVenditoreService;
         this.astaSilenziosaMapper = astaSilenziosaMapper;
         this.astaSilenziosaRepository = astaSilenziosaRepository;
         this.relationsConverter = relationsConverter;
+        this.buildNotice = buildNotice;
     }
 
     @Override
@@ -270,5 +277,41 @@ public class AstaSilenziosaServiceImpl implements AstaSilenziosaService {
         log.debug("Modifiche di asta silenziosa effettuate correttamente.");
 
         // Non è possibile modificare l'associazione "offerteRicevute" tramite la risorsa "aste/di-venditori/silenziose"
+    }
+
+    @Override
+    public void closeAstaSilenziosa(AstaSilenziosa expiredAsta) {
+
+        log.debug("L'asta con id '{}' è scaduta. Chiudo l'asta...", expiredAsta.getIdAsta());
+
+        expiredAsta.setStato(StatoAsta.CLOSED);
+
+        log.debug("Asta chiusa. Invio la notifica a tutti i partecipanti...");
+
+        Set<OffertaSilenziosa> offertePerdenti = expiredAsta.getOfferteRicevute();
+
+        if (!offertePerdenti.isEmpty()) {
+
+            for (OffertaSilenziosa pendingOfferta : offertePerdenti) {
+                if (pendingOfferta.getStato().equals(StatoOffertaSilenziosa.PENDING)) {
+                    pendingOfferta.setStato(StatoOffertaSilenziosa.REJECTED);
+                }
+            }
+
+            log.trace("offertePerdenti: {}", offertePerdenti);
+
+            buildNotice.notifyOffertaSilenziosaRifiutata(offertePerdenti);
+
+            log.debug("Notifica inviata con successo.");
+
+        } else {
+            log.debug("Non ci sono offerte all'asta.");
+        }
+
+        log.debug("Invio la notifica al proprietario...");
+
+        buildNotice.notifyAstaSilenziosaScaduta(expiredAsta);
+
+        log.debug("Notifica inviata con successo.");
     }
 }

@@ -1,6 +1,7 @@
 package com.iasdietideals24.backend.services.implementations;
 
 import com.iasdietideals24.backend.entities.*;
+import com.iasdietideals24.backend.entities.utilities.StatoAsta;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
@@ -11,6 +12,7 @@ import com.iasdietideals24.backend.mapstruct.mappers.AstaInversaMapper;
 import com.iasdietideals24.backend.repositories.AstaInversaRepository;
 import com.iasdietideals24.backend.services.AstaDiCompratoreService;
 import com.iasdietideals24.backend.services.AstaInversaService;
+import com.iasdietideals24.backend.services.helper.BuildNotice;
 import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -33,18 +36,23 @@ public class AstaInversaServiceImpl implements AstaInversaService {
     public static final String LOG_ASTA_RECUPERATA = "Asta inversa recuperata dal database.";
 
     private final AstaDiCompratoreService astaDiCompratoreService;
+
     private final AstaInversaMapper astaInversaMapper;
     private final AstaInversaRepository astaInversaRepository;
+
     private final RelationsConverter relationsConverter;
+    private final BuildNotice buildNotice;
 
     public AstaInversaServiceImpl(AstaDiCompratoreService astaDiCompratoreService,
                                   AstaInversaMapper astaInversaMapper,
                                   AstaInversaRepository astaInversaRepository,
-                                  RelationsConverter relationsConverter) {
+                                  RelationsConverter relationsConverter,
+                                  BuildNotice buildNotice) {
         this.astaDiCompratoreService = astaDiCompratoreService;
         this.astaInversaMapper = astaInversaMapper;
         this.astaInversaRepository = astaInversaRepository;
         this.relationsConverter = relationsConverter;
+        this.buildNotice = buildNotice;
     }
 
     @Override
@@ -295,5 +303,57 @@ public class AstaInversaServiceImpl implements AstaInversaService {
         }
 
         log.trace("'sogliaIniziale' modificato correttamente.");
+    }
+
+    @Override
+    public void closeAstaInversa(AstaInversa expiredAsta) {
+
+        log.debug("L'asta con id '{}' è scaduta. Chiudo l'asta...", expiredAsta.getIdAsta());
+
+        expiredAsta.setStato(StatoAsta.CLOSED);
+
+        log.debug("Asta chiusa. Determino il vincitore...");
+
+        Set<OffertaInversa> offerteRicevute = expiredAsta.getOfferteRicevute();
+
+        if (!offerteRicevute.isEmpty()) {
+
+            OffertaInversa leastValueOffertaRicevuta = offerteRicevute.iterator().next();
+            for (OffertaInversa offertaRicevuta : offerteRicevute) {
+                if (offertaRicevuta.getValore().compareTo(leastValueOffertaRicevuta.getValore()) < 0)
+                    leastValueOffertaRicevuta = offertaRicevuta;
+            }
+
+            log.trace("leastValueOffertaRicevuta: {}", leastValueOffertaRicevuta);
+
+            if (leastValueOffertaRicevuta.getValore().compareTo(expiredAsta.getSogliaIniziale()) <= 0) {
+
+                log.debug("Vincitore trovato. Invio la notifica...");
+
+                buildNotice.notifyOffertaInversaVincitrice(leastValueOffertaRicevuta);
+
+                log.debug("Notifica inviata con successo. Invio la notifica a tutti gli altri partecipanti...");
+
+                Set<OffertaInversa> offertePerdenti = new HashSet<>(offerteRicevute);
+                offertePerdenti.remove(leastValueOffertaRicevuta);
+
+                log.trace("offerteRicevute: {}", offerteRicevute);
+                log.trace("offertePerdenti: {}", offertePerdenti);
+
+                buildNotice.notifyOffertaInversaPerdente(offertePerdenti);
+
+                log.debug("Notifica inviata con successo.");
+            } else {
+                log.debug("Non è stata raggiunta la soglia minima.");
+            }
+        } else {
+            log.debug("Non ci sono offerte all'asta.");
+        }
+
+        log.debug("Invio la notifica al proprietario...");
+
+        buildNotice.notifyAstaInversaScaduta(expiredAsta);
+
+        log.debug("Notifica inviata con successo.");
     }
 }

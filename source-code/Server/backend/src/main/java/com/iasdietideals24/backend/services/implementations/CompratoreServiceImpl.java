@@ -30,8 +30,10 @@ public class CompratoreServiceImpl implements CompratoreService {
     public static final String LOG_ACCOUNT_RECUPERATO = "Account compratore recuperato dal database.";
 
     private final AccountService accountService;
+
     private final CompratoreMapper compratoreMapper;
     private final CompratoreRepository compratoreRepository;
+
     private final RelationsConverter relationsConverter;
 
     public CompratoreServiceImpl(AccountService accountService, CompratoreMapper compratoreMapper, CompratoreRepository compratoreRepository, RelationsConverter relationsConverter) {

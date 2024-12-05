@@ -1,8 +1,7 @@
 package com.iasdietideals24.backend.services.implementations;
 
-import com.iasdietideals24.backend.entities.AstaTempoFisso;
-import com.iasdietideals24.backend.entities.Offerta;
-import com.iasdietideals24.backend.entities.OffertaTempoFisso;
+import com.iasdietideals24.backend.entities.*;
+import com.iasdietideals24.backend.entities.utilities.StatoAsta;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
@@ -13,6 +12,7 @@ import com.iasdietideals24.backend.mapstruct.mappers.AstaTempoFissoMapper;
 import com.iasdietideals24.backend.repositories.AstaTempoFissoRepository;
 import com.iasdietideals24.backend.services.AstaDiVenditoreService;
 import com.iasdietideals24.backend.services.AstaTempoFissoService;
+import com.iasdietideals24.backend.services.helper.BuildNotice;
 import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -35,18 +36,23 @@ public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
     public static final String LOG_ASTA_RECUPERATA = "Asta a tempo fisso recuperata dal database.";
 
     private final AstaDiVenditoreService astaDiVenditoreService;
+
     private final AstaTempoFissoMapper astaTempoFissoMapper;
     private final AstaTempoFissoRepository astaTempoFissoRepository;
+
     private final RelationsConverter relationsConverter;
+    private final BuildNotice buildNotice;
 
     public AstaTempoFissoServiceImpl(AstaDiVenditoreService astaDiVenditoreService,
                                      AstaTempoFissoMapper astaTempoFissoMapper,
                                      AstaTempoFissoRepository astaTempoFissoRepository,
-                                     RelationsConverter relationsConverter) {
+                                     RelationsConverter relationsConverter,
+                                     BuildNotice buildNotice) {
         this.astaDiVenditoreService = astaDiVenditoreService;
         this.astaTempoFissoMapper = astaTempoFissoMapper;
         this.astaTempoFissoRepository = astaTempoFissoRepository;
         this.relationsConverter = relationsConverter;
+        this.buildNotice = buildNotice;
     }
 
     @Override
@@ -297,5 +303,57 @@ public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
         }
 
         log.trace("'sogliaMinima' modificato correttamente.");
+    }
+
+    @Override
+    public void closeAstaTempoFisso(AstaTempoFisso expiredAsta) {
+
+        log.debug("L'asta con id '{}' è scaduta. Chiudo l'asta...", expiredAsta.getIdAsta());
+
+        expiredAsta.setStato(StatoAsta.CLOSED);
+
+        log.debug("Asta chiusa. Determino il vincitore...");
+
+        Set<OffertaTempoFisso> offerteRicevute = expiredAsta.getOfferteRicevute();
+
+        if (!offerteRicevute.isEmpty()) {
+
+            OffertaTempoFisso mostValueOffertaRicevuta = offerteRicevute.iterator().next();
+            for (OffertaTempoFisso offertaRicevuta : offerteRicevute) {
+                if (offertaRicevuta.getValore().compareTo(mostValueOffertaRicevuta.getValore()) > 0)
+                    mostValueOffertaRicevuta = offertaRicevuta;
+            }
+
+            log.trace("mostValueOffertaRicevuta: {}", mostValueOffertaRicevuta);
+
+            if (mostValueOffertaRicevuta.getValore().compareTo(expiredAsta.getSogliaMinima()) >= 0) {
+
+                log.debug("Vincitore trovato. Invio la notifica...");
+
+                buildNotice.notifyOffertaTempoFissoVincitrice(mostValueOffertaRicevuta);
+
+                log.debug("Notifica inviata con successo. Invio la notifica a tutti gli altri partecipanti...");
+
+                Set<OffertaTempoFisso> offertePerdenti = new HashSet<>(offerteRicevute);
+                offertePerdenti.remove(mostValueOffertaRicevuta);
+
+                log.trace("offerteRicevute: {}", offerteRicevute);
+                log.trace("offertePerdenti: {}", offertePerdenti);
+
+                buildNotice.notifyOffertaTempoFissoPerdente(offertePerdenti);
+
+                log.debug("Notifica inviata con successo.");
+            } else {
+                log.debug("Non è stata raggiunta la soglia minima.");
+            }
+        } else {
+            log.debug("Non ci sono offerte all'asta.");
+        }
+
+        log.debug("Invio la notifica al proprietario...");
+
+        buildNotice.notifyAstaTempoFissoScaduta(expiredAsta);
+
+        log.debug("Notifica inviata con successo.");
     }
 }

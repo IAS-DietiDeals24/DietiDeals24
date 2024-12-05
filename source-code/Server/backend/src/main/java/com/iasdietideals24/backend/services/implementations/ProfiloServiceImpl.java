@@ -16,8 +16,8 @@ import com.iasdietideals24.backend.mapstruct.mappers.AnagraficaProfiloMapper;
 import com.iasdietideals24.backend.mapstruct.mappers.LinksProfiloMapper;
 import com.iasdietideals24.backend.mapstruct.mappers.ProfiloMapper;
 import com.iasdietideals24.backend.mapstruct.mappers.PutProfiloMapper;
-import com.iasdietideals24.backend.repositories.AccountRepository;
 import com.iasdietideals24.backend.repositories.ProfiloRepository;
+import com.iasdietideals24.backend.services.AccountService;
 import com.iasdietideals24.backend.services.ProfiloService;
 import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import jakarta.transaction.Transactional;
@@ -27,7 +27,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -39,12 +38,14 @@ public class ProfiloServiceImpl implements ProfiloService {
     public static final String LOG_FOUND_PROFILO = "foundProfilo: {}";
     public static final String LOG_PROFILO_RECUPERATO = "Profilo recuperato dal database.";
 
+    private final AccountService accountService;
+
     private final ProfiloMapper profiloMapper;
     private final PutProfiloMapper putProfiloMapper;
     private final AnagraficaProfiloMapper anagraficaProfiloMapper;
     private final LinksProfiloMapper linksProfiloMapper;
     private final ProfiloRepository profiloRepository;
-    private final AccountRepository accountRepository;
+
     private final RelationsConverter relationsConverter;
 
     public ProfiloServiceImpl(ProfiloMapper profiloMapper,
@@ -52,15 +53,15 @@ public class ProfiloServiceImpl implements ProfiloService {
                               AnagraficaProfiloMapper anagraficaProfiloMapper,
                               LinksProfiloMapper linksProfiloMapper,
                               ProfiloRepository profiloRepository,
-                              AccountRepository accountRepository,
-                              RelationsConverter relationsConverter) {
+                              RelationsConverter relationsConverter,
+                              AccountService accountService) {
         this.profiloMapper = profiloMapper;
         this.putProfiloMapper = putProfiloMapper;
         this.anagraficaProfiloMapper = anagraficaProfiloMapper;
         this.linksProfiloMapper = linksProfiloMapper;
         this.profiloRepository = profiloRepository;
-        this.accountRepository = accountRepository;
         this.relationsConverter = relationsConverter;
+        this.accountService = accountService;
     }
 
     @Override
@@ -85,7 +86,7 @@ public class ProfiloServiceImpl implements ProfiloService {
 
         log.debug("Verifico che l'email scelta non sia già utilizzata nell'account di altri profili...");
 
-        checkEmailNotAlreadyTaken(nuovoProfiloDto.getEmail());
+        accountService.checkEmailNotAlreadyTaken(nuovoProfiloDto.getEmail());
 
         log.debug("L'email non è utilizzata in account di altri profili.");
 
@@ -100,21 +101,6 @@ public class ProfiloServiceImpl implements ProfiloService {
         log.debug("Profilo salvato correttamente nel database con nome utente {}...", savedProfilo.getNomeUtente());
 
         return profiloMapper.toDto(savedProfilo);
-    }
-
-    private void checkEmailNotAlreadyTaken(String email) throws InvalidParameterException {
-
-        // Recupero la lista di account che hanno la stessa email
-        List<Account> foundAccounts = accountRepository.findByEmailIs(email, Pageable.unpaged()).toList();
-
-        log.trace("foundAccounts: {}", foundAccounts);
-
-        // Se l'email è gia stata utilizzata, allora mando l'eccezione
-        if (!foundAccounts.isEmpty()) {
-            log.warn("Impossibile associare l'email '{}' all'account di questo profilo poichè è già associata all'account di un altro profilo!", email);
-
-            throw new InvalidParameterException("L'email '" + email + "' è già associata all'account di un altro profilo!");
-        }
     }
 
     @Override

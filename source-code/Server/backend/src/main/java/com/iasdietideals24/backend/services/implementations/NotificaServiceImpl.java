@@ -32,6 +32,7 @@ public class NotificaServiceImpl implements NotificaService {
 
     private final NotificaMapper notificaMapper;
     private final NotificaRepository notificaRepository;
+
     private final RelationsConverter relationsConverter;
 
     public NotificaServiceImpl(NotificaMapper notificaMapper,

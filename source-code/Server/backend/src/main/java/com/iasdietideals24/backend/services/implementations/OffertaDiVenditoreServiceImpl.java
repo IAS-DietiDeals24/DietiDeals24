@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class OffertaDiVenditoreServiceImpl implements OffertaDiVenditoreService {
 
     private final OffertaService offertaService;
+
     private final RelationsConverter relationsConverter;
 
     protected OffertaDiVenditoreServiceImpl(OffertaService offertaService, RelationsConverter relationsConverter) {

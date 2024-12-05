@@ -3,8 +3,6 @@ package com.iasdietideals24.backend.services.implementations;
 import com.iasdietideals24.backend.entities.Asta;
 import com.iasdietideals24.backend.entities.CategoriaAsta;
 import com.iasdietideals24.backend.entities.Notifica;
-import com.iasdietideals24.backend.entities.OffertaSilenziosa;
-import com.iasdietideals24.backend.entities.utilities.StatoAsta;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.mapstruct.dto.AstaDto;
@@ -24,10 +22,12 @@ import java.util.Set;
 @Service
 public class AstaServiceImpl implements AstaService {
 
-    private final RelationsConverter relationsConverter;
     private final StatoAstaMapper statoAstaMapper;
 
-    protected AstaServiceImpl(RelationsConverter relationsConverter, StatoAstaMapper statoAstaMapper) {
+    private final RelationsConverter relationsConverter;
+
+    protected AstaServiceImpl(RelationsConverter relationsConverter,
+                              StatoAstaMapper statoAstaMapper) {
         this.relationsConverter = relationsConverter;
         this.statoAstaMapper = statoAstaMapper;
     }

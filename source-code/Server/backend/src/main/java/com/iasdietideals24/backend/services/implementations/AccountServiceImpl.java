@@ -10,11 +10,14 @@ import com.iasdietideals24.backend.mapstruct.dto.shallows.NotificaShallowDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.ProfiloShallowDto;
 import com.iasdietideals24.backend.mapstruct.dto.utilities.TokensAccountDto;
 import com.iasdietideals24.backend.mapstruct.mappers.TokensAccountMapper;
+import com.iasdietideals24.backend.repositories.AccountRepository;
 import com.iasdietideals24.backend.services.AccountService;
 import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -22,11 +25,16 @@ import java.util.Set;
 public class AccountServiceImpl implements AccountService {
 
     private final TokensAccountMapper tokensAccountMapper;
+    private final AccountRepository accountRepository;
+
     private final RelationsConverter relationsConverter;
 
-    protected AccountServiceImpl(TokensAccountMapper tokensAccountMapper, RelationsConverter relationsConverter) {
+    protected AccountServiceImpl(TokensAccountMapper tokensAccountMapper,
+                                 RelationsConverter relationsConverter,
+                                 AccountRepository accountRepository) {
         this.tokensAccountMapper = tokensAccountMapper;
         this.relationsConverter = relationsConverter;
+        this.accountRepository = accountRepository;
     }
 
     @Override
@@ -284,5 +292,21 @@ public class AccountServiceImpl implements AccountService {
             throw new InvalidParameterException("Il profilo associato all'account '" + account.getIdAccount() + "' è null!");
 
         return (profiloAssociato.getAccounts().size() == 1);
+    }
+
+    @Override
+    public void checkEmailNotAlreadyTaken(String email) throws InvalidParameterException {
+
+        // Recupero la lista di account che hanno la stessa email
+        List<Account> foundAccounts = accountRepository.findByEmailIs(email, Pageable.unpaged()).toList();
+
+        log.trace("foundAccounts: {}", foundAccounts);
+
+        // Se l'email è gia stata utilizzata, allora mando l'eccezione
+        if (!foundAccounts.isEmpty()) {
+            log.warn("Impossibile associare l'email '{}' all'account di questo profilo poichè è già associata all'account di un altro profilo!", email);
+
+            throw new InvalidParameterException("L'email '" + email + "' è già associata all'account di un altro profilo!");
+        }
     }
 }

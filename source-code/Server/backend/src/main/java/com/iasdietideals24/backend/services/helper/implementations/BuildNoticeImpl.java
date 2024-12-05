@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Iterator;
-import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
@@ -17,50 +16,18 @@ import java.util.Set;
 public class BuildNoticeImpl implements BuildNotice {
 
     public static final String LOG_COSTRUZIONE_NOTIFICA = "Costruisco la notifica...";
+
     public static final String NUOVA_OFFERTA = "Hai ricevuto una nuova offerta per la tua asta";
     public static final String OFFERTA_SILENZIOSA_RIFIUTATA = "La tua offerta silenziosa è stata rifiutata";
     public static final String OFFERTA_SILENZIOSA_ACCETTATA = "La tua offerta silenziosa è stata accettata";
+    public static final String ASTA_SCADUTA = "La tua asta è scaduta";
+    public static final String ASTA_PERSA = "Hai perso l'asta";
+    public static final String ASTA_VINTA = "Hai vinto l'asta";
 
     private final NotificaRepository notificaRepository;
-    private final AstaInversaRepository astaInversaRepository;
 
-    public BuildNoticeImpl(NotificaRepository notificaRepository,
-                           AstaInversaRepository astaInversaRepository) {
+    public BuildNoticeImpl(NotificaRepository notificaRepository) {
         this.notificaRepository = notificaRepository;
-        this.astaInversaRepository = astaInversaRepository;
-    }
-
-    private void createNotificaAstaEliminata(Long idAsta) {
-
-        Optional<AstaInversa> foundAsta = astaInversaRepository.findById(idAsta);
-
-        if (foundAsta.isPresent()) {
-
-            AstaInversa astaInversa = foundAsta.get();
-
-            Set<OffertaInversa> offerteCollegate = astaInversa.getOfferteRicevute();
-            if (!offerteCollegate.isEmpty()) {
-
-                log.debug(LOG_COSTRUZIONE_NOTIFICA);
-
-                Notifica notifica = new Notifica(
-                        LocalDate.now(),
-                        LocalTime.now(),
-                        "L'asta a cui hai partecipato è stata eliminata.",
-                        astaInversa.getProprietario(),
-                        offerteCollegate.iterator().next().getVenditoreCollegato(),
-                        astaInversa
-                );
-
-                for (OffertaInversa offertaInversa : offerteCollegate) {
-                    Venditore venditore = offertaInversa.getVenditoreCollegato();
-                    notifica.addDestinatario(venditore);
-                    venditore.addNotificaRicevuta(notifica);
-                }
-
-                sendNotifica(notifica);
-            }
-        }
     }
 
     @Override
@@ -202,6 +169,174 @@ public class BuildNoticeImpl implements BuildNotice {
             );
 
             sendNotifica(notifica);
+        }
+    }
+
+    @Override
+    public void notifyAstaInversaScaduta(AstaInversa astaInversa) {
+
+        if (astaInversa != null) {
+
+            log.debug(LOG_COSTRUZIONE_NOTIFICA);
+
+            Notifica notifica = new Notifica(
+                    LocalDate.now(),
+                    LocalTime.now(),
+                    ASTA_SCADUTA,
+                    astaInversa.getProprietario(),
+                    astaInversa.getProprietario(),
+                    astaInversa
+            );
+
+            sendNotifica(notifica);
+        }
+    }
+
+    @Override
+    public void notifyAstaSilenziosaScaduta(AstaSilenziosa astaSilenziosa) {
+
+        if (astaSilenziosa != null) {
+
+            log.debug(LOG_COSTRUZIONE_NOTIFICA);
+
+            Notifica notifica = new Notifica(
+                    LocalDate.now(),
+                    LocalTime.now(),
+                    ASTA_SCADUTA,
+                    astaSilenziosa.getProprietario(),
+                    astaSilenziosa.getProprietario(),
+                    astaSilenziosa
+            );
+
+            sendNotifica(notifica);
+        }
+    }
+
+    @Override
+    public void notifyAstaTempoFissoScaduta(AstaTempoFisso astaTempoFisso) {
+
+        if (astaTempoFisso != null) {
+
+            log.debug(LOG_COSTRUZIONE_NOTIFICA);
+
+            Notifica notifica = new Notifica(
+                    LocalDate.now(),
+                    LocalTime.now(),
+                    ASTA_SCADUTA,
+                    astaTempoFisso.getProprietario(),
+                    astaTempoFisso.getProprietario(),
+                    astaTempoFisso
+            );
+
+            sendNotifica(notifica);
+        }
+    }
+
+    @Override
+    public void notifyOffertaInversaVincitrice(OffertaInversa offertaVincitrice) {
+
+        if (offertaVincitrice != null) {
+
+            AstaInversa astaInversa = offertaVincitrice.getAstaRiferimento();
+
+            log.debug(LOG_COSTRUZIONE_NOTIFICA);
+
+            Notifica notifica = new Notifica(
+                    LocalDate.now(),
+                    LocalTime.now(),
+                    ASTA_VINTA,
+                    astaInversa.getProprietario(),
+                    offertaVincitrice.getVenditoreCollegato(),
+                    astaInversa
+            );
+
+            sendNotifica(notifica);
+        }
+    }
+
+    @Override
+    public void notifyOffertaInversaPerdente(Set<OffertaInversa> offertePerdeti) {
+
+        if (offertePerdeti != null) {
+
+            Iterator<OffertaInversa> itrOffertePerdenti = offertePerdeti.iterator();
+
+            if (itrOffertePerdenti.hasNext()) {
+                OffertaInversa offertaPerdente = itrOffertePerdenti.next();
+                AstaInversa astaInversa = offertaPerdente.getAstaRiferimento();
+                Account destinatario = offertaPerdente.getVenditoreCollegato();
+
+                log.debug(LOG_COSTRUZIONE_NOTIFICA);
+
+                Notifica notifica = new Notifica(
+                        LocalDate.now(),
+                        LocalTime.now(),
+                        ASTA_PERSA,
+                        astaInversa.getProprietario(),
+                        destinatario,
+                        astaInversa
+                );
+
+                while(itrOffertePerdenti.hasNext()) {
+                    notifica.addDestinatario(itrOffertePerdenti.next().getVenditoreCollegato());
+                }
+
+                sendNotifica(notifica);
+            }
+        }
+    }
+
+    @Override
+    public void notifyOffertaTempoFissoVincitrice(OffertaTempoFisso offertaVincitrice) {
+
+        if (offertaVincitrice != null) {
+
+            AstaTempoFisso astaTempoFisso = offertaVincitrice.getAstaRiferimento();
+
+            log.debug(LOG_COSTRUZIONE_NOTIFICA);
+
+            Notifica notifica = new Notifica(
+                    LocalDate.now(),
+                    LocalTime.now(),
+                    ASTA_VINTA,
+                    astaTempoFisso.getProprietario(),
+                    offertaVincitrice.getCompratoreCollegato(),
+                    astaTempoFisso
+            );
+
+            sendNotifica(notifica);
+        }
+    }
+
+    @Override
+    public void notifyOffertaTempoFissoPerdente(Set<OffertaTempoFisso> offertePerdeti) {
+
+        if (offertePerdeti != null) {
+
+            Iterator<OffertaTempoFisso> itrOffertePerdenti = offertePerdeti.iterator();
+
+            if (itrOffertePerdenti.hasNext()) {
+                OffertaTempoFisso offertaPerdente = itrOffertePerdenti.next();
+                AstaTempoFisso astaTempoFisso = offertaPerdente.getAstaRiferimento();
+                Account destinatario = offertaPerdente.getCompratoreCollegato();
+
+                log.debug(LOG_COSTRUZIONE_NOTIFICA);
+
+                Notifica notifica = new Notifica(
+                        LocalDate.now(),
+                        LocalTime.now(),
+                        ASTA_PERSA,
+                        astaTempoFisso.getProprietario(),
+                        destinatario,
+                        astaTempoFisso
+                );
+
+                while(itrOffertePerdenti.hasNext()) {
+                    notifica.addDestinatario(itrOffertePerdenti.next().getCompratoreCollegato());
+                }
+
+                sendNotifica(notifica);
+            }
         }
     }
 

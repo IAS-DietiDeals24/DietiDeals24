@@ -35,4 +35,6 @@ public interface AstaTempoFissoService {
     void convertRelations(AstaTempoFissoDto astaTempoFissoDto, AstaTempoFisso astaTempoFisso) throws InvalidParameterException;
 
     void updatePresentFields(AstaTempoFissoDto updatedAstaTempoFissoDto, AstaTempoFisso existingAstaTempoFisso) throws InvalidParameterException;
+
+    void closeAstaTempoFisso(AstaTempoFisso expiredAsta);
 }
