@@ -1,11 +1,10 @@
 package com.iasdietideals24.dietideals24.controller
 
-import android.text.Editable
-import android.text.TextWatcher
+import android.view.View
 import android.widget.ArrayAdapter
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.HomeBinding
 import com.iasdietideals24.dietideals24.model.ModelHome
 import com.iasdietideals24.dietideals24.utilities.adapters.AdapterHome
@@ -17,7 +16,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -47,15 +45,13 @@ class ControllerHome : Controller<HomeBinding>() {
     override fun onResume() {
         super.onResume()
 
-        if (binding.homeRicerca.text.isNullOrEmpty()) {
-            jobRecupero = lifecycleScope.launch {
-                while (isActive) {
-                    viewModel.invalidate()
+        jobRecupero = lifecycleScope.launch {
+            while (isActive) {
+                viewModel.invalidate()
 
-                    recuperaAste()
+                recuperaAste()
 
-                    delay(10000)
-                }
+                delay(10000)
             }
         }
     }
@@ -64,72 +60,45 @@ class ControllerHome : Controller<HomeBinding>() {
     override fun impostaEventiClick() {
         binding.homeFiltro.setOnItemClickListener { _, _, _, _ ->
             viewModel.filter.value = binding.homeFiltro.text.toString()
-        }
-    }
 
-    @UIBuilder
-    override fun impostaEventiDiCambiamentoCampi() {
-        binding.homeFiltro.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                jobRecupero = lifecycleScope.launch {
-                    while (isActive) {
-                        viewModel.invalidate()
-
-                        recuperaAste()
-
-                        delay(10000)
-                    }
-                }
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {}
-        })
-
-        binding.homeRicerca.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                viewModel.searchText.value = s.toString()
-
+            jobRecupero = lifecycleScope.launch {
                 jobRecupero?.cancel()
 
-                if (!s.isNullOrEmpty()) {
-                    jobRecupero = lifecycleScope.launch {
-                        delay(1000)
+                viewModel.invalidate()
 
-                        while (isActive) {
-                            viewModel.invalidate()
+                recuperaAste()
 
-                            recuperaAste()
-
-                            delay(10000)
-
-                            withContext(Dispatchers.IO) {
-                                logger.scriviLog("Performing auction research")
-                            }
-                        }
-                    }
-                } else if (s.isNullOrEmpty() && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-                    jobRecupero = lifecycleScope.launch {
-                        while (isActive) {
-                            viewModel.invalidate()
-
-                            recuperaAste()
-
-                            delay(10000)
-
-                            withContext(Dispatchers.IO) {
-                                logger.scriviLog("Performing auction research")
-                            }
-                        }
-                    }
-                }
+                delay(10000)
             }
+        }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        binding.homeCampoRicerca.setEndIconOnClickListener {
+            viewModel.searchText.value = binding.homeRicerca.text.toString()
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
+            jobRecupero = lifecycleScope.launch {
+                jobRecupero?.cancel()
+
+                viewModel.invalidate()
+
+                recuperaAste()
+
+                delay(10000)
+            }
+        }
+
+        binding.homeTipo.setOnItemClickListener { _, _, position, _ ->
+            viewModel.tipo = position
+
+            jobRecupero = lifecycleScope.launch {
+                jobRecupero?.cancel()
+
+                viewModel.invalidate()
+
+                recuperaAste()
+
+                delay(10000)
+            }
+        }
     }
 
     @UIBuilder
@@ -151,6 +120,67 @@ class ControllerHome : Controller<HomeBinding>() {
     override fun elaborazioneAggiuntiva() {
         binding.homeRecyclerView.layoutManager = LinearLayoutManager(fragmentContext)
         binding.homeRecyclerView.adapter = adapterHome
+
+        when (CurrentUser.tipoAccount) {
+            TipoAccount.VENDITORE -> {
+                binding.homeCampoTipo.visibility = View.GONE
+            }
+
+            TipoAccount.COMPRATORE -> {
+                val categorieAsta: MutableList<String> = mutableListOf(
+                    getString(R.string.tipoAsta_astaSilenziosa),
+                    getString(R.string.tipoAsta_astaTempoFisso)
+                )
+
+                val adapter: ArrayAdapter<String> = ArrayAdapter(
+                    fragmentContext,
+                    android.R.layout.simple_dropdown_item_1line,
+                    categorieAsta
+                )
+
+                binding.homeTipo.setAdapter(adapter)
+
+                binding.homeTipo.setOnItemClickListener { _, _, position, _ ->
+                    viewModel.tipo = position
+
+                    jobRecupero = lifecycleScope.launch {
+                        jobRecupero?.cancel()
+
+                        viewModel.invalidate()
+
+                        recuperaAste()
+                    }
+                }
+            }
+
+            else -> {
+                val categorieAsta: MutableList<String> = mutableListOf(
+                    getString(R.string.tipoAsta_astaSilenziosa),
+                    getString(R.string.tipoAsta_astaTempoFisso),
+                    getString(R.string.tipoAsta_astaInversa)
+                )
+
+                val adapter: ArrayAdapter<String> = ArrayAdapter(
+                    fragmentContext,
+                    android.R.layout.simple_dropdown_item_1line,
+                    categorieAsta
+                )
+
+                binding.homeTipo.setAdapter(adapter)
+
+                binding.homeTipo.setOnItemClickListener { _, _, position, _ ->
+                    viewModel.tipo = position
+
+                    jobRecupero = lifecycleScope.launch {
+                        jobRecupero?.cancel()
+
+                        viewModel.invalidate()
+
+                        recuperaAste()
+                    }
+                }
+            }
+        }
 
         lifecycleScope.launch {
             val categorieAsta: MutableList<String> = mutableListOf("")
@@ -174,11 +204,14 @@ class ControllerHome : Controller<HomeBinding>() {
     private suspend fun recuperaAste() {
         when (CurrentUser.tipoAccount) {
             TipoAccount.COMPRATORE -> {
-                merge(
-                    viewModel.getAsteTempoFissoFlows(),
-                    viewModel.getAsteSilenzioseFlows()
-                ).collectLatest { pagingData ->
-                    adapterHome.submitData(pagingData)
+                if (viewModel.tipo == 0) {
+                    viewModel.getAsteSilenzioseFlows().collectLatest { pagingData ->
+                        adapterHome.submitData(pagingData)
+                    }
+                } else {
+                    viewModel.getAsteTempoFissoFlows().collectLatest { pagingData ->
+                        adapterHome.submitData(pagingData)
+                    }
                 }
             }
 
@@ -189,12 +222,24 @@ class ControllerHome : Controller<HomeBinding>() {
             }
 
             else -> {
-                merge(
-                    viewModel.getAsteTempoFissoFlows(),
-                    viewModel.getAsteSilenzioseFlows(),
-                    viewModel.getAsteInverseFlows()
-                ).collectLatest { pagingData ->
-                    adapterHome.submitData(pagingData)
+                when (viewModel.tipo) {
+                    0 -> {
+                        viewModel.getAsteSilenzioseFlows().collectLatest { pagingData ->
+                            adapterHome.submitData(pagingData)
+                        }
+                    }
+
+                    1 -> {
+                        viewModel.getAsteTempoFissoFlows().collectLatest { pagingData ->
+                            adapterHome.submitData(pagingData)
+                        }
+                    }
+
+                    else -> {
+                        viewModel.getAsteInverseFlows().collectLatest { pagingData ->
+                            adapterHome.submitData(pagingData)
+                        }
+                    }
                 }
             }
         }

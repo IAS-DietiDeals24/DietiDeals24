@@ -24,6 +24,13 @@ class ModelHome(
     private val tempoFissoRepository: AstaTempoFissoRepository,
     private val silenziosaRepository: AstaSilenziosaRepository
 ) : ViewModel() {
+    private var _tipo: Int = 0
+
+    var tipo: Int
+        get() = _tipo
+        set(value) {
+            _tipo = value
+        }
 
     private val _searchText = MutableStateFlow("")
 
