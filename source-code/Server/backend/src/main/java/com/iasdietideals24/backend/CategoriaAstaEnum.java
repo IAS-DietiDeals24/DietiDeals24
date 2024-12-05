@@ -1,4 +1,4 @@
-package com.iasdietideals24.backend.utilities;
+package com.iasdietideals24.backend;
 
 /**
  * L'enumeration "CategoriaAsta" rappresenta le diverse categorie a cui può essere assegnata un'asta.

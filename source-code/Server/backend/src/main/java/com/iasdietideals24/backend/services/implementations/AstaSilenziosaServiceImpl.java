@@ -13,7 +13,7 @@ import com.iasdietideals24.backend.mapstruct.mappers.AstaSilenziosaMapper;
 import com.iasdietideals24.backend.repositories.AstaSilenziosaRepository;
 import com.iasdietideals24.backend.services.AstaDiVenditoreService;
 import com.iasdietideals24.backend.services.AstaSilenziosaService;
-import com.iasdietideals24.backend.utilities.RelationsConverter;
+import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

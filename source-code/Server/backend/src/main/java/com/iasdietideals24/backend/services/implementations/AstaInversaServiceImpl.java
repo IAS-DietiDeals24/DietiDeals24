@@ -1,8 +1,6 @@
 package com.iasdietideals24.backend.services.implementations;
 
-import com.iasdietideals24.backend.entities.AstaInversa;
-import com.iasdietideals24.backend.entities.Offerta;
-import com.iasdietideals24.backend.entities.OffertaInversa;
+import com.iasdietideals24.backend.entities.*;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
@@ -13,7 +11,7 @@ import com.iasdietideals24.backend.mapstruct.mappers.AstaInversaMapper;
 import com.iasdietideals24.backend.repositories.AstaInversaRepository;
 import com.iasdietideals24.backend.services.AstaDiCompratoreService;
 import com.iasdietideals24.backend.services.AstaInversaService;
-import com.iasdietideals24.backend.utilities.RelationsConverter;
+import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -208,8 +206,8 @@ public class AstaInversaServiceImpl implements AstaInversaService {
     @Override
     public void delete(Long idAsta) {
 
-        log.trace("Id asta da eliminare: {}", idAsta);
         log.debug("Elimino l'asta inversa dal database...");
+        log.trace("Id asta da eliminare: {}", idAsta);
 
         // Eliminiamo l'entità con l'id passato per parametro
         astaInversaRepository.deleteById(idAsta);

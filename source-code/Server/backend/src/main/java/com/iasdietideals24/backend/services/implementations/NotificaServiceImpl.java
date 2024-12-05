@@ -11,7 +11,7 @@ import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
 import com.iasdietideals24.backend.mapstruct.mappers.NotificaMapper;
 import com.iasdietideals24.backend.repositories.NotificaRepository;
 import com.iasdietideals24.backend.services.NotificaService;
-import com.iasdietideals24.backend.utilities.RelationsConverter;
+import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

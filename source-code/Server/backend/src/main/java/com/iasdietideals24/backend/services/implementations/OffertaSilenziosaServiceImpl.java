@@ -3,6 +3,8 @@ package com.iasdietideals24.backend.services.implementations;
 import com.iasdietideals24.backend.entities.Asta;
 import com.iasdietideals24.backend.entities.AstaSilenziosa;
 import com.iasdietideals24.backend.entities.OffertaSilenziosa;
+import com.iasdietideals24.backend.entities.utilities.StatoAsta;
+import com.iasdietideals24.backend.entities.utilities.StatoOffertaSilenziosa;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
@@ -14,13 +16,16 @@ import com.iasdietideals24.backend.mapstruct.mappers.StatoOffertaSilenziosaMappe
 import com.iasdietideals24.backend.repositories.OffertaSilenziosaRepository;
 import com.iasdietideals24.backend.services.OffertaDiCompratoreService;
 import com.iasdietideals24.backend.services.OffertaSilenziosaService;
-import com.iasdietideals24.backend.utilities.RelationsConverter;
+import com.iasdietideals24.backend.services.helper.BuildNotice;
+import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -35,17 +40,20 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
     private final OffertaSilenziosaMapper offertaSilenziosaMapper;
     private final OffertaSilenziosaRepository offertaSilenziosaRepository;
     private final RelationsConverter relationsConverter;
+    private final BuildNotice buildNotice;
 
     public OffertaSilenziosaServiceImpl(OffertaDiCompratoreService offertaDiCompratoreService,
                                         StatoOffertaSilenziosaMapper statoOffertaSilenziosaMapper,
                                         OffertaSilenziosaMapper offertaSilenziosaMapper,
                                         OffertaSilenziosaRepository offertaSilenziosaRepository,
-                                        RelationsConverter relationsConverter) {
+                                        RelationsConverter relationsConverter,
+                                        BuildNotice buildNotice) {
         this.offertaDiCompratoreService = offertaDiCompratoreService;
         this.statoOffertaSilenziosaMapper = statoOffertaSilenziosaMapper;
         this.offertaSilenziosaMapper = offertaSilenziosaMapper;
         this.offertaSilenziosaRepository = offertaSilenziosaRepository;
         this.relationsConverter = relationsConverter;
+        this.buildNotice = buildNotice;
     }
 
     @Override
@@ -74,6 +82,15 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
 
         log.trace("savedOffertaSilenziosa: {}", savedOffertaSilenziosa);
         log.debug("Offerta silenziosa salvata correttamente nel database con id offerta {}...", savedOffertaSilenziosa.getIdOfferta());
+
+        // Invio le notifiche necessarie
+        log.debug("Invio la notifica al proprietario dell'asta...");
+
+        buildNotice.notifyNuovaOfferta(savedOffertaSilenziosa);
+
+        log.debug("Notifica inviata con successo.");
+
+        ifAcceptedUpdateAstaAndOfferte(savedOffertaSilenziosa);
 
         return offertaSilenziosaMapper.toDto(savedOffertaSilenziosa);
     }
@@ -287,6 +304,8 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
         offertaDiCompratoreService.updatePresentFields(updatedOffertaSilenziosaDto, existingOffertaSilenziosa);
         ifPresentUpdateStato(updatedOffertaSilenziosaDto.getStato(), existingOffertaSilenziosa);
 
+        ifAcceptedUpdateAstaAndOfferte(existingOffertaSilenziosa);
+
         log.debug("Modifiche di offerta silenziosa effettuate correttamente.");
 
         // Non è possibile modificare l'associazione "astaRiferimento" tramite la risorsa "offerte/di-compratori/silenziose"
@@ -302,5 +321,37 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
         }
 
         log.trace("'stato' modificato correttamente.");
+    }
+
+    private void ifAcceptedUpdateAstaAndOfferte(OffertaSilenziosa offertaSilenziosa) {
+
+        log.debug("Controllo se lo stato dell'offerta è 'accettata'...");
+
+        if (offertaSilenziosa != null && offertaSilenziosa.getStato().equals(StatoOffertaSilenziosa.ACCEPTED)) {
+
+            log.debug("L'offerta è stata accettata! Chiudo l'asta...");
+
+            AstaSilenziosa astaSilenziosa = offertaSilenziosa.getAstaRiferimento();
+            astaSilenziosa.setStato(StatoAsta.CLOSED);
+
+            log.debug("Asta chiusa. Rifiuto tutte le offerte in attesa...");
+
+            Set<OffertaSilenziosa> offerteRifiutate = new HashSet<>();
+            for (OffertaSilenziosa pendingOfferta : astaSilenziosa.getOfferteRicevute()) {
+
+                if (pendingOfferta.getStato().equals(StatoOffertaSilenziosa.PENDING)) {
+                    pendingOfferta.setStato(StatoOffertaSilenziosa.REJECTED);
+                    offerteRifiutate.add(pendingOfferta);
+                }
+            }
+
+            log.debug("Offerte rifiutate. Invio le notifiche agli offerenti...");
+
+            buildNotice.notifyOffertaSilenziosaRifiutata(offerteRifiutate);
+            buildNotice.notifyOffertaSilenziosaAccettata(offertaSilenziosa);
+
+            log.debug("Notifiche inviate con successo.");
+
+        }
     }
 }

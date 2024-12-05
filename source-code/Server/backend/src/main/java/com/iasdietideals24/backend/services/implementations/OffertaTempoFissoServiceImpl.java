@@ -13,7 +13,8 @@ import com.iasdietideals24.backend.mapstruct.mappers.OffertaTempoFissoMapper;
 import com.iasdietideals24.backend.repositories.OffertaTempoFissoRepository;
 import com.iasdietideals24.backend.services.OffertaDiCompratoreService;
 import com.iasdietideals24.backend.services.OffertaTempoFissoService;
-import com.iasdietideals24.backend.utilities.RelationsConverter;
+import com.iasdietideals24.backend.services.helper.BuildNotice;
+import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,15 +34,18 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
     private final OffertaTempoFissoMapper offertaTempoFissoMapper;
     private final OffertaTempoFissoRepository offertaTempoFissoRepository;
     private final RelationsConverter relationsConverter;
+    private final BuildNotice buildNotice;
 
     public OffertaTempoFissoServiceImpl(OffertaDiCompratoreService offertaDiCompratoreService,
-                                     OffertaTempoFissoMapper offertaTempoFissoMapper,
-                                     OffertaTempoFissoRepository offertaTempoFissoRepository,
-                                     RelationsConverter relationsConverter) {
+                                        OffertaTempoFissoMapper offertaTempoFissoMapper,
+                                        OffertaTempoFissoRepository offertaTempoFissoRepository,
+                                        RelationsConverter relationsConverter,
+                                        BuildNotice buildNotice) {
         this.offertaDiCompratoreService = offertaDiCompratoreService;
         this.offertaTempoFissoMapper = offertaTempoFissoMapper;
         this.offertaTempoFissoRepository = offertaTempoFissoRepository;
         this.relationsConverter = relationsConverter;
+        this.buildNotice = buildNotice;
     }
 
     @Override
@@ -70,6 +74,13 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
 
         log.trace("savedOffertaTempoFisso: {}", savedOffertaTempoFisso);
         log.debug("Offerta a tempo fisso salvata correttamente nel database con id offerta {}...", savedOffertaTempoFisso.getIdOfferta());
+
+        // Invio le notifiche necessarie
+        log.debug("Invio la notifica al proprietario dell'asta...");
+
+        buildNotice.notifyNuovaOfferta(savedOffertaTempoFisso);
+
+        log.debug("Notifica inviata con successo.");
 
         return offertaTempoFissoMapper.toDto(savedOffertaTempoFisso);
     }

@@ -1,5 +1,6 @@
 package com.iasdietideals24.backend.entities;
 
+import com.iasdietideals24.backend.entities.utilities.StatoAsta;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -21,8 +22,8 @@ public abstract class AstaDiVenditore extends Asta {
     private Venditore proprietario;
 
     // AllArgsConstructor
-    protected AstaDiVenditore(@NonNull CategoriaAsta categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Venditore proprietario) {
-        super(categoria, nome, descrizione, dataScadenza, oraScadenza, immagine);
+    protected AstaDiVenditore(@NonNull CategoriaAsta categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Venditore proprietario, StatoAsta statoAsta) {
+        super(categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, statoAsta);
 
         this.proprietario = proprietario;
         proprietario.addAstaPosseduta(this);

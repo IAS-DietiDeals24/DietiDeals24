@@ -11,7 +11,7 @@ import com.iasdietideals24.backend.mapstruct.dto.shallows.ProfiloShallowDto;
 import com.iasdietideals24.backend.mapstruct.dto.utilities.TokensAccountDto;
 import com.iasdietideals24.backend.mapstruct.mappers.TokensAccountMapper;
 import com.iasdietideals24.backend.services.AccountService;
-import com.iasdietideals24.backend.utilities.RelationsConverter;
+import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

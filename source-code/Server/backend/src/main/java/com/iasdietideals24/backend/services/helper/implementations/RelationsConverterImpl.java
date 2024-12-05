@@ -1,11 +1,11 @@
-package com.iasdietideals24.backend.utilities.implementations;
+package com.iasdietideals24.backend.services.helper.implementations;
 
 import com.iasdietideals24.backend.entities.*;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.*;
 import com.iasdietideals24.backend.repositories.*;
-import com.iasdietideals24.backend.utilities.RelationsConverter;
+import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

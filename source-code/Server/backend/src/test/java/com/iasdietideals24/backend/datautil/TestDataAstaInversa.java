@@ -3,6 +3,7 @@ package com.iasdietideals24.backend.datautil;
 import com.iasdietideals24.backend.entities.AstaInversa;
 import com.iasdietideals24.backend.entities.CategoriaAsta;
 import com.iasdietideals24.backend.entities.Compratore;
+import com.iasdietideals24.backend.entities.utilities.StatoAsta;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,7 +22,8 @@ public final class TestDataAstaInversa {
                 LocalTime.of(18, 44),
                 null,
                 proprietario,
-                BigDecimal.valueOf(1.00));
+                BigDecimal.valueOf(1.00),
+                StatoAsta.ACTIVE);
     }
 
     public static AstaInversa createAstaInversaB(final CategoriaAsta categoriaAsta, final Compratore proprietario) {
@@ -32,7 +34,8 @@ public final class TestDataAstaInversa {
                 LocalTime.of(18, 44),
                 new byte[]{-126, 19, 27},
                 proprietario,
-                BigDecimal.valueOf(2.00));
+                BigDecimal.valueOf(2.00),
+                StatoAsta.ACTIVE);
     }
 
     public static AstaInversa createAstaInversaC(final CategoriaAsta categoriaAsta, final Compratore proprietario) {
@@ -43,6 +46,7 @@ public final class TestDataAstaInversa {
                 LocalTime.of(17, 44),
                 new byte[]{-100, -20, -14},
                 proprietario,
-                BigDecimal.valueOf(3.00));
+                BigDecimal.valueOf(3.00),
+                StatoAsta.CLOSED);
     }
 }

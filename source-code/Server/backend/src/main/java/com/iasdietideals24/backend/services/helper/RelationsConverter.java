@@ -1,4 +1,4 @@
-package com.iasdietideals24.backend.utilities;
+package com.iasdietideals24.backend.services.helper;
 
 import com.iasdietideals24.backend.entities.*;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;

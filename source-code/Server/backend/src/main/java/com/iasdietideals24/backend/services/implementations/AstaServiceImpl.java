@@ -3,13 +3,16 @@ package com.iasdietideals24.backend.services.implementations;
 import com.iasdietideals24.backend.entities.Asta;
 import com.iasdietideals24.backend.entities.CategoriaAsta;
 import com.iasdietideals24.backend.entities.Notifica;
+import com.iasdietideals24.backend.entities.OffertaSilenziosa;
+import com.iasdietideals24.backend.entities.utilities.StatoAsta;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.mapstruct.dto.AstaDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.CategoriaAstaShallowDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.NotificaShallowDto;
+import com.iasdietideals24.backend.mapstruct.mappers.StatoAstaMapper;
 import com.iasdietideals24.backend.services.AstaService;
-import com.iasdietideals24.backend.utilities.RelationsConverter;
+import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +25,11 @@ import java.util.Set;
 public class AstaServiceImpl implements AstaService {
 
     private final RelationsConverter relationsConverter;
+    private final StatoAstaMapper statoAstaMapper;
 
-    protected AstaServiceImpl(RelationsConverter relationsConverter) {
+    protected AstaServiceImpl(RelationsConverter relationsConverter, StatoAstaMapper statoAstaMapper) {
         this.relationsConverter = relationsConverter;
+        this.statoAstaMapper = statoAstaMapper;
     }
 
     @Override
@@ -32,6 +37,7 @@ public class AstaServiceImpl implements AstaService {
 
         log.debug("Verifico l'integrità dei dati di asta...");
 
+        checkStatoValid(astaDto.getStato());
         checkNomeValid(astaDto.getNome());
         checkDescrizioneValid(astaDto.getDescrizione());
         checkDataScadenzaValid(astaDto.getDataScadenza());
@@ -39,6 +45,18 @@ public class AstaServiceImpl implements AstaService {
         checkCategoriaValid(astaDto.getCategoriaShallow());
 
         log.debug("Integrità dei dati di asta verificata.");
+    }
+
+    private void checkStatoValid(String stato) throws InvalidParameterException {
+
+        log.trace("Controllo che 'stato' sia valido...");
+
+        if (stato == null)
+            throw new InvalidParameterException("Lo stato non può essere null!");
+        else if (stato.isBlank())
+            throw new InvalidParameterException("Lo stato non può essere vuoto!");
+
+        log.trace("'stato' valido.");
     }
 
     private void checkCategoriaValid(CategoriaAstaShallowDto categoria) throws InvalidParameterException {
@@ -150,6 +168,7 @@ public class AstaServiceImpl implements AstaService {
 
         log.debug("Effettuo le modifiche di asta richieste...");
 
+        ifPresentUpdateStato(updatedAstaDto.getStato(), existingAsta);
         ifPresentUpdateNome(updatedAstaDto.getNome(), existingAsta);
         ifPresentUpdateDescrizione(updatedAstaDto.getDescrizione(), existingAsta);
         ifPresentUpdateDataScadenza(updatedAstaDto.getDataScadenza(), existingAsta);
@@ -159,6 +178,18 @@ public class AstaServiceImpl implements AstaService {
         log.debug("Modifiche di asta effettuate correttamente.");
 
         // Non è possibile modificare l'associazione "categoria", "notificheAssociate" tramite la risorsa "aste"
+    }
+
+    private void ifPresentUpdateStato(String stato, Asta existingAsta) throws InvalidParameterException {
+
+        log.trace("Effettuo la modifica di 'stato'...");
+
+        if (stato != null) {
+            checkStatoValid(stato);
+            existingAsta.setStato(statoAstaMapper.toEntity(stato));
+        }
+
+        log.trace("'stato' modificato correttamente.");
     }
 
     private void ifPresentUpdateNome(String updatedNome, Asta existingAsta) throws InvalidParameterException {

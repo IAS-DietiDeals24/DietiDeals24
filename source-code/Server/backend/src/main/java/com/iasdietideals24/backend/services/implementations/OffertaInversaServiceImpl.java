@@ -1,8 +1,6 @@
 package com.iasdietideals24.backend.services.implementations;
 
-import com.iasdietideals24.backend.entities.Asta;
-import com.iasdietideals24.backend.entities.AstaInversa;
-import com.iasdietideals24.backend.entities.OffertaInversa;
+import com.iasdietideals24.backend.entities.*;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
@@ -13,7 +11,8 @@ import com.iasdietideals24.backend.mapstruct.mappers.OffertaInversaMapper;
 import com.iasdietideals24.backend.repositories.OffertaInversaRepository;
 import com.iasdietideals24.backend.services.OffertaDiVenditoreService;
 import com.iasdietideals24.backend.services.OffertaInversaService;
-import com.iasdietideals24.backend.utilities.RelationsConverter;
+import com.iasdietideals24.backend.services.helper.BuildNotice;
+import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,15 +32,18 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
     private final OffertaInversaMapper offertaInversaMapper;
     private final OffertaInversaRepository offertaInversaRepository;
     private final RelationsConverter relationsConverter;
+    private final BuildNotice buildNotice;
 
     public OffertaInversaServiceImpl(OffertaDiVenditoreService offertaDiVenditoreService,
                                      OffertaInversaMapper offertaInversaMapper,
                                      OffertaInversaRepository offertaInversaRepository,
-                                     RelationsConverter relationsConverter) {
+                                     RelationsConverter relationsConverter,
+                                     BuildNotice buildNotice) {
         this.offertaDiVenditoreService = offertaDiVenditoreService;
         this.offertaInversaMapper = offertaInversaMapper;
         this.offertaInversaRepository = offertaInversaRepository;
         this.relationsConverter = relationsConverter;
+        this.buildNotice = buildNotice;
     }
 
     @Override
@@ -70,6 +72,13 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
 
         log.trace("savedOffertaInversa: {}", savedOffertaInversa);
         log.debug("Offerta inversa salvata correttamente nel database con id offerta {}...", savedOffertaInversa.getIdOfferta());
+
+        // Invio le notifiche necessarie
+        log.debug("Invio la notifica al proprietario dell'asta...");
+
+        buildNotice.notifyNuovaOfferta(savedOffertaInversa);
+
+        log.debug("Notifica inviata con successo.");
 
         return offertaInversaMapper.toDto(savedOffertaInversa);
     }

@@ -3,6 +3,7 @@ package com.iasdietideals24.backend.datautil;
 import com.iasdietideals24.backend.entities.AstaSilenziosa;
 import com.iasdietideals24.backend.entities.CategoriaAsta;
 import com.iasdietideals24.backend.entities.Venditore;
+import com.iasdietideals24.backend.entities.utilities.StatoAsta;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -19,7 +20,8 @@ public final class TestDataAstaSilenziosa {
                 LocalDate.of(2025, 1, 11),
                 LocalTime.of(10, 38),
                 null,
-                proprietario);
+                proprietario,
+                StatoAsta.ACTIVE);
     }
 
     public static AstaSilenziosa createAstaSilenziosaB(final CategoriaAsta categoriaAsta, final Venditore proprietario) {
@@ -29,7 +31,8 @@ public final class TestDataAstaSilenziosa {
                 LocalDate.of(2024, 12, 24),
                 LocalTime.of(18, 22),
                 new byte[]{-93, -32, 91},
-                proprietario);
+                proprietario,
+                StatoAsta.ACTIVE);
     }
 
     public static AstaSilenziosa createAstaSilenziosaC(final CategoriaAsta categoriaAsta, final Venditore proprietario) {
@@ -39,6 +42,7 @@ public final class TestDataAstaSilenziosa {
                 LocalDate.of(2024, 6, 19),
                 LocalTime.of(18, 35),
                 new byte[]{-69, 18, 51},
-                proprietario);
+                proprietario,
+                StatoAsta.CLOSED);
     }
 }

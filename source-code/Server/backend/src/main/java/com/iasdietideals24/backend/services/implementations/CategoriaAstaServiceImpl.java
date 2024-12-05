@@ -10,7 +10,7 @@ import com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto;
 import com.iasdietideals24.backend.mapstruct.mappers.CategoriaAstaMapper;
 import com.iasdietideals24.backend.repositories.CategoriaAstaRepository;
 import com.iasdietideals24.backend.services.CategoriaAstaService;
-import com.iasdietideals24.backend.utilities.RelationsConverter;
+import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

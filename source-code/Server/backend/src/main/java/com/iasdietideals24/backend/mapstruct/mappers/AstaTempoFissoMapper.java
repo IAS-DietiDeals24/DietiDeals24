@@ -9,7 +9,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring",
-        uses = {AccountMapper.class, NotificaMapper.class, OffertaMapper.class, CategoriaAstaMapper.class},
+        uses = {AccountMapper.class, NotificaMapper.class, OffertaMapper.class, CategoriaAstaMapper.class, StatoAstaMapper.class},
         collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED)
 public interface AstaTempoFissoMapper {
 

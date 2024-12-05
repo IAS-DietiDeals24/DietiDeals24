@@ -11,7 +11,7 @@ import com.iasdietideals24.backend.mapstruct.dto.AstaDiCompratoreDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
 import com.iasdietideals24.backend.services.AstaDiCompratoreService;
 import com.iasdietideals24.backend.services.AstaService;
-import com.iasdietideals24.backend.utilities.RelationsConverter;
+import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

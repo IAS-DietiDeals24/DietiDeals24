@@ -19,7 +19,7 @@ import com.iasdietideals24.backend.mapstruct.mappers.PutProfiloMapper;
 import com.iasdietideals24.backend.repositories.AccountRepository;
 import com.iasdietideals24.backend.repositories.ProfiloRepository;
 import com.iasdietideals24.backend.services.ProfiloService;
-import com.iasdietideals24.backend.utilities.RelationsConverter;
+import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

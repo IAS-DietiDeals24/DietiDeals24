@@ -17,6 +17,8 @@ public class AstaDto {
 
     private Long idAsta;
 
+    private String stato;
+
     private String nome;
 
     private String descrizione;

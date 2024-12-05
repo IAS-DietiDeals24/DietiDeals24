@@ -12,7 +12,7 @@ import com.iasdietideals24.backend.mapstruct.mappers.VenditoreMapper;
 import com.iasdietideals24.backend.repositories.VenditoreRepository;
 import com.iasdietideals24.backend.services.AccountService;
 import com.iasdietideals24.backend.services.VenditoreService;
-import com.iasdietideals24.backend.utilities.RelationsConverter;
+import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

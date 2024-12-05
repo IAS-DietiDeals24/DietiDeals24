@@ -1,5 +1,6 @@
 package com.iasdietideals24.backend.entities;
 
+import com.iasdietideals24.backend.entities.utilities.StatoAsta;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,8 +32,8 @@ public class AstaInversa extends AstaDiCompratore {
     private Set<OffertaInversa> offerteRicevute = new LinkedHashSet<>();
 
     // AllArgsConstructor
-    public AstaInversa(@NonNull CategoriaAsta categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Compratore proprietario, @NonNull BigDecimal sogliaIniziale) {
-        super(categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, proprietario);
+    public AstaInversa(@NonNull CategoriaAsta categoria, @NonNull String nome, @NonNull String descrizione, @NonNull LocalDate dataScadenza, @NonNull LocalTime oraScadenza, byte[] immagine, @NonNull Compratore proprietario, @NonNull BigDecimal sogliaIniziale, StatoAsta statoAsta) {
+        super(categoria, nome, descrizione, dataScadenza, oraScadenza, immagine, proprietario, statoAsta);
 
         this.sogliaIniziale = sogliaIniziale;
     }

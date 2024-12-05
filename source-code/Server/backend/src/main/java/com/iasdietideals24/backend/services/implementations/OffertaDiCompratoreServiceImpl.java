@@ -10,7 +10,7 @@ import com.iasdietideals24.backend.mapstruct.dto.OffertaDiCompratoreDto;
 import com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto;
 import com.iasdietideals24.backend.services.OffertaDiCompratoreService;
 import com.iasdietideals24.backend.services.OffertaService;
-import com.iasdietideals24.backend.utilities.RelationsConverter;
+import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
