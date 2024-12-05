@@ -13,7 +13,6 @@ import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.repositories.CategoriaAstaRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -104,6 +103,10 @@ class ControllerHome : Controller<HomeBinding>() {
                             recuperaAste()
 
                             delay(10000)
+
+                            withContext(Dispatchers.IO) {
+                                logger.scriviLog("Performing auction research")
+                            }
                         }
                     }
                 } else if (s.isNullOrEmpty() && lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
@@ -114,6 +117,10 @@ class ControllerHome : Controller<HomeBinding>() {
                             recuperaAste()
 
                             delay(10000)
+
+                            withContext(Dispatchers.IO) {
+                                logger.scriviLog("Performing auction research")
+                            }
                         }
                     }
                 }
@@ -192,6 +199,8 @@ class ControllerHome : Controller<HomeBinding>() {
             }
         }
 
-        Logger.log("Performing auction research")
+        withContext(Dispatchers.IO) {
+            logger.scriviLog("Performing auction research")
+        }
     }
 }

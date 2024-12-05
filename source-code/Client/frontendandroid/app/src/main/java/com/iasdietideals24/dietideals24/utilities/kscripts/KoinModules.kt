@@ -51,6 +51,7 @@ import com.iasdietideals24.dietideals24.utilities.services.OffertaSilenziosaServ
 import com.iasdietideals24.dietideals24.utilities.services.OffertaTempoFissoService
 import com.iasdietideals24.dietideals24.utilities.services.ProfiloService
 import com.iasdietideals24.dietideals24.utilities.services.VenditoreService
+import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import com.iasdietideals24.dietideals24.utilities.tools.RetrofitController
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
@@ -60,6 +61,10 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "dd
 
 val dataStoreModule = module {
     single<DataStore<Preferences>> { androidContext().dataStore }
+}
+
+val loggerModule = module {
+    single<Logger> { Logger(get()) }
 }
 
 val serviceModule = module {

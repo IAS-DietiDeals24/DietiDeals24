@@ -35,7 +35,6 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.kscripts.toMillis
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -223,7 +222,9 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
                             .setTextColor(resources.getColor(R.color.grigio, null))
                             .show()
 
-                        Logger.log("Profile edited successfully")
+                        withContext(Dispatchers.IO) {
+                            logger.scriviLog("Profile edited successfully")
+                        }
 
                         listenerProfile?.onGoToProfile(
                             CurrentUser.id,

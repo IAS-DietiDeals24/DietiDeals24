@@ -2,6 +2,7 @@ package com.iasdietideals24.dietideals24.utilities.viewHolders
 
 import android.content.Context
 import android.content.res.Resources
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -30,6 +31,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
 import java.math.BigDecimal
+import java.time.LocalDateTime
 
 class ViewHolderAstaCreata(private val binding: AstaBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -51,6 +53,9 @@ class ViewHolderAstaCreata(private val binding: AstaBinding) :
     private val astaTempoFissoRepository: AstaTempoFissoRepository by inject(
         AstaTempoFissoRepository::class.java
     )
+
+    // Logger
+    private val logger: Logger by inject(Logger::class.java)
 
     // Listeners
     private var listenerGoToDetails: OnGoToDetails? = null
@@ -95,9 +100,21 @@ class ViewHolderAstaCreata(private val binding: AstaBinding) :
                     resources.getString(R.string.dettagliAsta_testoOfferta1)
             }
         }
-        binding.astaDataScadenza.text =
-            currentAsta.dataScadenza.toLocalStringShort()
-        binding.astaOraScadenza.text = currentAsta.oraScadenza.toString()
+
+        if (currentAsta.dataScadenza.atTime(currentAsta.oraScadenza).isBefore(LocalDateTime.now())) {
+            binding.astaDataScadenza.text = resources.getString(R.string.astaScaduta)
+            binding.astaOraScadenza.visibility = View.GONE
+            binding.astaScadenza.visibility = View.GONE
+        } else {
+            binding.astaDataScadenza.text =
+                currentAsta.dataScadenza.toLocalStringShort()
+            binding.astaOraScadenza.text = currentAsta.oraScadenza.toString()
+
+            if (currentAsta.foto.isNotEmpty())
+                binding.astaImmagine.load(currentAsta.foto) {
+                    crossfade(true)
+                }
+        }
 
         if (currentAsta.foto.isNotEmpty())
             binding.astaImmagine.load(currentAsta.foto) {
@@ -107,13 +124,21 @@ class ViewHolderAstaCreata(private val binding: AstaBinding) :
         binding.astaNome.text = currentAsta.nome
 
         binding.astaLinearLayout3.setOnClickListener {
-            Logger.log("Showing auction details")
+            scope.launch {
+                withContext(Dispatchers.IO) {
+                    logger.scriviLog("Showing auction details")
+                }
+            }
 
             listenerGoToDetails?.onGoToDetails(currentAsta.id, currentAsta.tipoAsta, this::class)
         }
 
         binding.astaModificaAsta.setOnClickListener {
-            Logger.log("Editing acution")
+            scope.launch {
+                withContext(Dispatchers.IO) {
+                    logger.scriviLog("Editing auction")
+                }
+            }
 
             listenerEditButton?.onEditButton(currentAsta.id, currentAsta.tipoAsta, this::class)
         }
@@ -123,10 +148,11 @@ class ViewHolderAstaCreata(private val binding: AstaBinding) :
                 .setTitle(R.string.elimina_titoloConfermaElimina)
                 .setMessage(R.string.elimina_testoConfermaElimina)
                 .setPositiveButton(R.string.ok) { _, _ ->
-                    Logger.log("Deleting auction")
-
                     scope.launch {
-                        withContext(Dispatchers.IO) { clickConferma(currentAsta) }
+                        withContext(Dispatchers.IO) {
+                            logger.scriviLog("Deleting auction")
+                            clickConferma(currentAsta)
+                        }
 
                         listenerRefresh?.onRefresh(
                             currentAsta.id,
@@ -140,7 +166,11 @@ class ViewHolderAstaCreata(private val binding: AstaBinding) :
         }
 
         binding.astaElencoOfferte.setOnClickListener {
-            Logger.log("Showing auction bids")
+            scope.launch {
+                withContext(Dispatchers.IO) {
+                    logger.scriviLog("Showing auction bids")
+                }
+            }
 
             listenerGoToBids?.onGoToBids(currentAsta.id, currentAsta.tipoAsta, this::class)
         }

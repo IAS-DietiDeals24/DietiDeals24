@@ -42,6 +42,9 @@ class ViewHolderNotifica(private val binding: NotificaBinding) :
     private val compratoreRepository: CompratoreRepository by inject(CompratoreRepository::class.java)
     private val venditoreRepository: VenditoreRepository by inject(VenditoreRepository::class.java)
 
+    // Logger
+    private val logger: Logger by inject(Logger::class.java)
+
     // Listeners
     private var listenerGoToDetails: OnGoToDetails? = null
     private var listenerGoToProfile: OnGoToProfile? = null
@@ -81,7 +84,11 @@ class ViewHolderNotifica(private val binding: NotificaBinding) :
             binding.notificaTempo.text = resources.getString(R.string.placeholder, tempoFa)
 
             binding.notificaLinearLayout1.setOnClickListener {
-                Logger.log("Showing auction details")
+                scope.launch {
+                    withContext(Dispatchers.IO) {
+                        logger.scriviLog("Showing auction details")
+                    }
+                }
 
                 listenerGoToDetails?.onGoToDetails(
                     currentNotifica.idAsta,
@@ -91,7 +98,11 @@ class ViewHolderNotifica(private val binding: NotificaBinding) :
             }
 
             binding.notificaImmagine.setOnClickListener {
-                Logger.log("Showing user profile")
+                scope.launch {
+                    withContext(Dispatchers.IO) {
+                        logger.scriviLog("Showing user profile")
+                    }
+                }
 
                 listenerGoToProfile?.onGoToProfile(currentNotifica.idMittente, this::class)
             }

@@ -47,6 +47,9 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
     private val profiloRepository: ProfiloRepository by inject(ProfiloRepository::class.java)
     private val compratoreRepository: CompratoreRepository by inject(CompratoreRepository::class.java)
 
+    // Logger
+    private val logger: Logger by inject(Logger::class.java)
+
     // Listeners
     private var immagineListener: OnGoToProfile? = null
     private var refreshListener: OnRefresh? = null
@@ -87,7 +90,11 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
             binding.offertaTempo.text = resources.getString(R.string.placeholder, tempoFa)
 
             binding.offertaImmagine.setOnClickListener {
-                Logger.log("Showing user profile")
+                scope.launch {
+                    withContext(Dispatchers.IO) {
+                        logger.scriviLog("Showing user profile")
+                    }
+                }
 
                 immagineListener?.onGoToProfile(currentOfferta.idOfferente, this::class)
             }
@@ -98,9 +105,11 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
                     MaterialAlertDialogBuilder(itemView.context, R.style.Dialog)
                         .setTitle(R.string.offerta_confermaAccetta)
                         .setPositiveButton(R.string.ok) { _, _ ->
-                            Logger.log("Accepting auction bid")
-
                             scope.launch {
+                                withContext(Dispatchers.IO) {
+                                    logger.scriviLog("Accepting auction bid")
+                                }
+
                                 clickAccetta(
                                     currentOfferta.idAsta,
                                     currentOfferta.idOfferta,
@@ -117,9 +126,11 @@ class ViewHolderOfferta(private val binding: OffertaBinding) :
                     MaterialAlertDialogBuilder(itemView.context, R.style.Dialog)
                         .setTitle(R.string.offerta_confermaRifiuto)
                         .setPositiveButton(R.string.ok) { _, _ ->
-                            Logger.log("Rejecting auction bid")
-
                             scope.launch {
+                                withContext(Dispatchers.IO) {
+                                    logger.scriviLog("Rejecting auction bid")
+                                }
+
                                 clickRifiuta(
                                     currentOfferta.idAsta,
                                     currentOfferta.idOfferta,

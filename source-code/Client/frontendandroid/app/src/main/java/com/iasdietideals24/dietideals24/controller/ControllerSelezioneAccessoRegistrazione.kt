@@ -13,7 +13,6 @@ import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.repositories.AuthRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -80,13 +79,16 @@ class ControllerSelezioneAccessoRegistrazione : Controller<Selezioneaccessoregis
 
     @EventHandler
     private fun clickAccedi() {
-        Logger.log("Sign-in selected")
-
         lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                logger.scriviLog("Sign-in selected")
+            }
+
             val url = withContext(Dispatchers.IO) {
                 authRepository.recuperaUrlAutenticazione("ias://com.iasdietideals24.dietideals24/signin")
                     .replace("/oauth2/authorize", "/login")
             }
+
             val intent = CustomTabsIntent.Builder()
                 .setShowTitle(false)
                 .setColorScheme(CustomTabsIntent.COLOR_SCHEME_SYSTEM)
@@ -113,13 +115,16 @@ class ControllerSelezioneAccessoRegistrazione : Controller<Selezioneaccessoregis
 
     @EventHandler
     private fun clickRegistrati() {
-        Logger.log("Sign-up selected")
-
         lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                logger.scriviLog("Sign-up selected")
+            }
+
             val url = withContext(Dispatchers.IO) {
                 authRepository.recuperaUrlAutenticazione("ias://com.iasdietideals24.dietideals24/signup")
                     .replace("/oauth2/authorize", "/signup")
             }
+
             val intent = CustomTabsIntent.Builder()
                 .setShowTitle(false)
                 .setColorScheme(CustomTabsIntent.COLOR_SCHEME_SYSTEM)

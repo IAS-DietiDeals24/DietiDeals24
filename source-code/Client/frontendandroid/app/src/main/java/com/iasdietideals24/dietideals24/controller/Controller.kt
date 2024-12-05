@@ -13,9 +13,18 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
 import com.iasdietideals24.dietideals24.utilities.annotations.Utility
+import com.iasdietideals24.dietideals24.utilities.tools.Logger
+import org.koin.android.ext.android.inject
 import java.lang.reflect.ParameterizedType
 
 abstract class Controller<bindingType : ViewBinding> : Fragment() {
+
+    private val _logger: Logger by inject()
+
+    /**
+     * Entità utilizzata per scrivere messaggi di log in un file.
+     */
+    protected val logger get() = _logger
 
     private var _binding: bindingType? = null
 

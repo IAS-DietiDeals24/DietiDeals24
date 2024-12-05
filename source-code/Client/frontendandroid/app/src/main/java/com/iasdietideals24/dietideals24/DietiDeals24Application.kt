@@ -4,6 +4,7 @@ import android.app.Application
 import com.iasdietideals24.dietideals24.utilities.kscripts.adapterModule
 import com.iasdietideals24.dietideals24.utilities.kscripts.dataStoreModule
 import com.iasdietideals24.dietideals24.utilities.kscripts.facebookModule
+import com.iasdietideals24.dietideals24.utilities.kscripts.loggerModule
 import com.iasdietideals24.dietideals24.utilities.kscripts.pagingSourceModule
 import com.iasdietideals24.dietideals24.utilities.kscripts.repositoryModule
 import com.iasdietideals24.dietideals24.utilities.kscripts.serviceModule
@@ -25,7 +26,8 @@ class DietiDeals24Application : Application() {
                 adapterModule,
                 viewModelModule,
                 facebookModule,
-                dataStoreModule
+                dataStoreModule,
+                loggerModule
             )
         }
     }

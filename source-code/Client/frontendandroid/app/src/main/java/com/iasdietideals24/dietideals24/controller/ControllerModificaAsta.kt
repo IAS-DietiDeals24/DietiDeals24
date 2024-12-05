@@ -51,7 +51,6 @@ import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreReposit
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -457,7 +456,9 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
                             .setTextColor(resources.getColor(R.color.grigio, null))
                             .show()
 
-                        Logger.log("Auction created successfully")
+                        withContext(Dispatchers.IO) {
+                            logger.scriviLog("Auction created successfully")
+                        }
 
                         if (args.fromDetails)
                             listenerDetails?.onGoToDetails(

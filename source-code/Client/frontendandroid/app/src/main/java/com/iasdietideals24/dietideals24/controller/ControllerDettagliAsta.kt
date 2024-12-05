@@ -53,7 +53,6 @@ import com.iasdietideals24.dietideals24.utilities.repositories.OffertaTempoFisso
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -61,6 +60,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.math.BigDecimal
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneOffset
 
@@ -95,6 +95,12 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
         super.onPause()
 
         listerMaterialDivider?.onHideMaterialDivider(false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        listerMaterialDivider?.onHideMaterialDivider(true)
     }
 
     override fun onAttach(context: Context) {
@@ -152,8 +158,6 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        listerMaterialDivider?.onHideMaterialDivider(true)
-
         lifecycleScope.launch {
             try {
                 val asta: Asta = withContext(Dispatchers.IO) { caricaAsta().toAsta() }
@@ -208,7 +212,9 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                         }
                     }
 
-                    if (CurrentUser.id == 0L || CurrentUser.id != asta.idCreatore) {
+                    if (CurrentUser.id == 0L || CurrentUser.id != asta.idCreatore ||
+                        (asta.dataFine.atTime(asta.oraFine).isAfter(LocalDateTime.now()))
+                    ) {
                         binding.dettagliAstaPulsanteOfferta.isEnabled = false
                     } else if (CurrentUser.id == asta.idCreatore) {
                         binding.dettagliAstaPulsanteOfferta.visibility = View.GONE
@@ -385,14 +391,22 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
     @EventHandler
     private fun clickImmagine() {
-        Logger.log("Showing user profile")
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                logger.scriviLog("Showing user profile")
+            }
+        }
 
         listenerProfile?.onGoToProfile(viewModel.idCreatore.value!!, this::class)
     }
 
     @EventHandler
     private fun clickOfferta() {
-        Logger.log("Sending a bid")
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                logger.scriviLog("Sending a bid")
+            }
+        }
 
         val viewInflated: View = LayoutInflater.from(context)
             .inflate(R.layout.popupofferta, view as ViewGroup?, false)
@@ -593,7 +607,11 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
     @EventHandler
     private fun clickModifica() {
-        Logger.log("Editing auction")
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                logger.scriviLog("Editing auction")
+            }
+        }
 
         listenerEditButton?.onEditButton(
             viewModel.idAsta.value!!,
@@ -608,7 +626,11 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
             .setTitle(R.string.elimina_titoloConfermaElimina)
             .setMessage(R.string.elimina_testoConfermaElimina)
             .setPositiveButton(R.string.ok) { _, _ ->
-                Logger.log("Deleting auction")
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        logger.scriviLog("Deleting auction")
+                    }
+                }
 
                 clickConferma()
             }
@@ -662,7 +684,11 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
     @EventHandler
     private fun clickOfferte() {
-        Logger.log("Showing auction bids")
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                logger.scriviLog("Showing auction bids")
+            }
+        }
 
         listenerBids?.onGoToBids(viewModel.idAsta.value!!, viewModel.tipo.value!!, this::class)
     }

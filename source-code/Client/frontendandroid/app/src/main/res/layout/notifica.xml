@@ -25,7 +25,7 @@
             android:src="@drawable/icona_profilo"
             app:shapeAppearanceOverlay="@style/ImageViewRotonda"
             app:strokeColor="@color/grigioScuro"
-            app:strokeWidth="2dp" />
+            app:strokeWidth="1dp" />
 
         <LinearLayout
             android:id="@+id/notifica_linearLayout2"
@@ -53,7 +53,8 @@
                     android:id="@+id/notifica_tempo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_marginVertical="5dp"
+                    android:layout_marginEnd="10dp"
                     android:fontFamily="@font/fira_sans"
                     android:text="@string/placeholder"
                     android:textColor="@color/blu" />
@@ -64,7 +65,9 @@
                 android:id="@+id/notifica_testo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginVertical="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="10dp"
                 android:fontFamily="@font/fira_sans_light"
                 android:text="@string/placeholder"
                 android:textColor="@color/blu" />

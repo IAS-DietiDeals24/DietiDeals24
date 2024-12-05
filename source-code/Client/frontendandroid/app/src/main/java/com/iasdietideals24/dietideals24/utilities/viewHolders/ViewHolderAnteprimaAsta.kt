@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
 import java.math.BigDecimal
+import java.time.LocalDateTime
 
 class ViewHolderAnteprimaAsta(private val binding: AstaBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -38,6 +39,9 @@ class ViewHolderAnteprimaAsta(private val binding: AstaBinding) :
     private val offertaTempoFissoRepository: OffertaTempoFissoRepository by inject(
         OffertaTempoFissoRepository::class.java
     )
+
+    // Logger
+    private val logger: Logger by inject(Logger::class.java)
 
     // Listeners
     private var listenerGoToDetails: OnGoToDetails? = null
@@ -71,14 +75,20 @@ class ViewHolderAnteprimaAsta(private val binding: AstaBinding) :
             }
         }
 
-        binding.astaDataScadenza.text =
-            currentAsta.dataScadenza.toLocalStringShort()
-        binding.astaOraScadenza.text = currentAsta.oraScadenza.toString()
+        if (currentAsta.dataScadenza.atTime(currentAsta.oraScadenza).isBefore(LocalDateTime.now())) {
+            binding.astaDataScadenza.text = resources.getString(R.string.astaScaduta)
+            binding.astaOraScadenza.visibility = View.GONE
+            binding.astaScadenza.visibility = View.GONE
+        } else {
+            binding.astaDataScadenza.text =
+                currentAsta.dataScadenza.toLocalStringShort()
+            binding.astaOraScadenza.text = currentAsta.oraScadenza.toString()
 
-        if (currentAsta.foto.isNotEmpty())
-            binding.astaImmagine.load(currentAsta.foto) {
-                crossfade(true)
-            }
+            if (currentAsta.foto.isNotEmpty())
+                binding.astaImmagine.load(currentAsta.foto) {
+                    crossfade(true)
+                }
+        }
 
         binding.astaNome.text = currentAsta.nome
         binding.astaModificaAsta.visibility = View.GONE
@@ -86,7 +96,11 @@ class ViewHolderAnteprimaAsta(private val binding: AstaBinding) :
         binding.astaElencoOfferte.visibility = View.GONE
 
         binding.astaLinearLayout3.setOnClickListener {
-            Logger.log("Showing auction details")
+            scope.launch {
+                withContext(Dispatchers.IO) {
+                    logger.scriviLog("Showing auction details")
+                }
+            }
 
             listenerGoToDetails?.onGoToDetails(currentAsta.id, currentAsta.tipoAsta, this::class)
         }

@@ -26,7 +26,6 @@ import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreReposit
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -172,42 +171,57 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
 
     @EventHandler
     private fun clickUtente() {
-        Logger.log("Showing user profile")
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                logger.scriviLog("Showing user profile")
+            }
+        }
 
         listenerProfile?.onGoToProfile(CurrentUser.id, ControllerProfilo::class)
     }
 
     @EventHandler
     private fun clickAste() {
-        Logger.log("Showing created bids")
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                logger.scriviLog("Showing created auctions")
+            }
+        }
 
         listenerCreatedAuctions?.onGoToCreatedAuctions()
     }
 
     @EventHandler
     private fun clickStorico() {
-        Logger.log("Showing participations")
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                logger.scriviLog("Showing participations")
+            }
+        }
 
         listenerParticipation?.onGoToParticipation()
     }
 
     @EventHandler
     private fun clickAiuto() {
-        Logger.log("Showing help section")
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                logger.scriviLog("Showing help section")
+            }
+        }
 
         listenerHelp?.onGoToHelp()
     }
 
     @EventHandler
     private fun clickEsci() {
-        Logger.log("Logging out")
-
         // Cancella i dati di autenticazione memorizzati
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 CurrentUser.jwt = ""
                 authRepository.cancellaJWT()
                 authRepository.cancellaRuolo()
+                logger.cancellaLog()
             }
         }
 

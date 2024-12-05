@@ -44,7 +44,6 @@ import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRep
 import com.iasdietideals24.dietideals24.utilities.repositories.CategoriaAstaRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import com.iasdietideals24.dietideals24.utilities.tools.ImageHandler
-import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -382,7 +381,9 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
                             .setTextColor(resources.getColor(R.color.grigio, null))
                             .show()
 
-                        Logger.log("Auction created successfully")
+                        withContext(Dispatchers.IO) {
+                            logger.scriviLog("Auction created successfully")
+                        }
 
                         listenerGoToHome?.onGoToHome()
                     }

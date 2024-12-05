@@ -41,7 +41,7 @@
         <activity
             android:name=".activities.Accesso"
             android:exported="true"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.Material3.DynamicColors.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -58,7 +58,7 @@
         <activity
             android:name=".activities.Registrazione"
             android:exported="true"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.Material3.DynamicColors.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

@@ -18,7 +18,6 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnShowBackButton
 import com.iasdietideals24.dietideals24.utilities.repositories.AuthRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -108,12 +107,11 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
 
     @EventHandler
     private fun clickCompratore() {
-        Logger.log("Buyer account selected")
-
         showBackButtonListener?.onShowBackButton()
         CurrentUser.tipoAccount = TipoAccount.COMPRATORE
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
+                logger.scriviLog("Buyer account selected")
                 authRepository.scriviRuolo(TipoAccount.COMPRATORE)
             }
         }
@@ -122,12 +120,11 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
 
     @EventHandler
     private fun clickVenditore() {
-        Logger.log("Seller account selected")
-
         showBackButtonListener?.onShowBackButton()
         CurrentUser.tipoAccount = TipoAccount.VENDITORE
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
+                logger.scriviLog("Seller account selected")
                 authRepository.scriviRuolo(TipoAccount.VENDITORE)
             }
         }
@@ -136,11 +133,10 @@ class ControllerSelezioneTipoAccount : Controller<SelezionetipoaccountBinding>()
 
     @EventHandler
     private fun clickOspite() {
-        Logger.log("Guest selected")
-
         CurrentUser.tipoAccount = TipoAccount.OSPITE
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
+                logger.scriviLog("Guest selected")
                 authRepository.scriviRuolo(TipoAccount.OSPITE)
             }
         }

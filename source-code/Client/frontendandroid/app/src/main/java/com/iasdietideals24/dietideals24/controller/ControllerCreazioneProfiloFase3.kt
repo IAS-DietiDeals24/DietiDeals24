@@ -19,7 +19,6 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -115,7 +114,9 @@ class ControllerCreazioneProfiloFase3 : Controller<Creazioneprofilofase3Binding>
                     withContext(Dispatchers.IO) { creazioneAccountVenditore().toAccount() }
 
                 if (accountCompratore.idAccount != 0L && accountVenditore.idAccount != 0L) {
-                    Logger.log("Profile creation successful")
+                    withContext(Dispatchers.IO) {
+                        logger.scriviLog("Profile creation successful")
+                    }
 
                     CurrentUser.id = when (CurrentUser.tipoAccount) {
                         TipoAccount.COMPRATORE -> accountCompratore.idAccount

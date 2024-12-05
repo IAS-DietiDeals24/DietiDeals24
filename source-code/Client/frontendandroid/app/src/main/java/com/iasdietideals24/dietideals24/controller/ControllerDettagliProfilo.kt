@@ -25,7 +25,6 @@ import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreReposit
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
-import com.iasdietideals24.dietideals24.utilities.tools.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -240,7 +239,11 @@ class ControllerDettagliProfilo : Controller<DettagliprofiloBinding>() {
 
     @EventHandler
     private fun clickModifica() {
-        Logger.log("Editing profile")
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                logger.scriviLog("Editing profile")
+            }
+        }
 
         listenerEditButton?.onEditButton(sender = ControllerDettagliProfilo::class)
     }

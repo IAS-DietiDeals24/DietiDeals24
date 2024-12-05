@@ -254,4 +254,5 @@
     <string name="modifica_titoloPopupLinkSocial">Social link</string>
     <string name="registrazione_erroreDataPassata">The selected date and time are in the past.</string>
     <string name="notificaOfferta">%1$s sent a bid to your "%2$s" auction.</string>
+    <string name="astaScaduta">EXPIRED</string>
 </resources>

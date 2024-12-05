@@ -244,4 +244,5 @@
     <string name="modifica_titoloPopupLinkSocial">Link social</string>
     <string name="registrazione_erroreDataPassata">La data e ora selezionate sono nel passato.</string>
     <string name="notificaOfferta">%1$s ha mandato un\'offerta alla tua asta "%2$s".</string>
+    <string name="astaScaduta">SCADUTA</string>
 </resources>
