@@ -90,8 +90,8 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
 
         log.debug("Notifica inviata con successo.");
 
-        ifAcceptedUpdateAstaAndOfferte(savedOffertaSilenziosa);
-
+        doTasksForStatoOfferta(savedOffertaSilenziosa);
+        
         return offertaSilenziosaMapper.toDto(savedOffertaSilenziosa);
     }
 
@@ -304,7 +304,7 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
         offertaDiCompratoreService.updatePresentFields(updatedOffertaSilenziosaDto, existingOffertaSilenziosa);
         ifPresentUpdateStato(updatedOffertaSilenziosaDto.getStato(), existingOffertaSilenziosa);
 
-        ifAcceptedUpdateAstaAndOfferte(existingOffertaSilenziosa);
+        doTasksForStatoOfferta(existingOffertaSilenziosa);
 
         log.debug("Modifiche di offerta silenziosa effettuate correttamente.");
 
@@ -323,35 +323,52 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
         log.trace("'stato' modificato correttamente.");
     }
 
-    private void ifAcceptedUpdateAstaAndOfferte(OffertaSilenziosa offertaSilenziosa) {
+    private void doTasksForStatoOfferta(OffertaSilenziosa offertaSilenziosa) {
 
-        log.debug("Controllo se lo stato dell'offerta è 'accettata'...");
+        if (offertaSilenziosa != null) {
 
-        if (offertaSilenziosa != null && offertaSilenziosa.getStato().equals(StatoOffertaSilenziosa.ACCEPTED)) {
+            log.debug("Controllo lo stato dell'offerta...");
 
-            log.debug("L'offerta è stata accettata! Chiudo l'asta...");
-
-            AstaSilenziosa astaSilenziosa = offertaSilenziosa.getAstaRiferimento();
-            astaSilenziosa.setStato(StatoAsta.CLOSED);
-
-            log.debug("Asta chiusa. Rifiuto tutte le offerte in attesa...");
-
-            Set<OffertaSilenziosa> offerteRifiutate = new HashSet<>();
-            for (OffertaSilenziosa pendingOfferta : astaSilenziosa.getOfferteRicevute()) {
-
-                if (pendingOfferta.getStato().equals(StatoOffertaSilenziosa.PENDING)) {
-                    pendingOfferta.setStato(StatoOffertaSilenziosa.REJECTED);
-                    offerteRifiutate.add(pendingOfferta);
-                }
+            if (offertaSilenziosa.getStato().equals(StatoOffertaSilenziosa.ACCEPTED)) {
+                acceptedOffertaTasks(offertaSilenziosa);
+            } else if (offertaSilenziosa.getStato().equals(StatoOffertaSilenziosa.REJECTED)) {
+                rejectedOffertaTasks(offertaSilenziosa);
             }
-
-            log.debug("Offerte rifiutate. Invio le notifiche agli offerenti...");
-
-            buildNotice.notifyOffertaSilenziosaRifiutata(offerteRifiutate);
-            buildNotice.notifyOffertaSilenziosaAccettata(offertaSilenziosa);
-
-            log.debug("Notifiche inviate con successo.");
-
         }
+    }
+
+    private void acceptedOffertaTasks(OffertaSilenziosa offertaSilenziosa) {
+
+        log.debug("L'offerta è stata accettata. Chiudo l'asta...");
+
+        AstaSilenziosa astaSilenziosa = offertaSilenziosa.getAstaRiferimento();
+        astaSilenziosa.setStato(StatoAsta.CLOSED);
+
+        log.debug("Asta chiusa. Rifiuto tutte le offerte in attesa...");
+
+        Set<OffertaSilenziosa> offerteRifiutate = new HashSet<>();
+        for (OffertaSilenziosa pendingOfferta : astaSilenziosa.getOfferteRicevute()) {
+
+            if (pendingOfferta.getStato().equals(StatoOffertaSilenziosa.PENDING)) {
+                pendingOfferta.setStato(StatoOffertaSilenziosa.REJECTED);
+                offerteRifiutate.add(pendingOfferta);
+            }
+        }
+
+        log.debug("Offerte rifiutate. Invio le notifiche agli offerenti...");
+
+        buildNotice.notifyOffertaSilenziosaRifiutata(offerteRifiutate);
+        buildNotice.notifyOffertaSilenziosaAccettata(offertaSilenziosa);
+
+        log.debug("Notifiche inviate con successo.");
+    }
+
+    private void rejectedOffertaTasks(OffertaSilenziosa offertaSilenziosa) {
+
+        log.debug("L'offerta è stata rifiutata. Invio la notifica all'offerente...");
+
+        buildNotice.notifyOffertaSilenziosaRifiutata(offertaSilenziosa);
+
+        log.debug("Notifica inviata con successo.");
     }
 }

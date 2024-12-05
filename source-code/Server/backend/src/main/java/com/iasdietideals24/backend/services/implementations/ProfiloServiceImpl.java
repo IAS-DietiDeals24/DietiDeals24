@@ -229,6 +229,8 @@ public class ProfiloServiceImpl implements ProfiloService {
             throw new InvalidParameterException("Il nome utente non può essere null!");
         else if (nomeUtente.isBlank())
             throw new InvalidParameterException("Il nome utente non può essere vuoto!");
+        else if (!nomeUtente.matches("^[A-Za-z0-9+_.-]+$")) // Il nome utente non può contenere spazi o caratteri speciali
+            throw new InvalidParameterException("Formato nome utente non valido!");
 
         log.trace("'nomeUtente' valido.");
     }
