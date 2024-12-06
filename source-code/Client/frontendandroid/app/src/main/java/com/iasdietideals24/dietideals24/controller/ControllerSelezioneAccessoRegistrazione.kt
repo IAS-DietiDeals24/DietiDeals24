@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.SelezioneaccessoregistrazioneBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
@@ -89,27 +90,34 @@ class ControllerSelezioneAccessoRegistrazione : Controller<Selezioneaccessoregis
                     .replace("/oauth2/authorize", "/login")
             }
 
-            val intent = CustomTabsIntent.Builder()
-                .setShowTitle(false)
-                .setColorScheme(CustomTabsIntent.COLOR_SCHEME_SYSTEM)
-                .setDefaultColorSchemeParams(
-                    CustomTabColorSchemeParams.Builder()
-                        .setToolbarColor(
-                            resources.getColor(
-                                R.color.arancione,
-                                fragmentContext.theme
+            if (url != "") {
+                val intent = CustomTabsIntent.Builder()
+                    .setShowTitle(false)
+                    .setColorScheme(CustomTabsIntent.COLOR_SCHEME_SYSTEM)
+                    .setDefaultColorSchemeParams(
+                        CustomTabColorSchemeParams.Builder()
+                            .setToolbarColor(
+                                resources.getColor(
+                                    R.color.arancione,
+                                    fragmentContext.theme
+                                )
                             )
-                        )
-                        .setNavigationBarColor(
-                            resources.getColor(
-                                R.color.arancione,
-                                fragmentContext.theme
+                            .setNavigationBarColor(
+                                resources.getColor(
+                                    R.color.arancione,
+                                    fragmentContext.theme
+                                )
                             )
-                        )
-                        .build()
-                )
-                .build()
-            intent.launchUrl(fragmentContext, Uri.parse(url))
+                            .build()
+                    )
+                    .build()
+                intent.launchUrl(fragmentContext, Uri.parse(url))
+            } else {
+                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+            }
         }
     }
 
@@ -125,22 +133,29 @@ class ControllerSelezioneAccessoRegistrazione : Controller<Selezioneaccessoregis
                     .replace("/oauth2/authorize", "/signup")
             }
 
-            val intent = CustomTabsIntent.Builder()
-                .setShowTitle(false)
-                .setColorScheme(CustomTabsIntent.COLOR_SCHEME_SYSTEM)
-                .setDefaultColorSchemeParams(
-                    CustomTabColorSchemeParams.Builder()
-                        .setToolbarColor(resources.getColor(R.color.blu, fragmentContext.theme))
-                        .setNavigationBarColor(
-                            resources.getColor(
-                                R.color.blu,
-                                fragmentContext.theme
+            if (url != "") {
+                val intent = CustomTabsIntent.Builder()
+                    .setShowTitle(false)
+                    .setColorScheme(CustomTabsIntent.COLOR_SCHEME_SYSTEM)
+                    .setDefaultColorSchemeParams(
+                        CustomTabColorSchemeParams.Builder()
+                            .setToolbarColor(resources.getColor(R.color.blu, fragmentContext.theme))
+                            .setNavigationBarColor(
+                                resources.getColor(
+                                    R.color.blu,
+                                    fragmentContext.theme
+                                )
                             )
-                        )
-                        .build()
-                )
-                .build()
-            intent.launchUrl(fragmentContext, Uri.parse(url))
+                            .build()
+                    )
+                    .build()
+                intent.launchUrl(fragmentContext, Uri.parse(url))
+            } else {
+                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+            }
         }
     }
 }

@@ -92,6 +92,6 @@ public abstract class Asta {
         }
         listIdNotificheAssociate.append("]");
 
-        return "Asta(idAsta=" + this.getIdAsta() + ", stato=" + this.getStato() + ", nome=" + this.getNome() + ", descrizione=" + this.getDescrizione() + ", dataScadenza=" + this.getDataScadenza() + ", oraScadenza=" + this.getOraScadenza() + ", immagine=" + java.util.Arrays.toString(this.getImmagine()) + ", categoria=" + this.getCategoria().getNome() + ", notificheAssociate=" + listIdNotificheAssociate + ")";
+        return "Asta(idAsta=" + this.getIdAsta() + ", stato=" + this.getStato() + ", nome=" + this.getNome() + ", descrizione=" + this.getDescrizione() + ", dataScadenza=" + this.getDataScadenza() + ", oraScadenza=" + this.getOraScadenza() + ", categoria=" + this.getCategoria().getNome() + ", notificheAssociate=" + listIdNotificheAssociate + ")";
     }
 }

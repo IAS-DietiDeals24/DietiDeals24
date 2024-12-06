@@ -3,9 +3,7 @@ package com.iasdietideals24.dietideals24.utilities.services
 import com.iasdietideals24.dietideals24.utilities.dto.NotificaDto
 import com.iasdietideals24.dietideals24.utilities.tools.Page
 import retrofit2.Response
-import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface NotificaService : Service {
@@ -23,14 +21,4 @@ interface NotificaService : Service {
         @Query("size") size: Long,
         @Query("page") page: Long
     ): Response<Page<NotificaDto>>
-
-    /**
-     * Invia una notifica a un altro utente da parte dell'attuale utente.
-     * @param notifica La notifica da inviare.
-     * @return La notifica inviata. Se non è stata inviata, viene restituita una notifica vuota.
-     */
-    @POST("notifiche")
-    suspend fun inviaNotifica(
-        @Body notifica: NotificaDto
-    ): Response<NotificaDto>
 }

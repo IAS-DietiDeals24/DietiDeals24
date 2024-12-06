@@ -8,8 +8,4 @@ class NotificaRepository(private val service: NotificaService) {
     suspend fun recuperaNotifiche(idAccount: Long, size: Long, page: Long): Page<NotificaDto> {
         return service.recuperaNotifiche(idAccount, size, page).body() ?: Page<NotificaDto>()
     }
-
-    suspend fun inviaNotifica(notifica: NotificaDto): NotificaDto {
-        return service.inviaNotifica(notifica).body() ?: NotificaDto()
-    }
 }

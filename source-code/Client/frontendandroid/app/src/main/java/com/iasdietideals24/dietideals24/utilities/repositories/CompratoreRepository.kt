@@ -5,10 +5,6 @@ import com.iasdietideals24.dietideals24.utilities.services.CompratoreService
 
 class CompratoreRepository(private val service: CompratoreService) {
 
-    suspend fun accountFacebookCompratore(idFacebook: String): CompratoreDto {
-        return service.accountFacebookCompratore(idFacebook).body() ?: CompratoreDto()
-    }
-
     suspend fun accediCompratore(accountEmail: String): CompratoreDto {
         return service.accediCompratore(accountEmail).body()?.content?.singleOrNull()
             ?: CompratoreDto()
@@ -16,9 +12,5 @@ class CompratoreRepository(private val service: CompratoreService) {
 
     suspend fun caricaAccountCompratore(idAccount: Long): CompratoreDto {
         return service.caricaAccountCompratore(idAccount).body() ?: CompratoreDto()
-    }
-
-    suspend fun creaAccountCompratore(account: CompratoreDto): CompratoreDto {
-        return service.creaAccountCompratore(account).body() ?: CompratoreDto()
     }
 }

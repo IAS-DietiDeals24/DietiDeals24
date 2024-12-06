@@ -11,18 +11,6 @@ import retrofit2.http.Query
 
 interface VenditoreService : Service {
     /**
-     * Il metodo recupera l'account associato all'ID dell'account Facebook, ma solo se l'utente ha
-     * un account associato a questo profilo Facebook di tipo venditore.
-     * @param idFacebook Identificativo dell'account Facebook dell'utente.
-     * @return [VenditoreDto] associato a questo account Facebook. Se non esiste, viene restituito un
-     * account vuoto.
-     */
-    @GET("accounts/venditori/facebook/{idFacebook}")
-    suspend fun accountFacebookVenditore(
-        @Path("idFacebook") idFacebook: String
-    ): Response<VenditoreDto>
-
-    /**
      * Il metodo recupera l'account venditore che ha effettuato l'accesso.
      * @param accountEmail Email dell'account che sta tentando di accedere.
      * @return [VenditoreDto] che ha effettuato l'accesso. Se non esiste, viene restituito un account
