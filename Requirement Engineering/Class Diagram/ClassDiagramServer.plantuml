@@ -1,0 +1,1794 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class Account {
+  + Account(): 
+  # Account(String, String, TokensAccount, Profilo): 
+  - password: String
+  - idAccount: Long
+  - email: String
+  - profilo: Profilo
+  - tokens: TokensAccount
+  - notificheInviate: Set<Notifica>
+  - notificheRicevute: Set<Notifica>
+  # canEqual(Object): boolean
+  + equals(Object): boolean
+  + hashCode(): int
+  + toString(): String
+  + removeNotificaRicevuta(Notifica): void
+  + addNotificaInviata(Notifica): void
+  + removeNotificaInviata(Notifica): void
+  + addNotificaRicevuta(Notifica): void
+   password: String
+   notificheInviate: Set<Notifica>
+   email: String
+   tokens: TokensAccount
+   profilo: Profilo
+   idAccount: Long
+   notificheRicevute: Set<Notifica>
+}
+class AccountDto {
+  + AccountDto(): 
+  - password: String
+  - tokens: TokensAccountDto
+  - notificheInviateShallow: Set<NotificaShallowDto>
+  - notificheRicevuteShallow: Set<NotificaShallowDto>
+  - email: String
+  - idAccount: Long
+  - profiloShallow: ProfiloShallowDto
+   password: String
+   email: String
+   tokens: TokensAccountDto
+   profiloShallow: ProfiloShallowDto
+   notificheRicevuteShallow: Set<NotificaShallowDto>
+   idAccount: Long
+   notificheInviateShallow: Set<NotificaShallowDto>
+}
+class AccountMapper {
+  + AccountMapper(): 
+  + toVenditore(AccountShallowDto): Venditore
+  + toEntity(AccountShallowDto): Account
+  + toCompratore(AccountShallowDto): Compratore
+  + toShallowDto(Set<Account>): Set<AccountShallowDto>
+  + toShallowDto(Account): AccountShallowDto
+  + toEntity(Set<AccountShallowDto>): Set<Account>
+}
+interface AccountRepository << interface >> {
+  + findByEmailIs(String, Pageable): Page<Account>
+}
+interface AccountService << interface >> {
+  + checkEmailNotAlreadyTaken(String): void
+  + convertRelations(AccountDto, Account): void
+  + isLastAccountOfProfilo(Account): boolean
+  + checkFieldsValid(AccountDto): void
+  + updatePresentFields(AccountDto, Account): void
+}
+class AccountServiceImpl {
+  # AccountServiceImpl(TokensAccountMapper, RelationsConverter, AccountRepository): 
+  - checkNomeUtenteValid(String): void
+  - convertNotificheRicevuteShallow(Set<NotificaShallowDto>, Account): void
+  - ifPresentUpdatePassword(String, Account): void
+  - ifPresentUpdateIdGitHub(String, TokensAccount): void
+  - ifPresentUpdateIdFacebook(String, TokensAccount): void
+  - ifPresentUpdateEmail(String, Account): void
+  + isLastAccountOfProfilo(Account): boolean
+  - ifPresentUpdateIdGoogle(String, TokensAccount): void
+  - checkPasswordValid(String): void
+  + convertRelations(AccountDto, Account): void
+  + checkEmailNotAlreadyTaken(String): void
+  + checkFieldsValid(AccountDto): void
+  - convertNotificheInviateShallow(Set<NotificaShallowDto>, Account): void
+  - checkProfiloShallowValid(ProfiloShallowDto): void
+  - convertProfiloShallow(ProfiloShallowDto, Account): void
+  - checkNuovoAccountTypeNotAlreadyPresent(Account, Account): void
+  - ifPresentUpdateTokens(TokensAccountDto, Account): void
+  - checkEmailValid(String): void
+  - checkNuovoAccountCohesionWithOtherAccounts(Account, Account): void
+  - ifPresentUpdateIdX(String, TokensAccount): void
+  + updatePresentFields(AccountDto, Account): void
+}
+class AccountShallowDto {
+  + AccountShallowDto(): 
+  - idAccount: Long
+  - tipoAccount: String
+   tipoAccount: String
+   idAccount: Long
+}
+class AnagraficaProfilo {
+  + AnagraficaProfilo(): 
+  + AnagraficaProfilo(String, String, LocalDate, String, String, String): 
+  - areaGeografica: String
+  - nome: String
+  - cognome: String
+  - dataNascita: LocalDate
+  - genere: String
+  - biografia: String
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + toString(): String
+   dataNascita: LocalDate
+   cognome: String
+   genere: String
+   areaGeografica: String
+   nome: String
+   biografia: String
+}
+class AnagraficaProfiloDto {
+  + AnagraficaProfiloDto(): 
+  - genere: String
+  - dataNascita: LocalDate
+  - areaGeografica: String
+  - biografia: String
+  - nome: String
+  - cognome: String
+   dataNascita: LocalDate
+   cognome: String
+   genere: String
+   areaGeografica: String
+   nome: String
+   biografia: String
+}
+interface AnagraficaProfiloMapper << interface >> {
+  + toEntity(AnagraficaProfiloDto): AnagraficaProfilo
+  + toDto(AnagraficaProfilo): AnagraficaProfiloDto
+}
+class Asta {
+  # Asta(CategoriaAsta, String, String, LocalDate, LocalTime, byte[], StatoAsta): 
+  + Asta(): 
+  - idAsta: Long
+  - nome: String
+  - immagine: byte[]
+  - dataScadenza: LocalDate
+  - descrizione: String
+  - notificheAssociate: Set<Notifica>
+  - oraScadenza: LocalTime
+  - stato: StatoAsta
+  - categoria: CategoriaAsta
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + addNotificaAssociata(Notifica): void
+  + toString(): String
+  + removeNotificaAssociata(Notifica): void
+   oraScadenza: LocalTime
+   idAsta: Long
+   nome: String
+   notificheAssociate: Set<Notifica>
+   dataScadenza: LocalDate
+   immagine: byte[]
+   stato: StatoAsta
+   descrizione: String
+   categoria: CategoriaAsta
+}
+class AstaDiCompratore {
+  + AstaDiCompratore(): 
+  # AstaDiCompratore(CategoriaAsta, String, String, LocalDate, LocalTime, byte[], Compratore, StatoAsta): 
+  - proprietario: Compratore
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + toString(): String
+   proprietario: Compratore
+}
+class AstaDiCompratoreDto {
+  + AstaDiCompratoreDto(): 
+  - proprietarioShallow: AccountShallowDto
+   proprietarioShallow: AccountShallowDto
+}
+interface AstaDiCompratoreRepository << interface >> {
+  + findByProprietario_IdAccountIs(Long, Pageable): Page<AstaDiCompratore>
+  + findByNomeLikeAndCategoria_NomeIs(String, String, Pageable): Page<AstaDiCompratore>
+}
+interface AstaDiCompratoreService << interface >> {
+  + checkFieldsValid(AstaDiCompratoreDto): void
+  + updatePresentFields(AstaDiCompratoreDto, AstaDiCompratore): void
+  + convertRelations(AstaDiCompratoreDto, AstaDiCompratore): void
+}
+class AstaDiCompratoreServiceImpl {
+  # AstaDiCompratoreServiceImpl(AstaService, RelationsConverter): 
+  + checkFieldsValid(AstaDiCompratoreDto): void
+  + updatePresentFields(AstaDiCompratoreDto, AstaDiCompratore): void
+  + convertRelations(AstaDiCompratoreDto, AstaDiCompratore): void
+  - checkProprietarioValid(AccountShallowDto): void
+  - convertProprietarioShallow(AccountShallowDto, AstaDiCompratore): void
+}
+class AstaDiVenditore {
+  + AstaDiVenditore(): 
+  # AstaDiVenditore(CategoriaAsta, String, String, LocalDate, LocalTime, byte[], Venditore, StatoAsta): 
+  - proprietario: Venditore
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + toString(): String
+   proprietario: Venditore
+}
+class AstaDiVenditoreDto {
+  + AstaDiVenditoreDto(): 
+  - proprietarioShallow: AccountShallowDto
+   proprietarioShallow: AccountShallowDto
+}
+interface AstaDiVenditoreRepository << interface >> {
+  + findByNomeLikeAndCategoria_NomeIs(String, String, Pageable): Page<AstaDiVenditore>
+  + findByProprietario_IdAccountIs(Long, Pageable): Page<AstaDiVenditore>
+}
+interface AstaDiVenditoreService << interface >> {
+  + checkFieldsValid(AstaDiVenditoreDto): void
+  + convertRelations(AstaDiVenditoreDto, AstaDiVenditore): void
+  + updatePresentFields(AstaDiVenditoreDto, AstaDiVenditore): void
+}
+class AstaDiVenditoreServiceImpl {
+  # AstaDiVenditoreServiceImpl(AstaService, RelationsConverter): 
+  - checkProprietarioValid(AccountShallowDto): void
+  + checkFieldsValid(AstaDiVenditoreDto): void
+  - convertProprietarioShallow(AccountShallowDto, AstaDiVenditore): void
+  + updatePresentFields(AstaDiVenditoreDto, AstaDiVenditore): void
+  + convertRelations(AstaDiVenditoreDto, AstaDiVenditore): void
+}
+class AstaDto {
+  + AstaDto(): 
+  - oraScadenza: LocalTime
+  - dataScadenza: LocalDate
+  - categoriaShallow: CategoriaAstaShallowDto
+  - notificheAssociateShallow: Set<NotificaShallowDto>
+  - idAsta: Long
+  - descrizione: String
+  - immagine: byte[]
+  - stato: String
+  - nome: String
+   oraScadenza: LocalTime
+   idAsta: Long
+   nome: String
+   notificheAssociateShallow: Set<NotificaShallowDto>
+   categoriaShallow: CategoriaAstaShallowDto
+   dataScadenza: LocalDate
+   immagine: byte[]
+   stato: String
+   descrizione: String
+}
+class AstaInversa {
+  + AstaInversa(): 
+  + AstaInversa(CategoriaAsta, String, String, LocalDate, LocalTime, byte[], Compratore, BigDecimal, StatoAsta): 
+  - offerteRicevute: Set<OffertaInversa>
+  - sogliaIniziale: BigDecimal
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + removeOffertaRicevuta(OffertaInversa): void
+  + addOffertaRicevuta(OffertaInversa): void
+  + toString(): String
+   sogliaIniziale: BigDecimal
+   offerteRicevute: Set<OffertaInversa>
+}
+class AstaInversaController {
+  + AstaInversaController(AstaInversaService): 
+  + listAsteInverseByOfferenteIdAccountIs(Long, Pageable): ResponseEntity<Page<AstaInversaDto>>
+  + listAsteInverse(Pageable): ResponseEntity<Page<AstaInversaDto>>
+  + fullUpdateAstaInversa(Long, AstaInversaDto): ResponseEntity<AstaInversaDto>
+  + partialUpdateAstaInversa(Long, AstaInversaDto): ResponseEntity<AstaInversaDto>
+  + listAsteInverseByNomeLikeAndCategoriaNomeIs(String, String, Pageable): ResponseEntity<Page<AstaInversaDto>>
+  + createAstaInversa(AstaInversaDto): ResponseEntity<AstaInversaDto>
+  + listAsteInverseByProprietarioIdAccountIs(Long, Pageable): ResponseEntity<Page<AstaInversaDto>>
+  + getAstaInversa(Long): ResponseEntity<AstaInversaDto>
+  + deleteAstaInversa(Long): ResponseEntity<AstaInversaDto>
+}
+class AstaInversaDto {
+  + AstaInversaDto(): 
+  - offerteRicevuteShallow: Set<OffertaShallowDto>
+  - sogliaIniziale: BigDecimal
+   sogliaIniziale: BigDecimal
+   offerteRicevuteShallow: Set<OffertaShallowDto>
+}
+interface AstaInversaMapper << interface >> {
+  + toEntity(AstaInversaDto): AstaInversa
+  + toDto(AstaInversa): AstaInversaDto
+}
+interface AstaInversaRepository << interface >> {
+  + findByProprietario_IdAccountIs(Long, Pageable): Page<AstaInversa>
+  + findByNomeLikeAndCategoria_NomeIs(String, String, Pageable): Page<AstaInversa>
+  + findByOfferente_IdAccountIs(Long, Pageable): Page<AstaInversa>
+}
+interface AstaInversaService << interface >> {
+  + findByOfferenteIdAccountIs(Long, Pageable): Page<AstaInversaDto>
+  + isExists(Long): boolean
+  + delete(Long): void
+  + updatePresentFields(AstaInversaDto, AstaInversa): void
+  + findOne(Long): Optional<AstaInversaDto>
+  + create(AstaInversaDto): AstaInversaDto
+  + fullUpdate(Long, AstaInversaDto): AstaInversaDto
+  + checkFieldsValid(AstaInversaDto): void
+  + findAll(Pageable): Page<AstaInversaDto>
+  + findByProprietarioIdAccountIs(Long, Pageable): Page<AstaInversaDto>
+  + partialUpdate(Long, AstaInversaDto): AstaInversaDto
+  + convertRelations(AstaInversaDto, AstaInversa): void
+  + closeAstaInversa(AstaInversa): void
+  + findByNomeLikeAndCategoriaNomeIs(String, String, Pageable): Page<AstaInversaDto>
+}
+class AstaInversaServiceImpl {
+  + AstaInversaServiceImpl(AstaDiCompratoreService, AstaInversaMapper, AstaInversaRepository, RelationsConverter, BuildNotice): 
+  - ifPresentUpdateSogliaIniziale(BigDecimal, AstaInversa): void
+  + closeAstaInversa(AstaInversa): void
+  + findOne(Long): Optional<AstaInversaDto>
+  + convertRelations(AstaInversaDto, AstaInversa): void
+  + findByProprietarioIdAccountIs(Long, Pageable): Page<AstaInversaDto>
+  + findByOfferenteIdAccountIs(Long, Pageable): Page<AstaInversaDto>
+  + findByNomeLikeAndCategoriaNomeIs(String, String, Pageable): Page<AstaInversaDto>
+  + delete(Long): void
+  + updatePresentFields(AstaInversaDto, AstaInversa): void
+  - convertOfferteRicevute(Set<OffertaShallowDto>, AstaInversa): void
+  + findAll(Pageable): Page<AstaInversaDto>
+  + isExists(Long): boolean
+  + partialUpdate(Long, AstaInversaDto): AstaInversaDto
+  + checkFieldsValid(AstaInversaDto): void
+  + fullUpdate(Long, AstaInversaDto): AstaInversaDto
+  + create(AstaInversaDto): AstaInversaDto
+  - checkSogliaInizialeValid(BigDecimal): void
+}
+class AstaMapper {
+  + AstaMapper(): 
+  + toShallowDto(Asta): AstaShallowDto
+  + toAstaSilenziosa(AstaShallowDto): AstaSilenziosa
+  + toAstaDiCompratore(AstaShallowDto): AstaDiCompratore
+  + toShallowDto(Set<Asta>): Set<AstaShallowDto>
+  + toAstaDiVenditore(AstaShallowDto): AstaDiVenditore
+  + toAstaTempoFisso(AstaShallowDto): AstaTempoFisso
+  + toEntity(AstaShallowDto): Asta
+  + toEntity(Set<AstaShallowDto>): Set<Asta>
+  + toAstaInversa(AstaShallowDto): AstaInversa
+}
+interface AstaRepository << interface >> {
+  + findByDataScadenzaIsAfterAndOraScadenzaIsAfterAndStatoIs(LocalDate, LocalTime, StatoAsta, Pageable): Page<Asta>
+  + findByNomeLikeAndCategoria_NomeIs(String, String, Pageable): Page<Asta>
+}
+class AstaScheduler {
+  + AstaScheduler(AstaRepository, AstaInversaService, AstaSilenziosaService, AstaTempoFissoService): 
+  + updateExpiredAste(): void
+}
+interface AstaService << interface >> {
+  + convertRelations(AstaDto, Asta): void
+  + updatePresentFields(AstaDto, Asta): void
+  + checkFieldsValid(AstaDto): void
+}
+class AstaServiceImpl {
+  # AstaServiceImpl(RelationsConverter, StatoAstaMapper): 
+  - checkDataScadenzaValid(LocalDate): void
+  - ifPresentUpdateStato(String, Asta): void
+  + convertRelations(AstaDto, Asta): void
+  - convertNotificheAssociateShallow(Set<NotificaShallowDto>, Asta): void
+  - ifPresentUpdateOraScadenza(LocalTime, Asta): void
+  + checkFieldsValid(AstaDto): void
+  - checkDescrizioneValid(String): void
+  - checkOraScadenzaValid(LocalDate, LocalTime): void
+  - ifPresentUpdateDataScadenza(LocalDate, Asta): void
+  - checkCategoriaValid(CategoriaAstaShallowDto): void
+  - checkStatoValid(String): void
+  - checkNomeValid(String): void
+  - ifPresentUpdateNome(String, Asta): void
+  - ifPresentUpdateImmagine(byte[], Asta): void
+  - ifPresentUpdateDescrizione(String, Asta): void
+  - convertCategoriaAstaShallow(CategoriaAstaShallowDto, Asta): void
+  + updatePresentFields(AstaDto, Asta): void
+}
+class AstaShallowDto {
+  + AstaShallowDto(): 
+  - idAsta: Long
+  - tipoAstaPerAccount: String
+  - tipoAstaSpecifica: String
+   tipoAstaSpecifica: String
+   tipoAstaPerAccount: String
+   idAsta: Long
+}
+class AstaSilenziosa {
+  + AstaSilenziosa(CategoriaAsta, String, String, LocalDate, LocalTime, byte[], Venditore, StatoAsta): 
+  + AstaSilenziosa(): 
+  - offerteRicevute: Set<OffertaSilenziosa>
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + removeOffertaRicevuta(OffertaSilenziosa): void
+  + addOffertaRicevuta(OffertaSilenziosa): void
+  + toString(): String
+   offerteRicevute: Set<OffertaSilenziosa>
+}
+class AstaSilenziosaController {
+  + AstaSilenziosaController(AstaSilenziosaService): 
+  + fullUpdateAstaSilenziosa(Long, AstaSilenziosaDto): ResponseEntity<AstaSilenziosaDto>
+  + listAsteSilenzioseByProprietarioIdAccountIs(Long, Pageable): ResponseEntity<Page<AstaSilenziosaDto>>
+  + createAstaSilenziosa(AstaSilenziosaDto): ResponseEntity<AstaSilenziosaDto>
+  + listAsteSilenzioseByOfferenteIdAccountIs(Long, Pageable): ResponseEntity<Page<AstaSilenziosaDto>>
+  + deleteAstaSilenziosa(Long): ResponseEntity<AstaSilenziosaDto>
+  + listAsteSilenziose(Pageable): ResponseEntity<Page<AstaSilenziosaDto>>
+  + getAstaSilenziosa(Long): ResponseEntity<AstaSilenziosaDto>
+  + listAsteSilenzioseByNomeLikeAndCategoriaNomeIs(String, String, Pageable): ResponseEntity<Page<AstaSilenziosaDto>>
+  + partialUpdateAstaSilenziosa(Long, AstaSilenziosaDto): ResponseEntity<AstaSilenziosaDto>
+}
+class AstaSilenziosaDto {
+  + AstaSilenziosaDto(): 
+  - offerteRicevuteShallow: Set<OffertaShallowDto>
+   offerteRicevuteShallow: Set<OffertaShallowDto>
+}
+interface AstaSilenziosaMapper << interface >> {
+  + toEntity(AstaSilenziosaDto): AstaSilenziosa
+  + toDto(AstaSilenziosa): AstaSilenziosaDto
+}
+interface AstaSilenziosaRepository << interface >> {
+  + findByOfferente_IdAccountIs(Long, Pageable): Page<AstaSilenziosa>
+  + findByNomeLikeAndCategoria_NomeIs(String, String, Pageable): Page<AstaSilenziosa>
+  + findByProprietario_IdAccountIs(Long, Pageable): Page<AstaSilenziosa>
+}
+interface AstaSilenziosaService << interface >> {
+  + findByNomeLikeAndCategoriaNomeIs(String, String, Pageable): Page<AstaSilenziosaDto>
+  + create(AstaSilenziosaDto): AstaSilenziosaDto
+  + fullUpdate(Long, AstaSilenziosaDto): AstaSilenziosaDto
+  + findAll(Pageable): Page<AstaSilenziosaDto>
+  + delete(Long): void
+  + isExists(Long): boolean
+  + convertRelations(AstaSilenziosaDto, AstaSilenziosa): void
+  + findByProprietarioIdAccountIs(Long, Pageable): Page<AstaSilenziosaDto>
+  + partialUpdate(Long, AstaSilenziosaDto): AstaSilenziosaDto
+  + findOne(Long): Optional<AstaSilenziosaDto>
+  + updatePresentFields(AstaSilenziosaDto, AstaSilenziosa): void
+  + findByOfferenteIdAccountIs(Long, Pageable): Page<AstaSilenziosaDto>
+  + checkFieldsValid(AstaSilenziosaDto): void
+  + closeAstaSilenziosa(AstaSilenziosa): void
+}
+class AstaSilenziosaServiceImpl {
+  + AstaSilenziosaServiceImpl(AstaDiVenditoreService, AstaSilenziosaMapper, AstaSilenziosaRepository, RelationsConverter, BuildNotice): 
+  + delete(Long): void
+  + updatePresentFields(AstaSilenziosaDto, AstaSilenziosa): void
+  + fullUpdate(Long, AstaSilenziosaDto): AstaSilenziosaDto
+  + isExists(Long): boolean
+  + findOne(Long): Optional<AstaSilenziosaDto>
+  + findByOfferenteIdAccountIs(Long, Pageable): Page<AstaSilenziosaDto>
+  - convertOfferteRicevute(Set<OffertaShallowDto>, AstaSilenziosa): void
+  + findAll(Pageable): Page<AstaSilenziosaDto>
+  + create(AstaSilenziosaDto): AstaSilenziosaDto
+  + findByNomeLikeAndCategoriaNomeIs(String, String, Pageable): Page<AstaSilenziosaDto>
+  + findByProprietarioIdAccountIs(Long, Pageable): Page<AstaSilenziosaDto>
+  + checkFieldsValid(AstaSilenziosaDto): void
+  + closeAstaSilenziosa(AstaSilenziosa): void
+  + convertRelations(AstaSilenziosaDto, AstaSilenziosa): void
+  + partialUpdate(Long, AstaSilenziosaDto): AstaSilenziosaDto
+}
+class AstaTempoFisso {
+  + AstaTempoFisso(): 
+  + AstaTempoFisso(CategoriaAsta, String, String, LocalDate, LocalTime, byte[], Venditore, BigDecimal, StatoAsta): 
+  - sogliaMinima: BigDecimal
+  - offerteRicevute: Set<OffertaTempoFisso>
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + removeOffertaRicevuta(OffertaTempoFisso): void
+  + addOffertaRicevuta(OffertaTempoFisso): void
+  + toString(): String
+   sogliaMinima: BigDecimal
+   offerteRicevute: Set<OffertaTempoFisso>
+}
+class AstaTempoFissoController {
+  + AstaTempoFissoController(AstaTempoFissoService): 
+  + createAstaTempoFisso(AstaTempoFissoDto): ResponseEntity<AstaTempoFissoDto>
+  + listAsteTempoFisso(Pageable): ResponseEntity<Page<AstaTempoFissoDto>>
+  + deleteAstaTempoFisso(Long): ResponseEntity<AstaTempoFissoDto>
+  + getAstaTempoFisso(Long): ResponseEntity<AstaTempoFissoDto>
+  + fullUpdateAstaTempoFisso(Long, AstaTempoFissoDto): ResponseEntity<AstaTempoFissoDto>
+  + partialUpdateAstaTempoFisso(Long, AstaTempoFissoDto): ResponseEntity<AstaTempoFissoDto>
+  + listAsteTempoFissoByOfferenteIdAccountIs(Long, Pageable): ResponseEntity<Page<AstaTempoFissoDto>>
+  + listAsteTempoFissoByNomeLikeAndCategoriaNomeIs(String, String, Pageable): ResponseEntity<Page<AstaTempoFissoDto>>
+  + listAsteTempoFissoByProprietarioIdAccountIs(Long, Pageable): ResponseEntity<Page<AstaTempoFissoDto>>
+}
+class AstaTempoFissoDto {
+  + AstaTempoFissoDto(): 
+  - offerteRicevuteShallow: Set<OffertaShallowDto>
+  - sogliaMinima: BigDecimal
+   sogliaMinima: BigDecimal
+   offerteRicevuteShallow: Set<OffertaShallowDto>
+}
+interface AstaTempoFissoMapper << interface >> {
+  + toEntity(AstaTempoFissoDto): AstaTempoFisso
+  + toDto(AstaTempoFisso): AstaTempoFissoDto
+}
+interface AstaTempoFissoRepository << interface >> {
+  + findByProprietario_IdAccountIs(Long, Pageable): Page<AstaTempoFisso>
+  + findByNomeLikeAndCategoria_NomeIs(String, String, Pageable): Page<AstaTempoFisso>
+  + findByOfferente_IdAccountIs(Long, Pageable): Page<AstaTempoFisso>
+}
+interface AstaTempoFissoService << interface >> {
+  + findByOfferenteIdAccountIs(Long, Pageable): Page<AstaTempoFissoDto>
+  + convertRelations(AstaTempoFissoDto, AstaTempoFisso): void
+  + findOne(Long): Optional<AstaTempoFissoDto>
+  + partialUpdate(Long, AstaTempoFissoDto): AstaTempoFissoDto
+  + checkFieldsValid(AstaTempoFissoDto): void
+  + create(AstaTempoFissoDto): AstaTempoFissoDto
+  + isExists(Long): boolean
+  + delete(Long): void
+  + updatePresentFields(AstaTempoFissoDto, AstaTempoFisso): void
+  + closeAstaTempoFisso(AstaTempoFisso): void
+  + findByProprietarioIdAccountIs(Long, Pageable): Page<AstaTempoFissoDto>
+  + findAll(Pageable): Page<AstaTempoFissoDto>
+  + fullUpdate(Long, AstaTempoFissoDto): AstaTempoFissoDto
+  + findByNomeLikeAndCategoriaNomeIs(String, String, Pageable): Page<AstaTempoFissoDto>
+}
+class AstaTempoFissoServiceImpl {
+  + AstaTempoFissoServiceImpl(AstaDiVenditoreService, AstaTempoFissoMapper, AstaTempoFissoRepository, RelationsConverter, BuildNotice): 
+  - ifPresentUpdateSogliaMinima(BigDecimal, AstaTempoFisso): void
+  + isExists(Long): boolean
+  + checkFieldsValid(AstaTempoFissoDto): void
+  + closeAstaTempoFisso(AstaTempoFisso): void
+  + fullUpdate(Long, AstaTempoFissoDto): AstaTempoFissoDto
+  + findOne(Long): Optional<AstaTempoFissoDto>
+  + partialUpdate(Long, AstaTempoFissoDto): AstaTempoFissoDto
+  + findByOfferenteIdAccountIs(Long, Pageable): Page<AstaTempoFissoDto>
+  + convertRelations(AstaTempoFissoDto, AstaTempoFisso): void
+  + create(AstaTempoFissoDto): AstaTempoFissoDto
+  + findByNomeLikeAndCategoriaNomeIs(String, String, Pageable): Page<AstaTempoFissoDto>
+  + findAll(Pageable): Page<AstaTempoFissoDto>
+  + delete(Long): void
+  + updatePresentFields(AstaTempoFissoDto, AstaTempoFisso): void
+  + findByProprietarioIdAccountIs(Long, Pageable): Page<AstaTempoFissoDto>
+  - convertOfferteRicevute(Set<OffertaShallowDto>, AstaTempoFisso): void
+  - checkSogliaMinimaValid(BigDecimal): void
+}
+class AuthController {
+  + AuthController(): 
+  + auth(String): ResponseEntity<UrlDto>
+  + callback(String, String): ResponseEntity<TokenDto>
+}
+class AuthRuntimeException {
+  + AuthRuntimeException(): 
+  + AuthRuntimeException(String): 
+}
+class BackendApplication {
+  + BackendApplication(): 
+  + main(String[]): void
+}
+interface BuildNotice << interface >> {
+  + notifyAstaInversaScaduta(AstaInversa): void
+  + notifyNuovaOfferta(OffertaInversa): void
+  + notifyOffertaTempoFissoPerdente(Set<OffertaTempoFisso>): void
+  + notifyOffertaInversaPerdente(Set<OffertaInversa>): void
+  + notifyNuovaOfferta(OffertaTempoFisso): void
+  + notifyOffertaSilenziosaRifiutata(OffertaSilenziosa): void
+  + notifyOffertaSilenziosaAccettata(OffertaSilenziosa): void
+  + notifyOffertaInversaVincitrice(OffertaInversa): void
+  + notifyAstaSilenziosaScaduta(AstaSilenziosa): void
+  + notifyOffertaTempoFissoVincitrice(OffertaTempoFisso): void
+  + notifyNuovaOfferta(OffertaSilenziosa): void
+  + notifyAstaTempoFissoScaduta(AstaTempoFisso): void
+  + notifyOffertaSilenziosaRifiutata(Set<OffertaSilenziosa>): void
+}
+class BuildNoticeImpl {
+  + BuildNoticeImpl(NotificaRepository): 
+  + notifyOffertaInversaPerdente(Set<OffertaInversa>): void
+  + notifyOffertaSilenziosaAccettata(OffertaSilenziosa): void
+  + notifyOffertaTempoFissoPerdente(Set<OffertaTempoFisso>): void
+  + notifyOffertaInversaVincitrice(OffertaInversa): void
+  + notifyOffertaSilenziosaRifiutata(Set<OffertaSilenziosa>): void
+  + notifyNuovaOfferta(OffertaSilenziosa): void
+  + notifyAstaTempoFissoScaduta(AstaTempoFisso): void
+  + notifyAstaSilenziosaScaduta(AstaSilenziosa): void
+  + notifyNuovaOfferta(OffertaTempoFisso): void
+  + notifyAstaInversaScaduta(AstaInversa): void
+  + notifyNuovaOfferta(OffertaInversa): void
+  - sendNotifica(Notifica): void
+  + notifyOffertaTempoFissoVincitrice(OffertaTempoFisso): void
+  + notifyOffertaSilenziosaRifiutata(OffertaSilenziosa): void
+}
+class CategoriaAsta {
+  + CategoriaAsta(): 
+  + CategoriaAsta(String): 
+  - nome: String
+  - asteAssegnate: Set<Asta>
+  + toString(): String
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + removeAstaAssegnata(Asta): void
+  + addAstaAssegnata(Asta): void
+   nome: String
+   asteAssegnate: Set<Asta>
+}
+class CategoriaAstaController {
+  + CategoriaAstaController(CategoriaAstaService): 
+  + partialUpdateCategoriaAsta(String, CategoriaAstaDto): ResponseEntity<CategoriaAstaDto>
+  + deleteCategoriaAsta(String): ResponseEntity<CategoriaAstaDto>
+  + getCategoriaAsta(String): ResponseEntity<CategoriaAstaDto>
+  + createOrFullUpadateCategoriaAsta(String, CategoriaAstaDto): ResponseEntity<CategoriaAstaDto>
+  + listCategorieAsta(Pageable): ResponseEntity<Page<CategoriaAstaDto>>
+}
+class CategoriaAstaDto {
+  + CategoriaAstaDto(): 
+  - asteAssegnateShallow: Set<AstaShallowDto>
+  - nome: String
+   nome: String
+   asteAssegnateShallow: Set<AstaShallowDto>
+}
+enum CategoriaAstaEnum << enumeration >> {
+  + CategoriaAstaEnum(): 
+  + values(): CategoriaAstaEnum[]
+  + valueOf(String): CategoriaAstaEnum
+}
+interface CategoriaAstaMapper << interface >> {
+  + toDto(CategoriaAsta): CategoriaAstaDto
+  + toEntity(CategoriaAstaDto): CategoriaAsta
+  + toShallowDto(CategoriaAsta): CategoriaAstaShallowDto
+  + toEntity(CategoriaAstaShallowDto): CategoriaAsta
+  + toEntity(Set<CategoriaAstaShallowDto>): Set<CategoriaAsta>
+  + toShallowDto(Set<CategoriaAsta>): Set<CategoriaAstaShallowDto>
+}
+interface CategoriaAstaRepository << interface >>
+interface CategoriaAstaService << interface >> {
+  + create(String, CategoriaAstaDto): CategoriaAstaDto
+  + partialUpdate(String, CategoriaAstaDto): CategoriaAstaDto
+  + delete(String): void
+  + fullUpdate(String, CategoriaAstaDto): CategoriaAstaDto
+  + convertRelations(CategoriaAstaDto, CategoriaAsta): void
+  + updatePresentFields(CategoriaAstaDto, CategoriaAsta): void
+  + checkFieldsValid(CategoriaAstaDto): void
+  + isExists(String): boolean
+  + findOne(String): Optional<CategoriaAstaDto>
+  + findAll(Pageable): Page<CategoriaAstaDto>
+}
+class CategoriaAstaServiceImpl {
+  + CategoriaAstaServiceImpl(CategoriaAstaMapper, CategoriaAstaRepository, RelationsConverter): 
+  + convertRelations(CategoriaAstaDto, CategoriaAsta): void
+  + updatePresentFields(CategoriaAstaDto, CategoriaAsta): void
+  - convertAsteAssegnateShallow(Set<AstaShallowDto>, CategoriaAsta): void
+  + findAll(Pageable): Page<CategoriaAstaDto>
+  + findOne(String): Optional<CategoriaAstaDto>
+  + delete(String): void
+  + partialUpdate(String, CategoriaAstaDto): CategoriaAstaDto
+  + isExists(String): boolean
+  + checkFieldsValid(CategoriaAstaDto): void
+  - checkNomeValid(String): void
+  + create(String, CategoriaAstaDto): CategoriaAstaDto
+  + fullUpdate(String, CategoriaAstaDto): CategoriaAstaDto
+  - ifPresentUpdateNome(String, CategoriaAsta): void
+}
+class CategoriaAstaShallowDto {
+  + CategoriaAstaShallowDto(): 
+  - nome: String
+   nome: String
+}
+entity CognitoTokenResponseDto << record >> {
+  + CognitoTokenResponseDto(String): 
+  + id_token(): String
+}
+class Compratore {
+  + Compratore(): 
+  + Compratore(String, String, TokensAccount, Profilo): 
+  - astePossedute: Set<AstaDiCompratore>
+  - offerteCollegate: Set<OffertaDiCompratore>
+  + removeOffertaCollegata(OffertaDiCompratore): void
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + toString(): String
+  + addAstaPosseduta(AstaDiCompratore): void
+  + removeAstaPosseduta(AstaDiCompratore): void
+  + addOffertaCollegata(OffertaDiCompratore): void
+   astePossedute: Set<AstaDiCompratore>
+   offerteCollegate: Set<OffertaDiCompratore>
+}
+class CompratoreController {
+  + CompratoreController(CompratoreService): 
+  + createCompratore(CompratoreDto): ResponseEntity<CompratoreDto>
+  + listCompratori(Pageable): ResponseEntity<Page<CompratoreDto>>
+  + getCompratore(Long): ResponseEntity<CompratoreDto>
+  + deleteCompratore(Long): ResponseEntity<CompratoreDto>
+  + fullUpdateCompratore(Long, CompratoreDto): ResponseEntity<CompratoreDto>
+  + listCompratoriByEmailIs(String, Pageable): ResponseEntity<Page<CompratoreDto>>
+  + partialUpdateCompratore(Long, CompratoreDto): ResponseEntity<CompratoreDto>
+}
+class CompratoreDto {
+  + CompratoreDto(): 
+  - astePosseduteShallow: Set<AstaShallowDto>
+  - offerteCollegateShallow: Set<OffertaShallowDto>
+   astePosseduteShallow: Set<AstaShallowDto>
+   offerteCollegateShallow: Set<OffertaShallowDto>
+}
+interface CompratoreMapper << interface >> {
+  + toDto(Compratore): CompratoreDto
+  + toEntity(CompratoreDto): Compratore
+}
+interface CompratoreRepository << interface >> {
+  + findByEmailIs(String, Pageable): Page<Compratore>
+}
+interface CompratoreService << interface >> {
+  + findOne(Long): Optional<CompratoreDto>
+  + partialUpdate(Long, CompratoreDto): CompratoreDto
+  + fullUpdate(Long, CompratoreDto): CompratoreDto
+  + convertRelations(CompratoreDto, Compratore): void
+  + delete(Long): void
+  + isExists(Long): boolean
+  + checkFieldsValid(CompratoreDto): void
+  + create(CompratoreDto): CompratoreDto
+  + findAll(Pageable): Page<CompratoreDto>
+  + findByEmailIs(String, Pageable): Page<CompratoreDto>
+  + updatePresentFields(CompratoreDto, Compratore): void
+}
+class CompratoreServiceImpl {
+  + CompratoreServiceImpl(AccountService, CompratoreMapper, CompratoreRepository, RelationsConverter): 
+  - convertAstePosseduteShallow(Set<AstaShallowDto>, Compratore): void
+  + updatePresentFields(CompratoreDto, Compratore): void
+  + isExists(Long): boolean
+  + findAll(Pageable): Page<CompratoreDto>
+  + convertRelations(CompratoreDto, Compratore): void
+  + create(CompratoreDto): CompratoreDto
+  + partialUpdate(Long, CompratoreDto): CompratoreDto
+  + findOne(Long): Optional<CompratoreDto>
+  + findByEmailIs(String, Pageable): Page<CompratoreDto>
+  - convertOfferteCollegateShallow(Set<OffertaShallowDto>, Compratore): void
+  + fullUpdate(Long, CompratoreDto): CompratoreDto
+  + delete(Long): void
+  + checkFieldsValid(CompratoreDto): void
+}
+class ErrorDto {
+  + ErrorDto(): 
+  - date: String
+  - time: String
+  - message: String
+  - statusCode: String
+   date: String
+   time: String
+   statusCode: String
+   message: String
+}
+class GlobalExceptionHandlerController {
+  + GlobalExceptionHandlerController(): 
+  # handleInvalidParameterException(InvalidParameterException, HttpServletRequest): ResponseEntity<Object>
+  - toDto(Exception): ErrorDto
+}
+class IdNotFoundException {
+  + IdNotFoundException(): 
+  + IdNotFoundException(String): 
+}
+class IllegalDeleteRequestException {
+  + IllegalDeleteRequestException(String): 
+  + IllegalDeleteRequestException(): 
+}
+class InvalidParameterException {
+  + InvalidParameterException(String): 
+  + InvalidParameterException(): 
+}
+class InvalidTypeException {
+  + InvalidTypeException(String): 
+  + InvalidTypeException(): 
+}
+class JacksonConfig {
+  + JacksonConfig(): 
+  + objectMapper(): ObjectMapper
+}
+class LinksProfilo {
+  + LinksProfilo(): 
+  + LinksProfilo(String, String, String, String, String): 
+  - linkX: String
+  - linkPersonale: String
+  - linkGitHub: String
+  - linkInstagram: String
+  - linkFacebook: String
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + toString(): String
+   linkFacebook: String
+   linkGitHub: String
+   linkX: String
+   linkPersonale: String
+   linkInstagram: String
+}
+class LinksProfiloDto {
+  + LinksProfiloDto(): 
+  - linkGitHub: String
+  - linkFacebook: String
+  - linkPersonale: String
+  - linkInstagram: String
+  - linkX: String
+   linkFacebook: String
+   linkGitHub: String
+   linkX: String
+   linkPersonale: String
+   linkInstagram: String
+}
+interface LinksProfiloMapper << interface >> {
+  + toDto(LinksProfilo): LinksProfiloDto
+  + toEntity(LinksProfiloDto): LinksProfilo
+}
+class Notifica {
+  + Notifica(): 
+  + Notifica(LocalDate, LocalTime, String, Account, Account, Asta): 
+  - mittente: Account
+  - idNotifica: Long
+  - oraInvio: LocalTime
+  - dataInvio: LocalDate
+  - messaggio: String
+  - destinatari: Set<Account>
+  - astaAssociata: Asta
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + addDestinatario(Account): void
+  + toString(): String
+  + removeDestinatario(Account): void
+   dataInvio: LocalDate
+   mittente: Account
+   idNotifica: Long
+   messaggio: String
+   astaAssociata: Asta
+   destinatari: Set<Account>
+   oraInvio: LocalTime
+}
+class NotificaController {
+  + NotificaController(NotificaService): 
+  + createNotifica(NotificaDto): ResponseEntity<NotificaDto>
+  + partialUpdateNotifica(Long, NotificaDto): ResponseEntity<NotificaDto>
+  + deleteNotifica(Long): ResponseEntity<NotificaDto>
+  + listNotificheByDestinatariIdAccount(Long, Pageable): ResponseEntity<Page<NotificaDto>>
+  + fullUpdateNotifica(Long, NotificaDto): ResponseEntity<NotificaDto>
+  + getNotifica(Long): ResponseEntity<NotificaDto>
+  + listNotifiche(Pageable): ResponseEntity<Page<NotificaDto>>
+}
+class NotificaDto {
+  + NotificaDto(): 
+  - idNotifica: Long
+  - messaggio: String
+  - oraInvio: LocalTime
+  - mittenteShallow: AccountShallowDto
+  - destinatariShallow: Set<AccountShallowDto>
+  - astaAssociataShallow: AstaShallowDto
+  - dataInvio: LocalDate
+   astaAssociataShallow: AstaShallowDto
+   dataInvio: LocalDate
+   idNotifica: Long
+   messaggio: String
+   destinatariShallow: Set<AccountShallowDto>
+   mittenteShallow: AccountShallowDto
+   oraInvio: LocalTime
+}
+interface NotificaMapper << interface >> {
+  + toDto(Notifica): NotificaDto
+  + toEntity(NotificaShallowDto): Notifica
+  + toEntity(NotificaDto): Notifica
+  + toShallowDto(Notifica): NotificaShallowDto
+  + toShallowDto(Set<Notifica>): Set<NotificaShallowDto>
+  + toEntity(Set<NotificaShallowDto>): Set<Notifica>
+}
+interface NotificaRepository << interface >> {
+  + findByDestinatari_IdAccount(Long, Pageable): Page<Notifica>
+}
+interface NotificaService << interface >> {
+  + isExists(Long): boolean
+  + delete(Long): void
+  + convertRelations(NotificaDto, Notifica): void
+  + findOne(Long): Optional<NotificaDto>
+  + checkFieldsValid(NotificaDto): void
+  + findAll(Pageable): Page<NotificaDto>
+  + fullUpdate(Long, NotificaDto): NotificaDto
+  + updatePresentFields(NotificaDto, Notifica): void
+  + findByDestinatariIdAccount(Long, Pageable): Page<NotificaDto>
+  + partialUpdate(Long, NotificaDto): NotificaDto
+  + create(NotificaDto): NotificaDto
+}
+class NotificaServiceImpl {
+  + NotificaServiceImpl(NotificaMapper, NotificaRepository, RelationsConverter): 
+  + partialUpdate(Long, NotificaDto): NotificaDto
+  + isExists(Long): boolean
+  - convertMittenteShallow(AccountShallowDto, Notifica): void
+  - checkDestinatariValid(Set<AccountShallowDto>): void
+  + updatePresentFields(NotificaDto, Notifica): void
+  + findAll(Pageable): Page<NotificaDto>
+  - checkAstaAssociataShallow(AstaShallowDto): void
+  - checkDataInvioValid(LocalDate): void
+  + checkFieldsValid(NotificaDto): void
+  - checkOraInvioValid(LocalDate, LocalTime): void
+  + findOne(Long): Optional<NotificaDto>
+  - ifPresentUpdateMessaggio(String, Notifica): void
+  - checkMittenteDestinatarioValid(AccountShallowDto): void
+  - checkMessaggioValid(String): void
+  - ifPresentUpdateOraInvio(LocalTime, Notifica): void
+  + create(NotificaDto): NotificaDto
+  - convertDestinatariShallow(Set<AccountShallowDto>, Notifica): void
+  + findByDestinatariIdAccount(Long, Pageable): Page<NotificaDto>
+  + convertRelations(NotificaDto, Notifica): void
+  + delete(Long): void
+  - ifPresentUpdateDataInvio(LocalDate, Notifica): void
+  - convertAstaAssociataShallow(AstaShallowDto, Notifica): void
+  + fullUpdate(Long, NotificaDto): NotificaDto
+}
+class NotificaShallowDto {
+  + NotificaShallowDto(): 
+  - idNotifica: Long
+   idNotifica: Long
+}
+class Offerta {
+  + Offerta(): 
+  # Offerta(LocalDate, LocalTime, BigDecimal): 
+  - oraInvio: LocalTime
+  - valore: BigDecimal
+  - dataInvio: LocalDate
+  - idOfferta: Long
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + toString(): String
+   dataInvio: LocalDate
+   valore: BigDecimal
+   idOfferta: Long
+   oraInvio: LocalTime
+}
+class OffertaDiCompratore {
+  + OffertaDiCompratore(): 
+  # OffertaDiCompratore(LocalDate, LocalTime, BigDecimal, Compratore): 
+  - compratoreCollegato: Compratore
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + toString(): String
+   compratoreCollegato: Compratore
+}
+class OffertaDiCompratoreDto {
+  + OffertaDiCompratoreDto(): 
+  - compratoreCollegatoShallow: AccountShallowDto
+   compratoreCollegatoShallow: AccountShallowDto
+}
+interface OffertaDiCompratoreRepository << interface >>
+interface OffertaDiCompratoreService << interface >> {
+  + updatePresentFields(OffertaDiCompratoreDto, OffertaDiCompratore): void
+  + checkFieldsValid(OffertaDiCompratoreDto): void
+  + convertRelations(OffertaDiCompratoreDto, OffertaDiCompratore): void
+}
+class OffertaDiCompratoreServiceImpl {
+  # OffertaDiCompratoreServiceImpl(OffertaService, RelationsConverter): 
+  + checkFieldsValid(OffertaDiCompratoreDto): void
+  + convertRelations(OffertaDiCompratoreDto, OffertaDiCompratore): void
+  - convertCompratoreCollegatoShallow(AccountShallowDto, OffertaDiCompratore): void
+  - checkCompratoreCollegatoValid(AccountShallowDto): void
+  + updatePresentFields(OffertaDiCompratoreDto, OffertaDiCompratore): void
+}
+class OffertaDiVenditore {
+  + OffertaDiVenditore(): 
+  # OffertaDiVenditore(LocalDate, LocalTime, BigDecimal, Venditore): 
+  - venditoreCollegato: Venditore
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + toString(): String
+   venditoreCollegato: Venditore
+}
+class OffertaDiVenditoreDto {
+  + OffertaDiVenditoreDto(): 
+  - venditoreCollegatoShallow: AccountShallowDto
+   venditoreCollegatoShallow: AccountShallowDto
+}
+interface OffertaDiVenditoreRepository << interface >>
+interface OffertaDiVenditoreService << interface >> {
+  + checkFieldsValid(OffertaDiVenditoreDto): void
+  + convertRelations(OffertaDiVenditoreDto, OffertaDiVenditore): void
+  + updatePresentFields(OffertaDiVenditoreDto, OffertaDiVenditore): void
+}
+class OffertaDiVenditoreServiceImpl {
+  # OffertaDiVenditoreServiceImpl(OffertaService, RelationsConverter): 
+  + convertRelations(OffertaDiVenditoreDto, OffertaDiVenditore): void
+  - convertVenditoreCollegatoShallow(AccountShallowDto, OffertaDiVenditore): void
+  + checkFieldsValid(OffertaDiVenditoreDto): void
+  + updatePresentFields(OffertaDiVenditoreDto, OffertaDiVenditore): void
+  - checkVenditoreCollegatoValid(AccountShallowDto): void
+}
+class OffertaDto {
+  + OffertaDto(): 
+  - dataInvio: LocalDate
+  - valore: BigDecimal
+  - oraInvio: LocalTime
+  - idOfferta: Long
+   dataInvio: LocalDate
+   valore: BigDecimal
+   idOfferta: Long
+   oraInvio: LocalTime
+}
+class OffertaInversa {
+  + OffertaInversa(): 
+  + OffertaInversa(LocalDate, LocalTime, BigDecimal, Venditore, AstaInversa): 
+  - astaRiferimento: AstaInversa
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + toString(): String
+   astaRiferimento: AstaInversa
+}
+class OffertaInversaController {
+  + OffertaInversaController(OffertaInversaService): 
+  + listOfferteInverseByAstaRiferimentoIdAsta(Long, Pageable): ResponseEntity<Page<OffertaInversaDto>>
+  + findOffertaInversaMinByValoreAndAstaRiferimentoIdAstaIs(Long): ResponseEntity<OffertaInversaDto>
+  + createOffertaInversa(OffertaInversaDto): ResponseEntity<OffertaInversaDto>
+  + listOfferteInverse(Pageable): ResponseEntity<Page<OffertaInversaDto>>
+  + findOffertaInversaMinByValoreAndAstaRiferimentoIdAstaIsAndVenditoreCollegatoIdAccountIs(Long, Long): ResponseEntity<OffertaInversaDto>
+  + deleteOffertaInversa(Long): ResponseEntity<OffertaInversaDto>
+  + getOffertaInversa(Long): ResponseEntity<OffertaInversaDto>
+  + fullUpdateOffertaInversa(Long, OffertaInversaDto): ResponseEntity<OffertaInversaDto>
+  + partialUpdateOffertaInversa(Long, OffertaInversaDto): ResponseEntity<OffertaInversaDto>
+}
+class OffertaInversaDto {
+  + OffertaInversaDto(): 
+  - astaRiferimentoShallow: AstaShallowDto
+   astaRiferimentoShallow: AstaShallowDto
+}
+interface OffertaInversaMapper << interface >> {
+  + toDto(OffertaInversa): OffertaInversaDto
+  + toEntity(OffertaInversaDto): OffertaInversa
+}
+interface OffertaInversaRepository << interface >> {
+  + findMinByValoreAndAstaRiferimento_IdAstaIs(Long): Optional<OffertaInversa>
+  + findMinByValoreAndAstaRiferimento_IdAstaIsAndVenditoreCollegato_IdAccountIs(Long, Long): Optional<OffertaInversa>
+  + findByAstaRiferimento_IdAsta(Long, Pageable): Page<OffertaInversa>
+}
+interface OffertaInversaService << interface >> {
+  + findAll(Pageable): Page<OffertaInversaDto>
+  + updatePresentFields(OffertaInversaDto, OffertaInversa): void
+  + findOne(Long): Optional<OffertaInversaDto>
+  + isExists(Long): boolean
+  + convertRelations(OffertaInversaDto, OffertaInversa): void
+  + create(OffertaInversaDto): OffertaInversaDto
+  + findMinByValoreAndAstaRiferimentoIdAstaIs(Long): Optional<OffertaInversaDto>
+  + partialUpdate(Long, OffertaInversaDto): OffertaInversaDto
+  + checkFieldsValid(OffertaInversaDto): void
+  + findByAstaRiferimentoIdAsta(Long, Pageable): Page<OffertaInversaDto>
+  + delete(Long): void
+  + findMinByValoreAndAstaRiferimentoIdAstaIsAndVenditoreCollegatoIdAccountIs(Long, Long): Optional<OffertaInversaDto>
+  + fullUpdate(Long, OffertaInversaDto): OffertaInversaDto
+}
+class OffertaInversaServiceImpl {
+  + OffertaInversaServiceImpl(OffertaDiVenditoreService, OffertaInversaMapper, OffertaInversaRepository, RelationsConverter, BuildNotice, AstaScheduler): 
+  + create(OffertaInversaDto): OffertaInversaDto
+  + findMinByValoreAndAstaRiferimentoIdAstaIsAndVenditoreCollegatoIdAccountIs(Long, Long): Optional<OffertaInversaDto>
+  + isExists(Long): boolean
+  + findMinByValoreAndAstaRiferimentoIdAstaIs(Long): Optional<OffertaInversaDto>
+  + checkFieldsValid(OffertaInversaDto): void
+  + convertRelations(OffertaInversaDto, OffertaInversa): void
+  + findByAstaRiferimentoIdAsta(Long, Pageable): Page<OffertaInversaDto>
+  - checkAstaActive(OffertaInversa): void
+  + findAll(Pageable): Page<OffertaInversaDto>
+  + updatePresentFields(OffertaInversaDto, OffertaInversa): void
+  - convertAstaRiferimentoShallow(AstaShallowDto, OffertaInversa): void
+  - checkAstaRiferimentoValid(AstaShallowDto): void
+  + delete(Long): void
+  + findOne(Long): Optional<OffertaInversaDto>
+  + fullUpdate(Long, OffertaInversaDto): OffertaInversaDto
+  + partialUpdate(Long, OffertaInversaDto): OffertaInversaDto
+}
+class OffertaMapper {
+  + OffertaMapper(): 
+  + toShallowDto(Offerta): OffertaShallowDto
+  + toShallowDto(Set<Offerta>): Set<OffertaShallowDto>
+  + toEntity(OffertaShallowDto): Offerta
+  + toEntity(Set<OffertaShallowDto>): Set<Offerta>
+  + toOffertaInversa(OffertaShallowDto): OffertaInversa
+  + toOffertaDiVenditore(OffertaShallowDto): OffertaDiVenditore
+  + toOffertaTempoFisso(OffertaShallowDto): OffertaTempoFisso
+  + toOffertaDiCompratore(OffertaShallowDto): OffertaDiCompratore
+  + toOffertaSilenziosa(OffertaShallowDto): OffertaSilenziosa
+}
+interface OffertaRepository << interface >>
+interface OffertaService << interface >> {
+  + checkFieldsValid(OffertaDto): void
+  + convertRelations(OffertaDto, Offerta): void
+  + updatePresentFields(OffertaDto, Offerta): void
+}
+class OffertaServiceImpl {
+  + OffertaServiceImpl(): 
+  - ifPresentUpdateValore(BigDecimal, Offerta): void
+  - ifPresentUpdateOraInvio(LocalTime, Offerta): void
+  - checkOraInvioValid(LocalDate, LocalTime): void
+  - ifPresentUpdateDataInvio(LocalDate, Offerta): void
+  + convertRelations(OffertaDto, Offerta): void
+  + updatePresentFields(OffertaDto, Offerta): void
+  + checkFieldsValid(OffertaDto): void
+  - checkValoreValid(BigDecimal): void
+  - checkDataInvioValid(LocalDate): void
+}
+class OffertaShallowDto {
+  + OffertaShallowDto(): 
+  - tipoOffertaSpecifica: String
+  - idOfferta: Long
+  - tipoOffertaPerAccount: String
+   idOfferta: Long
+   tipoOffertaSpecifica: String
+   tipoOffertaPerAccount: String
+}
+class OffertaSilenziosa {
+  + OffertaSilenziosa(): 
+  + OffertaSilenziosa(LocalDate, LocalTime, BigDecimal, Compratore, StatoOffertaSilenziosa, AstaSilenziosa): 
+  - astaRiferimento: AstaSilenziosa
+  - stato: StatoOffertaSilenziosa
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + toString(): String
+   astaRiferimento: AstaSilenziosa
+   stato: StatoOffertaSilenziosa
+}
+class OffertaSilenziosaController {
+  + OffertaSilenziosaController(OffertaSilenziosaService): 
+  + findOffertaSilenziosaMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(Long, Long): ResponseEntity<OffertaSilenziosaDto>
+  + partialUpdateOffertaSilenziosa(Long, OffertaSilenziosaDto): ResponseEntity<OffertaSilenziosaDto>
+  + createOffertaSilenziosa(OffertaSilenziosaDto): ResponseEntity<OffertaSilenziosaDto>
+  + listOfferteSilenziose(Pageable): ResponseEntity<Page<OffertaSilenziosaDto>>
+  + listOfferteSilenzioseByAstaRiferimentoIdAsta(Long, Pageable): ResponseEntity<Page<OffertaSilenziosaDto>>
+  + fullUpdateOffertaSilenziosa(Long, OffertaSilenziosaDto): ResponseEntity<OffertaSilenziosaDto>
+  + deleteOffertaSilenziosa(Long): ResponseEntity<OffertaSilenziosaDto>
+  + findOffertaSilenziosaMaxByValoreAndAstaRiferimentoIdAstaIs(Long): ResponseEntity<OffertaSilenziosaDto>
+  + getOffertaSilenziosa(Long): ResponseEntity<OffertaSilenziosaDto>
+}
+class OffertaSilenziosaDto {
+  + OffertaSilenziosaDto(): 
+  - stato: String
+  - astaRiferimentoShallow: AstaShallowDto
+   astaRiferimentoShallow: AstaShallowDto
+   stato: String
+}
+interface OffertaSilenziosaMapper << interface >> {
+  + toEntity(OffertaSilenziosaDto): OffertaSilenziosa
+  + toDto(OffertaSilenziosa): OffertaSilenziosaDto
+}
+interface OffertaSilenziosaRepository << interface >> {
+  + findByAstaRiferimento_IdAsta(Long, Pageable): Page<OffertaSilenziosa>
+  + findMaxByValoreAndAstaRiferimento_IdAstaIs(Long): Optional<OffertaSilenziosa>
+  + findMaxByValoreAndAstaRiferimento_IdAstaIsAndCompratoreCollegato_IdAccountIs(Long, Long): Optional<OffertaSilenziosa>
+}
+interface OffertaSilenziosaService << interface >> {
+  + findAll(Pageable): Page<OffertaSilenziosaDto>
+  + partialUpdate(Long, OffertaSilenziosaDto): OffertaSilenziosaDto
+  + convertRelations(OffertaSilenziosaDto, OffertaSilenziosa): void
+  + updatePresentFields(OffertaSilenziosaDto, OffertaSilenziosa): void
+  + fullUpdate(Long, OffertaSilenziosaDto): OffertaSilenziosaDto
+  + delete(Long): void
+  + checkFieldsValid(OffertaSilenziosaDto): void
+  + findMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(Long, Long): Optional<OffertaSilenziosaDto>
+  + create(OffertaSilenziosaDto): OffertaSilenziosaDto
+  + findByAstaRiferimentoIdAsta(Long, Pageable): Page<OffertaSilenziosaDto>
+  + findOne(Long): Optional<OffertaSilenziosaDto>
+  + isExists(Long): boolean
+  + findMaxByValoreAndAstaRiferimentoIdAstaIs(Long): Optional<OffertaSilenziosaDto>
+}
+class OffertaSilenziosaServiceImpl {
+  + OffertaSilenziosaServiceImpl(OffertaDiCompratoreService, StatoOffertaSilenziosaMapper, OffertaSilenziosaMapper, OffertaSilenziosaRepository, RelationsConverter, BuildNotice, AstaScheduler): 
+  + checkFieldsValid(OffertaSilenziosaDto): void
+  + findMaxByValoreAndAstaRiferimentoIdAstaIs(Long): Optional<OffertaSilenziosaDto>
+  + delete(Long): void
+  + findAll(Pageable): Page<OffertaSilenziosaDto>
+  - checkAstaRiferimentoValid(AstaShallowDto): void
+  + convertRelations(OffertaSilenziosaDto, OffertaSilenziosa): void
+  - acceptedOffertaTasks(OffertaSilenziosa): void
+  + findByAstaRiferimentoIdAsta(Long, Pageable): Page<OffertaSilenziosaDto>
+  + findMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(Long, Long): Optional<OffertaSilenziosaDto>
+  + isExists(Long): boolean
+  - ifPresentUpdateStato(String, OffertaSilenziosa): void
+  - rejectedOffertaTasks(OffertaSilenziosa): void
+  + updatePresentFields(OffertaSilenziosaDto, OffertaSilenziosa): void
+  - convertAstaRiferimentoShallow(AstaShallowDto, OffertaSilenziosa): void
+  + findOne(Long): Optional<OffertaSilenziosaDto>
+  - checkAstaActive(OffertaSilenziosa): void
+  + partialUpdate(Long, OffertaSilenziosaDto): OffertaSilenziosaDto
+  - checkStatoValid(String): void
+  + create(OffertaSilenziosaDto): OffertaSilenziosaDto
+  + fullUpdate(Long, OffertaSilenziosaDto): OffertaSilenziosaDto
+  - doTasksForStatoOfferta(OffertaSilenziosa): void
+}
+class OffertaTempoFisso {
+  + OffertaTempoFisso(): 
+  + OffertaTempoFisso(LocalDate, LocalTime, BigDecimal, Compratore, AstaTempoFisso): 
+  - astaRiferimento: AstaTempoFisso
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + toString(): String
+   astaRiferimento: AstaTempoFisso
+}
+class OffertaTempoFissoController {
+  + OffertaTempoFissoController(OffertaTempoFissoService): 
+  + findOffertaTempoFissoMaxByValoreAndAstaRiferimentoIdAstaIs(Long): ResponseEntity<OffertaTempoFissoDto>
+  + fullUpdateOffertaTempoFisso(Long, OffertaTempoFissoDto): ResponseEntity<OffertaTempoFissoDto>
+  + listOfferteTempoFissoByAstaRiferimentoIdAsta(Long, Pageable): ResponseEntity<Page<OffertaTempoFissoDto>>
+  + partialUpdateOffertaTempoFisso(Long, OffertaTempoFissoDto): ResponseEntity<OffertaTempoFissoDto>
+  + deleteOffertaTempoFisso(Long): ResponseEntity<OffertaTempoFissoDto>
+  + listOfferteTempoFisso(Pageable): ResponseEntity<Page<OffertaTempoFissoDto>>
+  + getOffertaTempoFisso(Long): ResponseEntity<OffertaTempoFissoDto>
+  + findOffertaTempoFissoMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(Long, Long): ResponseEntity<OffertaTempoFissoDto>
+  + createOffertaTempoFisso(OffertaTempoFissoDto): ResponseEntity<OffertaTempoFissoDto>
+}
+class OffertaTempoFissoDto {
+  + OffertaTempoFissoDto(): 
+  - astaRiferimentoShallow: AstaShallowDto
+   astaRiferimentoShallow: AstaShallowDto
+}
+interface OffertaTempoFissoMapper << interface >> {
+  + toDto(OffertaTempoFisso): OffertaTempoFissoDto
+  + toEntity(OffertaTempoFissoDto): OffertaTempoFisso
+}
+interface OffertaTempoFissoRepository << interface >> {
+  + findByAstaRiferimento_IdAsta(Long, Pageable): Page<OffertaTempoFisso>
+  + findMaxByValoreAndAstaRiferimento_IdAstaIsAndCompratoreCollegato_IdAccountIs(Long, Long): Optional<OffertaTempoFisso>
+  + findMaxByValoreAndAstaRiferimento_IdAstaIs(Long): Optional<OffertaTempoFisso>
+}
+interface OffertaTempoFissoService << interface >> {
+  + convertRelations(OffertaTempoFissoDto, OffertaTempoFisso): void
+  + findMaxByValoreAndAstaRiferimentoIdAstaIs(Long): Optional<OffertaTempoFissoDto>
+  + fullUpdate(Long, OffertaTempoFissoDto): OffertaTempoFissoDto
+  + updatePresentFields(OffertaTempoFissoDto, OffertaTempoFisso): void
+  + isExists(Long): boolean
+  + delete(Long): void
+  + checkFieldsValid(OffertaTempoFissoDto): void
+  + partialUpdate(Long, OffertaTempoFissoDto): OffertaTempoFissoDto
+  + create(OffertaTempoFissoDto): OffertaTempoFissoDto
+  + findMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(Long, Long): Optional<OffertaTempoFissoDto>
+  + findAll(Pageable): Page<OffertaTempoFissoDto>
+  + findByAstaRiferimentoIdAsta(Long, Pageable): Page<OffertaTempoFissoDto>
+  + findOne(Long): Optional<OffertaTempoFissoDto>
+}
+class OffertaTempoFissoServiceImpl {
+  + OffertaTempoFissoServiceImpl(OffertaDiCompratoreService, OffertaTempoFissoMapper, OffertaTempoFissoRepository, RelationsConverter, BuildNotice, AstaScheduler): 
+  - convertAstaRiferimentoShallow(AstaShallowDto, OffertaTempoFisso): void
+  + partialUpdate(Long, OffertaTempoFissoDto): OffertaTempoFissoDto
+  + fullUpdate(Long, OffertaTempoFissoDto): OffertaTempoFissoDto
+  + findAll(Pageable): Page<OffertaTempoFissoDto>
+  + isExists(Long): boolean
+  + findMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(Long, Long): Optional<OffertaTempoFissoDto>
+  - checkAstaRiferimentoValid(AstaShallowDto): void
+  - checkAstaActive(OffertaTempoFisso): void
+  + findMaxByValoreAndAstaRiferimentoIdAstaIs(Long): Optional<OffertaTempoFissoDto>
+  + checkFieldsValid(OffertaTempoFissoDto): void
+  + convertRelations(OffertaTempoFissoDto, OffertaTempoFisso): void
+  + create(OffertaTempoFissoDto): OffertaTempoFissoDto
+  + findByAstaRiferimentoIdAsta(Long, Pageable): Page<OffertaTempoFissoDto>
+  + delete(Long): void
+  + findOne(Long): Optional<OffertaTempoFissoDto>
+  + updatePresentFields(OffertaTempoFissoDto, OffertaTempoFisso): void
+}
+class Profilo {
+  + Profilo(): 
+  + Profilo(String, byte[], AnagraficaProfilo, LinksProfilo, String, String, TokensAccount, String): 
+  + Profilo(String, byte[], AnagraficaProfilo, LinksProfilo, Account): 
+  - anagrafica: AnagraficaProfilo
+  - nomeUtente: String
+  - profilePicture: byte[]
+  - links: LinksProfilo
+  - accounts: Set<Account>
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + removeAccount(Account): void
+  + toString(): String
+  + addAccount(Account): void
+   anagrafica: AnagraficaProfilo
+   venditore: Venditore
+   profilePicture: byte[]
+   accounts: Set<Account>
+   compratore: Compratore
+   nomeUtente: String
+   links: LinksProfilo
+}
+class ProfiloController {
+  + ProfiloController(ProfiloService): 
+  + deleteProfilo(String): ResponseEntity<ProfiloDto>
+  + getProfilo(String): ResponseEntity<ProfiloDto>
+  + listProfili(Pageable): ResponseEntity<Page<ProfiloDto>>
+  + createOrFullUpdateProfilo(String, PutProfiloDto): ResponseEntity<ProfiloDto>
+  + partialUpdateProfilo(String, ProfiloDto): ResponseEntity<ProfiloDto>
+}
+class ProfiloDto {
+  + ProfiloDto(): 
+  - links: LinksProfiloDto
+  - profilePicture: byte[]
+  - anagrafica: AnagraficaProfiloDto
+  - nomeUtente: String
+  - accountsShallow: Set<AccountShallowDto>
+   accountsShallow: Set<AccountShallowDto>
+   nomeUtente: String
+   links: LinksProfiloDto
+   anagrafica: AnagraficaProfiloDto
+   profilePicture: byte[]
+}
+interface ProfiloMapper << interface >> {
+  + toShallowDto(Profilo): ProfiloShallowDto
+  + toEntity(ProfiloShallowDto): Profilo
+  + toEntity(ProfiloDto): Profilo
+  + toDto(Profilo): ProfiloDto
+}
+interface ProfiloRepository << interface >>
+interface ProfiloService << interface >> {
+  + convertRelations(PutProfiloDto, Profilo): void
+  + convertRelations(ProfiloDto, Profilo): void
+  + updatePresentFields(ProfiloDto, Profilo): void
+  + isExists(String): boolean
+  + fullUpdate(String, PutProfiloDto): ProfiloDto
+  + findOne(String): Optional<ProfiloDto>
+  + checkFieldsValid(ProfiloDto): void
+  + findAll(Pageable): Page<ProfiloDto>
+  + delete(String): void
+  + checkFieldsValid(PutProfiloDto): void
+  + partialUpdate(String, ProfiloDto): ProfiloDto
+  + create(String, PutProfiloDto): ProfiloDto
+}
+class ProfiloServiceImpl {
+  + ProfiloServiceImpl(ProfiloMapper, PutProfiloMapper, AnagraficaProfiloMapper, LinksProfiloMapper, ProfiloRepository, RelationsConverter, AccountService): 
+  + checkFieldsValid(ProfiloDto): void
+  - checkEmailValid(String): void
+  - ifPresentUpdateGenere(String, AnagraficaProfilo): void
+  - ifPresentUpdateLinkX(String, LinksProfilo): void
+  + findAll(Pageable): Page<ProfiloDto>
+  - ifPresentUpdateLinkPersonale(String, LinksProfilo): void
+  - ifPresentUpdateLinkGitHub(String, LinksProfilo): void
+  - ifPresentUpdateProfilePicture(byte[], Profilo): void
+  + create(String, PutProfiloDto): ProfiloDto
+  + convertRelations(PutProfiloDto, Profilo): void
+  - ifPresentUpdateLinkInstagram(String, LinksProfilo): void
+  - checkNomeValid(String): void
+  - ifPresentUpdateCognome(String, AnagraficaProfilo): void
+  - ifPresentUpdateLinks(LinksProfiloDto, Profilo): void
+  - checkAccountsValid(Set<AccountShallowDto>): void
+  - checkNomeUtenteValid(String): void
+  + updatePresentFields(ProfiloDto, Profilo): void
+  - ifPresentUpdateDataNascita(LocalDate, AnagraficaProfilo): void
+  - ifPresentUpdateAreaGeografica(String, AnagraficaProfilo): void
+  - checkDataNascitaValid(LocalDate): void
+  + checkFieldsValid(PutProfiloDto): void
+  + convertRelations(ProfiloDto, Profilo): void
+  - ifPresentUpdateNome(String, AnagraficaProfilo): void
+  - ifPresentUpdateLinkFacebook(String, LinksProfilo): void
+  - ifPresentUpdateBiografia(String, AnagraficaProfilo): void
+  + findOne(String): Optional<ProfiloDto>
+  + partialUpdate(String, ProfiloDto): ProfiloDto
+  + fullUpdate(String, PutProfiloDto): ProfiloDto
+  - checkPasswordValid(String): void
+  - checkAnagraficaValid(AnagraficaProfiloDto): void
+  - ifPresentUpdateAnagrafica(AnagraficaProfiloDto, Profilo): void
+  - checkProfilePictureValid(byte[]): void
+  + delete(String): void
+  - checkCognomeValid(String): void
+  + isExists(String): boolean
+  - convertAccounts(Set<AccountShallowDto>, Profilo): void
+}
+class ProfiloShallowDto {
+  + ProfiloShallowDto(): 
+  - nomeUtente: String
+   nomeUtente: String
+}
+class PutProfiloDto {
+  + PutProfiloDto(): 
+  - password: String
+  - links: LinksProfiloDto
+  - anagrafica: AnagraficaProfiloDto
+  - tokens: TokensAccountDto
+  - email: String
+  - tipoAccount: String
+  - nomeUtente: String
+  - profilePicture: byte[]
+   password: String
+   tipoAccount: String
+   links: LinksProfiloDto
+   email: String
+   profilePicture: byte[]
+   tokens: TokensAccountDto
+   nomeUtente: String
+   anagrafica: AnagraficaProfiloDto
+}
+interface PutProfiloMapper << interface >> {
+  + toEntity(PutProfiloDto): Profilo
+}
+class PutProfiloMapperImpl {
+  + PutProfiloMapperImpl(AnagraficaProfiloMapper, TokensAccountMapper, LinksProfiloMapper): 
+  + toEntity(PutProfiloDto): Profilo
+}
+interface RelationsConverter << interface >> {
+  + convertAccountShallowRelation(AccountShallowDto): Account
+  + convertProfiloShallowRelation(ProfiloShallowDto): Profilo
+  + convertAstaShallowRelation(AstaShallowDto): Asta
+  + convertNotificaShallowRelation(NotificaShallowDto): Notifica
+  + convertCategoriaAstaShallowRelation(CategoriaAstaShallowDto): CategoriaAsta
+  + convertOffertaShallowRelation(OffertaShallowDto): Offerta
+}
+class RelationsConverterImpl {
+  + RelationsConverterImpl(ProfiloRepository, NotificaRepository, AstaRepository, OffertaRepository, AccountRepository, CategoriaAstaRepository): 
+  + convertOffertaShallowRelation(OffertaShallowDto): Offerta
+  + convertNotificaShallowRelation(NotificaShallowDto): Notifica
+  + convertProfiloShallowRelation(ProfiloShallowDto): Profilo
+  + convertAccountShallowRelation(AccountShallowDto): Account
+  + convertCategoriaAstaShallowRelation(CategoriaAstaShallowDto): CategoriaAsta
+  + convertAstaShallowRelation(AstaShallowDto): Asta
+}
+class SecurityConfig {
+  + SecurityConfig(): 
+  - grantedAuthoritiesExtractor(): Converter<Jwt, AbstractAuthenticationToken>
+  - oAuthRoleConversion(OAuth2ResourceServerConfigurer<HttpSecurity>): void
+  + security(HttpSecurity): SecurityFilterChain
+  - userAuthoritiesMapper(Jwt): Collection<GrantedAuthority>
+  - jwtToGrantedAuthExtractor(JwtConfigurer): void
+  - mapCognitoAuthorities(List<String>): List<GrantedAuthority>
+}
+enum StatoAsta << enumeration >> {
+  + StatoAsta(): 
+  + values(): StatoAsta[]
+  + valueOf(String): StatoAsta
+}
+interface StatoAstaMapper << interface >> {
+  + toStringEnum(StatoAsta): String
+  + toEntity(String): StatoAsta
+}
+enum StatoOffertaSilenziosa << enumeration >> {
+  + StatoOffertaSilenziosa(): 
+  + values(): StatoOffertaSilenziosa[]
+  + valueOf(String): StatoOffertaSilenziosa
+}
+interface StatoOffertaSilenziosaMapper << interface >> {
+  + toEntity(String): StatoOffertaSilenziosa
+  + toStringEnum(StatoOffertaSilenziosa): String
+}
+entity TokenDto << record >> {
+  + TokenDto(String): 
+  + token(): String
+}
+class TokensAccount {
+  + TokensAccount(): 
+  + TokensAccount(String, String, String, String): 
+  - idFacebook: String
+  - idGoogle: String
+  - idX: String
+  - idGitHub: String
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + toString(): String
+   idFacebook: String
+   idGitHub: String
+   idGoogle: String
+   idX: String
+}
+class TokensAccountDto {
+  + TokensAccountDto(): 
+  - idX: String
+  - idGoogle: String
+  - idGitHub: String
+  - idFacebook: String
+   idFacebook: String
+   idGitHub: String
+   idGoogle: String
+   idX: String
+}
+interface TokensAccountMapper << interface >> {
+  + toDto(TokensAccount): TokensAccountDto
+  + toEntity(TokensAccountDto): TokensAccount
+}
+class UpdateRuntimeException {
+  + UpdateRuntimeException(): 
+  + UpdateRuntimeException(String): 
+}
+entity UrlDto << record >> {
+  + UrlDto(String): 
+  + url(): String
+}
+class Venditore {
+  + Venditore(): 
+  + Venditore(String, String, TokensAccount, Profilo): 
+  - astePossedute: Set<AstaDiVenditore>
+  - offerteCollegate: Set<OffertaDiVenditore>
+  + equals(Object): boolean
+  # canEqual(Object): boolean
+  + hashCode(): int
+  + removeOffertaCollegata(OffertaDiVenditore): void
+  + removeAstaPosseduta(AstaDiVenditore): void
+  + toString(): String
+  + addAstaPosseduta(AstaDiVenditore): void
+  + addOffertaCollegata(OffertaDiVenditore): void
+   astePossedute: Set<AstaDiVenditore>
+   offerteCollegate: Set<OffertaDiVenditore>
+}
+class VenditoreController {
+  + VenditoreController(VenditoreService): 
+  + fullUpdateVenditore(Long, VenditoreDto): ResponseEntity<VenditoreDto>
+  + createVenditore(VenditoreDto): ResponseEntity<VenditoreDto>
+  + getVenditore(Long): ResponseEntity<VenditoreDto>
+  + deleteVenditore(Long): ResponseEntity<VenditoreDto>
+  + listVenditori(Pageable): ResponseEntity<Page<VenditoreDto>>
+  + listVenditoriByEmailIs(String, Pageable): ResponseEntity<Page<VenditoreDto>>
+  + partialUpdateVenditore(Long, VenditoreDto): ResponseEntity<VenditoreDto>
+}
+class VenditoreDto {
+  + VenditoreDto(): 
+  - astePosseduteShallow: Set<AstaShallowDto>
+  - offerteCollegateShallow: Set<OffertaShallowDto>
+   astePosseduteShallow: Set<AstaShallowDto>
+   offerteCollegateShallow: Set<OffertaShallowDto>
+}
+interface VenditoreMapper << interface >> {
+  + toEntity(VenditoreDto): Venditore
+  + toDto(Venditore): VenditoreDto
+}
+interface VenditoreRepository << interface >> {
+  + findByEmailIs(String, Pageable): Page<Venditore>
+}
+interface VenditoreService << interface >> {
+  + isExists(Long): boolean
+  + findByEmailIs(String, Pageable): Page<VenditoreDto>
+  + fullUpdate(Long, VenditoreDto): VenditoreDto
+  + partialUpdate(Long, VenditoreDto): VenditoreDto
+  + delete(Long): void
+  + updatePresentFields(VenditoreDto, Venditore): void
+  + findOne(Long): Optional<VenditoreDto>
+  + findAll(Pageable): Page<VenditoreDto>
+  + checkFieldsValid(VenditoreDto): void
+  + create(VenditoreDto): VenditoreDto
+  + convertRelations(VenditoreDto, Venditore): void
+}
+class VenditoreServiceImpl {
+  + VenditoreServiceImpl(AccountService, VenditoreMapper, VenditoreRepository, RelationsConverter): 
+  + findOne(Long): Optional<VenditoreDto>
+  + checkFieldsValid(VenditoreDto): void
+  + fullUpdate(Long, VenditoreDto): VenditoreDto
+  - convertOfferteCollegateShallow(Set<OffertaShallowDto>, Venditore): void
+  + updatePresentFields(VenditoreDto, Venditore): void
+  + findByEmailIs(String, Pageable): Page<VenditoreDto>
+  + partialUpdate(Long, VenditoreDto): VenditoreDto
+  + isExists(Long): boolean
+  + findAll(Pageable): Page<VenditoreDto>
+  + convertRelations(VenditoreDto, Venditore): void
+  + delete(Long): void
+  + create(VenditoreDto): VenditoreDto
+  - convertAstePosseduteShallow(Set<AstaShallowDto>, Venditore): void
+}
+
+Account                          "1" *-[#595959,plain]-> "notificheInviate\n*" Notifica                         
+Account                          "1" *-[#595959,plain]-> "profilo\n1" Profilo                          
+Account                          "1" *-[#595959,plain]-> "tokens\n1" TokensAccount                    
+AccountDto                       "1" *-[#595959,plain]-> "notificheInviateShallow\n*" NotificaShallowDto               
+AccountDto                       "1" *-[#595959,plain]-> "profiloShallow\n1" ProfiloShallowDto                
+AccountDto                       "1" *-[#595959,plain]-> "tokens\n1" TokensAccountDto                 
+AccountMapper                     -[#595959,dashed]->  AccountShallowDto                : "«create»"
+AccountMapper                     -[#595959,dashed]->  InvalidTypeException             : "«create»"
+AccountServiceImpl               "1" *-[#595959,plain]-> "accountRepository\n1" AccountRepository                
+AccountServiceImpl                -[#008200,dashed]-^  AccountService                   
+AccountServiceImpl                -[#595959,dashed]->  InvalidParameterException        : "«create»"
+AccountServiceImpl               "1" *-[#595959,plain]-> "relationsConverter\n1" RelationsConverter               
+AccountServiceImpl               "1" *-[#595959,plain]-> "tokensAccountMapper\n1" TokensAccountMapper              
+Asta                             "1" *-[#595959,plain]-> "categoria\n1" CategoriaAsta                    
+Asta                             "1" *-[#595959,plain]-> "notificheAssociate\n*" Notifica                         
+Asta                             "1" *-[#595959,plain]-> "stato\n1" StatoAsta                        
+AstaDiCompratore                  -[#000082,plain]-^  Asta                             
+AstaDiCompratore                 "1" *-[#595959,plain]-> "proprietario\n1" Compratore                       
+AstaDiCompratoreDto              "1" *-[#595959,plain]-> "proprietarioShallow\n1" AccountShallowDto                
+AstaDiCompratoreDto               -[#000082,plain]-^  AstaDto                          
+AstaDiCompratoreServiceImpl       -[#008200,dashed]-^  AstaDiCompratoreService          
+AstaDiCompratoreServiceImpl      "1" *-[#595959,plain]-> "astaService\n1" AstaService                      
+AstaDiCompratoreServiceImpl       -[#595959,dashed]->  InvalidTypeException             : "«create»"
+AstaDiCompratoreServiceImpl      "1" *-[#595959,plain]-> "relationsConverter\n1" RelationsConverter               
+AstaDiCompratoreServiceImpl       -[#595959,dashed]->  UpdateRuntimeException           : "«create»"
+AstaDiVenditore                   -[#000082,plain]-^  Asta                             
+AstaDiVenditore                  "1" *-[#595959,plain]-> "proprietario\n1" Venditore                        
+AstaDiVenditoreDto               "1" *-[#595959,plain]-> "proprietarioShallow\n1" AccountShallowDto                
+AstaDiVenditoreDto                -[#000082,plain]-^  AstaDto                          
+AstaDiVenditoreServiceImpl        -[#008200,dashed]-^  AstaDiVenditoreService           
+AstaDiVenditoreServiceImpl       "1" *-[#595959,plain]-> "astaService\n1" AstaService                      
+AstaDiVenditoreServiceImpl        -[#595959,dashed]->  InvalidTypeException             : "«create»"
+AstaDiVenditoreServiceImpl       "1" *-[#595959,plain]-> "relationsConverter\n1" RelationsConverter               
+AstaDiVenditoreServiceImpl        -[#595959,dashed]->  UpdateRuntimeException           : "«create»"
+AstaDto                          "1" *-[#595959,plain]-> "categoriaShallow\n1" CategoriaAstaShallowDto          
+AstaDto                          "1" *-[#595959,plain]-> "notificheAssociateShallow\n*" NotificaShallowDto               
+AstaInversa                       -[#000082,plain]-^  AstaDiCompratore                 
+AstaInversa                      "1" *-[#595959,plain]-> "offerteRicevute\n*" OffertaInversa                   
+AstaInversaController            "1" *-[#595959,plain]-> "astaInversaService\n1" AstaInversaService               
+AstaInversaDto                    -[#000082,plain]-^  AstaDiCompratoreDto              
+AstaInversaDto                   "1" *-[#595959,plain]-> "offerteRicevuteShallow\n*" OffertaShallowDto                
+AstaInversaServiceImpl           "1" *-[#595959,plain]-> "astaDiCompratoreService\n1" AstaDiCompratoreService          
+AstaInversaServiceImpl           "1" *-[#595959,plain]-> "astaInversaMapper\n1" AstaInversaMapper                
+AstaInversaServiceImpl           "1" *-[#595959,plain]-> "astaInversaRepository\n1" AstaInversaRepository            
+AstaInversaServiceImpl            -[#008200,dashed]-^  AstaInversaService               
+AstaInversaServiceImpl           "1" *-[#595959,plain]-> "buildNotice\n1" BuildNotice                      
+AstaInversaServiceImpl            -[#595959,dashed]->  InvalidParameterException        : "«create»"
+AstaInversaServiceImpl            -[#595959,dashed]->  InvalidTypeException             : "«create»"
+AstaInversaServiceImpl           "1" *-[#595959,plain]-> "relationsConverter\n1" RelationsConverter               
+AstaInversaServiceImpl            -[#595959,dashed]->  UpdateRuntimeException           : "«create»"
+AstaMapper                        -[#595959,dashed]->  AstaShallowDto                   : "«create»"
+AstaMapper                        -[#595959,dashed]->  InvalidTypeException             : "«create»"
+AstaScheduler                    "1" *-[#595959,plain]-> "astaInversaService\n1" AstaInversaService               
+AstaScheduler                    "1" *-[#595959,plain]-> "astaRepository\n1" AstaRepository                   
+AstaScheduler                    "1" *-[#595959,plain]-> "astaSilenziosaService\n1" AstaSilenziosaService            
+AstaScheduler                    "1" *-[#595959,plain]-> "astaTempoFissoService\n1" AstaTempoFissoService            
+AstaServiceImpl                   -[#008200,dashed]-^  AstaService                      
+AstaServiceImpl                   -[#595959,dashed]->  InvalidParameterException        : "«create»"
+AstaServiceImpl                  "1" *-[#595959,plain]-> "relationsConverter\n1" RelationsConverter               
+AstaServiceImpl                  "1" *-[#595959,plain]-> "statoAstaMapper\n1" StatoAstaMapper                  
+AstaSilenziosa                    -[#000082,plain]-^  AstaDiVenditore                  
+AstaSilenziosa                   "1" *-[#595959,plain]-> "offerteRicevute\n*" OffertaSilenziosa                
+AstaSilenziosaController         "1" *-[#595959,plain]-> "astaSilenziosaService\n1" AstaSilenziosaService            
+AstaSilenziosaDto                 -[#000082,plain]-^  AstaDiVenditoreDto               
+AstaSilenziosaDto                "1" *-[#595959,plain]-> "offerteRicevuteShallow\n*" OffertaShallowDto                
+AstaSilenziosaServiceImpl        "1" *-[#595959,plain]-> "astaDiVenditoreService\n1" AstaDiVenditoreService           
+AstaSilenziosaServiceImpl        "1" *-[#595959,plain]-> "astaSilenziosaMapper\n1" AstaSilenziosaMapper             
+AstaSilenziosaServiceImpl        "1" *-[#595959,plain]-> "astaSilenziosaRepository\n1" AstaSilenziosaRepository         
+AstaSilenziosaServiceImpl         -[#008200,dashed]-^  AstaSilenziosaService            
+AstaSilenziosaServiceImpl        "1" *-[#595959,plain]-> "buildNotice\n1" BuildNotice                      
+AstaSilenziosaServiceImpl         -[#595959,dashed]->  InvalidTypeException             : "«create»"
+AstaSilenziosaServiceImpl        "1" *-[#595959,plain]-> "relationsConverter\n1" RelationsConverter               
+AstaSilenziosaServiceImpl         -[#595959,dashed]->  UpdateRuntimeException           : "«create»"
+AstaTempoFisso                    -[#000082,plain]-^  AstaDiVenditore                  
+AstaTempoFisso                   "1" *-[#595959,plain]-> "offerteRicevute\n*" OffertaTempoFisso                
+AstaTempoFissoController         "1" *-[#595959,plain]-> "astaTempoFissoService\n1" AstaTempoFissoService            
+AstaTempoFissoDto                 -[#000082,plain]-^  AstaDiVenditoreDto               
+AstaTempoFissoDto                "1" *-[#595959,plain]-> "offerteRicevuteShallow\n*" OffertaShallowDto                
+AstaTempoFissoServiceImpl        "1" *-[#595959,plain]-> "astaDiVenditoreService\n1" AstaDiVenditoreService           
+AstaTempoFissoServiceImpl        "1" *-[#595959,plain]-> "astaTempoFissoMapper\n1" AstaTempoFissoMapper             
+AstaTempoFissoServiceImpl        "1" *-[#595959,plain]-> "astaTempoFissoRepository\n1" AstaTempoFissoRepository         
+AstaTempoFissoServiceImpl         -[#008200,dashed]-^  AstaTempoFissoService            
+AstaTempoFissoServiceImpl        "1" *-[#595959,plain]-> "buildNotice\n1" BuildNotice                      
+AstaTempoFissoServiceImpl         -[#595959,dashed]->  InvalidParameterException        : "«create»"
+AstaTempoFissoServiceImpl         -[#595959,dashed]->  InvalidTypeException             : "«create»"
+AstaTempoFissoServiceImpl        "1" *-[#595959,plain]-> "relationsConverter\n1" RelationsConverter               
+AstaTempoFissoServiceImpl         -[#595959,dashed]->  UpdateRuntimeException           : "«create»"
+AuthController                    -[#595959,dashed]->  AuthRuntimeException             : "«create»"
+AuthController                    -[#595959,dashed]->  TokenDto                         : "«create»"
+AuthController                    -[#595959,dashed]->  UrlDto                           : "«create»"
+BuildNoticeImpl                   -[#008200,dashed]-^  BuildNotice                      
+BuildNoticeImpl                   -[#595959,dashed]->  Notifica                         : "«create»"
+BuildNoticeImpl                  "1" *-[#595959,plain]-> "notificaRepository\n1" NotificaRepository               
+CategoriaAsta                    "1" *-[#595959,plain]-> "asteAssegnate\n*" Asta                             
+CategoriaAstaController          "1" *-[#595959,plain]-> "categoriaAstaService\n1" CategoriaAstaService             
+CategoriaAstaDto                 "1" *-[#595959,plain]-> "asteAssegnateShallow\n*" AstaShallowDto                   
+CategoriaAstaServiceImpl         "1" *-[#595959,plain]-> "categoriaAstaMapper\n1" CategoriaAstaMapper              
+CategoriaAstaServiceImpl         "1" *-[#595959,plain]-> "categoriaAstaRepository\n1" CategoriaAstaRepository          
+CategoriaAstaServiceImpl          -[#008200,dashed]-^  CategoriaAstaService             
+CategoriaAstaServiceImpl          -[#595959,dashed]->  IllegalDeleteRequestException    : "«create»"
+CategoriaAstaServiceImpl          -[#595959,dashed]->  InvalidParameterException        : "«create»"
+CategoriaAstaServiceImpl         "1" *-[#595959,plain]-> "relationsConverter\n1" RelationsConverter               
+CategoriaAstaServiceImpl          -[#595959,dashed]->  UpdateRuntimeException           : "«create»"
+Compratore                        -[#000082,plain]-^  Account                          
+Compratore                       "1" *-[#595959,plain]-> "astePossedute\n*" AstaDiCompratore                 
+Compratore                       "1" *-[#595959,plain]-> "offerteCollegate\n*" OffertaDiCompratore              
+CompratoreController             "1" *-[#595959,plain]-> "compratoreService\n1" CompratoreService                
+CompratoreDto                     -[#000082,plain]-^  AccountDto                       
+CompratoreDto                    "1" *-[#595959,plain]-> "astePosseduteShallow\n*" AstaShallowDto                   
+CompratoreDto                    "1" *-[#595959,plain]-> "offerteCollegateShallow\n*" OffertaShallowDto                
+CompratoreServiceImpl            "1" *-[#595959,plain]-> "accountService\n1" AccountService                   
+CompratoreServiceImpl            "1" *-[#595959,plain]-> "compratoreMapper\n1" CompratoreMapper                 
+CompratoreServiceImpl            "1" *-[#595959,plain]-> "compratoreRepository\n1" CompratoreRepository             
+CompratoreServiceImpl             -[#008200,dashed]-^  CompratoreService                
+CompratoreServiceImpl             -[#595959,dashed]->  IllegalDeleteRequestException    : "«create»"
+CompratoreServiceImpl             -[#595959,dashed]->  InvalidTypeException             : "«create»"
+CompratoreServiceImpl            "1" *-[#595959,plain]-> "relationsConverter\n1" RelationsConverter               
+CompratoreServiceImpl             -[#595959,dashed]->  UpdateRuntimeException           : "«create»"
+GlobalExceptionHandlerController  -[#595959,dashed]->  ErrorDto                         : "«create»"
+IdNotFoundException               -[#000082,plain]-^  InvalidParameterException        
+IllegalDeleteRequestException     -[#000082,plain]-^  InvalidParameterException        
+InvalidTypeException              -[#000082,plain]-^  InvalidParameterException        
+Notifica                         "1" *-[#595959,plain]-> "destinatari\n*" Account                          
+Notifica                         "1" *-[#595959,plain]-> "astaAssociata\n1" Asta                             
+NotificaController               "1" *-[#595959,plain]-> "notificaService\n1" NotificaService                  
+NotificaDto                      "1" *-[#595959,plain]-> "destinatariShallow\n*" AccountShallowDto                
+NotificaDto                      "1" *-[#595959,plain]-> "astaAssociataShallow\n1" AstaShallowDto                   
+NotificaServiceImpl               -[#595959,dashed]->  InvalidParameterException        : "«create»"
+NotificaServiceImpl              "1" *-[#595959,plain]-> "notificaMapper\n1" NotificaMapper                   
+NotificaServiceImpl              "1" *-[#595959,plain]-> "notificaRepository\n1" NotificaRepository               
+NotificaServiceImpl               -[#008200,dashed]-^  NotificaService                  
+NotificaServiceImpl              "1" *-[#595959,plain]-> "relationsConverter\n1" RelationsConverter               
+NotificaServiceImpl               -[#595959,dashed]->  UpdateRuntimeException           : "«create»"
+OffertaDiCompratore              "1" *-[#595959,plain]-> "compratoreCollegato\n1" Compratore                       
+OffertaDiCompratore               -[#000082,plain]-^  Offerta                          
+OffertaDiCompratoreDto           "1" *-[#595959,plain]-> "compratoreCollegatoShallow\n1" AccountShallowDto                
+OffertaDiCompratoreDto            -[#000082,plain]-^  OffertaDto                       
+OffertaDiCompratoreServiceImpl    -[#595959,dashed]->  InvalidParameterException        : "«create»"
+OffertaDiCompratoreServiceImpl    -[#595959,dashed]->  InvalidTypeException             : "«create»"
+OffertaDiCompratoreServiceImpl    -[#008200,dashed]-^  OffertaDiCompratoreService       
+OffertaDiCompratoreServiceImpl   "1" *-[#595959,plain]-> "offertaService\n1" OffertaService                   
+OffertaDiCompratoreServiceImpl   "1" *-[#595959,plain]-> "relationsConverter\n1" RelationsConverter               
+OffertaDiVenditore                -[#000082,plain]-^  Offerta                          
+OffertaDiVenditore               "1" *-[#595959,plain]-> "venditoreCollegato\n1" Venditore                        
+OffertaDiVenditoreDto            "1" *-[#595959,plain]-> "venditoreCollegatoShallow\n1" AccountShallowDto                
+OffertaDiVenditoreDto             -[#000082,plain]-^  OffertaDto                       
+OffertaDiVenditoreServiceImpl     -[#595959,dashed]->  InvalidParameterException        : "«create»"
+OffertaDiVenditoreServiceImpl     -[#595959,dashed]->  InvalidTypeException             : "«create»"
+OffertaDiVenditoreServiceImpl     -[#008200,dashed]-^  OffertaDiVenditoreService        
+OffertaDiVenditoreServiceImpl    "1" *-[#595959,plain]-> "offertaService\n1" OffertaService                   
+OffertaDiVenditoreServiceImpl    "1" *-[#595959,plain]-> "relationsConverter\n1" RelationsConverter               
+OffertaInversa                   "1" *-[#595959,plain]-> "astaRiferimento\n1" AstaInversa                      
+OffertaInversa                    -[#000082,plain]-^  OffertaDiVenditore               
+OffertaInversaController         "1" *-[#595959,plain]-> "offertaInversaService\n1" OffertaInversaService            
+OffertaInversaDto                "1" *-[#595959,plain]-> "astaRiferimentoShallow\n1" AstaShallowDto                   
+OffertaInversaDto                 -[#000082,plain]-^  OffertaDiVenditoreDto            
+OffertaInversaServiceImpl        "1" *-[#595959,plain]-> "astaScheduler\n1" AstaScheduler                    
+OffertaInversaServiceImpl        "1" *-[#595959,plain]-> "buildNotice\n1" BuildNotice                      
+OffertaInversaServiceImpl         -[#595959,dashed]->  InvalidParameterException        : "«create»"
+OffertaInversaServiceImpl         -[#595959,dashed]->  InvalidTypeException             : "«create»"
+OffertaInversaServiceImpl        "1" *-[#595959,plain]-> "offertaDiVenditoreService\n1" OffertaDiVenditoreService        
+OffertaInversaServiceImpl        "1" *-[#595959,plain]-> "offertaInversaMapper\n1" OffertaInversaMapper             
+OffertaInversaServiceImpl        "1" *-[#595959,plain]-> "offertaInversaRepository\n1" OffertaInversaRepository         
+OffertaInversaServiceImpl         -[#008200,dashed]-^  OffertaInversaService            
+OffertaInversaServiceImpl        "1" *-[#595959,plain]-> "relationsConverter\n1" RelationsConverter               
+OffertaInversaServiceImpl         -[#595959,dashed]->  UpdateRuntimeException           : "«create»"
+OffertaMapper                     -[#595959,dashed]->  InvalidTypeException             : "«create»"
+OffertaMapper                     -[#595959,dashed]->  OffertaShallowDto                : "«create»"
+OffertaServiceImpl                -[#595959,dashed]->  InvalidParameterException        : "«create»"
+OffertaServiceImpl                -[#008200,dashed]-^  OffertaService                   
+OffertaSilenziosa                "1" *-[#595959,plain]-> "astaRiferimento\n1" AstaSilenziosa                   
+OffertaSilenziosa                 -[#000082,plain]-^  OffertaDiCompratore              
+OffertaSilenziosa                "1" *-[#595959,plain]-> "stato\n1" StatoOffertaSilenziosa           
+OffertaSilenziosaController      "1" *-[#595959,plain]-> "offertaSilenziosaService\n1" OffertaSilenziosaService         
+OffertaSilenziosaDto             "1" *-[#595959,plain]-> "astaRiferimentoShallow\n1" AstaShallowDto                   
+OffertaSilenziosaDto              -[#000082,plain]-^  OffertaDiCompratoreDto           
+OffertaSilenziosaServiceImpl     "1" *-[#595959,plain]-> "astaScheduler\n1" AstaScheduler                    
+OffertaSilenziosaServiceImpl     "1" *-[#595959,plain]-> "buildNotice\n1" BuildNotice                      
+OffertaSilenziosaServiceImpl      -[#595959,dashed]->  InvalidParameterException        : "«create»"
+OffertaSilenziosaServiceImpl      -[#595959,dashed]->  InvalidTypeException             : "«create»"
+OffertaSilenziosaServiceImpl     "1" *-[#595959,plain]-> "offertaDiCompratoreService\n1" OffertaDiCompratoreService       
+OffertaSilenziosaServiceImpl     "1" *-[#595959,plain]-> "offertaSilenziosaMapper\n1" OffertaSilenziosaMapper          
+OffertaSilenziosaServiceImpl     "1" *-[#595959,plain]-> "offertaSilenziosaRepository\n1" OffertaSilenziosaRepository      
+OffertaSilenziosaServiceImpl      -[#008200,dashed]-^  OffertaSilenziosaService         
+OffertaSilenziosaServiceImpl     "1" *-[#595959,plain]-> "relationsConverter\n1" RelationsConverter               
+OffertaSilenziosaServiceImpl     "1" *-[#595959,plain]-> "statoOffertaSilenziosaMapper\n1" StatoOffertaSilenziosaMapper     
+OffertaSilenziosaServiceImpl      -[#595959,dashed]->  UpdateRuntimeException           : "«create»"
+OffertaTempoFisso                "1" *-[#595959,plain]-> "astaRiferimento\n1" AstaTempoFisso                   
+OffertaTempoFisso                 -[#000082,plain]-^  OffertaDiCompratore              
+OffertaTempoFissoController      "1" *-[#595959,plain]-> "offertaTempoFissoService\n1" OffertaTempoFissoService         
+OffertaTempoFissoDto             "1" *-[#595959,plain]-> "astaRiferimentoShallow\n1" AstaShallowDto                   
+OffertaTempoFissoDto              -[#000082,plain]-^  OffertaDiCompratoreDto           
+OffertaTempoFissoServiceImpl     "1" *-[#595959,plain]-> "astaScheduler\n1" AstaScheduler                    
+OffertaTempoFissoServiceImpl     "1" *-[#595959,plain]-> "buildNotice\n1" BuildNotice                      
+OffertaTempoFissoServiceImpl      -[#595959,dashed]->  InvalidParameterException        : "«create»"
+OffertaTempoFissoServiceImpl      -[#595959,dashed]->  InvalidTypeException             : "«create»"
+OffertaTempoFissoServiceImpl     "1" *-[#595959,plain]-> "offertaDiCompratoreService\n1" OffertaDiCompratoreService       
+OffertaTempoFissoServiceImpl     "1" *-[#595959,plain]-> "offertaTempoFissoMapper\n1" OffertaTempoFissoMapper          
+OffertaTempoFissoServiceImpl     "1" *-[#595959,plain]-> "offertaTempoFissoRepository\n1" OffertaTempoFissoRepository      
+OffertaTempoFissoServiceImpl      -[#008200,dashed]-^  OffertaTempoFissoService         
+OffertaTempoFissoServiceImpl     "1" *-[#595959,plain]-> "relationsConverter\n1" RelationsConverter               
+OffertaTempoFissoServiceImpl      -[#595959,dashed]->  UpdateRuntimeException           : "«create»"
+Profilo                          "1" *-[#595959,plain]-> "accounts\n*" Account                          
+Profilo                          "1" *-[#595959,plain]-> "anagrafica\n1" AnagraficaProfilo                
+Profilo                           -[#595959,dashed]->  Compratore                       : "«create»"
+Profilo                           -[#595959,dashed]->  InvalidTypeException             : "«create»"
+Profilo                          "1" *-[#595959,plain]-> "links\n1" LinksProfilo                     
+Profilo                           -[#595959,dashed]->  Venditore                        : "«create»"
+ProfiloController                "1" *-[#595959,plain]-> "profiloService\n1" ProfiloService                   
+ProfiloDto                       "1" *-[#595959,plain]-> "accountsShallow\n*" AccountShallowDto                
+ProfiloDto                       "1" *-[#595959,plain]-> "anagrafica\n1" AnagraficaProfiloDto             
+ProfiloDto                       "1" *-[#595959,plain]-> "links\n1" LinksProfiloDto                  
+ProfiloServiceImpl               "1" *-[#595959,plain]-> "accountService\n1" AccountService                   
+ProfiloServiceImpl               "1" *-[#595959,plain]-> "anagraficaProfiloMapper\n1" AnagraficaProfiloMapper          
+ProfiloServiceImpl                -[#595959,dashed]->  InvalidParameterException        : "«create»"
+ProfiloServiceImpl               "1" *-[#595959,plain]-> "linksProfiloMapper\n1" LinksProfiloMapper               
+ProfiloServiceImpl               "1" *-[#595959,plain]-> "profiloMapper\n1" ProfiloMapper                    
+ProfiloServiceImpl               "1" *-[#595959,plain]-> "profiloRepository\n1" ProfiloRepository                
+ProfiloServiceImpl                -[#008200,dashed]-^  ProfiloService                   
+ProfiloServiceImpl               "1" *-[#595959,plain]-> "putProfiloMapper\n1" PutProfiloMapper                 
+ProfiloServiceImpl               "1" *-[#595959,plain]-> "relationsConverter\n1" RelationsConverter               
+ProfiloServiceImpl                -[#595959,dashed]->  UpdateRuntimeException           : "«create»"
+PutProfiloDto                    "1" *-[#595959,plain]-> "anagrafica\n1" AnagraficaProfiloDto             
+PutProfiloDto                    "1" *-[#595959,plain]-> "links\n1" LinksProfiloDto                  
+PutProfiloDto                    "1" *-[#595959,plain]-> "tokens\n1" TokensAccountDto                 
+PutProfiloMapperImpl             "1" *-[#595959,plain]-> "anagraficaProfiloMapper\n1" AnagraficaProfiloMapper          
+PutProfiloMapperImpl             "1" *-[#595959,plain]-> "linksProfiloMapper\n1" LinksProfiloMapper               
+PutProfiloMapperImpl              -[#595959,dashed]->  Profilo                          : "«create»"
+PutProfiloMapperImpl              -[#008200,dashed]-^  PutProfiloMapper                 
+PutProfiloMapperImpl             "1" *-[#595959,plain]-> "tokensAccountMapper\n1" TokensAccountMapper              
+RelationsConverterImpl           "1" *-[#595959,plain]-> "accountRepository\n1" AccountRepository                
+RelationsConverterImpl           "1" *-[#595959,plain]-> "astaRepository\n1" AstaRepository                   
+RelationsConverterImpl           "1" *-[#595959,plain]-> "categoriaAstaRepository\n1" CategoriaAstaRepository          
+RelationsConverterImpl            -[#595959,dashed]->  IdNotFoundException              : "«create»"
+RelationsConverterImpl            -[#595959,dashed]->  InvalidTypeException             : "«create»"
+RelationsConverterImpl           "1" *-[#595959,plain]-> "notificaRepository\n1" NotificaRepository               
+RelationsConverterImpl           "1" *-[#595959,plain]-> "offertaRepository\n1" OffertaRepository                
+RelationsConverterImpl           "1" *-[#595959,plain]-> "profiloRepository\n1" ProfiloRepository                
+RelationsConverterImpl            -[#008200,dashed]-^  RelationsConverter               
+Venditore                         -[#000082,plain]-^  Account                          
+Venditore                        "1" *-[#595959,plain]-> "astePossedute\n*" AstaDiVenditore                  
+Venditore                        "1" *-[#595959,plain]-> "offerteCollegate\n*" OffertaDiVenditore               
+VenditoreController              "1" *-[#595959,plain]-> "venditoreService\n1" VenditoreService                 
+VenditoreDto                      -[#000082,plain]-^  AccountDto                       
+VenditoreDto                     "1" *-[#595959,plain]-> "astePosseduteShallow\n*" AstaShallowDto                   
+VenditoreDto                     "1" *-[#595959,plain]-> "offerteCollegateShallow\n*" OffertaShallowDto                
+VenditoreServiceImpl             "1" *-[#595959,plain]-> "accountService\n1" AccountService                   
+VenditoreServiceImpl              -[#595959,dashed]->  IllegalDeleteRequestException    : "«create»"
+VenditoreServiceImpl              -[#595959,dashed]->  InvalidTypeException             : "«create»"
+VenditoreServiceImpl             "1" *-[#595959,plain]-> "relationsConverter\n1" RelationsConverter               
+VenditoreServiceImpl              -[#595959,dashed]->  UpdateRuntimeException           : "«create»"
+VenditoreServiceImpl             "1" *-[#595959,plain]-> "venditoreMapper\n1" VenditoreMapper                  
+VenditoreServiceImpl             "1" *-[#595959,plain]-> "venditoreRepository\n1" VenditoreRepository              
+VenditoreServiceImpl              -[#008200,dashed]-^  VenditoreService                 
+@enduml

@@ -7,29 +7,34 @@
     \section{Architettura e criteri di progettazione}
         L'architettura di un software è la struttura del sistema, che comprende gli elementi del software, le proprietà visibili all'esterno di tali elementi, e le relazioni tra di essi. \\
         Sulla base delle richieste avanzate dagli utenti, ovvero di un’applicazione \textbf{portabile}, \textbf{facile da usare} e \textbf{rapida}, si ritiene che i criteri di progettazione sui quali bisogni focalizzarsi siano \textbf{bassi tempi di risposta (bassa latenza)}, \textbf{basso consumo di memoria}, \textbf{alta portabilità e modificabilità}. \\
+        In vista dell'impossibilità di coordinare tutti questi aspetti, si è deciso di focalizzarsi sui bassi tempi di risposta (l'aspetto che più di tutti influenza l'opinione degli utilizzatori comuni) attraverso l'utilizzo di ridondanze e meccanismi di cache. \\
         Per soddisfare tali requisiti qualitativi, il sistema deve essere suddiviso in diversi moduli tali che tra essi sussistano un'\textbf{alta coesione} e un \textbf{basso accoppiamento}. \\
-        Si è optato, in questo sistema, per un'\textbf{architettura client-server a due livelli con modello client leggero}. \\
+        Si è optato, in questo sistema, per un'\textbf{architettura client-server a due livelli con modello client leggero} e una \textbf{base di dati relazionale} per la persistenza dei dati. \\
         Si desidera ora evidenziare i criteri di progettazione definiti che hanno portato a questa decisione:
         \begin{itemize}
             \item La coesione è una misura di quanto siano fortemente relate e mirate le responsabilità, cioè i servizi offerti da un modulo; ciò permetterà di ottenere un’alta manutenibilità del codice e focalizzare i cambiamenti in interventi mirati e precisi. \\
             Per ottenere un'alta coesione, si è optato per una architettura client-server, nella quale ogni modulo adempie ad una funzione ben precisa e le cui classi collaborano per lo stesso fine. \\
             L'architettura client-server è una architettura distribuita, ove un sottosistema "servitore" offre servizi e dati ad altri sottosistemi "cliente", i quali sono responsabili dell'interazione con l'utente. \\
-            I client chiamano il server richiedendo un servizio e ad essi viene restituito il risultato; questa chiamata è possibile poiché i client conoscono le interfacce del server, ma non è vero il viceversa.
+            I client chiamano il server richiedendo un servizio e ad essi viene restituito il risultato; questa chiamata è possibile poiché i client conoscono le interfacce del server, ma non è vero il viceversa. \\
+            In questo modo, tutti quanti gli utilizzatori dell'applicazione possono accedere alla stessa fonte di dati, ossia il server centrale.
             \item L’accoppiamento è una misura su quanto fortemente un modulo sia dipendente da altri. \\
             Un basso accoppiamento permetterà il riutilizzo dei moduli nonché una facilitazione nella modifica dello stesso, senza che le modifiche possano avere conseguenze inaspettate su altri moduli. \\
             Per ottenere un basso accoppiamento, si è scelto di seguire la legge di Demetra, spingendo al massimo l'incapsulamento.
             \item Il modello client leggero è l'alternativa al modello client pesante in un'architettura client-server a doppio legame. \\
             In questo modello, il client si occupa solamente dell'interfaccia e l'interazione con l'utente, e quindi può essere eseguito su gran parte dei dispositivi, anche con modeste prestazioni. \\
-            Lo svantaggio di tale scelta è che pone maggior carico di elaborazione sia sul server, che si occupa della logica dell'applicazione e dell'immagazzinamento dei dati, sia sulla rete.
+            Lo svantaggio di tale scelta è che pone maggior carico di elaborazione sia sul server, che si occupa della logica dell'applicazione e dell'immagazzinamento dei dati, sia sulla rete. \\
+            Questa decisione è anche frutto della piattaforma scelta per il client, ossia i dispositivi mobili; seppur nel corso del tempo abbiano conosciuto un incremento in termini di capacità di elaborazione, memoria e durata della batteria, restano comunque dei dispositivi poco adatti a applicazioni con elaborazioni troppo pesanti.
+            \item La scelta della base di dati relazionale invece deriva dalla consapevolezza di una struttura fissa dei dati che verranno conservati, e dalla garanzia delle quattro proprietà ACID (atomicità, coerenza, isolamento e durabilità) che essa fornisce.
         \end{itemize}
 
     \section{Tecnologie adottate}
         Il client è un'applicazione per sistema operativo \textbf{Android}, scritta in linguaggio \textbf{Kotlin}. \\
         Il server si articola in:
         \begin{itemize}
-            \item Un'applicazione \textbf{Java} salvata in un'immagine ed eseguita in un container del programma \textbf{Docker (Compose)}, installato su una macchina virtuale fornita da \textbf{AWS EC2}.
+            \item Un'applicazione \textbf{Java} salvata in un'immagine ed eseguita in un container \textbf{Docker}, installato su una macchina virtuale fornita da \textbf{AWS EC2}.
             \item Una base di dati relazionale \textbf{PostgreSQL}, al cui interno sono conservati tutti i dati dell'applicazione, eseguita anch'essa come immagine Docker sulla stessa macchina virtuale AWS EC2.
         \end{itemize}
+        I due container comunicano grazie all'utilizzo di \textbf{Docker Compose}. \\
         Per lo scambio di messaggi tra client e server (attraverso le \textbf{REST API}), il server adotta lo \textbf{Spring Framework}. \\
 
         \subsection{Android}
@@ -63,7 +68,7 @@
             \subsubsection{Perché EC2?}
                 A causa della sua ampia personalizzazione sulla base delle necessità dell'applicazione e grazie alla possibilità di creare, lanciare, e fermare le istanze delle macchine virtuali sul server su richiesta, pagando solo il tempo di computazione sfruttato, l'elasticità del servizio è indubbia \cite{Wikipedia6}. Il Free Tier di EC2 garantisce 750 ore di computazione in 12 mesi su una istanza di tipo "micro" \cite{AWS3}.
             \subsubsection{Cos'è Cognito? \cite{AWS4}} 
-            Amazon Cognito è una piattaforma di identità per app web e per dispositivi mobili. È una directory utente, un server di autenticazione e un servizio di autorizzazione per token di accesso OAuth 2.0 e credenziali AWS. Con Amazon Cognito, puoi autenticare e autorizzare gli utenti dalla directory utente integrata, dalla directory aziendale e dai provider di identità utente come Google e Facebook.
+                Amazon Cognito è una piattaforma di identità per app web e per dispositivi mobili. È una directory utente, un server di autenticazione e un servizio di autorizzazione per token di accesso OAuth 2.0 e credenziali AWS. Con Amazon Cognito, puoi autenticare e autorizzare gli utenti dalla directory utente integrata, dalla directory aziendale e dai provider di identità utente come Google e Facebook.
             \begin{figure}[htbp!]
                 \centering
                 \includegraphics[width=0.2\linewidth]{Immagini/System Design/AWS Cognito.png}
@@ -76,6 +81,7 @@
                 \item Permette di ridimensionare la directory degli utenti fino a milioni di utenti, con alte prestazioni e affidabilità.
                 \item Consente l'accesso federato con OIDC o SAML 2.0 e la connessione ad altri servizi e prodotti AWS.
             \end{itemize}
+           
         \subsection{Kotlin}
             \subsubsection{Cos'è Kotlin? \cite{Wikipedia2}}
                 Kotlin è un linguaggio di programmazione multi-piattaforma, staticamente e fortemente tipizzato con inferenza di tipo, general purpose, multi-paradigma (orientato agli oggetti, imperativo, funzionale). Sviluppato da JetBrains, Kotlin è realizzato per essere interscambiabile con Java, poiché è interpretato da una macchina virtuale Java (JVM) che utilizza la libreria di classi Java standard. Ha pian piano soppiantato l'utilizzo di Java per la realizzazione di applicazioni Android ed è diventato nel 2019 il linguaggio primario e consigliato da Google per la realizzazione di esse.

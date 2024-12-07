@@ -2,72 +2,398 @@
 
 \chapter{Requirement Elicitation}
     \section{Obiettivo}
-        A seguito di una intervista agli stakeholders per carpire informazioni sul dominio del problema, nonché le funzionalità e le qualità che il software debba possedere per risultare conforme ai bisogni dell'utente, si elencano di seguito tutti i requisiti di sistema individuati:
+        A seguito di una intervista agli stakeholders per carpire informazioni sul dominio del problema, nonché le funzionalità e le qualità che il software debba possedere per risultare conforme ai bisogni dell'utente, si elencano di seguito tutti i requisiti individuati:
     \section{Introduzione al sistema} %Requisiti sistema. 1 pagina
-% 1
-        \begin{itemize}
-            \item L'utente che non ha effettuato l'accesso può registrarsi con email correttamente formattata e password.
-            \item Il sistema controlla che l'email abbia il formato corretto (ovvero sia del tipo x+@y+.z+) e che la password sia sicura (ovvero sia lunga almeno 8 caratteri e contenga, nel complesso, almeno una lettera maiuscola [A-Z], un numero [0-9] e un carattere speciale [!@\#\$\%\^{}\&*])
-            \item L'utente che non ha effettuato l'accesso può registrarsi con un account Facebook già esistente.
-            \item L'utente che non ha effettuato l'accesso può selezionare se il suo nuovo account è di tipo compratore o venditore.
-            \item L'utente che non ha effettuato l'accesso può creare uno e un solo account di tipo compratore con la stessa email.
-            \item L'utente che non ha effettuato l'accesso può creare uno e un solo account di tipo venditore con la stessa email.
-            \item L'utente che non ha effettuato l'accesso può creare un profilo condiviso tra l'account venditore e l'account compratore con la stessa email. La creazione del profilo avviene subito dopo la fase di registrazione account.
-            \item L'utente che non ha effettuato l'accesso può accedere a un account con l'email e password utilizzati nella registrazione.
-            \item L'utente che non ha effettuato l'accesso può accedere con un account Facebook già esistente.
-            \item L'utente che ha effettuato l'accesso può visualizzare il suo profilo.
-            \item L'utente che ha effettuato l'accesso può modificare i dati sul suo profilo, come biografia, link al proprio sito, link social e area geografica.
-        \end{itemize}
-% 2
-        \begin{itemize}
-            \item Il venditore può creare aste di vendita di un prodotto/servizio. L'asta risulterà attiva (cioè sarà possibile presentare offerte) fin da subito.
-            \item Il venditore può selezionare il tipo di asta da creare. L'asta può essere di tipo "a tempo fisso" o "silenziosa".
-            \item Il venditore di un'asta di qualsiasi tipo può inserire, al momento della creazione dell'asta, una data e ora di scadenza, un titolo, una descrizione, una categoria e opzionalmente una o più fotografie per l'asta da lui creata.
-            \item Il venditore di un'asta di qualsiasi tipo può modificare la data e ora di scadenza, il titolo, la descrizione, la categoria e le fotografie (se aggiunte) per l'asta da lui creata.
-            \item Il compratore può presentare offerte per le aste correntemente attive e gestite da venditori.
-        \end{itemize}
-% 3
-        \begin{itemize}
-            \item L'utente (sia che abbia effettuato l'accesso, sia che non l'abbia effettuato) può ricercare le aste attraverso parole chiave.
-            \item L'utente (sia che abbia effettuato l'accesso, sia che non l'abbia effettuato) può ricercare le aste sulla base della categoria.
-            \item L'utente (sia che abbia effettuato l'accesso, sia che non l'abbia effettuato) può ricercare le aste attraverso parole chiave e filtrando sulla base della categoria.
-            \item L'utente (sia che abbia effettuato l'accesso, sia che non l'abbia effettuato) può visualizzare i dettagli di un'asta.
-            \item L'utente (sia che abbia effettuato l'accesso, sia che non l'abbia effettuato) può visualizzare il profilo del proprietario dell'asta.
-            \item L'utente (sia che abbia effettuato l'accesso, sia che non l'abbia effettuato) può visualizzare le aste attive.
-            \item L'utente che ha effettuato l'accesso può visualizzare le aste che ha creato.
-            \item L'utente che ha effettuato l'accesso può eliminare le aste che ha creato.
-            \item L'utente che ha effettuato l'accesso può visualizzare le aste a cui ha partecipato.
-            \item L'utente che ha effettuato l'accesso può visualizzare l'elenco delle offerte proposte alle aste da lui create.
-        \end{itemize}
-% 4
-        \begin{itemize}
-            \item Il venditore di un asta di tipo "a tempo fisso" può stabilire, al momento della creazione dell'asta, una soglia minima segreta per l'asta da lui creata (mai visibile ad altri utenti al di fuori del creatore dell'asta e deve essere un valore maggiore o uguale a 0).
-            \item L'utente (sia che abbia effettuato l'accesso, sia che non l'abbia effettuato) può visualizzare l'attuale offerta più alta dell'asta di tipo "a tempo fisso".
-            \item Il sistema assegna la vincita al compratore di un asta di tipo "a tempo fisso" che ha offerto la somma più alta entro la data e ora di scadenza dell'asta.
-            \item Il sistema dichiara l'asta fallita se nessun compratore di un asta di tipo "a tempo fisso" ha offerto una somma più alta della soglia minima entro la data e ora di scadenza dell'asta.
-            \item Il sistema dichiara l'asta fallita se non è stata avanzata alcuna offerta da parte di un compratore di un'asta di tipo "a tempo fisso" entro la data e ora di scadenza dell'asta.
-            \item L'utente che ha effettuato l'accesso può visualizzare le proprie notifiche.
-            \item Il sistema invia una notifica di chiusura dell'asta a tutti i partecipanti dell'asta di tipo "a tempo fisso" (ovvero il venditore e tutti i compratori che hanno offerto almeno una volta una somma di denaro) entro 10 secondi dalla data e ora di scadenza dell'asta.
-        \end{itemize}
-% 7
-        \begin{itemize}
-            \item Il sistema mostra l'offerta di un'asta di tipo "silenziosa" solo al venditore di tale asta e a colui che ha proposto l'offerta.
-            \item Il venditore di un'asta di tipo "silenziosa" può accettare una e una sola offerta, inviata tra le offerte non ancora rifiutate dell'asta di tipo "silenziosa" da lui creata.
-            \item Il venditore di un'asta di tipo "silenziosa" può rifiutare le singole offerte ricevute all'asta di tipo "silenziosa" da lui creata.
-            \item Il sistema assegna la vincita dell'asta al compratore di un'asta di tipo "silenziosa" la cui offerta è stata accettata dal venditore dell'asta di tipo "silenziosa".
-            \item Il sistema dichiara l'asta fallita se il venditore di un'asta di tipo "silenziosa" non ha accettato alcuna offerta entro la data e ora di scadenza dell'asta.
-            \item Il sistema dichiara l'asta fallita se non è stata avanzata alcuna offerta da parte di un compratore di un'asta di tipo "silenziosa" entro la data e ora di scadenza dell'asta.
-            \item Il sistema invia una notifica di proposta offerta al venditore dell'asta di tipo "silenziosa" che ha ricevuto una nuova offerta alla propria asta.
-            \item Il sistema invia una notifica di chiusura dell'asta a tutti i partecipanti dell'asta di tipo "silenziosa" (ovvero a tutti i compratori che hanno offerto almeno una volta una somma di denaro) entro 10 secondi dal momento in cui è stata accettata un'offerta. Tale notifica indicherà se la propria offerta è stata accettata o rifiutata.
-            \item Il sistema invia una notifica di rifiuto dell'offerta al partecipante dell'asta di tipo "silenziosa" la cui offerta è stata rifiutata dal venditore dell'asta.
-        \end{itemize}
-% 8
-        \begin{itemize}            
-            \item Il compratore può creare un'asta di tipo "inversa".
-            \item Il compratore di un'asta di tipo "inversa" può inserire, al momento della creazione dell'asta, una data e ora di scadenza, un titolo, una descrizione, una categoria, un prezzo di partenza che è disposto a pagare e opzionalmente una o più fotografie per l'asta da lui creata.
-            \item Il compratore di un'asta di tipo "inversa" può modificare la data e ora di scadenza, il titolo, la descrizione, la categoria e le fotografie (se aggiunte) per l'asta da lui creata.
-            \item Il venditore in grado di fornire quel particolare prodotto/servizio può presentare offerte per le aste di tipo "inversa" entro la data e ora di scadenza dell'asta. Tale offerta è una somma in euro minore rispetto alla somma più bassa attualmente raggiunta (tale valore deve essere maggiore o uguale a 0).
-            \item Il sistema assegna la vincita dell'asta di tipo "inversa" al venditore che ha offerto la somma più bassa al sopraggiungere della data e ora di scadenza dell'asta a cui ha partecipato.
-            \item Il sistema dichiara l'asta di tipo "inversa" fallita se non è stata avanzata alcuna offerta da parte di un venditore entro la data e ora di scadenza dell'asta.
-            \item Il sistema invia una notifica di chiusura dell'asta a tutti i partecipanti dell'asta di tipo "inversa" (ovvero il compratore e tutti i venditori che hanno offerto almeno una volta una somma di denaro) entro 10 secondi dalla data e ora di scadenza dell'asta.
-        \end{itemize}
+        \subsection{Requisiti funzionali: utente non registrato}
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-NRU-01}} \\
+            \hline
+            L'utente che non ha effettuato l'accesso può registrarsi con email correttamente formattata e password. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-NRU-02}} \\
+            \hline
+            L'utente che non ha effettuato l'accesso può registrarsi con un account Facebook già esistente. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-NRU-03}} \\
+            \hline
+            L'utente che non ha effettuato l'accesso può registrarsi con un account Google già esistente. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-NRU-04}} \\
+            \hline
+            L'utente che non ha effettuato l'accesso può selezionare se il suo nuovo account è di tipo compratore o venditore. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-NRU-05}} \\
+            \hline
+            L'utente che non ha effettuato l'accesso può creare uno e un solo account di tipo compratore con la stessa email. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-NRU-06}} \\
+            \hline
+            L'utente che non ha effettuato l'accesso può creare uno e un solo account di tipo venditore con la stessa email. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-NRU-07}} \\
+            \hline
+            L'utente che non ha effettuato l'accesso può creare un profilo condiviso tra l'account venditore e l'account compratore con la stessa email. La creazione del profilo avviene subito dopo la fase di registrazione account. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-NRU-08}} \\
+            \hline
+            L'utente che non ha effettuato l'accesso può accedere a un account con l'email e password utilizzati nella registrazione. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-NRU-09}} \\
+            \hline
+            L'utente che non ha effettuato l'accesso può accedere con un account Facebook già esistente. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-NRU-10}} \\
+            \hline
+            L'utente che non ha effettuato l'accesso può accedere con un account Google già esistente. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \subsection{Requisiti funzionali: utente registrato}
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-RU-01}} \\
+            \hline
+            L'utente che ha effettuato l'accesso può visualizzare il suo profilo. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-RU-02}} \\
+            \hline
+            L'utente che ha effettuato l'accesso può modificare i dati sul suo profilo, come biografia, link al proprio sito, link social e area geografica. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-RU-03}} \\
+            \hline
+            L'utente che ha effettuato l'accesso può visualizzare le aste che ha creato. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-RU-04}} \\
+            \hline
+            L'utente che ha effettuato l'accesso può eliminare le aste che ha creato. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-RU-05}} \\
+            \hline
+            L'utente che ha effettuato l'accesso può visualizzare le aste a cui ha partecipato. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-RU-06}} \\
+            \hline
+            L'utente che ha effettuato l'accesso può visualizzare l'elenco delle offerte proposte alle aste da lui create. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-RU-07}} \\
+            \hline
+            L'utente che ha effettuato l'accesso può visualizzare le proprie notifiche. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \subsection{Requisiti funzionali: utente generico}
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-USR-01}} \\
+            \hline
+            L'utente (sia che abbia effettuato l'accesso, sia che non l'abbia effettuato) può ricercare le aste attraverso parole chiave. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-USR-02}} \\
+            \hline
+            L'utente (sia che abbia effettuato l'accesso, sia che non l'abbia effettuato) può ricercare le aste sulla base della categoria. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-USR-03}} \\
+            \hline
+            L'utente (sia che abbia effettuato l'accesso, sia che non l'abbia effettuato) può ricercare le aste attraverso parole chiave e filtrando sulla base della categoria. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-USR-04}} \\
+            \hline
+            L'utente (sia che abbia effettuato l'accesso, sia che non l'abbia effettuato) può visualizzare i dettagli di un'asta. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-USR-05}} \\
+            \hline
+            L'utente (sia che abbia effettuato l'accesso, sia che non l'abbia effettuato) può visualizzare il profilo del proprietario dell'asta. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-USR-06}} \\
+            \hline
+            L'utente (sia che abbia effettuato l'accesso, sia che non l'abbia effettuato) può visualizzare le aste attive. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-USR-07}} \\
+            \hline
+            L'utente (sia che abbia effettuato l'accesso, sia che non l'abbia effettuato) può visualizzare l'attuale offerta più alta dell'asta di tipo "a tempo fisso". \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-USR-08}} \\
+            \hline
+            L'utente (sia che abbia effettuato l'accesso, sia che non l'abbia effettuato) può visualizzare l'attuale offerta più bassa dell'asta di tipo "inversa". \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-USR-09}} \\
+            \hline
+            L'utente (sia che abbia effettuato l'accesso, sia che non l'abbia effettuato) può accedere ad una sezione di aiuto per leggere istruzioni sull'utilizzo dell'applicativo. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \subsection{Requisiti funzionali: compratore}
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-BUY-01}} \\
+            \hline
+            Il compratore può creare aste di acquisto di un prodotto/servizio. L'asta risulterà attiva (cioè sarà possibile presentare offerte) fin da subito. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-BUY-02}} \\
+            \hline
+            Il compratore può creare un'asta di tipo "inversa". \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-BUY-03}} \\
+            \hline
+            Il compratore di un'asta di tipo "inversa" può inserire, al momento della creazione dell'asta, una data e ora di scadenza, un titolo, una descrizione, una categoria, un prezzo di partenza che è disposto a pagare e opzionalmente una o più fotografie per l'asta da lui creata. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-BUY-04}} \\
+            \hline
+            Il compratore di un'asta di tipo "inversa" può modificare la data e ora di scadenza, il titolo, la descrizione, la categoria e le fotografie (se aggiunte) per l'asta da lui creata. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-BUY-05}} \\
+            \hline
+            Il compratore che vuole acquistare quel particolare prodotto/servizio può presentare offerte per le aste di tipo "a tempo fisso" o "silenziosa" entro la data e ora di scadenza dell'asta. Tale offerta è una somma in euro sempre maggiore di 0, e per l'asta di tipo "a tempo fisso" deve anche essere maggiore dell'attuale offerta più alta.  \\
+            \hline
+        \end{tabular} \smallskip \\
+        \subsection{Requisiti funzionali: venditore}
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SEL-01}} \\
+            \hline
+            Il venditore può creare aste di vendita di un prodotto/servizio. L'asta risulterà attiva (cioè sarà possibile presentare offerte) fin da subito. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SEL-02}} \\
+            \hline
+            Il venditore può selezionare il tipo di asta da creare. L'asta può essere di tipo "a tempo fisso" o "silenziosa". \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SEL-03}} \\
+            \hline
+            Il venditore di un'asta di qualsiasi tipo può inserire, al momento della creazione dell'asta, una data e ora di scadenza, un titolo, una descrizione, una categoria e opzionalmente una o più fotografie per l'asta da lui creata. Per l'asta di tipo "a tempo fisso", può anche specificare un prezzo minimo da raggiungere. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SEL-04}} \\
+            \hline
+            Il venditore di un'asta di qualsiasi tipo può modificare la data e ora di scadenza, il titolo, la descrizione, la categoria e le fotografie (se aggiunte) per l'asta da lui creata. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SEL-05}} \\
+            \hline
+            Il venditore in grado di fornire quel particolare prodotto/servizio può presentare offerte per le aste di tipo "inversa" entro la data e ora di scadenza dell'asta. Tale offerta è una somma in euro minore rispetto alla somma più bassa attualmente raggiunta (tale valore deve essere maggiore di 0). \\
+            \hline
+        \end{tabular} \smallskip \\
+        \subsection{Requisiti funzionali: sistema}
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SYS-01}} \\
+            \hline
+            Il sistema assegna la vincita al compratore di un asta di tipo "a tempo fisso" che ha offerto la somma più alta entro la data e ora di scadenza dell'asta. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SYS-02}} \\
+            \hline
+            Il sistema dichiara l'asta fallita se nessun compratore di un asta di tipo "a tempo fisso" ha offerto una somma più alta della soglia minima entro la data e ora di scadenza dell'asta. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SYS-03}} \\
+            \hline
+            Il sistema dichiara l'asta fallita se non è stata avanzata alcuna offerta da parte di un compratore di un'asta di tipo "a tempo fisso" entro la data e ora di scadenza dell'asta. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SYS-04}} \\
+            \hline
+            Il sistema mostra l'offerta di un'asta di tipo "silenziosa" solo al venditore di tale asta e a colui che ha proposto l'offerta. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SYS-05}} \\
+            \hline
+            Il sistema assegna la vincita dell'asta al compratore di un'asta di tipo "silenziosa" la cui offerta è stata accettata dal venditore dell'asta di tipo "silenziosa". \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SYS-06}} \\
+            \hline
+            Il sistema dichiara l'asta fallita se il venditore di un'asta di tipo "silenziosa" non ha accettato alcuna offerta entro la data e ora di scadenza dell'asta. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SYS-07}} \\
+            \hline
+            Il sistema dichiara l'asta fallita se non è stata avanzata alcuna offerta da parte di un compratore di un'asta di tipo "silenziosa" entro la data e ora di scadenza dell'asta. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SYS-08}} \\
+            \hline
+            Il sistema invia una notifica di proposta offerta al venditore dell'asta di tipo "silenziosa" che ha ricevuto una nuova offerta alla propria asta. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SYS-09}} \\
+            \hline
+            Il sistema invia una notifica di rifiuto dell'offerta al partecipante dell'asta di tipo "silenziosa" la cui offerta è stata rifiutata dal venditore dell'asta. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SYS-10}} \\
+            \hline
+            Il sistema assegna la vincita dell'asta di tipo "inversa" al venditore che ha offerto la somma più bassa al sopraggiungere della data e ora di scadenza dell'asta a cui ha partecipato. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SYS-11}} \\
+            \hline
+            Il sistema dichiara l'asta di tipo "inversa" fallita se non è stata avanzata alcuna offerta da parte di un venditore entro la data e ora di scadenza dell'asta. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SYS-12}} \\
+            \hline
+            Il sistema controlla che l'email abbia il formato corretto (ovvero sia del tipo x+@y+.z+) e che la password sia sicura (ovvero sia lunga almeno 8 caratteri e contenga, nel complesso, almeno una lettera maiuscola [A-Z], una lettere minuscola [a-z], un numero [0-9] e un carattere speciale [!@\#\$\%\^{}\&*]). \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SYS-13}} \\
+            \hline
+            Il sistema invia una notifica di chiusura dell'asta a tutti i partecipanti dell'asta di tipo "a tempo fisso" (ovvero il venditore e tutti i compratori che hanno offerto almeno una volta una somma di denaro). \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SYS-14}} \\
+            \hline
+            Il sistema invia una notifica di chiusura dell'asta a tutti i partecipanti dell'asta di tipo "silenziosa" (ovvero a tutti i compratori che hanno offerto almeno una volta una somma di denaro) entro 10 secondi dal momento in cui è stata accettata un'offerta. Tale notifica indicherà se la propria offerta è stata accettata o rifiutata. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-SYS-15}} \\
+            \hline
+            Il sistema invia una notifica di chiusura dell'asta a tutti i partecipanti dell'asta di tipo "inversa" (ovvero il compratore e tutti i venditori che hanno offerto almeno una volta una somma di denaro). \\
+            \hline
+        \end{tabular} \smallskip \\
+        \subsection{Requisiti non funzionali}
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-A}} \\
+            \hline
+            Il sistema deve far recapitare le notifiche agli utenti in meno di 10 secondi. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-B}} \\
+            \hline
+            Il sistema deve elaborare quali aste hanno raggiunto la data di scadenza entro 5 secondi dalla loro conclusione. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-C}} \\
+            \hline
+            Le operazioni di rete effettuate dal sistema non devono richiedere più di un secondo. \\
+            \hline
+        \end{tabular} \smallskip \\
+        \begin{tabular}{|p{0.9\textwidth}|}
+            \hline
+            \multicolumn{1}{|l|}{\cellcolor{head}\textbf{REQ-D}} \\
+            \hline
+            Il sistema non deve utilizzare più di 500 Mb della memoria della macchina che lo esegue. \\
+            \hline
+        \end{tabular} \smallskip \\
+        

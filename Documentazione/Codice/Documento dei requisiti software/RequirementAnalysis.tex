@@ -10,7 +10,7 @@
         %Use Case Diagram costruito con StarUML
         \begin{figure}[htbp!]
             \centering
-                \includegraphics[width=0.325\linewidth]{Immagini/Diagrammi/UseCaseDiagram.pdf}
+                \includegraphics[width=0.32\linewidth]{Immagini/Diagrammi/UseCaseDiagram.pdf}
             \caption{Use Case Diagram}
             \label{fig:Use Case Diagram}
         \end{figure}
@@ -62,19 +62,51 @@
         \end{figure}
 
     \newpage
-    
-    \section{Tabelle di Cockburn e Mock-up}
+
+    \section{Mock-up}
     La realizzazione dell'interfaccia è stata eseguita attraverso il software di prototipazione Figma (il link al mock-up è visualizzabile \href{https://www.figma.com/file/kieERzm8U3jsHALXk4IjKS/Mockup?type=design&node-id=0%3A1&mode=design&t=CAyNdczd5giYLJ1j-1}{\underline{qui}}). \\
-    Il software ha consentito di individuare l'assetto generale dell'interfaccia utente per l'esecuzione di ogni caso d'uso individuato, nonché indicare le trasformazioni dell'interfaccia stessa in caso di errori del sistema.\\
-    Basandosi sull'interfaccia realizzata, è stata effettuata la stesura delle tabelle di Cockburn di due casi d'uso significativi. \\
+    Il software ha consentito di individuare l'assetto generale dell'interfaccia utente per l'esecuzione di ogni caso d'uso individuato, nonché indicare le trasformazioni dell'interfaccia stessa in caso di errori del sistema.
+
+    \subsection{Logo}
+    Il logo dell’applicazione è un’immagine che richiama i mondi dell’informatica e del mercato delle aste: un monitor simboleggia la natura informatizzata dei servizi offerti, mentre il martelletto che compare sullo schermo rimanda al mondo del mercato delle aste; sotto questi elementi, il nome dell’applicazione “DietiDeals24”.
+
+    \subsection{Colori}
+    Riferendosi alla teoria dei colori, si è scelto di impiegare una palette cromatica ben specifica. \\
+    I colori caldi sono utilizzati per riflettere passione, felicità, entusiasmo, energia; i colori freddi sono invece utilizzati per trasmettere calma e professionalità. \\
+    I colori principali dominanti nell’interfaccia sono l’arancione e il blu: 
+    \begin{itemize}
+        \item L’arancione è spesso associato alla creatività, al cambiamento (dovuto al suo rimando ai colori autunnali), ma anche a salubrità e vitalità. \\
+        Esso permette di tenere viva l’attenzione senza allarmare quanto il rosso, spesso utilizzato per il pericolo e l’importanza. \\
+        In seno alla sua scelta risiede la volontà di associare la nostra applicazione a un’opera creativa e vivace, capace di catturare l’utente.
+        \item Il blu non necessariamente deve implicare tristezza. \\
+        Spesso, viene utilizzato per trasmettere calma e responsabilità. \\
+        Principalmente, i toni più chiari sono utilizzati per instillare la tranquillità nell’osservatore, mentre quelli più scuri sono spesso scelti dai brand premium per conferire un tocco di forza ed affidabilità allo stesso. \\
+        La scelta del blu scuro risiede proprio nella volontà di far percepire la nostra applicazione come affidabile e professionale.
+    \end{itemize}
+    Un ruolo importante nella scelta di questi due colori ha giocato anche la loro complementarità: essendo situati a due poli opposti dello spettro cromatico, il contrasto tra i due risulta notevolmente accentuato, evidenziando maggiormente gli elementi dell’interfaccia. \\
+    Lo sfondo invece impiega un colore grigio tendente al blu, risultando in una sfumatura molto chiara di quest’ultimo. \\
+    Tenendo conto che i due “colori” bianco e nero, se utilizzati puri possono affaticare troppo la vista dell’utente, questa scelta permette sia di ridurre il fastidio visivo, sia di provocare come tutti i blu più chiari un senso di calma. \\
+    Altri colori impiegati sono il rosso, principalmente per richiamare l’attenzione su elementi dell’interfaccia che comportano azioni importanti o irreversibili, ma anche per sottolineare messaggi di errore dell’applicazione. \\
+    Il verde, invece, adempie funzioni opposte al rosso, come ad esempio indicare bottoni di annullamento di un’operazione critica. \\
+    Il blu chiaro sottolineato è stato utilizzato per le parole (o frasi) cliccabili, essendo questa una convenzione ben radicata nell’ambito delle interfacce grafiche. \\
+    Il grigio ed il bianco mantengono una funzione conforme ai normali standard di realizzazione dell’interfaccia:
+    \begin{itemize}
+        \item Il grigio è utilizzato per quei campi con i quali non si può interagire, come ad esempio i pulsanti nella barra di navigazione che senza account non devono permettere azione da parte dell’utente.
+        \item Il bianco, infine, viene sfruttato per evidenziare campi con i quali è possibile interagire, come ad esempio i campi di testo.
+    \end{itemize}      
+    
+    \newpage
+    
+    \section{Tabelle di Cockburn}
+    Basandosi sull'interfaccia realizzata, è stata effettuata la stesura delle tabelle di Cockburn di quattro casi d'uso significativi. \\
     Lo scopo delle tabelle è quello di presentare in maniera sequenziale come giungere all'esecuzione di un caso d'uso interagendo con l'interfaccia utente. \\
     Sono stati evidenziati anche possibili metodi alternativi per raggiungere lo stesso scopo o errori che potrebbero sorgere.
     
         \subsection{Crea un’asta inversa}
             \begin{longtable}{|C{3.0cm}|C{1.3cm}|L{5.2cm}|L{5.2cm}|}
                 \hline
-                    \textbf{USE CASE \#1} &
-                    \multicolumn{3}{|l|}{\textbf{Crea un’asta inversa}}\\
+                    \cellcolor{head}\textbf{USE CASE \#1} &
+                    \multicolumn{3}{|l|}{\textbf{\cellcolor{head}Crea un’asta inversa}}\\
                 \hline
                     Goal in Context &
                     \multicolumn{3}{|l|}{L'utente di tipo "compratore" vuole creare un'asta inversa}\\
@@ -86,9 +118,9 @@
                     \multicolumn{3}{|l|}{L'utente di tipo "compratore" ha correttamente creato un'asta "inversa"}\\
                 \hline
                     \multirow[|c|]{32}{*}{DESCRIPTION} 
-                    & \textbf{Step n°}
-                    & \textbf{Compratore}
-                    & \textbf{Sistema}\\
+                    & \cellcolor{head}\textbf{Step n°}
+                    & \cellcolor{head}\textbf{Compratore}
+                    & \cellcolor{head}\textbf{Sistema}\\
                 \cline{2-4}
                         & 1
                         & Preme bottone "Crea asta" su mock-up C1 (Figura 3.8)
@@ -214,10 +246,10 @@
                         & 
                         & Torna al mock-up C1 (Figura 3.8, Finestra Home)\\
                 \hline
-                    EXTENSIONS
-                    & \textbf{Step n°} 
-                    & \textbf{Compratore} 
-                    & \textbf{Sistema}\\
+                    \cellcolor{head}EXTENSIONS
+                    & \cellcolor{head}\textbf{Step n°} 
+                    & \cellcolor{head}\textbf{Compratore} 
+                    & \cellcolor{head}\textbf{Sistema}\\
                 \hline
                     \multirow[|c|]{2}{*}{\shortstack[c]{Seleziona asta \\ diversa da quella \\ inversa}}
                         & 3.a
@@ -293,10 +325,10 @@
                         & 
                         & Mostra mock-up corrispondente al tasto cliccato\\
                 \hline
-                    SUBVARIATIONS
-                    & \textbf{Step n°} 
-                    & \textbf{Compratore} 
-                    & \textbf{Sistema}\\
+                    \cellcolor{head}SUBVARIATIONS
+                    & \cellcolor{head}\textbf{Step n°} 
+                    & \cellcolor{head}\textbf{Compratore} 
+                    & \cellcolor{head}\textbf{Sistema}\\
                 \hline
                     \multirow[|c|]{5}{*}{\shortstack[c]{Inserisce immagine}}
                         & 18.s1
@@ -380,8 +412,8 @@
         \subsection{Accetta un'offerta ricevuta all'asta silenziosa}
             \begin{longtable}{|C{3.0cm}|C{1.3cm}|L{5.2cm}|L{5.2cm}|}
                 \hline
-                    \textbf{USE CASE \#2} &
-                    \multicolumn{3}{|l|}{\textbf{Accetta un'offerta ricevuta all'asta silenziosa}}\\
+                    \textbf{\cellcolor{head}USE CASE \#2} &
+                    \multicolumn{3}{|l|}{\textbf{\cellcolor{head}Accetta un'offerta ricevuta all'asta silenziosa}}\\
                 \hline
                     Goal in Context &
                     \multicolumn{3}{|l|}{\shortstack[l]{L'utente di tipo "venditore" vuole accettare un'offerta ricevuta in un'asta \\ "silenziosa" da lui creata}}\\
@@ -393,9 +425,9 @@
                     \multicolumn{3}{|l|}{\shortstack[l]{L'utente di tipo "venditore" ha correttamente accettato un'offerta di un'asta \\ "silenziosa" da lui creata}}\\
                 \hline
                     \multirow[|c|]{11}{*}{DESCRIPTION} 
-                    & \textbf{Step n°}
-                    & \textbf{Venditore di asta silenziosa}
-                    & \textbf{Sistema}\\
+                    & \cellcolor{head}\textbf{Step n°}
+                    & \cellcolor{head}\textbf{Venditore di asta silenziosa}
+                    & \cellcolor{head}\textbf{Sistema}\\
                 \cline{2-4}
                         & 1
                         & Preme bottone "Profilo" su mock-up V1 (Figura 3.17)
@@ -437,10 +469,10 @@
                         & 
                         & Mostra mock-up V14 (Figura 3.22) dove vengono elencate tutte le offerte ricevute a questa asta "silenziosa". L'offerta accettata sarà l'unica in bianco, tutte le altre saranno in grigio. Viene inviata una notifica a tutti coloro che hanno partecipato almeno una volta all'asta per indicare la chiusura della stessa\\
                 \hline
-                    EXTENSIONS
-                    & \textbf{Step n°} 
-                    & \textbf{Venditore di asta silenziosa} 
-                    & \textbf{Sistema}\\
+                    \cellcolor{head}EXTENSIONS
+                    & \cellcolor{head}\textbf{Step n°} 
+                    & \cellcolor{head}\textbf{Venditore di asta silenziosa} 
+                    & \cellcolor{head}\textbf{Sistema}\\
                 \hline
                     \multirow[|c|]{2}{*}{\shortstack[c]{Esce dalla pagina \\ di gestione delle \\ offerte ricevute}}
                         & \textit{In qualunque passo del main scenario}
@@ -451,10 +483,10 @@
                         & 
                         & Mostra mock-up corrispondente al tasto cliccato\\
                 \hline
-                    SUBVARIATIONS
-                    & \textbf{Step n°} 
-                    & \textbf{Venditore di asta silenziosa}
-                    & \textbf{Sistema}\\
+                    \cellcolor{head}SUBVARIATIONS
+                    & \cellcolor{head}\textbf{Step n°} 
+                    & \cellcolor{head}\textbf{Venditore di asta silenziosa}
+                    & \cellcolor{head}\textbf{Sistema}\\
                 \hline
                     \multirow[|c|]{4}{*}{\shortstack[c]{Visualizza i \\ dettagli dell'asta \\ silenziosa \\ selezionata}}
                         & 5.s1
@@ -546,8 +578,8 @@
     \subsection{Visualizza i dettagli di un'asta}
             \begin{longtable}{|C{3.0cm}|C{1.3cm}|L{5.2cm}|L{5.2cm}|}
                 \hline
-                    \textbf{USE CASE \#3} &
-                    \multicolumn{3}{|l|}{\textbf{Visualizza i dettagli di un'asta}}\\
+                    \textbf{\cellcolor{head}USE CASE \#3} &
+                    \multicolumn{3}{|l|}{\textbf{\cellcolor{head}Visualizza i dettagli di un'asta}}\\
                 \hline
                     Goal in Context &
                     \multicolumn{3}{|l|}{\shortstack[l]{L'utente di un qualsiasi tipo vuole visualizzare i dettagli di un'asta creata da un \\ altro utente}}\\
@@ -559,9 +591,9 @@
                     \multicolumn{3}{|l|}{\shortstack[l]{L'utente visualizza correttamente la pagina con tutti i dettagli dell'asta}}\\
                 \hline
                     \multirow[|c|]{6}{*}{DESCRIPTION} 
-                    & \textbf{Step n°}
-                    & \textbf{Utente}
-                    & \textbf{Sistema}\\
+                    & \cellcolor{head}\textbf{Step n°}
+                    & \cellcolor{head}\textbf{Utente}
+                    & \cellcolor{head}\textbf{Sistema}\\
                 \cline{2-4}
                         & 1
                         & Preme sull'area bianca della card di anteprima dell'asta su mock-up C1 (Figura 3.25)
@@ -571,10 +603,10 @@
                         & 
                         & Mostra mock-up C7 (Figura 3.26) con tutte le informazioni circa l'asta\\
                 \hline
-                    EXTENSIONS
-                    & \textbf{Step n°} 
-                    & \textbf{Utente} 
-                    & \textbf{Sistema}\\
+                    \cellcolor{head}EXTENSIONS
+                    & \cellcolor{head}\textbf{Step n°} 
+                    & \cellcolor{head}\textbf{Utente} 
+                    & \cellcolor{head}\textbf{Sistema}\\
                 \hline
                     \multirow[|c|]{2}{*}{\shortstack[c]{Esce dalla pagina \\ di dettagli dell'asta}}
                         & \textit{In qualunque passo del main scenario}
@@ -585,10 +617,10 @@
                         & 
                         & Mostra mock-up corrispondente all'elemento cliccato\\
                 \hline
-                    SUBVARIATIONS
-                    & \textbf{Step n°} 
-                    & \textbf{Utente loggato}
-                    & \textbf{Sistema}\\
+                    \cellcolor{head}SUBVARIATIONS
+                    & \cellcolor{head}\textbf{Step n°} 
+                    & \cellcolor{head}\textbf{Utente loggato}
+                    & \cellcolor{head}\textbf{Sistema}\\
                 \hline
                     \multirow[|c|]{6}{*}{\shortstack[c]{Riceve notifica circa \\ un'offerta, la fine \\ o la vittoria all'asta}}
                         & 1.s1
@@ -663,8 +695,8 @@
         \subsection{Modificare il proprio profilo}
             \begin{longtable}{|C{3.0cm}|C{1.3cm}|L{5.2cm}|L{5.2cm}|}
                 \hline
-                    \textbf{USE CASE \#4} &
-                    \multicolumn{3}{|l|}{\textbf{Modificare il proprio profilo}}\\
+                    \textbf{\cellcolor{head}USE CASE \#4} &
+                    \multicolumn{3}{|l|}{\textbf{\cellcolor{head}Modificare il proprio profilo}}\\
                 \hline
                     Goal in Context &
                     \multicolumn{3}{|l|}{\shortstack[l]{L'utente che ha effettuato l'accesso vuole modificare i dettagli salvati nel \\ proprio profilo}}\\
@@ -676,8 +708,8 @@
                     \multicolumn{3}{|l|}{L'utente ha modificato con successo le informazioni sul suo profilo personale}\\
                 \hline
                     \multirow[|c|]{32}{*}{DESCRIPTION} 
-                    & \textbf{Step n°}
-                    & \textbf{Utente loggato}
+                    & \cellcolor{head}\textbf{Step n°}
+                    & \cellcolor{head}\textbf{Utente loggato}
                     & \textbf{Sistema}\\
                 \cline{2-4}
                         & 1
@@ -756,10 +788,10 @@
                         & 
                         & Ritorna al mock-up C11 (Figura 3.32) con le informazioni aggiornate\\
                 \hline
-                    EXTENSIONS
-                    & \textbf{Step n°} 
-                    & \textbf{Utente loggato} 
-                    & \textbf{Sistema}\\
+                    \cellcolor{head}EXTENSIONS
+                    & \cellcolor{head}\textbf{Step n°} 
+                    & \cellcolor{head}\textbf{Utente loggato} 
+                    & \cellcolor{head}\textbf{Sistema}\\
                 \hline
                     \multirow[|c|]{1}{*}{\shortstack[c]{Alcuni campi \\ obbligatori non \\ compilati}}
                         & 17.e
@@ -787,10 +819,10 @@
                         & 
                         & Mostra mock-up corrispondente al tasto cliccato\\
                 \hline
-                    SUBVARIATIONS
-                    & \textbf{Step n°} 
-                    & \textbf{Utente loggato} 
-                    & \textbf{Sistema}\\
+                    \cellcolor{head}SUBVARIATIONS
+                    & \cellcolor{head}\textbf{Step n°} 
+                    & \cellcolor{head}\textbf{Utente loggato} 
+                    & \cellcolor{head}\textbf{Sistema}\\
                 \hline
                     \multirow[|c|]{5}{*}{\shortstack[c]{Inserisce immagine}}
                         & 7.s1
@@ -995,15 +1027,15 @@
                 \begin{tabular}{l|l|l|l|l|l|l|l|l|l|}
                 \cline{2-10}
                 &
-                \begin{tabular}[c]{@{}l@{}}Registrazione\\ account\end{tabular} &
-                \begin{tabular}[c]{@{}l@{}}Accesso\\ account\end{tabular} &
-                \begin{tabular}[c]{@{}l@{}}Ricerca\\ aste\end{tabular} &
-                \begin{tabular}[c]{@{}l@{}}Filtra\\ aste\end{tabular} &
-                \begin{tabular}[c]{@{}l@{}}Visualizza\\ dettagli asta\end{tabular} &
-                \begin{tabular}[c]{@{}l@{}}Visualizza\\ profilo\\ proprietario\\ asta\end{tabular} &
-                \begin{tabular}[c]{@{}l@{}}Visualizza\\ le tue aste\\ create\end{tabular} &
-                \begin{tabular}[c]{@{}l@{}}Modifica\\ la tua\\ asta\end{tabular} &
-                \begin{tabular}[c]{@{}l@{}}Elimina\\ la tua\\ asta\end{tabular}\\ \hline
+                \begin{tabular}[c]{@{}l@{}}Registrazione\\ account\end{tabular}\cellcolor{head} &
+                \begin{tabular}[c]{@{}l@{}}Accesso\\ account\end{tabular} \cellcolor{head} &
+                \begin{tabular}[c]{@{}l@{}}Ricerca\\ aste\end{tabular}\cellcolor{head} &
+                \begin{tabular}[c]{@{}l@{}}Filtra\\ aste\end{tabular}\cellcolor{head} &
+                \begin{tabular}[c]{@{}l@{}}Visualizza\\ dettagli asta\end{tabular}\cellcolor{head} &
+                \begin{tabular}[c]{@{}l@{}}Visualizza\\ profilo\\ proprietario\\ asta\end{tabular}\cellcolor{head} &
+                \begin{tabular}[c]{@{}l@{}}Visualizza\\ le tue aste\\ create\end{tabular}\cellcolor{head} &
+                \begin{tabular}[c]{@{}l@{}}Modifica\\ la tua\\ asta\end{tabular}\cellcolor{head} &
+                \begin{tabular}[c]{@{}l@{}}Elimina\\ la tua\\ asta\end{tabular}\cellcolor{head} \\ \hline
                 \multicolumn{1}{|l|}{Utente 1} & S & S & S & S & S & S & S & S & S \\ \hline
                 \multicolumn{1}{|l|}{Utente 2} & S & S & S & P & S & P & S & S & S \\ \hline
                 \multicolumn{1}{|l|}{Utente 3} & S & S & S & S & S & S & S & S & S \\ \hline
@@ -1022,14 +1054,14 @@
                 \begin{tabular}{l|l|l|l|l|l|l|l|l|}
                 \cline{2-9}
                 &
-                \begin{tabular}[c]{@{}l@{}}Visualizza\\ il tuo\\ profilo\end{tabular} &
-                \begin{tabular}[c]{@{}l@{}}Visualizza\\ aste a cui\\ hai\\ partecipato\end{tabular} &
-                \begin{tabular}[c]{@{}l@{}}Modifica\\ il tuo\\ profilo\end{tabular} &
-                \begin{tabular}[c]{@{}l@{}}Visualizza\\ offerte per\\ la tua asta\end{tabular} &
-                \begin{tabular}[c]{@{}l@{}}Fai un'offerta\\ ad un'asta\end{tabular} &
-                \begin{tabular}[c]{@{}l@{}}Crea\\ asta\end{tabular} &
-                \begin{tabular}[c]{@{}l@{}}Accetta\\ offerte\\ asta\\ silenziosa\end{tabular} &
-                \begin{tabular}[c]{@{}l@{}}Rifiuta\\ offerte\\ asta\\ silenziosa\end{tabular}\\ \hline
+                \begin{tabular}[c]{@{}l@{}}Visualizza\\ il tuo\\ profilo\end{tabular}\cellcolor{head} &
+                \begin{tabular}[c]{@{}l@{}}Visualizza\\ aste a cui\\ hai\\ partecipato\end{tabular}\cellcolor{head} &
+                \begin{tabular}[c]{@{}l@{}}Modifica\\ il tuo\\ profilo\end{tabular}\cellcolor{head} &
+                \begin{tabular}[c]{@{}l@{}}Visualizza\\ offerte per\\ la tua asta\end{tabular}\cellcolor{head} &
+                \begin{tabular}[c]{@{}l@{}}Fai un'offerta\\ ad un'asta\end{tabular}\cellcolor{head} &
+                \begin{tabular}[c]{@{}l@{}}Crea\\ asta\end{tabular}\cellcolor{head} &
+                \begin{tabular}[c]{@{}l@{}}Accetta\\ offerte\\ asta\\ silenziosa\end{tabular}\cellcolor{head} &
+                \begin{tabular}[c]{@{}l@{}}Rifiuta\\ offerte\\ asta\\ silenziosa\end{tabular}\cellcolor{head} \\ \hline
                 \multicolumn{1}{|l|}{Utente 1} & S & S & S & S & S & S & X & X \\ \hline
                 \multicolumn{1}{|l|}{Utente 2} & S & S & P & S & S & S & X & X \\ \hline
                 \multicolumn{1}{|l|}{Utente 3} & S & S & P & S & S & S & S & S \\ \hline
@@ -1088,7 +1120,7 @@
             \begin{center}
             \begin{longtable}{|C{7.35cm}|C{7.35cm}|}
                 \hline
-                    \textbf{Problematica riscontrata} & \textbf{Modifica apportata}\\
+                    \cellcolor{head}\textbf{Problematica riscontrata} & \cellcolor{head}\textbf{Modifica apportata}\\
                 \hline
                 \endhead
                     La presenza dello sfondo bianco sotto le singole informazioni delle "informazioni utente" ha indotto alcuni soggetti a cliccare direttamente i campi per effettuare una modifica, ignorando la presenza del pulsantino apposito. &

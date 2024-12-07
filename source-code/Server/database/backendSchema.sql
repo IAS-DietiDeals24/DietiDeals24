@@ -31,14 +31,16 @@ CREATE TABLE profilo
 
 CREATE TABLE compratore
 (
-    email               TEXT NOT NULL,
-    CONSTRAINT pk_compratore PRIMARY KEY (email),
-    password            TEXT NOT NULL,
+    id_account          BIGSERIAL NOT NULL,
+    CONSTRAINT pk_compratore PRIMARY KEY (id_account),
+    email               TEXT      NOT NULL,
+    CONSTRAINT uk_compratore_email UNIQUE (email),
+    password            TEXT      NOT NULL,
     id_facebook         TEXT,
     id_git_hub          TEXT,
     id_google           TEXT,
     id_x                TEXT,
-    profilo_nome_utente TEXT NOT NULL,
+    profilo_nome_utente TEXT      NOT NULL,
     CONSTRAINT fk_profilo_nome_utente FOREIGN KEY (profilo_nome_utente) REFERENCES profilo (nome_utente) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -48,40 +50,41 @@ $$
 BEGIN
     DELETE
     FROM offerta_silenziosa
-    WHERE compratore_email = OLD.email;
+    WHERE compratore_id_account = OLD.id_account;
     DELETE
     FROM offerta_tempo_fisso
-    WHERE compratore_email = OLD.email;
+    WHERE compratore_id_account = OLD.id_account;
     DELETE
     FROM asta_inversa
-    WHERE compratore_email = OLD.email;
+    WHERE compratore_id_account = OLD.id_account;
     DELETE
     FROM destinatari
-    WHERE account_email = OLD.email;
+    WHERE account_id_account = OLD.id_account;
     DELETE
     FROM notifica
-    WHERE account_email = OLD.email;
+    WHERE account_id_account = OLD.id_account;
 END
 $$
     LANGUAGE PLPGSQL;
 
 CREATE TRIGGER trg_compratore
-    BEFORE DELETE OR
-        UPDATE OF email
+    BEFORE DELETE
     ON compratore
     FOR EACH ROW
 EXECUTE FUNCTION cleanup_compratore();
 
 CREATE TABLE venditore
 (
-    email               TEXT NOT NULL,
-    CONSTRAINT pk_venditore PRIMARY KEY (email),
-    password            TEXT NOT NULL,
+    id_account          BIGSERIAL NOT NULL,
+    CONSTRAINT pk_venditore PRIMARY KEY (id_account),
+    email               TEXT      NOT NULL,
+    CONSTRAINT uk_venditore_email UNIQUE (email),
+    password            TEXT      NOT NULL,
     id_facebook         TEXT,
     id_git_hub          TEXT,
     id_google           TEXT,
     id_x                TEXT,
-    profilo_nome_utente TEXT NOT NULL,
+    profilo_nome_utente TEXT      NOT NULL,
     CONSTRAINT fk_profilo_nome_utente FOREIGN KEY (profilo_nome_utente) REFERENCES profilo (nome_utente) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -91,46 +94,46 @@ $$
 BEGIN
     DELETE
     FROM offerta_inversa
-    WHERE venditore_email = OLD.email;
+    WHERE venditore_id_account = OLD.id_account;
     DELETE
     FROM asta_tempo_fisso
-    WHERE venditore_email = OLD.email;
+    WHERE venditore_id_account = OLD.id_account;
     DELETE
     FROM asta_silenziosa
-    WHERE venditore_email = OLD.email;
+    WHERE venditore_id_account = OLD.id_account;
     DELETE
     FROM destinatari
-    WHERE account_email = OLD.email;
+    WHERE account_id_account = OLD.id_account;
     DELETE
     FROM notifica
-    WHERE account_email = OLD.email;
+    WHERE account_id_account = OLD.id_account;
 END
 $$
     LANGUAGE PLPGSQL;
 
 CREATE TRIGGER trg_venditore
-    BEFORE DELETE OR
-        UPDATE OF email
+    BEFORE DELETE
     ON venditore
     FOR EACH ROW
 EXECUTE FUNCTION cleanup_venditore();
 
 CREATE TABLE asta_inversa
 (
-    id_asta             BIGINT GENERATED ALWAYS AS IDENTITY,
+    id_asta               BIGSERIAL      NOT NULL,
     CONSTRAINT pk_asta_inversa PRIMARY KEY (id_asta),
-    data_scadenza       DATE          NOT NULL,
+    data_scadenza         DATE           NOT NULL,
     CONSTRAINT chk_data_scadenza CHECK (data_scadenza > NOW()),
-    descrizione         TEXT          NOT NULL,
-    immagine            BYTEA,
-    nome                TEXT          NOT NULL,
-    ora_scadenza        TIME          NOT NULL,
-    categoria_asta_nome TEXT          NOT NULL,
+    descrizione           TEXT           NOT NULL,
+    immagine              BYTEA,
+    nome                  TEXT           NOT NULL,
+    ora_scadenza          TIME           NOT NULL,
+    categoria_asta_nome   TEXT           NOT NULL,
     CONSTRAINT fk_categoria_asta_nome FOREIGN KEY (categoria_asta_nome) REFERENCES categoria_asta (nome) ON UPDATE CASCADE ON DELETE CASCADE,
-    compratore_email    TEXT          NOT NULL,
-    CONSTRAINT fk_compratore_email FOREIGN KEY (compratore_email) REFERENCES compratore (email) ON UPDATE CASCADE ON DELETE CASCADE,
-    soglia_iniziale     DECIMAL(2, 2) NOT NULL,
-    CONSTRAINT chk_soglia_iniziale CHECK (soglia_iniziale >= 0)
+    compratore_id_account BIGINT         NOT NULL,
+    CONSTRAINT fk_compratore_id_account FOREIGN KEY (compratore_id_account) REFERENCES compratore (id_account) ON UPDATE CASCADE ON DELETE CASCADE,
+    soglia_iniziale       DECIMAL(2, 10) NOT NULL,
+    CONSTRAINT chk_soglia_iniziale CHECK (soglia_iniziale >= 0),
+    stato                 TEXT           NOT NULL
 );
 
 CREATE FUNCTION cleanup_asta_inversa()
@@ -152,18 +155,19 @@ EXECUTE FUNCTION cleanup_asta_inversa();
 
 CREATE TABLE asta_silenziosa
 (
-    id_asta             BIGINT GENERATED ALWAYS AS IDENTITY,
+    id_asta              BIGSERIAL NOT NULL,
     CONSTRAINT pk_asta_silenziosa PRIMARY KEY (id_asta),
-    data_scadenza       DATE NOT NULL,
+    data_scadenza        DATE      NOT NULL,
     CONSTRAINT chk_data_scadenza CHECK (data_scadenza > NOW()),
-    descrizione         TEXT NOT NULL,
-    immagine            BYTEA,
-    nome                TEXT NOT NULL,
-    ora_scadenza        TIME NOT NULL,
-    categoria_asta_nome TEXT NOT NULL,
+    descrizione          TEXT      NOT NULL,
+    immagine             BYTEA,
+    nome                 TEXT      NOT NULL,
+    ora_scadenza         TIME      NOT NULL,
+    categoria_asta_nome  TEXT      NOT NULL,
     CONSTRAINT fk_categoria_asta_nome FOREIGN KEY (categoria_asta_nome) REFERENCES categoria_asta (nome) ON UPDATE CASCADE ON DELETE CASCADE,
-    venditore_email     TEXT NOT NULL,
-    CONSTRAINT fk_venditore_email FOREIGN KEY (venditore_email) REFERENCES venditore (email) ON UPDATE CASCADE ON DELETE CASCADE
+    venditore_id_account BIGINT    NOT NULL,
+    CONSTRAINT fk_venditore_id_account FOREIGN KEY (venditore_email) REFERENCES venditore (id_account) ON UPDATE CASCADE ON DELETE CASCADE,
+    stato                TEXT      NOT NULL
 );
 
 CREATE FUNCTION cleanup_asta_silenziosa()
@@ -185,20 +189,21 @@ EXECUTE FUNCTION cleanup_asta_silenziosa();
 
 CREATE TABLE asta_tempo_fisso
 (
-    id_asta             BIGINT GENERATED ALWAYS AS IDENTITY,
+    id_asta              BIGSERIAL NOT NULL,
     CONSTRAINT pk_asta_tempo_fisso PRIMARY KEY (id_asta),
-    data_scadenza       DATE          NOT NULL,
+    data_scadenza        DATE           NOT NULL,
     CONSTRAINT chk_data_scadenza CHECK (data_scadenza > NOW()),
-    descrizione         TEXT          NOT NULL,
-    immagine            BYTEA,
-    nome                TEXT          NOT NULL,
-    ora_scadenza        TIME          NOT NULL,
-    categoria_asta_nome TEXT          NOT NULL,
+    descrizione          TEXT           NOT NULL,
+    immagine             BYTEA,
+    nome                 TEXT           NOT NULL,
+    ora_scadenza         TIME           NOT NULL,
+    categoria_asta_nome  TEXT           NOT NULL,
     CONSTRAINT fk_categoria_asta_nome FOREIGN KEY (categoria_asta_nome) REFERENCES categoria_asta (nome) ON UPDATE CASCADE ON DELETE CASCADE,
-    venditore_email     TEXT          NOT NULL,
-    CONSTRAINT fk_venditore_email FOREIGN KEY (venditore_email) REFERENCES venditore (email) ON UPDATE CASCADE ON DELETE CASCADE,
-    soglia_minima       DECIMAL(2, 2) NOT NULL,
-    CONSTRAINT chk_soglia_minima CHECK (soglia_minima >= 0)
+    venditore_id_account BIGINT         NOT NULL,
+    CONSTRAINT fk_venditore_id_account FOREIGN KEY (venditore_id_account) REFERENCES venditore (id_account) ON UPDATE CASCADE ON DELETE CASCADE,
+    soglia_minima        DECIMAL(2, 10) NOT NULL,
+    CONSTRAINT chk_soglia_minima CHECK (soglia_minima >= 0),
+    stato                TEXT           NOT NULL
 );
 
 CREATE FUNCTION cleanup_asta_tempo_fisso()
@@ -220,14 +225,14 @@ EXECUTE FUNCTION cleanup_asta_tempo_fisso();
 
 CREATE TABLE notifica
 (
-    id_notifica   BIGINT GENERATED ALWAYS AS IDENTITY,
+    id_notifica        BIGSERIAL NOT NULL,
     CONSTRAINT pk_notifica PRIMARY KEY (id_notifica),
-    data_invio    DATE   NOT NULL,
+    data_invio         DATE      NOT NULL,
     CONSTRAINT chk_data_invio CHECK (data_invio <= NOW()),
-    messaggio     TEXT   NOT NULL,
-    oraInvio      TIME   NOT NULL,
-    asta_id_asta  BIGINT NOT NULL,
-    account_email TEXT   NOT NULL
+    messaggio          TEXT      NOT NULL,
+    oraInvio           TIME      NOT NULL,
+    asta_id_asta       BIGINT    NOT NULL,
+    account_id_account BIGINT    NOT NULL
 );
 
 CREATE FUNCTION chk_asta_id_asta()
@@ -253,14 +258,14 @@ CREATE TRIGGER trg_asta_id_asta
     FOR EACH ROW
 EXECUTE FUNCTION chk_asta_id_asta();
 
-CREATE FUNCTION chk_account_email()
+CREATE FUNCTION chk_account_id_account()
     RETURNS TRIGGER AS
 $$
 BEGIN
     IF
-        NOT EXISTS (SELECT email FROM compratore WHERE email = NEW.account_email) AND
-        NOT EXISTS (SELECT email FROM venditore WHERE email = NEW.account_email) THEN
-        RAISE EXCEPTION 'L''email del record inserito non referenzia un account esistente';
+        NOT EXISTS (SELECT id_account FROM compratore WHERE id_account = NEW.id_account) AND
+        NOT EXISTS (SELECT id_account FROM venditore WHERE id_account = NEW.id_account) THEN
+        RAISE EXCEPTION 'L''identificativo dell''account del record inserito non referenzia un account esistente';
     ELSE
         RETURN NEW;
     END IF;
@@ -268,76 +273,70 @@ END;
 $$
     LANGUAGE PLPGSQL;
 
-CREATE TRIGGER trg_account_email
+CREATE TRIGGER trg_account_id_account
     BEFORE INSERT OR
-        UPDATE OF account_email
+        UPDATE OF account_id_account
     ON notifica
     FOR EACH ROW
-EXECUTE FUNCTION chk_account_email();
+EXECUTE FUNCTION chk_account_id_account();
 
 CREATE TABLE destinatari
 (
     notifica_id_notifica BIGINT NOT NULL,
     CONSTRAINT fk_notifica_id_notifica FOREIGN KEY (notifica_id_notifica) REFERENCES notifica (id_notifica) ON UPDATE CASCADE ON DELETE CASCADE,
-    account_email        TEXT   NOT NULL,
-    CONSTRAINT pk_destinatari PRIMARY KEY (notifica_id_notifica, account_email)
+    account_id_account   BIGINT NOT NULL,
+    CONSTRAINT pk_destinatari PRIMARY KEY (notifica_id_notifica, account_id_account)
 );
 
-CREATE TRIGGER trg_account_email
+CREATE TRIGGER trg_account_id_account
     BEFORE INSERT OR
-        UPDATE OF account_email
+        UPDATE OF account_id_account
     ON destinatari
     FOR EACH ROW
-EXECUTE FUNCTION chk_account_email();
+EXECUTE FUNCTION chk_account_id_account();
 
 CREATE TABLE offerta_inversa
 (
-    id_offerta           BIGINT GENERATED ALWAYS AS IDENTITY,
+    id_offerta           BIGSERIAL      NOT NULL,
     CONSTRAINT pk_offerta_inversa PRIMARY KEY (id_offerta),
-    data_invio           DATE          NOT NULL,
+    data_invio           DATE           NOT NULL,
     CONSTRAINT chk_data_invio CHECK (data_invio <= NOW()),
-    ora_invio            TIME          NOT NULL,
-    valore               DECIMAL(2, 2) NOT NULL,
+    ora_invio            TIME           NOT NULL,
+    valore               DECIMAL(2, 10) NOT NULL,
     CONSTRAINT chk_valore CHECK (valore > 0),
-    venditore_email      TEXT          NOT NULL,
-    CONSTRAINT fk_venditore_email FOREIGN KEY (venditore_email) REFERENCES venditore (email) ON UPDATE CASCADE ON DELETE CASCADE,
-    asta_inversa_id_asta BIGINT        NOT NULL,
+    venditore_id_account BIGINT         NOT NULL,
+    CONSTRAINT fk_venditore_id_account FOREIGN KEY (venditore_id_account) REFERENCES venditore (id_account) ON UPDATE CASCADE ON DELETE CASCADE,
+    asta_inversa_id_asta BIGINT         NOT NULL,
     CONSTRAINT fk_asta_inversa_id_asta FOREIGN KEY (asta_inversa_id_asta) REFERENCES asta_inversa (id_asta) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-CREATE TYPE STATO AS ENUM (
-    'ACCEPTED',
-    'REJECTED',
-    'PENDING'
-    );
-
 CREATE TABLE offerta_silenziosa
 (
-    id_offerta              BIGINT GENERATED ALWAYS AS IDENTITY,
+    id_offerta              BIGSERIAL      NOT NULL,
     CONSTRAINT pk_offerta_silenziosa PRIMARY KEY (id_offerta),
-    data_invio              DATE          NOT NULL,
+    data_invio              DATE           NOT NULL,
     CONSTRAINT chk_data_invio CHECK (data_invio <= NOW()),
-    ora_invio               TIME          NOT NULL,
-    valore                  DECIMAL(2, 2) NOT NULL,
+    ora_invio               TIME           NOT NULL,
+    valore                  DECIMAL(2, 10) NOT NULL,
     CONSTRAINT chk_valore CHECK (valore > 0),
-    compratore_email        TEXT          NOT NULL,
-    CONSTRAINT fk_compratore_email FOREIGN KEY (compratore_email) REFERENCES compratore (email) ON UPDATE CASCADE ON DELETE CASCADE,
-    stato                   STATO         NOT NULL,
-    asta_silenziosa_id_asta BIGINT        NOT NULL,
+    compratore_id_account   BIGINT         NOT NULL,
+    CONSTRAINT fk_compratore_id_account FOREIGN KEY (compratore_id_account) REFERENCES compratore (id_account) ON UPDATE CASCADE ON DELETE CASCADE,
+    stato                   TEXT           NOT NULL,
+    asta_silenziosa_id_asta BIGINT         NOT NULL,
     CONSTRAINT fk_asta_silenziosa_id_asta FOREIGN KEY (asta_silenziosa_id_asta) REFERENCES asta_silenziosa (id_asta) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 CREATE TABLE offerta_tempo_fisso
 (
-    id_offerta               BIGINT GENERATED ALWAYS AS IDENTITY,
+    id_offerta               BIGSERIAL      NOT NULl,
     CONSTRAINT pk_offerta_tempo_fisso PRIMARY KEY (id_offerta),
-    data_invio               DATE          NOT NULL,
+    data_invio               DATE           NOT NULL,
     CONSTRAINT chk_data_invio CHECK (data_invio <= NOW()),
-    ora_invio                TIME          NOT NULL,
-    valore                   DECIMAL(2, 2) NOT NULL,
+    ora_invio                TIME           NOT NULL,
+    valore                   DECIMAL(2, 10) NOT NULL,
     CONSTRAINT chk_valore CHECK (valore > 0),
-    compratore_email         TEXT          NOT NULL,
-    CONSTRAINT fk_compratore_email FOREIGN KEY (compratore_email) REFERENCES compratore (email) ON UPDATE CASCADE ON DELETE CASCADE,
-    asta_tempo_fisso_id_asta BIGINT        NOT NULL,
+    compratore_id_account    BIGINT         NOT NULL,
+    CONSTRAINT fk_compratore_id_account FOREIGN KEY (compratore_id_account) REFERENCES compratore (id_account) ON UPDATE CASCADE ON DELETE CASCADE,
+    asta_tempo_fisso_id_asta BIGINT         NOT NULL,
     CONSTRAINT fk_asta_tempo_fisso_id_asta FOREIGN KEY (asta_tempo_fisso_id_asta) REFERENCES asta_tempo_fisso (id_asta) ON UPDATE CASCADE ON DELETE CASCADE
 );
