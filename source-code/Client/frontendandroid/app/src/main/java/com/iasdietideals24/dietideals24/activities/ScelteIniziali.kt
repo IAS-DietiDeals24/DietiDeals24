@@ -46,6 +46,9 @@ class ScelteIniziali : DietiDeals24Activity<ActivityScelteInizialiBinding>(), On
             val jwt = withContext(Dispatchers.IO) {
                 authRepository.leggiJWT()
             }
+
+            CurrentUser.jwt = jwt
+
             val ruolo = withContext(Dispatchers.IO) {
                 authRepository.leggiRuolo()
             }

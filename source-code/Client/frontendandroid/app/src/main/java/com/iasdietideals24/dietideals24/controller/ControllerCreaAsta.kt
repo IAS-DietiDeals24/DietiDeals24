@@ -1,16 +1,13 @@
 package com.iasdietideals24.dietideals24.controller
 
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
-import android.Manifest.permission.READ_MEDIA_IMAGES
-import android.Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
 import android.content.Context
 import android.icu.util.Calendar
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
@@ -67,8 +64,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
 
     // Listeners
     private var listenerGoToHome: OnGoToHome? = null
-    private lateinit var requestPermissions: ActivityResultLauncher<Array<String>>
-    private lateinit var selectPhoto: ActivityResultLauncher<String>
+    private lateinit var selectPhoto: ActivityResultLauncher<PickVisualMediaRequest>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -189,12 +185,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        requestPermissions =
-            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results: Map<String, Boolean> ->
-                apriGalleria(results)
-            }
-
-        selectPhoto = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        selectPhoto = registerForActivityResult(PickVisualMedia()) { uri: Uri? ->
             viewModel.immagine.value = ImageHandler.encodeImage(uri, fragmentContext)
         }
 
@@ -214,50 +205,6 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
             )
 
             binding.creaCategoria.setAdapter(adapter)
-        }
-    }
-
-    private fun apriGalleria(results: Map<String, Boolean>) {
-        when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> {
-                when {
-                    results.getOrDefault(READ_MEDIA_IMAGES, false) ||
-                            results.getOrDefault(READ_MEDIA_VISUAL_USER_SELECTED, false) ->
-                        selectPhoto.launch("image/*")
-
-                    else ->
-                        Snackbar.make(fragmentView, R.string.noMediaAccess, Snackbar.LENGTH_SHORT)
-                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                            .setTextColor(resources.getColor(R.color.grigio, null))
-                            .show()
-                }
-            }
-
-            Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU -> {
-                when {
-                    results.getOrDefault(READ_MEDIA_IMAGES, false) ->
-                        selectPhoto.launch("image/*")
-
-                    else ->
-                        Snackbar.make(fragmentView, R.string.noMediaAccess, Snackbar.LENGTH_SHORT)
-                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                            .setTextColor(resources.getColor(R.color.grigio, null))
-                            .show()
-                }
-            }
-
-            else -> {
-                when {
-                    results.getOrDefault(READ_EXTERNAL_STORAGE, false) ->
-                        selectPhoto.launch("image/*")
-
-                    else ->
-                        Snackbar.make(fragmentView, R.string.noMediaAccess, Snackbar.LENGTH_SHORT)
-                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                            .setTextColor(resources.getColor(R.color.grigio, null))
-                            .show()
-                }
-            }
         }
     }
 
@@ -498,12 +445,6 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
 
     @EventHandler
     private fun clickFoto() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            requestPermissions.launch(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VISUAL_USER_SELECTED))
-        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
-            requestPermissions.launch(arrayOf(READ_MEDIA_IMAGES))
-        } else {
-            requestPermissions.launch(arrayOf(READ_EXTERNAL_STORAGE))
-        }
+        selectPhoto.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
     }
 }

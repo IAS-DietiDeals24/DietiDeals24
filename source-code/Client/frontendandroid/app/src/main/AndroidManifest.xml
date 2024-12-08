@@ -4,15 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-    <uses-permission
-        android:name="android.permission.READ_MEDIA_IMAGES"
-        android:minSdkVersion="33" />
-    <uses-permission
-        android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED"
-        android:minSdkVersion="34" />
-    <uses-permission
         android:name="com.google.android.gms.permission.AD_ID"
         tools:node="remove" />
 
@@ -43,6 +34,7 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:theme="@style/Theme.Material3.DynamicColors.DayNight.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -60,6 +52,7 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:theme="@style/Theme.Material3.DynamicColors.DayNight.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -78,6 +71,21 @@
         <activity
             android:name=".activities.DietiDeals24Activity"
             android:theme="@style/Theme.Material3.DynamicColors.DayNight.NoActionBar" />
+
+        <service
+            android:name="com.google.android.gms.metadata.ModuleDependencies"
+            android:enabled="false"
+            android:exported="false"
+            tools:ignore="MissingClass">
+
+            <intent-filter>
+                <action android:name="com.google.android.gms.metadata.MODULE_DEPENDENCIES" />
+            </intent-filter>
+
+            <meta-data
+                android:name="photopicker_activity:0:required"
+                android:value="" />
+        </service>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

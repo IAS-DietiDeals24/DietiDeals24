@@ -1,18 +1,15 @@
 package com.iasdietideals24.dietideals24.controller
 
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
-import android.Manifest.permission.READ_MEDIA_IMAGES
-import android.Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED
 import android.content.Context
 import android.icu.util.Calendar
 import android.net.Uri
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import coil.load
@@ -51,8 +48,7 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
     // Repositories
     private val repositoryProfilo: ProfiloRepository by inject()
 
-    private lateinit var requestPermissions: ActivityResultLauncher<Array<String>>
-    private lateinit var selectPhoto: ActivityResultLauncher<String>
+    private lateinit var selectPhoto: ActivityResultLauncher<PickVisualMediaRequest>
 
     // Listeners
     private var listenerProfile: OnGoToProfile? = null
@@ -92,18 +88,14 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
 
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
-        requestPermissions =
-            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results: Map<String, Boolean> ->
-                apriGalleria(results)
+        selectPhoto =
+            registerForActivityResult(PickVisualMedia()) { uri: Uri? ->
+                viewModel.immagineProfilo.value =
+                    com.iasdietideals24.dietideals24.utilities.tools.ImageHandler.encodeImage(
+                        uri,
+                        fragmentContext
+                    )
             }
-
-        selectPhoto = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            viewModel.immagineProfilo.value =
-                com.iasdietideals24.dietideals24.utilities.tools.ImageHandler.encodeImage(
-                    uri,
-                    fragmentContext
-                )
-        }
     }
 
     @UIBuilder
@@ -263,13 +255,7 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
 
     @EventHandler
     private fun clickPulsanteImmagine() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            requestPermissions.launch(arrayOf(READ_MEDIA_IMAGES, READ_MEDIA_VISUAL_USER_SELECTED))
-        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
-            requestPermissions.launch(arrayOf(READ_MEDIA_IMAGES))
-        } else {
-            requestPermissions.launch(arrayOf(READ_EXTERNAL_STORAGE))
-        }
+        selectPhoto.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly))
     }
 
     @EventHandler
@@ -369,49 +355,5 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
         }
 
         datePicker.show(requireActivity().supportFragmentManager, "datePicker")
-    }
-
-    private fun apriGalleria(results: Map<String, Boolean>) {
-        when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE -> {
-                when {
-                    results.getOrDefault(READ_MEDIA_IMAGES, false) ||
-                            results.getOrDefault(READ_MEDIA_VISUAL_USER_SELECTED, false) ->
-                        selectPhoto.launch("image/*")
-
-                    else ->
-                        Snackbar.make(fragmentView, R.string.noMediaAccess, Snackbar.LENGTH_SHORT)
-                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                            .setTextColor(resources.getColor(R.color.grigio, null))
-                            .show()
-                }
-            }
-
-            Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU -> {
-                when {
-                    results.getOrDefault(READ_MEDIA_IMAGES, false) ->
-                        selectPhoto.launch("image/*")
-
-                    else ->
-                        Snackbar.make(fragmentView, R.string.noMediaAccess, Snackbar.LENGTH_SHORT)
-                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                            .setTextColor(resources.getColor(R.color.grigio, null))
-                            .show()
-                }
-            }
-
-            else -> {
-                when {
-                    results.getOrDefault(READ_EXTERNAL_STORAGE, false) ->
-                        selectPhoto.launch("image/*")
-
-                    else ->
-                        Snackbar.make(fragmentView, R.string.noMediaAccess, Snackbar.LENGTH_SHORT)
-                            .setBackgroundTint(resources.getColor(R.color.arancione, null))
-                            .setTextColor(resources.getColor(R.color.grigio, null))
-                            .show()
-                }
-            }
-        }
     }
 }
