@@ -29,6 +29,7 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
     public static final String LOG_RECUPERO_OFFERTA = "Recupero l'offerta inversa dal database...";
     public static final String LOG_FOUND_OFFERTA = "foundOffertaInversa: {}";
     public static final String LOG_OFFERTA_RECUPERATA = "Offerta inversa recuperata dal database.";
+    public static final String LOG_NUOVA_OFFERTA = "nuovaOffertaInversa: {}";
 
     private final OffertaDiVenditoreService offertaDiVenditoreService;
 
@@ -65,12 +66,12 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
         OffertaInversa nuovaOffertaInversa = offertaInversaMapper.toEntity(nuovaOffertaInversaDto);
 
         log.debug("DTO convertito correttamente.");
-        log.trace("nuovaOffertaInversa: {}", nuovaOffertaInversa);
+        log.trace(LOG_NUOVA_OFFERTA, nuovaOffertaInversa);
 
         // Recuperiamo le associazioni
         convertRelations(nuovaOffertaInversaDto, nuovaOffertaInversa);
 
-        log.trace("nuovaOffertaInversa: {}", nuovaOffertaInversa);
+        log.trace(LOG_NUOVA_OFFERTA, nuovaOffertaInversa);
 
         // Controlliamo che l'asta a cui voliamo riferirci sia attiva
         checkAstaActive(nuovaOffertaInversa);
@@ -321,7 +322,7 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
 
         log.debug("Controllo che non ci siano già offerte migliori per quest'asta...");
 
-        log.trace("nuovaOffertaInversa: {}", nuovaOffertaInversa);
+        log.trace(LOG_NUOVA_OFFERTA, nuovaOffertaInversa);
 
         if (nuovaOffertaInversa != null && nuovaOffertaInversa.getAstaRiferimento() != null) {
 
@@ -329,11 +330,9 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
 
             Optional<OffertaInversa> attualeOffertaInversaMigliore = offertaInversaRepository.findMinByValoreAndAstaRiferimento_IdAstaIs(idAstaRiferimento);
 
-            if (attualeOffertaInversaMigliore.isPresent()) {
-                if (attualeOffertaInversaMigliore.get().getValore().compareTo(nuovaOffertaInversa.getValore()) <= 0 ) {
+            if (attualeOffertaInversaMigliore.isPresent() && attualeOffertaInversaMigliore.get().getValore().compareTo(nuovaOffertaInversa.getValore()) <= 0 ) {
                     log.warn("Esiste già un'offerta migliore rispetto a quella che si vuole inserire per l'asta di id '{}'!", idAstaRiferimento);
                     throw new InvalidParameterException("Esiste già un'offerta migliore rispetto a quella che si vuole inserire per l'asta di id '" + idAstaRiferimento + "'!");
-                }
             }
         }
 
