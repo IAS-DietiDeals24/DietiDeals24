@@ -120,7 +120,7 @@ public class AuthController {
         return new ResponseEntity<>(new NewTokenDto(cognitoTokenResponse.id_token(), cognitoTokenResponse.refresh_token(), cognitoTokenResponse.expires_in()), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('USER')")
+    // No authentication required
     // Restituiamo un nuovo JWT per l'autenticazione in base al refresh_token passato per parametro
     // Il JWT dovrà essere inserito nell'header di ogni richiesta che necessita di autorizzazione
     @GetMapping("/auth/refresh")

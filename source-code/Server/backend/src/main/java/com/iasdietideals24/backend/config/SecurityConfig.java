@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -17,6 +18,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.*;
 
@@ -38,7 +40,14 @@ public class SecurityConfig {
                 .exceptionHandling(c -> c.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))) // Nel caso di eccezione restituiamo un codice 401
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers("/auth/**", "/**").permitAll()
+                        authorize
+                                .requestMatchers(new AntPathRequestMatcher("/aste/**", HttpMethod.GET.toString())).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/auth/**", HttpMethod.GET.toString())).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/categorie-asta/**", HttpMethod.GET.toString())).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/accounts/**", HttpMethod.GET.toString())).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/offerte/**/**/least-value", HttpMethod.GET.toString())).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/offerte/**/**/most-value", HttpMethod.GET.toString())).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/profili/**", HttpMethod.GET.toString())).permitAll()
                                 .anyRequest().authenticated()
                 ) // Configuriamo gli authorization routes
                 .oauth2ResourceServer(this::oAuthRoleConversion); // Configuriamo l'OAuth 2.0 Resource Server
