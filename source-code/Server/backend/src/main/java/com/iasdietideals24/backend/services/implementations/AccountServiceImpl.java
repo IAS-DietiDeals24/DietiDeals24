@@ -14,9 +14,11 @@ import com.iasdietideals24.backend.repositories.AccountRepository;
 import com.iasdietideals24.backend.services.AccountService;
 import com.iasdietideals24.backend.services.helper.RelationsConverter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -119,26 +121,13 @@ public class AccountServiceImpl implements AccountService {
 
         if (convertedProfilo != null) {
 
-            for (Account accountAssociato : convertedProfilo.getAccounts()) {
-                checkNuovoAccountTypeNotAlreadyPresent(accountAssociato, nuovoAccount);
-                checkNuovoAccountCohesionWithOtherAccounts(accountAssociato, nuovoAccount);
-            }
+            verifyAccountsProfiloCohesion(nuovoAccount, convertedProfilo);
 
             nuovoAccount.setProfilo(convertedProfilo);
             convertedProfilo.addAccount(nuovoAccount);
         }
 
         log.trace("'profilo' convertita correttamente.");
-    }
-
-    private void checkNuovoAccountTypeNotAlreadyPresent(Account accountAssociato, Account nuovoAccount) throws InvalidParameterException {
-        if (accountAssociato != null && nuovoAccount.getClass().equals(accountAssociato.getClass()))
-            throw new InvalidParameterException("Non puoi associare l'account con email '" + nuovoAccount.getEmail() + "' a un profilo che è già associato a un account '" + accountAssociato.getClass().getSimpleName() + "'! Eliminare prima quello precedente.");
-    }
-
-    private void checkNuovoAccountCohesionWithOtherAccounts(Account accountAssociato, Account nuovoAccount) throws InvalidParameterException {
-        if (accountAssociato != null && !nuovoAccount.getEmail().equals(accountAssociato.getEmail()))
-            throw new InvalidParameterException("Non puoi associare l'account con email '" + nuovoAccount.getEmail() + "' a un profilo che è associato a un account '" + accountAssociato.getClass().getSimpleName() + "' con un'email diversa!");
     }
 
     private void convertNotificheInviateShallow(Set<NotificaShallowDto> notificheInviateShallowDto, Account nuovoAccount) throws InvalidParameterException {
@@ -204,6 +193,15 @@ public class AccountServiceImpl implements AccountService {
         if (updatedEmail != null) {
             checkEmailValid(updatedEmail);
             existingAccount.setEmail(updatedEmail);
+
+            // Controllo che l'email sia coerente rispetto a quella degli altri account
+            Profilo existingProfilo = existingAccount.getProfilo();
+            for (Account accountAssociato : existingProfilo.getAccounts()) {
+                checkNuovoAccountCohesionWithOtherAccounts(accountAssociato, existingAccount);
+            }
+
+            // Controllo che l'email non sia già stata presa
+            checkEmailNotAlreadyTaken(existingAccount);
         }
 
         log.trace("'email' modificato correttamente.");
@@ -285,6 +283,28 @@ public class AccountServiceImpl implements AccountService {
         log.trace("'idGitHub' modificato correttamente.");
     }
 
+    private void verifyAccountsProfiloCohesion(Account account, Profilo profiloAccount) throws InvalidParameterException {
+
+        for (Account accountAssociato : profiloAccount.getAccounts()) {
+            checkNuovoAccountTypeNotAlreadyPresent(accountAssociato, account);
+            checkNuovoAccountCohesionWithOtherAccounts(accountAssociato, account);
+        }
+    }
+
+    private void checkNuovoAccountTypeNotAlreadyPresent(Account accountAssociato, Account nuovoAccount) throws InvalidParameterException {
+        if (accountAssociato != null && nuovoAccount.getClass().equals(accountAssociato.getClass())) {
+            log.warn("Non puoi associare l'account con email '{}' a un profilo che è già associato a un account '{}'! Eliminare prima quello precedente.", nuovoAccount.getEmail(), accountAssociato.getClass().getSimpleName());
+            throw new InvalidParameterException("Non puoi associare l'account con email '" + nuovoAccount.getEmail() + "' a un profilo che è già associato a un account '" + accountAssociato.getClass().getSimpleName() + "'! Eliminare prima quello precedente.");
+        }
+    }
+
+    private void checkNuovoAccountCohesionWithOtherAccounts(Account accountAssociato, Account nuovoAccount) throws InvalidParameterException {
+        if (accountAssociato != null && !nuovoAccount.getEmail().equals(accountAssociato.getEmail())) {
+            log.warn("Non puoi associare l'account con email '{}' a un profilo che è associato a un account '{}' con un'email diversa!", nuovoAccount.getEmail(), accountAssociato.getClass().getSimpleName());
+            throw new InvalidParameterException("Non puoi associare l'account con email '" + nuovoAccount.getEmail() + "' a un profilo che è associato a un account '" + accountAssociato.getClass().getSimpleName() + "' con un'email diversa!");
+        }
+    }
+
     @Override
     public boolean isLastAccountOfProfilo(Account account) throws InvalidParameterException {
         Profilo profiloAssociato = account.getProfilo();
@@ -297,6 +317,10 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void checkEmailNotAlreadyTaken(String email) throws InvalidParameterException {
 
+        log.debug("Verifico che l'email scelta non sia già utilizzata nell'account di altri profili...");
+
+        log.trace("email: {}", email);
+
         // Recupero la lista di account che hanno la stessa email
         List<Account> foundAccounts = accountRepository.findByEmailIs(email, Pageable.unpaged()).toList();
 
@@ -305,8 +329,39 @@ public class AccountServiceImpl implements AccountService {
         // Se l'email è gia stata utilizzata, allora mando l'eccezione
         if (!foundAccounts.isEmpty()) {
             log.warn("Impossibile associare l'email '{}' all'account di questo profilo poichè è già associata all'account di un altro profilo!", email);
-
             throw new InvalidParameterException("L'email '" + email + "' è già associata all'account di un altro profilo!");
+        } else {
+            log.debug("L'email non è utilizzata in account di altri profili.");
+        }
+    }
+
+    @Override
+    public void checkEmailNotAlreadyTaken(Account account) throws InvalidParameterException {
+
+        log.debug("Verifico che l'email scelta non sia già utilizzata nell'account di altri profili...");
+
+        log.trace("account: {}", account);
+
+        String email = account.getEmail();
+
+        // Recupero la lista di account che hanno la stessa email
+        Page<Account> foundAccounts = accountRepository.findByEmailIs(email, Pageable.unpaged());
+
+        List<Account> accountConEmailGiaAssegnata = new ArrayList<>();
+        for (Account foundAccount : foundAccounts) {
+            if (!foundAccount.getProfilo().equals(account.getProfilo())) {
+                accountConEmailGiaAssegnata.add(foundAccount);
+            }
+        }
+
+        log.trace("accountConEmailGiaAssegnata: {}", accountConEmailGiaAssegnata);
+
+        // Se l'email è gia stata utilizzata, allora mando l'eccezione
+        if (!accountConEmailGiaAssegnata.isEmpty()) {
+            log.warn("Impossibile associare l'email '{}' all'account di questo profilo poichè è già associata all'account di un altro profilo!", email);
+            throw new InvalidParameterException("L'email '" + email + "' è già associata all'account di un altro profilo!");
+        } else {
+            log.debug("L'email non è utilizzata in account di altri profili.");
         }
     }
 }

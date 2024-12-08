@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -24,6 +25,7 @@ public class OffertaInversaController {
         this.offertaInversaService = offertaInversaService;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping(path = "/offerte/di-venditori/inverse")
     public ResponseEntity<OffertaInversaDto> createOffertaInversa(@RequestBody OffertaInversaDto receivedOffertaInversaDto) throws InvalidParameterException {
 
@@ -36,6 +38,7 @@ public class OffertaInversaController {
         return new ResponseEntity<>(createdOffertaInversaDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "/offerte/di-venditori/inverse")
     public ResponseEntity<Page<OffertaInversaDto>> listOfferteInverse(Pageable pageable) {
 
@@ -48,6 +51,7 @@ public class OffertaInversaController {
         return new ResponseEntity<>(foundOfferteInverseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "/offerte/di-venditori/inverse", params = "asta_riferimento")
     public ResponseEntity<Page<OffertaInversaDto>> listOfferteInverseByAstaRiferimentoIdAsta(@RequestParam("asta_riferimento") Long idAsta, Pageable pageable) {
 
@@ -61,6 +65,7 @@ public class OffertaInversaController {
         return new ResponseEntity<>(foundOfferteInverseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "/offerte/di-venditori/inverse/{idOfferta}")
     public ResponseEntity<OffertaInversaDto> getOffertaInversa(@PathVariable("idOfferta") Long idOfferta) {
 
@@ -82,6 +87,7 @@ public class OffertaInversaController {
         }
     }
 
+    // No authentication required
     @GetMapping(path = "/offerte/di-venditori/inverse/least-value", params = "asta_riferimento")
     public ResponseEntity<OffertaInversaDto> findOffertaInversaMinByValoreAndAstaRiferimentoIdAstaIs(@RequestParam("asta_riferimento") Long idAsta) {
 
@@ -103,6 +109,7 @@ public class OffertaInversaController {
         }
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "/offerte/di-venditori/inverse/least-value", params = {"asta_riferimento", "venditore_collegato"})
     public ResponseEntity<OffertaInversaDto> findOffertaInversaMinByValoreAndAstaRiferimentoIdAstaIsAndVenditoreCollegatoIdAccountIs(@RequestParam("asta_riferimento") Long idAsta, @RequestParam("venditore_collegato") Long idAccount) {
 
@@ -125,6 +132,7 @@ public class OffertaInversaController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(path = "/offerte/di-venditori/inverse/{idOfferta}")
     public ResponseEntity<OffertaInversaDto> fullUpdateOffertaInversa(@PathVariable("idOfferta") Long idOfferta, @RequestBody OffertaInversaDto receivedOffertaInversaDto) throws InvalidParameterException {
 
@@ -146,6 +154,7 @@ public class OffertaInversaController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(path = "/offerte/di-venditori/inverse/{idOfferta}")
     public ResponseEntity<OffertaInversaDto> partialUpdateOffertaInversa(@PathVariable("idOfferta") Long idOfferta, @RequestBody OffertaInversaDto receivedOffertaInversaDto) throws InvalidParameterException {
 
@@ -167,6 +176,7 @@ public class OffertaInversaController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "/offerte/di-venditori/inverse/{idOfferta}")
     public ResponseEntity<OffertaInversaDto> deleteOffertaInversa(@PathVariable("idOfferta") Long idOfferta) {
 

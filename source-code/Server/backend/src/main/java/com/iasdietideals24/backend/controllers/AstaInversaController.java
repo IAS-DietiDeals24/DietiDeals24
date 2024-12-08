@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -26,6 +27,7 @@ public class AstaInversaController {
         this.astaInversaService = astaInversaService;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping(path = "/aste/di-compratori/inverse")
     public ResponseEntity<AstaInversaDto> createAstaInversa(@RequestBody AstaInversaDto receivedAstaInversaDto) throws InvalidParameterException {
 
@@ -38,6 +40,7 @@ public class AstaInversaController {
         return new ResponseEntity<>(createdAstaInversaDto, HttpStatus.CREATED);
     }
 
+    // No authentication required
     @GetMapping(path = "/aste/di-compratori/inverse")
     public ResponseEntity<Page<AstaInversaDto>> listAsteInverse(Pageable pageable) {
 
@@ -50,6 +53,7 @@ public class AstaInversaController {
         return new ResponseEntity<>(foundAsteInverseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "/aste/di-compratori/inverse", params = "proprietario")
     public ResponseEntity<Page<AstaInversaDto>> listAsteInverseByProprietarioIdAccountIs(@RequestParam("proprietario") Long idAccount, Pageable pageable) {
 
@@ -62,6 +66,7 @@ public class AstaInversaController {
         return new ResponseEntity<>(foundAsteInverseDto, HttpStatus.OK);
     }
 
+    // No authentication required
     @GetMapping(path = "/aste/di-compratori/inverse", params = {"nome", "categoria"})
     public ResponseEntity<Page<AstaInversaDto>> listAsteInverseByNomeLikeAndCategoriaNomeIs(@RequestParam(name = "nome", defaultValue = "%") String nomeAsta,
                                                                                             @RequestParam("categoria") String nomeCategoria,
@@ -76,6 +81,7 @@ public class AstaInversaController {
         return new ResponseEntity<>(foundAsteInverseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "/aste/di-compratori/inverse", params = "offerente")
     public ResponseEntity<Page<AstaInversaDto>> listAsteInverseByOfferenteIdAccountIs(@RequestParam("offerente") Long idAccount, Pageable pageable) {
 
@@ -88,6 +94,7 @@ public class AstaInversaController {
         return new ResponseEntity<>(foundAsteInverseDto, HttpStatus.OK);
     }
 
+    // No authentication required
     @GetMapping(path = "/aste/di-compratori/inverse/{idAsta}")
     public ResponseEntity<AstaInversaDto> getAstaInversa(@PathVariable("idAsta") Long idAsta) {
 
@@ -109,6 +116,7 @@ public class AstaInversaController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(path = "/aste/di-compratori/inverse/{idAsta}")
     public ResponseEntity<AstaInversaDto> fullUpdateAstaInversa(@PathVariable("idAsta") Long idAsta, @RequestBody AstaInversaDto receivedAstaInversaDto) throws InvalidParameterException {
 
@@ -130,6 +138,7 @@ public class AstaInversaController {
         }
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PatchMapping(path = "/aste/di-compratori/inverse/{idAsta}")
     public ResponseEntity<AstaInversaDto> partialUpdateAstaInversa(@PathVariable("idAsta") Long idAsta, @RequestBody AstaInversaDto receivedAstaInversaDto) throws InvalidParameterException {
 
@@ -151,6 +160,7 @@ public class AstaInversaController {
         }
     }
 
+    @PreAuthorize("hasRole('USER')")
     @DeleteMapping(path = "/aste/di-compratori/inverse/{idAsta}")
     public ResponseEntity<AstaInversaDto> deleteAstaInversa(@PathVariable("idAsta") Long idAsta) {
 

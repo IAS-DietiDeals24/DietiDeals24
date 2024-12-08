@@ -84,11 +84,8 @@ public class ProfiloServiceImpl implements ProfiloService {
         // Recuperiamo le associazioni
         convertRelations(nuovoProfiloDto, nuovoProfilo);
 
-        log.debug("Verifico che l'email scelta non sia già utilizzata nell'account di altri profili...");
-
+        // Verifichiamo che l'account non sia già associato ad altri profili
         accountService.checkEmailNotAlreadyTaken(nuovoProfiloDto.getEmail());
-
-        log.debug("L'email non è utilizzata in account di altri profili.");
 
         log.trace("nuovoProfilo: {}", nuovoProfilo);
 

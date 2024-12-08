@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -26,6 +27,7 @@ public class AstaSilenziosaController {
         this.astaSilenziosaService = astaSilenziosaService;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping(path = "/aste/di-venditori/silenziose")
     public ResponseEntity<AstaSilenziosaDto> createAstaSilenziosa(@RequestBody AstaSilenziosaDto receivedAstaSilenziosaDto) throws InvalidParameterException {
 
@@ -38,6 +40,7 @@ public class AstaSilenziosaController {
         return new ResponseEntity<>(createdAstaSilenziosaDto, HttpStatus.CREATED);
     }
 
+    // No authentication required
     @GetMapping(path = "/aste/di-venditori/silenziose")
     public ResponseEntity<Page<AstaSilenziosaDto>> listAsteSilenziose(Pageable pageable) {
 
@@ -50,6 +53,7 @@ public class AstaSilenziosaController {
         return new ResponseEntity<>(foundAsteSilenzioseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "/aste/di-venditori/silenziose", params = "proprietario")
     public ResponseEntity<Page<AstaSilenziosaDto>> listAsteSilenzioseByProprietarioIdAccountIs(@RequestParam("proprietario") Long idAccount, Pageable pageable) {
 
@@ -62,6 +66,7 @@ public class AstaSilenziosaController {
         return new ResponseEntity<>(foundAsteSilenzioseDto, HttpStatus.OK);
     }
 
+    // No authentication required
     @GetMapping(path = "/aste/di-venditori/silenziose", params = {"nome", "categoria"})
     public ResponseEntity<Page<AstaSilenziosaDto>> listAsteSilenzioseByNomeLikeAndCategoriaNomeIs(@RequestParam(name = "nome", defaultValue = "%") String nomeAsta,
                                                                                                   @RequestParam("categoria") String nomeCategoria,
@@ -76,6 +81,7 @@ public class AstaSilenziosaController {
         return new ResponseEntity<>(foundAsteSilenzioseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "/aste/di-venditori/silenziose", params = "offerente")
     public ResponseEntity<Page<AstaSilenziosaDto>> listAsteSilenzioseByOfferenteIdAccountIs(@RequestParam("offerente") Long idAccount, Pageable pageable) {
 
@@ -88,6 +94,7 @@ public class AstaSilenziosaController {
         return new ResponseEntity<>(foundAsteSilenzioseDto, HttpStatus.OK);
     }
 
+    // No authentication required
     @GetMapping(path = "/aste/di-venditori/silenziose/{idAsta}")
     public ResponseEntity<AstaSilenziosaDto> getAstaSilenziosa(@PathVariable("idAsta") Long idAsta) {
 
@@ -109,6 +116,7 @@ public class AstaSilenziosaController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(path = "/aste/di-venditori/silenziose/{idAsta}")
     public ResponseEntity<AstaSilenziosaDto> fullUpdateAstaSilenziosa(@PathVariable("idAsta") Long idAsta, @RequestBody AstaSilenziosaDto receivedAstaSilenziosaDto) throws InvalidParameterException {
 
@@ -130,6 +138,7 @@ public class AstaSilenziosaController {
         }
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PatchMapping(path = "/aste/di-venditori/silenziose/{idAsta}")
     public ResponseEntity<AstaSilenziosaDto> partialUpdateAstaSilenziosa(@PathVariable("idAsta") Long idAsta, @RequestBody AstaSilenziosaDto receivedAstaSilenziosaDto) throws InvalidParameterException {
 
@@ -151,6 +160,7 @@ public class AstaSilenziosaController {
         }
     }
 
+    @PreAuthorize("hasRole('USER')")
     @DeleteMapping(path = "/aste/di-venditori/silenziose/{idAsta}")
     public ResponseEntity<AstaSilenziosaDto> deleteAstaSilenziosa(@PathVariable("idAsta") Long idAsta) {
 

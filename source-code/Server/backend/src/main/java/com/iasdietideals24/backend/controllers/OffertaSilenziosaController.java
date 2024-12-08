@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -24,6 +25,7 @@ public class OffertaSilenziosaController {
         this.offertaSilenziosaService = offertaSilenziosaService;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping(path = "/offerte/di-compratori/silenziose")
     public ResponseEntity<OffertaSilenziosaDto> createOffertaSilenziosa(@RequestBody OffertaSilenziosaDto receivedOffertaSilenziosaDto) throws InvalidParameterException {
 
@@ -36,6 +38,7 @@ public class OffertaSilenziosaController {
         return new ResponseEntity<>(createdOffertaSilenziosaDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "/offerte/di-compratori/silenziose")
     public ResponseEntity<Page<OffertaSilenziosaDto>> listOfferteSilenziose(Pageable pageable) {
 
@@ -48,6 +51,7 @@ public class OffertaSilenziosaController {
         return new ResponseEntity<>(foundOfferteSilenzioseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "/offerte/di-compratori/silenziose", params = "asta_riferimento")
     public ResponseEntity<Page<OffertaSilenziosaDto>> listOfferteSilenzioseByAstaRiferimentoIdAsta(@RequestParam("asta_riferimento") Long idAsta, Pageable pageable) {
 
@@ -61,6 +65,7 @@ public class OffertaSilenziosaController {
         return new ResponseEntity<>(foundOfferteSilenzioseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "/offerte/di-compratori/silenziose/{idOfferta}")
     public ResponseEntity<OffertaSilenziosaDto> getOffertaSilenziosa(@PathVariable("idOfferta") Long idOfferta) {
 
@@ -82,6 +87,7 @@ public class OffertaSilenziosaController {
         }
     }
 
+    // No authentication required
     @GetMapping(path = "/offerte/di-compratori/silenziose/most-value", params = "asta_riferimento")
     public ResponseEntity<OffertaSilenziosaDto> findOffertaSilenziosaMaxByValoreAndAstaRiferimentoIdAstaIs(@RequestParam("asta_riferimento") Long idAsta) {
 
@@ -103,6 +109,7 @@ public class OffertaSilenziosaController {
         }
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "/offerte/di-compratori/silenziose/most-value", params = {"asta_riferimento", "compratore_collegato"})
     public ResponseEntity<OffertaSilenziosaDto> findOffertaSilenziosaMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(@RequestParam("asta_riferimento") Long idAsta, @RequestParam("compratore_collegato") Long idAccount) {
 
@@ -125,6 +132,7 @@ public class OffertaSilenziosaController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(path = "/offerte/di-compratori/silenziose/{idOfferta}")
     public ResponseEntity<OffertaSilenziosaDto> fullUpdateOffertaSilenziosa(@PathVariable("idOfferta") Long idOfferta, @RequestBody OffertaSilenziosaDto receivedOffertaSilenziosaDto) throws InvalidParameterException {
 
@@ -146,6 +154,7 @@ public class OffertaSilenziosaController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(path = "/offerte/di-compratori/silenziose/{idOfferta}")
     public ResponseEntity<OffertaSilenziosaDto> partialUpdateOffertaSilenziosa(@PathVariable("idOfferta") Long idOfferta, @RequestBody OffertaSilenziosaDto receivedOffertaSilenziosaDto) throws InvalidParameterException {
 
@@ -167,6 +176,7 @@ public class OffertaSilenziosaController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "/offerte/di-compratori/silenziose/{idOfferta}")
     public ResponseEntity<OffertaSilenziosaDto> deleteOffertaSilenziosa(@PathVariable("idOfferta") Long idOfferta) {
 

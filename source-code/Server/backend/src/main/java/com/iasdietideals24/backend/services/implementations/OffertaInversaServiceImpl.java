@@ -75,6 +75,9 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
         // Controlliamo che l'asta a cui voliamo riferirci sia attiva
         checkAstaActive(nuovaOffertaInversa);
 
+        // Controllo che non ci siano già offerte più basse
+        checkBestOfferta(nuovaOffertaInversa);
+
         log.debug("Salvo l'offerta inversa nel database...");
 
         // Registriamo l'entità
@@ -215,6 +218,11 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
             // Effettuiamo le modifiche
             updatePresentFields(updatedOffertaInversaDto, existingOffertaInversa);
 
+            if (updatedOffertaInversaDto.getValore() != null) {
+                // Controllo che non ci siano già offerte più basse
+                checkBestOfferta(existingOffertaInversa);
+            }
+
             return offertaInversaMapper.toDto(offertaInversaRepository.save(existingOffertaInversa));
         }
     }
@@ -307,5 +315,28 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
                 throw new InvalidParameterException("L'asta '" + astaInversa.getIdAsta() + "' a cui si vuole fare l'offerta è già terminata!");
             }
         }
+    }
+
+    private void checkBestOfferta(OffertaInversa nuovaOffertaInversa) throws InvalidParameterException {
+
+        log.debug("Controllo che non ci siano già offerte migliori per quest'asta...");
+
+        log.trace("nuovaOffertaInversa: {}", nuovaOffertaInversa);
+
+        if (nuovaOffertaInversa != null && nuovaOffertaInversa.getAstaRiferimento() != null) {
+
+            Long idAstaRiferimento = nuovaOffertaInversa.getAstaRiferimento().getIdAsta();
+
+            Optional<OffertaInversa> attualeOffertaInversaMigliore = offertaInversaRepository.findMinByValoreAndAstaRiferimento_IdAstaIs(idAstaRiferimento);
+
+            if (attualeOffertaInversaMigliore.isPresent()) {
+                if (attualeOffertaInversaMigliore.get().getValore().compareTo(nuovaOffertaInversa.getValore()) <= 0 ) {
+                    log.warn("Esiste già un'offerta migliore rispetto a quella che si vuole inserire per l'asta di id '{}'!", idAstaRiferimento);
+                    throw new InvalidParameterException("Esiste già un'offerta migliore rispetto a quella che si vuole inserire per l'asta di id '" + idAstaRiferimento + "'!");
+                }
+            }
+        }
+
+        log.debug("Non ci sono già offerte migliori.");
     }
 }

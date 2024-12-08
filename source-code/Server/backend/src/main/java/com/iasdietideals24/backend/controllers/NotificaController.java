@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -24,6 +25,7 @@ public class NotificaController {
         this.notificaService = notificaService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "/notifiche")
     public ResponseEntity<NotificaDto> createNotifica(@RequestBody NotificaDto receivedNotificaDto) throws InvalidParameterException {
 
@@ -36,6 +38,7 @@ public class NotificaController {
         return new ResponseEntity<>(createdNotificaDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "/notifiche")
     public ResponseEntity<Page<NotificaDto>> listNotifiche(Pageable pageable) {
 
@@ -48,6 +51,7 @@ public class NotificaController {
         return new ResponseEntity<>(foundNotificheDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "/notifiche", params = "destinatario")
     public ResponseEntity<Page<NotificaDto>> listNotificheByDestinatariIdAccount(@RequestParam("destinatario") Long idAccount, Pageable pageable) {
 
@@ -60,6 +64,7 @@ public class NotificaController {
         return new ResponseEntity<>(foundNotificheDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "/notifiche/{idNotifica}")
     public ResponseEntity<NotificaDto> getNotifica(@PathVariable("idNotifica") Long idNotifica) {
 
@@ -81,6 +86,7 @@ public class NotificaController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(path = "/notifiche/{idNotifica}")
     public ResponseEntity<NotificaDto> fullUpdateNotifica(@PathVariable("idNotifica") Long idNotifica, @RequestBody NotificaDto receivedNotificaDto) throws InvalidParameterException {
 
@@ -102,6 +108,7 @@ public class NotificaController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(path = "/notifiche/{idNotifica}")
     public ResponseEntity<NotificaDto> partialUpdateNotifica(@PathVariable("idNotifica") Long idNotifica, @RequestBody NotificaDto receivedNotificaDto) throws InvalidParameterException {
 
@@ -123,6 +130,7 @@ public class NotificaController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "/notifiche/{idNotifica}")
     public ResponseEntity<NotificaDto> deleteNotifica(@PathVariable("idNotifica") Long idNotifica) {
 

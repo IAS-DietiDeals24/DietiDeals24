@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -24,6 +25,7 @@ public class OffertaTempoFissoController {
         this.offertaTempoFissoService = offertaTempoFissoService;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping(path = "/offerte/di-compratori/tempo-fisso")
     public ResponseEntity<OffertaTempoFissoDto> createOffertaTempoFisso(@RequestBody OffertaTempoFissoDto receivedOffertaTempoFissoDto) throws InvalidParameterException {
 
@@ -36,6 +38,7 @@ public class OffertaTempoFissoController {
         return new ResponseEntity<>(createdOffertaTempoFissoDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "/offerte/di-compratori/tempo-fisso")
     public ResponseEntity<Page<OffertaTempoFissoDto>> listOfferteTempoFisso(Pageable pageable) {
 
@@ -48,6 +51,7 @@ public class OffertaTempoFissoController {
         return new ResponseEntity<>(foundOfferteTempoFissoDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "/offerte/di-compratori/tempo-fisso", params = "asta_riferimento")
     public ResponseEntity<Page<OffertaTempoFissoDto>> listOfferteTempoFissoByAstaRiferimentoIdAsta(@RequestParam("asta_riferimento") Long idAsta, Pageable pageable) {
 
@@ -61,6 +65,7 @@ public class OffertaTempoFissoController {
         return new ResponseEntity<>(foundOfferteTempoFissoDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "/offerte/di-compratori/tempo-fisso/{idOfferta}")
     public ResponseEntity<OffertaTempoFissoDto> getOffertaTempoFisso(@PathVariable("idOfferta") Long idOfferta) {
 
@@ -82,6 +87,7 @@ public class OffertaTempoFissoController {
         }
     }
 
+    // No authentication required
     @GetMapping(path = "/offerte/di-compratori/tempo-fisso/most-value", params = "asta_riferimento")
     public ResponseEntity<OffertaTempoFissoDto> findOffertaTempoFissoMaxByValoreAndAstaRiferimentoIdAstaIs(@RequestParam("asta_riferimento") Long idAsta) {
 
@@ -103,6 +109,7 @@ public class OffertaTempoFissoController {
         }
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "/offerte/di-compratori/tempo-fisso/most-value", params = {"asta_riferimento", "compratore_collegato"})
     public ResponseEntity<OffertaTempoFissoDto> findOffertaTempoFissoMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(@RequestParam("asta_riferimento") Long idAsta, @RequestParam("compratore_collegato") Long idAccount) {
 
@@ -125,6 +132,7 @@ public class OffertaTempoFissoController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(path = "/offerte/di-compratori/tempo-fisso/{idOfferta}")
     public ResponseEntity<OffertaTempoFissoDto> fullUpdateOffertaTempoFisso(@PathVariable("idOfferta") Long idOfferta, @RequestBody OffertaTempoFissoDto receivedOffertaTempoFissoDto) throws InvalidParameterException {
 
@@ -146,6 +154,7 @@ public class OffertaTempoFissoController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(path = "/offerte/di-compratori/tempo-fisso/{idOfferta}")
     public ResponseEntity<OffertaTempoFissoDto> partialUpdateOffertaTempoFisso(@PathVariable("idOfferta") Long idOfferta, @RequestBody OffertaTempoFissoDto receivedOffertaTempoFissoDto) throws InvalidParameterException {
 
@@ -167,6 +176,7 @@ public class OffertaTempoFissoController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "/offerte/di-compratori/tempo-fisso/{idOfferta}")
     public ResponseEntity<OffertaTempoFissoDto> deleteOffertaTempoFisso(@PathVariable("idOfferta") Long idOfferta) {
 

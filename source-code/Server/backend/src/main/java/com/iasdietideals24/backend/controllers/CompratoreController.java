@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -24,6 +25,7 @@ public class CompratoreController {
         this.compratoreService = compratoreService;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping(path = "/accounts/compratori")
     public ResponseEntity<CompratoreDto> createCompratore(@RequestBody CompratoreDto receivedCompratoreDto) throws InvalidParameterException {
 
@@ -36,6 +38,7 @@ public class CompratoreController {
         return new ResponseEntity<>(createdCompratoreDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "/accounts/compratori")
     public ResponseEntity<Page<CompratoreDto>> listCompratori(Pageable pageable) {
 
@@ -48,6 +51,7 @@ public class CompratoreController {
         return new ResponseEntity<>(foundCompratoriDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "/accounts/compratori", params = "email")
     public ResponseEntity<Page<CompratoreDto>> listCompratoriByEmailIs(@RequestParam("email") String email, Pageable pageable) {
 
@@ -60,6 +64,7 @@ public class CompratoreController {
         return new ResponseEntity<>(foundCompratoriDto, HttpStatus.OK);
     }
 
+    // No authentication required
     @GetMapping(path = "/accounts/compratori/{idAccount}")
     public ResponseEntity<CompratoreDto> getCompratore(@PathVariable("idAccount") Long idAccount) {
 
@@ -81,6 +86,7 @@ public class CompratoreController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(path = "/accounts/compratori/{idAccount}")
     public ResponseEntity<CompratoreDto> fullUpdateCompratore(@PathVariable("idAccount") Long idAccount, @RequestBody CompratoreDto receivedCompratoreDto) throws InvalidParameterException {
 
@@ -102,6 +108,7 @@ public class CompratoreController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(path = "/accounts/compratori/{idAccount}")
     public ResponseEntity<CompratoreDto> partialUpdateCompratore(@PathVariable("idAccount") Long idAccount, @RequestBody CompratoreDto receivedCompratoreDto) throws InvalidParameterException {
 
@@ -123,6 +130,7 @@ public class CompratoreController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "/accounts/compratori/{idAccount}")
     public ResponseEntity<CompratoreDto> deleteCompratore(@PathVariable("idAccount") Long idAccount) throws InvalidParameterException {
 

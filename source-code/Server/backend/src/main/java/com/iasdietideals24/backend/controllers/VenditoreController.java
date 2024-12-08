@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -24,6 +25,7 @@ public class VenditoreController {
         this.venditoreService = venditoreService;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping(path = "/accounts/venditori")
     public ResponseEntity<VenditoreDto> createVenditore(@RequestBody VenditoreDto receivedVenditoreDto) throws InvalidParameterException {
 
@@ -36,6 +38,7 @@ public class VenditoreController {
         return new ResponseEntity<>(createdVenditoreDto, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "/accounts/venditori")
     public ResponseEntity<Page<VenditoreDto>> listVenditori(Pageable pageable) {
 
@@ -48,6 +51,7 @@ public class VenditoreController {
         return new ResponseEntity<>(foundVenditoriDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "/accounts/venditori", params = "email")
     public ResponseEntity<Page<VenditoreDto>> listVenditoriByEmailIs(@RequestParam("email") String email, Pageable pageable) {
 
@@ -60,6 +64,7 @@ public class VenditoreController {
         return new ResponseEntity<>(foundVenditoriDto, HttpStatus.OK);
     }
 
+    // No authentication required
     @GetMapping(path = "/accounts/venditori/{idAccount}")
     public ResponseEntity<VenditoreDto> getVenditore(@PathVariable("idAccount") Long idAccount) {
 
@@ -81,6 +86,7 @@ public class VenditoreController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(path = "/accounts/venditori/{idAccount}")
     public ResponseEntity<VenditoreDto> fullUpdateVenditore(@PathVariable("idAccount") Long idAccount, @RequestBody VenditoreDto receivedVenditoreDto) throws InvalidParameterException {
 
@@ -102,6 +108,7 @@ public class VenditoreController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(path = "/accounts/venditori/{idAccount}")
     public ResponseEntity<VenditoreDto> partialUpdateVenditore(@PathVariable("idAccount") Long idAccount, @RequestBody VenditoreDto receivedVenditoreDto) throws InvalidParameterException {
 
@@ -123,6 +130,7 @@ public class VenditoreController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "/accounts/venditori/{idAccount}")
     public ResponseEntity<VenditoreDto> deleteVenditore(@PathVariable("idAccount") Long idAccount) throws InvalidParameterException {
 

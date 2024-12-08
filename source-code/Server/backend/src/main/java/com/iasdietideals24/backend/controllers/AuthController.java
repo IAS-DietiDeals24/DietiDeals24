@@ -45,6 +45,7 @@ public class AuthController {
 
     private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 
+    // No authentication required
     // Generiamo l'URL a cui il frontend deve accedere per fare il login su Cognito
     // Una volta fatto il login, il frontend avrà un Codice che servirà per l'autenticazione
     @GetMapping("/auth/url")
@@ -68,6 +69,7 @@ public class AuthController {
         return new ResponseEntity<>(new UrlDto(url), HttpStatus.OK);
     }
 
+    // No authentication required
     // Validiamo il Codice ricevuto dal frontend e restituiamo il JWT
     // Il JWT dovrà essere inserito nell'header di ogni richiesta che necessita di autorizzazione
     @GetMapping("/auth/callback")

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -26,6 +27,7 @@ public class AstaTempoFissoController {
         this.astaTempoFissoService = astaTempoFissoService;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping(path = "/aste/di-venditori/tempo-fisso")
     public ResponseEntity<AstaTempoFissoDto> createAstaTempoFisso(@RequestBody AstaTempoFissoDto receivedAstaTempoFissoDto) throws InvalidParameterException {
 
@@ -38,6 +40,7 @@ public class AstaTempoFissoController {
         return new ResponseEntity<>(createdAstaTempoFissoDto, HttpStatus.CREATED);
     }
 
+    // No authentication required
     @GetMapping(path = "/aste/di-venditori/tempo-fisso")
     public ResponseEntity<Page<AstaTempoFissoDto>> listAsteTempoFisso(Pageable pageable) {
 
@@ -50,6 +53,7 @@ public class AstaTempoFissoController {
         return new ResponseEntity<>(foundAsteTempoFissoDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "/aste/di-venditori/tempo-fisso", params = "proprietario")
     public ResponseEntity<Page<AstaTempoFissoDto>> listAsteTempoFissoByProprietarioIdAccountIs(@RequestParam("proprietario") Long idAccount, Pageable pageable) {
 
@@ -62,6 +66,7 @@ public class AstaTempoFissoController {
         return new ResponseEntity<>(foundAsteTempoFissoDto, HttpStatus.OK);
     }
 
+    // No authentication required
     @GetMapping(path = "/aste/di-venditori/tempo-fisso", params = {"nome", "categoria"})
     public ResponseEntity<Page<AstaTempoFissoDto>> listAsteTempoFissoByNomeLikeAndCategoriaNomeIs(@RequestParam(name = "nome", defaultValue = "%") String nomeAsta,
                                                                                                   @RequestParam("categoria") String nomeCategoria,
@@ -76,6 +81,7 @@ public class AstaTempoFissoController {
         return new ResponseEntity<>(foundAsteTempoFissoDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping(path = "/aste/di-venditori/tempo-fisso", params = "offerente")
     public ResponseEntity<Page<AstaTempoFissoDto>> listAsteTempoFissoByOfferenteIdAccountIs(@RequestParam("offerente") Long idAccount, Pageable pageable) {
 
@@ -88,6 +94,7 @@ public class AstaTempoFissoController {
         return new ResponseEntity<>(foundAsteTempoFissoDto, HttpStatus.OK);
     }
 
+    // No authentication required
     @GetMapping(path = "/aste/di-venditori/tempo-fisso/{idAsta}")
     public ResponseEntity<AstaTempoFissoDto> getAstaTempoFisso(@PathVariable("idAsta") Long idAsta) {
 
@@ -109,6 +116,7 @@ public class AstaTempoFissoController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(path = "/aste/di-venditori/tempo-fisso/{idAsta}")
     public ResponseEntity<AstaTempoFissoDto> fullUpdateAstaTempoFisso(@PathVariable("idAsta") Long idAsta, @RequestBody AstaTempoFissoDto receivedAstaTempoFissoDto) throws InvalidParameterException {
 
@@ -130,6 +138,7 @@ public class AstaTempoFissoController {
         }
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PatchMapping(path = "/aste/di-venditori/tempo-fisso/{idAsta}")
     public ResponseEntity<AstaTempoFissoDto> partialUpdateAstaTempoFisso(@PathVariable("idAsta") Long idAsta, @RequestBody AstaTempoFissoDto receivedAstaTempoFissoDto) throws InvalidParameterException {
 
@@ -151,6 +160,7 @@ public class AstaTempoFissoController {
         }
     }
 
+    @PreAuthorize("hasRole('USER')")
     @DeleteMapping(path = "/aste/di-venditori/tempo-fisso/{idAsta}")
     public ResponseEntity<AstaTempoFissoDto> deleteAstaTempoFisso(@PathVariable("idAsta") Long idAsta) {
 

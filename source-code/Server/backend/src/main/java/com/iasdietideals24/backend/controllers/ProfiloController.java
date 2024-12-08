@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -25,6 +26,7 @@ public class ProfiloController {
         this.profiloService = profiloService;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PutMapping(path = "/profili/{nomeUtente}")
     public ResponseEntity<ProfiloDto> createOrFullUpdateProfilo(@PathVariable("nomeUtente") String nomeUtente, @RequestBody PutProfiloDto receivedProfiloDto) throws InvalidParameterException {
 
@@ -47,6 +49,7 @@ public class ProfiloController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "/profili")
     public ResponseEntity<Page<ProfiloDto>> listProfili(Pageable pageable) {
 
@@ -59,6 +62,7 @@ public class ProfiloController {
         return new ResponseEntity<>(foundProfiliDto, HttpStatus.OK);
     }
 
+    // No authentication required
     @GetMapping(path = "/profili/{nomeUtente}")
     public ResponseEntity<ProfiloDto> getProfilo(@PathVariable("nomeUtente") String nomeUtente) {
 
@@ -81,6 +85,7 @@ public class ProfiloController {
         }
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PatchMapping(path = "/profili/{nomeUtente}")
     public ResponseEntity<ProfiloDto> partialUpdateProfilo(@PathVariable("nomeUtente") String nomeUtente, @RequestBody ProfiloDto receivedProfiloDto) throws InvalidParameterException {
 
@@ -102,6 +107,7 @@ public class ProfiloController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "/profili/{nomeUtente}")
     public ResponseEntity<ProfiloDto> deleteProfilo(@PathVariable("nomeUtente") String nomeUtente) {
 

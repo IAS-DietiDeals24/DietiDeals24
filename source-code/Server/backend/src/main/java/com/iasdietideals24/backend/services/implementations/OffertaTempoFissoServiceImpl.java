@@ -75,6 +75,9 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
         // Controlliamo che l'asta a cui voliamo riferirci sia attiva
         checkAstaActive(nuovaOffertaTempoFisso);
 
+        // Controllo che non ci siano già offerte più alte
+        checkBestOfferta(nuovaOffertaTempoFisso);
+
         log.debug("Salvo l'offerta a tempo fisso nel database...");
 
         // Registriamo l'entità
@@ -215,6 +218,11 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
             // Effettuiamo le modifiche
             updatePresentFields(updatedOffertaTempoFissoDto, existingOffertaTempoFisso);
 
+            if (updatedOffertaTempoFissoDto.getValore() != null) {
+                // Controllo che non ci siano già offerte più alte
+                checkBestOfferta(existingOffertaTempoFisso);
+            }
+
             return offertaTempoFissoMapper.toDto(offertaTempoFissoRepository.save(existingOffertaTempoFisso));
         }
     }
@@ -307,5 +315,28 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
                 throw new InvalidParameterException("L'asta '" + astaTempoFisso.getIdAsta() + "' a cui si vuole fare l'offerta è già terminata!");
             }
         }
+    }
+
+    private void checkBestOfferta(OffertaTempoFisso nuovaOffertaTempoFisso) throws InvalidParameterException {
+
+        log.debug("Controllo che non ci siano già offerte migliori per quest'asta...");
+
+        log.trace("nuovaOffertaTempoFisso: {}", nuovaOffertaTempoFisso);
+
+        if (nuovaOffertaTempoFisso != null && nuovaOffertaTempoFisso.getAstaRiferimento() != null) {
+
+            Long idAstaRiferimento = nuovaOffertaTempoFisso.getAstaRiferimento().getIdAsta();
+
+            Optional<OffertaTempoFisso> attualeOffertaTempoFissoMigliore = offertaTempoFissoRepository.findMaxByValoreAndAstaRiferimento_IdAstaIs(idAstaRiferimento);
+
+            if (attualeOffertaTempoFissoMigliore.isPresent()) {
+                if (attualeOffertaTempoFissoMigliore.get().getValore().compareTo(nuovaOffertaTempoFisso.getValore()) >= 0 ) {
+                    log.warn("Esiste già un'offerta migliore rispetto a quella che si vuole inserire per l'asta di id '{}'!", idAstaRiferimento);
+                    throw new InvalidParameterException("Esiste già un'offerta migliore rispetto a quella che si vuole inserire per l'asta di id '" + idAstaRiferimento + "'!");
+                }
+            }
+        }
+
+        log.debug("Non ci sono già offerte migliori.");
     }
 }

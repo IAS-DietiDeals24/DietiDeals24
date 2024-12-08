@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -25,6 +26,7 @@ public class CategoriaAstaController {
         this.categoriaAstaService = categoriaAstaService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping(path = "/categorie-asta/{nome}")
     public ResponseEntity<CategoriaAstaDto> createOrFullUpadateCategoriaAsta(@PathVariable("nome") String nome, @RequestBody CategoriaAstaDto receivedCategoriaAstaDto) throws InvalidParameterException {
 
@@ -47,6 +49,7 @@ public class CategoriaAstaController {
         }
     }
 
+    // No authentication required
     @GetMapping(path = "/categorie-asta")
     public ResponseEntity<Page<CategoriaAstaDto>> listCategorieAsta(Pageable pageable) {
 
@@ -59,6 +62,7 @@ public class CategoriaAstaController {
         return new ResponseEntity<>(foundCategorieAstaDto, HttpStatus.OK);
     }
 
+    // No authentication required
     @GetMapping(path = "/categorie-asta/{nome}")
     public ResponseEntity<CategoriaAstaDto> getCategoriaAsta(@PathVariable("nome") String nome) {
 
@@ -80,6 +84,7 @@ public class CategoriaAstaController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(path = "/categorie-asta/{nome}")
     public ResponseEntity<CategoriaAstaDto> partialUpdateCategoriaAsta(@PathVariable("nome") String nome, @RequestBody CategoriaAstaDto receivedCategoriaAstaDto) throws InvalidParameterException {
 
@@ -101,6 +106,7 @@ public class CategoriaAstaController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(path = "/categorie-asta/{nome}")
     public ResponseEntity<CategoriaAstaDto> deleteCategoriaAsta(@PathVariable("nome") String nome) throws IllegalDeleteRequestException {
 

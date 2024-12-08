@@ -16,9 +16,9 @@ public interface OffertaSilenziosaRepository extends CrudRepository<OffertaSilen
     @Query("select o from offerta_silenziosa o where o.astaRiferimento.idAsta = ?1")
     Page<OffertaSilenziosa> findByAstaRiferimento_IdAsta(Long idAsta, Pageable pageable);
 
-    @Query("select o from offerta_silenziosa o where o.astaRiferimento.idAsta = ?1 and o.valore = (select max(o.valore) from offerta_silenziosa o where o.astaRiferimento.idAsta = ?1)")
+    @Query("select o from offerta_silenziosa o where o.astaRiferimento.idAsta = ?1 and o.valore = (select max(o.valore) from offerta_silenziosa o where o.astaRiferimento.idAsta = ?1) order by o.dataInvio, o.oraInvio limit 1")
     Optional<OffertaSilenziosa> findMaxByValoreAndAstaRiferimento_IdAstaIs(Long idAsta);
 
-    @Query("select o from offerta_silenziosa o where o.astaRiferimento.idAsta = ?1 and o.compratoreCollegato.idAccount = ?2 and o.valore = (select max(o.valore) from offerta_silenziosa o where o.astaRiferimento.idAsta = ?1 and o.compratoreCollegato.idAccount = ?2)")
+    @Query("select o from offerta_silenziosa o where o.astaRiferimento.idAsta = ?1 and o.compratoreCollegato.idAccount = ?2 and o.valore = (select max(o.valore) from offerta_silenziosa o where o.astaRiferimento.idAsta = ?1 and o.compratoreCollegato.idAccount = ?2) order by o.dataInvio, o.oraInvio limit 1")
     Optional<OffertaSilenziosa> findMaxByValoreAndAstaRiferimento_IdAstaIsAndCompratoreCollegato_IdAccountIs(Long idAsta, Long idAccount);
 }

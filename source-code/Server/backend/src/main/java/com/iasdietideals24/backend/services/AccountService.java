@@ -15,4 +15,6 @@ public interface AccountService {
     boolean isLastAccountOfProfilo(Account account) throws InvalidParameterException;
 
     void checkEmailNotAlreadyTaken(String email) throws InvalidParameterException;
+
+    void checkEmailNotAlreadyTaken(Account account) throws InvalidParameterException;
 }
