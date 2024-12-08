@@ -43,19 +43,25 @@ class ScelteIniziali : DietiDeals24Activity<ActivityScelteInizialiBinding>(), On
 
     override fun onCreate(savedInstanceState: Bundle?) {
         lifecycleScope.launch {
-            val jwt = withContext(Dispatchers.IO) {
-                authRepository.leggiJWT()
+            val refreshToken = withContext(Dispatchers.IO) {
+                authRepository.scriviRefreshToken()
             }
 
-            CurrentUser.jwt = jwt
+            CurrentUser.rToken = refreshToken
 
             val ruolo = withContext(Dispatchers.IO) {
                 authRepository.leggiRuolo()
             }
 
-            if (jwt != "" && ruolo != TipoAccount.OSPITE) {
-                if (JWT.getExpirationDate(jwt) < System.currentTimeMillis()) {
-                    val userEmail = JWT.getUserEmail(jwt)
+            val accessToken = withContext(Dispatchers.IO) {
+                authRepository.aggiornaAccessToken(refreshToken).body()?.authToken ?: ""
+            }
+
+            CurrentUser.aToken = accessToken
+
+            if (refreshToken != "" && accessToken != "" && ruolo != TipoAccount.OSPITE) {
+                if (JWT.getExpirationDate(accessToken) < System.currentTimeMillis()) {
+                    val userEmail = JWT.getUserEmail(accessToken)
 
                     val account = withContext(Dispatchers.IO) {
                         when (ruolo) {

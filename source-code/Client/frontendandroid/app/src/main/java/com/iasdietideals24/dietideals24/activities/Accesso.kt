@@ -45,19 +45,22 @@ class Accesso : DietiDeals24Activity<ActivityAccessoBinding>() {
             val code = intent.data?.getQueryParameter("code") ?: ""
 
             lifecycleScope.launch {
-                CurrentUser.jwt = withContext(Dispatchers.IO) {
-                    authRepository.recuperaJWT(
+                val tokens = withContext(Dispatchers.IO) {
+                    authRepository.recuperaToken(
                         code,
                         "ias://com.iasdietideals24.dietideals24/signin"
                     )
                 }
 
-                withContext(Dispatchers.IO) {
-                    authRepository.scriviJWT(CurrentUser.jwt)
-                }
+                CurrentUser.rToken = tokens.refreshToken
+                CurrentUser.aToken = tokens.authToken
 
-                if (CurrentUser.jwt != "") {
-                    val userEmail = JWT.getUserEmail(CurrentUser.jwt)
+                if (CurrentUser.rToken != "" && CurrentUser.aToken != "") {
+                    withContext(Dispatchers.IO) {
+                        authRepository.scriviRefreshToken(CurrentUser.rToken)
+                    }
+
+                    val userEmail = JWT.getUserEmail(CurrentUser.aToken)
 
                     val account = withContext(Dispatchers.IO) {
                         when (CurrentUser.tipoAccount) {
@@ -84,13 +87,13 @@ class Accesso : DietiDeals24Activity<ActivityAccessoBinding>() {
                                 .putExtra("email", userEmail)
                         )
 
-                        finish()
+                        finishAffinity()
                     } else {
                         startActivity(
                             Intent(baseContext, Home::class.java)
                         )
 
-                        finish()
+                        finishAffinity()
                     }
                 }
             }

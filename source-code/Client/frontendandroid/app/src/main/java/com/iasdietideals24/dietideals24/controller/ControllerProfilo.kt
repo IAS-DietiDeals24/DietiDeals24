@@ -1,13 +1,15 @@
 package com.iasdietideals24.dietideals24.controller
 
 import android.content.Context
+import android.net.Uri
 import android.widget.ImageView
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
-import com.iasdietideals24.dietideals24.activities.ScelteIniziali
 import com.iasdietideals24.dietideals24.databinding.ProfiloBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
@@ -129,7 +131,7 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
                     binding.profiloPulsanteEsci.icon =
                         ResourcesCompat.getDrawable(resources, R.drawable.icona_porta, null)
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                     .setBackgroundTint(resources.getColor(R.color.blu, null))
                     .setTextColor(resources.getColor(R.color.grigio, null))
@@ -215,17 +217,46 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
 
     @EventHandler
     private fun clickEsci() {
-        // Cancella i dati di autenticazione memorizzati
         lifecycleScope.launch {
+            val url = withContext(Dispatchers.IO) {
+                authRepository.logout(
+                    CurrentUser.rToken,
+                    "ias://com.iasdietideals24.dietideals24/signout",
+                    "ias://com.iasdietideals24.dietideals24/signout"
+                )
+            }
+
             withContext(Dispatchers.IO) {
-                CurrentUser.jwt = ""
-                authRepository.cancellaJWT()
+                CurrentUser.rToken = ""
+                authRepository.cancellaRefreshToken()
                 authRepository.cancellaRuolo()
                 logger.cancellaLog()
             }
-        }
 
-        listenerChangeActivity?.onChangeActivity(ScelteIniziali::class.java)
+            if (url != "") {
+                val intent = CustomTabsIntent.Builder()
+                    .setShowTitle(false)
+                    .setColorScheme(CustomTabsIntent.COLOR_SCHEME_SYSTEM)
+                    .setDefaultColorSchemeParams(
+                        CustomTabColorSchemeParams.Builder()
+                            .setToolbarColor(resources.getColor(R.color.blu, fragmentContext.theme))
+                            .setNavigationBarColor(
+                                resources.getColor(
+                                    R.color.grigio,
+                                    fragmentContext.theme
+                                )
+                            )
+                            .build()
+                    )
+                    .build()
+                intent.launchUrl(fragmentContext, Uri.parse(url))
+            } else {
+                Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
+            }
+        }
     }
 
 }

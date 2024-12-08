@@ -23,6 +23,7 @@
             android:name=".activities.ScelteIniziali"
             android:exported="true"
             android:theme="@style/Theme.Material3.DynamicColors.DayNight.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,6 +34,7 @@
             android:name=".activities.Accesso"
             android:exported="true"
             android:launchMode="singleTask"
+            android:noHistory="true"
             android:theme="@style/Theme.Material3.DynamicColors.DayNight.NoActionBar">
 
             <intent-filter>
@@ -50,6 +52,7 @@
         <activity
             android:name=".activities.Registrazione"
             android:exported="true"
+            android:noHistory="true"
             android:launchMode="singleTask"
             android:theme="@style/Theme.Material3.DynamicColors.DayNight.NoActionBar">
 
@@ -62,6 +65,25 @@
                 <data
                     android:host="com.iasdietideals24.dietideals24"
                     android:path="/signup"
+                    android:scheme="ias" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.Logout"
+            android:exported="true"
+            android:noHistory="true"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.Material3.DynamicColors.DayNight.NoActionBar">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="com.iasdietideals24.dietideals24"
+                    android:path="/signout"
                     android:scheme="ias" />
             </intent-filter>
         </activity>

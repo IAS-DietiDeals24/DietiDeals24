@@ -233,7 +233,7 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
                     binding.modificaProfiloCampoDataNascita,
                     binding.modificaProfiloCampoGenere
                 )
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 Snackbar.make(
                     fragmentView,
                     R.string.apiError,

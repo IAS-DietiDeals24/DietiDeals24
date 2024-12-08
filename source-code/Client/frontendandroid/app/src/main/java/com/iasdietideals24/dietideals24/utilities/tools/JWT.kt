@@ -7,9 +7,11 @@ class JWT {
         private fun decodePayload(jwt: String): String {
             val tempList = jwt.split(".")
 
-            return String(tempList[1].let {
-                Base64.getDecoder().decode(it)
-            })
+            return if (tempList.isNotEmpty())
+                String(tempList[1].let {
+                    Base64.getDecoder().decode(it)
+                })
+            else ""
         }
 
         fun getUserEmail(jwt: String): String {

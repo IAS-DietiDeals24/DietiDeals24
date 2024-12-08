@@ -663,7 +663,7 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                     .show()
 
                 listenerBackButton?.onBackButton()
-            } catch (exception: Exception) {
+            } catch (_: Exception) {
                 Snackbar.make(
                     fragmentView,
                     R.string.dettagliAsta_erroreEliminazione,

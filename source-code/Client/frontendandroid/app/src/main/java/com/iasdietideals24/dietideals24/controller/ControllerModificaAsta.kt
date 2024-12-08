@@ -239,7 +239,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
                         viewModel.categoria.value = asta.categoria
                         viewModel.descrizione.value = asta.descrizione
                     }
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                         .setBackgroundTint(resources.getColor(R.color.blu, null))
                         .setTextColor(resources.getColor(R.color.grigio, null))
@@ -447,7 +447,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
                     binding.modificaCampoCategoria,
                     binding.modificaCampoDescrizione
                 )
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                     .setBackgroundTint(resources.getColor(R.color.blu, null))
                     .setTextColor(resources.getColor(R.color.grigio, null))
