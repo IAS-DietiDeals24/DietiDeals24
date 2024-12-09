@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
+import com.iasdietideals24.dietideals24.activities.ScelteIniziali
 import com.iasdietideals24.dietideals24.databinding.ProfiloBinding
 import com.iasdietideals24.dietideals24.utilities.annotations.EventHandler
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
@@ -228,12 +229,13 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
 
             withContext(Dispatchers.IO) {
                 CurrentUser.rToken = ""
+                CurrentUser.tipoAccount = TipoAccount.OSPITE
                 authRepository.cancellaRefreshToken()
                 authRepository.cancellaRuolo()
                 logger.cancellaLog()
             }
 
-            if (url != "") {
+            if (url != "" && CurrentUser.id != 0L) {
                 val intent = CustomTabsIntent.Builder()
                     .setShowTitle(false)
                     .setColorScheme(CustomTabsIntent.COLOR_SCHEME_SYSTEM)
@@ -249,12 +251,16 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
                             .build()
                     )
                     .build()
+                CurrentUser.id = 0L
                 intent.launchUrl(fragmentContext, Uri.parse(url))
-            } else {
+            } else if (url == "" && CurrentUser.id != 0L) {
                 Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
                     .setBackgroundTint(resources.getColor(R.color.blu, null))
                     .setTextColor(resources.getColor(R.color.grigio, null))
                     .show()
+            } else {
+                CurrentUser.id = 0L
+                listenerChangeActivity?.onChangeActivity(ScelteIniziali::class.java)
             }
         }
     }

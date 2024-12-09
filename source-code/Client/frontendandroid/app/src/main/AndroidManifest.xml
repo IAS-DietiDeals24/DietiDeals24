@@ -52,8 +52,8 @@
         <activity
             android:name=".activities.Registrazione"
             android:exported="true"
-            android:noHistory="true"
             android:launchMode="singleTask"
+            android:noHistory="true"
             android:theme="@style/Theme.Material3.DynamicColors.DayNight.NoActionBar">
 
             <intent-filter>
@@ -71,8 +71,8 @@
         <activity
             android:name=".activities.Logout"
             android:exported="true"
-            android:noHistory="true"
             android:launchMode="singleTask"
+            android:noHistory="true"
             android:theme="@style/Theme.Material3.DynamicColors.DayNight.NoActionBar">
 
             <intent-filter>

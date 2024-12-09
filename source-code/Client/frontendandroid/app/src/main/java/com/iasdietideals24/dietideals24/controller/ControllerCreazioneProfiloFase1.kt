@@ -10,6 +10,7 @@ import com.facebook.login.LoginManager
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.Creazioneprofilofase1Binding
@@ -60,7 +61,7 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
     override fun impostaEventiClick() {
         binding.creazioneProfiloFase1PulsanteIndietro.setOnClickListener { clickIndietro() }
         binding.creazioneProfiloFase1PulsanteAvanti.setOnClickListener { clickAvanti() }
-        binding.creazioneProfiloFase1CampoDataNascita.setEndIconOnClickListener { clickDataNascita() }
+        binding.creazioneProfiloFase1CampoDataNascita.setStartIconOnClickListener { clickDataNascita() }
     }
 
     @UIBuilder
@@ -122,12 +123,19 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
 
     @EventHandler
     private fun clickIndietro() {
-        val accessToken: AccessToken? = AccessToken.getCurrentAccessToken()
-        if (accessToken != null && !accessToken.isExpired) {
-            LoginManager.getInstance().logOut()
-        }
+        MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
+            .setTitle(R.string.modifica_titoloConfermaIndietro)
+            .setMessage(R.string.modifica_testoConfermaIndietro)
+            .setPositiveButton(R.string.ok) { _, _ ->
+                val accessToken: AccessToken? = AccessToken.getCurrentAccessToken()
+                if (accessToken != null && !accessToken.isExpired) {
+                    LoginManager.getInstance().logOut()
+                }
 
-        listenerBackButton?.onBackButton()
+                listenerBackButton?.onBackButton()
+            }
+            .setNegativeButton(R.string.annulla) { _, _ -> }
+            .show()
     }
 
     @EventHandler

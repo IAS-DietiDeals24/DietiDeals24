@@ -101,16 +101,16 @@
                     app:boxStrokeWidth="1.5dp"
                     app:cursorColor="@color/arancione"
                     app:cursorErrorColor="@color/rosso"
-                    app:endIconDrawable="@drawable/icona_calendario_blu"
-                    app:endIconMode="custom"
-                    app:endIconTint="@null"
                     app:errorIconTint="@color/rosso"
                     app:errorTextColor="@color/arancione"
                     app:hintTextColor="@color/arancione"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/modifica_etichettaDataScadenza">
+                    app:layout_constraintTop_toBottomOf="@+id/modifica_etichettaDataScadenza"
+                    app:startIconDrawable="@drawable/icona_calendario_blu"
+                    app:startIconTint="@null"
+                    app:startIconTintMode="multiply">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/modifica_dataScadenza"
@@ -168,16 +168,16 @@
                     app:boxStrokeWidth="1.5dp"
                     app:cursorColor="@color/arancione"
                     app:cursorErrorColor="@color/rosso"
-                    app:endIconDrawable="@drawable/icona_ora"
-                    app:endIconMode="custom"
-                    app:endIconTint="@null"
                     app:errorIconTint="@color/rosso"
                     app:errorTextColor="@color/arancione"
                     app:hintTextColor="@color/arancione"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/modifica_etichettaOra">
+                    app:layout_constraintTop_toBottomOf="@+id/modifica_etichettaOra"
+                    app:startIconDrawable="@drawable/icona_ora"
+                    app:startIconTint="@null"
+                    app:startIconTintMode="multiply">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/modifica_ora"

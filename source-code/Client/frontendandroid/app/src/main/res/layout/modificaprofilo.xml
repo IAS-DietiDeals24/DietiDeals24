@@ -328,13 +328,12 @@
                 app:boxStrokeWidth="1.5dp"
                 app:cursorColor="@color/arancione"
                 app:cursorErrorColor="@color/rosso"
-                app:endIconDrawable="@drawable/icona_calendario_arancione"
-                app:endIconMode="custom"
-                app:endIconTint="@null"
-                app:endIconTintMode="multiply"
                 app:errorIconTint="@color/rosso"
                 app:errorTextColor="@color/arancione"
-                app:hintTextColor="@color/arancione">
+                app:hintTextColor="@color/arancione"
+                app:startIconDrawable="@drawable/icona_calendario_arancione"
+                app:startIconTint="@null"
+                app:startIconTintMode="multiply">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/modificaProfilo_dataNascita"

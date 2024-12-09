@@ -78,6 +78,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
         super.onDetach()
 
         listenerGoToHome = null
+        viewModel.clear()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -131,11 +132,11 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
             clickCrea()
         }
 
-        binding.creaCampoDataScadenza.setEndIconOnClickListener {
+        binding.creaCampoDataScadenza.setStartIconOnClickListener {
             clickDataScadenza()
         }
 
-        binding.creaCampoOra.setEndIconOnClickListener {
+        binding.creaCampoOra.setStartIconOnClickListener {
             clickOraScadenza()
         }
 

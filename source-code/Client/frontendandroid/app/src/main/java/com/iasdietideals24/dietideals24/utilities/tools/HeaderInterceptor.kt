@@ -2,7 +2,9 @@ package com.iasdietideals24.dietideals24.utilities.tools
 
 import com.iasdietideals24.dietideals24.utilities.repositories.AuthRepository
 import okhttp3.Interceptor
+import okhttp3.Protocol
 import okhttp3.Response
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.koin.java.KoinJavaComponent.inject
 
 object HeaderInterceptor : Interceptor {
@@ -23,7 +25,17 @@ object HeaderInterceptor : Interceptor {
         }
 
         // Esegui la richiesta e ottieni la risposta
-        val risposta = chain.proceed(richiesta)
+        val risposta = try {
+            chain.proceed(richiesta)
+        } catch (e: Exception) {
+            return Response.Builder()
+                .request(richiesta)
+                .protocol(Protocol.HTTP_2)
+                .code(408)
+                .message("Connection lost")
+                .body("".toResponseBody())
+                .build()
+        }
 
         // Se ottengo un non autorizzato, il token di accesso è scaduto
         if (risposta.code == 401) {
@@ -51,7 +63,17 @@ object HeaderInterceptor : Interceptor {
                                 .build()
 
                             // Riprova a inviare la richiesta
-                            return chain.proceed(nuovaRichiesta)
+                            return try {
+                                chain.proceed(nuovaRichiesta)
+                            } catch (e: Exception) {
+                                return Response.Builder()
+                                    .request(nuovaRichiesta)
+                                    .protocol(Protocol.HTTP_2)
+                                    .code(408)
+                                    .message("Connection lost")
+                                    .body("".toResponseBody())
+                                    .build()
+                            }
                         }
                     } finally {
                         // Sblocca dopo aver terminato

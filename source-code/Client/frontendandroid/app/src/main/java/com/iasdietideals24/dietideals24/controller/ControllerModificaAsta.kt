@@ -144,9 +144,9 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
 
         binding.modificaPulsanteModifica.setOnClickListener { clickModifica() }
 
-        binding.modificaCampoDataScadenza.setEndIconOnClickListener { clickDataScadenza() }
+        binding.modificaCampoDataScadenza.setStartIconOnClickListener { clickDataScadenza() }
 
-        binding.modificaCampoOra.setEndIconOnClickListener { clickOraScadenza() }
+        binding.modificaCampoOra.setStartIconOnClickListener { clickOraScadenza() }
 
         binding.modificaCampoFoto.setOnClickListener { clickFoto() }
     }

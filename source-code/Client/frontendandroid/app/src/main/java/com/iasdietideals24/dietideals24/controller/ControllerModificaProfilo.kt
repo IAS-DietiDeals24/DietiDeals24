@@ -83,7 +83,7 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
 
         binding.modificaProfiloX.setOnClickListener { clickX() }
 
-        binding.modificaProfiloCampoDataNascita.setEndIconOnClickListener { clickDataNascita() }
+        binding.modificaProfiloCampoDataNascita.setStartIconOnClickListener { clickDataNascita() }
     }
 
     @UIBuilder
