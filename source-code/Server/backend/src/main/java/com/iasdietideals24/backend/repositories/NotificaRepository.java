@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NotificaRepository extends CrudRepository<Notifica, Long>, PagingAndSortingRepository<Notifica, Long> {
 
-    @Query(value = "select n from notifica n join n.destinatari d where d.idAccount = ?1")
+    @Query(value = "select n from notifica n join n.destinatari d where d.idAccount = ?1 order by n.dataInvio desc, n.oraInvio desc")
     Page<Notifica> findByDestinatari_IdAccount(Long idAccount, Pageable pageable);
 }
