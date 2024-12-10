@@ -72,6 +72,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
         if (requireContext() is OnGoToHome) {
             listenerGoToHome = requireContext() as OnGoToHome
         }
+        viewModel.clear()
     }
 
     override fun onDetach() {
@@ -89,7 +90,15 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
             getString(R.string.tipoAsta_astaTempoFisso),
             getString(R.string.tipoAsta_astaSilenziosa)
         )
-        var selezionato: Int = -1
+
+        apriMaterialDialog(asteCompratore, asteVenditore)
+    }
+
+    private fun apriMaterialDialog(
+        asteCompratore: Array<String>,
+        asteVenditore: Array<String>
+    ) {
+        var selezionato = -1
 
         MaterialAlertDialogBuilder(fragmentContext, R.style.Dialog)
             .setTitle(R.string.crea_titoloPopupTipoAsta)
@@ -104,18 +113,22 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
                 selezionato = which
             }
             .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                when (CurrentUser.tipoAccount) {
-                    TipoAccount.COMPRATORE -> viewModel.tipo.value = TipoAsta.INVERSA
+                if (selezionato == -1) {
+                    apriMaterialDialog(asteCompratore, asteVenditore)
+                } else {
+                    when (CurrentUser.tipoAccount) {
+                        TipoAccount.COMPRATORE -> viewModel.tipo.value = TipoAsta.INVERSA
 
-                    TipoAccount.VENDITORE -> viewModel.tipo.value =
-                        when (asteVenditore[selezionato]) {
-                            getString(R.string.tipoAsta_astaTempoFisso) -> TipoAsta.TEMPO_FISSO
-                            getString(R.string.tipoAsta_astaSilenziosa) -> TipoAsta.SILENZIOSA
-                            else -> TipoAsta.TEMPO_FISSO
+                        TipoAccount.VENDITORE -> viewModel.tipo.value =
+                            when (asteVenditore[selezionato]) {
+                                getString(R.string.tipoAsta_astaTempoFisso) -> TipoAsta.TEMPO_FISSO
+                                getString(R.string.tipoAsta_astaSilenziosa) -> TipoAsta.SILENZIOSA
+                                else -> TipoAsta.TEMPO_FISSO
+                            }
+
+                        else -> {
+                            // Non fare nulla
                         }
-
-                    else -> {
-                        // Non fare nulla
                     }
                 }
             }
@@ -195,7 +208,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
 
             withContext(Dispatchers.IO) {
                 categoriaAstaRepository.recuperaCategorieAsta().forEach {
-                    categorieAsta.add(it.nome)
+                    categorieAsta.add(CategoriaAsta.fromEnumToString(CategoriaAsta.valueOf(it.nome)))
                 }
             }
 

@@ -30,8 +30,13 @@ class AstaSilenziosaRepository(private val service: AstaSilenziosaService) {
         return service.aggiornaAstaSilenziosa(asta, idAsta).body() ?: AstaSilenziosaDto()
     }
 
-    suspend fun recuperaAsteSilenziose(size: Long, page: Long): Page<AstaSilenziosaDto> {
-        return service.recuperaAsteSilenziose(size, page).body() ?: Page<AstaSilenziosaDto>()
+    suspend fun recuperaAsteSilenziose(
+        idAccount: Long,
+        size: Long,
+        page: Long
+    ): Page<AstaSilenziosaDto> {
+        return service.recuperaAsteSilenziose(idAccount, size, page).body()
+            ?: Page<AstaSilenziosaDto>()
     }
 
     suspend fun ricercaAsteSilenziose(

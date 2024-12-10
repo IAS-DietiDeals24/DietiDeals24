@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -195,12 +196,19 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                             getString(R.string.dettagliAsta_testoOfferta1)
 
                     val offertaAsta = when (viewModel.tipo.value) {
-                        TipoAsta.TEMPO_FISSO -> offerta.offerta.toString()
+                        TipoAsta.TEMPO_FISSO -> if (offerta.offerta == BigDecimal("0.00"))
+                            asta.prezzo
+                        else {
+                            viewModel.prezzo.value = offerta.offerta
+                            offerta.offerta.toString()
+                        }
 
                         TipoAsta.INVERSA -> if (offerta.offerta == BigDecimal("0.00"))
                             asta.prezzo
-                        else
+                        else {
+                            viewModel.prezzo.value = offerta.offerta
                             offerta.offerta.toString()
+                        }
 
                         else -> "???"
                     }
@@ -226,6 +234,14 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                         CurrentUser.id == idAltroAccount
                     ) {
                         binding.dettagliAstaPulsanteOfferta.isEnabled = false
+                        binding.dettagliAstaPulsanteOfferta.setIconTintResource(R.color.grigioScuro)
+                        binding.dettagliAstaPulsanteOfferta.setTextColor(
+                            getColor(
+                                resources,
+                                R.color.grigioScuro,
+                                context?.theme
+                            )
+                        )
                     } else if (CurrentUser.id == asta.idCreatore) {
                         binding.dettagliAstaPulsanteOfferta.visibility = View.GONE
                         binding.dettagliAstaPulsanteModifica.visibility = View.VISIBLE

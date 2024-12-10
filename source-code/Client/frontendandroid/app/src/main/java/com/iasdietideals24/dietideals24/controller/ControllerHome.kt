@@ -9,6 +9,7 @@ import com.iasdietideals24.dietideals24.databinding.HomeBinding
 import com.iasdietideals24.dietideals24.model.ModelHome
 import com.iasdietideals24.dietideals24.utilities.adapters.AdapterHome
 import com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder
+import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.repositories.CategoriaAstaRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
@@ -59,7 +60,9 @@ class ControllerHome : Controller<HomeBinding>() {
     @UIBuilder
     override fun impostaEventiClick() {
         binding.homeFiltro.setOnItemClickListener { _, _, _, _ ->
-            viewModel.filter.value = binding.homeFiltro.text.toString()
+            viewModel.filter.value =
+                if (binding.homeFiltro.text.toString() != getString(R.string.category_all))
+                    binding.homeFiltro.text.toString() else ""
 
             jobRecupero = lifecycleScope.launch {
                 jobRecupero?.cancel()
@@ -127,7 +130,7 @@ class ControllerHome : Controller<HomeBinding>() {
             }
 
             TipoAccount.COMPRATORE -> {
-                val categorieAsta: MutableList<String> = mutableListOf(
+                val tipoAsta: MutableList<String> = mutableListOf(
                     getString(R.string.tipoAsta_astaSilenziosa),
                     getString(R.string.tipoAsta_astaTempoFisso)
                 )
@@ -135,7 +138,7 @@ class ControllerHome : Controller<HomeBinding>() {
                 val adapter: ArrayAdapter<String> = ArrayAdapter(
                     fragmentContext,
                     android.R.layout.simple_dropdown_item_1line,
-                    categorieAsta
+                    tipoAsta
                 )
 
                 binding.homeTipo.setAdapter(adapter)
@@ -154,7 +157,7 @@ class ControllerHome : Controller<HomeBinding>() {
             }
 
             else -> {
-                val categorieAsta: MutableList<String> = mutableListOf(
+                val tipoAsta: MutableList<String> = mutableListOf(
                     getString(R.string.tipoAsta_astaSilenziosa),
                     getString(R.string.tipoAsta_astaTempoFisso),
                     getString(R.string.tipoAsta_astaInversa)
@@ -163,7 +166,7 @@ class ControllerHome : Controller<HomeBinding>() {
                 val adapter: ArrayAdapter<String> = ArrayAdapter(
                     fragmentContext,
                     android.R.layout.simple_dropdown_item_1line,
-                    categorieAsta
+                    tipoAsta
                 )
 
                 binding.homeTipo.setAdapter(adapter)
@@ -183,11 +186,11 @@ class ControllerHome : Controller<HomeBinding>() {
         }
 
         lifecycleScope.launch {
-            val categorieAsta: MutableList<String> = mutableListOf("")
+            val categorieAsta: MutableList<String> = mutableListOf(getString(R.string.category_all))
 
             withContext(Dispatchers.IO) {
                 categoriaAstaRepository.recuperaCategorieAsta().forEach {
-                    categorieAsta.add(it.nome)
+                    categorieAsta.add(CategoriaAsta.fromEnumToString(CategoriaAsta.valueOf(it.nome)))
                 }
             }
 
@@ -198,6 +201,11 @@ class ControllerHome : Controller<HomeBinding>() {
             )
 
             binding.homeFiltro.setAdapter(adapter)
+
+            if (viewModel.filter.value == "")
+                binding.homeFiltro.setText(getString(R.string.category_all), false)
+            else
+                binding.homeFiltro.setText(viewModel.filter.value, false)
         }
     }
 

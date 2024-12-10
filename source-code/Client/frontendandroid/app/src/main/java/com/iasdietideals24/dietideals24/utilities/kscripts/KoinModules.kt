@@ -152,3 +152,7 @@ val viewModelModule = module {
 val facebookModule = module {
     factory { create() }
 }
+
+val otherModule = module {
+    factory { androidContext().resources }
+}

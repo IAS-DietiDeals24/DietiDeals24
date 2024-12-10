@@ -125,7 +125,7 @@
     <string name="ok">OK</string>
     <string name="tipoAsta_astaInversa">Inversa</string>
     <string name="tipoAsta_astaSilenziosa">Silenziosa</string>
-    <string name="tipoAsta_astaTempoFisso">Tempo fisso</string>
+    <string name="tipoAsta_astaTempoFisso">A tempo fisso</string>
     <string name="card_accessibilitàModificaAsta">Modifica asta</string>
     <string name="card_accessibilitàEliminaAsta">Elimina asta</string>
     <string name="card_accessibilitàElencoOfferte">Elenco offerte</string>
@@ -170,9 +170,9 @@
     <string name="modificaProfilo_fallimentoModifica">Il tuo profilo non è stato aggiornato. Riprova.</string>
     <string name="dettagliAsta_successoOfferta">La tua offerta è stata inviata con successo.</string>
     <string name="dettagliAsta_fallimentoOfferta">La tua offerta non è stata inviata. Riprova.</string>
-    <string name="dettagliAsta_erroreOffertaTempoFisso">L\'offerta non può essere più bassa di zero o più bassa dell\'offerta corrente.</string>
-    <string name="dettagliAsta_erroreOffertaInversa">L\'offerta non può essere più bassa di zero o più alta dell\'offerta corrente.</string>
-    <string name="dettagliAsta_erroreOffertaSilenziosa">L\'offerta non può essere più bassa di zero.</string>
+    <string name="dettagliAsta_erroreOffertaTempoFisso">L\'offerta non può essere minore o uguale a zero o minore o uguale all\'offerta corrente. Deve anche essere un intero o un intero con due cifre decimali.</string>
+    <string name="dettagliAsta_erroreOffertaInversa">L\'offerta non può essere minore o uguale a zero o maggiore o uguale all\'offerta corrente. Deve anche essere un intero o un intero con due cifre decimali.</string>
+    <string name="dettagliAsta_erroreOffertaSilenziosa">L\'offerta non può essere minore di zero. Deve anche essere un intero o un intero con due cifre decimali.</string>
     <string name="modifica_pulsanteModifica">Modifica</string>
     <string name="crea_titolo">Crea asta</string>
     <string name="modifica_titolo">Modifica asta</string>
@@ -248,4 +248,5 @@
     <string name="testoNotifica">%1$s (asta: %2$s)</string>
     <string name="astaAggiudicata">AGGIUDICATA</string>
     <string name="astecreate_filtro">Filtra per tipo</string>
+    <string name="category_all">Tutte</string>
 </resources>

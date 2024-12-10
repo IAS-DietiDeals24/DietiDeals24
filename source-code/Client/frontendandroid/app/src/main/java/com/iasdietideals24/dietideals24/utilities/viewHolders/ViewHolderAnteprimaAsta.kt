@@ -108,9 +108,11 @@ class ViewHolderAnteprimaAsta(private val binding: AstaBinding) :
         scope.launch {
             val valoreOfferta: String = when (currentAsta.tipoAsta) {
                 TipoAsta.TEMPO_FISSO -> {
-                    withContext(Dispatchers.IO) {
-                        recuperaOfferta(currentAsta).toOfferta().offerta.toString()
-                    }
+                    val offerta = recuperaOfferta(currentAsta).toOfferta().offerta
+                    if (offerta == BigDecimal("0.00"))
+                        currentAsta.prezzo.toString()
+                    else
+                        offerta.toString()
                 }
 
                 TipoAsta.INVERSA -> {

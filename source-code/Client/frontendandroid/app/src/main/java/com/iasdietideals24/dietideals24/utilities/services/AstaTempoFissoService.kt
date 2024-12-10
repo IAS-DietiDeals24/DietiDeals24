@@ -72,6 +72,7 @@ interface AstaTempoFissoService : Service {
     /**
      * Recupera l'elenco di tutte le aste a tempo fisso con le quali può interagire il compratore che ha
      * effettuato il login.
+     * @param idAccount Identificativo dell'account del quale escludere le aste.
      * @param size Il numero massimo di aste da recuperare.
      * @param page Il numero della pagina da recuperare.
      * @return [Page] di [AstaTempoFissoDto] che contiene un certo numero di aste create. Se non
@@ -79,6 +80,7 @@ interface AstaTempoFissoService : Service {
      */
     @GET("aste/di-venditori/tempo-fisso")
     suspend fun recuperaAsteTempoFisso(
+        @Query("exclude_proprietario") idAccount: Long,
         @Query("size") size: Long,
         @Query("page") page: Long
     ): Response<Page<AstaTempoFissoDto>>

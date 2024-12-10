@@ -20,7 +20,7 @@ class AstaSilenziosaPagingSource(
         return try {
             val data = when (api) {
                 ApiCall.CREATE -> repository.recuperaAsteCreateSilenziose(idAccount, size, 0)
-                ApiCall.TUTTE -> repository.recuperaAsteSilenziose(size, 0)
+                ApiCall.TUTTE -> repository.recuperaAsteSilenziose(idAccount, size, 0)
                 ApiCall.RICERCA -> repository.ricercaAsteSilenziose(ricerca, filtro, size, 0)
                 ApiCall.PARTECIPAZIONI -> repository.recuperaPartecipazioniSilenziose(
                     idAccount,

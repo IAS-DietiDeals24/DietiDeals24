@@ -201,7 +201,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
 
             withContext(Dispatchers.IO) {
                 categoriaAstaRepository.recuperaCategorieAsta().forEach {
-                    categorieAsta.add(it.nome)
+                    categorieAsta.add(CategoriaAsta.fromEnumToString(CategoriaAsta.valueOf(it.nome)))
                 }
             }
 

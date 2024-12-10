@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/popupOfferta_linearLayout"
-    android:layout_width="wrap_content"
+    android:layout_width="340dp"
     android:layout_height="wrap_content"
     android:background="@color/grigio"
     android:gravity="center"
@@ -14,9 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20sp"
         android:text="@string/placeholder"
-        android:textColor="@color/blu"
-        android:textSize="15sp"
-        app:fontFamily="@font/fira_sans" />
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="@color/blu" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/popupOfferta_valoreOfferta"
@@ -31,7 +30,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/popupOfferta_campoOfferta"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
         android:layout_margin="20dp"
@@ -66,14 +65,13 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/popupOfferta_avviso"
-        android:layout_width="320sp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginHorizontal="20dp"
         android:text="@string/offerta_avviso"
         android:textAlignment="center"
-        android:textColor="@color/rosso"
-        android:textSize="20sp"
-        app:fontFamily="@font/fira_sans_medium" />
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textColor="@color/rosso" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/popupOfferta_inviaOfferta"
@@ -81,7 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="20sp"
+        android:layout_marginVertical="20sp"
         android:backgroundTint="@color/materialbuttonbackground2"
         android:text="@string/dettagliAsta_pulsanteOfferta"
         app:layout_constraintBottom_toBottomOf="parent"

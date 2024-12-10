@@ -150,7 +150,7 @@ class ModelAsta(
             idAsta.value!!,
             stato.value!!.name,
             CategoriaAstaShallowDto(
-                CategoriaAsta.fromEnumToString(categoria.value!!),
+                categoria.value!!.name,
             ),
             nome.value!!,
             descrizione.value!!,
@@ -178,7 +178,7 @@ class ModelAsta(
             idAsta.value!!,
             stato.value!!.name,
             CategoriaAstaShallowDto(
-                CategoriaAsta.fromEnumToString(categoria.value!!),
+                categoria.value!!.name,
             ),
             nome.value!!,
             descrizione.value!!,
@@ -206,7 +206,7 @@ class ModelAsta(
             idAsta.value!!,
             stato.value!!.name,
             CategoriaAstaShallowDto(
-                CategoriaAsta.fromEnumToString(categoria.value!!),
+                categoria.value!!.name,
             ),
             nome.value!!,
             descrizione.value!!,

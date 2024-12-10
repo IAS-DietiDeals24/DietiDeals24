@@ -87,6 +87,19 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
             binding.activityHomeBottomNavigationView.menu.getItem(1).isEnabled = false
             binding.activityHomeBottomNavigationView.menu.getItem(2).isEnabled = false
         }
+
+        binding.activityHomeBottomNavigationView.menu.getItem(0).setOnMenuItemClickListener {
+            getNavController().popBackStack(R.id.controllerHome, false)
+        }
+        binding.activityHomeBottomNavigationView.menu.getItem(1).setOnMenuItemClickListener {
+            getNavController().popBackStack(R.id.controllerPartecipazioni, false)
+        }
+        binding.activityHomeBottomNavigationView.menu.getItem(2).setOnMenuItemClickListener {
+            getNavController().popBackStack(R.id.controllerAsteCreate, false)
+        }
+        binding.activityHomeBottomNavigationView.menu.getItem(3).setOnMenuItemClickListener {
+            getNavController().popBackStack(R.id.controllerNotifiche, false)
+        }
     }
 
     private fun getNavController(): NavController {

@@ -6,6 +6,7 @@ import android.widget.ImageView
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.google.android.material.snackbar.Snackbar
@@ -124,10 +125,31 @@ class ControllerProfilo : Controller<ProfiloBinding>() {
                     binding.profiloNome.text = getString(R.string.tipoAccount_ospite)
                     binding.profiloPulsanteUtente.isEnabled = false
                     binding.profiloPulsanteUtente.setIconTintResource(R.color.grigioScuro)
+                    binding.profiloPulsanteUtente.setTextColor(
+                        getColor(
+                            resources,
+                            R.color.grigioScuro,
+                            context?.theme
+                        )
+                    )
                     binding.profiloPulsanteAste.isEnabled = false
                     binding.profiloPulsanteAste.setIconTintResource(R.color.grigioScuro)
+                    binding.profiloPulsanteAste.setTextColor(
+                        getColor(
+                            resources,
+                            R.color.grigioScuro,
+                            context?.theme
+                        )
+                    )
                     binding.profiloPulsanteStorico.isEnabled = false
                     binding.profiloPulsanteStorico.setIconTintResource(R.color.grigioScuro)
+                    binding.profiloPulsanteStorico.setTextColor(
+                        getColor(
+                            resources,
+                            R.color.grigioScuro,
+                            context?.theme
+                        )
+                    )
                     binding.profiloPulsanteEsci.text = getString(R.string.profilo_pulsante5O)
                     binding.profiloPulsanteEsci.icon =
                         ResourcesCompat.getDrawable(resources, R.drawable.icona_porta, null)

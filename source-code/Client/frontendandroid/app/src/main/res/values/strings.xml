@@ -180,9 +180,9 @@
     <string name="modificaProfilo_fallimentoModifica">Your profile has not been updated. Please retry.</string>
     <string name="dettagliAsta_successoOfferta">Your bid has been sent successfully.</string>
     <string name="dettagliAsta_fallimentoOfferta">Your bid has not been sent. Please retry.</string>
-    <string name="dettagliAsta_erroreOffertaTempoFisso">The bid can\'t be lower than zero or lower than the current bid.</string>
-    <string name="dettagliAsta_erroreOffertaInversa">The bid can\'t be lower than zero or greater than the current bid.</string>
-    <string name="dettagliAsta_erroreOffertaSilenziosa">The bid can\'t be lower than zero.</string>
+    <string name="dettagliAsta_erroreOffertaTempoFisso">The bid can\'t be lower or equal than zero or lower or equal than the current bid. It must also be an integer or an integer with two decimal places.</string>
+    <string name="dettagliAsta_erroreOffertaInversa">The bid can\'t be lower or equal than zero or greater or equal than the current bid. It must also be an integer or an integer with two decimal places.</string>
+    <string name="dettagliAsta_erroreOffertaSilenziosa">The bid can\'t be lower than zero. It must also be an integer or an integer with two decimal places.</string>
     <string name="modifica_pulsanteModifica">Edit</string>
     <string name="crea_titolo">Create auction</string>
     <string name="modifica_titolo">Edit auction</string>
@@ -258,4 +258,5 @@
     <string name="testoNotifica">%1$s (auction: "%2$s")</string>
     <string name="astaAggiudicata">WON</string>
     <string name="astecreate_filtro">Filter by type</string>
+    <string name="category_all">All</string>
 </resources>

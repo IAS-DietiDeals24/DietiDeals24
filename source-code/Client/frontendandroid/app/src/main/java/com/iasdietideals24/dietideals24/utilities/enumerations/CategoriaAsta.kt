@@ -1,5 +1,9 @@
 package com.iasdietideals24.dietideals24.utilities.enumerations
 
+import android.content.res.Resources
+import com.iasdietideals24.dietideals24.R
+import org.koin.java.KoinJavaComponent.inject
+
 enum class CategoriaAsta {
     BOOKS,
     COMICS_AND_MANGAS,
@@ -18,43 +22,45 @@ enum class CategoriaAsta {
     ND;
 
     companion object {
+        private val resources: Resources by inject(Resources::class.java)
+
         fun fromStringToEnum(stringa: String): CategoriaAsta {
             when (stringa) {
-                "Libri" -> return BOOKS
-                "Fumetti e manga" -> return COMICS_AND_MANGAS
-                "Musica" -> return MUSIC
-                "Film e serie TV" -> return MOVIES_AND_TV_SHOWS
-                "Videogiochi e console" -> return VIDEOGAMES_AND_CONSOLES
-                "Elettronica" -> return ELECTRONICS
-                "Cibi e bevande" -> return FOODS_AND_DRINKS
-                "Scorte animali domestici" -> return PETS_SUPPLIES
-                "Cura del corpo e bellezza" -> return BODYCARE_AND_BEAUTY
-                "Sport e tempo libero" -> return SPORTS_AND_HOBBIES
-                "Abiti e indossabili" -> return CLOTHINGS_AND_WEARABLES
-                "Casa e arredamenti" -> return HOME_AND_FURNITURES
-                "Veicoli" -> return VEHICLES
-                "Altro" -> return OTHER
+                resources.getString(R.string.category_books) -> return BOOKS
+                resources.getString(R.string.category_comics_and_mangas) -> return COMICS_AND_MANGAS
+                resources.getString(R.string.category_music) -> return MUSIC
+                resources.getString(R.string.category_movies_and_tv_shows) -> return MOVIES_AND_TV_SHOWS
+                resources.getString(R.string.category_videogames_and_consoles) -> return VIDEOGAMES_AND_CONSOLES
+                resources.getString(R.string.category_electronics) -> return ELECTRONICS
+                resources.getString(R.string.category_foods_and_drinks) -> return FOODS_AND_DRINKS
+                resources.getString(R.string.category_pets_supplies) -> return PETS_SUPPLIES
+                resources.getString(R.string.category_bodycare_and_beauty) -> return BODYCARE_AND_BEAUTY
+                resources.getString(R.string.category_sports_and_hobbies) -> return SPORTS_AND_HOBBIES
+                resources.getString(R.string.category_clothings_and_wearables) -> return CLOTHINGS_AND_WEARABLES
+                resources.getString(R.string.category_home_and_furnitures) -> return HOME_AND_FURNITURES
+                resources.getString(R.string.category_vehicles) -> return VEHICLES
+                resources.getString(R.string.category_other) -> return OTHER
                 else -> return ND
             }
         }
 
         fun fromEnumToString(enum: CategoriaAsta): String {
-            when (enum) {
-                BOOKS -> return "Libri"
-                COMICS_AND_MANGAS -> return "Fumetti e manga"
-                MUSIC -> return "Musica"
-                MOVIES_AND_TV_SHOWS -> return "Film e serie TV"
-                VIDEOGAMES_AND_CONSOLES -> return "Videogiochi e console"
-                ELECTRONICS -> return "Elettronica"
-                FOODS_AND_DRINKS -> return "Cibi e bevande"
-                PETS_SUPPLIES -> return "Scorte animali domestici"
-                BODYCARE_AND_BEAUTY -> return "Cura del corpo e bellezza"
-                SPORTS_AND_HOBBIES -> return "Sport e tempo libero"
-                CLOTHINGS_AND_WEARABLES -> return "Abiti e indossabili"
-                HOME_AND_FURNITURES -> return "Casa e arredamenti"
-                VEHICLES -> return "Veicoli"
-                OTHER -> return "Altro"
-                ND -> return "Non specificato"
+            return when (enum) {
+                BOOKS -> resources.getString(R.string.category_books)
+                COMICS_AND_MANGAS -> resources.getString(R.string.category_comics_and_mangas)
+                MUSIC -> resources.getString(R.string.category_music)
+                MOVIES_AND_TV_SHOWS -> resources.getString(R.string.category_movies_and_tv_shows)
+                VIDEOGAMES_AND_CONSOLES -> resources.getString(R.string.category_videogames_and_consoles)
+                ELECTRONICS -> resources.getString(R.string.category_electronics)
+                FOODS_AND_DRINKS -> resources.getString(R.string.category_foods_and_drinks)
+                PETS_SUPPLIES -> resources.getString(R.string.category_pets_supplies)
+                BODYCARE_AND_BEAUTY -> resources.getString(R.string.category_bodycare_and_beauty)
+                SPORTS_AND_HOBBIES -> resources.getString(R.string.category_sports_and_hobbies)
+                CLOTHINGS_AND_WEARABLES -> resources.getString(R.string.category_clothings_and_wearables)
+                HOME_AND_FURNITURES -> resources.getString(R.string.category_home_and_furnitures)
+                VEHICLES -> resources.getString(R.string.category_vehicles)
+                OTHER -> resources.getString(R.string.category_other)
+                else -> ""
             }
         }
     }

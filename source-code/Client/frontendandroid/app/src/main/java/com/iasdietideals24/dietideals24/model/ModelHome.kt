@@ -7,6 +7,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.iasdietideals24.dietideals24.utilities.dto.AstaDto
+import com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
 import com.iasdietideals24.dietideals24.utilities.paging.AstaInversaPagingSource
 import com.iasdietideals24.dietideals24.utilities.paging.AstaSilenziosaPagingSource
 import com.iasdietideals24.dietideals24.utilities.paging.AstaTempoFissoPagingSource
@@ -17,7 +18,8 @@ import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flattenMerge
 
 class ModelHome(
     private val inverseRepository: AstaInversaRepository,
@@ -131,7 +133,7 @@ class ModelHome(
                     repository = inverseRepository,
                     idAccount = CurrentUser.id,
                     ricerca = searchText.value,
-                    filtro = filter.value,
+                    filtro = CategoriaAsta.fromStringToEnum(filter.value).name,
                     api = AstaInversaRepository.ApiCall.RICERCA
                 )
 
@@ -150,7 +152,7 @@ class ModelHome(
                     repository = tempoFissoRepository,
                     idAccount = CurrentUser.id,
                     ricerca = searchText.value,
-                    filtro = filter.value,
+                    filtro = CategoriaAsta.fromStringToEnum(filter.value).name,
                     api = AstaTempoFissoRepository.ApiCall.RICERCA
                 )
 
@@ -169,7 +171,7 @@ class ModelHome(
                     repository = silenziosaRepository,
                     idAccount = CurrentUser.id,
                     ricerca = searchText.value,
-                    filtro = filter.value,
+                    filtro = CategoriaAsta.fromStringToEnum(filter.value).name,
                     api = AstaSilenziosaRepository.ApiCall.RICERCA
                 )
 
@@ -179,19 +181,19 @@ class ModelHome(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val flowInverseRicerca = searchText.flatMapLatest { _ ->
+    private val flowInverseRicerca = combine(searchText, filter) { _, _ ->
         pagerInverseRicerca.flow.cachedIn(viewModelScope)
-    }
+    }.flattenMerge()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val flowTempoFissoRicerca = searchText.flatMapLatest { _ ->
+    private val flowTempoFissoRicerca = combine(searchText, filter) { _ ->
         pagerTempoFissoRicerca.flow.cachedIn(viewModelScope)
-    }
+    }.flattenMerge()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val flowSilenzioseRicerca = searchText.flatMapLatest { _ ->
+    private val flowSilenzioseRicerca = combine(searchText, filter) { _ ->
         pagerSilenzioseRicerca.flow.cachedIn(viewModelScope)
-    }
+    }.flattenMerge()
 
     private fun invalidateInverseRicerca() {
         pagingSourceInverseRicerca?.invalidate()

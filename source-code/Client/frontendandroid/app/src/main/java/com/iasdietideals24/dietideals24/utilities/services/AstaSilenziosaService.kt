@@ -72,6 +72,7 @@ interface AstaSilenziosaService : Service {
     /**
      * Recupera l'elenco di tutte le aste silenziose con le quali può interagire il compratore che ha
      * effettuato il login.
+     * @param idAccount Identificativo dell'account del quale escludere le aste.
      * @param size Il numero massimo di aste da recuperare.
      * @param page Il numero della pagina da recuperare.
      * @return [Page] di [AstaSilenziosaDto] con un certo numero di aste da mostrare nella home.
@@ -79,6 +80,7 @@ interface AstaSilenziosaService : Service {
      */
     @GET("aste/di-venditori/silenziose")
     suspend fun recuperaAsteSilenziose(
+        @Query("exclude_proprietario") idAccount: Long,
         @Query("size") size: Long,
         @Query("page") page: Long
     ): Response<Page<AstaSilenziosaDto>>

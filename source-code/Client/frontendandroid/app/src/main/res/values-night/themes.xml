@@ -72,6 +72,7 @@
         <item name="colorOnPrimary">@color/blu</item>
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">15.dp</item>
+        <item name="colorControlActivated">@color/arancione</item>
     </style>
 
     <style name="DropdownText">

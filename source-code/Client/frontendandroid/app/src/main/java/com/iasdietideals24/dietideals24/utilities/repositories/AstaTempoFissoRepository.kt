@@ -30,8 +30,13 @@ class AstaTempoFissoRepository(private val service: AstaTempoFissoService) {
         return service.aggiornaAstaTempoFisso(asta, idAsta).body() ?: AstaTempoFissoDto()
     }
 
-    suspend fun recuperaAsteTempoFisso(size: Long, page: Long): Page<AstaTempoFissoDto> {
-        return service.recuperaAsteTempoFisso(size, page).body() ?: Page<AstaTempoFissoDto>()
+    suspend fun recuperaAsteTempoFisso(
+        idAccount: Long,
+        size: Long,
+        page: Long
+    ): Page<AstaTempoFissoDto> {
+        return service.recuperaAsteTempoFisso(idAccount, size, page).body()
+            ?: Page<AstaTempoFissoDto>()
     }
 
     suspend fun ricercaAsteTempoFisso(

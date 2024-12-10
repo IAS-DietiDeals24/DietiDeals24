@@ -1,10 +1,12 @@
 package com.iasdietideals24.dietideals24.utilities.tools
 
+import android.util.Log
 import com.iasdietideals24.dietideals24.utilities.repositories.AuthRepository
 import okhttp3.Interceptor
 import okhttp3.Protocol
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
+import okio.Buffer
 import org.koin.java.KoinJavaComponent.inject
 
 object HeaderInterceptor : Interceptor {
@@ -23,6 +25,14 @@ object HeaderInterceptor : Interceptor {
         } else {
             richiestaOriginale
         }
+
+        // Scrivi la richiesta nei log
+        var buffer = Buffer()
+        richiesta.body?.writeTo(buffer)
+        Log.d(
+            "HeaderInterceptor",
+            "Method: ${richiesta.method}, Url: ${richiesta.url}, Body: ${buffer.readUtf8()}"
+        )
 
         // Esegui la richiesta e ottieni la risposta
         val risposta = try {
@@ -46,11 +56,11 @@ object HeaderInterceptor : Interceptor {
                     isRefreshing = true
 
                     try {
-                        val nuovaRisposta = authRepository.aggiornaAccessToken(CurrentUser.rToken)
+                        val richiestaToken = authRepository.aggiornaAccessToken(CurrentUser.rToken)
 
                         // Se ho recuperato correttamente il token, aggiorna quello salvato
-                        if (nuovaRisposta.isSuccessful) {
-                            val nuovoToken = nuovaRisposta.body()?.authToken ?: ""
+                        if (richiestaToken.isSuccessful) {
+                            val nuovoToken = richiestaToken.body()?.authToken ?: ""
                             CurrentUser.aToken = nuovoToken
 
                             // Chiudo la risposta precedente
@@ -62,8 +72,16 @@ object HeaderInterceptor : Interceptor {
                                 .addHeader("Authorization", "Bearer $nuovoToken")
                                 .build()
 
+                            // Scrivi la richiesta nei log
+                            buffer = Buffer()
+                            richiesta.body?.writeTo(buffer)
+                            Log.d(
+                                "HeaderInterceptor",
+                                "Method: ${richiesta.method}, Url: ${richiesta.url}, Body: ${buffer.readUtf8()}"
+                            )
+
                             // Riprova a inviare la richiesta
-                            return try {
+                            val nuovaRisposta = try {
                                 chain.proceed(nuovaRichiesta)
                             } catch (e: Exception) {
                                 return Response.Builder()
@@ -74,6 +92,14 @@ object HeaderInterceptor : Interceptor {
                                     .body("".toResponseBody())
                                     .build()
                             }
+
+                            // Scrivi la risposta nei log
+                            Log.d(
+                                "HeaderInterceptor",
+                                nuovaRisposta.peekBody(Long.MAX_VALUE).string()
+                            )
+
+                            return nuovaRisposta
                         }
                     } finally {
                         // Sblocca dopo aver terminato
@@ -82,6 +108,9 @@ object HeaderInterceptor : Interceptor {
                 }
             }
         }
+
+        // Scrivi la risposta nei log
+        Log.d("HeaderInterceptor", risposta.peekBody(Long.MAX_VALUE).string())
 
         // Restituisci la risposta originale se tutto è ok oppure sono ancora non autorizzato
         // dopo aver fatto il refresh

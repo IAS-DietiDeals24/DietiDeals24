@@ -181,10 +181,10 @@ class ViewHolderAstaCreata(private val binding: AstaBinding) :
             }
 
             binding.astaOfferta.text = when (currentAsta.tipoAsta) {
-                TipoAsta.TEMPO_FISSO -> resources.getString(
-                    R.string.placeholder_prezzo,
-                    valoreOfferta
-                )
+                TipoAsta.TEMPO_FISSO -> if (valoreOfferta == BigDecimal("0.00").toString())
+                    resources.getString(R.string.placeholder_prezzo, currentAsta.prezzo.toString())
+                else
+                    resources.getString(R.string.placeholder_prezzo, valoreOfferta)
 
                 TipoAsta.INVERSA -> if (valoreOfferta == BigDecimal("0.00").toString())
                     resources.getString(R.string.placeholder_prezzo, currentAsta.prezzo.toString())
