@@ -37,14 +37,14 @@ public class Notifica {
     private String messaggio;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "account_email", nullable = false)
+    @JoinColumn(name = "account_id_account", nullable = false)
     @NonNull
     private Account mittente;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "destinatari",
             joinColumns = {@JoinColumn(name = "notifica_id_notifica", nullable = false)},
-            inverseJoinColumns = {@JoinColumn(name = "account_email", nullable = false)})
+            inverseJoinColumns = {@JoinColumn(name = "account_id_account", nullable = false)})
     @NonNull
     @EqualsAndHashCode.Exclude
     @Setter(AccessLevel.NONE)

@@ -17,7 +17,7 @@ import java.time.LocalTime;
 @Entity(name = "offerta_di_compratore")
 public abstract class OffertaDiCompratore extends Offerta {
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "compratore_email", nullable = false)
+    @JoinColumn(name = "compratore_id_account", nullable = false)
     @NonNull
     private Compratore compratoreCollegato;
 

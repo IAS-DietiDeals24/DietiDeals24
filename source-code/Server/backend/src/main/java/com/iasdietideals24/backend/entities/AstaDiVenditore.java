@@ -17,7 +17,7 @@ import java.time.LocalTime;
 @Entity(name = "asta_di_venditore")
 public abstract class AstaDiVenditore extends Asta {
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
-    @JoinColumn(name = "venditore_email", nullable = false)
+    @JoinColumn(name = "venditore_id_account", nullable = false)
     @NonNull
     private Venditore proprietario;
 
