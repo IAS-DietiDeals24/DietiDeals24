@@ -20,7 +20,7 @@ class AstaTempoFissoPagingSource(
         return try {
             val data = when (api) {
                 ApiCall.CREATE -> repository.recuperaAsteCreateTempoFisso(idAccount, size, 0)
-                ApiCall.TUTTE -> repository.recuperaAsteTempoFisso(idAccount, size, 0)
+                ApiCall.TUTTE -> repository.recuperaAsteTempoFisso(size, 0)
                 ApiCall.RICERCA -> repository.ricercaAsteTempoFisso(ricerca, filtro, size, 0)
                 ApiCall.PARTECIPAZIONI -> repository.recuperaPartecipazioniTempoFisso(
                     idAccount,

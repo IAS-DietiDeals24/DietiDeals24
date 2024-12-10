@@ -20,7 +20,7 @@ class AstaInversaPagingSource(
         return try {
             val data = when (api) {
                 ApiCall.CREATE -> repository.recuperaAsteCreateInverse(idAccount, size, 0)
-                ApiCall.TUTTE -> repository.recuperaAsteInverse(idAccount, size, 0)
+                ApiCall.TUTTE -> repository.recuperaAsteInverse(size, 0)
                 ApiCall.RICERCA -> repository.ricercaAsteInverse(ricerca, filtro, size, 0)
                 ApiCall.PARTECIPAZIONI -> repository.recuperaPartecipazioniInverse(
                     idAccount,

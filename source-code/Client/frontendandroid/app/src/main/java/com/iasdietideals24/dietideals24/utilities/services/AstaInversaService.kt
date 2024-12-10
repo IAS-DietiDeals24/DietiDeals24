@@ -72,7 +72,6 @@ interface AstaInversaService : Service {
     /**
      * Recupera l'elenco di tutte le aste inverse con le quali può interagire il venditore che ha
      * effettuato il login.
-     * @param idAccount Identificativo dell'account del quale escludere le aste.
      * @param size Il numero massimo di aste da recuperare.
      * @param page Il numero della pagina da recuperare.
      * @return [Page] di [AstaInversaDto] che contiene un certo numero di aste create. Se non
@@ -80,7 +79,6 @@ interface AstaInversaService : Service {
      */
     @GET("aste/di-compratori/inverse")
     suspend fun recuperaAsteInverse(
-        @Query("exclude_proprietario") idAccount: Long,
         @Query("size") size: Long,
         @Query("page") page: Long
     ): Response<Page<AstaInversaDto>>

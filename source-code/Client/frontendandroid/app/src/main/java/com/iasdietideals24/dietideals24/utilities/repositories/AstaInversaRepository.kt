@@ -30,8 +30,8 @@ class AstaInversaRepository(private val service: AstaInversaService) {
         return service.aggiornaAstaInversa(asta, idAsta).body() ?: AstaInversaDto()
     }
 
-    suspend fun recuperaAsteInverse(idAccount: Long, size: Long, page: Long): Page<AstaInversaDto> {
-        return service.recuperaAsteInverse(idAccount, size, page).body() ?: Page<AstaInversaDto>()
+    suspend fun recuperaAsteInverse(size: Long, page: Long): Page<AstaInversaDto> {
+        return service.recuperaAsteInverse(size, page).body() ?: Page<AstaInversaDto>()
     }
 
     suspend fun ricercaAsteInverse(
