@@ -115,6 +115,21 @@ public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
     }
 
     @Override
+    public Page<AstaTempoFissoDto> findByProprietarioIdAccountNot(Long idAccount, Pageable pageable) {
+
+        log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
+        log.trace("Id account proprietario da escludere: {}", idAccount);
+
+        // Recuperiamo tutte le entità
+        Page<AstaTempoFisso> foundAsteTempoFisso = astaTempoFissoRepository.findByProprietario_IdAccountNot(idAccount, pageable);
+
+        log.trace(LOG_FOUND_ASTE, foundAsteTempoFisso);
+        log.debug(LOG_ASTE_RECUPERATE);
+
+        return foundAsteTempoFisso.map(astaTempoFissoMapper::toDto);
+    }
+
+    @Override
     public Page<AstaTempoFissoDto> findByNomeLikeAndCategoriaNomeIs(String nomeAsta, String nomeCategoria, Pageable pageable) {
 
         log.debug(LOG_RECUPERO_ASTE_IN_CORSO);

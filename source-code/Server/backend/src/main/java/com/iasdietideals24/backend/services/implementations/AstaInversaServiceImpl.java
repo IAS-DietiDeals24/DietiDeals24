@@ -115,6 +115,21 @@ public class AstaInversaServiceImpl implements AstaInversaService {
     }
 
     @Override
+    public Page<AstaInversaDto> findByProprietarioIdAccountNot(Long idAccount, Pageable pageable) {
+
+        log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
+        log.trace("Id account proprietario da escludere: {}", idAccount);
+
+        // Recuperiamo tutte le entità
+        Page<AstaInversa> foundAsteInverse = astaInversaRepository.findByProprietario_IdAccountNot(idAccount, pageable);
+
+        log.trace(LOG_FOUND_ASTE, foundAsteInverse);
+        log.debug(LOG_ASTE_RECUPERATE);
+
+        return foundAsteInverse.map(astaInversaMapper::toDto);
+    }
+
+    @Override
     public Page<AstaInversaDto> findByNomeLikeAndCategoriaNomeIs(String nomeAsta, String nomeCategoria, Pageable pageable) {
 
         log.debug(LOG_RECUPERO_ASTE_IN_CORSO);

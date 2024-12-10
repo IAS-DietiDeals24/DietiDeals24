@@ -115,6 +115,21 @@ public class AstaSilenziosaServiceImpl implements AstaSilenziosaService {
     }
 
     @Override
+    public Page<AstaSilenziosaDto> findByProprietarioIdAccountNot(Long idAccount, Pageable pageable) {
+
+        log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
+        log.trace("Id account proprietario da escludere: {}", idAccount);
+
+        // Recuperiamo tutte le entità
+        Page<AstaSilenziosa> foundAsteSilenziose = astaSilenziosaRepository.findByProprietario_IdAccountNot(idAccount, pageable);
+
+        log.trace(LOG_FOUND_ASTE, foundAsteSilenziose);
+        log.debug(LOG_ASTE_RECUPERATE);
+
+        return foundAsteSilenziose.map(astaSilenziosaMapper::toDto);
+    }
+
+    @Override
     public Page<AstaSilenziosaDto> findByNomeLikeAndCategoriaNomeIs(String nomeAsta, String nomeCategoria, Pageable pageable) {
 
         log.debug(LOG_RECUPERO_ASTE_IN_CORSO);

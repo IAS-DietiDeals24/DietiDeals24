@@ -14,6 +14,9 @@ public interface AstaDiVenditoreRepository extends CrudRepository<AstaDiVenditor
     @Query(value = "select a from asta_di_venditore a where a.proprietario.idAccount = ?1")
     Page<AstaDiVenditore> findByProprietario_IdAccountIs(Long idAccount, Pageable pageable);
 
+    @Query(value = "select a from asta_di_venditore a where a.proprietario.idAccount <> ?1")
+    Page<AstaDiVenditore> findByProprietario_IdAccountNot(Long idAccount, Pageable pageable);
+
     @Query(value = "select a from asta_di_venditore a where a.nome like ?1 and a.categoria.nome = ?2")
     Page<AstaDiVenditore> findByNomeLikeAndCategoria_NomeIs(String nomeAsta, String nomeCategoria, Pageable pageable);
 }

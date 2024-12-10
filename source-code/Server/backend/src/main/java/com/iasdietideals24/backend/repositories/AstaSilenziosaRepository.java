@@ -14,6 +14,9 @@ public interface AstaSilenziosaRepository extends CrudRepository<AstaSilenziosa,
     @Query(value = "select a from asta_silenziosa a where a.proprietario.idAccount = ?1")
     Page<AstaSilenziosa> findByProprietario_IdAccountIs(Long idAccount, Pageable pageable);
 
+    @Query(value = "select a from asta_silenziosa a where a.proprietario.idAccount <> ?1")
+    Page<AstaSilenziosa> findByProprietario_IdAccountNot(Long idAccount, Pageable pageable);
+
     @Query(value = "select a from asta_silenziosa a where a.nome like ?1 and a.categoria.nome = ?2")
     Page<AstaSilenziosa> findByNomeLikeAndCategoria_NomeIs(String nomeAsta, String nomeCategoria, Pageable pageable);
 

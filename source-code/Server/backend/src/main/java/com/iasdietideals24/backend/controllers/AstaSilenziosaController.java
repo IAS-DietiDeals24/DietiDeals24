@@ -66,6 +66,19 @@ public class AstaSilenziosaController {
         return new ResponseEntity<>(foundAsteSilenzioseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(path = "/aste/di-venditori/silenziose", params = "exlude_proprietario")
+    public ResponseEntity<Page<AstaSilenziosaDto>> listAsteSilenzioseByProprietarioIdAccountNot(@RequestParam("exlude_proprietario") Long idAccount, Pageable pageable) {
+
+        log.info(LOG_RECUPERO_ASTE_IN_CORSO);
+
+        Page<AstaSilenziosaDto> foundAsteSilenzioseDto = astaSilenziosaService.findByProprietarioIdAccountNot(idAccount, pageable);
+
+        log.info(LOG_ASTE_RECUPERATE);
+
+        return new ResponseEntity<>(foundAsteSilenzioseDto, HttpStatus.OK);
+    }
+
     // No authentication required
     @GetMapping(path = "/aste/di-venditori/silenziose", params = {"nome", "categoria"})
     public ResponseEntity<Page<AstaSilenziosaDto>> listAsteSilenzioseByNomeLikeAndCategoriaNomeIs(@RequestParam(name = "nome", defaultValue = "%") String nomeAsta,

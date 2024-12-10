@@ -66,6 +66,19 @@ public class AstaInversaController {
         return new ResponseEntity<>(foundAsteInverseDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(path = "/aste/di-compratori/inverse", params = "exlude_proprietario")
+    public ResponseEntity<Page<AstaInversaDto>> listAsteInverseByProprietarioIdAccountNot(@RequestParam("exlude_proprietario") Long idAccount, Pageable pageable) {
+
+        log.info(LOG_RECUPERO_ASTE_IN_CORSO);
+
+        Page<AstaInversaDto> foundAsteInverseDto = astaInversaService.findByProprietarioIdAccountNot(idAccount, pageable);
+
+        log.info(LOG_ASTE_RECUPERATE);
+
+        return new ResponseEntity<>(foundAsteInverseDto, HttpStatus.OK);
+    }
+
     // No authentication required
     @GetMapping(path = "/aste/di-compratori/inverse", params = {"nome", "categoria"})
     public ResponseEntity<Page<AstaInversaDto>> listAsteInverseByNomeLikeAndCategoriaNomeIs(@RequestParam(name = "nome", defaultValue = "%") String nomeAsta,

@@ -66,6 +66,19 @@ public class AstaTempoFissoController {
         return new ResponseEntity<>(foundAsteTempoFissoDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping(path = "/aste/di-venditori/tempo-fisso", params = "exlude_proprietario")
+    public ResponseEntity<Page<AstaTempoFissoDto>> listAsteTempoFissoByProprietarioIdAccountNot(@RequestParam("exlude_proprietario") Long idAccount, Pageable pageable) {
+
+        log.info(LOG_RECUPERO_ASTE_IN_CORSO);
+
+        Page<AstaTempoFissoDto> foundAsteTempoFissoDto = astaTempoFissoService.findByProprietarioIdAccountNot(idAccount, pageable);
+
+        log.info(LOG_ASTE_RECUPERATE);
+
+        return new ResponseEntity<>(foundAsteTempoFissoDto, HttpStatus.OK);
+    }
+
     // No authentication required
     @GetMapping(path = "/aste/di-venditori/tempo-fisso", params = {"nome", "categoria"})
     public ResponseEntity<Page<AstaTempoFissoDto>> listAsteTempoFissoByNomeLikeAndCategoriaNomeIs(@RequestParam(name = "nome", defaultValue = "%") String nomeAsta,
