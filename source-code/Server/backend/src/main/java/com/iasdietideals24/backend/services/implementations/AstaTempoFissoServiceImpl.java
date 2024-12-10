@@ -115,14 +115,14 @@ public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
     }
 
     @Override
-    public Page<AstaTempoFissoDto> findByNomeLikeAndCategoriaNomeIs(String nomeAsta, String nomeCategoria, Pageable pageable) {
+    public Page<AstaTempoFissoDto> findByNomeLikeAndCategoriaNomeLike(String nomeAsta, String nomeCategoria, Pageable pageable) {
 
         log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
         log.trace("Nome asta da cercare: {}", nomeAsta);
         log.trace("Nome categoria da cercare: {}", nomeCategoria);
 
         // Recuperiamo tutte le entità
-        Page<AstaTempoFisso> foundAsteTempoFisso = astaTempoFissoRepository.findByNomeLikeAndCategoria_NomeIs(nomeAsta, nomeCategoria, pageable);
+        Page<AstaTempoFisso> foundAsteTempoFisso = astaTempoFissoRepository.findByNomeLikeAndCategoria_NomeLike(nomeAsta.toUpperCase(), nomeCategoria, pageable);
 
         log.trace(LOG_FOUND_ASTE, foundAsteTempoFisso);
         log.debug(LOG_ASTE_RECUPERATE);

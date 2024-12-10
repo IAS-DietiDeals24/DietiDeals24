@@ -73,8 +73,11 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
 
         log.trace(LOG_NUOVA_OFFERTA, nuovaOffertaInversa);
 
-        // Controlliamo che l'asta a cui voliamo riferirci sia attiva
+        // Controlliamo che l'asta a cui vogliamo riferirci sia attiva
         checkAstaActive(nuovaOffertaInversa);
+
+        // Controlliamo che il proprietario dell'asta a cui vogliamo riferirci non sia un altro nostro account
+        checkProprietarioAstaNotMe(nuovaOffertaInversa);
 
         // Controllo che non ci siano già offerte più basse
         checkBestOfferta(nuovaOffertaInversa);
@@ -314,6 +317,25 @@ public class OffertaInversaServiceImpl implements OffertaInversaService {
                 log.warn("L'asta '{}' a cui si vuole fare l'offerta è già terminata!", astaInversa.getIdAsta());
 
                 throw new InvalidParameterException("L'asta '" + astaInversa.getIdAsta() + "' a cui si vuole fare l'offerta è già terminata!");
+            }
+        }
+    }
+
+    private void checkProprietarioAstaNotMe(OffertaInversa nuovaOffertaInversa) throws InvalidParameterException {
+
+        if (nuovaOffertaInversa != null) {
+
+            AstaInversa astaInversa = nuovaOffertaInversa.getAstaRiferimento();
+
+            if (astaInversa != null) {
+
+                Profilo profiloProprietario = astaInversa.getProprietario().getProfilo();
+
+                if (profiloProprietario != null && profiloProprietario.equals(nuovaOffertaInversa.getVenditoreCollegato().getProfilo())) {
+                    log.warn("Il proprietario dell'asta '{}' a cui si vuole fare l'offerta sei tu!", astaInversa.getIdAsta());
+
+                    throw new InvalidParameterException("Il proprietario dell'asta '" + astaInversa.getIdAsta() + "' a cui si vuole fare l'offerta sei tu!");
+                }
             }
         }
     }

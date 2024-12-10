@@ -73,8 +73,11 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
 
         log.trace(LOG_NUOVA_OFFERTA, nuovaOffertaTempoFisso);
 
-        // Controlliamo che l'asta a cui voliamo riferirci sia attiva
+        // Controlliamo che l'asta a cui vogliamo riferirci sia attiva
         checkAstaActive(nuovaOffertaTempoFisso);
+
+        // Controlliamo che il proprietario dell'asta a cui vogliamo riferirci non sia un altro nostro account
+        checkProprietarioAstaNotMe(nuovaOffertaTempoFisso);
 
         // Controllo che non ci siano già offerte più alte
         checkBestOfferta(nuovaOffertaTempoFisso);
@@ -314,6 +317,25 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
                 log.warn("L'asta '{}' a cui si vuole fare l'offerta è già terminata!", astaTempoFisso.getIdAsta());
 
                 throw new InvalidParameterException("L'asta '" + astaTempoFisso.getIdAsta() + "' a cui si vuole fare l'offerta è già terminata!");
+            }
+        }
+    }
+
+    private void checkProprietarioAstaNotMe(OffertaTempoFisso nuovaOffertaTempoFisso) throws InvalidParameterException {
+
+        if (nuovaOffertaTempoFisso != null) {
+
+            AstaTempoFisso astaTempoFisso = nuovaOffertaTempoFisso.getAstaRiferimento();
+
+            if (astaTempoFisso != null) {
+
+                Profilo profiloProprietario = astaTempoFisso.getProprietario().getProfilo();
+
+                if (profiloProprietario != null && profiloProprietario.equals(nuovaOffertaTempoFisso.getCompratoreCollegato().getProfilo())) {
+                    log.warn("Il proprietario dell'asta '{}' a cui si vuole fare l'offerta sei tu!", astaTempoFisso.getIdAsta());
+
+                    throw new InvalidParameterException("Il proprietario dell'asta '" + astaTempoFisso.getIdAsta() + "' a cui si vuole fare l'offerta sei tu!");
+                }
             }
         }
     }

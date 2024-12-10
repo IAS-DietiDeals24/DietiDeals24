@@ -16,7 +16,7 @@ public interface AstaInversaService {
 
     Page<AstaInversaDto> findByProprietarioIdAccountIs(Long idAccount, Pageable pageable);
 
-    Page<AstaInversaDto> findByNomeLikeAndCategoriaNomeIs(String nomeAsta, String nomeCategoria, Pageable pageable);
+    Page<AstaInversaDto> findByNomeLikeAndCategoriaNomeLike(String nomeAsta, String nomeCategoria, Pageable pageable);
 
     Page<AstaInversaDto> findByOfferenteIdAccountIs(Long idAccount, Pageable pageable);
 

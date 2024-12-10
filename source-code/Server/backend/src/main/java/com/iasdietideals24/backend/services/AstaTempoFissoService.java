@@ -16,7 +16,7 @@ public interface AstaTempoFissoService {
 
     Page<AstaTempoFissoDto> findByProprietarioIdAccountIs(Long idAccount, Pageable pageable);
 
-    Page<AstaTempoFissoDto> findByNomeLikeAndCategoriaNomeIs(String nomeAsta, String nomeCategoria, Pageable pageable);
+    Page<AstaTempoFissoDto> findByNomeLikeAndCategoriaNomeLike(String nomeAsta, String nomeCategoria, Pageable pageable);
 
     Page<AstaTempoFissoDto> findByOfferenteIdAccountIs(Long idAccount, Pageable pageable);
 

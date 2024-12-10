@@ -68,13 +68,13 @@ public class AstaSilenziosaController {
 
     // No authentication required
     @GetMapping(path = "/aste/di-venditori/silenziose", params = {"nome", "categoria"})
-    public ResponseEntity<Page<AstaSilenziosaDto>> listAsteSilenzioseByNomeLikeAndCategoriaNomeIs(@RequestParam(name = "nome", defaultValue = "%") String nomeAsta,
-                                                                                                  @RequestParam("categoria") String nomeCategoria,
-                                                                                                  Pageable pageable) {
+    public ResponseEntity<Page<AstaSilenziosaDto>> listAsteSilenzioseByNomeLikeAndCategoriaNomeLike(@RequestParam(name = "nome", defaultValue = "%") String nomeAsta,
+                                                                                                    @RequestParam(name = "categoria", defaultValue = "%") String nomeCategoria,
+                                                                                                    Pageable pageable) {
 
         log.info(LOG_RECUPERO_ASTE_IN_CORSO);
 
-        Page<AstaSilenziosaDto> foundAsteSilenzioseDto = astaSilenziosaService.findByNomeLikeAndCategoriaNomeIs("%" + nomeAsta + "%", nomeCategoria, pageable);
+        Page<AstaSilenziosaDto> foundAsteSilenzioseDto = astaSilenziosaService.findByNomeLikeAndCategoriaNomeLike("%" + nomeAsta + "%", nomeCategoria, pageable);
 
         log.info(LOG_ASTE_RECUPERATE);
 

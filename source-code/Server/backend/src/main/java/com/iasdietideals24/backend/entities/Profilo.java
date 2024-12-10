@@ -124,6 +124,6 @@ public class Profilo {
         }
         listEmailAccounts.append("]");
 
-        return "Profilo(nomeUtente=" + this.getNomeUtente() + ", anagrafica=" + this.getAnagrafica() + ", links=" + this.getLinks() + ", accounts=" + listEmailAccounts + ")";
+        return "Profilo(nomeUtente=" + this.getNomeUtente() + ", profilePicture=[...]" + ", anagrafica=" + this.getAnagrafica() + ", links=" + this.getLinks() + ", accounts=" + listEmailAccounts + ")";
     }
 }

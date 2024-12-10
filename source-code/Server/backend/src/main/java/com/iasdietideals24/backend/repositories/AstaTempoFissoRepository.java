@@ -14,8 +14,8 @@ public interface AstaTempoFissoRepository extends CrudRepository<AstaTempoFisso,
     @Query(value = "select a from asta_tempo_fisso a where a.proprietario.idAccount = ?1")
     Page<AstaTempoFisso> findByProprietario_IdAccountIs(Long idAccount, Pageable pageable);
 
-    @Query(value = "select a from asta_tempo_fisso a where a.nome like ?1 and a.categoria.nome = ?2")
-    Page<AstaTempoFisso> findByNomeLikeAndCategoria_NomeIs(String nomeAsta, String nomeCategoria, Pageable pageable);
+    @Query(value = "select a from asta_tempo_fisso a where upper(a.nome) like ?1 and a.categoria.nome like ?2")
+    Page<AstaTempoFisso> findByNomeLikeAndCategoria_NomeLike(String nomeAsta, String nomeCategoria, Pageable pageable);
 
     @Query(value = "select a from asta_tempo_fisso a join a.offerteRicevute o where o.compratoreCollegato.idAccount = ?1")
     Page<AstaTempoFisso> findByOfferente_IdAccountIs(Long idAccount, Pageable pageable);

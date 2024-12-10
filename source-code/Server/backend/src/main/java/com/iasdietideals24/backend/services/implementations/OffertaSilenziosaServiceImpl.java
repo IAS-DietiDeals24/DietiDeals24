@@ -1,8 +1,6 @@
 package com.iasdietideals24.backend.services.implementations;
 
-import com.iasdietideals24.backend.entities.Asta;
-import com.iasdietideals24.backend.entities.AstaSilenziosa;
-import com.iasdietideals24.backend.entities.OffertaSilenziosa;
+import com.iasdietideals24.backend.entities.*;
 import com.iasdietideals24.backend.entities.utilities.StatoAsta;
 import com.iasdietideals24.backend.entities.utilities.StatoOffertaSilenziosa;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
@@ -81,8 +79,11 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
 
         log.trace("nuovaOffertaSilenziosa: {}", nuovaOffertaSilenziosa);
 
-        // Controlliamo che l'asta a cui voliamo riferirci sia attiva
+        // Controlliamo che l'asta a cui vogliamo riferirci sia attiva
         checkAstaActive(nuovaOffertaSilenziosa);
+
+        // Controlliamo che il proprietario dell'asta a cui vogliamo riferirci non sia un altro nostro account
+        checkProprietarioAstaNotMe(nuovaOffertaSilenziosa);
 
         log.debug("Salvo l'offerta silenziosa nel database...");
 
@@ -344,6 +345,25 @@ public class OffertaSilenziosaServiceImpl implements OffertaSilenziosaService {
                 log.warn("L'asta '{}' a cui si vuole fare l'offerta è già terminata!", astaSilenziosa.getIdAsta());
 
                 throw new InvalidParameterException("L'asta '" + astaSilenziosa.getIdAsta() + "' a cui si vuole fare l'offerta è già terminata!");
+            }
+        }
+    }
+
+    private void checkProprietarioAstaNotMe(OffertaSilenziosa nuovaOffertaSilenziosa) throws InvalidParameterException {
+
+        if (nuovaOffertaSilenziosa != null) {
+
+            AstaSilenziosa astaSilenziosa = nuovaOffertaSilenziosa.getAstaRiferimento();
+
+            if (astaSilenziosa != null) {
+
+                Profilo profiloProprietario = astaSilenziosa.getProprietario().getProfilo();
+
+                if (profiloProprietario != null && profiloProprietario.equals(nuovaOffertaSilenziosa.getCompratoreCollegato().getProfilo())) {
+                    log.warn("Il proprietario dell'asta '{}' a cui si vuole fare l'offerta sei tu!", astaSilenziosa.getIdAsta());
+
+                    throw new InvalidParameterException("Il proprietario dell'asta '" + astaSilenziosa.getIdAsta() + "' a cui si vuole fare l'offerta sei tu!");
+                }
             }
         }
     }

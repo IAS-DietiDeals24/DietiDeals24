@@ -20,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -115,14 +114,14 @@ public class AstaSilenziosaServiceImpl implements AstaSilenziosaService {
     }
 
     @Override
-    public Page<AstaSilenziosaDto> findByNomeLikeAndCategoriaNomeIs(String nomeAsta, String nomeCategoria, Pageable pageable) {
+    public Page<AstaSilenziosaDto> findByNomeLikeAndCategoriaNomeLike(String nomeAsta, String nomeCategoria, Pageable pageable) {
 
         log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
         log.trace("Nome asta da cercare: {}", nomeAsta);
         log.trace("Nome categoria da cercare: {}", nomeCategoria);
 
         // Recuperiamo tutte le entità
-        Page<AstaSilenziosa> foundAsteSilenziose = astaSilenziosaRepository.findByNomeLikeAndCategoria_NomeIs(nomeAsta, nomeCategoria, pageable);
+        Page<AstaSilenziosa> foundAsteSilenziose = astaSilenziosaRepository.findByNomeLikeAndCategoria_NomeLike(nomeAsta.toUpperCase(), nomeCategoria, pageable);
 
         log.trace(LOG_FOUND_ASTE, foundAsteSilenziose);
         log.debug(LOG_ASTE_RECUPERATE);

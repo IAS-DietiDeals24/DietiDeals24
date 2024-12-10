@@ -115,14 +115,14 @@ public class AstaInversaServiceImpl implements AstaInversaService {
     }
 
     @Override
-    public Page<AstaInversaDto> findByNomeLikeAndCategoriaNomeIs(String nomeAsta, String nomeCategoria, Pageable pageable) {
+    public Page<AstaInversaDto> findByNomeLikeAndCategoriaNomeLike(String nomeAsta, String nomeCategoria, Pageable pageable) {
 
         log.debug(LOG_RECUPERO_ASTE_IN_CORSO);
         log.trace("Nome asta da cercare: {}", nomeAsta);
         log.trace("Nome categoria da cercare: {}", nomeCategoria);
 
         // Recuperiamo tutte le entità
-        Page<AstaInversa> foundAsteInverse = astaInversaRepository.findByNomeLikeAndCategoria_NomeIs(nomeAsta, nomeCategoria, pageable);
+        Page<AstaInversa> foundAsteInverse = astaInversaRepository.findByNomeLikeAndCategoria_NomeLike(nomeAsta.toUpperCase(), nomeCategoria, pageable);
 
         log.trace(LOG_FOUND_ASTE, foundAsteInverse);
         log.debug(LOG_ASTE_RECUPERATE);
