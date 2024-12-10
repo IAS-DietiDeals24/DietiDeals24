@@ -16,6 +16,15 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_controllerHome_to_controllerProfilo"
+            app:destination="@id/controllerProfilo" />
+        <action
+            android:id="@+id/action_controllerHome_to_controllerNotifiche"
+            app:destination="@id/controllerNotifiche" />
+        <action
+            android:id="@+id/action_controllerHome_to_controllerCreaAsta"
+            app:destination="@id/controllerCreaAsta" />
     </fragment>
     <fragment
         android:id="@+id/controllerCreaAsta"
@@ -49,6 +58,15 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_controllerNotifiche_to_controllerProfilo"
+            app:destination="@id/controllerProfilo" />
+        <action
+            android:id="@+id/action_controllerNotifiche_to_controllerHome"
+            app:destination="@id/controllerHome" />
+        <action
+            android:id="@+id/action_controllerNotifiche_to_controllerCreaAsta"
+            app:destination="@id/controllerCreaAsta" />
     </fragment>
     <fragment
         android:id="@+id/controllerProfilo"
@@ -83,6 +101,15 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_controllerProfilo_to_controllerHome"
+            app:destination="@id/controllerHome" />
+        <action
+            android:id="@+id/action_controllerProfilo_to_controllerCreaAsta"
+            app:destination="@id/controllerCreaAsta" />
+        <action
+            android:id="@+id/action_controllerProfilo_to_controllerNotifiche"
+            app:destination="@id/controllerNotifiche" />
     </fragment>
     <fragment
         android:id="@+id/controllerDettagliAsta"

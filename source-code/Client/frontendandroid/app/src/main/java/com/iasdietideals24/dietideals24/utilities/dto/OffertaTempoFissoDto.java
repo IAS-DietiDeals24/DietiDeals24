@@ -12,6 +12,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class OffertaTempoFissoDto extends OffertaDiCompratoreDto {
 
@@ -24,7 +25,7 @@ public class OffertaTempoFissoDto extends OffertaDiCompratoreDto {
 
     public Offerta toOfferta() {
         ZonedDateTime utc = ZonedDateTime.of(this.dataInvio, this.oraInvio, ZoneOffset.UTC);
-        ZonedDateTime local = utc.withZoneSameInstant(ZoneId.systemDefault());
+        ZonedDateTime local = utc.withZoneSameInstant(ZoneId.systemDefault()).truncatedTo(ChronoUnit.SECONDS);
         LocalDate dataInvio = local.toLocalDate();
         LocalTime oraInvio = local.toLocalTime();
 
@@ -40,7 +41,7 @@ public class OffertaTempoFissoDto extends OffertaDiCompratoreDto {
 
     public OffertaRicevuta toOffertaRicevuta() {
         ZonedDateTime utc = ZonedDateTime.of(this.dataInvio, this.oraInvio, ZoneOffset.UTC);
-        ZonedDateTime local = utc.withZoneSameInstant(ZoneId.systemDefault());
+        ZonedDateTime local = utc.withZoneSameInstant(ZoneId.systemDefault()).truncatedTo(ChronoUnit.SECONDS);
         LocalDate dataInvio = local.toLocalDate();
         LocalTime oraInvio = local.toLocalTime();
 

@@ -142,6 +142,7 @@ class ControllerHome : Controller<HomeBinding>() {
                 )
 
                 binding.homeTipo.setAdapter(adapter)
+                binding.homeTipo.setText(tipoAsta[viewModel.tipo], false)
 
                 binding.homeTipo.setOnItemClickListener { _, _, position, _ ->
                     viewModel.tipo = position
@@ -170,6 +171,7 @@ class ControllerHome : Controller<HomeBinding>() {
                 )
 
                 binding.homeTipo.setAdapter(adapter)
+                binding.homeTipo.setText(tipoAsta[viewModel.tipo], false)
 
                 binding.homeTipo.setOnItemClickListener { _, _, position, _ ->
                     viewModel.tipo = position

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.iasdietideals24.dietideals24.R
@@ -88,17 +89,54 @@ class Home : DietiDeals24Activity<ActivityHomeBinding>(), OnBackButton, OnGoToPr
             binding.activityHomeBottomNavigationView.menu.getItem(2).isEnabled = false
         }
 
-        binding.activityHomeBottomNavigationView.menu.getItem(0).setOnMenuItemClickListener {
-            getNavController().popBackStack(R.id.controllerHome, false)
-        }
-        binding.activityHomeBottomNavigationView.menu.getItem(1).setOnMenuItemClickListener {
-            getNavController().popBackStack(R.id.controllerPartecipazioni, false)
-        }
-        binding.activityHomeBottomNavigationView.menu.getItem(2).setOnMenuItemClickListener {
-            getNavController().popBackStack(R.id.controllerAsteCreate, false)
-        }
-        binding.activityHomeBottomNavigationView.menu.getItem(3).setOnMenuItemClickListener {
-            getNavController().popBackStack(R.id.controllerNotifiche, false)
+        binding.activityHomeBottomNavigationView.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.controllerHome -> {
+                    getNavController().navigate(
+                        R.id.controllerHome,
+                        null,
+                        NavOptions.Builder()
+                            .setPopUpTo(R.id.controllerHome, inclusive = false)
+                            .build()
+                    )
+                    true
+                }
+
+                R.id.controllerCreaAsta -> {
+                    getNavController().navigate(
+                        R.id.controllerCreaAsta,
+                        null,
+                        NavOptions.Builder()
+                            .setPopUpTo(R.id.controllerHome, inclusive = false)
+                            .build()
+                    )
+                    true
+                }
+
+                R.id.controllerNotifiche -> {
+                    getNavController().navigate(
+                        R.id.controllerNotifiche,
+                        null,
+                        NavOptions.Builder()
+                            .setPopUpTo(R.id.controllerHome, inclusive = false)
+                            .build()
+                    )
+                    true
+                }
+
+                R.id.controllerProfilo -> {
+                    getNavController().navigate(
+                        R.id.controllerProfilo,
+                        null,
+                        NavOptions.Builder()
+                            .setPopUpTo(R.id.controllerHome, inclusive = false)
+                            .build()
+                    )
+                    true
+                }
+
+                else -> false
+            }
         }
     }
 

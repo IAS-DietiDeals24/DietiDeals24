@@ -84,6 +84,7 @@ class ControllerAsteCreate : Controller<AstecreateBinding>() {
             )
 
             binding.astecreateFiltro.setAdapter(adapter)
+            binding.astecreateFiltro.setText(categorieAsta[viewModel.filtro], false)
 
             binding.astecreateFiltro.setOnItemClickListener { _, _, position, _ ->
                 viewModel.filtro = position

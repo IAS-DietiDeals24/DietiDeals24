@@ -84,6 +84,7 @@ class ControllerPartecipazioni : Controller<PartecipazioniBinding>() {
             )
 
             binding.partecipazioniFiltro.setAdapter(adapter)
+            binding.partecipazioniFiltro.setText(categorieAsta[viewModel.filtro], false)
 
             binding.partecipazioniFiltro.setOnItemClickListener { _, _, position, _ ->
                 viewModel.filtro = position

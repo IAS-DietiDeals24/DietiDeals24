@@ -33,6 +33,7 @@ import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 
 class ModelAsta(
     private val inverseRepository: OffertaInversaRepository,
@@ -142,7 +143,7 @@ class ModelAsta(
     fun toAstaInversa(): AstaInversaDto {
         val local =
             ZonedDateTime.of(this.dataFine.value!!, this.oraFine.value!!, ZoneId.systemDefault())
-        val utc = local.withZoneSameInstant(ZoneOffset.UTC)
+        val utc = local.withZoneSameInstant(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS)
         val dataFine = utc.toLocalDate()
         val oraFine = utc.toLocalTime()
 
@@ -170,7 +171,7 @@ class ModelAsta(
     fun toAstaTempoFisso(): AstaTempoFissoDto {
         val local =
             ZonedDateTime.of(this.dataFine.value!!, this.oraFine.value!!, ZoneId.systemDefault())
-        val utc = local.withZoneSameInstant(ZoneOffset.UTC)
+        val utc = local.withZoneSameInstant(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS)
         val dataFine = utc.toLocalDate()
         val oraFine = utc.toLocalTime()
 
@@ -198,7 +199,7 @@ class ModelAsta(
     fun toAstaSilenziosa(): AstaSilenziosaDto {
         val local =
             ZonedDateTime.of(this.dataFine.value!!, this.oraFine.value!!, ZoneId.systemDefault())
-        val utc = local.withZoneSameInstant(ZoneOffset.UTC)
+        val utc = local.withZoneSameInstant(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS)
         val dataFine = utc.toLocalDate()
         val oraFine = utc.toLocalTime()
 

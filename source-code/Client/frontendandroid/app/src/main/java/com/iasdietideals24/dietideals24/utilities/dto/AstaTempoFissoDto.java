@@ -16,6 +16,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
 public class AstaTempoFissoDto extends AstaDiVenditoreDto {
@@ -32,7 +33,7 @@ public class AstaTempoFissoDto extends AstaDiVenditoreDto {
 
     public AnteprimaAsta toAnteprimaAsta() {
         ZonedDateTime utc = ZonedDateTime.of(this.dataScadenza, this.oraScadenza, ZoneOffset.UTC);
-        ZonedDateTime local = utc.withZoneSameInstant(ZoneId.systemDefault());
+        ZonedDateTime local = utc.withZoneSameInstant(ZoneId.systemDefault()).truncatedTo(ChronoUnit.SECONDS);
         LocalDate dataScadenza = local.toLocalDate();
         LocalTime oraScadenza = local.toLocalTime();
 
@@ -50,7 +51,7 @@ public class AstaTempoFissoDto extends AstaDiVenditoreDto {
 
     public Asta toAsta() {
         ZonedDateTime utc = ZonedDateTime.of(this.dataScadenza, this.oraScadenza, ZoneOffset.UTC);
-        ZonedDateTime local = utc.withZoneSameInstant(ZoneId.systemDefault());
+        ZonedDateTime local = utc.withZoneSameInstant(ZoneId.systemDefault()).truncatedTo(ChronoUnit.SECONDS);
         LocalDate dataScadenza = local.toLocalDate();
         LocalTime oraScadenza = local.toLocalTime();
 

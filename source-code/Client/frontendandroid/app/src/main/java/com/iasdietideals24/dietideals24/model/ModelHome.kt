@@ -133,7 +133,11 @@ class ModelHome(
                     repository = inverseRepository,
                     idAccount = CurrentUser.id,
                     ricerca = searchText.value,
-                    filtro = CategoriaAsta.fromEnumToEnumString(CategoriaAsta.fromStringToEnum(filter.value)),
+                    filtro = CategoriaAsta.fromEnumToEnumString(
+                        CategoriaAsta.fromStringToEnum(
+                            filter.value
+                        )
+                    ),
                     api = AstaInversaRepository.ApiCall.RICERCA
                 )
 
@@ -152,7 +156,11 @@ class ModelHome(
                     repository = tempoFissoRepository,
                     idAccount = CurrentUser.id,
                     ricerca = searchText.value,
-                    filtro = CategoriaAsta.fromEnumToEnumString(CategoriaAsta.fromStringToEnum(filter.value)),
+                    filtro = CategoriaAsta.fromEnumToEnumString(
+                        CategoriaAsta.fromStringToEnum(
+                            filter.value
+                        )
+                    ),
                     api = AstaTempoFissoRepository.ApiCall.RICERCA
                 )
 
@@ -171,7 +179,11 @@ class ModelHome(
                     repository = silenziosaRepository,
                     idAccount = CurrentUser.id,
                     ricerca = searchText.value,
-                    filtro = CategoriaAsta.fromEnumToEnumString(CategoriaAsta.fromStringToEnum(filter.value)),
+                    filtro = CategoriaAsta.fromEnumToEnumString(
+                        CategoriaAsta.fromStringToEnum(
+                            filter.value
+                        )
+                    ),
                     api = AstaSilenziosaRepository.ApiCall.RICERCA
                 )
 

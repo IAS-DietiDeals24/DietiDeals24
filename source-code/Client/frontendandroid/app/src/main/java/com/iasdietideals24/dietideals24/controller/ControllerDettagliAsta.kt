@@ -64,7 +64,10 @@ import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 
 class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
 
@@ -505,14 +508,18 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                     }
 
                     when (returned.idOfferta) {
-                        0L -> Snackbar.make(
-                            fragmentView,
-                            R.string.dettagliAsta_fallimentoOfferta,
-                            Snackbar.LENGTH_SHORT
-                        )
-                            .setBackgroundTint(resources.getColor(R.color.blu, null))
-                            .setTextColor(resources.getColor(R.color.grigio, null))
-                            .show()
+                        0L -> {
+                            Snackbar.make(
+                                fragmentView,
+                                R.string.dettagliAsta_fallimentoOfferta,
+                                Snackbar.LENGTH_SHORT
+                            )
+                                .setBackgroundTint(resources.getColor(R.color.blu, null))
+                                .setTextColor(resources.getColor(R.color.grigio, null))
+                                .show()
+
+                            dialog.dismiss()
+                        }
 
                         else -> {
                             Snackbar.make(
@@ -544,13 +551,23 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
     }
 
     private suspend fun inviaOfferta(valoreOfferta: BigDecimal): OffertaDto {
+        val local =
+            ZonedDateTime.of(
+                LocalDate.now(ZoneOffset.UTC),
+                LocalTime.now(ZoneOffset.UTC),
+                ZoneId.systemDefault()
+            )
+        val utc = local.withZoneSameInstant(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS)
+        val dataInvio = utc.toLocalDate()
+        val oraInvio = utc.toLocalTime()
+
         return when (viewModel.tipo.value!!) {
             TipoAsta.TEMPO_FISSO -> {
                 offertaTempoFissoRepository.inviaOffertaTempoFisso(
                     OffertaTempoFissoDto(
                         0L,
-                        LocalDate.now(ZoneOffset.UTC),
-                        LocalTime.now(ZoneOffset.UTC),
+                        dataInvio,
+                        oraInvio,
                         valoreOfferta,
                         AccountShallowDto(
                             CurrentUser.id,
@@ -569,8 +586,8 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                 offertaInversaRepository.inviaOffertaInversa(
                     OffertaInversaDto(
                         0L,
-                        LocalDate.now(ZoneOffset.UTC),
-                        LocalTime.now(ZoneOffset.UTC),
+                        dataInvio,
+                        oraInvio,
                         valoreOfferta,
                         AccountShallowDto(
                             CurrentUser.id,
@@ -589,8 +606,8 @@ class ControllerDettagliAsta : Controller<DettagliastaBinding>() {
                 offertaSilenziosaRepository.inviaOffertaSilenziosa(
                     OffertaSilenziosaDto(
                         0L,
-                        LocalDate.now(ZoneOffset.UTC),
-                        LocalTime.now(ZoneOffset.UTC),
+                        dataInvio,
+                        oraInvio,
                         valoreOfferta,
                         AccountShallowDto(
                             CurrentUser.id,
