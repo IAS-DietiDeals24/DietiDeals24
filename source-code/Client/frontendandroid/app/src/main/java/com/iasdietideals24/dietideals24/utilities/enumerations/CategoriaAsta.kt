@@ -63,5 +63,25 @@ enum class CategoriaAsta {
                 else -> ""
             }
         }
+
+        fun fromEnumToEnumString(enum: CategoriaAsta): String {
+            return when (enum) {
+                BOOKS -> "BOOKS"
+                COMICS_AND_MANGAS -> "COMICS_AND_MANGAS"
+                MUSIC -> "MUSIC"
+                MOVIES_AND_TV_SHOWS -> "MOVIES_AND_TV_SHOWS"
+                VIDEOGAMES_AND_CONSOLES -> "VIDEOGAMES_AND_CONSOLES"
+                ELECTRONICS -> "ELECTRONICS"
+                FOODS_AND_DRINKS -> "FOODS_AND_DRINKS"
+                PETS_SUPPLIES -> "PETS_SUPPLIES"
+                BODYCARE_AND_BEAUTY -> "BODYCARE_AND_BEAUTY"
+                SPORTS_AND_HOBBIES -> "SPORTS_AND_HOBBIES"
+                CLOTHINGS_AND_WEARABLES -> "CLOTHINGS_AND_WEARABLES"
+                HOME_AND_FURNITURES -> "HOME_AND_FURNITURES"
+                VEHICLES -> "VEHICLES"
+                OTHER -> "OTHER"
+                else -> ""
+            }
+        }
     }
 }
