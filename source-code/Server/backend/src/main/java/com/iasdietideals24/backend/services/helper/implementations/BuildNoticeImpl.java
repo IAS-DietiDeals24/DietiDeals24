@@ -1,7 +1,7 @@
 package com.iasdietideals24.backend.services.helper.implementations;
 
 import com.iasdietideals24.backend.entities.*;
-import com.iasdietideals24.backend.repositories.*;
+import com.iasdietideals24.backend.repositories.NotificaRepository;
 import com.iasdietideals24.backend.services.helper.BuildNotice;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -141,7 +141,7 @@ public class BuildNoticeImpl implements BuildNotice {
                         astaSilenziosa
                 );
 
-                while(itrOfferteSilenziose.hasNext()) {
+                while (itrOfferteSilenziose.hasNext()) {
                     notifica.addDestinatario(itrOfferteSilenziose.next().getCompratoreCollegato());
                 }
 
@@ -277,7 +277,7 @@ public class BuildNoticeImpl implements BuildNotice {
                         astaInversa
                 );
 
-                while(itrOffertePerdenti.hasNext()) {
+                while (itrOffertePerdenti.hasNext()) {
                     notifica.addDestinatario(itrOffertePerdenti.next().getVenditoreCollegato());
                 }
 
@@ -331,7 +331,7 @@ public class BuildNoticeImpl implements BuildNotice {
                         astaTempoFisso
                 );
 
-                while(itrOffertePerdenti.hasNext()) {
+                while (itrOffertePerdenti.hasNext()) {
                     notifica.addDestinatario(itrOffertePerdenti.next().getCompratoreCollegato());
                 }
 

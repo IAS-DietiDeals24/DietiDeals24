@@ -1,6 +1,9 @@
 package com.iasdietideals24.backend.services.implementations;
 
-import com.iasdietideals24.backend.entities.*;
+import com.iasdietideals24.backend.entities.Asta;
+import com.iasdietideals24.backend.entities.AstaTempoFisso;
+import com.iasdietideals24.backend.entities.OffertaTempoFisso;
+import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.entities.utilities.StatoAsta;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
@@ -352,9 +355,9 @@ public class OffertaTempoFissoServiceImpl implements OffertaTempoFissoService {
 
             Optional<OffertaTempoFisso> attualeOffertaTempoFissoMigliore = offertaTempoFissoRepository.findMaxByValoreAndAstaRiferimento_IdAstaIs(idAstaRiferimento);
 
-            if (attualeOffertaTempoFissoMigliore.isPresent() && attualeOffertaTempoFissoMigliore.get().getValore().compareTo(nuovaOffertaTempoFisso.getValore()) >= 0 ) {
-                    log.warn("Esiste già un'offerta migliore rispetto a quella che si vuole inserire per l'asta di id '{}'!", idAstaRiferimento);
-                    throw new InvalidParameterException("Esiste già un'offerta migliore rispetto a quella che si vuole inserire per l'asta di id '" + idAstaRiferimento + "'!");
+            if (attualeOffertaTempoFissoMigliore.isPresent() && attualeOffertaTempoFissoMigliore.get().getValore().compareTo(nuovaOffertaTempoFisso.getValore()) >= 0) {
+                log.warn("Esiste già un'offerta migliore rispetto a quella che si vuole inserire per l'asta di id '{}'!", idAstaRiferimento);
+                throw new InvalidParameterException("Esiste già un'offerta migliore rispetto a quella che si vuole inserire per l'asta di id '" + idAstaRiferimento + "'!");
             }
         }
 

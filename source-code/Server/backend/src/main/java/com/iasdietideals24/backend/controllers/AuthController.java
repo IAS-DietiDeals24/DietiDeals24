@@ -33,10 +33,12 @@ import java.util.Base64;
 public class AuthController {
 
     public static final String IMPOSSIBILE_INVIARE_COGNITO_REQUEST = "Impossibile inviare la Cognito request";
-
-    private static final String DEFAULT_REDIRECT_URI = "https://d84l1y8p4kdic.cloudfront.net";
     public static final String LOG_REDIRECT_URI_RICEVUTO = "Redirect URI ricevuto: {}";
     public static final String LOG_LETTURA_COGNITO_RESPONSE_FALLITA = "Lettura della Cognito response fallita";
+
+    private static final String DEFAULT_REDIRECT_URI = "https://d84l1y8p4kdic.cloudfront.net";
+
+    private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 
     @Value("${spring.security.oauth2.resourceserver.jwt.clientId}") // Leggiamo il valore dall'application.properties
     private String clientId;
@@ -46,8 +48,6 @@ public class AuthController {
 
     @Value("${auth.cognitoUri}") // Leggiamo il valore dall'application.properties
     private String cognitoUri;
-
-    private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
 
     // No authentication required
     // Generiamo l'URL a cui il frontend deve accedere per fare il login su Cognito

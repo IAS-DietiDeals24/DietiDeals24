@@ -1,6 +1,8 @@
 package com.iasdietideals24.backend.services.implementations;
 
-import com.iasdietideals24.backend.entities.*;
+import com.iasdietideals24.backend.entities.AstaSilenziosa;
+import com.iasdietideals24.backend.entities.Offerta;
+import com.iasdietideals24.backend.entities.OffertaSilenziosa;
 import com.iasdietideals24.backend.entities.utilities.StatoAsta;
 import com.iasdietideals24.backend.entities.utilities.StatoOffertaSilenziosa;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;

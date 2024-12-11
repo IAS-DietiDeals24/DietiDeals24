@@ -185,7 +185,7 @@ public class CompratoreServiceImpl implements CompratoreService {
         }
 
         log.debug("L'account non è l'ultimo account del profilo al quale è associato. Elimino l'account compratore dal database...");
-        
+
         // Eliminiamo l'entità con l'id passato per parametro
         compratoreRepository.deleteById(idAccount);
 

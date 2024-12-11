@@ -1,8 +1,8 @@
 package com.iasdietideals24.backend.services.implementations;
 
 import com.iasdietideals24.backend.entities.Account;
-import com.iasdietideals24.backend.entities.Venditore;
 import com.iasdietideals24.backend.entities.OffertaDiVenditore;
+import com.iasdietideals24.backend.entities.Venditore;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;

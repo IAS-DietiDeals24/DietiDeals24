@@ -1,6 +1,8 @@
 package com.iasdietideals24.backend.services.implementations;
 
-import com.iasdietideals24.backend.entities.*;
+import com.iasdietideals24.backend.entities.AstaTempoFisso;
+import com.iasdietideals24.backend.entities.Offerta;
+import com.iasdietideals24.backend.entities.OffertaTempoFisso;
 import com.iasdietideals24.backend.entities.utilities.StatoAsta;
 import com.iasdietideals24.backend.exceptions.IdNotFoundException;
 import com.iasdietideals24.backend.exceptions.InvalidParameterException;

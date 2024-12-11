@@ -1,6 +1,9 @@
 package com.iasdietideals24.backend.scheduled;
 
-import com.iasdietideals24.backend.entities.*;
+import com.iasdietideals24.backend.entities.Asta;
+import com.iasdietideals24.backend.entities.AstaInversa;
+import com.iasdietideals24.backend.entities.AstaSilenziosa;
+import com.iasdietideals24.backend.entities.AstaTempoFisso;
 import com.iasdietideals24.backend.entities.utilities.StatoAsta;
 import com.iasdietideals24.backend.repositories.AstaRepository;
 import com.iasdietideals24.backend.services.AstaInversaService;
@@ -46,7 +49,7 @@ public class AstaScheduler {
                 .toList();
 
         if (!expiredAste.isEmpty()) {
-            for (Asta expiredAsta : expiredAste ) {
+            for (Asta expiredAsta : expiredAste) {
 
                 if (expiredAsta instanceof AstaInversa expiredAstaInversa)
                     astaInversaService.closeAstaInversa(expiredAstaInversa);
