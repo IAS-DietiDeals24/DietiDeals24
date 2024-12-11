@@ -154,7 +154,7 @@ public class OffertaSilenziosaController {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     @PatchMapping(path = "/offerte/di-compratori/silenziose/{idOfferta}")
     public ResponseEntity<OffertaSilenziosaDto> partialUpdateOffertaSilenziosa(@PathVariable("idOfferta") Long idOfferta, @RequestBody OffertaSilenziosaDto receivedOffertaSilenziosaDto) throws InvalidParameterException {
 
