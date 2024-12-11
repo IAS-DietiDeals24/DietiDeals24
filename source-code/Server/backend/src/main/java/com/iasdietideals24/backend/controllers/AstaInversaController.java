@@ -68,9 +68,7 @@ public class AstaInversaController {
 
     // No authentication required
     @GetMapping(path = "/aste/di-compratori/inverse", params = {"nome", "categoria"})
-    public ResponseEntity<Page<AstaInversaDto>> listAsteInverseByNomeLikeAndCategoriaNomeLike(@RequestParam(name = "nome", defaultValue = "%") String nomeAsta,
-                                                                                              @RequestParam(name = "categoria", defaultValue = "%") String nomeCategoria,
-                                                                                              Pageable pageable) {
+    public ResponseEntity<Page<AstaInversaDto>> listAsteInverseByNomeLikeAndCategoriaNomeLike(@RequestParam("nome") String nomeAsta, @RequestParam("categoria") String nomeCategoria, Pageable pageable) {
 
         log.info(LOG_RECUPERO_ASTE_IN_CORSO);
 

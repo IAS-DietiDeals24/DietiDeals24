@@ -120,8 +120,15 @@ public class AstaSilenziosaServiceImpl implements AstaSilenziosaService {
         log.trace("Nome asta da cercare: {}", nomeAsta);
         log.trace("Nome categoria da cercare: {}", nomeCategoria);
 
+        if (nomeAsta.isBlank())
+            nomeAsta = "%";
+        nomeAsta = nomeAsta.toUpperCase();
+
+        if (nomeCategoria.isBlank())
+            nomeCategoria = "%";
+
         // Recuperiamo tutte le entità
-        Page<AstaSilenziosa> foundAsteSilenziose = astaSilenziosaRepository.findByNomeLikeAndCategoria_NomeLike(nomeAsta.toUpperCase(), nomeCategoria, pageable);
+        Page<AstaSilenziosa> foundAsteSilenziose = astaSilenziosaRepository.findByNomeLikeAndCategoria_NomeLike(nomeAsta, nomeCategoria, pageable);
 
         log.trace(LOG_FOUND_ASTE, foundAsteSilenziose);
         log.debug(LOG_ASTE_RECUPERATE);

@@ -68,9 +68,7 @@ public class AstaTempoFissoController {
 
     // No authentication required
     @GetMapping(path = "/aste/di-venditori/tempo-fisso", params = {"nome", "categoria"})
-    public ResponseEntity<Page<AstaTempoFissoDto>> listAsteTempoFissoByNomeLikeAndCategoriaNomeLike(@RequestParam(name = "nome", defaultValue = "%") String nomeAsta,
-                                                                                                    @RequestParam(name = "categoria", defaultValue = "%") String nomeCategoria,
-                                                                                                    Pageable pageable) {
+    public ResponseEntity<Page<AstaTempoFissoDto>> listAsteTempoFissoByNomeLikeAndCategoriaNomeLike(@RequestParam("nome") String nomeAsta, @RequestParam("categoria") String nomeCategoria, Pageable pageable) {
 
         log.info(LOG_RECUPERO_ASTE_IN_CORSO);
 

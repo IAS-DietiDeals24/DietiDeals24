@@ -121,8 +121,15 @@ public class AstaInversaServiceImpl implements AstaInversaService {
         log.trace("Nome asta da cercare: {}", nomeAsta);
         log.trace("Nome categoria da cercare: {}", nomeCategoria);
 
+        if (nomeAsta.isBlank())
+            nomeAsta = "%";
+        nomeAsta = nomeAsta.toUpperCase();
+
+        if (nomeCategoria.isBlank())
+            nomeCategoria = "%";
+
         // Recuperiamo tutte le entità
-        Page<AstaInversa> foundAsteInverse = astaInversaRepository.findByNomeLikeAndCategoria_NomeLike(nomeAsta.toUpperCase(), nomeCategoria, pageable);
+        Page<AstaInversa> foundAsteInverse = astaInversaRepository.findByNomeLikeAndCategoria_NomeLike(nomeAsta, nomeCategoria, pageable);
 
         log.trace(LOG_FOUND_ASTE, foundAsteInverse);
         log.debug(LOG_ASTE_RECUPERATE);

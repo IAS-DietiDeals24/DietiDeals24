@@ -121,8 +121,15 @@ public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
         log.trace("Nome asta da cercare: {}", nomeAsta);
         log.trace("Nome categoria da cercare: {}", nomeCategoria);
 
+        if (nomeAsta.isBlank())
+            nomeAsta = "%";
+        nomeAsta = nomeAsta.toUpperCase();
+
+        if (nomeCategoria.isBlank())
+            nomeCategoria = "%";
+
         // Recuperiamo tutte le entità
-        Page<AstaTempoFisso> foundAsteTempoFisso = astaTempoFissoRepository.findByNomeLikeAndCategoria_NomeLike(nomeAsta.toUpperCase(), nomeCategoria, pageable);
+        Page<AstaTempoFisso> foundAsteTempoFisso = astaTempoFissoRepository.findByNomeLikeAndCategoria_NomeLike(nomeAsta, nomeCategoria, pageable);
 
         log.trace(LOG_FOUND_ASTE, foundAsteTempoFisso);
         log.debug(LOG_ASTE_RECUPERATE);
