@@ -140,7 +140,7 @@ class ModelAsta(
         _descrizione.value = ""
     }
 
-    fun toAstaInversa(): AstaInversaDto {
+    fun toAstaInversa(patching: Boolean = false): AstaInversaDto {
         val local =
             ZonedDateTime.of(this.dataFine.value!!, this.oraFine.value!!, ZoneId.systemDefault())
         val utc = local.withZoneSameInstant(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS)
@@ -158,17 +158,17 @@ class ModelAsta(
             dataFine,
             oraFine,
             immagine.value ?: ByteArray(0),
-            setOf(),
-            AccountShallowDto(
+            if (patching) null else setOf(),
+            if (patching) null else AccountShallowDto(
                 CurrentUser.id,
                 "Compratore"
             ),
-            setOf(),
+            if (patching) null else setOf(),
             prezzo.value!!
         )
     }
 
-    fun toAstaTempoFisso(): AstaTempoFissoDto {
+    fun toAstaTempoFisso(patching: Boolean = false): AstaTempoFissoDto {
         val local =
             ZonedDateTime.of(this.dataFine.value!!, this.oraFine.value!!, ZoneId.systemDefault())
         val utc = local.withZoneSameInstant(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS)
@@ -186,17 +186,17 @@ class ModelAsta(
             dataFine,
             oraFine,
             immagine.value ?: ByteArray(0),
-            setOf(),
-            AccountShallowDto(
+            if (patching) null else setOf(),
+            if (patching) null else AccountShallowDto(
                 CurrentUser.id,
                 "Venditore"
             ),
-            setOf(),
+            if (patching) null else setOf(),
             prezzo.value!!
         )
     }
 
-    fun toAstaSilenziosa(): AstaSilenziosaDto {
+    fun toAstaSilenziosa(patching: Boolean = false): AstaSilenziosaDto {
         val local =
             ZonedDateTime.of(this.dataFine.value!!, this.oraFine.value!!, ZoneId.systemDefault())
         val utc = local.withZoneSameInstant(ZoneOffset.UTC).truncatedTo(ChronoUnit.SECONDS)
@@ -214,12 +214,12 @@ class ModelAsta(
             dataFine,
             oraFine,
             immagine.value ?: ByteArray(0),
-            setOf(),
-            AccountShallowDto(
+            if (patching) null else setOf(),
+            if (patching) null else AccountShallowDto(
                 CurrentUser.id,
                 "Venditore"
             ),
-            setOf()
+            if (patching) null else setOf()
         )
     }
 
@@ -229,7 +229,6 @@ class ModelAsta(
         dataFine()
         oraFine()
         nome()
-        categoria()
         descrizione()
         if (_tipo.value != TipoAsta.SILENZIOSA)
             prezzo()
@@ -259,14 +258,6 @@ class ModelAsta(
     private fun nome() {
         if (nome.value?.isEmpty() == true) {
             throw EccezioneCampiNonCompilati("Nome non compilato.")
-        }
-    }
-
-    @Validation
-    @Throws(EccezioneCampiNonCompilati::class)
-    private fun categoria() {
-        if (categoria.value == CategoriaAsta.ND) {
-            throw EccezioneCampiNonCompilati("Categoria non compilata.")
         }
     }
 

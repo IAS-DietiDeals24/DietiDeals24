@@ -64,7 +64,7 @@ public class AstaTempoFissoDto extends AstaDiVenditoreDto {
                 oraScadenza, sogliaMinima,
                 immagine,
                 nome,
-                CategoriaAsta.Companion.fromStringToEnum(categoriaShallow.getNome()),
+                CategoriaAsta.valueOf(categoriaShallow.getNome()),
                 descrizione
         );
     }

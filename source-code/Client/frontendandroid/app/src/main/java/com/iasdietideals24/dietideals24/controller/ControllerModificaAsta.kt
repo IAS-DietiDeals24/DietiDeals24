@@ -3,7 +3,6 @@ package com.iasdietideals24.dietideals24.controller
 import android.content.Context
 import android.icu.util.Calendar
 import android.net.Uri
-import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
@@ -165,10 +164,6 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
             rimuoviErroreCampi()
         }
 
-        binding.modificaCategoria.addTextChangedListener {
-            rimuoviErroreCampi()
-        }
-
         binding.modificaDescrizione.addTextChangedListener {
             rimuoviErroreCampi()
         }
@@ -180,7 +175,6 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
             binding.modificaCampoDataScadenza,
             binding.modificaCampoOra,
             binding.modificaCampoNome,
-            binding.modificaCampoCategoria,
             binding.modificaCampoDescrizione
         )
     }
@@ -220,32 +214,6 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
                         viewModel.nome.value = asta.nome
                         viewModel.categoria.value = asta.categoria
                         viewModel.descrizione.value = asta.descrizione
-
-                        val categorieAsta: MutableList<String> = mutableListOf()
-
-                        withContext(Dispatchers.IO) {
-                            categoriaAstaRepository.recuperaCategorieAsta().forEach {
-                                categorieAsta.add(
-                                    CategoriaAsta.fromEnumToString(
-                                        CategoriaAsta.valueOf(
-                                            it.nome
-                                        )
-                                    )
-                                )
-                            }
-                        }
-
-                        val adapter: ArrayAdapter<String> = ArrayAdapter(
-                            fragmentContext,
-                            android.R.layout.simple_dropdown_item_1line,
-                            categorieAsta
-                        )
-
-                        binding.modificaCategoria.setAdapter(adapter)
-                        binding.modificaCategoria.setText(
-                            CategoriaAsta.fromEnumToString(viewModel.categoria.value!!),
-                            false
-                        )
                     }
                 } catch (_: Exception) {
                     Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)
@@ -366,7 +334,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
         viewModel.nome.observe(viewLifecycleOwner, nomeObserver)
 
         val categoriaObserver = Observer<CategoriaAsta> { newCategoria ->
-            binding.modificaCategoria.setText(CategoriaAsta.fromEnumToString(newCategoria))
+            binding.modificaCategoria.text = CategoriaAsta.fromEnumToString(newCategoria)
         }
         viewModel.categoria.observe(viewLifecycleOwner, categoriaObserver)
 
@@ -452,7 +420,6 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
                     binding.modificaCampoDataScadenza,
                     binding.modificaCampoOra,
                     binding.modificaCampoNome,
-                    binding.modificaCampoCategoria,
                     binding.modificaCampoDescrizione
                 )
             } catch (_: Exception) {
@@ -468,21 +435,21 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
         return when (viewModel.tipo.value!!) {
             TipoAsta.INVERSA -> {
                 repositoryAstaInversa.aggiornaAstaInversa(
-                    viewModel.toAstaInversa(),
+                    viewModel.toAstaInversa(true),
                     args.id
                 )
             }
 
             TipoAsta.TEMPO_FISSO -> {
                 repositoryAstaTempoFisso.aggiornaAstaTempoFisso(
-                    viewModel.toAstaTempoFisso(),
+                    viewModel.toAstaTempoFisso(true),
                     args.id
                 )
             }
 
             TipoAsta.SILENZIOSA -> {
                 repositoryAstaSilenziosa.aggiornaAstaSilenziosa(
-                    viewModel.toAstaSilenziosa(),
+                    viewModel.toAstaSilenziosa(true),
                     args.id
                 )
             }

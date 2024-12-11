@@ -65,7 +65,7 @@ public class AstaInversaDto extends AstaDiCompratoreDto {
                 sogliaIniziale,
                 immagine,
                 nome,
-                CategoriaAsta.Companion.fromStringToEnum(categoriaShallow.getNome()),
+                CategoriaAsta.valueOf(categoriaShallow.getNome()),
                 descrizione
         );
     }

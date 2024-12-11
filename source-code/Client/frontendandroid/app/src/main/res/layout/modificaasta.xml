@@ -117,7 +117,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
-                        android:enabled="false"
                         android:hint="@string/crea_accessibilitàDataScadenza"
                         android:inputType="date"
                         android:textColor="@color/nero" />
@@ -238,6 +237,7 @@
                     android:layout_marginBottom="16dp"
                     android:fontFamily="@font/fira_sans"
                     android:text="@string/placeholder_prezzo"
+                    android:textColor="@color/nero"
                     android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -360,47 +360,24 @@
                     android:text="@string/crea_categoria"
                     android:textColor="@color/blu"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="@+id/modifica_campoCategoria"
+                    app:layout_constraintStart_toStartOf="@+id/modifica_categoria"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/modifica_campoCategoria"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/modifica_categoria"
                     android:layout_width="320dp"
-                    android:layout_height="60dp"
-                    android:layout_margin="20dp"
-
-                    app:boxBackgroundColor="@color/bianco"
-                    app:boxCornerRadiusBottomEnd="30dp"
-                    app:boxCornerRadiusBottomStart="30dp"
-                    app:boxCornerRadiusTopEnd="30dp"
-                    app:boxCornerRadiusTopStart="30dp"
-                    app:boxStrokeColor="@color/arancione"
-                    app:boxStrokeErrorColor="@color/rosso"
-                    app:boxStrokeWidth="1.5dp"
-                    app:cursorColor="@color/arancione"
-                    app:cursorErrorColor="@color/rosso"
-                    app:endIconDrawable="@drawable/icona_dropdown"
-                    app:endIconMode="dropdown_menu"
-                    app:endIconTint="@null"
-                    app:errorIconTint="@color/rosso"
-                    app:errorTextColor="@color/arancione"
-                    app:hintTextColor="@color/arancione"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/fira_sans"
+                    android:text="@string/placeholder"
+                    android:textColor="@color/nero"
+                    android:textSize="20sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/modifica_etichettaCategoria">
-
-                    <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                        android:id="@+id/modifica_categoria"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:enabled="false"
-                        android:hint="@string/crea_accessibilitàCategoria"
-                        android:paddingHorizontal="15dp"
-                        android:textAppearance="@style/DropdownText"
-                        android:textColor="@color/nero" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    app:layout_constraintTop_toBottomOf="@+id/modifica_etichettaCategoria" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/crea_asteriscoCategoria"

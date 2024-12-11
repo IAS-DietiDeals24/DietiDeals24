@@ -62,7 +62,7 @@ public class AstaSilenziosaDto extends AstaDiVenditoreDto {
                 new BigDecimal("0.00"),
                 immagine,
                 nome,
-                CategoriaAsta.Companion.fromStringToEnum(categoriaShallow.getNome()),
+                CategoriaAsta.valueOf(categoriaShallow.getNome()),
                 descrizione
         );
     }
