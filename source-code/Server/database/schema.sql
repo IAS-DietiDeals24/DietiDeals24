@@ -230,7 +230,7 @@ CREATE TABLE notifica
     data_invio         DATE      NOT NULL,
     CONSTRAINT chk_data_invio CHECK (data_invio <= NOW()),
     messaggio          TEXT      NOT NULL,
-    ora_invio           TIME      NOT NULL,
+    ora_invio          TIME      NOT NULL,
     asta_id_asta       BIGINT    NOT NULL,
     account_id_account BIGINT    NOT NULL
 );
