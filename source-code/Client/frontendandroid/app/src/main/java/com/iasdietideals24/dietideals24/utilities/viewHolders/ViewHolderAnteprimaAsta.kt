@@ -84,11 +84,12 @@ class ViewHolderAnteprimaAsta(private val binding: AstaBinding) :
                 currentAsta.dataScadenza.toLocalStringShort()
             binding.astaOraScadenza.text = currentAsta.oraScadenza.toString()
 
-            if (currentAsta.foto.isNotEmpty())
-                binding.astaImmagine.load(currentAsta.foto) {
-                    crossfade(true)
-                }
         }
+
+        if (currentAsta.foto.isNotEmpty())
+            binding.astaImmagine.load(currentAsta.foto) {
+                crossfade(true)
+            }
 
         binding.astaNome.text = currentAsta.nome
         binding.astaModificaAsta.visibility = View.GONE
