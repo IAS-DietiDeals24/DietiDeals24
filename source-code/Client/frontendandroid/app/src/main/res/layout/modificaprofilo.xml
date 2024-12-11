@@ -511,8 +511,11 @@
                     android:id="@+id/modificaProfilo_biografia"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="top|start"
                     android:hint="@string/creazioneProfiloFase2_accessibilitàBiografia"
-                    android:inputType="text"
+                    android:inputType="textMultiLine"
+                    android:lines="5"
+                    android:scrollbars="vertical"
                     android:textColor="@color/nero" />
 
             </com.google.android.material.textfield.TextInputLayout>

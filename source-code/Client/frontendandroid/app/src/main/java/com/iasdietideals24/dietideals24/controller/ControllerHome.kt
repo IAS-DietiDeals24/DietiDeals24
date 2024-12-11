@@ -60,9 +60,11 @@ class ControllerHome : Controller<HomeBinding>() {
     @UIBuilder
     override fun impostaEventiClick() {
         binding.homeFiltro.setOnItemClickListener { _, _, _, _ ->
+            viewModel.searchText.value = binding.homeRicerca.text.toString()
             viewModel.filter.value =
                 if (binding.homeFiltro.text.toString() != getString(R.string.category_all))
                     binding.homeFiltro.text.toString() else ""
+
 
             jobRecupero = lifecycleScope.launch {
                 jobRecupero?.cancel()
@@ -77,6 +79,9 @@ class ControllerHome : Controller<HomeBinding>() {
 
         binding.homeCampoRicerca.setEndIconOnClickListener {
             viewModel.searchText.value = binding.homeRicerca.text.toString()
+            viewModel.filter.value =
+                if (binding.homeFiltro.text.toString() != getString(R.string.category_all))
+                    binding.homeFiltro.text.toString() else ""
 
             jobRecupero = lifecycleScope.launch {
                 jobRecupero?.cancel()
@@ -100,21 +105,6 @@ class ControllerHome : Controller<HomeBinding>() {
                 recuperaAste()
 
                 delay(10000)
-            }
-        }
-    }
-
-    @UIBuilder
-    override fun impostaOsservatori() {
-        lifecycleScope.launch {
-            viewModel.searchText.collect {
-                viewModel.searchText.value = it
-            }
-        }
-
-        lifecycleScope.launch {
-            viewModel.filter.collect {
-                viewModel.filter.value = it
             }
         }
     }

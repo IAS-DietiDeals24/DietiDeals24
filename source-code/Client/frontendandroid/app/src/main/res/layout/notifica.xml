@@ -45,7 +45,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:layout_weight="1"
+                    android:ellipsize="end"
                     android:fontFamily="@font/fira_sans_medium"
+                    android:maxLines="1"
                     android:text="@string/placeholder"
                     android:textColor="@color/blu" />
 
@@ -68,7 +70,9 @@
                 android:layout_marginVertical="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="10dp"
+                android:ellipsize="end"
                 android:fontFamily="@font/fira_sans_light"
+                android:maxLines="4"
                 android:text="@string/placeholder"
                 android:textColor="@color/blu" />
 

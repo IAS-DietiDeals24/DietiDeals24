@@ -196,24 +196,6 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
                     )
             }
 
-        lifecycleScope.launch {
-            val categorieAsta: MutableList<String> = mutableListOf()
-
-            withContext(Dispatchers.IO) {
-                categoriaAstaRepository.recuperaCategorieAsta().forEach {
-                    categorieAsta.add(CategoriaAsta.fromEnumToString(CategoriaAsta.valueOf(it.nome)))
-                }
-            }
-
-            val adapter: ArrayAdapter<String> = ArrayAdapter(
-                fragmentContext,
-                android.R.layout.simple_dropdown_item_1line,
-                categorieAsta
-            )
-
-            binding.modificaCategoria.setAdapter(adapter)
-        }
-
         if (args.id != 0L) {
             lifecycleScope.launch {
                 try {
@@ -238,6 +220,32 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
                         viewModel.nome.value = asta.nome
                         viewModel.categoria.value = asta.categoria
                         viewModel.descrizione.value = asta.descrizione
+
+                        val categorieAsta: MutableList<String> = mutableListOf()
+
+                        withContext(Dispatchers.IO) {
+                            categoriaAstaRepository.recuperaCategorieAsta().forEach {
+                                categorieAsta.add(
+                                    CategoriaAsta.fromEnumToString(
+                                        CategoriaAsta.valueOf(
+                                            it.nome
+                                        )
+                                    )
+                                )
+                            }
+                        }
+
+                        val adapter: ArrayAdapter<String> = ArrayAdapter(
+                            fragmentContext,
+                            android.R.layout.simple_dropdown_item_1line,
+                            categorieAsta
+                        )
+
+                        binding.modificaCategoria.setAdapter(adapter)
+                        binding.modificaCategoria.setText(
+                            CategoriaAsta.fromEnumToString(viewModel.categoria.value!!),
+                            false
+                        )
                     }
                 } catch (_: Exception) {
                     Snackbar.make(fragmentView, R.string.apiError, Snackbar.LENGTH_SHORT)

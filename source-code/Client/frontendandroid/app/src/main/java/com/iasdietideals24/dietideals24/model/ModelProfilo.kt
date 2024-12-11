@@ -133,8 +133,8 @@ class ModelProfilo : ViewModel() {
                 cognome.value!!,
                 dataNascita.value!!,
                 areaGeografica.value!!,
-                biografia.value!!,
-                genere.value!!
+                genere.value!!,
+                biografia.value!!
             ),
             LinksProfiloDto(
                 linkPersonale.value!!,

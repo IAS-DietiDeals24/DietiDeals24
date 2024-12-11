@@ -38,11 +38,15 @@ public class ProfiloDto {
 
     public Profilo toProfilo() {
         Iterator<AccountShallowDto> iterator = accountsShallow.iterator();
+        Long id1 = 0L, id2 = 0L;
+
+        if (iterator.hasNext())
+            id1 = iterator.next().getIdAccount();
+        if (iterator.hasNext())
+            id2 = iterator.next().getIdAccount();
+
         return new Profilo(
-                new Pair<>(
-                        iterator.next().getIdAccount(),
-                        iterator.next().getIdAccount()
-                ),
+                new Pair<>(id1, id2),
                 accountsShallow.stream().findFirst().orElse(new AccountShallowDto()).getTipoAccount(),
                 nomeUtente,
                 profilePicture,
