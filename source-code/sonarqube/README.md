@@ -1,6 +1,32 @@
 # SonarQube
 
-## Configurare pgAdmin4 per SonarQube
+## Indice
+
+- [Configurare SonarQube](#configurare-sonarqube)
+   * [Configurare pgAdmin4 per SonarQube](#configurare-pgadmin4-per-sonarqube)
+- [Accedere al SonarQube Server](#accedere-al-sonarqube-server)
+- [Generare uno User Token](#generare-uno-user-token)
+
+## Configurare SonarQube
+
+Possiamo avviare il docker compose file per SonarQube in due modi:
+
+1. Cliccando sull'apposito script
+    1. In *Linux*, clicchiamo su `run-sonarqube.sh`
+    1. In *Windows*, clicchiamo su `run-sonarqube.cmd`
+1. Tramite terminale, recandoci nella directory `source-code/sonarqube` ed eseguendo il comando:
+
+    ```bash
+    docker compose -f docker-compose.sonarqube.yaml up -d
+    ```
+
+In ogni caso, stoppiamo ed eliminiamo i container con il comando:
+
+```bash
+docker compose -f docker-compose.sonarqube.yaml down
+```
+
+### Configurare pgAdmin4 per SonarQube
 
 Se si desidera configurare pgAdmin4 in modo da accedere al database dedicato a SonarQube, ecco i passaggi da seguire:
 
@@ -28,3 +54,25 @@ Se, per qualche motivo, il server non dovesse autoconfigurarsi, bisogna seguire 
     - In `Password` inseriamo quella assegnata a `SONAR_JDBC_PASSWORD`
 
 3. `Save`
+
+## Accedere al SonarQube Server
+
+Possiamo accedere a SonarQube alla porta specificata dal file `.env` (default: `55513`).
+
+Al primo accesso, useremo le seguenti credenziali:
+
+- Login: `admin`
+- Password: `admin`
+
+Dopodiché ci verrà chiesto di modificare la password.
+
+## Generare uno User Token
+
+Una volta entrati nella dashboard SonarQube, generiamo uno User Token (ci servirà per automatizzare la scansione SonarQube del progetto):
+
+1. Clicchiamo sull'icona del proprio profilo
+2. Clicchiamo su `My Account`
+3. Andiamo in `Security`
+4. In `Generate Tokens` selezioniamo il tipo `User Token`
+5. Inseriamo un `Nome` e scegliamo il periodo di `Expire`
+6. Clicchiamo su `Generate` e usiamo il token come valore della environment variable `SONAR_TOKEN` del file `source-code/docker-compose/.env`
