@@ -14,5 +14,6 @@ services:
 
   backend-database:
     container_name: dietideals24-backend-postgresDB-prod
-    ports:
-      - 55502:5432 # Mappa la porta 5432 del container con 55501 nell'host (http://localhost:5432/ ci farà accedere all'app)
+# Uncomment the following two lines if you want to be able to access the production environment database
+#    ports:
+#      - 55502:5432 # Mappa la porta 5432 del container con 55502 nell'host (http://localhost:55502/ ci farà connettere al database)
