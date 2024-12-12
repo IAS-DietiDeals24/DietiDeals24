@@ -1,0 +1,23 @@
+@startuml
+participant Actor
+Actor -> AstaInversaController : createAstaInversa
+activate AstaInversaController
+AstaInversaController -> Logger : info
+activate Logger
+Logger --> AstaInversaController
+deactivate Logger
+AstaInversaController -> AstaInversaService : create
+activate AstaInversaService
+AstaInversaService --> AstaInversaController
+deactivate AstaInversaService
+AstaInversaController -> Logger : info
+activate Logger
+Logger --> AstaInversaController
+deactivate Logger
+create ResponseEntity
+AstaInversaController -> ResponseEntity : new
+activate ResponseEntity
+ResponseEntity --> AstaInversaController
+deactivate ResponseEntity
+return
+@enduml

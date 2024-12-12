@@ -1,0 +1,43 @@
+@startuml
+participant Actor
+Actor -> ProfiloController : partialUpdateProfilo
+activate ProfiloController
+ProfiloController -> Logger : info
+activate Logger
+Logger --> ProfiloController
+deactivate Logger
+ProfiloController -> Logger : trace
+activate Logger
+Logger --> ProfiloController
+deactivate Logger
+ProfiloController -> ProfiloService : isExists
+activate ProfiloService
+ProfiloService --> ProfiloController
+deactivate ProfiloService
+alt profiloService.isExists(nomeUtente)
+ProfiloController -> ProfiloService : partialUpdate
+activate ProfiloService
+ProfiloService --> ProfiloController
+deactivate ProfiloService
+ProfiloController -> Logger : info
+activate Logger
+Logger --> ProfiloController
+deactivate Logger
+create ResponseEntity
+ProfiloController -> ResponseEntity : new
+activate ResponseEntity
+ResponseEntity --> ProfiloController
+deactivate ResponseEntity
+else 
+ProfiloController -> Logger : info
+activate Logger
+Logger --> ProfiloController
+deactivate Logger
+create ResponseEntity
+ProfiloController -> ResponseEntity : new
+activate ResponseEntity
+ResponseEntity --> ProfiloController
+deactivate ResponseEntity
+end
+return
+@enduml

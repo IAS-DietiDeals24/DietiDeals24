@@ -1,0 +1,562 @@
+@startuml
+participant Actor
+Actor -> ControllerCreaAsta : clickCrea
+activate ControllerCreaAsta
+ControllerCreaAsta -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerCreaAsta
+deactivate Controller
+ControllerCreaAsta -> StringsKt__StringsJVMKt : replace
+activate StringsKt__StringsJVMKt
+StringsKt__StringsJVMKt --> ControllerCreaAsta
+deactivate StringsKt__StringsJVMKt
+create BigDecimal
+ControllerCreaAsta -> BigDecimal : new
+activate BigDecimal
+BigDecimal --> ControllerCreaAsta
+deactivate BigDecimal
+ControllerCreaAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerCreaAsta
+deactivate MutableLiveData
+ControllerCreaAsta -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerCreaAsta
+deactivate Controller
+ControllerCreaAsta -> StringsKt__StringsJVMKt : replace
+activate StringsKt__StringsJVMKt
+StringsKt__StringsJVMKt --> ControllerCreaAsta
+deactivate StringsKt__StringsJVMKt
+create BigDecimal
+ControllerCreaAsta -> BigDecimal : new
+activate BigDecimal
+BigDecimal --> ControllerCreaAsta
+deactivate BigDecimal
+ControllerCreaAsta -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerCreaAsta
+deactivate Controller
+ControllerCreaAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerCreaAsta
+deactivate MutableLiveData
+ControllerCreaAsta -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerCreaAsta
+deactivate Controller
+ControllerCreaAsta -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> TextView : getText
+activate TextView
+TextView --> Controller
+deactivate TextView
+Controller -> Object : toString
+activate Object
+Object --> Controller
+deactivate Object
+Controller --> ControllerCreaAsta
+deactivate Controller
+ControllerCreaAsta -> Companion : fromStringToEnum
+activate Companion
+alt stringa
+else resources.getString(R.string.category_books)
+else resources.getString(R.string.category_comics_and_mangas)
+else resources.getString(R.string.category_music)
+else resources.getString(R.string.category_movies_and_tv_shows)
+else resources.getString(R.string.category_videogames_and_consoles)
+else resources.getString(R.string.category_electronics)
+else resources.getString(R.string.category_foods_and_drinks)
+else resources.getString(R.string.category_pets_supplies)
+else resources.getString(R.string.category_bodycare_and_beauty)
+else resources.getString(R.string.category_sports_and_hobbies)
+else resources.getString(R.string.category_clothings_and_wearables)
+else resources.getString(R.string.category_home_and_furnitures)
+else resources.getString(R.string.category_vehicles)
+else resources.getString(R.string.category_other)
+else 
+note right of Companion : Empty
+end
+Companion --> ControllerCreaAsta
+deactivate Companion
+ControllerCreaAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerCreaAsta
+deactivate MutableLiveData
+ControllerCreaAsta -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> TextView : getText
+activate TextView
+TextView --> Controller
+deactivate TextView
+Controller -> Object : toString
+activate Object
+Object --> Controller
+deactivate Object
+Controller --> ControllerCreaAsta
+deactivate Controller
+ControllerCreaAsta -> Companion : fromStringToEnum
+activate Companion
+alt stringa
+else resources.getString(R.string.category_books)
+else resources.getString(R.string.category_comics_and_mangas)
+else resources.getString(R.string.category_music)
+else resources.getString(R.string.category_movies_and_tv_shows)
+else resources.getString(R.string.category_videogames_and_consoles)
+else resources.getString(R.string.category_electronics)
+else resources.getString(R.string.category_foods_and_drinks)
+else resources.getString(R.string.category_pets_supplies)
+else resources.getString(R.string.category_bodycare_and_beauty)
+else resources.getString(R.string.category_sports_and_hobbies)
+else resources.getString(R.string.category_clothings_and_wearables)
+else resources.getString(R.string.category_home_and_furnitures)
+else resources.getString(R.string.category_vehicles)
+else resources.getString(R.string.category_other)
+else 
+note right of Companion : Empty
+end
+Companion --> ControllerCreaAsta
+deactivate Companion
+ControllerCreaAsta -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerCreaAsta
+deactivate Controller
+ControllerCreaAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerCreaAsta
+deactivate MutableLiveData
+ControllerCreaAsta -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerCreaAsta
+deactivate Controller
+ControllerCreaAsta -> BuildersKt__Builders_commonKt : launch
+activate BuildersKt__Builders_commonKt
+BuildersKt__Builders_commonKt -> ControllerCreaAsta : () ->
+activate ControllerCreaAsta
+ControllerCreaAsta -> ModelAsta : validate
+activate ModelAsta
+ModelAsta -> ModelAsta : dataFine
+activate ModelAsta
+ModelAsta -> LiveData : getValue
+activate LiveData
+LiveData --> ModelAsta
+deactivate LiveData
+alt dataFine.value == LocalDate.MIN
+create EccezioneCampiNonCompilati
+ModelAsta -> EccezioneCampiNonCompilati : new
+activate EccezioneCampiNonCompilati
+create Exception
+EccezioneCampiNonCompilati -> Exception : new
+activate Exception
+Exception --> EccezioneCampiNonCompilati
+deactivate Exception
+EccezioneCampiNonCompilati --> ModelAsta
+deactivate EccezioneCampiNonCompilati
+end
+ModelAsta --> ModelAsta
+deactivate ModelAsta
+ModelAsta -> ModelAsta : oraFine
+activate ModelAsta
+ModelAsta -> LiveData : getValue
+activate LiveData
+LiveData --> ModelAsta
+deactivate LiveData
+alt oraFine.value == null
+create EccezioneCampiNonCompilati
+ModelAsta -> EccezioneCampiNonCompilati : new
+activate EccezioneCampiNonCompilati
+create Exception
+EccezioneCampiNonCompilati -> Exception : new
+activate Exception
+Exception --> EccezioneCampiNonCompilati
+deactivate Exception
+EccezioneCampiNonCompilati --> ModelAsta
+deactivate EccezioneCampiNonCompilati
+else 
+ModelAsta -> LiveData : getValue
+activate LiveData
+LiveData --> ModelAsta
+deactivate LiveData
+ModelAsta -> LocalDate : now
+activate LocalDate
+LocalDate --> ModelAsta
+deactivate LocalDate
+ModelAsta -> LiveData : getValue
+activate LiveData
+LiveData --> ModelAsta
+deactivate LiveData
+ModelAsta -> LocalTime : now
+activate LocalTime
+LocalTime --> ModelAsta
+deactivate LocalTime
+alt dataFine.value!! == LocalDate.now() && oraFine.value!! <= LocalTime.now()
+create EccezioneDataPassata
+ModelAsta -> EccezioneDataPassata : new
+activate EccezioneDataPassata
+create Exception
+EccezioneDataPassata -> Exception : new
+activate Exception
+Exception --> EccezioneDataPassata
+deactivate Exception
+EccezioneDataPassata --> ModelAsta
+deactivate EccezioneDataPassata
+end
+end
+ModelAsta --> ModelAsta
+deactivate ModelAsta
+ModelAsta -> ModelAsta : nome
+activate ModelAsta
+ModelAsta -> LiveData : getValue
+activate LiveData
+LiveData --> ModelAsta
+deactivate LiveData
+ModelAsta -> StringsKt__StringsKt : isEmpty
+activate StringsKt__StringsKt
+StringsKt__StringsKt --> ModelAsta
+deactivate StringsKt__StringsKt
+alt nome.value?.isEmpty() == true
+create EccezioneCampiNonCompilati
+ModelAsta -> EccezioneCampiNonCompilati : new
+activate EccezioneCampiNonCompilati
+create Exception
+EccezioneCampiNonCompilati -> Exception : new
+activate Exception
+Exception --> EccezioneCampiNonCompilati
+deactivate Exception
+EccezioneCampiNonCompilati --> ModelAsta
+deactivate EccezioneCampiNonCompilati
+end
+ModelAsta --> ModelAsta
+deactivate ModelAsta
+ModelAsta -> ModelAsta : descrizione
+activate ModelAsta
+ModelAsta -> LiveData : getValue
+activate LiveData
+LiveData --> ModelAsta
+deactivate LiveData
+ModelAsta -> StringsKt__StringsKt : isEmpty
+activate StringsKt__StringsKt
+StringsKt__StringsKt --> ModelAsta
+deactivate StringsKt__StringsKt
+alt descrizione.value?.isEmpty() == true
+create EccezioneCampiNonCompilati
+ModelAsta -> EccezioneCampiNonCompilati : new
+activate EccezioneCampiNonCompilati
+create Exception
+EccezioneCampiNonCompilati -> Exception : new
+activate Exception
+Exception --> EccezioneCampiNonCompilati
+deactivate Exception
+EccezioneCampiNonCompilati --> ModelAsta
+deactivate EccezioneCampiNonCompilati
+end
+ModelAsta --> ModelAsta
+deactivate ModelAsta
+ModelAsta -> LiveData : getValue
+activate LiveData
+LiveData --> ModelAsta
+deactivate LiveData
+alt _tipo.value != TipoAsta.SILENZIOSA
+ModelAsta -> ModelAsta : prezzo
+activate ModelAsta
+ModelAsta -> LiveData : getValue
+activate LiveData
+LiveData --> ModelAsta
+deactivate LiveData
+ModelAsta -> BigDecimal : doubleValue
+activate BigDecimal
+BigDecimal --> ModelAsta
+deactivate BigDecimal
+alt prezzo.value?.toDouble() == 0.0
+create EccezioneCampiNonCompilati
+ModelAsta -> EccezioneCampiNonCompilati : new
+activate EccezioneCampiNonCompilati
+create Exception
+EccezioneCampiNonCompilati -> Exception : new
+activate Exception
+Exception --> EccezioneCampiNonCompilati
+deactivate Exception
+EccezioneCampiNonCompilati --> ModelAsta
+deactivate EccezioneCampiNonCompilati
+end
+ModelAsta -> LiveData : getValue
+activate LiveData
+LiveData --> ModelAsta
+deactivate LiveData
+ModelAsta -> BigDecimal : doubleValue
+activate BigDecimal
+BigDecimal --> ModelAsta
+deactivate BigDecimal
+ModelAsta -> LiveData : getValue
+activate LiveData
+LiveData --> ModelAsta
+deactivate LiveData
+create Regex
+ModelAsta -> Regex : new
+activate Regex
+Regex --> ModelAsta
+deactivate Regex
+ModelAsta -> StringsKt__StringsKt : matches
+activate StringsKt__StringsKt
+StringsKt__StringsKt --> ModelAsta
+deactivate StringsKt__StringsKt
+alt prezzo.value?.toDouble()!! < 0.0 || !prezzo.value.toString().matches(Regex("^\\d+(\\.\\d{1,2})?$"))
+create EccezioneCampiNonCompilati
+ModelAsta -> EccezioneCampiNonCompilati : new
+activate EccezioneCampiNonCompilati
+create Exception
+EccezioneCampiNonCompilati -> Exception : new
+activate Exception
+Exception --> EccezioneCampiNonCompilati
+deactivate Exception
+EccezioneCampiNonCompilati --> ModelAsta
+deactivate EccezioneCampiNonCompilati
+end
+ModelAsta --> ModelAsta
+deactivate ModelAsta
+end
+ModelAsta --> ControllerCreaAsta
+deactivate ModelAsta
+ControllerCreaAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerCreaAsta
+deactivate MutableLiveData
+ControllerCreaAsta -> BuildersKt__Builders_commonKt : withContext
+activate BuildersKt__Builders_commonKt
+BuildersKt__Builders_commonKt --> ControllerCreaAsta
+deactivate BuildersKt__Builders_commonKt
+alt returned.idAsta
+else 0L
+ControllerCreaAsta -> Snackbar : make
+activate Snackbar
+Snackbar --> ControllerCreaAsta
+deactivate Snackbar
+ControllerCreaAsta -> Fragment : getResources
+activate Fragment
+Fragment --> ControllerCreaAsta
+deactivate Fragment
+ControllerCreaAsta -> Resources : getColor
+activate Resources
+Resources --> ControllerCreaAsta
+deactivate Resources
+ControllerCreaAsta -> Snackbar : setBackgroundTint
+activate Snackbar
+Snackbar --> ControllerCreaAsta
+deactivate Snackbar
+ControllerCreaAsta -> Fragment : getResources
+activate Fragment
+Fragment --> ControllerCreaAsta
+deactivate Fragment
+ControllerCreaAsta -> Resources : getColor
+activate Resources
+Resources --> ControllerCreaAsta
+deactivate Resources
+ControllerCreaAsta -> Snackbar : setTextColor
+activate Snackbar
+Snackbar --> ControllerCreaAsta
+deactivate Snackbar
+ControllerCreaAsta -> Snackbar : show
+activate Snackbar
+Snackbar --> ControllerCreaAsta
+deactivate Snackbar
+else 
+ControllerCreaAsta -> ModelAsta : clear
+activate ModelAsta
+ModelAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ModelAsta
+deactivate MutableLiveData
+ModelAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ModelAsta
+deactivate MutableLiveData
+ModelAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ModelAsta
+deactivate MutableLiveData
+ModelAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ModelAsta
+deactivate MutableLiveData
+ModelAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ModelAsta
+deactivate MutableLiveData
+ModelAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ModelAsta
+deactivate MutableLiveData
+ModelAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ModelAsta
+deactivate MutableLiveData
+create BigDecimal
+ModelAsta -> BigDecimal : new
+activate BigDecimal
+BigDecimal --> ModelAsta
+deactivate BigDecimal
+ModelAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ModelAsta
+deactivate MutableLiveData
+create BigDecimal
+ModelAsta -> BigDecimal : new
+activate BigDecimal
+BigDecimal --> ModelAsta
+deactivate BigDecimal
+ModelAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ModelAsta
+deactivate MutableLiveData
+ModelAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ModelAsta
+deactivate MutableLiveData
+ModelAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ModelAsta
+deactivate MutableLiveData
+ModelAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ModelAsta
+deactivate MutableLiveData
+ModelAsta --> ControllerCreaAsta
+deactivate ModelAsta
+ControllerCreaAsta -> Snackbar : make
+activate Snackbar
+Snackbar --> ControllerCreaAsta
+deactivate Snackbar
+ControllerCreaAsta -> Fragment : getResources
+activate Fragment
+Fragment --> ControllerCreaAsta
+deactivate Fragment
+ControllerCreaAsta -> Resources : getColor
+activate Resources
+Resources --> ControllerCreaAsta
+deactivate Resources
+ControllerCreaAsta -> Snackbar : setBackgroundTint
+activate Snackbar
+Snackbar --> ControllerCreaAsta
+deactivate Snackbar
+ControllerCreaAsta -> Fragment : getResources
+activate Fragment
+Fragment --> ControllerCreaAsta
+deactivate Fragment
+ControllerCreaAsta -> Resources : getColor
+activate Resources
+Resources --> ControllerCreaAsta
+deactivate Resources
+ControllerCreaAsta -> Snackbar : setTextColor
+activate Snackbar
+Snackbar --> ControllerCreaAsta
+deactivate Snackbar
+ControllerCreaAsta -> Snackbar : show
+activate Snackbar
+Snackbar --> ControllerCreaAsta
+deactivate Snackbar
+ControllerCreaAsta -> BuildersKt__Builders_commonKt : withContext
+activate BuildersKt__Builders_commonKt
+BuildersKt__Builders_commonKt --> ControllerCreaAsta
+deactivate BuildersKt__Builders_commonKt
+ControllerCreaAsta -> OnGoToHome : onGoToHome
+activate OnGoToHome
+OnGoToHome --> ControllerCreaAsta
+deactivate OnGoToHome
+end
+ControllerCreaAsta -> Controller : erroreCampo
+activate Controller
+loop campoErrore
+Controller -> Fragment : getString
+activate Fragment
+Fragment --> Controller
+deactivate Fragment
+Controller -> TextInputLayout : setError
+activate TextInputLayout
+TextInputLayout --> Controller
+deactivate TextInputLayout
+Controller -> Fragment : getString
+activate Fragment
+Fragment --> Controller
+deactivate Fragment
+end
+Controller --> ControllerCreaAsta
+deactivate Controller
+ControllerCreaAsta -> Controller : erroreCampo
+activate Controller
+loop campoErrore
+Controller -> Fragment : getString
+activate Fragment
+Fragment --> Controller
+deactivate Fragment
+Controller -> TextInputLayout : setError
+activate TextInputLayout
+TextInputLayout --> Controller
+deactivate TextInputLayout
+Controller -> Fragment : getString
+activate Fragment
+Fragment --> Controller
+deactivate Fragment
+end
+Controller --> ControllerCreaAsta
+deactivate Controller
+ControllerCreaAsta -> Snackbar : make
+activate Snackbar
+Snackbar --> ControllerCreaAsta
+deactivate Snackbar
+ControllerCreaAsta -> Fragment : getResources
+activate Fragment
+Fragment --> ControllerCreaAsta
+deactivate Fragment
+ControllerCreaAsta -> Resources : getColor
+activate Resources
+Resources --> ControllerCreaAsta
+deactivate Resources
+ControllerCreaAsta -> Snackbar : setBackgroundTint
+activate Snackbar
+Snackbar --> ControllerCreaAsta
+deactivate Snackbar
+ControllerCreaAsta -> Fragment : getResources
+activate Fragment
+Fragment --> ControllerCreaAsta
+deactivate Fragment
+ControllerCreaAsta -> Resources : getColor
+activate Resources
+Resources --> ControllerCreaAsta
+deactivate Resources
+ControllerCreaAsta -> Snackbar : setTextColor
+activate Snackbar
+Snackbar --> ControllerCreaAsta
+deactivate Snackbar
+ControllerCreaAsta -> Snackbar : show
+activate Snackbar
+Snackbar --> ControllerCreaAsta
+deactivate Snackbar
+ControllerCreaAsta --> BuildersKt__Builders_commonKt
+deactivate ControllerCreaAsta
+BuildersKt__Builders_commonKt --> ControllerCreaAsta
+deactivate BuildersKt__Builders_commonKt
+return
+@enduml

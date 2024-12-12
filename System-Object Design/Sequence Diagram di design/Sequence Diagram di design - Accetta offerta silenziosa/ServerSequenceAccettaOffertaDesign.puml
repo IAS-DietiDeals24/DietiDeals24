@@ -1,0 +1,43 @@
+@startuml
+participant Actor
+Actor -> OffertaSilenziosaController : partialUpdateOffertaSilenziosa
+activate OffertaSilenziosaController
+OffertaSilenziosaController -> Logger : info
+activate Logger
+Logger --> OffertaSilenziosaController
+deactivate Logger
+OffertaSilenziosaController -> Logger : trace
+activate Logger
+Logger --> OffertaSilenziosaController
+deactivate Logger
+OffertaSilenziosaController -> OffertaSilenziosaService : isExists
+activate OffertaSilenziosaService
+OffertaSilenziosaService --> OffertaSilenziosaController
+deactivate OffertaSilenziosaService
+alt offertaSilenziosaService.isExists(idOfferta)
+OffertaSilenziosaController -> OffertaSilenziosaService : partialUpdate
+activate OffertaSilenziosaService
+OffertaSilenziosaService --> OffertaSilenziosaController
+deactivate OffertaSilenziosaService
+OffertaSilenziosaController -> Logger : info
+activate Logger
+Logger --> OffertaSilenziosaController
+deactivate Logger
+create ResponseEntity
+OffertaSilenziosaController -> ResponseEntity : new
+activate ResponseEntity
+ResponseEntity --> OffertaSilenziosaController
+deactivate ResponseEntity
+else 
+OffertaSilenziosaController -> Logger : info
+activate Logger
+Logger --> OffertaSilenziosaController
+deactivate Logger
+create ResponseEntity
+OffertaSilenziosaController -> ResponseEntity : new
+activate ResponseEntity
+ResponseEntity --> OffertaSilenziosaController
+deactivate ResponseEntity
+end
+return
+@enduml

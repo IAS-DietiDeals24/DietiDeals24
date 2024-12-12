@@ -1,0 +1,85 @@
+@startuml
+participant Actor
+Actor -> ViewHolderOfferta : clickAccetta
+activate ViewHolderOfferta
+create OffertaSilenziosaDto
+ViewHolderOfferta -> OffertaSilenziosaDto : new
+activate OffertaSilenziosaDto
+create OffertaDiCompratoreDto
+OffertaSilenziosaDto -> OffertaDiCompratoreDto : new
+activate OffertaDiCompratoreDto
+create OffertaDto
+OffertaDiCompratoreDto -> OffertaDto : new
+activate OffertaDto
+OffertaDto --> OffertaDiCompratoreDto
+deactivate OffertaDto
+OffertaDiCompratoreDto --> OffertaSilenziosaDto
+deactivate OffertaDiCompratoreDto
+OffertaSilenziosaDto --> ViewHolderOfferta
+deactivate OffertaSilenziosaDto
+ViewHolderOfferta -> BuildersKt__Builders_commonKt : withContext
+activate BuildersKt__Builders_commonKt
+BuildersKt__Builders_commonKt --> ViewHolderOfferta
+deactivate BuildersKt__Builders_commonKt
+ViewHolderOfferta -> OffertaSilenziosaDto : getStato
+activate OffertaSilenziosaDto
+OffertaSilenziosaDto --> ViewHolderOfferta
+deactivate OffertaSilenziosaDto
+alt returned.stato == StatoOfferta.ACCEPTED.name
+else true
+ViewHolderOfferta -> Snackbar : make
+activate Snackbar
+Snackbar --> ViewHolderOfferta
+deactivate Snackbar
+ViewHolderOfferta -> Resources : getColor
+activate Resources
+Resources --> ViewHolderOfferta
+deactivate Resources
+ViewHolderOfferta -> Snackbar : setBackgroundTint
+activate Snackbar
+Snackbar --> ViewHolderOfferta
+deactivate Snackbar
+ViewHolderOfferta -> Resources : getColor
+activate Resources
+Resources --> ViewHolderOfferta
+deactivate Resources
+ViewHolderOfferta -> Snackbar : setTextColor
+activate Snackbar
+Snackbar --> ViewHolderOfferta
+deactivate Snackbar
+ViewHolderOfferta -> Snackbar : show
+activate Snackbar
+Snackbar --> ViewHolderOfferta
+deactivate Snackbar
+ViewHolderOfferta -> OnRefresh : onRefresh
+activate OnRefresh
+OnRefresh --> ViewHolderOfferta
+deactivate OnRefresh
+else false
+ViewHolderOfferta -> Snackbar : make
+activate Snackbar
+Snackbar --> ViewHolderOfferta
+deactivate Snackbar
+ViewHolderOfferta -> Resources : getColor
+activate Resources
+Resources --> ViewHolderOfferta
+deactivate Resources
+ViewHolderOfferta -> Snackbar : setBackgroundTint
+activate Snackbar
+Snackbar --> ViewHolderOfferta
+deactivate Snackbar
+ViewHolderOfferta -> Resources : getColor
+activate Resources
+Resources --> ViewHolderOfferta
+deactivate Resources
+ViewHolderOfferta -> Snackbar : setTextColor
+activate Snackbar
+Snackbar --> ViewHolderOfferta
+deactivate Snackbar
+ViewHolderOfferta -> Snackbar : show
+activate Snackbar
+Snackbar --> ViewHolderOfferta
+deactivate Snackbar
+end
+return
+@enduml

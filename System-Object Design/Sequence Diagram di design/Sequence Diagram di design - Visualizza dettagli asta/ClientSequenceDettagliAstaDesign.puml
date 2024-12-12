@@ -1,0 +1,263 @@
+@startuml
+participant Actor
+Actor -> ControllerDettagliAsta : elaborazioneAggiuntiva
+activate ControllerDettagliAsta
+ControllerDettagliAsta -> BuildersKt__Builders_commonKt : launch
+activate BuildersKt__Builders_commonKt
+BuildersKt__Builders_commonKt -> ControllerDettagliAsta : () ->
+activate ControllerDettagliAsta
+ControllerDettagliAsta -> BuildersKt__Builders_commonKt : withContext
+activate BuildersKt__Builders_commonKt
+BuildersKt__Builders_commonKt --> ControllerDettagliAsta
+deactivate BuildersKt__Builders_commonKt
+ControllerDettagliAsta -> BuildersKt__Builders_commonKt : withContext
+activate BuildersKt__Builders_commonKt
+BuildersKt__Builders_commonKt --> ControllerDettagliAsta
+deactivate BuildersKt__Builders_commonKt
+ControllerDettagliAsta -> BuildersKt__Builders_commonKt : withContext
+activate BuildersKt__Builders_commonKt
+BuildersKt__Builders_commonKt --> ControllerDettagliAsta
+deactivate BuildersKt__Builders_commonKt
+ControllerDettagliAsta -> BuildersKt__Builders_commonKt : withContext
+activate BuildersKt__Builders_commonKt
+BuildersKt__Builders_commonKt --> ControllerDettagliAsta
+deactivate BuildersKt__Builders_commonKt
+alt asta.idAsta != 0L && creatoreAsta.nomeUtente != ""
+ControllerDettagliAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerDettagliAsta
+deactivate MutableLiveData
+ControllerDettagliAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerDettagliAsta
+deactivate MutableLiveData
+ControllerDettagliAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerDettagliAsta
+deactivate MutableLiveData
+ControllerDettagliAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerDettagliAsta
+deactivate MutableLiveData
+ControllerDettagliAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerDettagliAsta
+deactivate MutableLiveData
+ControllerDettagliAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerDettagliAsta
+deactivate MutableLiveData
+ControllerDettagliAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerDettagliAsta
+deactivate MutableLiveData
+ControllerDettagliAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerDettagliAsta
+deactivate MutableLiveData
+ControllerDettagliAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerDettagliAsta
+deactivate MutableLiveData
+ControllerDettagliAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerDettagliAsta
+deactivate MutableLiveData
+ControllerDettagliAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerDettagliAsta
+deactivate MutableLiveData
+ControllerDettagliAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerDettagliAsta
+deactivate MutableLiveData
+ControllerDettagliAsta -> TextView : setText
+activate TextView
+TextView --> ControllerDettagliAsta
+deactivate TextView
+ControllerDettagliAsta -> LiveData : getValue
+activate LiveData
+LiveData --> ControllerDettagliAsta
+deactivate LiveData
+alt viewModel.tipo.value == TipoAsta.INVERSA
+ControllerDettagliAsta -> Fragment : getString
+activate Fragment
+Fragment --> ControllerDettagliAsta
+deactivate Fragment
+else 
+ControllerDettagliAsta -> Fragment : getString
+activate Fragment
+Fragment --> ControllerDettagliAsta
+deactivate Fragment
+end
+ControllerDettagliAsta -> LiveData : getValue
+activate LiveData
+LiveData --> ControllerDettagliAsta
+deactivate LiveData
+alt viewModel.tipo.value == TipoAsta.INVERSA
+ControllerDettagliAsta -> Fragment : getString
+activate Fragment
+Fragment --> ControllerDettagliAsta
+deactivate Fragment
+else 
+ControllerDettagliAsta -> Fragment : getString
+activate Fragment
+Fragment --> ControllerDettagliAsta
+deactivate Fragment
+end
+ControllerDettagliAsta -> LiveData : getValue
+activate LiveData
+LiveData --> ControllerDettagliAsta
+deactivate LiveData
+alt viewModel.tipo.value
+else TipoAsta.TEMPO_FISSO
+create BigDecimal
+ControllerDettagliAsta -> BigDecimal : new
+activate BigDecimal
+BigDecimal --> ControllerDettagliAsta
+deactivate BigDecimal
+alt offerta.offerta == BigDecimal("0.00")
+else 
+ControllerDettagliAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerDettagliAsta
+deactivate MutableLiveData
+ControllerDettagliAsta -> BigDecimal : toString
+activate BigDecimal
+BigDecimal --> ControllerDettagliAsta
+deactivate BigDecimal
+end
+else TipoAsta.INVERSA
+create BigDecimal
+ControllerDettagliAsta -> BigDecimal : new
+activate BigDecimal
+BigDecimal --> ControllerDettagliAsta
+deactivate BigDecimal
+alt offerta.offerta == BigDecimal("0.00")
+else 
+ControllerDettagliAsta -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerDettagliAsta
+deactivate MutableLiveData
+ControllerDettagliAsta -> BigDecimal : toString
+activate BigDecimal
+BigDecimal --> ControllerDettagliAsta
+deactivate BigDecimal
+end
+else 
+note right of ControllerDettagliAsta : Empty
+end
+ControllerDettagliAsta -> Fragment : getString
+activate Fragment
+Fragment --> ControllerDettagliAsta
+deactivate Fragment
+ControllerDettagliAsta -> TextView : setText
+activate TextView
+TextView --> ControllerDettagliAsta
+deactivate TextView
+ControllerDettagliAsta -> Fragment : getString
+activate Fragment
+Fragment --> ControllerDettagliAsta
+deactivate Fragment
+ControllerDettagliAsta -> ArraysKt___ArraysKt : isNotEmpty
+activate ArraysKt___ArraysKt
+ArraysKt___ArraysKt --> ControllerDettagliAsta
+deactivate ArraysKt___ArraysKt
+alt creatoreAsta.immagineProfilo.isNotEmpty()
+ControllerDettagliAsta -> ImageView : setScaleType
+activate ImageView
+ImageView --> ControllerDettagliAsta
+deactivate ImageView
+end
+alt creatoreAsta.idAccountCollegati.first == CurrentUser.id
+else 
+note right of ControllerDettagliAsta : Empty
+end
+ControllerDettagliAsta -> LiveData : getValue
+activate LiveData
+LiveData --> ControllerDettagliAsta
+deactivate LiveData
+alt CurrentUser.id == 0L || viewModel.stato.value!! == StatoAsta.CLOSED || CurrentUser.id == idAltroAccount
+ControllerDettagliAsta -> TextView : setEnabled
+activate TextView
+TextView --> ControllerDettagliAsta
+deactivate TextView
+ControllerDettagliAsta -> MaterialButton : setIconTintResource
+activate MaterialButton
+MaterialButton --> ControllerDettagliAsta
+deactivate MaterialButton
+ControllerDettagliAsta -> Fragment : getContext
+activate Fragment
+Fragment --> ControllerDettagliAsta
+deactivate Fragment
+ControllerDettagliAsta -> Context : getTheme
+activate Context
+Context --> ControllerDettagliAsta
+deactivate Context
+ControllerDettagliAsta -> ResourcesCompat : getColor
+activate ResourcesCompat
+ResourcesCompat --> ControllerDettagliAsta
+deactivate ResourcesCompat
+ControllerDettagliAsta -> TextView : setTextColor
+activate TextView
+TextView --> ControllerDettagliAsta
+deactivate TextView
+else 
+alt CurrentUser.id == asta.idCreatore
+ControllerDettagliAsta -> View : setVisibility
+activate View
+View --> ControllerDettagliAsta
+deactivate View
+ControllerDettagliAsta -> ImageView : setVisibility
+activate ImageView
+ImageView --> ControllerDettagliAsta
+deactivate ImageView
+ControllerDettagliAsta -> ImageView : setVisibility
+activate ImageView
+ImageView --> ControllerDettagliAsta
+deactivate ImageView
+ControllerDettagliAsta -> ImageView : setVisibility
+activate ImageView
+ImageView --> ControllerDettagliAsta
+deactivate ImageView
+end
+end
+end
+ControllerDettagliAsta -> Snackbar : make
+activate Snackbar
+Snackbar --> ControllerDettagliAsta
+deactivate Snackbar
+ControllerDettagliAsta -> Fragment : getResources
+activate Fragment
+Fragment --> ControllerDettagliAsta
+deactivate Fragment
+ControllerDettagliAsta -> Resources : getColor
+activate Resources
+Resources --> ControllerDettagliAsta
+deactivate Resources
+ControllerDettagliAsta -> Snackbar : setBackgroundTint
+activate Snackbar
+Snackbar --> ControllerDettagliAsta
+deactivate Snackbar
+ControllerDettagliAsta -> Fragment : getResources
+activate Fragment
+Fragment --> ControllerDettagliAsta
+deactivate Fragment
+ControllerDettagliAsta -> Resources : getColor
+activate Resources
+Resources --> ControllerDettagliAsta
+deactivate Resources
+ControllerDettagliAsta -> Snackbar : setTextColor
+activate Snackbar
+Snackbar --> ControllerDettagliAsta
+deactivate Snackbar
+ControllerDettagliAsta -> Snackbar : show
+activate Snackbar
+Snackbar --> ControllerDettagliAsta
+deactivate Snackbar
+ControllerDettagliAsta --> BuildersKt__Builders_commonKt
+deactivate ControllerDettagliAsta
+BuildersKt__Builders_commonKt --> ControllerDettagliAsta
+deactivate BuildersKt__Builders_commonKt
+return
+@enduml

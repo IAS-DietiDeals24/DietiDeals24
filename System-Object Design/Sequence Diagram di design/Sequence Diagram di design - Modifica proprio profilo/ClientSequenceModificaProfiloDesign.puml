@@ -1,0 +1,336 @@
+@startuml
+participant Actor
+Actor -> ControllerModificaProfilo : clickConferma
+activate ControllerModificaProfilo
+ControllerModificaProfilo -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerModificaProfilo
+deactivate Controller
+ControllerModificaProfilo -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerModificaProfilo
+deactivate MutableLiveData
+ControllerModificaProfilo -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerModificaProfilo
+deactivate Controller
+ControllerModificaProfilo -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerModificaProfilo
+deactivate Controller
+ControllerModificaProfilo -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerModificaProfilo
+deactivate MutableLiveData
+ControllerModificaProfilo -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerModificaProfilo
+deactivate Controller
+ControllerModificaProfilo -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerModificaProfilo
+deactivate Controller
+ControllerModificaProfilo -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerModificaProfilo
+deactivate MutableLiveData
+ControllerModificaProfilo -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerModificaProfilo
+deactivate Controller
+ControllerModificaProfilo -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerModificaProfilo
+deactivate Controller
+ControllerModificaProfilo -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerModificaProfilo
+deactivate MutableLiveData
+ControllerModificaProfilo -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerModificaProfilo
+deactivate Controller
+ControllerModificaProfilo -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerModificaProfilo
+deactivate Controller
+ControllerModificaProfilo -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerModificaProfilo
+deactivate MutableLiveData
+ControllerModificaProfilo -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerModificaProfilo
+deactivate Controller
+ControllerModificaProfilo -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerModificaProfilo
+deactivate Controller
+ControllerModificaProfilo -> MutableLiveData : setValue
+activate MutableLiveData
+MutableLiveData --> ControllerModificaProfilo
+deactivate MutableLiveData
+ControllerModificaProfilo -> Controller : estraiTestoDaElemento
+activate Controller
+Controller -> AppCompatEditText : getText
+activate AppCompatEditText
+AppCompatEditText --> Controller
+deactivate AppCompatEditText
+Controller --> ControllerModificaProfilo
+deactivate Controller
+ControllerModificaProfilo -> BuildersKt__Builders_commonKt : launch
+activate BuildersKt__Builders_commonKt
+BuildersKt__Builders_commonKt -> ControllerModificaProfilo : () ->
+activate ControllerModificaProfilo
+ControllerModificaProfilo -> ModelProfilo : validate
+activate ModelProfilo
+ModelProfilo -> ModelProfilo : nome
+activate ModelProfilo
+ModelProfilo -> LiveData : getValue
+activate LiveData
+LiveData --> ModelProfilo
+deactivate LiveData
+ModelProfilo -> StringsKt__StringsKt : isEmpty
+activate StringsKt__StringsKt
+StringsKt__StringsKt --> ModelProfilo
+deactivate StringsKt__StringsKt
+alt nome.value?.isEmpty() == true
+create EccezioneCampiNonCompilati
+ModelProfilo -> EccezioneCampiNonCompilati : new
+activate EccezioneCampiNonCompilati
+create Exception
+EccezioneCampiNonCompilati -> Exception : new
+activate Exception
+Exception --> EccezioneCampiNonCompilati
+deactivate Exception
+EccezioneCampiNonCompilati --> ModelProfilo
+deactivate EccezioneCampiNonCompilati
+end
+ModelProfilo --> ModelProfilo
+deactivate ModelProfilo
+ModelProfilo -> ModelProfilo : cognome
+activate ModelProfilo
+ModelProfilo -> LiveData : getValue
+activate LiveData
+LiveData --> ModelProfilo
+deactivate LiveData
+ModelProfilo -> StringsKt__StringsKt : isEmpty
+activate StringsKt__StringsKt
+StringsKt__StringsKt --> ModelProfilo
+deactivate StringsKt__StringsKt
+alt cognome.value?.isEmpty() == true
+create EccezioneCampiNonCompilati
+ModelProfilo -> EccezioneCampiNonCompilati : new
+activate EccezioneCampiNonCompilati
+create Exception
+EccezioneCampiNonCompilati -> Exception : new
+activate Exception
+Exception --> EccezioneCampiNonCompilati
+deactivate Exception
+EccezioneCampiNonCompilati --> ModelProfilo
+deactivate EccezioneCampiNonCompilati
+end
+ModelProfilo --> ModelProfilo
+deactivate ModelProfilo
+ModelProfilo -> ModelProfilo : dataNascita
+activate ModelProfilo
+ModelProfilo -> LiveData : getValue
+activate LiveData
+LiveData --> ModelProfilo
+deactivate LiveData
+alt dataNascita.value == LocalDate.MIN
+create EccezioneCampiNonCompilati
+ModelProfilo -> EccezioneCampiNonCompilati : new
+activate EccezioneCampiNonCompilati
+create Exception
+EccezioneCampiNonCompilati -> Exception : new
+activate Exception
+Exception --> EccezioneCampiNonCompilati
+deactivate Exception
+EccezioneCampiNonCompilati --> ModelProfilo
+deactivate EccezioneCampiNonCompilati
+end
+ModelProfilo --> ModelProfilo
+deactivate ModelProfilo
+ModelProfilo --> ControllerModificaProfilo
+deactivate ModelProfilo
+ControllerModificaProfilo -> BuildersKt__Builders_commonKt : withContext
+activate BuildersKt__Builders_commonKt
+BuildersKt__Builders_commonKt --> ControllerModificaProfilo
+deactivate BuildersKt__Builders_commonKt
+alt returned.nomeUtente
+else ""
+ControllerModificaProfilo -> Snackbar : make
+activate Snackbar
+Snackbar --> ControllerModificaProfilo
+deactivate Snackbar
+ControllerModificaProfilo -> Fragment : getResources
+activate Fragment
+Fragment --> ControllerModificaProfilo
+deactivate Fragment
+ControllerModificaProfilo -> Resources : getColor
+activate Resources
+Resources --> ControllerModificaProfilo
+deactivate Resources
+ControllerModificaProfilo -> Snackbar : setBackgroundTint
+activate Snackbar
+Snackbar --> ControllerModificaProfilo
+deactivate Snackbar
+ControllerModificaProfilo -> Fragment : getResources
+activate Fragment
+Fragment --> ControllerModificaProfilo
+deactivate Fragment
+ControllerModificaProfilo -> Resources : getColor
+activate Resources
+Resources --> ControllerModificaProfilo
+deactivate Resources
+ControllerModificaProfilo -> Snackbar : setTextColor
+activate Snackbar
+Snackbar --> ControllerModificaProfilo
+deactivate Snackbar
+ControllerModificaProfilo -> Snackbar : show
+activate Snackbar
+Snackbar --> ControllerModificaProfilo
+deactivate Snackbar
+else 
+ControllerModificaProfilo -> Snackbar : make
+activate Snackbar
+Snackbar --> ControllerModificaProfilo
+deactivate Snackbar
+ControllerModificaProfilo -> Fragment : getResources
+activate Fragment
+Fragment --> ControllerModificaProfilo
+deactivate Fragment
+ControllerModificaProfilo -> Resources : getColor
+activate Resources
+Resources --> ControllerModificaProfilo
+deactivate Resources
+ControllerModificaProfilo -> Snackbar : setBackgroundTint
+activate Snackbar
+Snackbar --> ControllerModificaProfilo
+deactivate Snackbar
+ControllerModificaProfilo -> Fragment : getResources
+activate Fragment
+Fragment --> ControllerModificaProfilo
+deactivate Fragment
+ControllerModificaProfilo -> Resources : getColor
+activate Resources
+Resources --> ControllerModificaProfilo
+deactivate Resources
+ControllerModificaProfilo -> Snackbar : setTextColor
+activate Snackbar
+Snackbar --> ControllerModificaProfilo
+deactivate Snackbar
+ControllerModificaProfilo -> Snackbar : show
+activate Snackbar
+Snackbar --> ControllerModificaProfilo
+deactivate Snackbar
+ControllerModificaProfilo -> BuildersKt__Builders_commonKt : withContext
+activate BuildersKt__Builders_commonKt
+BuildersKt__Builders_commonKt --> ControllerModificaProfilo
+deactivate BuildersKt__Builders_commonKt
+ControllerModificaProfilo -> OnGoToProfile : onGoToProfile
+activate OnGoToProfile
+OnGoToProfile --> ControllerModificaProfilo
+deactivate OnGoToProfile
+end
+ControllerModificaProfilo -> Controller : erroreCampo
+activate Controller
+loop campoErrore
+Controller -> Fragment : getString
+activate Fragment
+Fragment --> Controller
+deactivate Fragment
+Controller -> TextInputLayout : setError
+activate TextInputLayout
+TextInputLayout --> Controller
+deactivate TextInputLayout
+Controller -> Fragment : getString
+activate Fragment
+Fragment --> Controller
+deactivate Fragment
+end
+Controller --> ControllerModificaProfilo
+deactivate Controller
+ControllerModificaProfilo -> Snackbar : make
+activate Snackbar
+Snackbar --> ControllerModificaProfilo
+deactivate Snackbar
+ControllerModificaProfilo -> Fragment : getResources
+activate Fragment
+Fragment --> ControllerModificaProfilo
+deactivate Fragment
+ControllerModificaProfilo -> Resources : getColor
+activate Resources
+Resources --> ControllerModificaProfilo
+deactivate Resources
+ControllerModificaProfilo -> Snackbar : setBackgroundTint
+activate Snackbar
+Snackbar --> ControllerModificaProfilo
+deactivate Snackbar
+ControllerModificaProfilo -> Fragment : getResources
+activate Fragment
+Fragment --> ControllerModificaProfilo
+deactivate Fragment
+ControllerModificaProfilo -> Resources : getColor
+activate Resources
+Resources --> ControllerModificaProfilo
+deactivate Resources
+ControllerModificaProfilo -> Snackbar : setTextColor
+activate Snackbar
+Snackbar --> ControllerModificaProfilo
+deactivate Snackbar
+ControllerModificaProfilo -> Snackbar : show
+activate Snackbar
+Snackbar --> ControllerModificaProfilo
+deactivate Snackbar
+ControllerModificaProfilo --> BuildersKt__Builders_commonKt
+deactivate ControllerModificaProfilo
+BuildersKt__Builders_commonKt --> ControllerModificaProfilo
+deactivate BuildersKt__Builders_commonKt
+return
+@enduml

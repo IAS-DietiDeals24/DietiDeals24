@@ -1,0 +1,47 @@
+@startuml
+participant Actor
+Actor -> AstaTempoFissoController : getAstaTempoFisso
+activate AstaTempoFissoController
+AstaTempoFissoController -> Logger : info
+activate Logger
+Logger --> AstaTempoFissoController
+deactivate Logger
+AstaTempoFissoController -> Logger : trace
+activate Logger
+Logger --> AstaTempoFissoController
+deactivate Logger
+AstaTempoFissoController -> AstaTempoFissoService : findOne
+activate AstaTempoFissoService
+AstaTempoFissoService --> AstaTempoFissoController
+deactivate AstaTempoFissoService
+AstaTempoFissoController -> Optional : isPresent
+activate Optional
+Optional --> AstaTempoFissoController
+deactivate Optional
+alt foundAstaTempoFissoDto.isPresent()
+AstaTempoFissoController -> Logger : info
+activate Logger
+Logger --> AstaTempoFissoController
+deactivate Logger
+AstaTempoFissoController -> Optional : get
+activate Optional
+Optional --> AstaTempoFissoController
+deactivate Optional
+create ResponseEntity
+AstaTempoFissoController -> ResponseEntity : new
+activate ResponseEntity
+ResponseEntity --> AstaTempoFissoController
+deactivate ResponseEntity
+else 
+AstaTempoFissoController -> Logger : info
+activate Logger
+Logger --> AstaTempoFissoController
+deactivate Logger
+create ResponseEntity
+AstaTempoFissoController -> ResponseEntity : new
+activate ResponseEntity
+ResponseEntity --> AstaTempoFissoController
+deactivate ResponseEntity
+end
+return
+@enduml
