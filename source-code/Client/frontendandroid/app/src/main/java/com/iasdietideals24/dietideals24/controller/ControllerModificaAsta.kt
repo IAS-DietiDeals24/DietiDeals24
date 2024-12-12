@@ -35,18 +35,8 @@ import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
 import com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneDataPassata
-import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
-import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToDetails
-import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalDate
-import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
-import com.iasdietideals24.dietideals24.utilities.kscripts.toMillis
-import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
-import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
-import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
-import com.iasdietideals24.dietideals24.utilities.repositories.CategoriaAstaRepository
-import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
-import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
-import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
+import com.iasdietideals24.dietideals24.utilities.kscripts.*
+import com.iasdietideals24.dietideals24.utilities.repositories.*
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -69,7 +59,6 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
     private val repositoryProfilo: ProfiloRepository by inject()
     private val compratoreRepository: CompratoreRepository by inject()
     private val venditoreRepository: VenditoreRepository by inject()
-    private val categoriaAstaRepository: CategoriaAstaRepository by inject()
 
     // ViewModel
     private val viewModel: ModelAsta by activityViewModel()

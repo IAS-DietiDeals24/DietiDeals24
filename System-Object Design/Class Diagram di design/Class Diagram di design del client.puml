@@ -1,0 +1,1870 @@
+@startuml
+class com.iasdietideals24.dietideals24.utilities.dto.exceptional.PutProfiloDto {
+- String nomeUtente
+- byte[] profilePicture
+- AnagraficaProfiloDto anagrafica
+- LinksProfiloDto links
+- String email
+- String password
+- TokensAccountDto tokens
+- String tipoAccount
++ <<Create>> PutProfiloDto(String,byte[],AnagraficaProfiloDto,LinksProfiloDto,String,String,TokensAccountDto,String)
++ <<Create>> PutProfiloDto()
++ String getNomeUtente()
++ void setNomeUtente(String)
++ String getEmail()
++ void setEmail(String)
++ String getPassword()
++ void setPassword(String)
++ String getTipoAccount()
++ void setTipoAccount(String)
++ byte[] getProfilePicture()
++ AnagraficaProfiloDto getAnagrafica()
++ LinksProfiloDto getLinks()
++ TokensAccountDto getTokens()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.paging.AstaTempoFissoPagingSource {
++ <<Create>> AstaTempoFissoPagingSource(AstaTempoFissoRepository,Long,String,String,ApiCall)
++ LoadResult<Long, AstaTempoFissoDto> load(LoadParams<Long>)
++ Long? getRefreshKey(PagingState<Long, AstaTempoFissoDto>)
+}
+
+class com.iasdietideals24.dietideals24.utilities.paging.NotificaPagingSource {
++ <<Create>> NotificaPagingSource(NotificaRepository,Long)
++ LoadResult<Long, NotificaPagingSource> load(LoadParams<Long>)
++ Long? getRefreshKey(PagingState<Long, NotificaPagingSource>)
+}
+
+class com.iasdietideals24.dietideals24.utilities.paging.OffertaTempoFissoPagingSource {
++ <<Create>> OffertaTempoFissoPagingSource(OffertaTempoFissoRepository,Long)
++ LoadResult<Long, OffertaTempoFissoDto> load(LoadParams<Long>)
++ Long? getRefreshKey(PagingState<Long, OffertaTempoFissoDto>)
+}
+
+class com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShallowDto {
+- String nome
++ <<Create>> CategoriaAstaShallowDto()
++ <<Create>> CategoriaAstaShallowDto(String)
++ String getNome()
+}
+
+
+class com.iasdietideals24.dietideals24.controller.ControllerCreaAsta {
+- ModelAsta viewModel
+- AstaInversaRepository astaInversaRepository
+- AstaSilenziosaRepository astaSilenziosaRepository
+- AstaTempoFissoRepository astaTempoFissoRepository
+- CategoriaAstaRepository categoriaAstaRepository
+- OnGoToHome? listenerGoToHome
+- ActivityResultLauncher<PickVisualMediaRequest> selectPhoto
++ void onAttach(Context)
++ void onDetach()
++ void onCreate(Bundle?)
+- void apriMaterialDialog(Array<String>,Array<String>)
++ void impostaEventiClick()
++ void impostaEventiDiCambiamentoCampi()
+- void rimuoviErroreCampi()
++ void elaborazioneAggiuntiva()
++ void impostaOsservatori()
+- void clickCrea()
+- AstaDto creaAsta()
+- void clickDataScadenza()
+- void clickOraScadenza()
+- void clickFoto()
+}
+
+
+class com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFase3 {
+- ModelRegistrazione viewModel
+- ProfiloRepository profiloRepository
+- VenditoreRepository venditoreRepository
+- OnBackButton? listenerBackButton
+- OnChangeActivity? listenerChangeActivity
++ void onAttach(Context)
++ void onDetach()
++ void impostaEventiClick()
++ void impostaOsservatori()
+- void clickIndietro()
+- void clickFine()
+- ProfiloDto creazioneAccountCompratore()
+- AccountDto creazioneAccountVenditore()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.tools.Logger {
++ <<Create>> Logger(DataStore<Preferences>)
++ void scriviLog(String)
++ void cancellaLog()
+}
+
+class com.iasdietideals24.dietideals24.utilities.dto.utilities.NewTokenDto {
+- String authToken
+- String refreshToken
+- Long expiresIn
++ <<Create>> NewTokenDto()
++ String getAuthToken()
++ String getRefreshToken()
++ Long getExpiresIn()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.adapters.AdapterAsteCreate {
++ <<Create>> AdapterAsteCreate(DiffUtil.ItemCallback<AstaDto>,Resources)
++ ViewHolderAstaCreata onCreateVieHolder(ViewGroup, Int)
++ void onBindViewHolder(ViewHolderAstaCreata, Int)
++ void onViewDetachedFromWindows(ViewHolderAstaCreata)
+}
+
+class com.iasdietideals24.dietideals24.utilities.tools.Sort {
+- boolean unsorted
+- boolean sorted
+- boolean empty
++ <<Create>> Sort()
++ <<Create>> Sort(boolean,boolean,boolean)
++ boolean isUnsorted()
++ boolean isSorted()
++ boolean isEmpty()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.data.Offerta {
++ <<Create>> Offerta(Long,Long,Long,BigDecimal,LocalDate,LocalTime)
+}
+
+interface com.iasdietideals24.dietideals24.utilities.services.Service {
+}
+class com.iasdietideals24.dietideals24.utilities.dto.OffertaSilenziosaDto {
+- String stato
++ <<Create>> OffertaSilenziosaDto(Long,LocalDate,LocalTime,BigDecimal,AccountShallowDto,String,AstaShallowDto)
++ <<Create>> OffertaSilenziosaDto()
++ Offerta toOfferta()
++ OffertaRicevuta toOffertaRicevuta()
++ String getStato()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.paging.OffertaSilenziosaPagingSource {
++ <<Create>> OffertaSilenziosaPagingSource(OffertaSilenziosaRepository,Long)
++ LoadResult<Long, OffertaSilenziosaDto> load(LoadParams<Long>)
++ Long? getRefreshKey(PagingState<Long, OffertaSilenziosaDto>)
+}
+
+abstract class com.iasdietideals24.dietideals24.utilities.dto.AstaDiVenditoreDto {
++ <<Create>> AstaDiVenditoreDto(Long,String,CategoriaAstaShallowDto,String,String,LocalDate,LocalTime,byte[],Set<NotificaShallowDto>,AccountShallowDto,Set<OffertaShallowDto>)
++ <<Create>> AstaDiVenditoreDto()
+}
+
+interface com.iasdietideals24.dietideals24.utilities.services.ProfiloService {
++ Response<ProfiloDto> caricaProfilo(String)
++ Response<ProfiloDto> aggiornaProfilo(ProfiloDto,String)
++ Response<ProfiloDto> creazioneAccountProfilo(String, PutProfiloDto)
+}
+
+class com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto {
+- Long idNotifica
++ <<Create>> NotificaShallowDto()
++ Long getIdNotifica()
+}
+
+
+class com.iasdietideals24.dietideals24.model.ModelProfilo {
+- MutableLiveData<Long> _idAccount
+- MutableLiveData<String> _tipoAccount
+- MutableLiveData<String> _nomeUtente
+- MutableLiveData<ByteArray?> _immagineProfilo
+- MutableLiveData<String> _nome
+- MutableLiveData<String> _cognome
+- MutableLiveData<String> _email
+- MutableLiveData<LocalDate> _dataNascita
+- MutableLiveData<String> _genere
+- MutableLiveData<String> _areaGeografica
+- MutableLiveData<String> _biografia
+- MutableLiveData<String> _linkInstagram
+- MutableLiveData<String> _linkFacebook
+- MutableLiveData<String> _linkGitHub
+- MutableLiveData<String> _linkX
+- MutableLiveData<String> _linkPersonale
++ MutableLiveData<Long> getIdAccount()
++ MutableLiveData<String> getTipoAccount()
++ MutableLiveData<String> getNomeUtente()
++ MutableLiveData<ByteArray?> getImmagineProfilo()
++ MutableLiveData<String> getNome()
++ MutableLiveData<String> getCognome()
++ MutableLiveData<String> getEmail()
++ MutableLiveData<LocalDate> getDataNascita()
++ MutableLiveData<String> getGenere()
++ MutableLiveData<String> getAreaGeografica()
++ MutableLiveData<String> getBiografia()
++ MutableLiveData<String> getLinkInstagram()
++ MutableLiveData<String> getLinkFacebook()
++ MutableLiveData<String> getLinkGitHub()
++ MutableLiveData<String> getLinkX()
++ MutableLiveData<String> getLinkPersonale()
++ ProfiloDto toProfilo()
++ void clear()
++ void validate()
++ void clear()
++ void validate()
+- void nome()
+- void cognome()
+- void dataNascita()
+}
+
+
+class com.iasdietideals24.dietideals24.activities.Logout {
++ void onCreate(Bundle?)
+}
+
+interface com.iasdietideals24.dietideals24.utilities.services.AuthService {
++ Response<UrlDto> recuperaUrlAutenticazione(String)
++ Response<NewTokenDto> recuperaToken(String,String)
++ Call<RefreshTokenDto> aggiornaAccessToken(String)
++ Response<UrlDto> logout(String,String,String)
+}
+
+class com.iasdietideals24.dietideals24.utilities.dto.AstaTempoFissoDto {
+- BigDecimal sogliaMinima
++ <<Create>> AstaTempoFissoDto(Long,String,CategoriaAstaShallowDto,String,String,LocalDate,LocalTime,byte[],Set<NotificaShallowDto>,AccountShallowDto,Set<OffertaShallowDto>,BigDecimal)
++ <<Create>> AstaTempoFissoDto()
++ AnteprimaAsta toAnteprimaAsta()
++ Asta toAsta()
++ BigDecimal getSogliaMinima()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository {
++ <<Create>> CompratoreRepository(CompratoreService)
++ CompratoreDto accediCompratore(String)
++ CompratoreDto caricaAccountCompratore(Long)
+}
+
+abstract class com.iasdietideals24.dietideals24.utilities.dto.OffertaDiVenditoreDto {
+# AccountShallowDto venditoreCollegatoShallow
++ <<Create>> OffertaDiVenditoreDto(Long,LocalDate,LocalTime,BigDecimal,AccountShallowDto,AstaShallowDto)
++ <<Create>> OffertaDiVenditoreDto()
++ AccountShallowDto getVenditoreCollegatoShallow()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.dto.utilities.AnagraficaProfiloDto {
+- String nome
+- String cognome
+- LocalDate dataNascita
+- String areaGeografica
+- String genere
+- String biografia
++ <<Create>> AnagraficaProfiloDto(String,String,LocalDate,String,String,String)
++ <<Create>> AnagraficaProfiloDto()
++ String getNome()
++ void setNome(String)
++ String getCognome()
++ LocalDate getDataNascita()
++ String getAreaGeografica()
++ String getGenere()
++ String getBiografia()
+}
+
+
+class com.iasdietideals24.dietideals24.controller.ControllerSelezioneTipoAccount {
+- AuthRepository authRepository
+- OnChangeActivity? changeActivityListener
+- OnHideBackButton? hideBackButtonListener
+- OnShowBackButton? showBackButtonListener
+- OnNextStep? nextStepListener
++ void onAttach(Context)
++ void onDetach()
+# void elaborazioneAggiuntiva()
+# void impostaEventiClick()
+- void clickCompratore()
+- void clickVenditore()
+- void clickOspite()
+}
+
+
+abstract class com.iasdietideals24.dietideals24.utilities.dto.AstaDiCompratoreDto {
++ <<Create>> AstaDiCompratoreDto(Long,String,CategoriaAstaShallowDto,String,String,LocalDate,LocalTime,byte[],Set<NotificaShallowDto>,AccountShallowDto,Set<OffertaShallowDto>)
++ <<Create>> AstaDiCompratoreDto()
+}
+
+class com.iasdietideals24.dietideals24.utilities.data.AnteprimaAsta {
++ <<Create>> AnteprimaAsta(Long,StatoAsta,TipoAsta,LocalDate,LocalTime,ByteArray,String,BigDecimal)
+}
+
+class com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository {
++ <<Create>> VenditoreRepository(VenditoreService)
++ VenditoreDto accediVenditore(String)
++ VenditoreDto caricaAccountVenditore(Long)
++ VenditoreDto creaAccountVenditore(VenditoreDto)
+}
+
+class com.iasdietideals24.dietideals24.utilities.dto.shallows.OffertaShallowDto {
+- Long idOfferta
+- String tipoOffertaPerAccount
+- String tipoOffertaSpecifica
++ Long getIdOfferta()
++ void setIdOfferta(Long)
++ String getTipoOffertaPerAccount()
++ String getTipoOffertaSpecifica()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneDataPassata {
++ String message
++ <<Create>> EccezioneDataPassata(String)
+}
+
+
+class com.iasdietideals24.dietideals24.model.ModelRegistrazione {
+- MutableLiveData<Long> _idAccount
++ MutableLiveData<Long> getIdAccount()
+- MutableLiveData<String> _facebookAccountID
+- MutableLiveData<String> getFacebookAccountID()
+- MutableLiveData<String> _email
++ MutableLiveData<String> getEmail()
+- MutableLiveData<String> _password
++ MutableLiveData<String> getPassword()
+- MutableLiveData<TipoAccount> _tipoAccount
++ MutableLiveData<TipoAccount> getTipoAccount()
+- MutableLiveData<String> _nomeUtente
++ MutableLiveData<String> getNomeUtente()
+- MutableLiveData<String> _nome
++ MutableLiveData<String> getNome()
+- MutableLiveData<String> _cognome
++ MutableLiveData<String> getCognome()
+- MutableLiveData<LocalDate> _dataNascita
++ MutableLiveData<LocalDate> getDataNascita()
+- MutableLiveData<ByteArray> _immagineProfilo
++ MutableLiveData<ByteArray> getImmagineProfilo()
+- MutableLiveData<String> _biografia
++ MutableLiveData<String> getBiografia()
+- MutableLiveData<String> _areaGeografica
++ MutableLiveData<String> getAreaGeografica()
+- MutableLiveData<String> _genere
++ MutableLiveData<String> getGenere()
+- MutableLiveData<String> _linkPersonale
++ MutableLiveData<String> getLinkPersonale()
+- MutableLiveData<String> _linkInstagram
++ MutableLiveData<String> getLinkInstagram()
+- MutableLiveData<String> _linkFacebook
++ MutableLiveData<String> getLinkFacebook()
+- MutableLiveData<String> _linkGitHub
++ MutableLiveData<String> getLinkGitHub()
+- MutableLiveData<String> _linkX
++ MutableLiveData<String> getLinkX()
++ <<Create>> ModelRegistrazione(ProfiloRepository)
++ PutProfiloDto toPutAccountCompratore()
++ VenditoreDto toAccountVenditore()
++ void validateProfile()
+- void nomeUtente()
+- Boolean esisteNomeUtente()
+- void nome()
+- void cognome()
+- void dataNascita()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.tools.ImageHandler$Companion {
++ ByteArray? encodeImage(Uri?,Context)
+}
+
+class com.iasdietideals24.dietideals24.utilities.tools.ImageHandler {
+}
+interface com.iasdietideals24.dietideals24.utilities.services.OffertaSilenziosaService {
++ Response<OffertaSilenziosaDto> recuperaOffertaPersonalePiuAltaSilenziosa(Long,Long)
++ Response<OffertaSilenziosaDto> inviaOffertaSilenziosa(OffertaSilenziosaDto)
++ Response<Page<OffertaSilenziosaDto>> recuperaOfferteSilenziose(Long,Long,Long)
++ Response<OffertaSilenziosaDto> accettaOfferta(OffertaSilenziosaDto,Long)
++ Response<OffertaSilenziosaDto> rifiutaOfferta(OffertaSilenziosaDto,Long)
+}
+
+interface com.iasdietideals24.dietideals24.utilities.services.VenditoreService {
++ Response<Page<VenditoreDto>> accediVenditore(String)
++ Response<VenditoreDto> caricaAccountVenditore(Long)
++ Response<VenditoreDto> creaAccountVenditore(VenditoreDto)
+}
+
+class com.iasdietideals24.dietideals24.utilities.tools.Page<T> {
+- List<T> content
+- Pageable pageable
+- int totalElements
+- int totalPages
+- boolean last
+- int numberOfElements
+- boolean first
+- int size
+- int number
+- Sort sort
+- boolean empty
++ <<Create>> Page()
++ <<Create>> Page(List<T>,Pageable,int,int,boolean,int,boolean,int,int,Sort,boolean)
++ List<T> getContent()
++ Pageable getPageable()
++ int getTotalElements()
++ int getTotalPages()
++ boolean isLast()
++ int getNumberOfElements()
++ boolean isFirst()
++ int getSize()
++ int getNumber()
++ Sort getSort()
++ boolean isEmpty()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder {
+}
+interface com.iasdietideals24.dietideals24.utilities.services.OffertaInversaService {
++ Response<OffertaInversaDto> recuperaOffertaPiuBassa(Long)
++ Response<OffertaInversaDto> recuperaOffertaPersonalePiuBassaInversa(Long,Long)
++ Response<OffertaInversaDto> inviaOffertaInversa(OffertaInversaDto)
++ Response<Page<OffertaInversaDto>> recuperaOfferteInverse(Long,Long,Long)
+}
+
+enum com.iasdietideals24.dietideals24.utilities.enumerations.StatoAsta {
++  ACTIVE
++  CLOSED
+}
+
+class com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto {
+- String nomeUtente
+- byte[] profilePicture
+- AnagraficaProfiloDto anagrafica
+- LinksProfiloDto links
+- Set<AccountShallowDto> accountsShallow
++ <<Create>> ProfiloDto(String,byte[],AnagraficaProfiloDto,LinksProfiloDto,Set<AccountShallowDto>)
++ <<Create>> ProfiloDto()
++ Profilo toProfilo()
++ AnteprimaProfilo toAnteprimaProfilo()
++ Account toAccount()
++ String getNomeUtente()
++ void setNomeUtente(String)
++ byte[] getProfilePicture()
++ AnagraficaProfiloDto getAnagrafica()
++ LinksProfiloDto getLinks()
++ Set<AccountShallowDto> getAccountsShallow()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAccountNonEsistente {
++ String message
++ <<Create>> EccezioneAccountNonEsistente(String)
+}
+
+
+class com.iasdietideals24.dietideals24.DietiDeals24Application {
++ void onCreate()
+}
+
+class com.iasdietideals24.dietideals24.activities.ScelteIniziali {
+- AuthRepository authRepository
+- CompratoreRepository compratoreRepository
+- VenditoreRepository venditoreRepository
++ void onCreate(Bundle?)
+- NavController getNavController()
++ void onChangeActivity(Class<Activity>)
++ void onHideBackButton()
++ void onShowBackButton()
++ onNextStep(KClass<*>)
+}
+class com.iasdietideals24.dietideals24.model.ModelNotifiche {
+- NotificaPagingSource pagingSourceNotifiche
+- Pager<Long, NotificaDto> pagerNotifiche
+- Flow<PagingData<NotificaDto>> flowNotifiche
++ <<Create>> ModelNotifiche(NotificaRepository)
++ Flow<PagingData<NotificaDto>> getNotificheFlows()
+- void invalidateNotifiche()
++ void invalidate()
+}
+
+class com.iasdietideals24.dietideals24.utilities.comparators.AstaDtoComparator {
++ Boolean areItemsTheSame(AstaDto,AstaDto)
++ Boolean areContentsTheSame(AstaDto,AstaDto)
+}
+
+class com.iasdietideals24.dietideals24.utilities.annotations.Validation {
+}
+class com.iasdietideals24.dietideals24.utilities.paging.OffertaInversaPagingSource {
++ <<Create>> OffertaInversaPagingSource(OffertaInversaRepository,Long)
++ LoadResult<Long, OffertaInversaDto> load(LoadParams<Long>)
++ Long? getRefreshKey(PagingState<Long, OffertaInversaDto>)
+}
+
+abstract class com.iasdietideals24.dietideals24.utilities.dto.OffertaDto {
+# Long idOfferta
+# LocalDate dataInvio
+# LocalTime oraInvio
+# BigDecimal valore
+# AstaShallowDto astaRiferimentoShallow
++ <<Create>> OffertaDto(Long,LocalDate,LocalTime,BigDecimal,AstaShallowDto)
++ <<Create>> OffertaDto()
++ {abstract}Offerta toOfferta()
++ {abstract}OffertaRicevuta toOffertaRicevuta()
++ Long getIdOfferta()
++ void setIdOfferta(Long)
++ LocalDate getDataInvio()
++ void setDataInvio(LocalDate)
++ LocalTime getOraInvio()
++ void setOraInvio(LocalTime)
++ BigDecimal getValore()
++ AstaShallowDto getAstaRiferimentoShallow()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.dto.NotificaDto {
+- Long idNotifica
+- LocalDate dataInvio
+- LocalTime oraInvio
+- String messaggio
+- AccountShallowDto mittenteShallow
+- Set<AccountShallowDto> destinatariShallow
+- AstaShallowDto astaAssociataShallow
++ <<Create>> NotificaDto()
++ Notifica toNotifica()
++ Long getIdNotifica()
++ LocalDate getDataInvio()
++ void setDataInvio(LocalDate)
++ LocalTime getOraInvio()
++ void setOraInvio(LocalTime)
++ String getMessaggio()
++ AccountShallowDto getMittenteShallow()
++ Set<AccountShallowDto> getDestinatariShallow()
++ AstaShallowDto getAstaAssociataShallow()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.comparators.NotificaDtoComparator {
++ Boolean areItemsTheSame(NotificaDto,NotificaDto)
++ Boolean areContentsTheSame(NotificaDto,NotificaDto)
+}
+
+class com.iasdietideals24.dietideals24.utilities.repositories.OffertaInversaRepository {
++ <<Create>> OffertaInversaRepository(OffertaInversaService)
++ OffertaInversaDto recuperaOffertaPiuBassa(Long)
++ OffertaInversaDto recuperaOffertaPersonalePiuBassaInversa(Long,Long)
++ OffertaInversaDto inviaOffertaInversa(OffertaInversaDto)
++ Page<OffertaInversaDto> recuperaOfferteInverse(Long,Long,Long)
+}
+
+class com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata {
++ String message
++ <<Create>> EccezioneEmailUsata(String)
+}
+
+
+class com.iasdietideals24.dietideals24.controller.ControllerSelezioneAccessoRegistrazione {
+- AuthRepository authRepository
+- OnChangeActivity? listener
++ void onAttach(Context)
++ void onDetach()
+# void impostaMessaggiCorpo()
+# void impostaEventiClick()
+- void clickAccedi()
+- void clickRegistrati()
+}
+
+
+class com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFase2 {
+- ModelRegistrazione viewModel
+- ActivityResultLauncher<PickVisualMediaRequest> selectPhoto
+- OnBackButton? listenerBackButton
+- OnNextStep? listenerNextStep
++ void onAttach(Context)
++ void onDetach()
++ void impostaEventiClick()
++ void elaborazioneAggiuntiva()
++ void impostaOsservatori()
+- void clickIndietro()
+- void clickAvanti()
+- void clickImmagine()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida {
++ String message
++ <<Create>> EccezioneEmailNonValida(String)
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto {
+- Long idAccount
+- String tipoAccount
++ <<Create>> AccountShallowDto(Long,String)
++ <<Create>> AccountShallowDto()
++ Long getIdAccount()
++ void setIdAccount(Long)
++ String getTipoAccount()
++ void setTipoAccount(String)
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.tools.HeaderInterceptor {
+- AuthRepository authRepository
+- Boolean isRefreshing
+- Any lock
++ Response intercept(Interceptor.Chain)
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.dto.utilities.LinksProfiloDto {
+- String linkPersonale
+- String linkInstagram
+- String linkFacebook
+- String linkGitHub
+- String linkX
++ <<Create>> LinksProfiloDto(String,String,String,String,String)
++ <<Create>> LinksProfiloDto()
++ String getLinkPersonale()
++ String getLinkInstagram()
++ String getLinkFacebook()
++ String getLinkGitHub()
++ String getLinkX()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.adapters.AdapterOfferte {
++ <<Create>> AdapterOfferte(DiffUtil.ItemCallback<OffertaDto>,Resources)
++ ViewHolderOfferta onCreateVieHolder(ViewGroup, Int)
++ void onBindViewHolder(ViewHolderOfferta, Int)
++ void onViewDetachedFromWindows(ViewHolderOfferta)
+}
+
+class com.iasdietideals24.dietideals24.controller.ControllerModificaAsta {
+- ControllerModificaAstaArgs args
+- AstaInversaRepository repositoryAstaInversa
+- AstaSilenziosaRepository repositoryAstaSilenziosa
+- AstaTempoFissoRepository repositoryAstaTempoFisso
+- ProfiloRepository repositoryProfilo
+- CompratoreRepository compratoreRepository
+- VenditoreRepository venditoreRepository
+- ModelAsta viewModel
+- OnGoToDetails? listenerDetails
+- OnBackButton? listenerBackButton
+- ActivityResultLauncher<PickVisualMediaRequest> selectPhoto
++ void onAttach(Context)
++ void onDetach()
+# void impostaMessaggiCorpo()
+# void impostaEventiClick()
+# void impostaEventiDiCambiamentoCampi()
+# void rimuoviErroreCampi()
+# void elaborazioneAggiuntiva()
+- AstaDto caricaAsta()
+- AccountDto caricaAccount(Long)
+- ProfiloDto caricaProfilo(String)
+# void impostaOsservatori()
+- void clickIndietro()
+- void clickModifica()
+- AstaDto aggiornaAsta()
+- void clickDataScadenza()
+- void clickOraScadenza()
+- void clickFoto()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.data.AnteprimaProfilo {
++ <<Create>> AnteprimaProfilo(String,TipoAccount,ByteArray)
+}
+
+class com.iasdietideals24.dietideals24.utilities.paging.AstaInversaPagingSource {
++ <<Create>> AstaInversaPagingSource(AstaInversaRepository,Long,String,String,ApiCall)
++ LoadResult<Long, AstaInversaDto> load(LoadParams<Long>)
++ Long? getRefreshKey(PagingState<Long, AstaInversaDto>)
+}
+
+class com.iasdietideals24.dietideals24.controller.ControllerHome {
+- ModelHome viewModel
+- CategoriaAstaRepository categoriaAstaRepository
+- AdapterHome adapterHome
+- Job? jobRecupero
++ void onPause()
++ void onResume()
+# void impostaEventiClick()
+# void elaborazioneAggiuntiva()
+- void recuperaAste()
+}
+
+
+enum com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository$ApiCall {
++  CREATE
++  TUTTE
++  RICERCA
++  PARTECIPAZIONI
+}
+
+class com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository {
++ <<Create>> AstaSilenziosaRepository(AstaSilenziosaService)
++ Page<AstaSilenziosaDto> recuperaAsteCreateSilenziose(Long,Long,Long)
++ AstaSilenziosaDto creaAstaSilenziosa(AstaSilenziosaDto)
++ AstaSilenziosaDto caricaAstaSilenziosa(Long)
++ void eliminaAstaSilenziosa(Long)
++ AstaSilenziosaDto aggiornaAstaSilenziosa(AstaSilenziosaDto,Long)
++ Page<AstaSilenziosaDto> recuperaAsteSilenziose(Long,Long)
++ Page<AstaSilenziosaDto> ricercaAsteSilenziose(String,String,Long,Long)
++ Page<AstaSilenziosaDto> recuperaPartecipazioniSilenziose(Long,Long,Long)
+}
+
+class com.iasdietideals24.dietideals24.activities.Home {
+- ModelAsta viewModelAsta
+- ModelProfilo viewModelProfilo
+- ModelAsteCreate viewModelAsta
+- ModelHome viewModelHome
+- ModelNotifiche viewModelNotifiche
++ void onCreate(Bundle?)
+- NavController getNavController()
++ void onBackButton()
++ void onGoToDetails(Long, TipoAsta, KClass<*>)
++ void onGoToProfile(Long, KClass<*>)
++ void onEditButton(Long, TipoAsta, KClass<*>)
++ void onChangeActivity(Class<Activity>)
++ void onOpenUrl(String)
++ void onGoToHome()
++ void onGoToBids(Long, TipoAsta, KClass<*>)
++ void onRefresh(Long, TipoAsta, KClass<*>)
++ void onGoToParticipation()
++ void onGoToCreatedAuctions()
++ void onGoToHelp()
++ void onHideMaterialDivider(Boolean)
+}
+
+class com.iasdietideals24.dietideals24.utilities.dto.utilities.UrlDto {
+- String url
++ <<Create>> UrlDto()
++ String getUrl()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderAnteprimaAsta {
+- CoroutineScope scope
+- OffertaInversaRepository offertaInversaRepository
+- OffertaTempoFissoRepository offertaTempoFissoRepository
+- Logger logger
+- OnGoToDetails? listenerGoToDetails
++ <<Create>> ViewHolderAnteprimaAsta(AstaBinding)
++ setListeners(Context)
++ bind(AnteprimaAsta,Resources)
+- OffertaDto recuperaOfferta(AnteprimaAsta)
+- void cleanListeners()
+}
+
+class com.iasdietideals24.dietideals24.activities.Accesso {
+- AuthRepository authRepository
+- CompratoreRepository compratoreRepository
+- VenditoreRepository venditoreRepository
+- ProfiloRepository profiloRepository
++ void onCreate(Bundle?)
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.repositories.NotificaRepository {
++ <<Create>> NotificaRepository(NotificaService)
++ Page<NotificaDto> recuperaNotifiche(Long,Long,Long)
+}
+
+class com.iasdietideals24.dietideals24.utilities.dto.OffertaTempoFissoDto {
++ <<Create>> OffertaTempoFissoDto(Long,LocalDate,LocalTime,BigDecimal,AccountShallowDto,AstaShallowDto)
++ <<Create>> OffertaTempoFissoDto()
++ Offerta toOfferta()
++ OffertaRicevuta toOffertaRicevuta()
+}
+
+class com.iasdietideals24.dietideals24.utilities.annotations.Utility {
+}
+class com.iasdietideals24.dietideals24.utilities.data.Notifica {
++ <<Create>> Notifica(Long,TipoAsta,Long,String,ByteArray,String,LocalDate,LocalTime)
+}
+
+class com.iasdietideals24.dietideals24.model.ModelHome {
+- Int _tipo
++ Int getTipo()
++ void setTipo(Int)
+- MutableLiveData<String> _searchText
++ MutableLiveData<String> getSearchText()
+- MutableLiveData<String> _filter
++ MutableLiveData<String> getFilter()
+- OffertaInversaPagingSource? pagingSourceInverseTutte
+- Pager<Long, OffertaInversaDto> pagerInverseTutte
+- OffertaTempoFissoPagingSource? pagingSourceTempoFissoTutte
+- Pager<Long, OffertaTempoFissoDto> pagerTempoFissoTutte
+- OffertaSilenziosaPagingSource? pagingSourceSilenzioseTutte
+- Pager<Long, OffertaSilenziosaDto> pagerSilenzioseTutte
+- Flow<PagingData<OffertaInversaDto>> flowInverseTutte
+- Flow<PagingData<OffertaTempoFissoDto>> flowTempoFissoTutte
+- Flow<PagingData<OffertaSilenziosaDto>> flowSilenzioseTutte
+- OffertaInversaPagingSource? pagingSourceInverseRicerca
+- Pager<Long, OffertaInversaDto> pagerInverseRicerca
+- OffertaTempoFissoPagingSource? pagingSourceTempoFissoRicerca
+- Pager<Long, OffertaTempoFissoDto> pagerTempoFissoRicerca
+- OffertaSilenziosaPagingSource? pagingSourceSilenzioseRicerca
+- Pager<Long, OffertaSilenziosaDto> pagerSilenzioseRicerca
+- Flow<PagingData<OffertaInversaDto>> flowInverseRicerca
+- Flow<PagingData<OffertaTempoFissoDto>> flowTempoFissoRicerca
+- Flow<PagingData<OffertaSilenziosaDto>> flowSilenzioseRicerca
++ <<Create>> ModelHome(AstaInversaRepository,AstaTempoFissoRepository,AstaSilenziosaRepository)
++ Flow<PagingData<OffertaDto>> getInverseFlowsTutte()
++ Flow<PagingData<OffertaDto>> getTempoFissoFlowsTutte()
++ Flow<PagingData<OffertaDto>> getSilenzioseFlowsTutte()
+- void invalidateInverseTutte()
+- void invalidateTempoFissoTutte()
+- void invalidateSilenzioseTutte()
+- void invalidateTutte()
++ Flow<PagingData<OffertaDto>> getInverseFlowsRicerca()
++ Flow<PagingData<OffertaDto>> getTempoFissoFlowsRicerca()
++ Flow<PagingData<OffertaDto>> getSilenzioseFlowsRicerca()
+- void invalidateInverseRicerca()
+- void invalidateTempoFissoRicerca()
+- void invalidateSilenzioseRicerca()
+- void invalidateRicerca()
+- void invalidate()
+}
+
+class com.iasdietideals24.dietideals24.utilities.tools.CurrentUser {
+- Long _id
+- TipoAccount _tipoAccount
+- String _rToken
+- String _aToken
++ Long getId()
++ void setId(Long)
++ TipoAccount getTipoAccount()
++ void setTipoAccount(Long)
++ String getRToken()
++ void setRToken(String)
++ String getAToken()
++ void setAToken(String)
+}
+
+
+class com.iasdietideals24.dietideals24.model.ModelPartecipazioni {
+- Int _filtro
+- Int getFiltro()
+- void setFiltro(Int)
+- OffertaInversaPagingSource? pagingSourceInverse
+- Pager<Long, OffertaInversaDto> pagerInverse
+- OffertaTempoFissoPagingSource? pagingSourceTempoFisso
+- Pager<Long, OffertaTempoFissoDto> pagerTempoFisso
+- OffertaSilenziosaPagingSource? pagingSourceSilenziose
+- Pager<Long, OffertaSilenziosaDto> pagerSilenziose
+- Flow<PagingData<OffertaInversaDto>> flowInverse
+- Flow<PagingData<OffertaTempoFissoDto>> flowTempoFisso
+- Flow<PagingData<OffertaSilenziosaDto>> flowSilenziose
++ <<Create>> ModelPartecipazioni(AstaInversaRepository,AstaTempoFissoRepository,AstaSilenziosaRepository)
++ Flow<PagingData<OffertaDto>> getInverseFlows()
++ Flow<PagingData<OffertaDto>> getTempoFissoFlows()
++ Flow<PagingData<OffertaDto>> getSilenzioseFlows()
+- void invalidateInverse()
+- void invalidateTempoFisso()
+- void invalidateSilenziose()
+- void invalidate()
+}
+
+abstract class com.iasdietideals24.dietideals24.activities.DietiDeals24Activity<bindingType extends ViewBinding> {
+# bindingType binding
++ void onCreate(Bundle?)
+}
+
+
+abstract class com.iasdietideals24.dietideals24.utilities.dto.OffertaDiCompratoreDto {
+# AccountShallowDto compratoreCollegatoShallow
++ <<Create>> OffertaDiCompratoreDto(Long,LocalDate,LocalTime,BigDecimal,AccountShallowDto,AstaShallowDto)
++ <<Create>> OffertaDiCompratoreDto()
++ AccountShallowDto getCompratoreCollegatoShallow()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.dto.shallows.ProfiloShallowDto {
+- String nomeUtente
++ <<Create>> ProfiloShallowDto(String)
++ <<Create>> ProfiloShallowDto()
++ String getNomeUtente()
++ void setNomeUtente(String)
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderPartecipazione {
+- CoroutineScope scope
+- OffertaInversaRepository offertaInversaRepository
+- OffertaTempoFissoRepository offertaTempoFissoRepository
+- OffertaSilenziosaRepository offertaSilenziosaRepository
+- Logger logger
+- OnGoToDetails? listenerGoToDetails
++ <<Create>> ViewHolderPartecipazione(AstaBinding)
++ setListeners(Context)
++ bind(AnteprimaAsta,Resources)
+- OffertaDto recuperaOffertaPersonale(AnteprimaAsta)
+- OffertaDto recuperaOffertaMigliore(AnteprimaAsta)
+- void cleanListeners()
+}
+
+class com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderOfferta {
+- CoroutineScope scope
+- AstaSilenziosaRepository silenziosaRepository
+- ProfiloRepository profiloRepository
+- CompratoreRepository compratoreRepository
+- Logger logger
+- OnGoToProfile? immagineListener
+- OnRefresh? refreshListener
++ <<Create>> ViewHolderOfferta(OffertaBinding)
++ setListeners(Context)
++ bind(OffertaRicevuta,Resources)
+- ProfiloDto recuperaOfferente(OffertaRicevuta)
+- void clickAccetta(Long,Long,Resources,OffertaRicevuta)
+- void clickRifiuta(Long,Long,Resources,OffertaRicevuta)
+- void cleanListeners()
+}
+
+class com.iasdietideals24.dietideals24.utilities.repositories.CategoriaAstaRepository {
++ <<Create>> CategoriaAstaRepository(CategoriaAstaService)
++ List<CategoriaAstaDto> recuperaCategorieAsta()
+}
+
+class com.iasdietideals24.dietideals24.utilities.adapters.AdapterNotifiche {
++ <<Create>> AdapterNotifiche(DiffUtil.ItemCallback<NotificaDto>,Resources)
++ ViewHolderNotifica onCreateVieHolder(ViewGroup, Int)
++ void onBindViewHolder(ViewHolderNotifica, Int)
++ void onViewDetachedFromWindows(ViewHolderNotifica)
+}
+
+class com.iasdietideals24.dietideals24.utilities.annotations.EventHandler {
+}
+class com.iasdietideals24.dietideals24.utilities.data.Asta {
++ <<Create>> Asta(Long,StatoAsta,Long,TipoAsta,LocalDate,LocalTime?,BigDecimal,ByteArray,String,CategoriaAsta,String)
+}
+
+class com.iasdietideals24.dietideals24.utilities.adapters.AdapterPartecipazioni {
++ <<Create>> AdapterPartecipazioni(DiffUtil.ItemCallback<AstaDto>,Resources)
++ ViewHolderPartecipazione onCreateVieHolder(ViewGroup, Int)
++ void onBindViewHolder(ViewHolderPartecipazione, Int)
++ void onViewDetachedFromWindows(ViewHolderPartecipazione)
+}
+
+class com.iasdietideals24.dietideals24.utilities.dto.AstaSilenziosaDto {
++ <<Create>> AstaSilenziosaDto(Long,String,CategoriaAstaShallowDto,String,String,LocalDate,LocalTime,byte[],Set<NotificaShallowDto>,AccountShallowDto,Set<OffertaShallowDto>)
++ <<Create>> AstaSilenziosaDto()
++ AnteprimaAsta toAnteprimaAsta()
++ Asta toAsta()
+}
+
+class com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto {
+- Long idAsta
+- String tipoAstaPerAccount
+- String tipoAstaSpecifica
++ <<Create>> AstaShallowDto(Long,String,String)
++ <<Create>> AstaShallowDto()
++ Long getIdAsta()
++ void setIdAsta(Long)
++ String getTipoAstaPerAccount()
++ String getTipoAstaSpecifica()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.adapters.AdapterHome {
++ <<Create>> AdapterHome(DiffUtil.ItemCallback<AstaDto>,Resources)
++ ViewHolderAnteprimaAsta onCreateVieHolder(ViewGroup, Int)
++ void onBindViewHolder(ViewHolderAnteprimaAsta, Int)
++ void onViewDetachedFromWindows(ViewHolderAnteprimaAsta)
+}
+
+class com.iasdietideals24.dietideals24.utilities.data.DettagliAsta {
++ <<Create>> DettagliAsta(AnteprimaAsta,CategoriaAsta,Long,String,String)
+}
+
+class com.iasdietideals24.dietideals24.model.ModelAsteCreate {
+- Int _filtro
++ Int getFiltro()
++ void setFiltro(Int)
+- OffertaInversaPagingSource? pagingSourceInverse
+- Pager<Long, OffertaInversaDto> pagerInverse
+- OffertaTempoFissoPagingSource? pagingSourceTempoFisso
+- Pager<Long, OffertaTempoFissoDto> pagerTempoFisso
+- OffertaSilenziosaPagingSource? pagingSourceSilenziose
+- Pager<Long, OffertaSilenziosaDto> pagerSilenziose
+- Flow<PagingData<OffertaInversaDto>> flowInverse
+- Flow<PagingData<OffertaTempoFissoDto>> flowTempoFisso
+- Flow<PagingData<OffertaSilenziosaDto>> flowSilenziose
++ <<Create>> ModelAsteCreate(AstaInversaRepository,AstaTempoFissoRepository,AstaSilenziosaRepository)
++ Flow<PagingData<AstaInversaDto>> getInverseFlows()
++ Flow<PagingData<AstaTempoFissoDto>> getTempoFissoFlows()
++ Flow<PagingData<AstaSilenziosaDto>> getSilenzioseFlows()
+- void invalidateInverse()
+- void invalidateTempoFisso()
+- void invalidateSilenziose()
++ void invalidate()
+}
+
+class com.iasdietideals24.dietideals24.utilities.data.Profilo {
++ <<Create>> Profilo(Pair<Long, Long>,String,String,ByteArray,String,String,String,LocalDate,String,String,String,String,String,String,String,String)
+}
+
+interface com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity {
++ void onChangeActivity(Class<Activity>)
+}
+
+interface com.iasdietideals24.dietideals24.utilities.kscripts.OnOpenUrl {
++ void onOpenUrl(String)
+}
+
+interface com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton {
++ void onBackButton()
+}
+
+interface com.iasdietideals24.dietideals24.utilities.kscripts.OnHideBackButton {
++ void onHideBackButton()
+}
+
+interface com.iasdietideals24.dietideals24.utilities.kscripts.OnShowBackButton {
++ void onShowBackButton()
+}
+
+interface com.iasdietideals24.dietideals24.utilities.kscripts.OnEditButton {
++ void onEditButton(Long,TipoAsta,KClass<*>)
+}
+
+interface com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToHome {
++ void onGoToHome()
+}
+
+interface com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep {
++ void onNextStep(KClass<*>)
+}
+
+interface com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToDetails {
++ void onGoToDetails(Long,TipoAsta,KClass<*>)
+}
+
+interface com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToProfile {
++ void onGoToProfile(Long,KClass<*>)
+}
+
+interface com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToParticipation {
++ void onGoToParticipation()
+}
+
+interface com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToCreatedAuctions {
++ void onGoToCreatedAuctions()
+}
+
+interface com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToHelp {
++ void onGoToHelp()
+}
+
+interface com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToBids {
++ void onGoToBids(Long,TipoAsta,KClass<*>)
+}
+
+interface com.iasdietideals24.dietideals24.utilities.kscripts.OnRefresh {
++ void onRefresh(Long,TipoAsta,KClass<*>)
+}
+
+interface com.iasdietideals24.dietideals24.utilities.kscripts.OnHideMaterialDivider {
++ void onHideMaterialDivider(Boolean)
+}
+
+class com.iasdietideals24.dietideals24.utilities.data.AccountProfilo {
++ <<Create>> AccountProfilo(Account,String,String,String,LocalDate,ByteArray,String,String,String,String,String,String,String,String)
+}
+
+class com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderNotifica {
+- CoroutineScope scope
+- ProfiloRepository profiloRepository
+- CompratoreRepository compratoreRepository
+- VenditoreRepository venditoreRepository
+- AstaInversaRepository inversaRepository
+- AstaSilenziosaRepository silenziosaRepository
+- AstaTempoFissoRepository tempoFissoRepository
+- Logger logger
+- OnGoToDetails? listenerGoToDetails
+- OnGoToProfile? listenerGoToProfile
++ <<Create>> ViewHolderNotifica(NotificaBinding)
++ setListeners(Context)
++ bind(Notifica,Resources)
+- ProfiloDto recuperaMittente(Notifica)
+- AstaDto caricaAsta(Notifica)
+- void cleanListeners()
+}
+
+class com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto {
++ <<Create>> CompratoreDto(Long,String,String,TokensAccountDto,ProfiloShallowDto)
++ <<Create>> CompratoreDto()
++ Account toAccount()
+}
+
+class com.iasdietideals24.dietideals24.utilities.tools.Pageable {
+- int pageNumber
+- int pageSize
+- Sort sort
+- int offset
+- boolean unpaged
+- boolean paged
++ <<Create>> Pageable()
++ <<Create>> Pageable(int,int,Sort,int,boolean,boolean)
++ int getPageNumber()
++ int getPageSize()
++ Sort getSort()
++ int getOffset()
++ boolean isUnpaged()
++ boolean isPaged()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.data.OffertaRicevuta {
++ <<Create>> OffertaRicevuta(Long,Long,TipoAsta,Long,String,ByteArray,BigDecimal,LocalDate,LocalTime,StatoOfferta?)
+}
+
+enum com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository$ApiCall {
++  CREATE
++  TUTTE
++  RICERCA
++  PARTECIPAZIONI
+}
+
+class com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository {
++ <<Create>> AstaInversaRepository(AstaInversaService)
++ Page<AstaInversaDto> recuperaAsteCreateInverse(Long,Long,Long)
++ AstaInversaDto creaAstaInversa(AstaInversaDto)
++ AstaInversaDto caricaAstaInversa(Long)
++ void eliminaAstaInversa(Long)
++ AstaInversaDto aggiornaAstaInversa(AstaInversaDto,Long)
++ Page<AstaInversaDto> recuperaAsteInverse(Long,Long)
++ Page<AstaInversaDto> ricercaAsteInverse(String,String,Long,Long)
++ Page<AstaInversaDto> recuperaPartecipazioniInverse(Long,Long,Long)
+}
+
+class com.iasdietideals24.dietideals24.utilities.dto.OffertaInversaDto {
++ <<Create>> OffertaInversaDto(Long,LocalDate,LocalTime,BigDecimal,AccountShallowDto,AstaShallowDto)
++ <<Create>> OffertaInversaDto()
++ Offerta toOfferta()
++ OffertaRicevuta toOffertaRicevuta()
+}
+
+class com.iasdietideals24.dietideals24.controller.ControllerPartecipazioni {
+- ModelPartecipazioni viewModel
+- AdapterPartecipazioni adapterPartecipazioni
+- OnBackButton? listenerBackButton
+- Job? jobRecupero
++ void onPause()
++ void onResume()
++ void onAttach(Context)
++ void onDetach()
+# void elaborazioneAggiuntiva()
+- void recuperaPartecipazioni()
+# void impostaEventiClick()
+- void clickIndietro()
+}
+
+
+enum com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository$ApiCall {
++  CREATE
++  TUTTE
++  RICERCA
++  PARTECIPAZIONI
+}
+
+class com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository {
++ <<Create>> AstaTempoFissoRepository(AstaTempoFissoService)
++ Page<AstaTempoFissoDto> recuperaAsteCreateTempoFisso(Long,Long,Long)
++ AstaTempoFissoDto creaAstaTempoFisso(AstaTempoFissoDto)
++ AstaTempoFissoDto caricaAstaTempoFisso(Long)
++ void eliminaAstaTempoFisso(Long)
++ AstaTempoFissoDto aggiornaAstaTempoFisso(AstaTempoFissoDto,Long)
++ Page<AstaTempoFissoDto> recuperaAsteTempoFisso(Long,Long)
++ Page<AstaTempoFissoDto> ricercaAsteTempoFisso(String,String,Long,Long)
++ Page<AstaTempoFissoDto> recuperaPartecipazioniTempoFisso(Long,Long,Long)
+}
+
+class com.iasdietideals24.dietideals24.controller.ControllerAiuto {
+- OnBackButton? listenerBackButton
++ void onAttach(Context)
++ void onDetach()
+# void impostaEventiClick()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository {
++ <<Create>> ProfiloRepository(ProfiloService)
++ ProfiloDto caricaProfilo(String)
++ ProfiloDto aggiornaProfilo(ProfiloDto,String)
++ ProfiloDto creazioneAccountProfilo(String,PutProfiloDto)
+}
+
+interface com.iasdietideals24.dietideals24.utilities.services.AstaSilenziosaService {
++ Response<Page<AstaSilenziosaDto>> recuperaAsteCreateSilenziose(Long,Long,Long)
++ Response<AstaSilenziosaDto> creaAstaSilenziosa(AstaSienziosaDto)
++ Response<AstaSilenziosaDto> caricaAstaSilenziosa(Long)
++ Response<Unit> eliminaAstaSilenziosa(Long)
++ Response<AstaSilenziosaDto> aggiornaAstaSilenziosa(AstaSienziosaDto,Long)
++ Response<Page<AstaSilenziosaDto>> recuperaAsteSilenziose(Long,Long)
++ Response<Page<AstaSilenziosaDto>> ricercaAsteSilenziose(String,String,Long,Long)
++ Response<Page<AstaSilenziosaDto>> recuperaPartecipazioniSilenziose(Long,Long,Long)
+}
+
+class com.iasdietideals24.dietideals24.utilities.dto.VenditoreDto {
++ <<Create>> VenditoreDto(Long,String,String,TokensAccountDto,ProfiloShallowDto)
++ <<Create>> VenditoreDto()
++ Account toAccount()
+}
+
+class com.iasdietideals24.dietideals24.controller.ControllerDettagliProfilo {
+- ControllerDettagliProfiloArgs args
+- ModelProfilo viewModel
+- CompratoreRepository compratoreRepository
+- VenditoreRepository venditoreRepository
+- ProfiloRepository profiloRepository
+- OnBackButton? listenerBackButton
+- OnEditButton? listenerEditButton
+- OnOpenUrl? listenerOpenUrl
++ void onAttach(Context)
++ void onDetach()
+# void impostaEventiClick()
+# void elaborazioneAggiuntiva()
+- AccountDto caricaAccount()
+- ProfiloDto caricaProfilo(String)
+# void impostaOsservatori()
+- void clickIndietro()
+- void clickModifica()
+- void clickFacebook()
+- void clickInstagram()
+- void clickGitHub()
+- void clickX()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.dto.AstaInversaDto {
+- BigDecimal sogliaIniziale
++ <<Create>> AstaInversaDto(Long,String,CategoriaAstaShallowDto,String,String,LocalDate,LocalTime,byte[],Set<NotificaShallowDto>,AccountShallowDto,Set<OffertaShallowDto>,BigDecimal)
++ <<Create>> AstaInversaDto()
++ AnteprimaAsta toAnteprimaAsta()
++ Asta toAsta()
++ BigDecimal getSogliaIniziale()
+}
+
+
+enum com.iasdietideals24.dietideals24.utilities.enumerations.StatoOfferta {
++  PENDING
++  ACCEPTED
++  REJECTED
+}
+
+class com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFase1 {
+- ModelRegistrazione viewModel
+- OnBackButton? listenerBackButton
+- OnNextStep? listenerNextStep
++ void onAttach(Context)
++ void onDetach()
+# void impostaEventiClick()
+# void impostaEventiDiCambiamentoCampi()
+# void impostaOsservatori()
+- void clickIndietro()
+- void clickAvanti()
+- void clickDataNascita()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.dto.utilities.RefreshTokenDto {
+- String authToken
+- Long expiresIn
++ <<Create>> RefreshTokenDto()
++ String getAuthToken()
++ Long getExpiresIn()
+}
+
+
+interface com.iasdietideals24.dietideals24.utilities.services.CategoriaAstaService {
++ Response<Page<CategoriaAstaDto>> recuperaCategorieAste(Long,Long)
+}
+
+class com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderAstaCreata {
+- CoroutineScope scope
+- OffertaInversaRepository offertaInversaRepository
+- OffertaTempoFissoRepository offertaTempoFissoRepository
+- AstaInversaRepository astaInversaRepository
+- AstaSilenziosaRepository astaSilenziosaRepository
+- AstaTempoFissoRepository astaTempoFissoRepository
+- Logger logger
+- OnGoToDetails? listenerGoToDetails
+- OnEditButton? listenerEditButton
+- OnRefresh? listenerRefresh
+- OnGoToBids? listenerGoToBids
++ <<Create>> ViewHolderAstaCreata(AstaBinding)
++ setListeners(Context)
++ bind(AnteprimaAsta,Resources)
+- void clickConferma(AnteprimaAsta)
+- OffertaDto recuperaOfferta(AnteprimaAsta)
+- void cleanListeners()
+}
+
+class com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta$Companion {
+- Resources resources
++ CategoriaAsta fromStringToEnum(String)
++ String fromEnumToString(CategoriaAsta)
++ String fromEnumToEnumString(CategoriaAsta)
+}
+
+
+enum com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta {
++  BOOKS
++  COMICS_AND_MANGAS
++  MUSIC
++  MOVIES_AND_TV_SHOWS
++  VIDEOGAMES_AND_CONSOLES
++  ELECTRONICS
++  FOODS_AND_DRINKS
++  PETS_SUPPLIES
++  BODYCARE_AND_BEAUTY
++  SPORTS_AND_HOBBIES
++  CLOTHINGS_AND_WEARABLES
++  HOME_AND_FURNITURES
++  VEHICLES
++  OTHER
++  ND
+}
+abstract class com.iasdietideals24.dietideals24.controller.Controller<bindingType extends ViewBinding> {
+- Logger _logger
+# Logger getLogger()
+- bindingType? _binding
+# bindingType getBinding()
++ Context fragmentContext
++ View fragmentView
++ FragmentActivity fragmentActivity
++ void onCreateView(LayoutInflater,ViewGroup?,Bundle?)
++ void onViewCreated(View,Bundle?)
++ void onDestroyView()
+# void impostaMessaggiCorpo()
+# void impostaEventiClick()
+# void impostaEventiDiCambiamentoCampi()
+# void impostaOsservatori()
+# void elaborazioneAggiuntiva()
+# String estraiTestoDaElemento(TextInputEditText)
+# String estraiTestoDaElemento(TextView)
+# void rimuoviErroreCampo(TextInputLayout)
+# void erroreCampo(Int,TextInputLayout)
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneNomeUtenteUsato {
++ String message
++ <<Create>> EccezioneNomeUtenteUsato(String)
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.tools.RetrofitController {
++ OkHttpClient okHttpClient
++ ObjectMapper objectMapper
++ T service()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.repositories.OffertaTempoFissoRepository {
++ <<Create>> OffertaTempoFissoRepository(OffertaTempoFissoService)
++ OffertaTempoFissoDto recuperaOffertaPiuAlta(Long)
++ OffertaTempoFissoDto recuperaOffertaPersonalePiuAltaTempoFisso(Long,Long)
++ OffertaTempoFissoDto inviaOffertaTempoFisso(OffertaTempoFissoDto)
++ Page<OffertaTempoFissoDto> recuperaOfferteTempoFisso(Long,Long,Long)
+}
+
+class com.iasdietideals24.dietideals24.utilities.dto.utilities.TokensAccountDto {
+- String idFacebook
+- String idGoogle
+- String idX
+- String idGitHub
++ <<Create>> TokensAccountDto(String,String,String,String)
++ <<Create>> TokensAccountDto()
++ String getIdFacebook()
++ String getIdGoogle()
++ String getIdX()
++ String getIdGitHub()
+}
+
+
+class com.iasdietideals24.dietideals24.activities.Registrazione {
+- ModelRegistrazione viewModel
+- AuthRepository authRepository
++ void onCreate()
+- NavController getNavController()
++ void onChangeActivity(Class<Activity>)
++ void onBackButton()
++ void onNextStep(KClass<*>)
+}
+class com.iasdietideals24.dietideals24.utilities.repositories.AuthRepository {
++ <<Create>> AuthRepository(AuthService,DataStore<Preferences>)
++ String recuperaUrlAutenticazione(String)
++ NewTokenDto recuperaToken(String,String)
++ Response<RefreshTokenDto> aggiornaAccessToken(String)
++ String logout(String, String, String)
++ void scriviRefreshToken(String)
++ String leggiRefreshToken()
++ void cancellaRefreshToken()
++ void scriviRuolo(String)
++ String leggiRuolo()
++ void cancellaRuolo()
+}
+
+class com.iasdietideals24.dietideals24.utilities.exceptions.EccezionePasswordNonSicura {
++ String message
++ <<Create>> EccezionePasswordNonSicura(String)
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.data.Account {
++ <<Create>> Account(Long,String,String,String,TipoAccount)
+}
+
+class com.iasdietideals24.dietideals24.controller.ControllerOfferte {
+- ControllerOfferteArgs args
+- ModelAsta viewModel
+- AdapterOfferte adapterOfferte
+- Job? jobOfferte
+- OnGoToDetails? listenerDetails
+- OnBackButton? listenerBackButton
++ void onAttach(Context)
++ void onDetach()
++ void onPause()
++ void onResume()
+# void impostaEventiClick()
+- void clickIndietro()
+# void elaborazioneAggiuntiva()
+- void aggiornaOfferte()
+}
+
+
+class com.iasdietideals24.dietideals24.model.ModelAsta {
+- MutableLiveData<Long> _idAsta
++ MutableLiveData<Long> getIdAsta()
+- MutableLiveData<StatoAsta> _stato
++ MutableLiveData<StatoAsta> getStato()
+- MutableLiveData<Long> _idCreatore
++ MutableLiveData<Long> getIdCreatore()
+- MutableLiveData<String> _nomeCreatore
++ MutableLiveData<String> getNomeCreatore()
+- MutableLiveData<TipoAsta?> _tipo
++ MutableLiveData<TipoAsta?> getTipo()
+- MutableLiveData<LocalDate> _dataFine
++ MutableLiveData<LocalDate> getDataFine()
+- MutableLiveData<LocalTime> _oraFine
++ MutableLiveData<LocalTime> getOraFine()
+- MutableLiveData<BigDecimal> _prezzo
++ MutableLiveData<BigDecimal> getPrezzo()
+- MutableLiveData<ByteArray?> _immagine
++ MutableLiveData<ByteArray?> getImmagine()
+- MutableLiveData<String> _nome
++ MutableLiveData<String> getNome()
+- MutableLiveData<CategoriaAsta> _categoria
++ MutableLiveData<CategoriaAsta> getCategoria()
+- MutableLiveData<String> _descrizione
++ MutableLiveData<String> getDescrizione()
+- OffertaInversaPagingSource? pagingSourceInverse
+- Pager<Long, OffertaInversaDto> pagerInverse
+- OffertaTempoFissoPagingSource? pagingSourceTempoFisso
+- Pager<Long, OffertaTempoFissoDto> pagerTempoFisso
+- OffertaSilenziosaPagingSource? pagingSourceSilenziose
+- Pager<Long, OffertaSilenziosaDto> pagerSilenziose
+- Flow<PagingData<OffertaInversaDto>> flowInverse
+- Flow<PagingData<OffertaTempoFissoDto>> flowTempoFisso
+- Flow<PagingData<OffertaSilenziosaDto>> flowSilenziose
++ <<Create>> ModelAsta(OffertaInversaRepository,OffertaTempoFissoRepository,OffertaSilenziosaRepository)
++ void clear()
++ AstaInversaDto toAstaInversa(Boolean)
++ AstaTempoFissoDto toAstaTempoFisso(Boolean)
++ AstaSilenziosaDto toAstaSilenziosa(Boolean)
++ void validate()
+- void dataFine()
+- void oraFine()
+- void nome()
+- void descrizione()
+- void prezzo()
++ Flow<PagingData<OffertaDto>> getInverseFlows()
++ Flow<PagingData<OffertaDto>> getTempoFissoFlows()
++ Flow<PagingData<OffertaDto>> getSilenzioseFlows()
+- void invalidateInverse()
+- void invalidateTempoFisso()
+- void invalidateSilenziose()
++ void invalidate()
+}
+
+
+interface com.iasdietideals24.dietideals24.utilities.services.CompratoreService {
++ Response<Page<CompratoreDto>> accediCompratore(String)
++ Response<CompratoreDto> caricaAccountCompratore(Long)
+}
+
+class com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta$Companion {
++ TipoAsta getEnum(String)
+}
+
+enum com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta {
++  INVERSA
++  TEMPO_FISSO
++  SILENZIOSA
+}
+class com.iasdietideals24.dietideals24.controller.ControllerAsteCreate {
+- ModelAsteCreate viewModel
+- AdapterAsteCreate adapterAsteCreate
+- OnBackButton? listenerBackButton
+- Job? jobRecupero
++ void onPause()
++ void onResume()
++ void onAttach(Context)
++ void onDetach()
+# void elaborazioneAggiuntiva()
+- void recuperaAsteCreate()
+# void impostaEventiClick()
+- void clickIndietro()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.repositories.OffertaSilenziosaRepository {
++ <<Create>> OffertaSilenziosaRepository(OffertaSilenziosaService)
++ OffertaSilenziosaDto recuperaOffertaPersonalePiuAltaSilenziosa(Long,Long)
++ OffertaSilenziosaDto inviaOffertaSilenziosa(OffertaSilenziosaDto)
++ Page<OffertaSilenziosaDto> recuperaOfferteSilenziose(Long,Long,Long)
++ OffertaSilenziosaDto accettaOfferta(OffertaSilenziosaDto,Long)
++ OffertaSilenziosaDto rifiutaOfferta(OffertaSilenziosaDto,Long)
+}
+
+enum com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount {
++  COMPRATORE
++  VENDITORE
++  OSPITE
+}
+
+abstract class com.iasdietideals24.dietideals24.utilities.dto.AccountDto {
+# Long idAccount
+# String email
+# String password
+# TokensAccountDto tokens
+# ProfiloShallowDto profiloShallow
+# Set<NotificaShallowDto> notificheInviateShallow
+# Set<NotificaShallowDto> notificheRicevuteShallow
+# Set<AstaShallowDto> astePosseduteShallow
+# Set<OffertaShallowDto> offerteCollegateShallow
++ <<Create>> AccountDto()
++ {abstract}Account toAccount()
++ Long getIdAccount()
++ void setIdAccount(Long)
++ String getEmail()
++ void setEmail(String)
++ String getPassword()
++ void setPassword(String)
++ TokensAccountDto getTokens()
++ ProfiloShallowDto getProfiloShallow()
++ Set<NotificaShallowDto> getNotificheInviateShallow()
++ Set<NotificaShallowDto> getNotificheRicevuteShallow()
++ Set<AstaShallowDto> getAstePosseduteShallow()
++ Set<OffertaShallowDto> getOfferteCollegateShallow()
+}
+
+
+abstract class com.iasdietideals24.dietideals24.utilities.dto.AstaDto {
+# Long idAsta
+# String stato
+# CategoriaAstaShallowDto categoriaShallow
+# String nome
+# String descrizione
+# LocalDate dataScadenza
+# LocalTime oraScadenza
+# byte[] immagine
+# Set<NotificaShallowDto> notificheAssociateShallow
+# AccountShallowDto proprietarioShallow
+- Set<OffertaShallowDto> offerteRicevuteShallow
++ <<Create>> AstaDto(Long,String,CategoriaAstaShallowDto,String,String,LocalDate,LocalTime,byte[],Set<NotificaShallowDto>,AccountShallowDto,Set<OffertaShallowDto>)
++ <<Create>> AstaDto()
++ {abstract}Asta toAsta()
++ {abstract}AnteprimaAsta toAnteprimaAsta()
++ Long getIdAsta()
++ void setIdAsta(Long)
++ String getStato()
++ CategoriaAstaShallowDto getCategoriaShallow()
++ String getNome()
++ void setNome(String)
++ String getDescrizione()
++ void setDescrizione(String)
++ byte[] getImmagine()
++ void setImmagine(byte[])
++ LocalDate getDataScadenza()
++ LocalTime getOraScadenza()
++ Set<NotificaShallowDto> getNotificheAssociateShallow()
++ AccountShallowDto getProprietarioShallow()
++ Set<OffertaShallowDto> getOfferteRicevuteShallow()
+}
+
+
+class com.iasdietideals24.dietideals24.controller.ControllerNotifiche {
+- ModelNotifiche viewModel
+- AdapterNotifiche adapterNotifiche
+- Job? jobNotifiche
++ void onPause()
++ void onResume()
+# void elaborazioneAggiuntiva()
+- void aggiornaNotifiche()
+}
+
+
+interface com.iasdietideals24.dietideals24.utilities.services.AstaInversaService {
++ Response<Page<AstaInversaDto>> recuperaAsteCreateInverse(Long,Long,Long)
++ Response<AstaInversaDto> creaAstaInversa(AstaInversaDto)
++ Response<AstaInversaDto> caricaAstaInversa(Long)
++ Response<Unit> eliminaAstaInversa(Long)
++ Response<AstaInversaDto> aggiornaAstaInversa(AstaInversaDto,Long)
++ Response<Page<AstaInversaDto>> recuperaAsteInverse(Long,Long)
++ Response<Page<AstaInversaDto>> ricercaAsteInverse(String,String,Long,Long)
++ Response<Page<AstaInversaDto>> recuperaPartecipazioniInverse(Long,Long,Long)
+}
+
+class com.iasdietideals24.dietideals24.controller.ControllerProfilo {
+- AuthRepository authRepository
+- CompratoreRepository compratoreRepository
+- VenditoreRepository venditoreRepository
+- ProfiloRepository profiloRepository
+- OnGoToProfile? listenerProfile
+- OnGoToCreatedAuctions? listenerCreatedAuctions
+- OnGoToParticipation? listenerParticipation
+- OnGoToHelp? listenerHelp
+- OnChangeActivity? listenerChangeActivity
++ void onAttach(Context)
++ void onDetach()
+# void impostaMessaggiCorpo()
+- AccountDto caricaAccount()
+- ProfiloDto caricaProfilo(String)
+# void impostaEventiClick()
+- void clickUtente()
+- void clickAste()
+- void clickStorico()
+- void clickAiuto()
+- void clickEsci()
+}
+
+
+interface com.iasdietideals24.dietideals24.utilities.services.AstaTempoFissoService {
++ Response<Page<AstaTempoFissoDto>> recuperaAsteCreateTempoFisso(Long,Long,Long)
++ Response<AstaTempoFissoDto> creaAstaTempoFisso(AstaTempoFissoDto)
++ Response<AstaTempoFissoDto> caricaAstaTempoFisso(Long)
++ Response<Unit> eliminaAstaTempoFisso(Long)
++ Response<AstaTempoFissoDto> aggiornaAstaTempoFisso(AstaTempoFissoDto,Long)
++ Response<Page<AstaTempoFissoDto>> recuperaAsteTempoFisso(Long,Long)
++ Response<Page<AstaTempoFissoDto>> ricercaAsteTempoFisso(String,String,Long,Long)
++ Response<Page<AstaTempoFissoDto>> recuperaPartecipazioniTempoFisso(Long,Long,Long)
+}
+
+class com.iasdietideals24.dietideals24.utilities.comparators.OffertaDtoComparator {
++ Boolean areItemsTheSame(OffertaDto,OffertaDto)
++ Boolean areContentsTheSame(OffertaDto,OffertaDto)
+}
+
+class com.iasdietideals24.dietideals24.controller.ControllerModificaProfilo {
+- ModelProfilo viewModel
+- ProfiloRepository repositoryProfilo
+- ActivityResultLauncher<PickVisualMediaRequest> selectPhoto
+- OnGoToProfile? listenerProfile
++ void onAttach(Context)
++ void onDetach()
+# void impostaEventiClick()
+# void elaborazioneAggiuntiva()
+# void impostaOsservatori()
+- void clickIndietro()
+- void clickConferma()
+- ProfiloDto aggiornaProfilo()
+- void clickPulsanteImmagine()
+- void clickFacebook()
+- void clickInstagram()
+- void clickGitHub()
+- void clickX()
+- void clickDataNascita()
+}
+
+
+interface com.iasdietideals24.dietideals24.utilities.services.NotificaService {
++ Response<Page<NotificaDto>> recuperaNotifiche(Long,Long,Long)
+}
+
+class com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati {
++ String message
++ <<Create>> EccezioneCampiNonCompilati(String)
+}
+
+
+interface com.iasdietideals24.dietideals24.utilities.services.OffertaTempoFissoService {
++ Response<OffertaTempoFissoDto> recuperaOffertaPiuAlta(Long)
++ Response<OffertaTempoFissoDto> recuperaOffertaPersonalePiuAltaTempoFisso(Long,Long)
++ Response<OffertaTempoFissoDto> inviaOffertaTempoFisso(OffertaTempoFissoDto)
++ Response<Page<OffertaTempoFissoDto>> recuperaOfferteTempoFisso(Long,Long,Long)
+}
+
+class com.iasdietideals24.dietideals24.utilities.dto.CategoriaAstaDto {
+- String nome
+- Set<AstaShallowDto> asteAssegnateShallow
++ String getNome()
++ Set<AstaShallowDto> getAsteAssegnateShallow()
+}
+
+
+class com.iasdietideals24.dietideals24.utilities.tools.JWT$Companion {
+- String decodePayload(String)
++ String getUserEmail(String)
++ Long getExpirationDate(String)
+}
+
+class com.iasdietideals24.dietideals24.utilities.tools.JWT {
+}
+class com.iasdietideals24.dietideals24.utilities.paging.AstaSilenziosaPagingSource {
++ <<Create>> AstaSilenziosaPagingSource(AstaSilenziosaRepository,Long,String,String,ApiCall)
++ LoadResult<Long, AstaSilenziosaDto> load(LoadParams<Long>)
++ Long? getRefreshKey(PagingState<Long, AstaSilenziosaDto>)
+}
+
+class com.iasdietideals24.dietideals24.controller.ControllerDettagliAsta {
+- ControllerDettagliAstaArgs args
+- ModelAsta viewModel
+- AstaTempoFissoRepository astaTempoFissoRepository
+- AstaInversaRepository astaInversaRepository
+- AstaSilenziosaRepository astaSilenziosaRepository
+- ProfiloRepository profiloRepository
+- OffertaInversaRepository offertaInversaRepository
+- OffertaTempoFissoRepository offertaTempoFissoRepository
+- OffertaSilenziosaRepository offertaSilenziosaRepository
+- CompratoreRepository compratoreRepository
+- VenditoreRepository venditoreRepository
+- OnBackButton? listenerBackButton
+- OnGoToProfile? listenerProfile
+- OnEditButton? listenerEditButton
+- OnGoToBids? listenerBids
+- OnRefresh? listenerRefresh
+- OnHideMaterialDivider? listerMaterialDivider
++ void onPause()
++ void onResume()
++ void onAttach(Context)
++ void onDetach()
+# void impostaEventiClick()
+# void elaborazioneAggiuntiva()
+- AstaDto caricaAsta()
+- AccountDto caricaAccount(Long)
+- ProfiloDto caricaProfilo(String)
+- OffertaDto recuperaOfferta(Long,TipoAsta)
+# void impostaOsservatori()
+- void clickIndietro()
+- void clickAiuto()
+- void clickImmagine()
+- void clickOfferta()
+- void controlloOfferta(TextInputLayout,AlertDialog)
+- OffertaDto inviaOfferta(BigDecimal)
+- Boolean isPriceInvalid(String)
+- void clickModifica()
+- void clickElimina()
+- void clickConferma()
+- void eliminaAsta()
+- void clickOfferte()
+}
+
+
+
+
+com.iasdietideals24.dietideals24.controller.Controller <|-- com.iasdietideals24.dietideals24.controller.ControllerCreaAsta
+com.iasdietideals24.dietideals24.controller.Controller <|-- com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFase3
+com.iasdietideals24.dietideals24.utilities.dto.OffertaDiCompratoreDto <|-- com.iasdietideals24.dietideals24.utilities.dto.OffertaSilenziosaDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaDto <|-- com.iasdietideals24.dietideals24.utilities.dto.AstaDiVenditoreDto
+com.iasdietideals24.dietideals24.utilities.services.Service <|.. com.iasdietideals24.dietideals24.utilities.services.ProfiloService
+androidx.lifecycle.ViewModel <|-- com.iasdietideals24.dietideals24.model.ModelProfilo
+com.iasdietideals24.dietideals24.activities.DietiDeals24Activity <|-- com.iasdietideals24.dietideals24.activities.Logout
+com.iasdietideals24.dietideals24.utilities.services.Service <|.. com.iasdietideals24.dietideals24.utilities.services.AuthService
+com.iasdietideals24.dietideals24.utilities.dto.AstaDiVenditoreDto <|-- com.iasdietideals24.dietideals24.utilities.dto.AstaTempoFissoDto
+com.iasdietideals24.dietideals24.utilities.dto.OffertaDto <|-- com.iasdietideals24.dietideals24.utilities.dto.OffertaDiVenditoreDto
+com.iasdietideals24.dietideals24.controller.Controller <|-- com.iasdietideals24.dietideals24.controller.ControllerSelezioneTipoAccount
+com.iasdietideals24.dietideals24.utilities.dto.AstaDto <|-- com.iasdietideals24.dietideals24.utilities.dto.AstaDiCompratoreDto
+com.iasdietideals24.dietideals24.utilities.exceptions.Exception <|-- com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneDataPassata
+androidx.lifecycle.ViewModel <|-- com.iasdietideals24.dietideals24.model.ModelRegistrazione
+com.iasdietideals24.dietideals24.utilities.tools.ImageHandler +.. com.iasdietideals24.dietideals24.utilities.tools.ImageHandler$Companion
+com.iasdietideals24.dietideals24.utilities.services.Service <|.. com.iasdietideals24.dietideals24.utilities.services.OffertaSilenziosaService
+com.iasdietideals24.dietideals24.utilities.services.Service <|.. com.iasdietideals24.dietideals24.utilities.services.VenditoreService
+com.iasdietideals24.dietideals24.utilities.services.Service <|.. com.iasdietideals24.dietideals24.utilities.services.OffertaInversaService
+com.iasdietideals24.dietideals24.utilities.exceptions.Exception <|-- com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAccountNonEsistente
+android.app.Application <|-- com.iasdietideals24.dietideals24.DietiDeals24Application
+com.iasdietideals24.dietideals24.activities.DietiDeals24Activity <|-- com.iasdietideals24.dietideals24.activities.ScelteIniziali
+com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity <|.. com.iasdietideals24.dietideals24.activities.ScelteIniziali
+com.iasdietideals24.dietideals24.utilities.kscripts.OnHideBackButton <|.. com.iasdietideals24.dietideals24.activities.ScelteIniziali
+com.iasdietideals24.dietideals24.utilities.kscripts.OnShowBackButton <|.. com.iasdietideals24.dietideals24.activities.ScelteIniziali
+com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep <|.. com.iasdietideals24.dietideals24.activities.ScelteIniziali
+com.iasdietideals24.dietideals24.utilities.comparators.ItemCallback <|-- com.iasdietideals24.dietideals24.utilities.comparators.AstaDtoComparator
+com.iasdietideals24.dietideals24.utilities.comparators.ItemCallback <|-- com.iasdietideals24.dietideals24.utilities.comparators.NotificaDtoComparator
+com.iasdietideals24.dietideals24.utilities.exceptions.Exception <|-- com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata
+com.iasdietideals24.dietideals24.controller.Controller <|-- com.iasdietideals24.dietideals24.controller.ControllerSelezioneAccessoRegistrazione
+com.iasdietideals24.dietideals24.controller.Controller <|-- com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFase2
+com.iasdietideals24.dietideals24.utilities.exceptions.Exception <|-- com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailNonValida
+okhttp3.Interceptor <|.. com.iasdietideals24.dietideals24.utilities.tools.HeaderInterceptor
+com.iasdietideals24.dietideals24.controller.Controller <|-- com.iasdietideals24.dietideals24.controller.ControllerModificaAsta
+com.iasdietideals24.dietideals24.controller.Controller <|-- com.iasdietideals24.dietideals24.controller.ControllerHome
+com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository +.. com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository$ApiCall
+com.iasdietideals24.dietideals24.activities.DietiDeals24Activity <|-- com.iasdietideals24.dietideals24.activities.Home
+com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton <|.. com.iasdietideals24.dietideals24.activities.Home
+com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToProfile <|.. com.iasdietideals24.dietideals24.activities.Home
+com.iasdietideals24.dietideals24.utilities.kscripts.OnEditButton <|.. com.iasdietideals24.dietideals24.activities.Home
+com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToBids <|.. com.iasdietideals24.dietideals24.activities.Home
+com.iasdietideals24.dietideals24.utilities.kscripts.OnRefresh <|.. com.iasdietideals24.dietideals24.activities.Home
+com.iasdietideals24.dietideals24.utilities.kscripts.OnOpenUrl <|.. com.iasdietideals24.dietideals24.activities.Home
+com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToDetails <|.. com.iasdietideals24.dietideals24.activities.Home
+com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToParticipation <|.. com.iasdietideals24.dietideals24.activities.Home
+com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity <|.. com.iasdietideals24.dietideals24.activities.Home
+com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToHome <|.. com.iasdietideals24.dietideals24.activities.Home
+com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToCreatedAuctions <|.. com.iasdietideals24.dietideals24.activities.Home
+com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToHelp <|.. com.iasdietideals24.dietideals24.activities.Home
+com.iasdietideals24.dietideals24.utilities.kscripts.OnHideMaterialDivider <|.. com.iasdietideals24.dietideals24.activities.Home
+com.iasdietideals24.dietideals24.activities.DietiDeals24Activity <|-- com.iasdietideals24.dietideals24.activities.Accesso
+com.iasdietideals24.dietideals24.utilities.dto.OffertaDiCompratoreDto <|-- com.iasdietideals24.dietideals24.utilities.dto.OffertaTempoFissoDto
+androidx.appcompat.app.AppCompatActivity <|-- com.iasdietideals24.dietideals24.activities.DietiDeals24Activity
+com.iasdietideals24.dietideals24.utilities.dto.OffertaDto <|-- com.iasdietideals24.dietideals24.utilities.dto.OffertaDiCompratoreDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaDiVenditoreDto <|-- com.iasdietideals24.dietideals24.utilities.dto.AstaSilenziosaDto
+com.iasdietideals24.dietideals24.utilities.dto.AccountDto <|-- com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto
+com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository +.. com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository$ApiCall
+com.iasdietideals24.dietideals24.utilities.dto.OffertaDiVenditoreDto <|-- com.iasdietideals24.dietideals24.utilities.dto.OffertaInversaDto
+com.iasdietideals24.dietideals24.controller.Controller <|-- com.iasdietideals24.dietideals24.controller.ControllerPartecipazioni
+com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository +.. com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository$ApiCall
+com.iasdietideals24.dietideals24.controller.Controller <|-- com.iasdietideals24.dietideals24.controller.ControllerAiuto
+com.iasdietideals24.dietideals24.utilities.services.Service <|.. com.iasdietideals24.dietideals24.utilities.services.AstaSilenziosaService
+com.iasdietideals24.dietideals24.utilities.dto.AccountDto <|-- com.iasdietideals24.dietideals24.utilities.dto.VenditoreDto
+com.iasdietideals24.dietideals24.controller.Controller <|-- com.iasdietideals24.dietideals24.controller.ControllerDettagliProfilo
+com.iasdietideals24.dietideals24.utilities.dto.AstaDiCompratoreDto <|-- com.iasdietideals24.dietideals24.utilities.dto.AstaInversaDto
+com.iasdietideals24.dietideals24.controller.Controller <|-- com.iasdietideals24.dietideals24.controller.ControllerCreazioneProfiloFase1
+com.iasdietideals24.dietideals24.utilities.services.Service <|.. com.iasdietideals24.dietideals24.utilities.services.CategoriaAstaService
+com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta +.. com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta$Companion
+androidx.fragment.app.Fragment <|-- com.iasdietideals24.dietideals24.controller.Controller
+com.iasdietideals24.dietideals24.utilities.exceptions.Exception <|-- com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneNomeUtenteUsato
+com.iasdietideals24.dietideals24.activities.DietiDeals24Activity <|-- com.iasdietideals24.dietideals24.activities.Registrazione
+com.iasdietideals24.dietideals24.utilities.kscripts.OnChangeActivity <|.. com.iasdietideals24.dietideals24.activities.Registrazione
+com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton <|.. com.iasdietideals24.dietideals24.activities.Registrazione
+com.iasdietideals24.dietideals24.utilities.kscripts.OnNextStep <|.. com.iasdietideals24.dietideals24.activities.Registrazione
+com.iasdietideals24.dietideals24.utilities.exceptions.Exception <|-- com.iasdietideals24.dietideals24.utilities.exceptions.EccezionePasswordNonSicura
+com.iasdietideals24.dietideals24.controller.Controller <|-- com.iasdietideals24.dietideals24.controller.ControllerOfferte
+androidx.lifecycle.ViewModel <|-- com.iasdietideals24.dietideals24.model.ModelAsta
+com.iasdietideals24.dietideals24.utilities.services.Service <|.. com.iasdietideals24.dietideals24.utilities.services.CompratoreService
+com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta +.. com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta$Companion
+com.iasdietideals24.dietideals24.controller.Controller <|-- com.iasdietideals24.dietideals24.controller.ControllerAsteCreate
+com.iasdietideals24.dietideals24.controller.Controller <|-- com.iasdietideals24.dietideals24.controller.ControllerNotifiche
+com.iasdietideals24.dietideals24.utilities.services.Service <|.. com.iasdietideals24.dietideals24.utilities.services.AstaInversaService
+com.iasdietideals24.dietideals24.controller.Controller <|-- com.iasdietideals24.dietideals24.controller.ControllerProfilo
+com.iasdietideals24.dietideals24.utilities.services.Service <|.. com.iasdietideals24.dietideals24.utilities.services.AstaTempoFissoService
+com.iasdietideals24.dietideals24.utilities.comparators.ItemCallback <|-- com.iasdietideals24.dietideals24.utilities.comparators.OffertaDtoComparator
+com.iasdietideals24.dietideals24.controller.Controller <|-- com.iasdietideals24.dietideals24.controller.ControllerModificaProfilo
+com.iasdietideals24.dietideals24.utilities.services.Service <|.. com.iasdietideals24.dietideals24.utilities.services.NotificaService
+com.iasdietideals24.dietideals24.utilities.exceptions.Exception <|-- com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneCampiNonCompilati
+com.iasdietideals24.dietideals24.utilities.services.Service <|.. com.iasdietideals24.dietideals24.utilities.services.OffertaTempoFissoService
+com.iasdietideals24.dietideals24.utilities.tools.JWT +.. com.iasdietideals24.dietideals24.utilities.tools.JWT$Companion
+com.iasdietideals24.dietideals24.controller.Controller <|-- com.iasdietideals24.dietideals24.controller.ControllerDettagliAsta
+androidx.lifecycle.ViewModel <|-- com.iasdietideals24.dietideals24.model.ModelAsteCreate
+androidx.lifecycle.ViewModel <|-- com.iasdietideals24.dietideals24.model.ModelHome
+androidx.lifecycle.ViewModel <|-- com.iasdietideals24.dietideals24.model.ModelNotifiche
+androidx.lifecycle.ViewModel <|-- com.iasdietideals24.dietideals24.model.ModelPartecipazioni
+androidx.paging.PagingDataAdapter <|-- com.iasdietideals24.dietideals24.utilities.adapters.AdapterAsteCreate
+androidx.paging.PagingDataAdapter <|-- com.iasdietideals24.dietideals24.utilities.adapters.AdapterHome
+androidx.paging.PagingDataAdapter <|-- com.iasdietideals24.dietideals24.utilities.adapters.AdapterNotifiche
+androidx.paging.PagingDataAdapter <|-- com.iasdietideals24.dietideals24.utilities.adapters.AdapterOfferte
+androidx.paging.PagingDataAdapter <|-- com.iasdietideals24.dietideals24.utilities.adapters.AdapterPartecipazioni
+androidx.paging.PagingSource <|-- com.iasdietideals24.dietideals24.utilities.paging.AstaInversaPagingSource
+androidx.paging.PagingSource <|-- com.iasdietideals24.dietideals24.utilities.paging.AstaSilenziosaPagingSource
+androidx.paging.PagingSource <|-- com.iasdietideals24.dietideals24.utilities.paging.AstaTempoFissoPagingSource
+androidx.paging.PagingSource <|-- com.iasdietideals24.dietideals24.utilities.paging.NotificaPagingSource
+androidx.paging.PagingSource <|-- com.iasdietideals24.dietideals24.utilities.paging.OffertaInversaPagingSource
+androidx.paging.PagingSource <|-- com.iasdietideals24.dietideals24.utilities.paging.OffertaSilenziosaPagingSource
+androidx.paging.PagingSource <|-- com.iasdietideals24.dietideals24.utilities.paging.OffertaTempoFissoPagingSource
+androidx.recyclerview.widget.RecyclerView.ViewHolder <|-- com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderAnteprimaAsta
+androidx.recyclerview.widget.RecyclerView.ViewHolder <|-- com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderAstaCreata
+androidx.recyclerview.widget.RecyclerView.ViewHolder <|-- com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderNotifica
+androidx.recyclerview.widget.RecyclerView.ViewHolder <|-- com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderOfferta
+androidx.recyclerview.widget.RecyclerView.ViewHolder <|-- com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderPartecipazione
+@enduml

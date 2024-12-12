@@ -1,0 +1,1759 @@
+@startuml
+class com.iasdietideals24.backend.controllers.AuthController {
++ {static} String IMPOSSIBILE_INVIARE_COGNITO_REQUEST
++ {static} String LOG_REDIRECT_URI_RICEVUTO
++ {static} String LOG_LETTURA_COGNITO_RESPONSE_FALLITA
+- {static} String DEFAULT_REDIRECT_URI
+- {static} ObjectMapper JSON_MAPPER
+- String clientId
+- String clientSecret
+- String cognitoUri
++ ResponseEntity<UrlDto> auth(String)
++ ResponseEntity<NewTokenDto> callback(String,String)
++ ResponseEntity<RefreshTokenDto> refresh(String)
++ ResponseEntity<UrlDto> logout(String,String,String)
+- HttpRequest buildCognitoRequest(String)
+- HttpResponse<String> sendCognitoRequest(HttpRequest)
+}
+
+
+interface com.iasdietideals24.backend.mapstruct.mappers.OffertaTempoFissoMapper {
+~ OffertaTempoFissoDto toDto(OffertaTempoFisso)
+~ OffertaTempoFisso toEntity(OffertaTempoFissoDto)
+}
+
+class com.iasdietideals24.backend.mapstruct.dto.AstaDiCompratoreDto {
+- AccountShallowDto proprietarioShallow
+}
+
+interface com.iasdietideals24.backend.mapstruct.mappers.CategoriaAstaMapper {
+~ CategoriaAstaDto toDto(CategoriaAsta)
+~ CategoriaAsta toEntity(CategoriaAstaDto)
+~ CategoriaAstaShallowDto toShallowDto(CategoriaAsta)
+~ CategoriaAsta toEntity(CategoriaAstaShallowDto)
+~ Set<CategoriaAstaShallowDto> toShallowDto(Set<CategoriaAsta>)
+~ Set<CategoriaAsta> toEntity(Set<CategoriaAstaShallowDto>)
+}
+
+class com.iasdietideals24.backend.exceptions.InvalidTypeException {
++ <<Create>> InvalidTypeException()
++ <<Create>> InvalidTypeException(String)
+}
+
+interface com.iasdietideals24.backend.services.AstaSilenziosaService {
+~ AstaSilenziosaDto create(AstaSilenziosaDto)
+~ Page<AstaSilenziosaDto> findAll(Pageable)
+~ Page<AstaSilenziosaDto> findByProprietarioIdAccountIs(Long,Pageable)
+~ Page<AstaSilenziosaDto> findByNomeLikeAndCategoriaNomeLike(String,String,Pageable)
+~ Page<AstaSilenziosaDto> findByOfferenteIdAccountIs(Long,Pageable)
+~ Optional<AstaSilenziosaDto> findOne(Long)
+~ boolean isExists(Long)
+~ AstaSilenziosaDto fullUpdate(Long,AstaSilenziosaDto)
+~ AstaSilenziosaDto partialUpdate(Long,AstaSilenziosaDto)
+~ void delete(Long)
+~ void checkFieldsValid(AstaSilenziosaDto)
+~ void convertRelations(AstaSilenziosaDto,AstaSilenziosa)
+~ void updatePresentFields(AstaSilenziosaDto,AstaSilenziosa)
+~ void closeAstaSilenziosa(AstaSilenziosa)
+}
+
+class com.iasdietideals24.backend.controllers.OffertaSilenziosaController {
++ {static} String LOG_OFFERTA_NON_TROVATA
+- OffertaSilenziosaService offertaSilenziosaService
++ <<Create>> OffertaSilenziosaController(OffertaSilenziosaService)
++ ResponseEntity<OffertaSilenziosaDto> createOffertaSilenziosa(OffertaSilenziosaDto)
++ ResponseEntity<Page<OffertaSilenziosaDto>> listOfferteSilenziose(Pageable)
++ ResponseEntity<Page<OffertaSilenziosaDto>> listOfferteSilenzioseByAstaRiferimentoIdAsta(Long,Pageable)
++ ResponseEntity<OffertaSilenziosaDto> getOffertaSilenziosa(Long)
++ ResponseEntity<OffertaSilenziosaDto> findOffertaSilenziosaMaxByValoreAndAstaRiferimentoIdAstaIs(Long)
++ ResponseEntity<OffertaSilenziosaDto> findOffertaSilenziosaMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(Long,Long)
++ ResponseEntity<OffertaSilenziosaDto> fullUpdateOffertaSilenziosa(Long,OffertaSilenziosaDto)
++ ResponseEntity<OffertaSilenziosaDto> partialUpdateOffertaSilenziosa(Long,OffertaSilenziosaDto)
++ ResponseEntity<OffertaSilenziosaDto> deleteOffertaSilenziosa(Long)
+}
+
+
+class com.iasdietideals24.backend.controllers.OffertaInversaController {
++ {static} String LOG_OFFERTA_NON_TROVATA
+- OffertaInversaService offertaInversaService
++ <<Create>> OffertaInversaController(OffertaInversaService)
++ ResponseEntity<OffertaInversaDto> createOffertaInversa(OffertaInversaDto)
++ ResponseEntity<Page<OffertaInversaDto>> listOfferteInverse(Pageable)
++ ResponseEntity<Page<OffertaInversaDto>> listOfferteInverseByAstaRiferimentoIdAsta(Long,Pageable)
++ ResponseEntity<OffertaInversaDto> getOffertaInversa(Long)
++ ResponseEntity<OffertaInversaDto> findOffertaInversaMinByValoreAndAstaRiferimentoIdAstaIs(Long)
++ ResponseEntity<OffertaInversaDto> findOffertaInversaMinByValoreAndAstaRiferimentoIdAstaIsAndVenditoreCollegatoIdAccountIs(Long,Long)
++ ResponseEntity<OffertaInversaDto> fullUpdateOffertaInversa(Long,OffertaInversaDto)
++ ResponseEntity<OffertaInversaDto> partialUpdateOffertaInversa(Long,OffertaInversaDto)
++ ResponseEntity<OffertaInversaDto> deleteOffertaInversa(Long)
+}
+
+
+interface com.iasdietideals24.backend.repositories.CompratoreRepository {
+~ Page<Compratore> findByEmailIs(String,Pageable)
+}
+
+class com.iasdietideals24.backend.entities.CategoriaAsta {
+- String nome
+- Set<Asta> asteAssegnate
++ <<Create>> CategoriaAsta(String)
++ void addAstaAssegnata(Asta)
++ void removeAstaAssegnata(Asta)
++ String toString()
+}
+
+
+class com.iasdietideals24.backend.mapstruct.dto.AccountDto {
+- Long idAccount
+- String email
+- String password
+- TokensAccountDto tokens
+- ProfiloShallowDto profiloShallow
+- Set<NotificaShallowDto> notificheInviateShallow
+- Set<NotificaShallowDto> notificheRicevuteShallow
+}
+
+abstract class com.iasdietideals24.backend.entities.OffertaDiVenditore {
+- Venditore venditoreCollegato
+# <<Create>> OffertaDiVenditore(LocalDate,LocalTime,BigDecimal,Venditore)
++ String toString()
+}
+
+
+interface com.iasdietideals24.backend.mapstruct.mappers.ProfiloMapper {
+~ ProfiloDto toDto(Profilo)
+~ Profilo toEntity(ProfiloDto)
+~ ProfiloShallowDto toShallowDto(Profilo)
+~ Profilo toEntity(ProfiloShallowDto)
+}
+
+class com.iasdietideals24.backend.services.implementations.CompratoreServiceImpl {
++ {static} String LOG_RECUPERO_ACCOUNT
++ {static} String LOG_FOUND_ACCOUNT
++ {static} String LOG_ACCOUNT_RECUPERATO
+- AccountService accountService
+- CompratoreMapper compratoreMapper
+- CompratoreRepository compratoreRepository
+- RelationsConverter relationsConverter
++ <<Create>> CompratoreServiceImpl(AccountService,CompratoreMapper,CompratoreRepository,RelationsConverter)
++ CompratoreDto create(CompratoreDto)
++ Page<CompratoreDto> findAll(Pageable)
++ Optional<CompratoreDto> findOne(Long)
++ Page<CompratoreDto> findByEmailIs(String,Pageable)
++ boolean isExists(Long)
++ CompratoreDto fullUpdate(Long,CompratoreDto)
++ CompratoreDto partialUpdate(Long,CompratoreDto)
++ void delete(Long)
++ void checkFieldsValid(CompratoreDto)
++ void convertRelations(CompratoreDto,Compratore)
+- void convertAstePosseduteShallow(Set<AstaShallowDto>,Compratore)
+- void convertOfferteCollegateShallow(Set<OffertaShallowDto>,Compratore)
++ void updatePresentFields(CompratoreDto,Compratore)
+}
+
+
+interface com.iasdietideals24.backend.mapstruct.mappers.StatoOffertaSilenziosaMapper {
+~ String toStringEnum(StatoOffertaSilenziosa)
+~ StatoOffertaSilenziosa toEntity(String)
+}
+
+interface com.iasdietideals24.backend.services.OffertaTempoFissoService {
+~ OffertaTempoFissoDto create(OffertaTempoFissoDto)
+~ Page<OffertaTempoFissoDto> findAll(Pageable)
+~ Page<OffertaTempoFissoDto> findByAstaRiferimentoIdAsta(Long,Pageable)
+~ Optional<OffertaTempoFissoDto> findOne(Long)
+~ Optional<OffertaTempoFissoDto> findMaxByValoreAndAstaRiferimentoIdAstaIs(Long)
+~ Optional<OffertaTempoFissoDto> findMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(Long,Long)
+~ boolean isExists(Long)
+~ OffertaTempoFissoDto fullUpdate(Long,OffertaTempoFissoDto)
+~ OffertaTempoFissoDto partialUpdate(Long,OffertaTempoFissoDto)
+~ void delete(Long)
+~ void checkFieldsValid(OffertaTempoFissoDto)
+~ void convertRelations(OffertaTempoFissoDto,OffertaTempoFisso)
+~ void updatePresentFields(OffertaTempoFissoDto,OffertaTempoFisso)
+}
+
+class com.iasdietideals24.backend.controllers.GlobalExceptionHandlerController {
+# ResponseEntity<Object> handleInvalidParameterException(InvalidParameterException,HttpServletRequest)
+- ErrorDto toDto(Exception)
+}
+
+class com.iasdietideals24.backend.entities.OffertaTempoFisso {
+- AstaTempoFisso astaRiferimento
++ <<Create>> OffertaTempoFisso(LocalDate,LocalTime,BigDecimal,Compratore,AstaTempoFisso)
++ String toString()
+}
+
+
+class com.iasdietideals24.backend.services.implementations.AstaDiVenditoreServiceImpl {
+- AstaService astaService
+- RelationsConverter relationsConverter
+# <<Create>> AstaDiVenditoreServiceImpl(AstaService,RelationsConverter)
++ void checkFieldsValid(AstaDiVenditoreDto)
+- void checkProprietarioValid(AccountShallowDto)
++ void convertRelations(AstaDiVenditoreDto,AstaDiVenditore)
+- void convertProprietarioShallow(AccountShallowDto,AstaDiVenditore)
++ void updatePresentFields(AstaDiVenditoreDto,AstaDiVenditore)
+}
+
+
+class com.iasdietideals24.backend.config.SecurityConfig {
++ {static} String ROLE_USER
++ {static} String CLAIM_COGNITO_GROUPS
++ SecurityFilterChain security(HttpSecurity)
+- void oAuthRoleConversion(OAuth2ResourceServerConfigurer<HttpSecurity>)
+- void jwtToGrantedAuthExtractor(OAuth2ResourceServerConfigurer<HttpSecurity>.JwtConfigurer)
+- Converter<Jwt,AbstractAuthenticationToken> grantedAuthoritiesExtractor()
+- Collection<GrantedAuthority> userAuthoritiesMapper(Jwt)
+- List<GrantedAuthority> mapCognitoAuthorities(List<String>)
+}
+
+
+interface com.iasdietideals24.backend.mapstruct.mappers.OffertaSilenziosaMapper {
+~ OffertaSilenziosaDto toDto(OffertaSilenziosa)
+~ OffertaSilenziosa toEntity(OffertaSilenziosaDto)
+}
+
+interface com.iasdietideals24.backend.mapstruct.mappers.AnagraficaProfiloMapper {
+~ AnagraficaProfiloDto toDto(AnagraficaProfilo)
+~ AnagraficaProfilo toEntity(AnagraficaProfiloDto)
+}
+
+interface com.iasdietideals24.backend.services.AstaInversaService {
+~ AstaInversaDto create(AstaInversaDto)
+~ Page<AstaInversaDto> findAll(Pageable)
+~ Page<AstaInversaDto> findByProprietarioIdAccountIs(Long,Pageable)
+~ Page<AstaInversaDto> findByNomeLikeAndCategoriaNomeLike(String,String,Pageable)
+~ Page<AstaInversaDto> findByOfferenteIdAccountIs(Long,Pageable)
+~ Optional<AstaInversaDto> findOne(Long)
+~ boolean isExists(Long)
+~ AstaInversaDto fullUpdate(Long,AstaInversaDto)
+~ AstaInversaDto partialUpdate(Long,AstaInversaDto)
+~ void delete(Long)
+~ void checkFieldsValid(AstaInversaDto)
+~ void convertRelations(AstaInversaDto,AstaInversa)
+~ void updatePresentFields(AstaInversaDto,AstaInversa)
+~ void closeAstaInversa(AstaInversa)
+}
+
+interface com.iasdietideals24.backend.services.AstaService {
+~ void checkFieldsValid(AstaDto)
+~ void convertRelations(AstaDto,Asta)
+~ void updatePresentFields(AstaDto,Asta)
+}
+
+class com.iasdietideals24.backend.mapstruct.dto.AstaDiVenditoreDto {
+- AccountShallowDto proprietarioShallow
+}
+
+class com.iasdietideals24.backend.exceptions.AuthRuntimeException {
++ <<Create>> AuthRuntimeException()
++ <<Create>> AuthRuntimeException(String)
+}
+
+class com.iasdietideals24.backend.entities.Venditore {
+- Set<AstaDiVenditore> astePossedute
+- Set<OffertaDiVenditore> offerteCollegate
++ <<Create>> Venditore(String,String,TokensAccount,Profilo)
++ void addAstaPosseduta(AstaDiVenditore)
++ void removeAstaPosseduta(AstaDiVenditore)
++ void addOffertaCollegata(OffertaDiVenditore)
++ void removeOffertaCollegata(OffertaDiVenditore)
++ String toString()
+}
+
+
+class com.iasdietideals24.backend.controllers.OffertaTempoFissoController {
++ {static} String LOG_OFFERTA_NON_TROVATA
+- OffertaTempoFissoService offertaTempoFissoService
++ <<Create>> OffertaTempoFissoController(OffertaTempoFissoService)
++ ResponseEntity<OffertaTempoFissoDto> createOffertaTempoFisso(OffertaTempoFissoDto)
++ ResponseEntity<Page<OffertaTempoFissoDto>> listOfferteTempoFisso(Pageable)
++ ResponseEntity<Page<OffertaTempoFissoDto>> listOfferteTempoFissoByAstaRiferimentoIdAsta(Long,Pageable)
++ ResponseEntity<OffertaTempoFissoDto> getOffertaTempoFisso(Long)
++ ResponseEntity<OffertaTempoFissoDto> findOffertaTempoFissoMaxByValoreAndAstaRiferimentoIdAstaIs(Long)
++ ResponseEntity<OffertaTempoFissoDto> findOffertaTempoFissoMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(Long,Long)
++ ResponseEntity<OffertaTempoFissoDto> fullUpdateOffertaTempoFisso(Long,OffertaTempoFissoDto)
++ ResponseEntity<OffertaTempoFissoDto> partialUpdateOffertaTempoFisso(Long,OffertaTempoFissoDto)
++ ResponseEntity<OffertaTempoFissoDto> deleteOffertaTempoFisso(Long)
+}
+
+
+abstract class com.iasdietideals24.backend.mapstruct.mappers.AccountMapper {
++ AccountShallowDto toShallowDto(Account)
++ Account toEntity(AccountShallowDto)
++ {abstract}Compratore toCompratore(AccountShallowDto)
++ {abstract}Venditore toVenditore(AccountShallowDto)
++ {abstract}Set<AccountShallowDto> toShallowDto(Set<Account>)
++ {abstract}Set<Account> toEntity(Set<AccountShallowDto>)
+}
+
+class com.iasdietideals24.backend.controllers.CompratoreController {
++ {static} String LOG_ACCOUNT_NON_TROVATO
+- CompratoreService compratoreService
++ <<Create>> CompratoreController(CompratoreService)
++ ResponseEntity<CompratoreDto> createCompratore(CompratoreDto)
++ ResponseEntity<Page<CompratoreDto>> listCompratori(Pageable)
++ ResponseEntity<Page<CompratoreDto>> listCompratoriByEmailIs(String,Pageable)
++ ResponseEntity<CompratoreDto> getCompratore(Long)
++ ResponseEntity<CompratoreDto> fullUpdateCompratore(Long,CompratoreDto)
++ ResponseEntity<CompratoreDto> partialUpdateCompratore(Long,CompratoreDto)
++ ResponseEntity<CompratoreDto> deleteCompratore(Long)
+}
+
+
+class com.iasdietideals24.backend.mapstruct.dto.OffertaSilenziosaDto {
+- String stato
+- AstaShallowDto astaRiferimentoShallow
+}
+
+class com.iasdietideals24.backend.mapstruct.dto.VenditoreDto {
+- Set<AstaShallowDto> astePosseduteShallow
+- Set<OffertaShallowDto> offerteCollegateShallow
+}
+
+interface com.iasdietideals24.backend.services.NotificaService {
+~ NotificaDto create(NotificaDto)
+~ Page<NotificaDto> findAll(Pageable)
+~ Page<NotificaDto> findByDestinatariIdAccount(Long,Pageable)
+~ Optional<NotificaDto> findOne(Long)
+~ boolean isExists(Long)
+~ NotificaDto fullUpdate(Long,NotificaDto)
+~ NotificaDto partialUpdate(Long,NotificaDto)
+~ void delete(Long)
+~ void checkFieldsValid(NotificaDto)
+~ void convertRelations(NotificaDto,Notifica)
+~ void updatePresentFields(NotificaDto,Notifica)
+}
+
+class com.iasdietideals24.backend.mapstruct.dto.auth.CognitoTokenResponseDto {
+- String id_token
+- String refresh_token
+- Long expires_in
++ <<Create>> CognitoTokenResponseDto(String,String,Long)
++ Long expires_in()
++ String id_token()
++ String refresh_token()
+}
+
+
+class com.iasdietideals24.backend.mapstruct.dto.AstaSilenziosaDto {
+- Set<OffertaShallowDto> offerteRicevuteShallow
+}
+
+class com.iasdietideals24.backend.mapstruct.mappers.impl.PutProfiloMapperImpl {
+- AnagraficaProfiloMapper anagraficaProfiloMapper
+- TokensAccountMapper tokensAccountMapper
+- LinksProfiloMapper linksProfiloMapper
++ <<Create>> PutProfiloMapperImpl(AnagraficaProfiloMapper,TokensAccountMapper,LinksProfiloMapper)
++ Profilo toEntity(PutProfiloDto)
+}
+
+
+abstract class com.iasdietideals24.backend.entities.AstaDiCompratore {
+- Compratore proprietario
+# <<Create>> AstaDiCompratore(CategoriaAsta,String,String,LocalDate,LocalTime,byte[],Compratore,StatoAsta)
++ String toString()
+}
+
+
+interface com.iasdietideals24.backend.services.OffertaDiCompratoreService {
+~ void checkFieldsValid(OffertaDiCompratoreDto)
+~ void convertRelations(OffertaDiCompratoreDto,OffertaDiCompratore)
+~ void updatePresentFields(OffertaDiCompratoreDto,OffertaDiCompratore)
+}
+
+class com.iasdietideals24.backend.exceptions.InvalidParameterException {
++ <<Create>> InvalidParameterException()
++ <<Create>> InvalidParameterException(String)
+}
+
+interface com.iasdietideals24.backend.repositories.VenditoreRepository {
+~ Page<Venditore> findByEmailIs(String,Pageable)
+}
+
+class com.iasdietideals24.backend.mapstruct.dto.CategoriaAstaDto {
+- String nome
+- Set<AstaShallowDto> asteAssegnateShallow
+}
+
+interface com.iasdietideals24.backend.repositories.OffertaDiVenditoreRepository {
+}
+class com.iasdietideals24.backend.services.implementations.AstaDiCompratoreServiceImpl {
+- AstaService astaService
+- RelationsConverter relationsConverter
+# <<Create>> AstaDiCompratoreServiceImpl(AstaService,RelationsConverter)
++ void checkFieldsValid(AstaDiCompratoreDto)
+- void checkProprietarioValid(AccountShallowDto)
++ void convertRelations(AstaDiCompratoreDto,AstaDiCompratore)
+- void convertProprietarioShallow(AccountShallowDto,AstaDiCompratore)
++ void updatePresentFields(AstaDiCompratoreDto,AstaDiCompratore)
+}
+
+
+class com.iasdietideals24.backend.entities.Notifica {
+- Long idNotifica
+- LocalDate dataInvio
+- LocalTime oraInvio
+- String messaggio
+- Account mittente
+- Set<Account> destinatari
+- Asta astaAssociata
++ <<Create>> Notifica(LocalDate,LocalTime,String,Account,Account,Asta)
++ void addDestinatario(Account)
++ void removeDestinatario(Account)
++ String toString()
+}
+
+
+class com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto {
+- Long idAsta
+- String tipoAstaPerAccount
+- String tipoAstaSpecifica
+}
+
+abstract class com.iasdietideals24.backend.entities.Account {
+- Long idAccount
+- String email
+- String password
+- TokensAccount tokens
+- Profilo profilo
+- Set<Notifica> notificheInviate
+- Set<Notifica> notificheRicevute
+# <<Create>> Account(String,String,TokensAccount,Profilo)
++ void addNotificaInviata(Notifica)
++ void removeNotificaInviata(Notifica)
++ void addNotificaRicevuta(Notifica)
++ void removeNotificaRicevuta(Notifica)
++ String toString()
+}
+
+
+class com.iasdietideals24.backend.exceptions.UpdateRuntimeException {
++ <<Create>> UpdateRuntimeException()
++ <<Create>> UpdateRuntimeException(String)
+}
+
+interface com.iasdietideals24.backend.repositories.CategoriaAstaRepository {
+}
+class com.iasdietideals24.backend.controllers.AstaSilenziosaController {
++ {static} String LOG_ASTA_NON_TROVATA
++ {static} String LOG_RECUPERO_ASTE_IN_CORSO
++ {static} String LOG_ASTE_RECUPERATE
+- AstaSilenziosaService astaSilenziosaService
++ <<Create>> AstaSilenziosaController(AstaSilenziosaService)
++ ResponseEntity<AstaSilenziosaDto> createAstaSilenziosa(AstaSilenziosaDto)
++ ResponseEntity<Page<AstaSilenziosaDto>> listAsteSilenziose(Pageable)
++ ResponseEntity<Page<AstaSilenziosaDto>> listAsteSilenzioseByProprietarioIdAccountIs(Long,Pageable)
++ ResponseEntity<Page<AstaSilenziosaDto>> listAsteSilenzioseByNomeLikeAndCategoriaNomeLike(String,String,Pageable)
++ ResponseEntity<Page<AstaSilenziosaDto>> listAsteSilenzioseByOfferenteIdAccountIs(Long,Pageable)
++ ResponseEntity<AstaSilenziosaDto> getAstaSilenziosa(Long)
++ ResponseEntity<AstaSilenziosaDto> fullUpdateAstaSilenziosa(Long,AstaSilenziosaDto)
++ ResponseEntity<AstaSilenziosaDto> partialUpdateAstaSilenziosa(Long,AstaSilenziosaDto)
++ ResponseEntity<AstaSilenziosaDto> deleteAstaSilenziosa(Long)
+}
+
+
+interface com.iasdietideals24.backend.mapstruct.mappers.OffertaInversaMapper {
+~ OffertaInversaDto toDto(OffertaInversa)
+~ OffertaInversa toEntity(OffertaInversaDto)
+}
+
+interface com.iasdietideals24.backend.repositories.OffertaInversaRepository {
+~ Page<OffertaInversa> findByAstaRiferimento_IdAsta(Long,Pageable)
+~ Optional<OffertaInversa> findMinByValoreAndAstaRiferimento_IdAstaIs(Long)
+~ Optional<OffertaInversa> findMinByValoreAndAstaRiferimento_IdAstaIsAndVenditoreCollegato_IdAccountIs(Long,Long)
+}
+
+class com.iasdietideals24.backend.mapstruct.dto.AstaInversaDto {
+- BigDecimal sogliaIniziale
+- Set<OffertaShallowDto> offerteRicevuteShallow
+}
+
+class com.iasdietideals24.backend.services.implementations.OffertaSilenziosaServiceImpl {
++ {static} String LOG_RECUPERO_OFFERTA
++ {static} String LOG_FOUND_OFFERTA
++ {static} String LOG_OFFERTA_RECUPERATA
+- OffertaDiCompratoreService offertaDiCompratoreService
+- StatoOffertaSilenziosaMapper statoOffertaSilenziosaMapper
+- OffertaSilenziosaMapper offertaSilenziosaMapper
+- OffertaSilenziosaRepository offertaSilenziosaRepository
+- RelationsConverter relationsConverter
+- BuildNotice buildNotice
+- AstaScheduler astaScheduler
++ <<Create>> OffertaSilenziosaServiceImpl(OffertaDiCompratoreService,StatoOffertaSilenziosaMapper,OffertaSilenziosaMapper,OffertaSilenziosaRepository,RelationsConverter,BuildNotice,AstaScheduler)
++ OffertaSilenziosaDto create(OffertaSilenziosaDto)
++ Page<OffertaSilenziosaDto> findAll(Pageable)
++ Page<OffertaSilenziosaDto> findByAstaRiferimentoIdAsta(Long,Pageable)
++ Optional<OffertaSilenziosaDto> findOne(Long)
++ Optional<OffertaSilenziosaDto> findMaxByValoreAndAstaRiferimentoIdAstaIs(Long)
++ Optional<OffertaSilenziosaDto> findMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(Long,Long)
++ boolean isExists(Long)
++ OffertaSilenziosaDto fullUpdate(Long,OffertaSilenziosaDto)
++ OffertaSilenziosaDto partialUpdate(Long,OffertaSilenziosaDto)
++ void delete(Long)
++ void checkFieldsValid(OffertaSilenziosaDto)
+- void checkStatoValid(String)
+- void checkAstaRiferimentoValid(AstaShallowDto)
++ void convertRelations(OffertaSilenziosaDto,OffertaSilenziosa)
+- void convertAstaRiferimentoShallow(AstaShallowDto,OffertaSilenziosa)
++ void updatePresentFields(OffertaSilenziosaDto,OffertaSilenziosa)
+- void ifPresentUpdateStato(String,OffertaSilenziosa)
+- void checkAstaActive(OffertaSilenziosa)
+- void checkProprietarioAstaNotMe(OffertaSilenziosa)
+- void doTasksForStatoOfferta(OffertaSilenziosa)
+- void acceptedOffertaTasks(OffertaSilenziosa)
+- void rejectedOffertaTasks(OffertaSilenziosa)
+}
+
+
+interface com.iasdietideals24.backend.services.VenditoreService {
+~ VenditoreDto create(VenditoreDto)
+~ Page<VenditoreDto> findAll(Pageable)
+~ Optional<VenditoreDto> findOne(Long)
+~ Page<VenditoreDto> findByEmailIs(String,Pageable)
+~ boolean isExists(Long)
+~ VenditoreDto fullUpdate(Long,VenditoreDto)
+~ VenditoreDto partialUpdate(Long,VenditoreDto)
+~ void delete(Long)
+~ void checkFieldsValid(VenditoreDto)
+~ void convertRelations(VenditoreDto,Venditore)
+~ void updatePresentFields(VenditoreDto,Venditore)
+}
+
+class com.iasdietideals24.backend.mapstruct.dto.exceptional.PutProfiloDto {
+- String nomeUtente
+- byte[] profilePicture
+- AnagraficaProfiloDto anagrafica
+- LinksProfiloDto links
+- String email
+- String password
+- TokensAccountDto tokens
+- String tipoAccount
+}
+
+class com.iasdietideals24.backend.mapstruct.dto.shallows.AccountShallowDto {
+- Long idAccount
+- String tipoAccount
+}
+
+class com.iasdietideals24.backend.scheduled.AstaScheduler {
+- AstaRepository astaRepository
+- AstaInversaService astaInversaService
+- AstaSilenziosaService astaSilenziosaService
+- AstaTempoFissoService astaTempoFissoService
++ <<Create>> AstaScheduler(AstaRepository,AstaInversaService,AstaSilenziosaService,AstaTempoFissoService)
++ void updateExpiredAste()
+}
+
+
+class com.iasdietideals24.backend.services.implementations.OffertaServiceImpl {
++ void checkFieldsValid(OffertaDto)
+- void checkDataInvioValid(LocalDate)
+- void checkOraInvioValid(LocalDate,LocalTime)
+- void checkValoreValid(BigDecimal)
++ void convertRelations(OffertaDto,Offerta)
++ void updatePresentFields(OffertaDto,Offerta)
+- void ifPresentUpdateDataInvio(LocalDate,Offerta)
+- void ifPresentUpdateOraInvio(LocalTime,Offerta)
+- void ifPresentUpdateValore(BigDecimal,Offerta)
+}
+
+class com.iasdietideals24.backend.services.helper.implementations.BuildNoticeImpl {
++ {static} String LOG_COSTRUZIONE_NOTIFICA
++ {static} String NUOVA_OFFERTA
++ {static} String OFFERTA_SILENZIOSA_RIFIUTATA
++ {static} String OFFERTA_SILENZIOSA_ACCETTATA
++ {static} String ASTA_SCADUTA
++ {static} String ASTA_PERSA
++ {static} String ASTA_VINTA
+- NotificaRepository notificaRepository
++ <<Create>> BuildNoticeImpl(NotificaRepository)
++ void notifyNuovaOfferta(OffertaInversa)
++ void notifyNuovaOfferta(OffertaSilenziosa)
++ void notifyNuovaOfferta(OffertaTempoFisso)
++ void notifyOffertaSilenziosaRifiutata(OffertaSilenziosa)
++ void notifyOffertaSilenziosaRifiutata(Set<OffertaSilenziosa>)
++ void notifyOffertaSilenziosaAccettata(OffertaSilenziosa)
++ void notifyAstaInversaScaduta(AstaInversa)
++ void notifyAstaSilenziosaScaduta(AstaSilenziosa)
++ void notifyAstaTempoFissoScaduta(AstaTempoFisso)
++ void notifyOffertaInversaVincitrice(OffertaInversa)
++ void notifyOffertaInversaPerdente(Set<OffertaInversa>)
++ void notifyOffertaTempoFissoVincitrice(OffertaTempoFisso)
++ void notifyOffertaTempoFissoPerdente(Set<OffertaTempoFisso>)
+- void sendNotifica(Notifica)
+}
+
+
+interface com.iasdietideals24.backend.repositories.OffertaSilenziosaRepository {
+~ Page<OffertaSilenziosa> findByAstaRiferimento_IdAsta(Long,Pageable)
+~ Optional<OffertaSilenziosa> findMaxByValoreAndAstaRiferimento_IdAstaIs(Long)
+~ Optional<OffertaSilenziosa> findMaxByValoreAndAstaRiferimento_IdAstaIsAndCompratoreCollegato_IdAccountIs(Long,Long)
+}
+
+abstract class com.iasdietideals24.backend.entities.OffertaDiCompratore {
+- Compratore compratoreCollegato
+# <<Create>> OffertaDiCompratore(LocalDate,LocalTime,BigDecimal,Compratore)
++ String toString()
+}
+
+
+class com.iasdietideals24.backend.mapstruct.dto.utilities.LinksProfiloDto {
+- String linkPersonale
+- String linkInstagram
+- String linkFacebook
+- String linkGitHub
+- String linkX
+}
+
+class com.iasdietideals24.backend.config.JacksonConfig {
++ ObjectMapper objectMapper()
+}
+
+interface com.iasdietideals24.backend.repositories.AstaSilenziosaRepository {
+~ Page<AstaSilenziosa> findByProprietario_IdAccountIs(Long,Pageable)
+~ Page<AstaSilenziosa> findByNomeLikeAndCategoria_NomeLike(String,String,Pageable)
+~ Page<AstaSilenziosa> findByOfferente_IdAccountIs(Long,Pageable)
+}
+
+interface com.iasdietideals24.backend.services.helper.BuildNotice {
+~ void notifyNuovaOfferta(OffertaInversa)
+~ void notifyNuovaOfferta(OffertaSilenziosa)
+~ void notifyNuovaOfferta(OffertaTempoFisso)
+~ void notifyOffertaSilenziosaRifiutata(OffertaSilenziosa)
+~ void notifyOffertaSilenziosaRifiutata(Set<OffertaSilenziosa>)
+~ void notifyOffertaSilenziosaAccettata(OffertaSilenziosa)
+~ void notifyAstaInversaScaduta(AstaInversa)
+~ void notifyAstaSilenziosaScaduta(AstaSilenziosa)
+~ void notifyAstaTempoFissoScaduta(AstaTempoFisso)
+~ void notifyOffertaInversaVincitrice(OffertaInversa)
+~ void notifyOffertaInversaPerdente(Set<OffertaInversa>)
+~ void notifyOffertaTempoFissoVincitrice(OffertaTempoFisso)
+~ void notifyOffertaTempoFissoPerdente(Set<OffertaTempoFisso>)
+}
+
+class com.iasdietideals24.backend.services.implementations.CategoriaAstaServiceImpl {
++ {static} String LOG_RECUPERO_CATEGORIA_ASTA
++ {static} String LOG_FOUND_CATEGORIA_ASTA
++ {static} String LOG_CATEGORIA_ASTA_RECUPERATA
+- CategoriaAstaMapper categoriaAstaMapper
+- CategoriaAstaRepository categoriaAstaRepository
+- RelationsConverter relationsConverter
++ <<Create>> CategoriaAstaServiceImpl(CategoriaAstaMapper,CategoriaAstaRepository,RelationsConverter)
++ CategoriaAstaDto create(String,CategoriaAstaDto)
++ Page<CategoriaAstaDto> findAll(Pageable)
++ Optional<CategoriaAstaDto> findOne(String)
++ boolean isExists(String)
++ CategoriaAstaDto fullUpdate(String,CategoriaAstaDto)
++ CategoriaAstaDto partialUpdate(String,CategoriaAstaDto)
++ void delete(String)
++ void checkFieldsValid(CategoriaAstaDto)
+- void checkNomeValid(String)
++ void convertRelations(CategoriaAstaDto,CategoriaAsta)
+- void convertAsteAssegnateShallow(Set<AstaShallowDto>,CategoriaAsta)
++ void updatePresentFields(CategoriaAstaDto,CategoriaAsta)
+- void ifPresentUpdateNome(String,CategoriaAsta)
+}
+
+
+class com.iasdietideals24.backend.controllers.AstaInversaController {
++ {static} String LOG_ASTA_NON_TROVATA
++ {static} String LOG_RECUPERO_ASTE_IN_CORSO
++ {static} String LOG_ASTE_RECUPERATE
+- AstaInversaService astaInversaService
++ <<Create>> AstaInversaController(AstaInversaService)
++ ResponseEntity<AstaInversaDto> createAstaInversa(AstaInversaDto)
++ ResponseEntity<Page<AstaInversaDto>> listAsteInverse(Pageable)
++ ResponseEntity<Page<AstaInversaDto>> listAsteInverseByProprietarioIdAccountIs(Long,Pageable)
++ ResponseEntity<Page<AstaInversaDto>> listAsteInverseByNomeLikeAndCategoriaNomeLike(String,String,Pageable)
++ ResponseEntity<Page<AstaInversaDto>> listAsteInverseByOfferenteIdAccountIs(Long,Pageable)
++ ResponseEntity<AstaInversaDto> getAstaInversa(Long)
++ ResponseEntity<AstaInversaDto> fullUpdateAstaInversa(Long,AstaInversaDto)
++ ResponseEntity<AstaInversaDto> partialUpdateAstaInversa(Long,AstaInversaDto)
++ ResponseEntity<AstaInversaDto> deleteAstaInversa(Long)
+}
+
+
+class com.iasdietideals24.backend.mapstruct.dto.shallows.NotificaShallowDto {
+- Long idNotifica
+}
+
+class com.iasdietideals24.backend.BackendApplication {
++ {static} void main(String[])
+}
+
+class com.iasdietideals24.backend.controllers.VenditoreController {
++ {static} String LOG_ACCOUNT_NON_TROVATO
+- VenditoreService venditoreService
++ <<Create>> VenditoreController(VenditoreService)
++ ResponseEntity<VenditoreDto> createVenditore(VenditoreDto)
++ ResponseEntity<Page<VenditoreDto>> listVenditori(Pageable)
++ ResponseEntity<Page<VenditoreDto>> listVenditoriByEmailIs(String,Pageable)
++ ResponseEntity<VenditoreDto> getVenditore(Long)
++ ResponseEntity<VenditoreDto> fullUpdateVenditore(Long,VenditoreDto)
++ ResponseEntity<VenditoreDto> partialUpdateVenditore(Long,VenditoreDto)
++ ResponseEntity<VenditoreDto> deleteVenditore(Long)
+}
+
+
+class com.iasdietideals24.backend.entities.Profilo {
+- String nomeUtente
+- byte[] profilePicture
+- AnagraficaProfilo anagrafica
+- LinksProfilo links
+- Set<Account> accounts
++ <<Create>> Profilo(String,byte[],AnagraficaProfilo,LinksProfilo,Account)
++ <<Create>> Profilo(String,byte[],AnagraficaProfilo,LinksProfilo,String,String,TokensAccount,String)
++ void addAccount(Account)
++ void removeAccount(Account)
++ Compratore getCompratore()
++ Venditore getVenditore()
++ String toString()
+}
+
+
+interface com.iasdietideals24.backend.repositories.ProfiloRepository {
+}
+class com.iasdietideals24.backend.mapstruct.dto.shallows.ProfiloShallowDto {
+- String nomeUtente
+}
+
+interface com.iasdietideals24.backend.services.CompratoreService {
+~ CompratoreDto create(CompratoreDto)
+~ Page<CompratoreDto> findAll(Pageable)
+~ Optional<CompratoreDto> findOne(Long)
+~ Page<CompratoreDto> findByEmailIs(String,Pageable)
+~ boolean isExists(Long)
+~ CompratoreDto fullUpdate(Long,CompratoreDto)
+~ CompratoreDto partialUpdate(Long,CompratoreDto)
+~ void delete(Long)
+~ void checkFieldsValid(CompratoreDto)
+~ void convertRelations(CompratoreDto,Compratore)
+~ void updatePresentFields(CompratoreDto,Compratore)
+}
+
+class com.iasdietideals24.backend.entities.OffertaInversa {
+- AstaInversa astaRiferimento
++ <<Create>> OffertaInversa(LocalDate,LocalTime,BigDecimal,Venditore,AstaInversa)
++ String toString()
+}
+
+
+interface com.iasdietideals24.backend.services.OffertaService {
+~ void checkFieldsValid(OffertaDto)
+~ void convertRelations(OffertaDto,Offerta)
+~ void updatePresentFields(OffertaDto,Offerta)
+}
+
+interface com.iasdietideals24.backend.repositories.OffertaDiCompratoreRepository {
+}
+class com.iasdietideals24.backend.mapstruct.dto.CompratoreDto {
+- Set<AstaShallowDto> astePosseduteShallow
+- Set<OffertaShallowDto> offerteCollegateShallow
+}
+
+interface com.iasdietideals24.backend.repositories.AstaInversaRepository {
+~ Page<AstaInversa> findByProprietario_IdAccountIs(Long,Pageable)
+~ Page<AstaInversa> findByNomeLikeAndCategoria_NomeLike(String,String,Pageable)
+~ Page<AstaInversa> findByOfferente_IdAccountIs(Long,Pageable)
+}
+
+interface com.iasdietideals24.backend.services.OffertaInversaService {
+~ OffertaInversaDto create(OffertaInversaDto)
+~ Page<OffertaInversaDto> findAll(Pageable)
+~ Page<OffertaInversaDto> findByAstaRiferimentoIdAsta(Long,Pageable)
+~ Optional<OffertaInversaDto> findOne(Long)
+~ Optional<OffertaInversaDto> findMinByValoreAndAstaRiferimentoIdAstaIs(Long)
+~ Optional<OffertaInversaDto> findMinByValoreAndAstaRiferimentoIdAstaIsAndVenditoreCollegatoIdAccountIs(Long,Long)
+~ boolean isExists(Long)
+~ OffertaInversaDto fullUpdate(Long,OffertaInversaDto)
+~ OffertaInversaDto partialUpdate(Long,OffertaInversaDto)
+~ void delete(Long)
+~ void checkFieldsValid(OffertaInversaDto)
+~ void convertRelations(OffertaInversaDto,OffertaInversa)
+~ void updatePresentFields(OffertaInversaDto,OffertaInversa)
+}
+
+class com.iasdietideals24.backend.mapstruct.dto.OffertaTempoFissoDto {
+- AstaShallowDto astaRiferimentoShallow
+}
+
+interface com.iasdietideals24.backend.repositories.AstaDiCompratoreRepository {
+~ Page<AstaDiCompratore> findByProprietario_IdAccountIs(Long,Pageable)
+~ Page<AstaDiCompratore> findByNomeLikeAndCategoria_NomeLike(String,String,Pageable)
+}
+
+class com.iasdietideals24.backend.mapstruct.dto.OffertaDiCompratoreDto {
+- AccountShallowDto compratoreCollegatoShallow
+}
+
+interface com.iasdietideals24.backend.services.OffertaDiVenditoreService {
+~ void checkFieldsValid(OffertaDiVenditoreDto)
+~ void convertRelations(OffertaDiVenditoreDto,OffertaDiVenditore)
+~ void updatePresentFields(OffertaDiVenditoreDto,OffertaDiVenditore)
+}
+
+class com.iasdietideals24.backend.mapstruct.dto.ProfiloDto {
+- String nomeUtente
+- byte[] profilePicture
+- AnagraficaProfiloDto anagrafica
+- LinksProfiloDto links
+- Set<AccountShallowDto> accountsShallow
+}
+
+class com.iasdietideals24.backend.services.implementations.AccountServiceImpl {
+- TokensAccountMapper tokensAccountMapper
+- AccountRepository accountRepository
+- RelationsConverter relationsConverter
+# <<Create>> AccountServiceImpl(TokensAccountMapper,RelationsConverter,AccountRepository)
++ void checkFieldsValid(AccountDto)
+- void checkEmailValid(String)
+- void checkPasswordValid(String)
+- void checkProfiloShallowValid(ProfiloShallowDto)
+- void checkNomeUtenteValid(String)
++ void convertRelations(AccountDto,Account)
+- void convertProfiloShallow(ProfiloShallowDto,Account)
+- void convertNotificheInviateShallow(Set<NotificaShallowDto>,Account)
+- void convertNotificheRicevuteShallow(Set<NotificaShallowDto>,Account)
++ void updatePresentFields(AccountDto,Account)
+- void ifPresentUpdateEmail(String,Account)
+- void ifPresentUpdatePassword(String,Account)
+- void ifPresentUpdateTokens(TokensAccountDto,Account)
+- void ifPresentUpdateIdFacebook(String,TokensAccount)
+- void ifPresentUpdateIdGoogle(String,TokensAccount)
+- void ifPresentUpdateIdX(String,TokensAccount)
+- void ifPresentUpdateIdGitHub(String,TokensAccount)
+- void verifyAccountsProfiloCohesion(Account,Profilo)
+- void checkNuovoAccountTypeNotAlreadyPresent(Account,Account)
+- void checkNuovoAccountCohesionWithOtherAccounts(Account,Account)
++ boolean isLastAccountOfProfilo(Account)
++ void checkEmailNotAlreadyTaken(String)
++ void checkEmailNotAlreadyTaken(Account)
+}
+
+
+class com.iasdietideals24.backend.entities.utilities.AnagraficaProfilo {
+- String nome
+- String cognome
+- LocalDate dataNascita
+- String areaGeografica
+- String genere
+- String biografia
++ <<Create>> AnagraficaProfilo(String,String,LocalDate,String,String,String)
++ String toString()
+}
+
+
+interface com.iasdietideals24.backend.repositories.AccountRepository {
+~ Page<Account> findByEmailIs(String,Pageable)
+}
+
+class com.iasdietideals24.backend.services.implementations.ProfiloServiceImpl {
++ {static} String LOG_RECUPERO_PROFILO
++ {static} String LOG_FOUND_PROFILO
++ {static} String LOG_PROFILO_RECUPERATO
+- AccountService accountService
+- ProfiloMapper profiloMapper
+- PutProfiloMapper putProfiloMapper
+- AnagraficaProfiloMapper anagraficaProfiloMapper
+- LinksProfiloMapper linksProfiloMapper
+- ProfiloRepository profiloRepository
+- RelationsConverter relationsConverter
++ <<Create>> ProfiloServiceImpl(ProfiloMapper,PutProfiloMapper,AnagraficaProfiloMapper,LinksProfiloMapper,ProfiloRepository,RelationsConverter,AccountService)
++ ProfiloDto create(String,PutProfiloDto)
++ Page<ProfiloDto> findAll(Pageable)
++ Optional<ProfiloDto> findOne(String)
++ boolean isExists(String)
++ ProfiloDto fullUpdate(String,PutProfiloDto)
++ ProfiloDto partialUpdate(String,ProfiloDto)
++ void delete(String)
++ void checkFieldsValid(ProfiloDto)
+- void checkNomeUtenteValid(String)
+- void checkProfilePictureValid(byte[])
+- void checkAnagraficaValid(AnagraficaProfiloDto)
+- void checkNomeValid(String)
+- void checkCognomeValid(String)
+- void checkDataNascitaValid(LocalDate)
+- void checkAccountsValid(Set<AccountShallowDto>)
++ void checkFieldsValid(PutProfiloDto)
+- void checkEmailValid(String)
+- void checkPasswordValid(String)
++ void convertRelations(PutProfiloDto,Profilo)
++ void convertRelations(ProfiloDto,Profilo)
+- void convertAccounts(Set<AccountShallowDto>,Profilo)
++ void updatePresentFields(ProfiloDto,Profilo)
+- void ifPresentUpdateProfilePicture(byte[],Profilo)
+- void ifPresentUpdateAnagrafica(AnagraficaProfiloDto,Profilo)
+- void ifPresentUpdateNome(String,AnagraficaProfilo)
+- void ifPresentUpdateCognome(String,AnagraficaProfilo)
+- void ifPresentUpdateDataNascita(LocalDate,AnagraficaProfilo)
+- void ifPresentUpdateAreaGeografica(String,AnagraficaProfilo)
+- void ifPresentUpdateGenere(String,AnagraficaProfilo)
+- void ifPresentUpdateBiografia(String,AnagraficaProfilo)
+- void ifPresentUpdateLinks(LinksProfiloDto,Profilo)
+- void ifPresentUpdateLinkPersonale(String,LinksProfilo)
+- void ifPresentUpdateLinkInstagram(String,LinksProfilo)
+- void ifPresentUpdateLinkFacebook(String,LinksProfilo)
+- void ifPresentUpdateLinkGitHub(String,LinksProfilo)
+- void ifPresentUpdateLinkX(String,LinksProfilo)
+}
+
+
+interface com.iasdietideals24.backend.services.AccountService {
+~ void checkFieldsValid(AccountDto)
+~ void convertRelations(AccountDto,Account)
+~ void updatePresentFields(AccountDto,Account)
+~ boolean isLastAccountOfProfilo(Account)
+~ void checkEmailNotAlreadyTaken(String)
+~ void checkEmailNotAlreadyTaken(Account)
+}
+
+interface com.iasdietideals24.backend.services.helper.RelationsConverter {
+~ Profilo convertProfiloShallowRelation(ProfiloShallowDto)
+~ Notifica convertNotificaShallowRelation(NotificaShallowDto)
+~ Asta convertAstaShallowRelation(AstaShallowDto)
+~ Offerta convertOffertaShallowRelation(OffertaShallowDto)
+~ Account convertAccountShallowRelation(AccountShallowDto)
+~ CategoriaAsta convertCategoriaAstaShallowRelation(CategoriaAstaShallowDto)
+}
+
+interface com.iasdietideals24.backend.services.OffertaSilenziosaService {
+~ OffertaSilenziosaDto create(OffertaSilenziosaDto)
+~ Page<OffertaSilenziosaDto> findAll(Pageable)
+~ Page<OffertaSilenziosaDto> findByAstaRiferimentoIdAsta(Long,Pageable)
+~ Optional<OffertaSilenziosaDto> findOne(Long)
+~ Optional<OffertaSilenziosaDto> findMaxByValoreAndAstaRiferimentoIdAstaIs(Long)
+~ Optional<OffertaSilenziosaDto> findMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(Long,Long)
+~ boolean isExists(Long)
+~ OffertaSilenziosaDto fullUpdate(Long,OffertaSilenziosaDto)
+~ OffertaSilenziosaDto partialUpdate(Long,OffertaSilenziosaDto)
+~ void delete(Long)
+~ void checkFieldsValid(OffertaSilenziosaDto)
+~ void convertRelations(OffertaSilenziosaDto,OffertaSilenziosa)
+~ void updatePresentFields(OffertaSilenziosaDto,OffertaSilenziosa)
+}
+
+class com.iasdietideals24.backend.services.helper.implementations.RelationsConverterImpl {
+- ProfiloRepository profiloRepository
+- NotificaRepository notificaRepository
+- AstaRepository astaRepository
+- OffertaRepository offertaRepository
+- AccountRepository accountRepository
+- CategoriaAstaRepository categoriaAstaRepository
++ <<Create>> RelationsConverterImpl(ProfiloRepository,NotificaRepository,AstaRepository,OffertaRepository,AccountRepository,CategoriaAstaRepository)
++ Profilo convertProfiloShallowRelation(ProfiloShallowDto)
++ Notifica convertNotificaShallowRelation(NotificaShallowDto)
++ Asta convertAstaShallowRelation(AstaShallowDto)
++ Offerta convertOffertaShallowRelation(OffertaShallowDto)
++ Account convertAccountShallowRelation(AccountShallowDto)
++ CategoriaAsta convertCategoriaAstaShallowRelation(CategoriaAstaShallowDto)
+}
+
+
+class com.iasdietideals24.backend.entities.AstaTempoFisso {
+- BigDecimal sogliaMinima
+- Set<OffertaTempoFisso> offerteRicevute
++ <<Create>> AstaTempoFisso(CategoriaAsta,String,String,LocalDate,LocalTime,byte[],Venditore,BigDecimal,StatoAsta)
++ void addOffertaRicevuta(OffertaTempoFisso)
++ void removeOffertaRicevuta(OffertaTempoFisso)
++ String toString()
+}
+
+
+abstract class com.iasdietideals24.backend.entities.AstaDiVenditore {
+- Venditore proprietario
+# <<Create>> AstaDiVenditore(CategoriaAsta,String,String,LocalDate,LocalTime,byte[],Venditore,StatoAsta)
++ String toString()
+}
+
+
+interface com.iasdietideals24.backend.mapstruct.mappers.AstaInversaMapper {
+~ AstaInversaDto toDto(AstaInversa)
+~ AstaInversa toEntity(AstaInversaDto)
+}
+
+abstract class com.iasdietideals24.backend.mapstruct.mappers.OffertaMapper {
++ OffertaShallowDto toShallowDto(Offerta)
++ Offerta toEntity(OffertaShallowDto)
++ OffertaDiVenditore toOffertaDiVenditore(OffertaShallowDto)
++ OffertaDiCompratore toOffertaDiCompratore(OffertaShallowDto)
++ {abstract}OffertaInversa toOffertaInversa(OffertaShallowDto)
++ {abstract}OffertaTempoFisso toOffertaTempoFisso(OffertaShallowDto)
++ {abstract}OffertaSilenziosa toOffertaSilenziosa(OffertaShallowDto)
++ {abstract}Set<OffertaShallowDto> toShallowDto(Set<Offerta>)
++ {abstract}Set<Offerta> toEntity(Set<OffertaShallowDto>)
+}
+
+interface com.iasdietideals24.backend.mapstruct.mappers.StatoAstaMapper {
+~ String toStringEnum(StatoAsta)
+~ StatoAsta toEntity(String)
+}
+
+interface com.iasdietideals24.backend.repositories.OffertaRepository {
+}
+class com.iasdietideals24.backend.services.implementations.OffertaTempoFissoServiceImpl {
++ {static} String LOG_RECUPERO_OFFERTA
++ {static} String LOG_FOUND_OFFERTA
++ {static} String LOG_OFFERTA_RECUPERATA
++ {static} String LOG_NUOVA_OFFERTA
+- OffertaDiCompratoreService offertaDiCompratoreService
+- OffertaTempoFissoMapper offertaTempoFissoMapper
+- OffertaTempoFissoRepository offertaTempoFissoRepository
+- RelationsConverter relationsConverter
+- BuildNotice buildNotice
+- AstaScheduler astaScheduler
++ <<Create>> OffertaTempoFissoServiceImpl(OffertaDiCompratoreService,OffertaTempoFissoMapper,OffertaTempoFissoRepository,RelationsConverter,BuildNotice,AstaScheduler)
++ OffertaTempoFissoDto create(OffertaTempoFissoDto)
++ Page<OffertaTempoFissoDto> findAll(Pageable)
++ Page<OffertaTempoFissoDto> findByAstaRiferimentoIdAsta(Long,Pageable)
++ Optional<OffertaTempoFissoDto> findOne(Long)
++ Optional<OffertaTempoFissoDto> findMaxByValoreAndAstaRiferimentoIdAstaIs(Long)
++ Optional<OffertaTempoFissoDto> findMaxByValoreAndAstaRiferimentoIdAstaIsAndCompratoreCollegatoIdAccountIs(Long,Long)
++ boolean isExists(Long)
++ OffertaTempoFissoDto fullUpdate(Long,OffertaTempoFissoDto)
++ OffertaTempoFissoDto partialUpdate(Long,OffertaTempoFissoDto)
++ void delete(Long)
++ void checkFieldsValid(OffertaTempoFissoDto)
+- void checkAstaRiferimentoValid(AstaShallowDto)
++ void convertRelations(OffertaTempoFissoDto,OffertaTempoFisso)
+- void convertAstaRiferimentoShallow(AstaShallowDto,OffertaTempoFisso)
++ void updatePresentFields(OffertaTempoFissoDto,OffertaTempoFisso)
+- void checkAstaActive(OffertaTempoFisso)
+- void checkProprietarioAstaNotMe(OffertaTempoFisso)
+- void checkBestOfferta(OffertaTempoFisso)
+}
+
+
+class com.iasdietideals24.backend.mapstruct.dto.AstaDto {
+- Long idAsta
+- String stato
+- String nome
+- String descrizione
+- LocalDate dataScadenza
+- LocalTime oraScadenza
+- byte[] immagine
+- CategoriaAstaShallowDto categoriaShallow
+- Set<NotificaShallowDto> notificheAssociateShallow
+}
+
+class com.iasdietideals24.backend.mapstruct.dto.OffertaDto {
+- Long idOfferta
+- LocalDate dataInvio
+- LocalTime oraInvio
+- BigDecimal valore
+}
+
+interface com.iasdietideals24.backend.mapstruct.mappers.PutProfiloMapper {
+~ Profilo toEntity(PutProfiloDto)
+}
+
+interface com.iasdietideals24.backend.mapstruct.mappers.LinksProfiloMapper {
+~ LinksProfiloDto toDto(LinksProfilo)
+~ LinksProfilo toEntity(LinksProfiloDto)
+}
+
+class com.iasdietideals24.backend.controllers.ProfiloController {
++ {static} String LOG_PROFILO_NON_TROVATO
+- ProfiloService profiloService
++ <<Create>> ProfiloController(ProfiloService)
++ ResponseEntity<ProfiloDto> createOrFullUpdateProfilo(String,PutProfiloDto)
++ ResponseEntity<Page<ProfiloDto>> listProfili(Pageable)
++ ResponseEntity<ProfiloDto> getProfilo(String)
++ ResponseEntity<ProfiloDto> partialUpdateProfilo(String,ProfiloDto)
++ ResponseEntity<ProfiloDto> deleteProfilo(String)
+}
+
+
+class com.iasdietideals24.backend.mapstruct.dto.shallows.CategoriaAstaShallowDto {
+- String nome
+}
+
+interface com.iasdietideals24.backend.mapstruct.mappers.AstaSilenziosaMapper {
+~ AstaSilenziosaDto toDto(AstaSilenziosa)
+~ AstaSilenziosa toEntity(AstaSilenziosaDto)
+}
+
+interface com.iasdietideals24.backend.services.AstaTempoFissoService {
+~ AstaTempoFissoDto create(AstaTempoFissoDto)
+~ Page<AstaTempoFissoDto> findAll(Pageable)
+~ Page<AstaTempoFissoDto> findByProprietarioIdAccountIs(Long,Pageable)
+~ Page<AstaTempoFissoDto> findByNomeLikeAndCategoriaNomeLike(String,String,Pageable)
+~ Page<AstaTempoFissoDto> findByOfferenteIdAccountIs(Long,Pageable)
+~ Optional<AstaTempoFissoDto> findOne(Long)
+~ boolean isExists(Long)
+~ AstaTempoFissoDto fullUpdate(Long,AstaTempoFissoDto)
+~ AstaTempoFissoDto partialUpdate(Long,AstaTempoFissoDto)
+~ void delete(Long)
+~ void checkFieldsValid(AstaTempoFissoDto)
+~ void convertRelations(AstaTempoFissoDto,AstaTempoFisso)
+~ void updatePresentFields(AstaTempoFissoDto,AstaTempoFisso)
+~ void closeAstaTempoFisso(AstaTempoFisso)
+}
+
+interface com.iasdietideals24.backend.mapstruct.mappers.VenditoreMapper {
+~ VenditoreDto toDto(Venditore)
+~ Venditore toEntity(VenditoreDto)
+}
+
+interface com.iasdietideals24.backend.mapstruct.mappers.TokensAccountMapper {
+~ TokensAccountDto toDto(TokensAccount)
+~ TokensAccount toEntity(TokensAccountDto)
+}
+
+class com.iasdietideals24.backend.mapstruct.dto.auth.NewTokenDto {
+- String authToken
+- String refreshToken
+- Long expiresIn
++ <<Create>> NewTokenDto(String,String,Long)
++ String authToken()
++ Long expiresIn()
++ String refreshToken()
+}
+
+
+class com.iasdietideals24.backend.mapstruct.dto.utilities.AnagraficaProfiloDto {
+- String nome
+- String cognome
+- LocalDate dataNascita
+- String areaGeografica
+- String genere
+- String biografia
+}
+
+interface com.iasdietideals24.backend.mapstruct.mappers.NotificaMapper {
+~ NotificaDto toDto(Notifica)
+~ Notifica toEntity(NotificaDto)
+~ NotificaShallowDto toShallowDto(Notifica)
+~ Notifica toEntity(NotificaShallowDto)
+~ Set<NotificaShallowDto> toShallowDto(Set<Notifica>)
+~ Set<Notifica> toEntity(Set<NotificaShallowDto>)
+}
+
+class com.iasdietideals24.backend.services.implementations.OffertaInversaServiceImpl {
++ {static} String LOG_RECUPERO_OFFERTA
++ {static} String LOG_FOUND_OFFERTA
++ {static} String LOG_OFFERTA_RECUPERATA
++ {static} String LOG_NUOVA_OFFERTA
+- OffertaDiVenditoreService offertaDiVenditoreService
+- OffertaInversaMapper offertaInversaMapper
+- OffertaInversaRepository offertaInversaRepository
+- RelationsConverter relationsConverter
+- BuildNotice buildNotice
+- AstaScheduler astaScheduler
++ <<Create>> OffertaInversaServiceImpl(OffertaDiVenditoreService,OffertaInversaMapper,OffertaInversaRepository,RelationsConverter,BuildNotice,AstaScheduler)
++ OffertaInversaDto create(OffertaInversaDto)
++ Page<OffertaInversaDto> findAll(Pageable)
++ Page<OffertaInversaDto> findByAstaRiferimentoIdAsta(Long,Pageable)
++ Optional<OffertaInversaDto> findOne(Long)
++ Optional<OffertaInversaDto> findMinByValoreAndAstaRiferimentoIdAstaIs(Long)
++ Optional<OffertaInversaDto> findMinByValoreAndAstaRiferimentoIdAstaIsAndVenditoreCollegatoIdAccountIs(Long,Long)
++ boolean isExists(Long)
++ OffertaInversaDto fullUpdate(Long,OffertaInversaDto)
++ OffertaInversaDto partialUpdate(Long,OffertaInversaDto)
++ void delete(Long)
++ void checkFieldsValid(OffertaInversaDto)
+- void checkAstaRiferimentoValid(AstaShallowDto)
++ void convertRelations(OffertaInversaDto,OffertaInversa)
+- void convertAstaRiferimentoShallow(AstaShallowDto,OffertaInversa)
++ void updatePresentFields(OffertaInversaDto,OffertaInversa)
+- void checkAstaActive(OffertaInversa)
+- void checkProprietarioAstaNotMe(OffertaInversa)
+- void checkBestOfferta(OffertaInversa)
+}
+
+
+interface com.iasdietideals24.backend.repositories.NotificaRepository {
+~ Page<Notifica> findByDestinatari_IdAccount(Long,Pageable)
+}
+
+enum com.iasdietideals24.backend.entities.utilities.StatoAsta {
++  ACTIVE
++  CLOSED
+}
+
+class com.iasdietideals24.backend.entities.OffertaSilenziosa {
+- StatoOffertaSilenziosa stato
+- AstaSilenziosa astaRiferimento
++ <<Create>> OffertaSilenziosa(LocalDate,LocalTime,BigDecimal,Compratore,StatoOffertaSilenziosa,AstaSilenziosa)
++ String toString()
+}
+
+
+class com.iasdietideals24.backend.services.implementations.AstaServiceImpl {
+- StatoAstaMapper statoAstaMapper
+- RelationsConverter relationsConverter
+# <<Create>> AstaServiceImpl(RelationsConverter,StatoAstaMapper)
++ void checkFieldsValid(AstaDto)
+- void checkStatoValid(String)
+- void checkCategoriaValid(CategoriaAstaShallowDto)
+- void checkNomeValid(String)
+- void checkDescrizioneValid(String)
+- void checkDataScadenzaValid(LocalDate)
+- void checkOraScadenzaValid(LocalDate,LocalTime)
++ void convertRelations(AstaDto,Asta)
+- void convertNotificheAssociateShallow(Set<NotificaShallowDto>,Asta)
+- void convertCategoriaAstaShallow(CategoriaAstaShallowDto,Asta)
++ void updatePresentFields(AstaDto,Asta)
+- void ifPresentUpdateStato(String,Asta)
+- void ifPresentUpdateNome(String,Asta)
+- void ifPresentUpdateDescrizione(String,Asta)
+- void ifPresentUpdateDataScadenza(LocalDate,Asta)
+- void ifPresentUpdateOraScadenza(LocalTime,Asta)
+- void ifPresentUpdateImmagine(byte[],Asta)
+}
+
+
+class com.iasdietideals24.backend.exceptions.IllegalDeleteRequestException {
++ <<Create>> IllegalDeleteRequestException()
++ <<Create>> IllegalDeleteRequestException(String)
+}
+
+abstract class com.iasdietideals24.backend.mapstruct.mappers.AstaMapper {
++ AstaShallowDto toShallowDto(Asta)
++ Asta toEntity(AstaShallowDto)
++ AstaDiCompratore toAstaDiCompratore(AstaShallowDto)
++ AstaDiVenditore toAstaDiVenditore(AstaShallowDto)
++ {abstract}AstaInversa toAstaInversa(AstaShallowDto)
++ {abstract}AstaTempoFisso toAstaTempoFisso(AstaShallowDto)
++ {abstract}AstaSilenziosa toAstaSilenziosa(AstaShallowDto)
++ {abstract}Set<AstaShallowDto> toShallowDto(Set<Asta>)
++ {abstract}Set<Asta> toEntity(Set<AstaShallowDto>)
+}
+
+abstract class com.iasdietideals24.backend.entities.Asta {
+- Long idAsta
+- StatoAsta stato
+- String nome
+- String descrizione
+- LocalDate dataScadenza
+- LocalTime oraScadenza
+- byte[] immagine
+- CategoriaAsta categoria
+- Set<Notifica> notificheAssociate
+# <<Create>> Asta(CategoriaAsta,String,String,LocalDate,LocalTime,byte[],StatoAsta)
++ void addNotificaAssociata(Notifica)
++ void removeNotificaAssociata(Notifica)
++ String toString()
+}
+
+
+interface com.iasdietideals24.backend.repositories.OffertaTempoFissoRepository {
+~ Page<OffertaTempoFisso> findByAstaRiferimento_IdAsta(Long,Pageable)
+~ Optional<OffertaTempoFisso> findMaxByValoreAndAstaRiferimento_IdAstaIs(Long)
+~ Optional<OffertaTempoFisso> findMaxByValoreAndAstaRiferimento_IdAstaIsAndCompratoreCollegato_IdAccountIs(Long,Long)
+}
+
+class com.iasdietideals24.backend.exceptions.IdNotFoundException {
++ <<Create>> IdNotFoundException()
++ <<Create>> IdNotFoundException(String)
+}
+
+class com.iasdietideals24.backend.entities.AstaSilenziosa {
+- Set<OffertaSilenziosa> offerteRicevute
++ <<Create>> AstaSilenziosa(CategoriaAsta,String,String,LocalDate,LocalTime,byte[],Venditore,StatoAsta)
++ void addOffertaRicevuta(OffertaSilenziosa)
++ void removeOffertaRicevuta(OffertaSilenziosa)
++ String toString()
+}
+
+
+class com.iasdietideals24.backend.services.implementations.OffertaDiCompratoreServiceImpl {
+- OffertaService offertaService
+- RelationsConverter relationsConverter
+# <<Create>> OffertaDiCompratoreServiceImpl(OffertaService,RelationsConverter)
++ void checkFieldsValid(OffertaDiCompratoreDto)
+- void checkCompratoreCollegatoValid(AccountShallowDto)
++ void convertRelations(OffertaDiCompratoreDto,OffertaDiCompratore)
+- void convertCompratoreCollegatoShallow(AccountShallowDto,OffertaDiCompratore)
++ void updatePresentFields(OffertaDiCompratoreDto,OffertaDiCompratore)
+}
+
+
+class com.iasdietideals24.backend.services.implementations.AstaSilenziosaServiceImpl {
++ {static} String LOG_RECUPERO_ASTE_IN_CORSO
++ {static} String LOG_FOUND_ASTE
++ {static} String LOG_ASTE_RECUPERATE
++ {static} String LOG_RECUPERO_ASTA
++ {static} String LOG_FOUND_ASTA
++ {static} String LOG_ASTA_RECUPERATA
+- AstaDiVenditoreService astaDiVenditoreService
+- AstaSilenziosaMapper astaSilenziosaMapper
+- AstaSilenziosaRepository astaSilenziosaRepository
+- RelationsConverter relationsConverter
+- BuildNotice buildNotice
++ <<Create>> AstaSilenziosaServiceImpl(AstaDiVenditoreService,AstaSilenziosaMapper,AstaSilenziosaRepository,RelationsConverter,BuildNotice)
++ AstaSilenziosaDto create(AstaSilenziosaDto)
++ Page<AstaSilenziosaDto> findAll(Pageable)
++ Page<AstaSilenziosaDto> findByProprietarioIdAccountIs(Long,Pageable)
++ Page<AstaSilenziosaDto> findByNomeLikeAndCategoriaNomeLike(String,String,Pageable)
++ Page<AstaSilenziosaDto> findByOfferenteIdAccountIs(Long,Pageable)
++ Optional<AstaSilenziosaDto> findOne(Long)
++ boolean isExists(Long)
++ AstaSilenziosaDto fullUpdate(Long,AstaSilenziosaDto)
++ AstaSilenziosaDto partialUpdate(Long,AstaSilenziosaDto)
++ void delete(Long)
++ void checkFieldsValid(AstaSilenziosaDto)
++ void convertRelations(AstaSilenziosaDto,AstaSilenziosa)
+- void convertOfferteRicevute(Set<OffertaShallowDto>,AstaSilenziosa)
++ void updatePresentFields(AstaSilenziosaDto,AstaSilenziosa)
++ void closeAstaSilenziosa(AstaSilenziosa)
+}
+
+
+interface com.iasdietideals24.backend.services.AstaDiVenditoreService {
+~ void checkFieldsValid(AstaDiVenditoreDto)
+~ void convertRelations(AstaDiVenditoreDto,AstaDiVenditore)
+~ void updatePresentFields(AstaDiVenditoreDto,AstaDiVenditore)
+}
+
+interface com.iasdietideals24.backend.services.ProfiloService {
+~ ProfiloDto create(String,PutProfiloDto)
+~ Page<ProfiloDto> findAll(Pageable)
+~ Optional<ProfiloDto> findOne(String)
+~ boolean isExists(String)
+~ ProfiloDto fullUpdate(String,PutProfiloDto)
+~ ProfiloDto partialUpdate(String,ProfiloDto)
+~ void delete(String)
+~ void checkFieldsValid(ProfiloDto)
+~ void checkFieldsValid(PutProfiloDto)
+~ void convertRelations(PutProfiloDto,Profilo)
+~ void convertRelations(ProfiloDto,Profilo)
+~ void updatePresentFields(ProfiloDto,Profilo)
+}
+
+class com.iasdietideals24.backend.entities.AstaInversa {
+- BigDecimal sogliaIniziale
+- Set<OffertaInversa> offerteRicevute
++ <<Create>> AstaInversa(CategoriaAsta,String,String,LocalDate,LocalTime,byte[],Compratore,BigDecimal,StatoAsta)
++ void addOffertaRicevuta(OffertaInversa)
++ void removeOffertaRicevuta(OffertaInversa)
++ String toString()
+}
+
+
+class com.iasdietideals24.backend.mapstruct.dto.NotificaDto {
+- Long idNotifica
+- LocalDate dataInvio
+- LocalTime oraInvio
+- String messaggio
+- AccountShallowDto mittenteShallow
+- Set<AccountShallowDto> destinatariShallow
+- AstaShallowDto astaAssociataShallow
+}
+
+interface com.iasdietideals24.backend.mapstruct.mappers.AstaTempoFissoMapper {
+~ AstaTempoFissoDto toDto(AstaTempoFisso)
+~ AstaTempoFisso toEntity(AstaTempoFissoDto)
+}
+
+interface com.iasdietideals24.backend.services.AstaDiCompratoreService {
+~ void checkFieldsValid(AstaDiCompratoreDto)
+~ void convertRelations(AstaDiCompratoreDto,AstaDiCompratore)
+~ void updatePresentFields(AstaDiCompratoreDto,AstaDiCompratore)
+}
+
+abstract class com.iasdietideals24.backend.entities.Offerta {
+- Long idOfferta
+- LocalDate dataInvio
+- LocalTime oraInvio
+- BigDecimal valore
+# <<Create>> Offerta(LocalDate,LocalTime,BigDecimal)
++ String toString()
+}
+
+
+class com.iasdietideals24.backend.entities.Compratore {
+- Set<AstaDiCompratore> astePossedute
+- Set<OffertaDiCompratore> offerteCollegate
++ <<Create>> Compratore(String,String,TokensAccount,Profilo)
++ void addAstaPosseduta(AstaDiCompratore)
++ void removeAstaPosseduta(AstaDiCompratore)
++ void addOffertaCollegata(OffertaDiCompratore)
++ void removeOffertaCollegata(OffertaDiCompratore)
++ String toString()
+}
+
+
+class com.iasdietideals24.backend.services.implementations.NotificaServiceImpl {
++ {static} String LOG_RECUPERO_NOTIFICA
++ {static} String LOG_FOUND_NOTIFICA
++ {static} String LOG_NOTIFICA_RECUPERATA
+- NotificaMapper notificaMapper
+- NotificaRepository notificaRepository
+- RelationsConverter relationsConverter
++ <<Create>> NotificaServiceImpl(NotificaMapper,NotificaRepository,RelationsConverter)
++ NotificaDto create(NotificaDto)
++ Page<NotificaDto> findAll(Pageable)
++ Page<NotificaDto> findByDestinatariIdAccount(Long,Pageable)
++ Optional<NotificaDto> findOne(Long)
++ boolean isExists(Long)
++ NotificaDto fullUpdate(Long,NotificaDto)
++ NotificaDto partialUpdate(Long,NotificaDto)
++ void delete(Long)
++ void checkFieldsValid(NotificaDto)
+- void checkDataInvioValid(LocalDate)
+- void checkOraInvioValid(LocalDate,LocalTime)
+- void checkMessaggioValid(String)
+- void checkDestinatariValid(Set<AccountShallowDto>)
+- void checkMittenteDestinatarioValid(AccountShallowDto)
+- void checkAstaAssociataShallow(AstaShallowDto)
++ void convertRelations(NotificaDto,Notifica)
+- void convertMittenteShallow(AccountShallowDto,Notifica)
+- void convertDestinatariShallow(Set<AccountShallowDto>,Notifica)
+- void convertAstaAssociataShallow(AstaShallowDto,Notifica)
++ void updatePresentFields(NotificaDto,Notifica)
+- void ifPresentUpdateDataInvio(LocalDate,Notifica)
+- void ifPresentUpdateOraInvio(LocalTime,Notifica)
+- void ifPresentUpdateMessaggio(String,Notifica)
+}
+
+
+class com.iasdietideals24.backend.mapstruct.dto.utilities.ErrorDto {
+- String date
+- String time
+- String statusCode
+- String message
+}
+
+class com.iasdietideals24.backend.mapstruct.dto.shallows.OffertaShallowDto {
+- Long idOfferta
+- String tipoOffertaPerAccount
+- String tipoOffertaSpecifica
+}
+
+class com.iasdietideals24.backend.mapstruct.dto.AstaTempoFissoDto {
+- BigDecimal sogliaMinima
+- Set<OffertaShallowDto> offerteRicevuteShallow
+}
+
+class com.iasdietideals24.backend.services.implementations.VenditoreServiceImpl {
++ {static} String LOG_RECUPERO_ACCOUNT
++ {static} String LOG_FOUND_ACCOUNT
++ {static} String LOG_ACCOUNT_RECUPERATO
+- AccountService accountService
+- VenditoreMapper venditoreMapper
+- VenditoreRepository venditoreRepository
+- RelationsConverter relationsConverter
++ <<Create>> VenditoreServiceImpl(AccountService,VenditoreMapper,VenditoreRepository,RelationsConverter)
++ VenditoreDto create(VenditoreDto)
++ Page<VenditoreDto> findAll(Pageable)
++ Optional<VenditoreDto> findOne(Long)
++ Page<VenditoreDto> findByEmailIs(String,Pageable)
++ boolean isExists(Long)
++ VenditoreDto fullUpdate(Long,VenditoreDto)
++ VenditoreDto partialUpdate(Long,VenditoreDto)
++ void delete(Long)
++ void checkFieldsValid(VenditoreDto)
++ void convertRelations(VenditoreDto,Venditore)
+- void convertAstePosseduteShallow(Set<AstaShallowDto>,Venditore)
+- void convertOfferteCollegateShallow(Set<OffertaShallowDto>,Venditore)
++ void updatePresentFields(VenditoreDto,Venditore)
+}
+
+
+class com.iasdietideals24.backend.mapstruct.dto.utilities.TokensAccountDto {
+- String idFacebook
+- String idGoogle
+- String idX
+- String idGitHub
+}
+
+interface com.iasdietideals24.backend.mapstruct.mappers.CompratoreMapper {
+~ CompratoreDto toDto(Compratore)
+~ Compratore toEntity(CompratoreDto)
+}
+
+class com.iasdietideals24.backend.services.implementations.AstaTempoFissoServiceImpl {
++ {static} String LOG_RECUPERO_ASTE_IN_CORSO
++ {static} String LOG_FOUND_ASTE
++ {static} String LOG_ASTE_RECUPERATE
++ {static} String LOG_RECUPERO_ASTA
++ {static} String LOG_FOUND_ASTA
++ {static} String LOG_ASTA_RECUPERATA
+- AstaDiVenditoreService astaDiVenditoreService
+- AstaTempoFissoMapper astaTempoFissoMapper
+- AstaTempoFissoRepository astaTempoFissoRepository
+- RelationsConverter relationsConverter
+- BuildNotice buildNotice
++ <<Create>> AstaTempoFissoServiceImpl(AstaDiVenditoreService,AstaTempoFissoMapper,AstaTempoFissoRepository,RelationsConverter,BuildNotice)
++ AstaTempoFissoDto create(AstaTempoFissoDto)
++ Page<AstaTempoFissoDto> findAll(Pageable)
++ Page<AstaTempoFissoDto> findByProprietarioIdAccountIs(Long,Pageable)
++ Page<AstaTempoFissoDto> findByNomeLikeAndCategoriaNomeLike(String,String,Pageable)
++ Page<AstaTempoFissoDto> findByOfferenteIdAccountIs(Long,Pageable)
++ Optional<AstaTempoFissoDto> findOne(Long)
++ boolean isExists(Long)
++ AstaTempoFissoDto fullUpdate(Long,AstaTempoFissoDto)
++ AstaTempoFissoDto partialUpdate(Long,AstaTempoFissoDto)
++ void delete(Long)
++ void checkFieldsValid(AstaTempoFissoDto)
+- void checkSogliaMinimaValid(BigDecimal)
++ void convertRelations(AstaTempoFissoDto,AstaTempoFisso)
+- void convertOfferteRicevute(Set<OffertaShallowDto>,AstaTempoFisso)
++ void updatePresentFields(AstaTempoFissoDto,AstaTempoFisso)
+- void ifPresentUpdateSogliaMinima(BigDecimal,AstaTempoFisso)
++ void closeAstaTempoFisso(AstaTempoFisso)
+}
+
+
+interface com.iasdietideals24.backend.repositories.AstaDiVenditoreRepository {
+~ Page<AstaDiVenditore> findByProprietario_IdAccountIs(Long,Pageable)
+~ Page<AstaDiVenditore> findByNomeLikeAndCategoria_NomeLike(String,String,Pageable)
+}
+
+interface com.iasdietideals24.backend.services.CategoriaAstaService {
+~ CategoriaAstaDto create(String,CategoriaAstaDto)
+~ Page<CategoriaAstaDto> findAll(Pageable)
+~ Optional<CategoriaAstaDto> findOne(String)
+~ boolean isExists(String)
+~ CategoriaAstaDto fullUpdate(String,CategoriaAstaDto)
+~ CategoriaAstaDto partialUpdate(String,CategoriaAstaDto)
+~ void delete(String)
+~ void checkFieldsValid(CategoriaAstaDto)
+~ void convertRelations(CategoriaAstaDto,CategoriaAsta)
+~ void updatePresentFields(CategoriaAstaDto,CategoriaAsta)
+}
+
+class com.iasdietideals24.backend.controllers.AstaTempoFissoController {
++ {static} String LOG_ASTA_NON_TROVATA
++ {static} String LOG_RECUPERO_ASTE_IN_CORSO
++ {static} String LOG_ASTE_RECUPERATE
+- AstaTempoFissoService astaTempoFissoService
++ <<Create>> AstaTempoFissoController(AstaTempoFissoService)
++ ResponseEntity<AstaTempoFissoDto> createAstaTempoFisso(AstaTempoFissoDto)
++ ResponseEntity<Page<AstaTempoFissoDto>> listAsteTempoFisso(Pageable)
++ ResponseEntity<Page<AstaTempoFissoDto>> listAsteTempoFissoByProprietarioIdAccountIs(Long,Pageable)
++ ResponseEntity<Page<AstaTempoFissoDto>> listAsteTempoFissoByNomeLikeAndCategoriaNomeLike(String,String,Pageable)
++ ResponseEntity<Page<AstaTempoFissoDto>> listAsteTempoFissoByOfferenteIdAccountIs(Long,Pageable)
++ ResponseEntity<AstaTempoFissoDto> getAstaTempoFisso(Long)
++ ResponseEntity<AstaTempoFissoDto> fullUpdateAstaTempoFisso(Long,AstaTempoFissoDto)
++ ResponseEntity<AstaTempoFissoDto> partialUpdateAstaTempoFisso(Long,AstaTempoFissoDto)
++ ResponseEntity<AstaTempoFissoDto> deleteAstaTempoFisso(Long)
+}
+
+
+interface com.iasdietideals24.backend.repositories.AstaTempoFissoRepository {
+~ Page<AstaTempoFisso> findByProprietario_IdAccountIs(Long,Pageable)
+~ Page<AstaTempoFisso> findByNomeLikeAndCategoria_NomeLike(String,String,Pageable)
+~ Page<AstaTempoFisso> findByOfferente_IdAccountIs(Long,Pageable)
+}
+
+interface com.iasdietideals24.backend.repositories.AstaRepository {
+~ Page<Asta> findByNomeLikeAndCategoria_NomeLike(String,String,Pageable)
+~ Page<Asta> findByDataScadenzaIsAfterAndOraScadenzaIsAfterAndStatoIs(LocalDate,LocalTime,StatoAsta,Pageable)
+}
+
+class com.iasdietideals24.backend.mapstruct.dto.auth.UrlDto {
+- String url
++ <<Create>> UrlDto(String)
++ String url()
+}
+
+
+class com.iasdietideals24.backend.mapstruct.dto.auth.RefreshTokenDto {
+- String authToken
+- Long expiresIn
++ <<Create>> RefreshTokenDto(String,Long)
++ String authToken()
++ Long expiresIn()
+}
+
+
+class com.iasdietideals24.backend.controllers.NotificaController {
++ {static} String LOG_NOTIFICA_NON_TROVATA
+- NotificaService notificaService
++ <<Create>> NotificaController(NotificaService)
++ ResponseEntity<NotificaDto> createNotifica(NotificaDto)
++ ResponseEntity<Page<NotificaDto>> listNotifiche(Pageable)
++ ResponseEntity<Page<NotificaDto>> listNotificheByDestinatariIdAccount(Long,Pageable)
++ ResponseEntity<NotificaDto> getNotifica(Long)
++ ResponseEntity<NotificaDto> fullUpdateNotifica(Long,NotificaDto)
++ ResponseEntity<NotificaDto> partialUpdateNotifica(Long,NotificaDto)
++ ResponseEntity<NotificaDto> deleteNotifica(Long)
+}
+
+
+class com.iasdietideals24.backend.services.implementations.OffertaDiVenditoreServiceImpl {
+- OffertaService offertaService
+- RelationsConverter relationsConverter
+# <<Create>> OffertaDiVenditoreServiceImpl(OffertaService,RelationsConverter)
++ void checkFieldsValid(OffertaDiVenditoreDto)
+- void checkVenditoreCollegatoValid(AccountShallowDto)
++ void convertRelations(OffertaDiVenditoreDto,OffertaDiVenditore)
+- void convertVenditoreCollegatoShallow(AccountShallowDto,OffertaDiVenditore)
++ void updatePresentFields(OffertaDiVenditoreDto,OffertaDiVenditore)
+}
+
+
+class com.iasdietideals24.backend.controllers.CategoriaAstaController {
++ {static} String LOG_CATEGORIA_ASTA_NON_TROVATA
+- CategoriaAstaService categoriaAstaService
++ <<Create>> CategoriaAstaController(CategoriaAstaService)
++ ResponseEntity<CategoriaAstaDto> createOrFullUpadateCategoriaAsta(String,CategoriaAstaDto)
++ ResponseEntity<Page<CategoriaAstaDto>> listCategorieAsta(Pageable)
++ ResponseEntity<CategoriaAstaDto> getCategoriaAsta(String)
++ ResponseEntity<CategoriaAstaDto> partialUpdateCategoriaAsta(String,CategoriaAstaDto)
++ ResponseEntity<CategoriaAstaDto> deleteCategoriaAsta(String)
+}
+
+
+class com.iasdietideals24.backend.mapstruct.dto.OffertaDiVenditoreDto {
+- AccountShallowDto venditoreCollegatoShallow
+}
+
+class com.iasdietideals24.backend.services.implementations.AstaInversaServiceImpl {
++ {static} String LOG_RECUPERO_ASTE_IN_CORSO
++ {static} String LOG_FOUND_ASTE
++ {static} String LOG_ASTE_RECUPERATE
++ {static} String LOG_RECUPERO_ASTA
++ {static} String LOG_FOUND_ASTA
++ {static} String LOG_ASTA_RECUPERATA
+- AstaDiCompratoreService astaDiCompratoreService
+- AstaInversaMapper astaInversaMapper
+- AstaInversaRepository astaInversaRepository
+- RelationsConverter relationsConverter
+- BuildNotice buildNotice
++ <<Create>> AstaInversaServiceImpl(AstaDiCompratoreService,AstaInversaMapper,AstaInversaRepository,RelationsConverter,BuildNotice)
++ AstaInversaDto create(AstaInversaDto)
++ Page<AstaInversaDto> findAll(Pageable)
++ Page<AstaInversaDto> findByProprietarioIdAccountIs(Long,Pageable)
++ Page<AstaInversaDto> findByNomeLikeAndCategoriaNomeLike(String,String,Pageable)
++ Page<AstaInversaDto> findByOfferenteIdAccountIs(Long,Pageable)
++ Optional<AstaInversaDto> findOne(Long)
++ boolean isExists(Long)
++ AstaInversaDto fullUpdate(Long,AstaInversaDto)
++ AstaInversaDto partialUpdate(Long,AstaInversaDto)
++ void delete(Long)
++ void checkFieldsValid(AstaInversaDto)
+- void checkSogliaInizialeValid(BigDecimal)
++ void convertRelations(AstaInversaDto,AstaInversa)
+- void convertOfferteRicevute(Set<OffertaShallowDto>,AstaInversa)
++ void updatePresentFields(AstaInversaDto,AstaInversa)
+- void ifPresentUpdateSogliaIniziale(BigDecimal,AstaInversa)
++ void closeAstaInversa(AstaInversa)
+}
+
+
+class com.iasdietideals24.backend.entities.utilities.TokensAccount {
+- String idFacebook
+- String idGoogle
+- String idX
+- String idGitHub
++ <<Create>> TokensAccount(String,String,String,String)
++ String toString()
+}
+
+
+class com.iasdietideals24.backend.mapstruct.dto.OffertaInversaDto {
+- AstaShallowDto astaRiferimentoShallow
+}
+
+class com.iasdietideals24.backend.entities.utilities.LinksProfilo {
+- String linkPersonale
+- String linkInstagram
+- String linkFacebook
+- String linkGitHub
+- String linkX
++ <<Create>> LinksProfilo(String,String,String,String,String)
++ String toString()
+}
+
+
+enum com.iasdietideals24.backend.entities.utilities.StatoOffertaSilenziosa {
++  PENDING
++  ACCEPTED
++  REJECTED
+}
+
+
+
+com.iasdietideals24.backend.mapstruct.dto.AstaDto <|-- com.iasdietideals24.backend.mapstruct.dto.AstaDiCompratoreDto
+com.iasdietideals24.backend.exceptions.InvalidParameterException <|-- com.iasdietideals24.backend.exceptions.InvalidTypeException
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.CompratoreRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.CompratoreRepository
+com.iasdietideals24.backend.entities.Offerta <|-- com.iasdietideals24.backend.entities.OffertaDiVenditore
+com.iasdietideals24.backend.services.CompratoreService <|.. com.iasdietideals24.backend.services.implementations.CompratoreServiceImpl
+org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler <|-- com.iasdietideals24.backend.controllers.GlobalExceptionHandlerController
+com.iasdietideals24.backend.entities.OffertaDiCompratore <|-- com.iasdietideals24.backend.entities.OffertaTempoFisso
+com.iasdietideals24.backend.services.AstaDiVenditoreService <|.. com.iasdietideals24.backend.services.implementations.AstaDiVenditoreServiceImpl
+com.iasdietideals24.backend.mapstruct.dto.AstaDto <|-- com.iasdietideals24.backend.mapstruct.dto.AstaDiVenditoreDto
+com.iasdietideals24.backend.exceptions.RuntimeException <|-- com.iasdietideals24.backend.exceptions.AuthRuntimeException
+com.iasdietideals24.backend.entities.Account <|-- com.iasdietideals24.backend.entities.Venditore
+com.iasdietideals24.backend.mapstruct.dto.OffertaDiCompratoreDto <|-- com.iasdietideals24.backend.mapstruct.dto.OffertaSilenziosaDto
+com.iasdietideals24.backend.mapstruct.dto.AccountDto <|-- com.iasdietideals24.backend.mapstruct.dto.VenditoreDto
+com.iasdietideals24.backend.mapstruct.dto.AstaDiVenditoreDto <|-- com.iasdietideals24.backend.mapstruct.dto.AstaSilenziosaDto
+com.iasdietideals24.backend.mapstruct.mappers.PutProfiloMapper <|.. com.iasdietideals24.backend.mapstruct.mappers.impl.PutProfiloMapperImpl
+com.iasdietideals24.backend.entities.Asta <|-- com.iasdietideals24.backend.entities.AstaDiCompratore
+com.iasdietideals24.backend.exceptions.Exception <|-- com.iasdietideals24.backend.exceptions.InvalidParameterException
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.VenditoreRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.VenditoreRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaDiVenditoreRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaDiVenditoreRepository
+com.iasdietideals24.backend.services.AstaDiCompratoreService <|.. com.iasdietideals24.backend.services.implementations.AstaDiCompratoreServiceImpl
+com.iasdietideals24.backend.exceptions.RuntimeException <|-- com.iasdietideals24.backend.exceptions.UpdateRuntimeException
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.CategoriaAstaRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.CategoriaAstaRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaInversaRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaInversaRepository
+com.iasdietideals24.backend.mapstruct.dto.AstaDiCompratoreDto <|-- com.iasdietideals24.backend.mapstruct.dto.AstaInversaDto
+com.iasdietideals24.backend.services.OffertaSilenziosaService <|.. com.iasdietideals24.backend.services.implementations.OffertaSilenziosaServiceImpl
+com.iasdietideals24.backend.services.OffertaService <|.. com.iasdietideals24.backend.services.implementations.OffertaServiceImpl
+com.iasdietideals24.backend.services.helper.BuildNotice <|.. com.iasdietideals24.backend.services.helper.implementations.BuildNoticeImpl
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaSilenziosaRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaSilenziosaRepository
+com.iasdietideals24.backend.entities.Offerta <|-- com.iasdietideals24.backend.entities.OffertaDiCompratore
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaSilenziosaRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaSilenziosaRepository
+com.iasdietideals24.backend.services.CategoriaAstaService <|.. com.iasdietideals24.backend.services.implementations.CategoriaAstaServiceImpl
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.ProfiloRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.ProfiloRepository
+com.iasdietideals24.backend.entities.OffertaDiVenditore <|-- com.iasdietideals24.backend.entities.OffertaInversa
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaDiCompratoreRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaDiCompratoreRepository
+com.iasdietideals24.backend.mapstruct.dto.AccountDto <|-- com.iasdietideals24.backend.mapstruct.dto.CompratoreDto
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaInversaRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaInversaRepository
+com.iasdietideals24.backend.mapstruct.dto.OffertaDiCompratoreDto <|-- com.iasdietideals24.backend.mapstruct.dto.OffertaTempoFissoDto
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaDiCompratoreRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaDiCompratoreRepository
+com.iasdietideals24.backend.mapstruct.dto.OffertaDto <|-- com.iasdietideals24.backend.mapstruct.dto.OffertaDiCompratoreDto
+com.iasdietideals24.backend.services.AccountService <|.. com.iasdietideals24.backend.services.implementations.AccountServiceImpl
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AccountRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AccountRepository
+com.iasdietideals24.backend.services.ProfiloService <|.. com.iasdietideals24.backend.services.implementations.ProfiloServiceImpl
+com.iasdietideals24.backend.services.helper.RelationsConverter <|.. com.iasdietideals24.backend.services.helper.implementations.RelationsConverterImpl
+com.iasdietideals24.backend.entities.AstaDiVenditore <|-- com.iasdietideals24.backend.entities.AstaTempoFisso
+com.iasdietideals24.backend.entities.Asta <|-- com.iasdietideals24.backend.entities.AstaDiVenditore
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaRepository
+com.iasdietideals24.backend.services.OffertaTempoFissoService <|.. com.iasdietideals24.backend.services.implementations.OffertaTempoFissoServiceImpl
+com.iasdietideals24.backend.services.OffertaInversaService <|.. com.iasdietideals24.backend.services.implementations.OffertaInversaServiceImpl
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.NotificaRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.NotificaRepository
+com.iasdietideals24.backend.entities.OffertaDiCompratore <|-- com.iasdietideals24.backend.entities.OffertaSilenziosa
+com.iasdietideals24.backend.services.AstaService <|.. com.iasdietideals24.backend.services.implementations.AstaServiceImpl
+com.iasdietideals24.backend.exceptions.InvalidParameterException <|-- com.iasdietideals24.backend.exceptions.IllegalDeleteRequestException
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaTempoFissoRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaTempoFissoRepository
+com.iasdietideals24.backend.exceptions.InvalidParameterException <|-- com.iasdietideals24.backend.exceptions.IdNotFoundException
+com.iasdietideals24.backend.entities.AstaDiVenditore <|-- com.iasdietideals24.backend.entities.AstaSilenziosa
+com.iasdietideals24.backend.services.OffertaDiCompratoreService <|.. com.iasdietideals24.backend.services.implementations.OffertaDiCompratoreServiceImpl
+com.iasdietideals24.backend.services.AstaSilenziosaService <|.. com.iasdietideals24.backend.services.implementations.AstaSilenziosaServiceImpl
+com.iasdietideals24.backend.entities.AstaDiCompratore <|-- com.iasdietideals24.backend.entities.AstaInversa
+com.iasdietideals24.backend.entities.Account <|-- com.iasdietideals24.backend.entities.Compratore
+com.iasdietideals24.backend.services.NotificaService <|.. com.iasdietideals24.backend.services.implementations.NotificaServiceImpl
+com.iasdietideals24.backend.mapstruct.dto.AstaDiVenditoreDto <|-- com.iasdietideals24.backend.mapstruct.dto.AstaTempoFissoDto
+com.iasdietideals24.backend.services.VenditoreService <|.. com.iasdietideals24.backend.services.implementations.VenditoreServiceImpl
+com.iasdietideals24.backend.services.AstaTempoFissoService <|.. com.iasdietideals24.backend.services.implementations.AstaTempoFissoServiceImpl
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaDiVenditoreRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaDiVenditoreRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaTempoFissoRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaTempoFissoRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaRepository
+com.iasdietideals24.backend.services.OffertaDiVenditoreService <|.. com.iasdietideals24.backend.services.implementations.OffertaDiVenditoreServiceImpl
+com.iasdietideals24.backend.mapstruct.dto.OffertaDto <|-- com.iasdietideals24.backend.mapstruct.dto.OffertaDiVenditoreDto
+com.iasdietideals24.backend.services.AstaInversaService <|.. com.iasdietideals24.backend.services.implementations.AstaInversaServiceImpl
+com.iasdietideals24.backend.mapstruct.dto.OffertaDiVenditoreDto <|-- com.iasdietideals24.backend.mapstruct.dto.OffertaInversaDto
+@enduml
