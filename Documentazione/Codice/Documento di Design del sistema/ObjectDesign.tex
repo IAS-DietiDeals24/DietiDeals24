@@ -1,3 +1,5 @@
+%PDF DI RIFERIMENTO: 06_System Design.pdf + DesignPractices.pdf, 08_Architetture Software.pdf, 08_Architetture.pdf
+
 \chapter{Object Design}
     La progettazione orientata agli oggetti è la fase di sviluppo del software nella quale si definisce il dettaglio implementativo dei vari sottosistemi. \\
     Tali sottosistemi devono soddisfare i requisiti identificati, e sono costruiti sulla base degli oggetti individuati nel dominio del problema, ai quali inevitabilmente saranno aggiunti nuovi oggetti per giungere alla soluzione del problema. \\
@@ -13,8 +15,33 @@
 
     \clearpage
 
+    \section{Design Pattern}
+        \subsection{Client}
+
+        \subsection{Resource Server}
+            L'architettura adottata per il sottosistema \textbf{Resource Server} (da qui in avanti chiamato semplicemente \textbf{Server}) è un'architettura di tipo \textbf{esagonale}. L'obiettivo di tale architettura è di definire una \textbf{separazione netta} tra la business logic del dominio (anche detto \textit{domain layer}) e tutto ciò che sono i fattori esterni, ovvero il layer di interfaccia con l'utente (anche detto \textit{application layer}) e il layer di persistenza (anche detto \textit{infrastracture layer}), attraverso una serie di interfacce ben definite. \\
+            L'obiettivo di tale scelta è quello di migliorare la manutenibilità, la scalabilità e la modularità del backend, definendo così interfacce ben definite che permettono a più team di sviluppo di lavorare parallelamente, conoscendo esattamente il contratto per le interazioni tra la logica del dominio e dei protocolli di comunicazione tra l'applicazione e i suoi adattatori. \cite{AppMaster1}
+            
+            In particolare, il design pattern adottato per il domain layer è di tipo \textbf{Domain Driven}. Un approccio di tipo Domain Driven permette di avere un'\textbf{alta coesione} e \textbf{ridurre al minimo l'accoppiamento} tra le classi della business logic, dando a ciascuna classe del domain layer un solo motivo per cambiare: un cambiamento nell'entità del dominio corrispondente.
+            \begin{figure}[htbp!]
+                \centering
+                \includegraphics[width=1\linewidth]{Immagini/Object Design/DDD-Layers.jpg}
+                \caption{Schema dell'architettura adottata (backend)}
+                \cite{Baeldung1}
+            \end{figure}
+
+            In particolare, il backend è così organizzato:
+            \begin{itemize}
+                \item L'\textit{application layer} contiene le classi responsabili di esporre le REST API che verranno chiamate dall'utente. E' dipendente solo e unicamente da classi DTO, che si occupano di raccogliere le informazioni ricevute sottoforma di HTTP Request e saranno tradotte in HTTP Response. \cite{Baeldung2}
+                \item Il \textit{domain layer} contiene le classi responsabili della business logic, che dipende solo e unicamente dalle classi del dominio, ovvero le entità. Al suo interno troviamo anche classi responsabili di tradurre i DTO in entità del dominio. \\
+                Inoltre, grazie all'interfaccia offerta dalla \textbf{Java Persistance API}, le classi necessarie per la comunicazione con il persistance layer sono gestite da Spring Boot attraverso una Spring dependency.
+                \item Il \textit{persistance layer} contiene i driver responsabili della comunicazione con il database.
+            \end{itemize}
+
+    \clearpage
+
     \section{Class Diagram}
-        Sezione dedicata ai diagrammi delle classi di design del client e del server.
+        A seguito delle considerazioni fatte ai punti precedenti, in questa sezione verranno rappresentati i diagrammi delle classi di design del client e del server.
     
         \subsection{Client}
             % Class Diagram costruito con PlantUML
@@ -35,7 +62,7 @@
     \clearpage
     
     \section{Sequence Diagram}
-        Sezione dedicata ai diagrammi di sequenza di design del client e del server per i casi d'uso significativi individuati nella fase di Requirement Analysis.
+        In questa sezione saranno rappresentati i diagrammi di sequenza di design del client e del server per i casi d'uso individuati nella fase di Requirement Analysis.
         
         \subsection{I caso d'uso: Crea un’asta inversa}
             \begin{figure}[htbp!]
@@ -106,7 +133,9 @@
     \clearpage
 
     \section{Endpoint}
-        In questa sezione vengono descritti gli Endpoint esposti dal backend. In particolare, per Endpoint che accettano query parameters, le ulteriori "modalità" sono separate da un ";".
+        In questa sezione vengono descritti gli endpoints esposti dal backend. 
+        
+        NOTA: Gli endpoints che accettano query parameters, le ulteriori "modalità" sono separate da un ";".
 
         Per una descrizione dettagliata dei query parameters, esempi di richieste e di risposte per ciascun endpoint, riferirsi alla \href{https://documenter.getpostman.com/view/37147881/2sAYBd67Sj}{\underline{documentazione generata tramite Postman}}.
     
@@ -308,7 +337,7 @@
                 \cline{2-4}
                     & GET
                     & Permette di recuperare tutte le notifiche; filtrate per destinatario; id
-                    & USER; USER; ADMIN \\
+                    & ADMIN; USER; ADMIN \\
                 \cline{2-4}
                     & PUT
                     & Permette la sostituzione di una notifica
@@ -364,7 +393,7 @@
     \clearpage
     
     \section{Database}
-        L'analisi dei requisiti permette di individuare le entità, relazioni ed attributi che caratterizzano il dominio del problema. Tuttavia, per immagazzinare questi dati nel layer di persistenza in modo efficace è necessario fare uno studio adeguato al fine di arrivare a uno schema di base di dati che permetta di rispettare i requisiti non funzionali di velocità ed efficienza.
+        L'analisi dei requisiti permette di individuare le entità, relazioni ed attributi che caratterizzano il dominio del problema. Tuttavia, per immagazzinare questi dati in una base di dati relazionale in modo efficace è necessario fare uno studio adeguato al fine di arrivare a uno schema di base di dati che permetta di rispettare i requisiti non funzionali di velocità ed efficienza.
     
         \subsection{Ristrutturazione della progettazione concettuale}
             \begin{figure}[htbp!]

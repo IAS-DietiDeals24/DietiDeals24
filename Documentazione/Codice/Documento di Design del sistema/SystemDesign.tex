@@ -1,4 +1,4 @@
-%PDF DI RIFERIMENTO: 06_System Design.pdf + DesignPractices.pdf, 08_Architetture Software.pdf, 08_Architetture.pdf, XX-REST-APIs.pdf
+%PDF DI RIFERIMENTO: 06_System Design.pdf + DesignPractices.pdf, 08_Architetture Software.pdf, 08_Architetture.pdf, 09_Virtualizzazione e Cloud.pdf, 10_aws_slides_compact.pdf, 11_SonarQube.pdf, XX-REST-APIs.pdf
 
 \chapter{System Design}
     La progettazione del sistema è un insieme di scelte effettuate dall'ingegnere del software per la trasformazione del modello di analisi nel modello di design del sistema. \\
@@ -27,6 +27,8 @@
             \item La scelta della base di dati relazionale invece deriva dalla consapevolezza di una struttura fissa dei dati che verranno conservati, e dalla garanzia delle quattro proprietà ACID (atomicità, coerenza, isolamento e durabilità) che essa fornisce.
         \end{itemize}
 
+    \clearpage
+
     \section{Tecnologie adottate}
         Il client è un'applicazione per sistema operativo \textbf{Android}, scritta in linguaggio \textbf{Kotlin}. \\
         Il server si articola in:
@@ -48,7 +50,7 @@
             \subsubsection{Perché Android?}
                 Quasi tutti ormai posseggono uno smartphone. Ed essendo un sistema operativo così diffuso (conta circa il 69.94\% del mercato dei sistemi operativi per dispositivi mobili \cite{Statcounter1}) e disponibile su una grande varietà di dispositivi, Android è la scelta giusta per rendere l'applicazione disponibile quasi ovunque ed accessibile a chiunque.
 
-         \subsection{AWS EC2 \& Cognito}
+         \subsection{AWS EC2 \& AWS Cognito}
             \subsubsection{Cos'è AWS? \cite{AWS1}}
                 Amazon Web Services è la soluzione cloud, fornita da Amazon, più ricca e ampiamente adottata al mondo: conta circa 200 servizi forniti dai numerosi centri di dati sparsi in tutto il globo. Attualmente il tasso di adozione dei servizi AWS globalmente è al 71\% \cite{CNN1}. AWS offre anche un Free Tier, ossia permette di sfruttare alcuni dei suoi servizi gratuitamente (a tempo limitato, illimitato, a soglia). Inoltre, ogni servizio fornisce delle API per poter richiedere al server la dispensa del servizio affittato.
             \begin{figure}[htbp!]
@@ -58,23 +60,23 @@
             \end{figure}
             \subsubsection{Perché AWS? \cite{AWS1}}
                 L'utilizzo di AWS permette di tagliare i costi, seguire un approccio più agile, e innovare più in fretta. AWS offre nettamente più servizi rispetto ai concorrenti e le funzionalità all'interno dei singoli servizi sono più ricche. Inoltre, la maturità, l'esperienza, l'affidabilità e la sicurezza che offre sono senza eguali. Il Free Tier è anche un'ottima opportunità per piccole aziende che richiedono modesti strumenti per il rilascio della propria applicazione. Le API estremamente semplici permettono di richiedere il servizio direttamente nel codice astraendo tutte le fasi intermedie più complesse.
-            \subsubsection{Cos'è EC2?}
+            \subsubsection{Cos'è AWS EC2?}
                 Amazon Elastic Compute Cloud è uno dei servizi di AWS che consente l'affitto di computer virtuali in cloud sui quali eseguire le proprie applicazioni \cite{Wikipedia6}. Offre la più ampia e profonda piattaforma di computazione, permettendo di scegliere oltre 750 istanze e personalizzare processore, archiviazione, rete, sistema operativo \cite{AWS2}.
             \begin{figure}[htbp!]
                 \centering
                 \includegraphics[width=0.2\linewidth]{Immagini/System Design/AWS EC2.png}
-                \caption{Logo di EC2}
+                \caption{Logo di AWS EC2}
             \end{figure}
-            \subsubsection{Perché EC2?}
+            \subsubsection{Perché AWS EC2?}
                 A causa della sua ampia personalizzazione sulla base delle necessità dell'applicazione e grazie alla possibilità di creare, lanciare, e fermare le istanze delle macchine virtuali sul server su richiesta, pagando solo il tempo di computazione sfruttato, l'elasticità del servizio è indubbia \cite{Wikipedia6}. Il Free Tier di EC2 garantisce 750 ore di computazione in 12 mesi su una istanza di tipo "micro" \cite{AWS3}.
-            \subsubsection{Cos'è Cognito? \cite{AWS4}} 
+            \subsubsection{Cos'è AWS Cognito? \cite{AWS4}} 
                 Amazon Cognito è una piattaforma di identità per app web e per dispositivi mobili. È una directory utente, un server di autenticazione e un servizio di autorizzazione per token di accesso OAuth 2.0 e credenziali AWS. Con Amazon Cognito, puoi autenticare e autorizzare gli utenti dalla directory utente integrata, dalla directory aziendale e dai provider di identità utente come Google e Facebook.
             \begin{figure}[htbp!]
                 \centering
                 \includegraphics[width=0.2\linewidth]{Immagini/System Design/AWS Cognito.png}
-                \caption{Logo di Cognito}
+                \caption{Logo di AWS Cognito}
             \end{figure}
-            \subsubsection{Perché Cognito? \cite{AWS5}}
+            \subsubsection{Perché AWS Cognito? \cite{AWS5}}
             \begin{itemize}
                 \item Offre una gestione dell'identità e degli accessi del cliente, grazie a un servizio conveniente e personalizzabile;
                 \item Aggiunge funzionalità di sicurezza avanzate come l'autenticazione adattiva basata sul rischio, il monitoraggio delle credenziali compromesse e i parametri di sicurezza;
@@ -87,7 +89,7 @@
                 Kotlin è un linguaggio di programmazione multi-piattaforma, staticamente e fortemente tipizzato con inferenza di tipo, general purpose, multi-paradigma (orientato agli oggetti, imperativo, funzionale). Sviluppato da JetBrains, Kotlin è realizzato per essere interscambiabile con Java, poiché è interpretato da una macchina virtuale Java (JVM) che utilizza la libreria di classi Java standard. Ha pian piano soppiantato l'utilizzo di Java per la realizzazione di applicazioni Android ed è diventato nel 2019 il linguaggio primario e consigliato da Google per la realizzazione di esse.
             \begin{figure}[htbp!]
                 \centering
-                \includegraphics[width=0.5\linewidth]{Immagini/System Design/Kotlin.png}
+                \includegraphics[width=0.45\linewidth]{Immagini/System Design/Kotlin.png}
                 \caption{Logo di Kotlin}
             \end{figure}
             \subsubsection{Perché Kotlin? \cite{JetBrains1}}
@@ -157,16 +159,16 @@
             \subsubsection{Perché le REST API?}
                 I sei princìpi REST sono un'interfaccia uniforme, il disaccoppiamento client-server, servizio senza stato, possibilità di utilizzo del meccanismo di cache, organizzazione del sistema a più livelli, ed esecuzione di codice su richiesta \cite{IBM1}. La realizzazione di applicazioni che comunicano attraverso REST API permette di spingere al massimo l'indipendenza tra i vari servizi, non rinunciando però ad una semplicità di fondo nella comunicazione, essendo il protocollo HTTP un protocollo maturo, quindi testato e funzionante, e strutturalmente semplice. Inoltre, la comunicazione attraverso file JSON (un formato comodo nella lettura sia per esseri umani che per calcolatori e uno dei formati di scambio dei dati più diffuso al mondo), ne permette la lettura da parte di moltissimi linguaggi di programmazione, ciascuno dei quali in possesso di strumenti di parsing di tale formato.
             
-        \subsection{Spring Framework}
+        \subsection{Spring Framework \& Spring Boot}
             \subsubsection{Cos'è Spring Framework?}
                 Spring è un framework gratuito ed open source per applicazioni web scritte in Java. Inizialmente nato come alternativa al modello Enterprise JavaBeans di Java Enterprise Edition (ora Jakarta Enterprise Edition), le sue funzioni possono essere utilizzate da qualsiasi applicazione Java, e fornisce anche numerosi servizi aggiuntivi, che prendono il nome di Spring Boot, Spring Security, Spring Data, eccetera \cite{Wikipedia4}. Grazie a Spring, si possono realizzare delle REST API per la propria applicazione.
             \begin{figure}[htbp!]
                 \centering
                 \includegraphics[width=0.5\linewidth]{Immagini/System Design/Spring.png}
-                \caption{Logo di Spring}
+                \caption{Logo di Spring Framework}
             \end{figure}
             \subsubsection{Perché Spring Framework? \cite{Spoclearn1}}
-                I punti forti di Spring sono:
+                I punti forti di Spring Framework sono:
                 \begin{itemize}
                     \item Alta modularità e basso livello di dipendenze grazie al potente meccanismo di dependency injection, che promuove un basso accoppiamento, facilitando manutenzione e riusabilità;
                     \item  Ricco ecosistema, fornendo molti strumenti per ricoprire le varie necessità di sviluppo dell'applicazione;
@@ -175,6 +177,22 @@
                     \item Il supporto dello sviluppo orientato al test, assieme alla semplicità nella gestione delle dipendenza, contribuisce a migliori pratiche di test;
                     \item Flessibilità nella scelta di specifici componenti e moduli in base alle necessità del progetto.
                 \end{itemize}
+                
+            \subsubsection{Cos'è Spring Boot? \cite{IBM2}}
+                Java Spring Boot (Spring Boot) è uno strumento che semplifica e velocizza lo sviluppo di applicazioni web e microservizi con Spring Framework. E' un layer che si trova al di sopra dello Spring Framework e permette di configurarlo velocemente attraverso una serie di convenzioni.
+                \begin{figure}[htbp!]
+                    \centering
+                    \includegraphics[width=0.44\linewidth]{Immagini/System Design/Spring Boot.png}
+                    \caption{Logo di Spring Boot}
+                \end{figure}
+            \subsubsection{Perché Spring Boot?}
+                Essendo altamente flessibile e configurabile, Spring Framework richiede un notevole dispendio di tempo e competenze significative per configurare, impostare e implementare applicazioni Spring. Spring Boot agevola questo lavoro tramite tre funzionalità principali:
+                \begin{itemize}
+                    \item Configurazione automatica: le applicazioni vengono inizializzate con dipendenze preimpostate che non si ha bisogno di configurare manualmente, attenendosi alle best practices. Ad ogni modo, è sempre possibile personalizzare queste configurazioni;
+                    \item Un approccio categorico alla configurazione: Spring Boot sceglie i pacchetti da installare e i valori predefiniti da utilizzare. Tuttavia è possibile definire le esigenze del proprio progetto nel corso del processo di inizializzazione, durante il quale è possibile scegliere tra più dipendenze iniziali;
+                    \item La capacità di creare applicazioni autonome: Spring Boot consente di creare applicazioni autonome che vengono eseguite da server web già integrati nell'applicazione durante il processo di inizializzazione. In questo modo non è necessario fare affidamento su un server web esterno.
+                \end{itemize}
+                Queste funzionalità cooperano per fornire uno strumento che consente di configurare applicazioni basate su Spring che richiedono una configurazione e un'installazione minime.
 
     \subsection{SonarQube}
         \subsubsection{Cos'è SonarQube?}
