@@ -71,6 +71,7 @@ class com.iasdietideals24.backend.controllers.OffertaSilenziosaController {
 + ResponseEntity<OffertaSilenziosaDto> partialUpdateOffertaSilenziosa(Long,OffertaSilenziosaDto)
 + ResponseEntity<OffertaSilenziosaDto> deleteOffertaSilenziosa(Long)
 }
+OffertaSilenziosaController -- OffertaSilenziosaService
 
 
 class com.iasdietideals24.backend.controllers.OffertaInversaController {
@@ -87,6 +88,7 @@ class com.iasdietideals24.backend.controllers.OffertaInversaController {
 + ResponseEntity<OffertaInversaDto> partialUpdateOffertaInversa(Long,OffertaInversaDto)
 + ResponseEntity<OffertaInversaDto> deleteOffertaInversa(Long)
 }
+OffertaInversaController -- OffertaInversaService
 
 
 interface com.iasdietideals24.backend.repositories.CompratoreRepository {
@@ -118,6 +120,7 @@ abstract class com.iasdietideals24.backend.entities.OffertaDiVenditore {
 # <<Create>> OffertaDiVenditore(LocalDate,LocalTime,BigDecimal,Venditore)
 + String toString()
 }
+OffertaDiVenditore -- Venditore
 
 
 interface com.iasdietideals24.backend.mapstruct.mappers.ProfiloMapper {
@@ -150,7 +153,10 @@ class com.iasdietideals24.backend.services.implementations.CompratoreServiceImpl
 - void convertOfferteCollegateShallow(Set<OffertaShallowDto>,Compratore)
 + void updatePresentFields(CompratoreDto,Compratore)
 }
-
+CompratoreServiceImpl -- AccountService
+CompratoreServiceImpl -- CompratoreMapper
+CompratoreServiceImpl -- CompratoreRepository
+CompratoreServiceImpl -- RelationsConverter
 
 interface com.iasdietideals24.backend.mapstruct.mappers.StatoOffertaSilenziosaMapper {
 ~ String toStringEnum(StatoOffertaSilenziosa)
@@ -183,7 +189,8 @@ class com.iasdietideals24.backend.entities.OffertaTempoFisso {
 + <<Create>> OffertaTempoFisso(LocalDate,LocalTime,BigDecimal,Compratore,AstaTempoFisso)
 + String toString()
 }
-
+OffertaTempoFisso -- Compratore
+OffertaTempoFisso -- AstaTempoFisso
 
 class com.iasdietideals24.backend.services.implementations.AstaDiVenditoreServiceImpl {
 - AstaService astaService
@@ -195,7 +202,8 @@ class com.iasdietideals24.backend.services.implementations.AstaDiVenditoreServic
 - void convertProprietarioShallow(AccountShallowDto,AstaDiVenditore)
 + void updatePresentFields(AstaDiVenditoreDto,AstaDiVenditore)
 }
-
+AstaDiVenditoreServiceImpl -- AstaService
+AstaDiVenditoreServiceImpl -- RelationsConverter
 
 class com.iasdietideals24.backend.config.SecurityConfig {
 + {static} String ROLE_USER
@@ -261,7 +269,8 @@ class com.iasdietideals24.backend.entities.Venditore {
 + void removeOffertaCollegata(OffertaDiVenditore)
 + String toString()
 }
-
+Venditore -- TokensAccount
+Venditore -- Profilo
 
 class com.iasdietideals24.backend.controllers.OffertaTempoFissoController {
 + {static} String LOG_OFFERTA_NON_TROVATA
@@ -277,7 +286,7 @@ class com.iasdietideals24.backend.controllers.OffertaTempoFissoController {
 + ResponseEntity<OffertaTempoFissoDto> partialUpdateOffertaTempoFisso(Long,OffertaTempoFissoDto)
 + ResponseEntity<OffertaTempoFissoDto> deleteOffertaTempoFisso(Long)
 }
-
+OffertaTempoFissoController -- OffertaTempoFissoService
 
 abstract class com.iasdietideals24.backend.mapstruct.mappers.AccountMapper {
 + AccountShallowDto toShallowDto(Account)
@@ -300,7 +309,7 @@ class com.iasdietideals24.backend.controllers.CompratoreController {
 + ResponseEntity<CompratoreDto> partialUpdateCompratore(Long,CompratoreDto)
 + ResponseEntity<CompratoreDto> deleteCompratore(Long)
 }
-
+CompratoreController -- CompratoreService
 
 class com.iasdietideals24.backend.mapstruct.dto.OffertaSilenziosaDto {
 - String stato
@@ -348,14 +357,18 @@ class com.iasdietideals24.backend.mapstruct.mappers.impl.PutProfiloMapperImpl {
 + <<Create>> PutProfiloMapperImpl(AnagraficaProfiloMapper,TokensAccountMapper,LinksProfiloMapper)
 + Profilo toEntity(PutProfiloDto)
 }
-
+PutProfiloMapperImpl -- AnagraficaProfiloMapper
+PutProfiloMapperImpl -- TokensAccountMapper
+PutProfiloMapperImpl -- LinksProfiloMapper
 
 abstract class com.iasdietideals24.backend.entities.AstaDiCompratore {
 - Compratore proprietario
 # <<Create>> AstaDiCompratore(CategoriaAsta,String,String,LocalDate,LocalTime,byte[],Compratore,StatoAsta)
 + String toString()
 }
-
+AstaDiCompratore -- CategoriaAsta
+AstaDiCompratore -- Compratore
+AstaDiCompratore -- StatoAsta
 
 interface com.iasdietideals24.backend.services.OffertaDiCompratoreService {
 ~ void checkFieldsValid(OffertaDiCompratoreDto)
@@ -389,7 +402,8 @@ class com.iasdietideals24.backend.services.implementations.AstaDiCompratoreServi
 - void convertProprietarioShallow(AccountShallowDto,AstaDiCompratore)
 + void updatePresentFields(AstaDiCompratoreDto,AstaDiCompratore)
 }
-
+AstaDiCompratoreServiceImpl -- AstaService
+AstaDiCompratoreServiceImpl -- RelationsConverter
 
 class com.iasdietideals24.backend.entities.Notifica {
 - Long idNotifica
@@ -404,6 +418,7 @@ class com.iasdietideals24.backend.entities.Notifica {
 + void removeDestinatario(Account)
 + String toString()
 }
+Notifica -- Account
 
 
 class com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto {
@@ -427,7 +442,8 @@ abstract class com.iasdietideals24.backend.entities.Account {
 + void removeNotificaRicevuta(Notifica)
 + String toString()
 }
-
+Account -- TokensAccount
+Account -- Profilo
 
 class com.iasdietideals24.backend.exceptions.UpdateRuntimeException {
 + <<Create>> UpdateRuntimeException()
@@ -452,7 +468,7 @@ class com.iasdietideals24.backend.controllers.AstaSilenziosaController {
 + ResponseEntity<AstaSilenziosaDto> partialUpdateAstaSilenziosa(Long,AstaSilenziosaDto)
 + ResponseEntity<AstaSilenziosaDto> deleteAstaSilenziosa(Long)
 }
-
+AstaSilenziosaController -- AstaSilenziosaService
 
 interface com.iasdietideals24.backend.mapstruct.mappers.OffertaInversaMapper {
 ~ OffertaInversaDto toDto(OffertaInversa)
@@ -505,6 +521,13 @@ class com.iasdietideals24.backend.services.implementations.OffertaSilenziosaServ
 - void acceptedOffertaTasks(OffertaSilenziosa)
 - void rejectedOffertaTasks(OffertaSilenziosa)
 }
+OffertaSilenziosaServiceImpl -- OffertaDiCompratoreService
+OffertaSilenziosaServiceImpl -- StatoOffertaSilenziosaMapper
+OffertaSilenziosaServiceImpl -- OffertaSilenziosaMapper
+OffertaSilenziosaServiceImpl -- OffertaSilenziosaRepository
+OffertaSilenziosaServiceImpl -- RelationsConverter
+OffertaSilenziosaServiceImpl -- BuildNotice
+OffertaSilenziosaServiceImpl -- AstaScheduler
 
 
 interface com.iasdietideals24.backend.services.VenditoreService {
@@ -545,6 +568,10 @@ class com.iasdietideals24.backend.scheduled.AstaScheduler {
 + <<Create>> AstaScheduler(AstaRepository,AstaInversaService,AstaSilenziosaService,AstaTempoFissoService)
 + void updateExpiredAste()
 }
+AstaScheduler -- AstaRepository
+AstaScheduler -- AstaInversaService
+AstaScheduler -- AstaSilenziosaService
+AstaScheduler -- AstaTempoFissoService
 
 
 class com.iasdietideals24.backend.services.implementations.OffertaServiceImpl {
@@ -584,7 +611,7 @@ class com.iasdietideals24.backend.services.helper.implementations.BuildNoticeImp
 + void notifyOffertaTempoFissoPerdente(Set<OffertaTempoFisso>)
 - void sendNotifica(Notifica)
 }
-
+BuildNotice -- NotificaRepository
 
 interface com.iasdietideals24.backend.repositories.OffertaSilenziosaRepository {
 ~ Page<OffertaSilenziosa> findByAstaRiferimento_IdAsta(Long,Pageable)
@@ -597,7 +624,7 @@ abstract class com.iasdietideals24.backend.entities.OffertaDiCompratore {
 # <<Create>> OffertaDiCompratore(LocalDate,LocalTime,BigDecimal,Compratore)
 + String toString()
 }
-
+OffertaDiCompratore -- Compratore
 
 class com.iasdietideals24.backend.mapstruct.dto.utilities.LinksProfiloDto {
 - String linkPersonale
@@ -655,6 +682,9 @@ class com.iasdietideals24.backend.services.implementations.CategoriaAstaServiceI
 + void updatePresentFields(CategoriaAstaDto,CategoriaAsta)
 - void ifPresentUpdateNome(String,CategoriaAsta)
 }
+CategoriaAstaServiceImpl -- CategoriaAstaMapper
+CategoriaAstaServiceImpl -- CategoriaAstaRepository
+CategoriaAstaServiceImpl -- RelationsConverter
 
 
 class com.iasdietideals24.backend.controllers.AstaInversaController {
@@ -673,6 +703,7 @@ class com.iasdietideals24.backend.controllers.AstaInversaController {
 + ResponseEntity<AstaInversaDto> partialUpdateAstaInversa(Long,AstaInversaDto)
 + ResponseEntity<AstaInversaDto> deleteAstaInversa(Long)
 }
+AstaInversaController -- AstaInversaService
 
 
 class com.iasdietideals24.backend.mapstruct.dto.shallows.NotificaShallowDto {
@@ -695,7 +726,7 @@ class com.iasdietideals24.backend.controllers.VenditoreController {
 + ResponseEntity<VenditoreDto> partialUpdateVenditore(Long,VenditoreDto)
 + ResponseEntity<VenditoreDto> deleteVenditore(Long)
 }
-
+VenditoreController -- VenditoreService
 
 class com.iasdietideals24.backend.entities.Profilo {
 - String nomeUtente
@@ -711,7 +742,9 @@ class com.iasdietideals24.backend.entities.Profilo {
 + Venditore getVenditore()
 + String toString()
 }
-
+Profilo -- AnagraficaProfilo
+Profilo -- LinksProfilo
+Profilo -- TokensAccount
 
 interface com.iasdietideals24.backend.repositories.ProfiloRepository {
 }
@@ -738,7 +771,8 @@ class com.iasdietideals24.backend.entities.OffertaInversa {
 + <<Create>> OffertaInversa(LocalDate,LocalTime,BigDecimal,Venditore,AstaInversa)
 + String toString()
 }
-
+OffertaInversa -- Venditore
+OffertaInversa -- AstaInversa
 
 interface com.iasdietideals24.backend.services.OffertaService {
 ~ void checkFieldsValid(OffertaDto)
@@ -831,7 +865,9 @@ class com.iasdietideals24.backend.services.implementations.AccountServiceImpl {
 + void checkEmailNotAlreadyTaken(String)
 + void checkEmailNotAlreadyTaken(Account)
 }
-
+AccountServiceImpl -- TokensAccountMapper
+AccountServiceImpl -- RelationsConverter
+AccountServiceImpl -- AccountRepository
 
 class com.iasdietideals24.backend.entities.utilities.AnagraficaProfilo {
 - String nome
@@ -898,7 +934,13 @@ class com.iasdietideals24.backend.services.implementations.ProfiloServiceImpl {
 - void ifPresentUpdateLinkGitHub(String,LinksProfilo)
 - void ifPresentUpdateLinkX(String,LinksProfilo)
 }
-
+ProfiloServiceImpl -- ProfiloMapper
+ProfiloServiceImpl -- PutProfiloMapper
+ProfiloServiceImpl -- AnagraficaProfiloMapper
+ProfiloServiceImpl -- LinksProfiloMapper
+ProfiloServiceImpl -- ProfiloRepository
+ProfiloServiceImpl -- RelationsConverter
+ProfiloServiceImpl -- AccountService
 
 interface com.iasdietideals24.backend.services.AccountService {
 ~ void checkFieldsValid(AccountDto)
@@ -949,6 +991,12 @@ class com.iasdietideals24.backend.services.helper.implementations.RelationsConve
 + Account convertAccountShallowRelation(AccountShallowDto)
 + CategoriaAsta convertCategoriaAstaShallowRelation(CategoriaAstaShallowDto)
 }
+RelationsConverterImpl -- ProfiloRepository
+RelationsConverterImpl -- NotificaRepository
+RelationsConverterImpl -- AstaRepository
+RelationsConverterImpl -- OffertaRepository
+RelationsConverterImpl -- AccountRepository
+RelationsConverterImpl -- CategoriaAstaRepository
 
 
 class com.iasdietideals24.backend.entities.AstaTempoFisso {
@@ -959,13 +1007,18 @@ class com.iasdietideals24.backend.entities.AstaTempoFisso {
 + void removeOffertaRicevuta(OffertaTempoFisso)
 + String toString()
 }
-
+AstaTempoFisso -- CategoriaAsta
+AstaTempoFisso -- Venditore
+AstaTempoFisso -- StatoAsta
 
 abstract class com.iasdietideals24.backend.entities.AstaDiVenditore {
 - Venditore proprietario
 # <<Create>> AstaDiVenditore(CategoriaAsta,String,String,LocalDate,LocalTime,byte[],Venditore,StatoAsta)
 + String toString()
 }
+AstaDiVenditore -- CategoriaAsta
+AstaDiVenditore -- Venditore
+AstaDiVenditore -- StatoAsta
 
 
 interface com.iasdietideals24.backend.mapstruct.mappers.AstaInversaMapper {
@@ -1023,6 +1076,12 @@ class com.iasdietideals24.backend.services.implementations.OffertaTempoFissoServ
 - void checkProprietarioAstaNotMe(OffertaTempoFisso)
 - void checkBestOfferta(OffertaTempoFisso)
 }
+OffertaRepository -- OffertaDiCompratoreService
+OffertaRepository -- OffertaTempoFissoMapper
+OffertaRepository -- OffertaTempoFissoRepository
+OffertaRepository -- RelationsConverter
+OffertaRepository -- BuildNotice
+OffertaRepository -- AstaScheduler
 
 
 class com.iasdietideals24.backend.mapstruct.dto.AstaDto {
@@ -1063,6 +1122,7 @@ class com.iasdietideals24.backend.controllers.ProfiloController {
 + ResponseEntity<ProfiloDto> partialUpdateProfilo(String,ProfiloDto)
 + ResponseEntity<ProfiloDto> deleteProfilo(String)
 }
+ProfiloController -- ProfiloService
 
 
 class com.iasdietideals24.backend.mapstruct.dto.shallows.CategoriaAstaShallowDto {
@@ -1161,6 +1221,12 @@ class com.iasdietideals24.backend.services.implementations.OffertaInversaService
 - void checkProprietarioAstaNotMe(OffertaInversa)
 - void checkBestOfferta(OffertaInversa)
 }
+OffertaInversaServiceImpl -- OffertaDiVenditoreService
+OffertaInversaServiceImpl -- OffertaInversaMapper
+OffertaInversaServiceImpl -- OffertaInversaRepository
+OffertaInversaServiceImpl -- RelationsConverter
+OffertaInversaServiceImpl -- BuildNotice
+OffertaInversaServiceImpl -- AstaScheduler
 
 
 interface com.iasdietideals24.backend.repositories.NotificaRepository {
@@ -1178,6 +1244,9 @@ class com.iasdietideals24.backend.entities.OffertaSilenziosa {
 + <<Create>> OffertaSilenziosa(LocalDate,LocalTime,BigDecimal,Compratore,StatoOffertaSilenziosa,AstaSilenziosa)
 + String toString()
 }
+OffertaSilenziosa -- Compratore
+OffertaSilenziosa -- StatoOffertaSilenziosa
+OffertaSilenziosa -- AstaSilenziosa
 
 
 class com.iasdietideals24.backend.services.implementations.AstaServiceImpl {
@@ -1202,6 +1271,8 @@ class com.iasdietideals24.backend.services.implementations.AstaServiceImpl {
 - void ifPresentUpdateOraScadenza(LocalTime,Asta)
 - void ifPresentUpdateImmagine(byte[],Asta)
 }
+AstaServiceImpl -- RelationsConverter
+AstaServiceImpl -- StatoAstaMapper
 
 
 class com.iasdietideals24.backend.exceptions.IllegalDeleteRequestException {
@@ -1236,6 +1307,8 @@ abstract class com.iasdietideals24.backend.entities.Asta {
 + void removeNotificaAssociata(Notifica)
 + String toString()
 }
+Asta -- CategoriaAsta
+Asta -- StatoAsta
 
 
 interface com.iasdietideals24.backend.repositories.OffertaTempoFissoRepository {
@@ -1256,7 +1329,9 @@ class com.iasdietideals24.backend.entities.AstaSilenziosa {
 + void removeOffertaRicevuta(OffertaSilenziosa)
 + String toString()
 }
-
+AstaSilenziosa -- CategoriaAsta
+AstaSilenziosa -- Venditore
+AstaSilenziosa -- StatoAsta
 
 class com.iasdietideals24.backend.services.implementations.OffertaDiCompratoreServiceImpl {
 - OffertaService offertaService
@@ -1268,6 +1343,8 @@ class com.iasdietideals24.backend.services.implementations.OffertaDiCompratoreSe
 - void convertCompratoreCollegatoShallow(AccountShallowDto,OffertaDiCompratore)
 + void updatePresentFields(OffertaDiCompratoreDto,OffertaDiCompratore)
 }
+OffertaDiCompratoreServiceImpl -- OffertaService
+OffertaDiCompratoreServiceImpl -- RelationsConverter
 
 
 class com.iasdietideals24.backend.services.implementations.AstaSilenziosaServiceImpl {
@@ -1299,6 +1376,11 @@ class com.iasdietideals24.backend.services.implementations.AstaSilenziosaService
 + void updatePresentFields(AstaSilenziosaDto,AstaSilenziosa)
 + void closeAstaSilenziosa(AstaSilenziosa)
 }
+AstaSilenziosaServiceImpl -- AstaDiVenditoreService
+AstaSilenziosaServiceImpl -- AstaSilenziosaMapper
+AstaSilenziosaServiceImpl -- AstaSilenziosaRepository
+AstaSilenziosaServiceImpl -- RelationsConverter
+AstaSilenziosaServiceImpl -- BuildNotice
 
 
 interface com.iasdietideals24.backend.services.AstaDiVenditoreService {
@@ -1330,6 +1412,9 @@ class com.iasdietideals24.backend.entities.AstaInversa {
 + void removeOffertaRicevuta(OffertaInversa)
 + String toString()
 }
+AstaInversa -- CategoriaAsta
+AstaInversa -- Compratore
+AstaInversa -- StatoAsta
 
 
 class com.iasdietideals24.backend.mapstruct.dto.NotificaDto {
@@ -1373,6 +1458,8 @@ class com.iasdietideals24.backend.entities.Compratore {
 + void removeOffertaCollegata(OffertaDiCompratore)
 + String toString()
 }
+Compratore -- TokensAccount
+Compratore -- Profilo
 
 
 class com.iasdietideals24.backend.services.implementations.NotificaServiceImpl {
@@ -1407,6 +1494,9 @@ class com.iasdietideals24.backend.services.implementations.NotificaServiceImpl {
 - void ifPresentUpdateOraInvio(LocalTime,Notifica)
 - void ifPresentUpdateMessaggio(String,Notifica)
 }
+NotificaServiceImpl -- NotificaMapper
+NotificaServiceImpl -- NotificaRepository
+NotificaServiceImpl -- RelationsConverter
 
 
 class com.iasdietideals24.backend.mapstruct.dto.utilities.ErrorDto {
@@ -1450,6 +1540,10 @@ class com.iasdietideals24.backend.services.implementations.VenditoreServiceImpl 
 - void convertOfferteCollegateShallow(Set<OffertaShallowDto>,Venditore)
 + void updatePresentFields(VenditoreDto,Venditore)
 }
+VenditoreServiceImpl -- AccountService
+VenditoreServiceImpl -- VenditoreMapper
+VenditoreServiceImpl -- VenditoreRepository
+VenditoreServiceImpl -- RelationsConverter
 
 
 class com.iasdietideals24.backend.mapstruct.dto.utilities.TokensAccountDto {
@@ -1495,6 +1589,11 @@ class com.iasdietideals24.backend.services.implementations.AstaTempoFissoService
 - void ifPresentUpdateSogliaMinima(BigDecimal,AstaTempoFisso)
 + void closeAstaTempoFisso(AstaTempoFisso)
 }
+AstaTempoFissoServiceImpl -- AstaDiVenditoreService
+AstaTempoFissoServiceImpl -- AstaTempoFissoMapper
+AstaTempoFissoServiceImpl -- AstaTempoFissoRepository
+AstaTempoFissoServiceImpl -- RelationsConverter
+AstaTempoFissoServiceImpl -- BuildNotice
 
 
 interface com.iasdietideals24.backend.repositories.AstaDiVenditoreRepository {
@@ -1531,7 +1630,7 @@ class com.iasdietideals24.backend.controllers.AstaTempoFissoController {
 + ResponseEntity<AstaTempoFissoDto> partialUpdateAstaTempoFisso(Long,AstaTempoFissoDto)
 + ResponseEntity<AstaTempoFissoDto> deleteAstaTempoFisso(Long)
 }
-
+AstaTempoFissoController -- AstaTempoFissoService
 
 interface com.iasdietideals24.backend.repositories.AstaTempoFissoRepository {
 ~ Page<AstaTempoFisso> findByProprietario_IdAccountIs(Long,Pageable)
@@ -1572,6 +1671,7 @@ class com.iasdietideals24.backend.controllers.NotificaController {
 + ResponseEntity<NotificaDto> partialUpdateNotifica(Long,NotificaDto)
 + ResponseEntity<NotificaDto> deleteNotifica(Long)
 }
+NotificaController -- NotificaService
 
 
 class com.iasdietideals24.backend.services.implementations.OffertaDiVenditoreServiceImpl {
@@ -1584,6 +1684,8 @@ class com.iasdietideals24.backend.services.implementations.OffertaDiVenditoreSer
 - void convertVenditoreCollegatoShallow(AccountShallowDto,OffertaDiVenditore)
 + void updatePresentFields(OffertaDiVenditoreDto,OffertaDiVenditore)
 }
+OffertaDiVenditoreServiceImpl -- OffertaService
+OffertaDiVenditoreServiceImpl -- RelationsConverter
 
 
 class com.iasdietideals24.backend.controllers.CategoriaAstaController {
@@ -1596,6 +1698,7 @@ class com.iasdietideals24.backend.controllers.CategoriaAstaController {
 + ResponseEntity<CategoriaAstaDto> partialUpdateCategoriaAsta(String,CategoriaAstaDto)
 + ResponseEntity<CategoriaAstaDto> deleteCategoriaAsta(String)
 }
+CategoriaAstaController -- CategoriaAstaService
 
 
 class com.iasdietideals24.backend.mapstruct.dto.OffertaDiVenditoreDto {
@@ -1633,6 +1736,11 @@ class com.iasdietideals24.backend.services.implementations.AstaInversaServiceImp
 - void ifPresentUpdateSogliaIniziale(BigDecimal,AstaInversa)
 + void closeAstaInversa(AstaInversa)
 }
+AstaInversaServiceImpl -- AstaDiCompratoreService
+AstaInversaServiceImpl -- AstaInversaMapper
+AstaInversaServiceImpl -- AstaInversaRepository
+AstaInversaServiceImpl -- RelationsConverter
+AstaInversaServiceImpl -- BuildNotice
 
 
 class com.iasdietideals24.backend.entities.utilities.TokensAccount {
@@ -1756,4 +1864,15 @@ com.iasdietideals24.backend.services.OffertaDiVenditoreService <|.. com.iasdieti
 com.iasdietideals24.backend.mapstruct.dto.OffertaDto <|-- com.iasdietideals24.backend.mapstruct.dto.OffertaDiVenditoreDto
 com.iasdietideals24.backend.services.AstaInversaService <|.. com.iasdietideals24.backend.services.implementations.AstaInversaServiceImpl
 com.iasdietideals24.backend.mapstruct.dto.OffertaDiVenditoreDto <|-- com.iasdietideals24.backend.mapstruct.dto.OffertaInversaDto
+Notifica "0..*" --> "1" Asta : è associata a
+Notifica "0..*" <-- "1" Account : mittente
+Notifica "0..*" --> "1..*" Account : destinatario
+Account "1..2" --> "1" Profilo : possiede
+Venditore "1" --> "0..*" AstaDiVenditore: possiede
+Venditore "1" --> "0..*" OffertaDiVenditore : è collegato a
+Compratore "1" --> "0..*" AstaDiCompratore : possiede
+Compratore "1" --> "0..*" OffertaDiCompratore : è collegato a
+AstaInversa "1" <-- "0..*" OffertaInversa : si riferisce a
+AstaSilenziosa "1" <-- "0..*" OffertaSilenziosa : si riferisce a
+AstaTempoFisso "1" <-- "0..*" OffertaTempoFisso : si riferisce a
 @enduml
