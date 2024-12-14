@@ -327,13 +327,7 @@ public class AstaInversaServiceImpl implements AstaInversaService {
 
         if (!offerteRicevute.isEmpty()) {
 
-            OffertaInversa leastValueOffertaRicevuta = offerteRicevute.iterator().next();
-            for (OffertaInversa offertaRicevuta : offerteRicevute) {
-                if (offertaRicevuta.getValore().compareTo(leastValueOffertaRicevuta.getValore()) < 0)
-                    leastValueOffertaRicevuta = offertaRicevuta;
-            }
-
-            log.trace("leastValueOffertaRicevuta: {}", leastValueOffertaRicevuta);
+            OffertaInversa leastValueOffertaRicevuta = findLeastValueOfferta(offerteRicevute);
 
             if (leastValueOffertaRicevuta.getValore().compareTo(expiredAsta.getSogliaIniziale()) <= 0) {
 
@@ -343,15 +337,7 @@ public class AstaInversaServiceImpl implements AstaInversaService {
 
                 log.debug("Notifica inviata con successo. Invio la notifica a tutti gli altri partecipanti...");
 
-                Set<OffertaInversa> offertePerdenti = new HashSet<>();
-                for (OffertaInversa offertaRicevuta : offerteRicevute) {
-                    if (!offertaRicevuta.getVenditoreCollegato().equals(leastValueOffertaRicevuta.getVenditoreCollegato()))
-                        offertePerdenti.add(offertaRicevuta);
-                }
-
-                log.trace("offerteRicevute: {}", offerteRicevute);
-                log.trace("offertePerdenti: {}", offertePerdenti);
-
+                Set<OffertaInversa> offertePerdenti = buildListOffertePerdenti(offerteRicevute, leastValueOffertaRicevuta);
                 buildNotice.notifyOffertaInversaPerdente(offertePerdenti);
 
                 log.debug("Notifica inviata con successo.");
@@ -367,5 +353,34 @@ public class AstaInversaServiceImpl implements AstaInversaService {
         buildNotice.notifyAstaInversaScaduta(expiredAsta);
 
         log.debug("Notifica inviata con successo.");
+    }
+
+    private OffertaInversa findLeastValueOfferta(Set<OffertaInversa> offerteRicevute) {
+
+        OffertaInversa leastValueOffertaRicevuta = offerteRicevute.iterator().next();
+
+        for (OffertaInversa offertaRicevuta : offerteRicevute) {
+            if (offertaRicevuta.getValore().compareTo(leastValueOffertaRicevuta.getValore()) < 0)
+                leastValueOffertaRicevuta = offertaRicevuta;
+        }
+
+        log.trace("leastValueOffertaRicevuta: {}", leastValueOffertaRicevuta);
+
+        return leastValueOffertaRicevuta;
+    }
+
+    private Set<OffertaInversa> buildListOffertePerdenti(Set<OffertaInversa> offerteRicevute, OffertaInversa offertaVincitrice) {
+
+        Set<OffertaInversa> offertePerdenti = new HashSet<>();
+
+        for (OffertaInversa offertaRicevuta : offerteRicevute) {
+            if (!offertaRicevuta.getVenditoreCollegato().equals(offertaVincitrice.getVenditoreCollegato()))
+                offertePerdenti.add(offertaRicevuta);
+        }
+
+        log.trace("offerteRicevute: {}", offerteRicevute);
+        log.trace("offertePerdenti: {}", offertePerdenti);
+
+        return offertePerdenti;
     }
 }

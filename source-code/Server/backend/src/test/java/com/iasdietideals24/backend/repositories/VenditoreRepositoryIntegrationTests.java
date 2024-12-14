@@ -1,8 +1,8 @@
 package com.iasdietideals24.backend.repositories;
 
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
-import com.iasdietideals24.backend.entities.Venditore;
 import com.iasdietideals24.backend.entities.Profilo;
+import com.iasdietideals24.backend.entities.Venditore;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

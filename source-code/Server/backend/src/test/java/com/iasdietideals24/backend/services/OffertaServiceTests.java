@@ -5,21 +5,21 @@ import com.iasdietideals24.backend.mapstruct.dto.OffertaDto;
 import com.iasdietideals24.backend.services.implementations.OffertaServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class OffertaServiceTests {
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+
+class OffertaServiceTests {
 
     private OffertaService offertaService;
 
     @BeforeEach
     void initUnderTest() {
-       offertaService = new OffertaServiceImpl();
+        offertaService = new OffertaServiceImpl();
     }
 
     @Test

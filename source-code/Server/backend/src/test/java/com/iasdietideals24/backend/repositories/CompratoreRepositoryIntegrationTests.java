@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CompratoreRepositoryIntegrationTests {
 
     private final ProfiloRepository profiloRepository;
-    
+
     private final CompratoreRepository underTest;
 
     @Autowired

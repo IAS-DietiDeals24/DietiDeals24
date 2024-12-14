@@ -327,13 +327,7 @@ public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
 
         if (!offerteRicevute.isEmpty()) {
 
-            OffertaTempoFisso mostValueOffertaRicevuta = offerteRicevute.iterator().next();
-            for (OffertaTempoFisso offertaRicevuta : offerteRicevute) {
-                if (offertaRicevuta.getValore().compareTo(mostValueOffertaRicevuta.getValore()) > 0)
-                    mostValueOffertaRicevuta = offertaRicevuta;
-            }
-
-            log.trace("mostValueOffertaRicevuta: {}", mostValueOffertaRicevuta);
+            OffertaTempoFisso mostValueOffertaRicevuta = findMostValueOfferta(offerteRicevute);
 
             if (mostValueOffertaRicevuta.getValore().compareTo(expiredAsta.getSogliaMinima()) >= 0) {
 
@@ -343,15 +337,7 @@ public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
 
                 log.debug("Notifica inviata con successo. Invio la notifica a tutti gli altri partecipanti...");
 
-                Set<OffertaTempoFisso> offertePerdenti = new HashSet<>();
-                for (OffertaTempoFisso offertaRicevuta : offerteRicevute) {
-                    if (!offertaRicevuta.getCompratoreCollegato().equals(mostValueOffertaRicevuta.getCompratoreCollegato()))
-                        offertePerdenti.add(offertaRicevuta);
-                }
-
-                log.trace("offerteRicevute: {}", offerteRicevute);
-                log.trace("offertePerdenti: {}", offertePerdenti);
-
+                Set<OffertaTempoFisso> offertePerdenti = buildListOffertePerdenti(offerteRicevute, mostValueOffertaRicevuta);
                 buildNotice.notifyOffertaTempoFissoPerdente(offertePerdenti);
 
                 log.debug("Notifica inviata con successo.");
@@ -367,5 +353,34 @@ public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
         buildNotice.notifyAstaTempoFissoScaduta(expiredAsta);
 
         log.debug("Notifica inviata con successo.");
+    }
+
+    private OffertaTempoFisso findMostValueOfferta(Set<OffertaTempoFisso> offerteRicevute) {
+
+        OffertaTempoFisso mostValueOffertaRicevuta = offerteRicevute.iterator().next();
+
+        for (OffertaTempoFisso offertaRicevuta : offerteRicevute) {
+            if (offertaRicevuta.getValore().compareTo(mostValueOffertaRicevuta.getValore()) > 0)
+                mostValueOffertaRicevuta = offertaRicevuta;
+        }
+
+        log.trace("mostValueOffertaRicevuta: {}", mostValueOffertaRicevuta);
+
+        return mostValueOffertaRicevuta;
+    }
+
+    private Set<OffertaTempoFisso> buildListOffertePerdenti(Set<OffertaTempoFisso> offerteRicevute, OffertaTempoFisso offertaVincitrice) {
+
+        Set<OffertaTempoFisso> offertePerdenti = new HashSet<>();
+
+        for (OffertaTempoFisso offertaRicevuta : offerteRicevute) {
+            if (!offertaRicevuta.getCompratoreCollegato().equals(offertaVincitrice.getCompratoreCollegato()))
+                offertePerdenti.add(offertaRicevuta);
+        }
+
+        log.trace("offerteRicevute: {}", offerteRicevute);
+        log.trace("offertePerdenti: {}", offertePerdenti);
+
+        return offertePerdenti;
     }
 }
