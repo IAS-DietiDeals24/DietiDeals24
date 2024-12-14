@@ -1,7 +1,10 @@
 package com.iasdietideals24.dietideals24.controller
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.icu.util.Calendar
+import android.view.MotionEvent
+import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -64,6 +67,7 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
         binding.creazioneProfiloFase1CampoDataNascita.setStartIconOnClickListener { clickDataNascita() }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @UIBuilder
     override fun impostaEventiDiCambiamentoCampi() {
         binding.creazioneProfiloFase1NomeUtente.addTextChangedListener {
@@ -93,6 +97,17 @@ class ControllerCreazioneProfiloFase1 : Controller<Creazioneprofilofase1Binding>
             rimuoviErroreCampo(binding.creazioneProfiloFase1CampoCognome)
             rimuoviErroreCampo(binding.creazioneProfiloFase1CampoDataNascita)
         }
+
+        binding.creazioneProfiloFase1DataNascita.setOnTouchListener(View.OnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                v.clearFocus()
+
+                clickDataNascita()
+
+                return@OnTouchListener true
+            }
+            false
+        })
     }
 
     @UIBuilder

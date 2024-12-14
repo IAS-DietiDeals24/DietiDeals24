@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.iasdietideals24.dietideals24.R
 import com.iasdietideals24.dietideals24.databinding.HomeBinding
 import com.iasdietideals24.dietideals24.model.ModelHome
@@ -15,9 +16,7 @@ import com.iasdietideals24.dietideals24.utilities.repositories.CategoriaAstaRepo
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
@@ -47,13 +46,9 @@ class ControllerHome : Controller<HomeBinding>() {
         super.onResume()
 
         jobRecupero = lifecycleScope.launch {
-            while (isActive) {
-                viewModel.invalidate()
+            viewModel.invalidate()
 
-                recuperaAste()
-
-                delay(10000)
-            }
+            recuperaAste()
         }
     }
 
@@ -65,46 +60,45 @@ class ControllerHome : Controller<HomeBinding>() {
                 if (binding.homeFiltro.text.toString() != getString(R.string.category_all))
                     binding.homeFiltro.text.toString() else ""
 
+            jobRecupero?.cancel()
 
             jobRecupero = lifecycleScope.launch {
-                jobRecupero?.cancel()
-
                 viewModel.invalidate()
 
                 recuperaAste()
-
-                delay(10000)
             }
         }
 
         binding.homeCampoRicerca.setEndIconOnClickListener {
+
             viewModel.searchText.value = binding.homeRicerca.text.toString()
             viewModel.filter.value =
                 if (binding.homeFiltro.text.toString() != getString(R.string.category_all))
                     binding.homeFiltro.text.toString() else ""
 
-            jobRecupero = lifecycleScope.launch {
-                jobRecupero?.cancel()
+            jobRecupero?.cancel()
 
+            jobRecupero = lifecycleScope.launch {
                 viewModel.invalidate()
 
-                recuperaAste()
+                Snackbar.make(fragmentView, R.string.home_avvisoRicerca, Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(resources.getColor(R.color.blu, null))
+                    .setTextColor(resources.getColor(R.color.grigio, null))
+                    .show()
 
-                delay(10000)
+                recuperaAste()
             }
         }
 
         binding.homeTipo.setOnItemClickListener { _, _, position, _ ->
             viewModel.tipo = position
 
-            jobRecupero = lifecycleScope.launch {
-                jobRecupero?.cancel()
+            jobRecupero?.cancel()
 
+            jobRecupero = lifecycleScope.launch {
                 viewModel.invalidate()
 
                 recuperaAste()
-
-                delay(10000)
             }
         }
     }
@@ -137,9 +131,9 @@ class ControllerHome : Controller<HomeBinding>() {
                 binding.homeTipo.setOnItemClickListener { _, _, position, _ ->
                     viewModel.tipo = position
 
-                    jobRecupero = lifecycleScope.launch {
-                        jobRecupero?.cancel()
+                    jobRecupero?.cancel()
 
+                    jobRecupero = lifecycleScope.launch {
                         viewModel.invalidate()
 
                         recuperaAste()
@@ -166,9 +160,9 @@ class ControllerHome : Controller<HomeBinding>() {
                 binding.homeTipo.setOnItemClickListener { _, _, position, _ ->
                     viewModel.tipo = position
 
-                    jobRecupero = lifecycleScope.launch {
-                        jobRecupero?.cancel()
+                    jobRecupero?.cancel()
 
+                    jobRecupero = lifecycleScope.launch {
                         viewModel.invalidate()
 
                         recuperaAste()

@@ -89,9 +89,9 @@ class ControllerAsteCreate : Controller<AstecreateBinding>() {
             binding.astecreateFiltro.setOnItemClickListener { _, _, position, _ ->
                 viewModel.filtro = position
 
-                jobRecupero = lifecycleScope.launch {
-                    jobRecupero?.cancel()
+                jobRecupero?.cancel()
 
+                jobRecupero = lifecycleScope.launch {
                     viewModel.invalidate()
 
                     recuperaAsteCreate()

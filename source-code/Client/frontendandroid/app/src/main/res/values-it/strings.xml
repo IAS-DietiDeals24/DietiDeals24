@@ -249,4 +249,5 @@
     <string name="astaAggiudicata">AGGIUDICATA</string>
     <string name="astecreate_filtro">Filtra per tipo</string>
     <string name="category_all">Tutte</string>
+    <string name="home_avvisoRicerca">Ricerca delle aste avviata.</string>
 </resources>

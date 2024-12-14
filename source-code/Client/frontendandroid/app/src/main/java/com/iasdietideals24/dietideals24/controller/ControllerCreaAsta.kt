@@ -1,9 +1,12 @@
 package com.iasdietideals24.dietideals24.controller
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.icu.util.Calendar
 import android.net.Uri
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.View
 import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
@@ -139,6 +142,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
             .show()
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @UIBuilder
     override fun impostaEventiClick() {
         binding.creaPulsanteCrea.setOnClickListener {
@@ -156,6 +160,28 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
         binding.creaCampoFoto.setOnClickListener {
             clickFoto()
         }
+
+        binding.creaDataScadenza.setOnTouchListener(View.OnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                v.clearFocus()
+
+                clickDataScadenza()
+
+                return@OnTouchListener true
+            }
+            false
+        })
+
+        binding.creaOra.setOnTouchListener(View.OnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                v.clearFocus()
+
+                clickOraScadenza()
+
+                return@OnTouchListener true
+            }
+            false
+        })
     }
 
     @UIBuilder

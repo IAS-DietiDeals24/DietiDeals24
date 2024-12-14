@@ -1,10 +1,13 @@
 package com.iasdietideals24.dietideals24.controller
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.icu.util.Calendar
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
@@ -41,6 +44,7 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
 import java.time.LocalDate
 
+
 class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
 
     // ViewModel
@@ -68,6 +72,7 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
         listenerProfile = null
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @UIBuilder
     override fun impostaEventiClick() {
         binding.modificaProfiloPulsanteIndietro.setOnClickListener { clickIndietro() }
@@ -85,6 +90,17 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
         binding.modificaProfiloX.setOnClickListener { clickX() }
 
         binding.modificaProfiloCampoDataNascita.setStartIconOnClickListener { clickDataNascita() }
+
+        binding.modificaProfiloDataNascita.setOnTouchListener(OnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                v.clearFocus()
+
+                clickDataNascita()
+
+                return@OnTouchListener true
+            }
+            false
+        })
     }
 
     @UIBuilder
