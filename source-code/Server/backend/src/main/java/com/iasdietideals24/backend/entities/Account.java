@@ -32,7 +32,7 @@ public abstract class Account {
     private TokensAccount tokens;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "profilo_nome_utente", nullable = false)
+    @JoinColumn(name = "profilo_nome_utente", nullable = false, foreignKey = @ForeignKey(name = "fk_profilo_nome_utente"))
     @NonNull
     private Profilo profilo;
 

@@ -1,9 +1,6 @@
 package com.iasdietideals24.backend.entities;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -17,7 +14,7 @@ import java.time.LocalTime;
 @Entity(name = "offerta_di_compratore")
 public abstract class OffertaDiCompratore extends Offerta {
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "compratore_id_account", nullable = false)
+    @JoinColumn(name = "compratore_id_account", nullable = false, foreignKey = @ForeignKey(name = "fk_compratore_id_account"))
     @NonNull
     private Compratore compratoreCollegato;
 

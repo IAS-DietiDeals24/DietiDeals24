@@ -1,10 +1,7 @@
 package com.iasdietideals24.backend.entities;
 
 import com.iasdietideals24.backend.entities.utilities.StatoAsta;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -17,7 +14,7 @@ import java.time.LocalTime;
 @Entity(name = "asta_di_venditore")
 public abstract class AstaDiVenditore extends Asta {
     @ManyToOne(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
-    @JoinColumn(name = "venditore_id_account", nullable = false)
+    @JoinColumn(name = "venditore_id_account", nullable = false, foreignKey = @ForeignKey(name = "fk_venditore_id_account"))
     @NonNull
     private Venditore proprietario;
 

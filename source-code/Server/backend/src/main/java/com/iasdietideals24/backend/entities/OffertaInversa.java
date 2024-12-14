@@ -1,9 +1,6 @@
 package com.iasdietideals24.backend.entities;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -17,7 +14,7 @@ import java.time.LocalTime;
 @Entity(name = "offerta_inversa")
 public class OffertaInversa extends OffertaDiVenditore {
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "asta_inversa_id_asta", nullable = false)
+    @JoinColumn(name = "asta_inversa_id_asta", nullable = false, foreignKey = @ForeignKey(name = "fk_asta_inversa_id_asta"))
     @NonNull
     private AstaInversa astaRiferimento;
 

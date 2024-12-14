@@ -20,7 +20,7 @@ public class OffertaSilenziosa extends OffertaDiCompratore {
     private StatoOffertaSilenziosa stato = StatoOffertaSilenziosa.PENDING;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "asta_silenziosa_id_asta", nullable = false)
+    @JoinColumn(name = "asta_silenziosa_id_asta", nullable = false, foreignKey = @ForeignKey(name = "fk_asta_silenziosa_id_asta"))
     @NonNull
     private AstaSilenziosa astaRiferimento;
 

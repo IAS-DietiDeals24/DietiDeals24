@@ -1,9 +1,6 @@
 package com.iasdietideals24.backend.entities;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -17,7 +14,7 @@ import java.time.LocalTime;
 @Entity(name = "offerta_tempo_fisso")
 public class OffertaTempoFisso extends OffertaDiCompratore {
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "asta_tempo_fisso_id_asta", nullable = false)
+    @JoinColumn(name = "asta_tempo_fisso_id_asta", nullable = false, foreignKey = @ForeignKey(name = "fk_asta_tempo_fisso_id_asta"))
     @NonNull
     private AstaTempoFisso astaRiferimento;
 

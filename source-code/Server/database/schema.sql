@@ -166,7 +166,7 @@ CREATE TABLE asta_silenziosa
     categoria_asta_nome  TEXT      NOT NULL,
     CONSTRAINT fk_categoria_asta_nome FOREIGN KEY (categoria_asta_nome) REFERENCES categoria_asta (nome) ON UPDATE CASCADE ON DELETE CASCADE,
     venditore_id_account BIGINT    NOT NULL,
-    CONSTRAINT fk_venditore_id_account FOREIGN KEY (venditore_email) REFERENCES venditore (id_account) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_venditore_id_account FOREIGN KEY (venditore_id_account) REFERENCES venditore (id_account) ON UPDATE CASCADE ON DELETE CASCADE,
     stato                TEXT      NOT NULL
 );
 

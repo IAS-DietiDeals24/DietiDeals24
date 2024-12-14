@@ -43,7 +43,7 @@ public class Notifica {
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "destinatari",
-            joinColumns = {@JoinColumn(name = "notifica_id_notifica", nullable = false)},
+            joinColumns = {@JoinColumn(name = "notifica_id_notifica", nullable = false, foreignKey = @ForeignKey(name = "fk_notifica_id_notifica"))},
             inverseJoinColumns = {@JoinColumn(name = "account_id_account", nullable = false)})
     @NonNull
     @EqualsAndHashCode.Exclude

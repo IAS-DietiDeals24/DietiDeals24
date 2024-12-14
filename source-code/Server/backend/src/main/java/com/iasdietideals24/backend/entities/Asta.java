@@ -51,7 +51,7 @@ public abstract class Asta {
     private byte[] immagine;
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "categoria_asta_nome", nullable = false)
+    @JoinColumn(name = "categoria_asta_nome", nullable = false, foreignKey = @ForeignKey(name = "fk_categoria_asta_nome"))
     @NonNull
     private CategoriaAsta categoria;
 

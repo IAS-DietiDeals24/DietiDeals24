@@ -5,6 +5,8 @@ import com.iasdietideals24.backend.mapstruct.dto.OffertaDto;
 import com.iasdietideals24.backend.services.implementations.OffertaServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.math.BigDecimal;
@@ -145,6 +147,19 @@ public class OffertaServiceTests {
         offertaDto.setDataInvio(LocalDate.now().minusDays(5));
         offertaDto.setOraInvio(LocalTime.now().minusMinutes(5));
         offertaDto.setValore(BigDecimal.valueOf(-5));
+
+        // Act & Assert
+        assertThrowsExactly(InvalidParameterException.class, () -> offertaService.checkFieldsValid(offertaDto));
+    }
+
+    @Test
+    void testCheckFieldsValid_idMaggioreDataMinoreOraMinoreValoreNull() {
+        // Arrange
+        OffertaDto offertaDto = new OffertaDto();
+        offertaDto.setIdOfferta(5L);
+        offertaDto.setDataInvio(LocalDate.now().minusDays(5));
+        offertaDto.setOraInvio(LocalTime.now().minusMinutes(5));
+        offertaDto.setValore(null);
 
         // Act & Assert
         assertThrowsExactly(InvalidParameterException.class, () -> offertaService.checkFieldsValid(offertaDto));
