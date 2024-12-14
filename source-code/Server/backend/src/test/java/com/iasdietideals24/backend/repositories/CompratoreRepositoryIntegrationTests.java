@@ -26,11 +26,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class CompratoreRepositoryIntegrationTests {
 
+    private final ProfiloRepository profiloRepository;
+    
     private final CompratoreRepository underTest;
 
     @Autowired
-    public CompratoreRepositoryIntegrationTests(CompratoreRepository underTest) {
+    public CompratoreRepositoryIntegrationTests(CompratoreRepository underTest, ProfiloRepository profiloRepository) {
         this.underTest = underTest;
+        this.profiloRepository = profiloRepository;
     }
 
     @Test
@@ -38,6 +41,7 @@ class CompratoreRepositoryIntegrationTests {
     void testCompratoreCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreC();
+        profiloCompratore = profiloRepository.save(profiloCompratore);
         Compratore compratore = profiloCompratore.getCompratore();
 
         // Salvataggio oggetto nel database
@@ -57,12 +61,15 @@ class CompratoreRepositoryIntegrationTests {
     void testMultipleCompratoreCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloCompratoreA = TestDataProfilo.createProfiloCompratoreA();
+        profiloCompratoreA = profiloRepository.save(profiloCompratoreA);
         Compratore compratoreA = profiloCompratoreA.getCompratore();
 
         Profilo profiloCompratoreB = TestDataProfilo.createProfiloCompratoreB();
+        profiloCompratoreB = profiloRepository.save(profiloCompratoreB);
         Compratore compratoreB = profiloCompratoreB.getCompratore();
 
         Profilo profiloCompratoreC = TestDataProfilo.createProfiloCompratoreC();
+        profiloCompratoreC = profiloRepository.save(profiloCompratoreC);
         Compratore compratoreC = profiloCompratoreC.getCompratore();
 
         // Salvataggio oggetti nel database
@@ -83,6 +90,7 @@ class CompratoreRepositoryIntegrationTests {
     void testCompratoreCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreA();
+        profiloCompratore = profiloRepository.save(profiloCompratore);
         Compratore compratore = profiloCompratore.getCompratore();
         underTest.save(compratore);
 
@@ -104,6 +112,7 @@ class CompratoreRepositoryIntegrationTests {
     void testCompratoreCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreA();
+        profiloCompratore = profiloRepository.save(profiloCompratore);
         Compratore compratore = profiloCompratore.getCompratore();
         underTest.save(compratore);
 

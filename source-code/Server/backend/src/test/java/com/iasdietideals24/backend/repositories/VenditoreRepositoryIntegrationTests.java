@@ -1,8 +1,8 @@
 package com.iasdietideals24.backend.repositories;
 
 import com.iasdietideals24.backend.datautil.TestDataProfilo;
-import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.entities.Venditore;
+import com.iasdietideals24.backend.entities.Profilo;
 import com.iasdietideals24.backend.exceptions.InvalidTypeException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -26,11 +26,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class VenditoreRepositoryIntegrationTests {
 
+    private final ProfiloRepository profiloRepository;
+
     private final VenditoreRepository underTest;
 
     @Autowired
-    public VenditoreRepositoryIntegrationTests(VenditoreRepository underTest) {
+    public VenditoreRepositoryIntegrationTests(VenditoreRepository underTest, ProfiloRepository profiloRepository) {
         this.underTest = underTest;
+        this.profiloRepository = profiloRepository;
     }
 
     @Test
@@ -38,6 +41,7 @@ class VenditoreRepositoryIntegrationTests {
     void testVenditoreCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreC();
+        profiloVenditore = profiloRepository.save(profiloVenditore);
         Venditore venditore = profiloVenditore.getVenditore();
 
         // Salvataggio oggetto nel database
@@ -57,12 +61,15 @@ class VenditoreRepositoryIntegrationTests {
     void testMultipleVenditoreCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloVenditoreA = TestDataProfilo.createProfiloVenditoreA();
+        profiloVenditoreA = profiloRepository.save(profiloVenditoreA);
         Venditore venditoreA = profiloVenditoreA.getVenditore();
 
         Profilo profiloVenditoreB = TestDataProfilo.createProfiloVenditoreB();
+        profiloVenditoreB = profiloRepository.save(profiloVenditoreB);
         Venditore venditoreB = profiloVenditoreB.getVenditore();
 
         Profilo profiloVenditoreC = TestDataProfilo.createProfiloVenditoreC();
+        profiloVenditoreC = profiloRepository.save(profiloVenditoreC);
         Venditore venditoreC = profiloVenditoreC.getVenditore();
 
         // Salvataggio oggetti nel database
@@ -83,6 +90,7 @@ class VenditoreRepositoryIntegrationTests {
     void testVenditoreCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
+        profiloVenditore = profiloRepository.save(profiloVenditore);
         Venditore venditore = profiloVenditore.getVenditore();
         underTest.save(venditore);
 
@@ -104,6 +112,7 @@ class VenditoreRepositoryIntegrationTests {
     void testVenditoreCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
+        profiloVenditore = profiloRepository.save(profiloVenditore);
         Venditore venditore = profiloVenditore.getVenditore();
         underTest.save(venditore);
 

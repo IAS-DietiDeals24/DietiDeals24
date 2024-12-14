@@ -25,11 +25,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class NotificaRepositoryIntegrationTests {
 
+    private final ProfiloRepository profiloRepository;
+    private final CategoriaAstaRepository categoriaAstaRepository;
+    private final AstaRepository astaRepository;
+
     private final NotificaRepository underTest;
 
     @Autowired
-    public NotificaRepositoryIntegrationTests(NotificaRepository underTest) {
+    public NotificaRepositoryIntegrationTests(NotificaRepository underTest, ProfiloRepository profiloRepository, CategoriaAstaRepository categoriaAstaRepository, AstaRepository astaRepository) {
         this.underTest = underTest;
+        this.astaRepository = astaRepository;
+        this.profiloRepository = profiloRepository;
+        this.categoriaAstaRepository = categoriaAstaRepository;
     }
 
     @Test
@@ -37,10 +44,14 @@ class NotificaRepositoryIntegrationTests {
     void testNotificaCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloMittente = TestDataProfilo.createProfiloCompratoreA();
+        profiloMittente = profiloRepository.save(profiloMittente);
         Compratore mittente = profiloMittente.getCompratore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaDiCompratore astaAssociata = TestDataAstaInversa.createAstaInversaA(categoriaAsta, mittente);
+        astaAssociata = astaRepository.save(astaAssociata);
         Profilo profiloDestinatario = TestDataProfilo.createProfiloVenditoreB();
+        profiloDestinatario = profiloRepository.save(profiloDestinatario);
         Venditore destinatario = profiloDestinatario.getVenditore();
         Notifica notifica = TestDataNotifica.createNotificaA(mittente, destinatario, astaAssociata);
 
@@ -61,23 +72,32 @@ class NotificaRepositoryIntegrationTests {
     void testMultipleNotificaCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloMittenteA = TestDataProfilo.createProfiloCompratoreA();
+        profiloMittenteA = profiloRepository.save(profiloMittenteA);
         Compratore mittenteA = profiloMittenteA.getCompratore();
         CategoriaAsta categoriaAstaA = TestDataCategoriaAsta.createCategoriaAstaE();
+        categoriaAstaA = categoriaAstaRepository.save(categoriaAstaA);
         AstaDiCompratore astaAssociataA = TestDataAstaInversa.createAstaInversaA(categoriaAstaA, mittenteA);
+        astaAssociataA = astaRepository.save(astaAssociataA);
         Profilo profiloDestinatarioB = TestDataProfilo.createProfiloVenditoreB();
+        profiloDestinatarioB = profiloRepository.save(profiloDestinatarioB);
         Venditore destinatarioB = profiloDestinatarioB.getVenditore();
         Notifica notificaA = TestDataNotifica.createNotificaA(mittenteA, destinatarioB, astaAssociataA);
 
         Venditore mittenteB = destinatarioB;
         CategoriaAsta categoriaAstaB = TestDataCategoriaAsta.createCategoriaAstaB();
+        categoriaAstaB = categoriaAstaRepository.save(categoriaAstaB);
         AstaDiVenditore astaAssociataB = TestDataAstaSilenziosa.createAstaSilenziosaB(categoriaAstaB, mittenteB);
+        astaAssociataB = astaRepository.save(astaAssociataB);
         Compratore destinatarioA = mittenteA;
         Notifica notificaB = TestDataNotifica.createNotificaA(mittenteB, destinatarioA, astaAssociataB);
 
         Profilo profiloMittenteC = TestDataProfilo.createProfiloVenditoreC();
+        profiloMittenteC = profiloRepository.save(profiloMittenteC);
         Venditore mittenteC = profiloMittenteC.getVenditore();
         CategoriaAsta categoriaAstaC = TestDataCategoriaAsta.createCategoriaAstaK();
+        categoriaAstaC = categoriaAstaRepository.save(categoriaAstaC);
         AstaDiVenditore astaAssociataC = TestDataAstaTempoFisso.createAstaTempoFissoC(categoriaAstaC, mittenteC);
+        astaAssociataC = astaRepository.save(astaAssociataC);
         Compratore destinatarioC = mittenteA;
         Notifica notificaC = TestDataNotifica.createNotificaA(mittenteC, destinatarioC, astaAssociataC);
 
@@ -99,10 +119,14 @@ class NotificaRepositoryIntegrationTests {
     void testNotificaCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloMittente = TestDataProfilo.createProfiloCompratoreC();
+        profiloMittente = profiloRepository.save(profiloMittente);
         Compratore mittente = profiloMittente.getCompratore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaDiCompratore astaAssociata = TestDataAstaInversa.createAstaInversaA(categoriaAsta, mittente);
+        astaAssociata = astaRepository.save(astaAssociata);
         Profilo profiloDestinatario = TestDataProfilo.createProfiloVenditoreA();
+        profiloDestinatario = profiloRepository.save(profiloDestinatario);
         Venditore destinatario = profiloDestinatario.getVenditore();
         Notifica notifica = TestDataNotifica.createNotificaA(mittente, destinatario, astaAssociata);
         underTest.save(notifica);
@@ -125,12 +149,17 @@ class NotificaRepositoryIntegrationTests {
     void testNotificaCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloMittente = TestDataProfilo.createProfiloVenditoreA();
+        profiloMittente = profiloRepository.save(profiloMittente);
         Venditore mittente = profiloMittente.getVenditore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaB();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaDiVenditore astaAssociata = TestDataAstaTempoFisso.createAstaTempoFissoA(categoriaAsta, mittente);
+        astaAssociata = astaRepository.save(astaAssociata);
         Profilo profiloDestinatario1 = TestDataProfilo.createProfiloCompratoreB();
+        profiloDestinatario1 = profiloRepository.save(profiloDestinatario1);
         Compratore destinatario1 = profiloDestinatario1.getCompratore();
         Profilo profiloDestinatario2 = TestDataProfilo.createProfiloCompratoreC();
+        profiloDestinatario2 = profiloRepository.save(profiloDestinatario2);
         Compratore destinatario2 = profiloDestinatario2.getCompratore();
 
         Notifica notifica = TestDataNotifica.createNotificaA(mittente, destinatario1, astaAssociata);

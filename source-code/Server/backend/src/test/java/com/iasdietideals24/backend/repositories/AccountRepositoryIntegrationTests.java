@@ -26,11 +26,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class AccountRepositoryIntegrationTests {
 
+    private final ProfiloRepository profiloRepository;
+
     private final AccountRepository underTest;
 
     @Autowired
-    public AccountRepositoryIntegrationTests(AccountRepository underTest) {
+    public AccountRepositoryIntegrationTests(AccountRepository underTest, ProfiloRepository profiloRepository) {
         this.underTest = underTest;
+        this.profiloRepository = profiloRepository;
     }
 
     @Test
@@ -38,6 +41,7 @@ class AccountRepositoryIntegrationTests {
     void testAccountCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloAccount = TestDataProfilo.createProfiloVenditoreA();
+        profiloAccount = profiloRepository.save(profiloAccount);
         Account account = profiloAccount.getVenditore();
 
         // Salvataggio oggetto nel database
@@ -57,12 +61,15 @@ class AccountRepositoryIntegrationTests {
     void testMultipleAccountCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloAccountA = TestDataProfilo.createProfiloCompratoreA();
+        profiloAccountA = profiloRepository.save(profiloAccountA);
         Account accountA = profiloAccountA.getCompratore();
 
         Profilo profiloAccountB = TestDataProfilo.createProfiloVenditoreB();
+        profiloAccountB = profiloRepository.save(profiloAccountB);
         Account accountB = profiloAccountB.getVenditore();
 
         Profilo profiloAccountC = TestDataProfilo.createProfiloCompratoreC();
+        profiloAccountC = profiloRepository.save(profiloAccountC);
         Account accountC = profiloAccountC.getCompratore();
 
         // Salvataggio oggetti nel database
@@ -83,6 +90,7 @@ class AccountRepositoryIntegrationTests {
     void testAccountCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloAccount = TestDataProfilo.createProfiloVenditoreC();
+        profiloAccount = profiloRepository.save(profiloAccount);
         Account account = profiloAccount.getVenditore();
         underTest.save(account);
 
@@ -104,6 +112,7 @@ class AccountRepositoryIntegrationTests {
     void testAccountCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloAccount = TestDataProfilo.createProfiloCompratoreB();
+        profiloAccount = profiloRepository.save(profiloAccount);
         Account account = profiloAccount.getCompratore();
         underTest.save(account);
 

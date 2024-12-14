@@ -30,11 +30,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class AstaTempoFissoRepositoryIntegrationTests {
 
+    private final ProfiloRepository profiloRepository;
+    private final CategoriaAstaRepository categoriaAstaRepository;
+
     private final AstaTempoFissoRepository underTest;
 
     @Autowired
-    public AstaTempoFissoRepositoryIntegrationTests(AstaTempoFissoRepository underTest) {
+    public AstaTempoFissoRepositoryIntegrationTests(AstaTempoFissoRepository underTest, ProfiloRepository profiloRepository, CategoriaAstaRepository categoriaAstaRepository) {
         this.underTest = underTest;
+        this.profiloRepository = profiloRepository;
+        this.categoriaAstaRepository = categoriaAstaRepository;
     }
 
     @Test
@@ -42,8 +47,10 @@ class AstaTempoFissoRepositoryIntegrationTests {
     void testAstaTempoFissoCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreC();
+        profiloVenditore = profiloRepository.save(profiloVenditore);
         Venditore venditore = profiloVenditore.getVenditore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaB();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaTempoFisso astaTempoFisso = TestDataAstaTempoFisso.createAstaTempoFissoA(categoriaAsta, venditore);
 
         // Salvataggio oggetto nel database
@@ -63,18 +70,24 @@ class AstaTempoFissoRepositoryIntegrationTests {
     void testMultipleAstaTempoFissoCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloVenditoreA = TestDataProfilo.createProfiloVenditoreA();
+        profiloVenditoreA = profiloRepository.save(profiloVenditoreA);
         Venditore venditoreA = profiloVenditoreA.getVenditore();
         CategoriaAsta categoriaAstaA = TestDataCategoriaAsta.createCategoriaAstaB();
+        categoriaAstaA = categoriaAstaRepository.save(categoriaAstaA);
         AstaTempoFisso astaTempoFissoA = TestDataAstaTempoFisso.createAstaTempoFissoA(categoriaAstaA, venditoreA);
 
         Profilo profiloVenditoreB = TestDataProfilo.createProfiloVenditoreB();
+        profiloVenditoreB = profiloRepository.save(profiloVenditoreB);
         Venditore venditoreB = profiloVenditoreB.getVenditore();
         CategoriaAsta categoriaAstaB = TestDataCategoriaAsta.createCategoriaAstaE();
+        categoriaAstaB = categoriaAstaRepository.save(categoriaAstaB);
         AstaTempoFisso astaTempoFissoB = TestDataAstaTempoFisso.createAstaTempoFissoB(categoriaAstaB, venditoreB);
 
         Profilo profiloVenditoreC = TestDataProfilo.createProfiloVenditoreC();
+        profiloVenditoreC = profiloRepository.save(profiloVenditoreC);
         Venditore venditoreC = profiloVenditoreC.getVenditore();
         CategoriaAsta categoriaAstaC = TestDataCategoriaAsta.createCategoriaAstaK();
+        categoriaAstaC = categoriaAstaRepository.save(categoriaAstaC);
         AstaTempoFisso astaTempoFissoC = TestDataAstaTempoFisso.createAstaTempoFissoC(categoriaAstaC, venditoreC);
 
         // Salvataggio oggetti nel database
@@ -95,8 +108,10 @@ class AstaTempoFissoRepositoryIntegrationTests {
     void testAstaTempoFissoCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
+        profiloVenditore = profiloRepository.save(profiloVenditore);
         Venditore venditore = profiloVenditore.getVenditore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaK();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaTempoFisso astaTempoFisso = TestDataAstaTempoFisso.createAstaTempoFissoC(categoriaAsta, venditore);
         underTest.save(astaTempoFisso);
 
@@ -118,8 +133,10 @@ class AstaTempoFissoRepositoryIntegrationTests {
     void testAstaTempoFissoCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
+        profiloVenditore = profiloRepository.save(profiloVenditore);
         Venditore venditore = profiloVenditore.getVenditore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaTempoFisso astaTempoFisso = TestDataAstaTempoFisso.createAstaTempoFissoB(categoriaAsta, venditore);
         underTest.save(astaTempoFisso);
 

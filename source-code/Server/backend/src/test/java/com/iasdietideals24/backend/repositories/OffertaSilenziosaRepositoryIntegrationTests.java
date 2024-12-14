@@ -29,11 +29,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class OffertaSilenziosaRepositoryIntegrationTests {
 
+    private final ProfiloRepository profiloRepository;
+    private final CategoriaAstaRepository categoriaAstaRepository;
+    private final AstaRepository astaRepository;
     private final OffertaSilenziosaRepository underTest;
 
     @Autowired
-    public OffertaSilenziosaRepositoryIntegrationTests(OffertaSilenziosaRepository underTest) {
+    public OffertaSilenziosaRepositoryIntegrationTests(OffertaSilenziosaRepository underTest, ProfiloRepository profiloRepository, CategoriaAstaRepository categoriaAstaRepository, AstaRepository astaRepository) {
         this.underTest = underTest;
+        this.astaRepository = astaRepository;
+        this.profiloRepository = profiloRepository;
+        this.categoriaAstaRepository = categoriaAstaRepository;
     }
 
     @Test
@@ -41,10 +47,14 @@ class OffertaSilenziosaRepositoryIntegrationTests {
     void testOffertaSilenziosaCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloProprietario = TestDataProfilo.createProfiloVenditoreA();
+        profiloProprietario = profiloRepository.save(profiloProprietario);
         Venditore proprietario = profiloProprietario.getVenditore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaM();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaSilenziosa astaRiferimento = TestDataAstaSilenziosa.createAstaSilenziosaA(categoriaAsta, proprietario);
+        astaRiferimento = astaRepository.save(astaRiferimento);
         Profilo profiloCompratoreCollegato = TestDataProfilo.createProfiloCompratoreB();
+        profiloCompratoreCollegato = profiloRepository.save(profiloCompratoreCollegato);
         Compratore compratoreCollegato = profiloCompratoreCollegato.getCompratore();
         OffertaSilenziosa offertaSilenziosa = TestDataOffertaSilenziosa.createOffertaSilenziosaA(compratoreCollegato, astaRiferimento);
 
@@ -65,21 +75,30 @@ class OffertaSilenziosaRepositoryIntegrationTests {
     void testMultipleOffertaSilenziosaCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloProprietarioA = TestDataProfilo.createProfiloVenditoreA();
+        profiloProprietarioA = profiloRepository.save(profiloProprietarioA);
         Venditore proprietarioA = profiloProprietarioA.getVenditore();
         CategoriaAsta categoriaAstaA = TestDataCategoriaAsta.createCategoriaAstaM();
+        categoriaAstaA = categoriaAstaRepository.save(categoriaAstaA);
         AstaSilenziosa astaRiferimentoA = TestDataAstaSilenziosa.createAstaSilenziosaA(categoriaAstaA, proprietarioA);
+        astaRiferimentoA = astaRepository.save(astaRiferimentoA);
         Profilo profiloCompratoreCollegatoB = TestDataProfilo.createProfiloCompratoreB();
+        profiloCompratoreCollegatoB = profiloRepository.save(profiloCompratoreCollegatoB);
         Compratore compratoreCollegatoB = profiloCompratoreCollegatoB.getCompratore();
         OffertaSilenziosa offertaSilenziosaA = TestDataOffertaSilenziosa.createOffertaSilenziosaA(compratoreCollegatoB, astaRiferimentoA);
 
         Profilo profiloProprietarioC = TestDataProfilo.createProfiloVenditoreC();
+        profiloProprietarioC = profiloRepository.save(profiloProprietarioC);
         Venditore proprietarioC = profiloProprietarioC.getVenditore();
         CategoriaAsta categoriaAstaB = TestDataCategoriaAsta.createCategoriaAstaB();
+        categoriaAstaB = categoriaAstaRepository.save(categoriaAstaB);
         AstaSilenziosa astaRiferimentoB = TestDataAstaSilenziosa.createAstaSilenziosaB(categoriaAstaB, proprietarioC);
+        astaRiferimentoB = astaRepository.save(astaRiferimentoB);
         OffertaSilenziosa offertaSilenziosaB = TestDataOffertaSilenziosa.createOffertaSilenziosaB(compratoreCollegatoB, astaRiferimentoB);
 
         CategoriaAsta categoriaAstaC = TestDataCategoriaAsta.createCategoriaAstaC();
+        categoriaAstaC = categoriaAstaRepository.save(categoriaAstaC);
         AstaSilenziosa astaRiferimentoC = TestDataAstaSilenziosa.createAstaSilenziosaC(categoriaAstaC, proprietarioC);
+        astaRiferimentoC = astaRepository.save(astaRiferimentoC);
         OffertaSilenziosa offertaSilenziosaC = TestDataOffertaSilenziosa.createOffertaSilenziosaC(compratoreCollegatoB, astaRiferimentoC);
 
         // Salvataggio oggetti nel database
@@ -100,10 +119,14 @@ class OffertaSilenziosaRepositoryIntegrationTests {
     void testOffertaSilenziosaCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloVenditoreB();
+        profiloProprietario = profiloRepository.save(profiloProprietario);
         Venditore proprietario = profiloProprietario.getVenditore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaB();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaSilenziosa astaRiferimento = TestDataAstaSilenziosa.createAstaSilenziosaB(categoriaAsta, proprietario);
+        astaRiferimento = astaRepository.save(astaRiferimento);
         Profilo profiloCompratoreCollegato = TestDataProfilo.createProfiloCompratoreA();
+        profiloCompratoreCollegato = profiloRepository.save(profiloCompratoreCollegato);
         Compratore compratoreCollegato = profiloCompratoreCollegato.getCompratore();
         OffertaSilenziosa offertaSilenziosa = TestDataOffertaSilenziosa.createOffertaSilenziosaC(compratoreCollegato, astaRiferimento);
         underTest.save(offertaSilenziosa);
@@ -126,10 +149,14 @@ class OffertaSilenziosaRepositoryIntegrationTests {
     void testOffertaSilenziosaCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloVenditoreC();
+        profiloProprietario = profiloRepository.save(profiloProprietario);
         Venditore proprietario = profiloProprietario.getVenditore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaC();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaSilenziosa astaRiferimento = TestDataAstaSilenziosa.createAstaSilenziosaC(categoriaAsta, proprietario);
+        astaRiferimento = astaRepository.save(astaRiferimento);
         Profilo profiloCompratoreCollegato = TestDataProfilo.createProfiloCompratoreA();
+        profiloCompratoreCollegato = profiloRepository.save(profiloCompratoreCollegato);
         Compratore compratoreCollegato = profiloCompratoreCollegato.getCompratore();
         OffertaSilenziosa offertaSilenziosa = TestDataOffertaSilenziosa.createOffertaSilenziosaA(compratoreCollegato, astaRiferimento);
         underTest.save(offertaSilenziosa);

@@ -29,11 +29,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class OffertaTempoFissoRepositoryIntegrationTests {
 
+    private final ProfiloRepository profiloRepository;
+    private final CategoriaAstaRepository categoriaAstaRepository;
+    private final AstaRepository astaRepository;
     private final OffertaTempoFissoRepository underTest;
 
     @Autowired
-    public OffertaTempoFissoRepositoryIntegrationTests(OffertaTempoFissoRepository underTest) {
+    public OffertaTempoFissoRepositoryIntegrationTests(OffertaTempoFissoRepository underTest, ProfiloRepository profiloRepository, CategoriaAstaRepository categoriaAstaRepository, AstaRepository astaRepository) {
         this.underTest = underTest;
+        this.astaRepository = astaRepository;
+        this.profiloRepository = profiloRepository;
+        this.categoriaAstaRepository = categoriaAstaRepository;
     }
 
     @Test
@@ -41,10 +47,14 @@ class OffertaTempoFissoRepositoryIntegrationTests {
     void testOffertaTempoFissoCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloProprietario = TestDataProfilo.createProfiloVenditoreA();
+        profiloProprietario = profiloRepository.save(profiloProprietario);
         Venditore proprietario = profiloProprietario.getVenditore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaB();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaTempoFisso astaRiferimento = TestDataAstaTempoFisso.createAstaTempoFissoA(categoriaAsta, proprietario);
+        astaRiferimento = astaRepository.save(astaRiferimento);
         Profilo profiloCompratoreCollegato = TestDataProfilo.createProfiloCompratoreB();
+        profiloCompratoreCollegato = profiloRepository.save(profiloCompratoreCollegato);
         Compratore compratoreCollegato = profiloCompratoreCollegato.getCompratore();
         OffertaTempoFisso offertaTempoFisso = TestDataOffertaTempoFisso.createOffertaTempoFissoA(compratoreCollegato, astaRiferimento);
 
@@ -65,21 +75,30 @@ class OffertaTempoFissoRepositoryIntegrationTests {
     void testMultipleOffertaTempoFissoCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloProprietarioA = TestDataProfilo.createProfiloVenditoreA();
+        profiloProprietarioA = profiloRepository.save(profiloProprietarioA);
         Venditore proprietarioA = profiloProprietarioA.getVenditore();
         CategoriaAsta categoriaAstaA = TestDataCategoriaAsta.createCategoriaAstaB();
+        categoriaAstaA = categoriaAstaRepository.save(categoriaAstaA);
         AstaTempoFisso astaRiferimentoA = TestDataAstaTempoFisso.createAstaTempoFissoA(categoriaAstaA, proprietarioA);
+        astaRiferimentoA = astaRepository.save(astaRiferimentoA);
         Profilo profiloCompratoreCollegatoB = TestDataProfilo.createProfiloCompratoreB();
+        profiloCompratoreCollegatoB = profiloRepository.save(profiloCompratoreCollegatoB);
         Compratore compratoreCollegatoB = profiloCompratoreCollegatoB.getCompratore();
         OffertaTempoFisso offertaTempoFissoA = TestDataOffertaTempoFisso.createOffertaTempoFissoA(compratoreCollegatoB, astaRiferimentoA);
 
         Profilo profiloProprietarioC = TestDataProfilo.createProfiloVenditoreC();
+        profiloProprietarioC = profiloRepository.save(profiloProprietarioC);
         Venditore proprietarioC = profiloProprietarioC.getVenditore();
         CategoriaAsta categoriaAstaB = TestDataCategoriaAsta.createCategoriaAstaE();
+        categoriaAstaB = categoriaAstaRepository.save(categoriaAstaB);
         AstaTempoFisso astaRiferimentoB = TestDataAstaTempoFisso.createAstaTempoFissoB(categoriaAstaB, proprietarioC);
+        astaRiferimentoB = astaRepository.save(astaRiferimentoB);
         OffertaTempoFisso offertaTempoFissoB = TestDataOffertaTempoFisso.createOffertaTempoFissoB(compratoreCollegatoB, astaRiferimentoB);
 
         CategoriaAsta categoriaAstaC = TestDataCategoriaAsta.createCategoriaAstaK();
+        categoriaAstaC = categoriaAstaRepository.save(categoriaAstaC);
         AstaTempoFisso astaRiferimentoC = TestDataAstaTempoFisso.createAstaTempoFissoC(categoriaAstaC, proprietarioC);
+        astaRiferimentoC = astaRepository.save(astaRiferimentoC);
         OffertaTempoFisso offertaTempoFissoC = TestDataOffertaTempoFisso.createOffertaTempoFissoC(compratoreCollegatoB, astaRiferimentoC);
 
         // Salvataggio oggetti nel database
@@ -100,10 +119,14 @@ class OffertaTempoFissoRepositoryIntegrationTests {
     void testOffertaTempoFissoCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloVenditoreB();
+        profiloProprietario = profiloRepository.save(profiloProprietario);
         Venditore proprietario = profiloProprietario.getVenditore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaTempoFisso astaRiferimento = TestDataAstaTempoFisso.createAstaTempoFissoB(categoriaAsta, proprietario);
+        astaRiferimento = astaRepository.save(astaRiferimento);
         Profilo profiloCompratoreCollegato = TestDataProfilo.createProfiloCompratoreA();
+        profiloCompratoreCollegato = profiloRepository.save(profiloCompratoreCollegato);
         Compratore compratoreCollegato = profiloCompratoreCollegato.getCompratore();
         OffertaTempoFisso offertaTempoFisso = TestDataOffertaTempoFisso.createOffertaTempoFissoC(compratoreCollegato, astaRiferimento);
         underTest.save(offertaTempoFisso);
@@ -126,10 +149,14 @@ class OffertaTempoFissoRepositoryIntegrationTests {
     void testOffertaTempoFissoCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloVenditoreC();
+        profiloProprietario = profiloRepository.save(profiloProprietario);
         Venditore proprietario = profiloProprietario.getVenditore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaK();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaTempoFisso astaRiferimento = TestDataAstaTempoFisso.createAstaTempoFissoC(categoriaAsta, proprietario);
+        astaRiferimento = astaRepository.save(astaRiferimento);
         Profilo profiloCompratoreCollegato = TestDataProfilo.createProfiloCompratoreA();
+        profiloCompratoreCollegato = profiloRepository.save(profiloCompratoreCollegato);
         Compratore compratoreCollegato = profiloCompratoreCollegato.getCompratore();
         OffertaTempoFisso offertaTempoFisso = TestDataOffertaTempoFisso.createOffertaTempoFissoA(compratoreCollegato, astaRiferimento);
         underTest.save(offertaTempoFisso);

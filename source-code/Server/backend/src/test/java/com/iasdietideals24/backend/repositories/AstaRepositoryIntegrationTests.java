@@ -25,11 +25,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class AstaRepositoryIntegrationTests {
 
+    private final ProfiloRepository profiloRepository;
+    private final CategoriaAstaRepository categoriaAstaRepository;
+
     private final AstaRepository underTest;
 
     @Autowired
-    public AstaRepositoryIntegrationTests(AstaRepository underTest) {
+    public AstaRepositoryIntegrationTests(AstaRepository underTest, ProfiloRepository profiloRepository, CategoriaAstaRepository categoriaAstaRepository) {
         this.underTest = underTest;
+        this.profiloRepository = profiloRepository;
+        this.categoriaAstaRepository = categoriaAstaRepository;
     }
 
     @Test
@@ -37,8 +42,10 @@ class AstaRepositoryIntegrationTests {
     void testAstaCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreA();
+        profiloVenditore = profiloRepository.save(profiloVenditore);
         Venditore venditore = profiloVenditore.getVenditore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         Asta asta = TestDataAstaSilenziosa.createAstaSilenziosaA(categoriaAsta, venditore);
 
         // Salvataggio oggetto nel database
@@ -58,18 +65,24 @@ class AstaRepositoryIntegrationTests {
     void testMultipleAstaCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloCompratoreA = TestDataProfilo.createProfiloCompratoreA();
+        profiloCompratoreA = profiloRepository.save(profiloCompratoreA);
         Compratore compratoreA = profiloCompratoreA.getCompratore();
         CategoriaAsta categoriaAstaA = TestDataCategoriaAsta.createCategoriaAstaE();
+        categoriaAstaA = categoriaAstaRepository.save(categoriaAstaA);
         Asta astaA = TestDataAstaInversa.createAstaInversaA(categoriaAstaA, compratoreA);
 
         Profilo profiloVenditoreB = TestDataProfilo.createProfiloVenditoreB();
+        profiloVenditoreB = profiloRepository.save(profiloVenditoreB);
         Venditore venditoreB = profiloVenditoreB.getVenditore();
         CategoriaAsta categoriaAstaC = TestDataCategoriaAsta.createCategoriaAstaK();
+        categoriaAstaC = categoriaAstaRepository.save(categoriaAstaC);
         Asta astaB = TestDataAstaTempoFisso.createAstaTempoFissoB(categoriaAstaC, venditoreB);
 
         Profilo profiloVenditoreC = TestDataProfilo.createProfiloVenditoreC();
+        profiloVenditoreC = profiloRepository.save(profiloVenditoreC);
         Venditore venditoreC = profiloVenditoreC.getVenditore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaL();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         Asta astaC = TestDataAstaSilenziosa.createAstaSilenziosaC(categoriaAsta, venditoreC);
 
         // Salvataggio oggetti nel database
@@ -90,8 +103,10 @@ class AstaRepositoryIntegrationTests {
     void testAstaCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreA();
+        profiloCompratore = profiloRepository.save(profiloCompratore);
         Compratore compratore = profiloCompratore.getCompratore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         Asta asta = TestDataAstaInversa.createAstaInversaB(categoriaAsta, compratore);
         underTest.save(asta);
 
@@ -113,8 +128,10 @@ class AstaRepositoryIntegrationTests {
     void testAstaCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloVenditore = TestDataProfilo.createProfiloVenditoreB();
+        profiloVenditore = profiloRepository.save(profiloVenditore);
         Venditore venditore = profiloVenditore.getVenditore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaK();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         Asta asta = TestDataAstaTempoFisso.createAstaTempoFissoC(categoriaAsta, venditore);
         underTest.save(asta);
 

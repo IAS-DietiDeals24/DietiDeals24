@@ -29,11 +29,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class OffertaInversaRepositoryIntegrationTests {
 
+    private final ProfiloRepository profiloRepository;
+    private final CategoriaAstaRepository categoriaAstaRepository;
+    private final AstaRepository astaRepository;
+
     private final OffertaInversaRepository underTest;
 
     @Autowired
-    public OffertaInversaRepositoryIntegrationTests(OffertaInversaRepository underTest) {
+    public OffertaInversaRepositoryIntegrationTests(OffertaInversaRepository underTest, ProfiloRepository profiloRepository, CategoriaAstaRepository categoriaAstaRepository, AstaRepository astaRepository) {
         this.underTest = underTest;
+        this.astaRepository = astaRepository;
+        this.profiloRepository = profiloRepository;
+        this.categoriaAstaRepository = categoriaAstaRepository;
     }
 
     @Test
@@ -41,10 +48,14 @@ class OffertaInversaRepositoryIntegrationTests {
     void testOffertaInversaCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloProprietario = TestDataProfilo.createProfiloCompratoreA();
+        profiloProprietario = profiloRepository.save(profiloProprietario);
         Compratore proprietario = profiloProprietario.getCompratore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaInversa astaRiferimento = TestDataAstaInversa.createAstaInversaA(categoriaAsta, proprietario);
+        astaRiferimento = astaRepository.save(astaRiferimento);
         Profilo profiloVenditoreCollegato = TestDataProfilo.createProfiloVenditoreB();
+        profiloVenditoreCollegato = profiloRepository.save(profiloVenditoreCollegato);
         Venditore venditoreCollegato = profiloVenditoreCollegato.getVenditore();
         OffertaInversa offertaInversa = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegato, astaRiferimento);
 
@@ -65,20 +76,28 @@ class OffertaInversaRepositoryIntegrationTests {
     void testMultipleOffertaInversaCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloProprietarioA = TestDataProfilo.createProfiloCompratoreA();
+        profiloProprietarioA = profiloRepository.save(profiloProprietarioA);
         Compratore proprietarioA = profiloProprietarioA.getCompratore();
         CategoriaAsta categoriaAstaA = TestDataCategoriaAsta.createCategoriaAstaE();
+        categoriaAstaA = categoriaAstaRepository.save(categoriaAstaA);
         AstaInversa astaRiferimentoA = TestDataAstaInversa.createAstaInversaA(categoriaAstaA, proprietarioA);
+        astaRiferimentoA = astaRepository.save(astaRiferimentoA);
         Profilo profiloVenditoreCollegatoB = TestDataProfilo.createProfiloVenditoreB();
+        profiloVenditoreCollegatoB = profiloRepository.save(profiloVenditoreCollegatoB);
         Venditore venditoreCollegatoB = profiloVenditoreCollegatoB.getVenditore();
         OffertaInversa offertaInversaA = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegatoB, astaRiferimentoA);
 
         Profilo profiloProprietarioC = TestDataProfilo.createProfiloCompratoreC();
+        profiloProprietarioC = profiloRepository.save(profiloProprietarioC);
         Compratore proprietarioC = profiloProprietarioC.getCompratore();
         CategoriaAsta categoriaAstaB = TestDataCategoriaAsta.createCategoriaAstaK();
+        categoriaAstaB = categoriaAstaRepository.save(categoriaAstaB);
         AstaInversa astaRiferimentoB = TestDataAstaInversa.createAstaInversaB(categoriaAstaB, proprietarioC);
+        astaRiferimentoB = astaRepository.save(astaRiferimentoB);
         OffertaInversa offertaInversaB = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegatoB, astaRiferimentoB);
 
         AstaInversa astaRiferimentoC = TestDataAstaInversa.createAstaInversaC(categoriaAstaB, proprietarioC);
+        astaRiferimentoC = astaRepository.save(astaRiferimentoC);
         OffertaInversa offertaInversaC = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegatoB, astaRiferimentoC);
 
         // Salvataggio oggetti nel database
@@ -99,10 +118,14 @@ class OffertaInversaRepositoryIntegrationTests {
     void testOffertaInversaCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloCompratoreB();
+        profiloProprietario = profiloRepository.save(profiloProprietario);
         Compratore proprietario = profiloProprietario.getCompratore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaK();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaInversa astaRiferimento = TestDataAstaInversa.createAstaInversaB(categoriaAsta, proprietario);
+        astaRiferimento = astaRepository.save(astaRiferimento);
         Profilo profiloVenditoreCollegato = TestDataProfilo.createProfiloVenditoreA();
+        profiloVenditoreCollegato = profiloRepository.save(profiloVenditoreCollegato);
         Venditore venditoreCollegato = profiloVenditoreCollegato.getVenditore();
         OffertaInversa offertaInversa = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegato, astaRiferimento);
         underTest.save(offertaInversa);
@@ -125,10 +148,14 @@ class OffertaInversaRepositoryIntegrationTests {
     void testOffertaInversaCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloProprietario = TestDataProfilo.createProfiloCompratoreC();
+        profiloProprietario = profiloRepository.save(profiloProprietario);
         Compratore proprietario = profiloProprietario.getCompratore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaK();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaInversa astaRiferimento = TestDataAstaInversa.createAstaInversaC(categoriaAsta, proprietario);
+        astaRiferimento = astaRepository.save(astaRiferimento);
         Profilo profiloVenditoreCollegato = TestDataProfilo.createProfiloVenditoreA();
+        profiloVenditoreCollegato = profiloRepository.save(profiloVenditoreCollegato);
         Venditore venditoreCollegato = profiloVenditoreCollegato.getVenditore();
         OffertaInversa offertaInversa = TestDataOffertaInversa.createOffertaInversaA(venditoreCollegato, astaRiferimento);
         underTest.save(offertaInversa);

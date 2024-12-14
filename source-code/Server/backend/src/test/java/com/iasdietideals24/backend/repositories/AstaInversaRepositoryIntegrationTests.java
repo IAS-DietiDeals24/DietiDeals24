@@ -30,11 +30,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class AstaInversaRepositoryIntegrationTests {
 
+    private final ProfiloRepository profiloRepository;
+    private final CategoriaAstaRepository categoriaAstaRepository;
+
     private final AstaInversaRepository underTest;
 
     @Autowired
-    public AstaInversaRepositoryIntegrationTests(AstaInversaRepository underTest) {
+    public AstaInversaRepositoryIntegrationTests(AstaInversaRepository underTest, ProfiloRepository profiloRepository, CategoriaAstaRepository categoriaAstaRepository) {
         this.underTest = underTest;
+        this.profiloRepository = profiloRepository;
+        this.categoriaAstaRepository = categoriaAstaRepository;
     }
 
     @Test
@@ -42,8 +47,10 @@ class AstaInversaRepositoryIntegrationTests {
     void testAstaInversaCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetto
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreC();
+        profiloCompratore = profiloRepository.save(profiloCompratore);
         Compratore compratore = profiloCompratore.getCompratore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaInversa astaInversa = TestDataAstaInversa.createAstaInversaA(categoriaAsta, compratore);
 
         // Salvataggio oggetto nel database
@@ -63,16 +70,21 @@ class AstaInversaRepositoryIntegrationTests {
     void testMultipleAstaInversaCanBeCreatedAndRecalled() throws InvalidTypeException {
         // Creazione oggetti
         Profilo profiloCompratoreA = TestDataProfilo.createProfiloCompratoreA();
+        profiloCompratoreA = profiloRepository.save(profiloCompratoreA);
         Compratore compratoreA = profiloCompratoreA.getCompratore();
         CategoriaAsta categoriaAstaA = TestDataCategoriaAsta.createCategoriaAstaE();
+        categoriaAstaA = categoriaAstaRepository.save(categoriaAstaA);
         AstaInversa astaInversaA = TestDataAstaInversa.createAstaInversaA(categoriaAstaA, compratoreA);
 
         Profilo profiloCompratoreB = TestDataProfilo.createProfiloCompratoreB();
+        profiloCompratoreB = profiloRepository.save(profiloCompratoreB);
         Compratore compratoreB = profiloCompratoreB.getCompratore();
         CategoriaAsta categoriaAstaB = TestDataCategoriaAsta.createCategoriaAstaK();
+        categoriaAstaB = categoriaAstaRepository.save(categoriaAstaB);
         AstaInversa astaInversaB = TestDataAstaInversa.createAstaInversaB(categoriaAstaB, compratoreB);
 
         Profilo profiloCompratoreC = TestDataProfilo.createProfiloCompratoreC();
+        profiloCompratoreC = profiloRepository.save(profiloCompratoreC);
         Compratore compratoreC = profiloCompratoreC.getCompratore();
         AstaInversa astaInversaC = TestDataAstaInversa.createAstaInversaC(categoriaAstaB, compratoreC);
 
@@ -94,8 +106,10 @@ class AstaInversaRepositoryIntegrationTests {
     void testAstaInversaCanBeUpdated() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreA();
+        profiloCompratore = profiloRepository.save(profiloCompratore);
         Compratore compratore = profiloCompratore.getCompratore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaInversa astaInversa = TestDataAstaInversa.createAstaInversaA(categoriaAsta, compratore);
         underTest.save(astaInversa);
 
@@ -117,8 +131,10 @@ class AstaInversaRepositoryIntegrationTests {
     void testAstaInversaCanBeDeleted() throws InvalidTypeException {
         // Creazione e salvataggio oggetto nel database
         Profilo profiloCompratore = TestDataProfilo.createProfiloCompratoreA();
+        profiloCompratore = profiloRepository.save(profiloCompratore);
         Compratore compratore = profiloCompratore.getCompratore();
         CategoriaAsta categoriaAsta = TestDataCategoriaAsta.createCategoriaAstaE();
+        categoriaAsta = categoriaAstaRepository.save(categoriaAsta);
         AstaInversa astaInversa = TestDataAstaInversa.createAstaInversaA(categoriaAsta, compratore);
         underTest.save(astaInversa);
 
