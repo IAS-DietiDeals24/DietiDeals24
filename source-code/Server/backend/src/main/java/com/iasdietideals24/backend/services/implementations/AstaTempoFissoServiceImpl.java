@@ -343,8 +343,11 @@ public class AstaTempoFissoServiceImpl implements AstaTempoFissoService {
 
                 log.debug("Notifica inviata con successo. Invio la notifica a tutti gli altri partecipanti...");
 
-                Set<OffertaTempoFisso> offertePerdenti = new HashSet<>(offerteRicevute);
-                offertePerdenti.remove(mostValueOffertaRicevuta);
+                Set<OffertaTempoFisso> offertePerdenti = new HashSet<>();
+                for (OffertaTempoFisso offertaRicevuta : offerteRicevute) {
+                    if (!offertaRicevuta.getCompratoreCollegato().equals(mostValueOffertaRicevuta.getCompratoreCollegato()))
+                        offertePerdenti.add(offertaRicevuta);
+                }
 
                 log.trace("offerteRicevute: {}", offerteRicevute);
                 log.trace("offertePerdenti: {}", offertePerdenti);

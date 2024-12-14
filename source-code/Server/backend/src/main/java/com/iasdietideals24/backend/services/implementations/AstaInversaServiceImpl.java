@@ -343,8 +343,11 @@ public class AstaInversaServiceImpl implements AstaInversaService {
 
                 log.debug("Notifica inviata con successo. Invio la notifica a tutti gli altri partecipanti...");
 
-                Set<OffertaInversa> offertePerdenti = new HashSet<>(offerteRicevute);
-                offertePerdenti.remove(leastValueOffertaRicevuta);
+                Set<OffertaInversa> offertePerdenti = new HashSet<>();
+                for (OffertaInversa offertaRicevuta : offerteRicevute) {
+                    if (!offertaRicevuta.getVenditoreCollegato().equals(leastValueOffertaRicevuta.getVenditoreCollegato()))
+                        offertePerdenti.add(offertaRicevuta);
+                }
 
                 log.trace("offerteRicevute: {}", offerteRicevute);
                 log.trace("offertePerdenti: {}", offertePerdenti);
