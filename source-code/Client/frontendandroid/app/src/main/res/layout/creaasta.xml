@@ -88,7 +88,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
-                        android:enabled="false"
                         android:hint="@string/crea_accessibilitàDataScadenza"
                         android:inputType="date"
                         android:textColor="@color/nero" />
@@ -155,7 +154,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
 
-                        android:enabled="false"
                         android:hint="@string/crea_accessibilitàOraScadenza"
                         android:inputType="time"
                         android:textColor="@color/nero" />

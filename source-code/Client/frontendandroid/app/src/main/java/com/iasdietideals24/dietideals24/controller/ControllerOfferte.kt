@@ -13,9 +13,7 @@ import com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnBackButton
 import com.iasdietideals24.dietideals24.utilities.kscripts.OnGoToDetails
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.activityViewModel
@@ -66,13 +64,9 @@ class ControllerOfferte : Controller<OfferteBinding>() {
         super.onResume()
 
         jobOfferte = lifecycleScope.launch {
-            while (isActive) {
-                viewModel.invalidate()
+            viewModel.invalidate()
 
-                aggiornaOfferte()
-
-                delay(15000)
-            }
+            aggiornaOfferte()
         }
     }
 

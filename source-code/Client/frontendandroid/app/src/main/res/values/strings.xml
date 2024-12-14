@@ -259,4 +259,5 @@
     <string name="astaAggiudicata">WON</string>
     <string name="astecreate_filtro">Filter by type</string>
     <string name="category_all">All</string>
+    <string name="home_avvisoRicerca">Performing auction research.</string>
 </resources>
