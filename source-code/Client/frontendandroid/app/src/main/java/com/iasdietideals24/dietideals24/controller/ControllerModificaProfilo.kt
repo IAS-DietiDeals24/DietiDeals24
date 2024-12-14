@@ -188,7 +188,11 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
 
         lifecycleScope.launch {
             try {
-                viewModel.validate()
+                viewModel.validate(
+                    viewModel.nome.value!!,
+                    viewModel.cognome.value!!,
+                    viewModel.dataNascita.value!!
+                )
 
                 val returned: Profilo =
                     withContext(Dispatchers.IO) { aggiornaProfilo().toProfilo() }

@@ -167,30 +167,30 @@ class ModelProfilo : ViewModel() {
 
     @Validation
     @Throws(EccezioneCampiNonCompilati::class)
-    fun validate() {
-        nome()
-        cognome()
-        dataNascita()
+    fun validate(nome: String, cognome: String, dataNascita: LocalDate) {
+        nome(nome)
+        cognome(cognome)
+        dataNascita(dataNascita)
     }
 
     @Validation
     @Throws(EccezioneCampiNonCompilati::class)
-    private fun nome() {
-        if (nome.value?.isEmpty() == true)
+    private fun nome(nome: String) {
+        if (nome.isEmpty())
             throw EccezioneCampiNonCompilati("Nome non compilato.")
     }
 
     @Validation
     @Throws(EccezioneCampiNonCompilati::class)
-    private fun cognome() {
-        if (cognome.value?.isEmpty() == true)
+    private fun cognome(cognome: String) {
+        if (cognome.isEmpty())
             throw EccezioneCampiNonCompilati("Cognome non compilato.")
     }
 
     @Validation
     @Throws(EccezioneCampiNonCompilati::class)
-    private fun dataNascita() {
-        if (dataNascita.value == LocalDate.MIN)
+    private fun dataNascita(dataNascita: LocalDate) {
+        if (dataNascita == LocalDate.MIN)
             throw EccezioneCampiNonCompilati("Data di nascita non compilata.")
     }
 }

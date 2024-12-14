@@ -204,9 +204,7 @@ class com.iasdietideals24.dietideals24.model.ModelProfilo {
 + MutableLiveData<String> getLinkPersonale()
 + ProfiloDto toProfilo()
 + void clear()
-+ void validate()
-+ void clear()
-+ void validate()
++ void validate(String,String,LocalDate)
 - void nome()
 - void cognome()
 - void dataNascita()
@@ -366,7 +364,11 @@ class com.iasdietideals24.dietideals24.model.ModelRegistrazione {
 
 
 class com.iasdietideals24.dietideals24.utilities.tools.ImageHandler$Companion {
-+ ByteArray? encodeImage(Uri?,Context)
++ ByteArray comprimiByteArray(Uri?,Context,Int,Int,Int)
+- Pair<Int, Int> calcolaNuoveDimensioniPreservandoAspectRatio(Int,Int,Int,Int)
+- Int calcolaDimensioniCampionamento(BitmapFactory.Options,Int,Int)
+- Bitmap ruotaImmagineSeNecessario(Bitmap,ExifInterface)
+- Bitmap ruotaBitmap(Bitmap,Float)
 }
 
 class com.iasdietideals24.dietideals24.utilities.tools.ImageHandler {
@@ -509,6 +511,8 @@ abstract class com.iasdietideals24.dietideals24.utilities.dto.OffertaDto {
 + void setOraInvio(LocalTime)
 + BigDecimal getValore()
 + AstaShallowDto getAstaRiferimentoShallow()
++ boolean equals(Object)
++ int hashCode()
 }
 
 
@@ -531,6 +535,8 @@ class com.iasdietideals24.dietideals24.utilities.dto.NotificaDto {
 + AccountShallowDto getMittenteShallow()
 + Set<AccountShallowDto> getDestinatariShallow()
 + AstaShallowDto getAstaAssociataShallow()
++ boolean equals(Object)
++ int hashCode()
 }
 
 
@@ -1584,6 +1590,8 @@ abstract class com.iasdietideals24.dietideals24.utilities.dto.AstaDto {
 + Set<NotificaShallowDto> getNotificheAssociateShallow()
 + AccountShallowDto getProprietarioShallow()
 + Set<OffertaShallowDto> getOfferteRicevuteShallow()
++ boolean equals(Object)
++ int hashCode()
 }
 
 

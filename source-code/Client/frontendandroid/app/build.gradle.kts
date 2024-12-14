@@ -73,5 +73,8 @@ dependencies {
     implementation(libs.browser)
     implementation(libs.datastore)
     implementation(libs.exifinterface)
+    androidTestImplementation(libs.runner)
+    androidTestImplementation(libs.junit.ktx)
+    androidTestImplementation(libs.espresso.core)
     coreLibraryDesugaring(libs.desugar)
 }

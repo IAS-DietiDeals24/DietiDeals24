@@ -7,7 +7,7 @@ class JWT {
         private fun decodePayload(jwt: String): String {
             val tempList = jwt.split(".")
 
-            return if (tempList.isNotEmpty())
+            return if (tempList.size > 1)
                 String(tempList[1].let {
                     Base64.getDecoder().decode(it)
                 })
