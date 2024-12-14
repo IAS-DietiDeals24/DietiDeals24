@@ -12,6 +12,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class NotificaDto {
@@ -86,5 +87,18 @@ public class NotificaDto {
 
     public AstaShallowDto getAstaAssociataShallow() {
         return this.astaAssociataShallow;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NotificaDto that = (NotificaDto) o;
+        return Objects.equals(idNotifica, that.idNotifica) && Objects.equals(dataInvio, that.dataInvio) && Objects.equals(oraInvio, that.oraInvio) && Objects.equals(messaggio, that.messaggio) && Objects.equals(mittenteShallow, that.mittenteShallow) && Objects.equals(destinatariShallow, that.destinatariShallow) && Objects.equals(astaAssociataShallow, that.astaAssociataShallow);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idNotifica, dataInvio, oraInvio, messaggio, mittenteShallow, destinatariShallow, astaAssociataShallow);
     }
 }

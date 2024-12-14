@@ -72,5 +72,6 @@ dependencies {
     implementation(libs.jackson.datatype.jsr310)
     implementation(libs.browser)
     implementation(libs.datastore)
+    implementation(libs.exifinterface)
     coreLibraryDesugaring(libs.desugar)
 }

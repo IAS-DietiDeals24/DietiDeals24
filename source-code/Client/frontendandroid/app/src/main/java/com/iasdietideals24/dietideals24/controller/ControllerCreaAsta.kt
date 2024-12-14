@@ -200,7 +200,7 @@ class ControllerCreaAsta : Controller<CreaastaBinding>() {
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
         selectPhoto = registerForActivityResult(PickVisualMedia()) { uri: Uri? ->
-            viewModel.immagine.value = ImageHandler.encodeImage(uri, fragmentContext)
+            viewModel.immagine.value = ImageHandler.comprimiByteArray(uri, fragmentContext)
         }
 
         lifecycleScope.launch {

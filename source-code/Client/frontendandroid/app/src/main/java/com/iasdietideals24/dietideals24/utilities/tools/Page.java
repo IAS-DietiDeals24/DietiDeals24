@@ -11,7 +11,7 @@ public class Page<T> {
     private boolean last = true;
     private int numberOfElements = 0;
     private boolean first = true;
-    private int size = 20;
+    private int size = 4;
     private int number = 0;
     private Sort sort = new Sort();
     private boolean empty = true;

@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
+import java.util.Objects;
 
 public abstract class OffertaDto {
 
@@ -68,5 +69,18 @@ public abstract class OffertaDto {
 
     public AstaShallowDto getAstaRiferimentoShallow() {
         return this.astaRiferimentoShallow;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OffertaDto that = (OffertaDto) o;
+        return Objects.equals(idOfferta, that.idOfferta) && Objects.equals(dataInvio, that.dataInvio) && Objects.equals(oraInvio, that.oraInvio) && Objects.equals(valore, that.valore) && Objects.equals(astaRiferimentoShallow, that.astaRiferimentoShallow);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idOfferta, dataInvio, oraInvio, valore, astaRiferimentoShallow);
     }
 }

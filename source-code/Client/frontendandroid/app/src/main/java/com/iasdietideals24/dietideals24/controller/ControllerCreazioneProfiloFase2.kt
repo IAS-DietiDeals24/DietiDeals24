@@ -57,7 +57,7 @@ class ControllerCreazioneProfiloFase2 : Controller<Creazioneprofilofase2Binding>
     @UIBuilder
     override fun elaborazioneAggiuntiva() {
         selectPhoto = registerForActivityResult(PickVisualMedia()) { uri: Uri? ->
-            viewModel.immagineProfilo.value = ImageHandler.encodeImage(uri, fragmentContext)
+            viewModel.immagineProfilo.value = ImageHandler.comprimiByteArray(uri, fragmentContext)
         }
     }
 

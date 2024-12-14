@@ -31,6 +31,7 @@ androidx-navigation-safeargs-kotlin = "2.8.4"
 google-services = "4.4.2"
 google-firebase-crashlytics = "3.0.2"
 google-firebase-perf = "1.4.2"
+exifinterface = "1.3.7"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -56,6 +57,7 @@ desugar = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref 
 jackson-datatype-jsr310 = { group = "com.fasterxml.jackson.datatype", name = "jackson-datatype-jsr310", version.ref = "jackson-datatype-jsr310"}
 browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
 datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-application" }

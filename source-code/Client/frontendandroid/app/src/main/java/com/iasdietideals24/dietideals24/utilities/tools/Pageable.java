@@ -3,7 +3,7 @@ package com.iasdietideals24.dietideals24.utilities.tools;
 public class Pageable {
 
     private int pageNumber = 0;
-    private int pageSize = 20;
+    private int pageSize = 4;
     private Sort sort = new Sort();
     private int offset = 0;
     private boolean unpaged = false;

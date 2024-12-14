@@ -11,7 +11,9 @@ import com.iasdietideals24.dietideals24.utilities.dto.shallows.OffertaShallowDto
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 abstract public class AstaDto {
@@ -118,5 +120,18 @@ abstract public class AstaDto {
 
     public Set<OffertaShallowDto> getOfferteRicevuteShallow() {
         return offerteRicevuteShallow;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AstaDto astaDto = (AstaDto) o;
+        return Objects.equals(idAsta, astaDto.idAsta) && Objects.equals(stato, astaDto.stato) && Objects.equals(categoriaShallow, astaDto.categoriaShallow) && Objects.equals(nome, astaDto.nome) && Objects.equals(descrizione, astaDto.descrizione) && Objects.equals(dataScadenza, astaDto.dataScadenza) && Objects.equals(oraScadenza, astaDto.oraScadenza) && Objects.deepEquals(immagine, astaDto.immagine) && Objects.equals(notificheAssociateShallow, astaDto.notificheAssociateShallow) && Objects.equals(proprietarioShallow, astaDto.proprietarioShallow) && Objects.equals(offerteRicevuteShallow, astaDto.offerteRicevuteShallow);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idAsta, stato, categoriaShallow, nome, descrizione, dataScadenza, oraScadenza, Arrays.hashCode(immagine), notificheAssociateShallow, proprietarioShallow, offerteRicevuteShallow);
     }
 }

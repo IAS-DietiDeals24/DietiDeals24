@@ -43,11 +43,11 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.toMillis
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
-import com.iasdietideals24.dietideals24.utilities.repositories.CategoriaAstaRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 import com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.tools.ImageHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -69,7 +69,6 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
     private val repositoryProfilo: ProfiloRepository by inject()
     private val compratoreRepository: CompratoreRepository by inject()
     private val venditoreRepository: VenditoreRepository by inject()
-    private val categoriaAstaRepository: CategoriaAstaRepository by inject()
 
     // ViewModel
     private val viewModel: ModelAsta by activityViewModel()
@@ -183,11 +182,7 @@ class ControllerModificaAsta : Controller<ModificaastaBinding>() {
     override fun elaborazioneAggiuntiva() {
         selectPhoto =
             registerForActivityResult(PickVisualMedia()) { uri: Uri? ->
-                viewModel.immagine.value =
-                    com.iasdietideals24.dietideals24.utilities.tools.ImageHandler.encodeImage(
-                        uri,
-                        fragmentContext
-                    )
+                viewModel.immagine.value = ImageHandler.comprimiByteArray(uri, fragmentContext)
             }
 
         if (args.id != 0L) {

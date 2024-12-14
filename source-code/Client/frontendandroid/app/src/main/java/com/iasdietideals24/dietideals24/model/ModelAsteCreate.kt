@@ -33,7 +33,12 @@ class ModelAsteCreate(
 
     private val pagerInverse by lazy {
         Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(
+                pageSize = 4,
+                initialLoadSize = 4,
+                prefetchDistance = 2,
+                enablePlaceholders = true
+            ),
             pagingSourceFactory = {
                 pagingSourceInverse = AstaInversaPagingSource(
                     repository = inverseRepository,
@@ -50,7 +55,12 @@ class ModelAsteCreate(
 
     private val pagerTempoFisso by lazy {
         Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(
+                pageSize = 4,
+                initialLoadSize = 4,
+                prefetchDistance = 2,
+                enablePlaceholders = true
+            ),
             pagingSourceFactory = {
                 pagingSourceTempoFisso = AstaTempoFissoPagingSource(
                     repository = tempoFissoRepository,
@@ -67,7 +77,12 @@ class ModelAsteCreate(
 
     private val pagerSilenziose by lazy {
         Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(
+                pageSize = 4,
+                initialLoadSize = 4,
+                prefetchDistance = 2,
+                enablePlaceholders = true
+            ),
             pagingSourceFactory = {
                 pagingSourceSilenziose = AstaSilenziosaPagingSource(
                     repository = silenziosaRepository,

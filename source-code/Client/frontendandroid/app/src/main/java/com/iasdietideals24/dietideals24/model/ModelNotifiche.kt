@@ -20,7 +20,12 @@ class ModelNotifiche(
 
     private val pagerNotifiche by lazy {
         Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(
+                pageSize = 4,
+                initialLoadSize = 4,
+                prefetchDistance = 2,
+                enablePlaceholders = true
+            ),
             pagingSourceFactory = {
                 pagingSourceNotifiche = NotificaPagingSource(
                     repository = notificaRepository,

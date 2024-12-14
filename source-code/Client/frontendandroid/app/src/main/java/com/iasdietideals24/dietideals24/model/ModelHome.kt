@@ -47,7 +47,12 @@ class ModelHome(
 
     private val pagerInverseTutte by lazy {
         Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(
+                pageSize = 4,
+                initialLoadSize = 4,
+                prefetchDistance = 2,
+                enablePlaceholders = true
+            ),
             pagingSourceFactory = {
                 pagingSourceInverseTutte = AstaInversaPagingSource(
                     repository = inverseRepository,
@@ -64,7 +69,12 @@ class ModelHome(
 
     private val pagerTempoFissoTutte by lazy {
         Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(
+                pageSize = 4,
+                initialLoadSize = 4,
+                prefetchDistance = 2,
+                enablePlaceholders = true
+            ),
             pagingSourceFactory = {
                 pagingSourceTempoFissoTutte = AstaTempoFissoPagingSource(
                     repository = tempoFissoRepository,
@@ -81,7 +91,12 @@ class ModelHome(
 
     private val pagerSilenzioseTutte by lazy {
         Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(
+                pageSize = 4,
+                initialLoadSize = 4,
+                prefetchDistance = 2,
+                enablePlaceholders = true
+            ),
             pagingSourceFactory = {
                 pagingSourceSilenzioseTutte = AstaSilenziosaPagingSource(
                     repository = silenziosaRepository,
@@ -128,7 +143,12 @@ class ModelHome(
 
     private val pagerInverseRicerca by lazy {
         Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(
+                pageSize = 4,
+                initialLoadSize = 4,
+                prefetchDistance = 2,
+                enablePlaceholders = true
+            ),
             pagingSourceFactory = {
                 pagingSourceInverseRicerca = AstaInversaPagingSource(
                     repository = inverseRepository,
@@ -151,7 +171,12 @@ class ModelHome(
 
     private val pagerTempoFissoRicerca by lazy {
         Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(
+                pageSize = 4,
+                initialLoadSize = 4,
+                prefetchDistance = 2,
+                enablePlaceholders = true
+            ),
             pagingSourceFactory = {
                 pagingSourceTempoFissoRicerca = AstaTempoFissoPagingSource(
                     repository = tempoFissoRepository,
@@ -174,7 +199,12 @@ class ModelHome(
 
     private val pagerSilenzioseRicerca by lazy {
         Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(
+                pageSize = 4,
+                initialLoadSize = 4,
+                prefetchDistance = 2,
+                enablePlaceholders = true
+            ),
             pagingSourceFactory = {
                 pagingSourceSilenzioseRicerca = AstaSilenziosaPagingSource(
                     repository = silenziosaRepository,

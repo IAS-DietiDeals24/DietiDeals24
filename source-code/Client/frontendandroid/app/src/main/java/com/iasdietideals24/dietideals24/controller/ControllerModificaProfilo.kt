@@ -33,6 +33,7 @@ import com.iasdietideals24.dietideals24.utilities.kscripts.toLocalStringShort
 import com.iasdietideals24.dietideals24.utilities.kscripts.toMillis
 import com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 import com.iasdietideals24.dietideals24.utilities.tools.CurrentUser
+import com.iasdietideals24.dietideals24.utilities.tools.ImageHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -91,10 +92,7 @@ class ControllerModificaProfilo : Controller<ModificaprofiloBinding>() {
         selectPhoto =
             registerForActivityResult(PickVisualMedia()) { uri: Uri? ->
                 viewModel.immagineProfilo.value =
-                    com.iasdietideals24.dietideals24.utilities.tools.ImageHandler.encodeImage(
-                        uri,
-                        fragmentContext
-                    )
+                    ImageHandler.comprimiByteArray(uri, fragmentContext)
             }
     }
 
