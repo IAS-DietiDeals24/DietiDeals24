@@ -5,9 +5,8 @@
     Vengono qui definiti gli obiettivi di progettazione del software, l'architettura del sistema (il quale viene decomposto in più sottosistemi realizzabili da differenti squadre di sviluppatori) e le strategie di creazione del sistema.
 
     \section{Architettura e criteri di progettazione}
-        L'architettura di un software è la struttura del sistema, che comprende gli elementi del software, le proprietà visibili all'esterno di tali elementi, e le relazioni tra di essi. \\
+        L'architettura di un software è la struttura del sistema, che comprende gli elementi del software, le proprietà visibili all'esterno di tali elementi e le relazioni tra di essi. \\
         Sulla base delle richieste avanzate dagli utenti, ovvero di un’applicazione \textbf{portabile}, \textbf{facile da usare} e \textbf{rapida}, si ritiene che i criteri di progettazione sui quali bisogni focalizzarsi siano \textbf{bassi tempi di risposta (bassa latenza)}, \textbf{basso consumo di memoria}, \textbf{alta portabilità e modificabilità}. \\
-        In vista dell'impossibilità di coordinare tutti questi aspetti, si è deciso di focalizzarsi sui bassi tempi di risposta (l'aspetto che più di tutti influenza l'opinione degli utilizzatori comuni) attraverso l'utilizzo di ridondanze e meccanismi di cache. \\
         Per soddisfare tali requisiti qualitativi, il sistema deve essere suddiviso in diversi moduli tali che tra essi sussistano un'\textbf{alta coesione} e un \textbf{basso accoppiamento}. \\
         Si è optato, in questo sistema, per un'\textbf{architettura client-server a due livelli con modello client leggero} e una \textbf{base di dati relazionale} per la persistenza dei dati. \\
         Si desidera ora evidenziare i criteri di progettazione definiti che hanno portato a questa decisione:
@@ -16,16 +15,23 @@
             Per ottenere un'alta coesione, si è optato per una architettura client-server, nella quale ogni modulo adempie ad una funzione ben precisa e le cui classi collaborano per lo stesso fine. \\
             L'architettura client-server è una architettura distribuita, ove un sottosistema "servitore" offre servizi e dati ad altri sottosistemi "cliente", i quali sono responsabili dell'interazione con l'utente. \\
             I client chiamano il server richiedendo un servizio e ad essi viene restituito il risultato; questa chiamata è possibile poiché i client conoscono le interfacce del server, ma non è vero il viceversa. \\
-            In questo modo, tutti quanti gli utilizzatori dell'applicazione possono accedere alla stessa fonte di dati, ossia il server centrale.
+            In questo modo, tutti gli utilizzatori dell'applicazione possono accedere alla stessa fonte di dati, ossia il server centrale.
             \item L’accoppiamento è una misura su quanto fortemente un modulo sia dipendente da altri. \\
             Un basso accoppiamento permetterà il riutilizzo dei moduli nonché una facilitazione nella modifica dello stesso, senza che le modifiche possano avere conseguenze inaspettate su altri moduli. \\
-            Per ottenere un basso accoppiamento, si è scelto di seguire la legge di Demetra, spingendo al massimo l'incapsulamento.
-            \item Il modello client leggero è l'alternativa al modello client pesante in un'architettura client-server a doppio legame. \\
+            Per ottenere un basso accoppiamento, si è scelto di adottare i principi espressi dalla legge di Demetra, spingendo al massimo l'incapsulamento.
+            \item Il modello client leggero è l'alternativa al modello client pesante in un'architettura client-server. \\
             In questo modello, il client si occupa solamente dell'interfaccia e l'interazione con l'utente, e quindi può essere eseguito su gran parte dei dispositivi, anche con modeste prestazioni. \\
             Lo svantaggio di tale scelta è che pone maggior carico di elaborazione sia sul server, che si occupa della logica dell'applicazione e dell'immagazzinamento dei dati, sia sulla rete. \\
             Questa decisione è anche frutto della piattaforma scelta per il client, ossia i dispositivi mobili; seppur nel corso del tempo abbiano conosciuto un incremento in termini di capacità di elaborazione, memoria e durata della batteria, restano comunque dei dispositivi poco adatti a applicazioni con elaborazioni troppo pesanti.
             \item La scelta della base di dati relazionale invece deriva dalla consapevolezza di una struttura fissa dei dati che verranno conservati, e dalla garanzia delle quattro proprietà ACID (atomicità, coerenza, isolamento e durabilità) che essa fornisce.
         \end{itemize}
+
+        Sulla base delle specifiche appena esposte si è deciso di organizzare il sistema in due sottosistemi principali:
+        \begin{itemize}
+            \item Il Client, che si occupa dell'interazione con l'utente, inviando richieste al Resource Server ed elaborandone le risposte;
+            \item Il Resource Server, che si occupa di gestire le richieste pervenute dal Client, far rispettare i vincoli esposti dalla business logic, interagire con la base di dati relazionale per la persistenza dei dati e inviare le risposte al Client. Inoltre, si occupa anche di interagire con i servizi esterni che si sceglierà di usufruire (ad esempio, l'Authorization Server di AWS Cognito con cui interagisce attraverso API).
+        \end{itemize}
+        
 
     \clearpage
 

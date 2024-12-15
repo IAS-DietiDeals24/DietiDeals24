@@ -2,22 +2,35 @@
 
 \chapter{Object Design}
     La progettazione orientata agli oggetti è la fase di sviluppo del software nella quale si definisce il dettaglio implementativo dei vari sottosistemi. \\
-    Tali sottosistemi devono soddisfare i requisiti identificati, e sono costruiti sulla base degli oggetti individuati nel dominio del problema, ai quali inevitabilmente saranno aggiunti nuovi oggetti per giungere alla soluzione del problema. \\
-    Avendo impiegato un approccio "orientato ai casi d'uso", all'interno del sistema, vi sono tanti \textbf{sottosistemi} quanti sono gli use case, ognuno dei quali si occupa di uno e uno solo use case. \\
-    Ogni sottosistema è organizzato in quattro macrosezioni:
-    
-    \begin{itemize}
-        \item (Client) Lo strato di presentazione dell'interfaccia utente;
-        \item (Client) Lo strato di controllo dell'interfaccia utente che costruisce l'interfaccia, controlla la validità dei dati inseriti, gestisce le richieste da inviare al server attraverso le REST API, gestisce le risposte ricevute dal server attraverso le REST API;
-        \item (Server) Lo strato di controllo dei dati che controlla la validità dei dati in arrivo, invia i dati da archiviare allo strato di archiviazione, gestisce le risposte da inviare al client attraverso le REST API, gestisce le richieste ricevute dal client attraverso le REST API;
-        \item (Server) Lo strato di archiviazione dei dati che si occupa di comunicare con la base di dati per il recupero e il salvataggio dei dati.
-    \end{itemize}
-
-    \clearpage
+    Tali sottosistemi devono soddisfare i requisiti non funzionali di performance, affidabilità e manutenibilità. Sono costruiti sulla base degli oggetti individuati nel dominio del problema, ai quali inevitabilmente saranno aggiunti nuovi oggetti per giungere alla soluzione. \\
+    Le scelte adoperate hanno l'obiettivo di favorire il basso accoppiamento tra i sottosistemi e la manutenibilità, in modo da mantenere un'alta qualità interna del software.
 
     \section{Design Pattern}
         \subsection{Client}
+            Il client possiede un'architettura con due strati: lo \textbf{strato della UI} e lo \textbf{strato dei dati}. \\
+            Nel complesso, è un ibrido tra il pattern \textbf{MVVM} (Model-View-ViewModel) e \textbf{MVC} (Model-View-Controller).
 
+            \begin{figure}[htbp!]
+                \centering
+                \includegraphics[width=0.45\linewidth]{Immagini/Object Design/ArchitetturaClient.pdf}
+                \caption{Schema dell'architettura adottata (client)}
+            \end{figure}
+            
+            \begin{itemize}
+                \item Lo strato della UI comprende \textbf{View}, \textbf{StateHolder} (che mantengono i dati sullo stato della View, come i \textbf{ViewModel}) e \textbf{Controller} e si occupa di gestire l'interfaccia e l'interazione con l'utente.
+                    \begin{itemize}
+                        \item Le \textit{View} sono dei file .XML che utilizzano degli schemi definiti da Android per la creazione dell'interfaccia utente. Inoltre, grazie al View binding, per ogni vista viene generata una classe Java che contiene riferimenti a tutti gli elementi della vista per poter interagire con essa. Esse interagiscono con il Controller per chiamare i metodi che gestiscono l'interazione con l'utente.
+                        \item I \textit{ViewModel} sono delle classi che hanno il compito di mantenere i dati che devono essere mostrati sulla UI. L'utilizzo del ViewModel è essenziale per poter mantenere i dati anche in caso di cambiamenti dello stato dell'applicazione, come rotazioni dello schermo o riduzione ad attività in secondo piano. I ViewModel, che nella architettura MVVM interagiscono direttamente con il Model e si interpongono tra quest'ultimo e la View, eseguono anche operazioni sui dati, come il recupero dei dati paginati da mostrare sullo schermo e la validazione dei dati inseriti dall'utente.
+                        \item L'aggiunta del \textit{Controller} è ciò che rende ibrida questa architettura. Il Controller si interpone tra ViewModel e View per separare i compiti che riguardano il conservare e il convalidare i dati della vista (affidati al ViewModel) da altre operazioni, come appunto le risposte all'interazione con l'utente, la creazione di messaggi di errore, e l'invio di richieste non relative a dati da mostrare, come ad esempio l'autenticazione. Inoltre esso funge da osservatore ai dati che sono presenti nel ViewModel e, in caso di mutazione, provvede ad aggiornare la vista con tali nuovi dati.
+                    \end{itemize}
+                \item Lo strato dei dati è rappresentato dal \textbf{Model} e il suo ruolo è comunicare con le fonti di dati, siano esse esterne (come basi di dati) che locali (come cache o basi di dati interne). Il Model, a sua volta, è organizzato secondo il pattern \textbf{Repository}, con tre sottostrati: \textbf{Repository}, \textbf{Service} e \textbf{ServiceImpl}.
+                    \begin{itemize}
+                        \item Le classi \textit{Repository} rappresentano una enumerazione delle operazioni che la logica dell'applicazione può effettuare sui dati, chiamando poi attraverso le interfacce Service i metodi che svolgono l'effettivo lavoro sui dati.
+                        \item Le classi \textit{Service} rappresentano una interfaccia che astrae queste operazioni sui dati. In questo caso, esse rappresentano una interfaccia di metodi che verranno utilizzati per la creazione di richieste HTTP da inviare agli endpoint del backend.
+                        \item Le classi \textit{ServiceImpl} rappresentano dei metodi concreti - implementati dalla libreria Retrofit - che, sulla base delle annotazioni e i parametri inseriti nelle interfacce dei metodi di Service, creeranno la giusta richiesta HTTP da inviare al backend.
+                    \end{itemize}
+            \end{itemize}
+    
         \subsection{Resource Server}
             L'architettura adottata per il sottosistema \textbf{Resource Server} (da qui in avanti chiamato semplicemente \textbf{Server}) è un'architettura di tipo \textbf{esagonale}. L'obiettivo di tale architettura è di definire una \textbf{separazione netta} tra la business logic del dominio (anche detto \textit{domain layer}) e tutto ciò che sono i fattori esterni, ovvero il layer di interfaccia con l'utente (anche detto \textit{application layer}) e il layer di persistenza (anche detto \textit{infrastracture layer}), attraverso una serie di interfacce ben definite. \\
             L'obiettivo di tale scelta è quello di migliorare la manutenibilità, la scalabilità e la modularità del backend, definendo così interfacce ben definite che permettono a più team di sviluppo di lavorare parallelamente, conoscendo esattamente il contratto per le interazioni tra la logica del dominio e dei protocolli di comunicazione tra l'applicazione e i suoi adattatori. \cite{AppMaster1}
@@ -25,7 +38,7 @@
             In particolare, il design pattern adottato per il domain layer è di tipo \textbf{Domain Driven}. Un approccio di tipo Domain Driven permette di avere un'\textbf{alta coesione} e \textbf{ridurre al minimo l'accoppiamento} tra le classi della business logic, dando a ciascuna classe del domain layer un solo motivo per cambiare: un cambiamento nell'entità del dominio corrispondente.
             \begin{figure}[htbp!]
                 \centering
-                \includegraphics[width=1\linewidth]{Immagini/Object Design/DDD-Layers.jpg}
+                \includegraphics[width=0.8\linewidth]{Immagini/Object Design/DDD-Layers.jpg}
                 \caption{Schema dell'architettura adottata (backend)}
                 \cite{Baeldung1}
             \end{figure}
@@ -41,22 +54,30 @@
     \clearpage
 
     \section{Class Diagram}
-        A seguito delle considerazioni fatte ai punti precedenti, in questa sezione verranno rappresentati i diagrammi delle classi di design del client e del server.
+        A seguito delle considerazioni fatte ai punti precedenti, in questa sezione verranno rappresentati i diagrammi delle classi di design del client e del server. \\
+        In particolare, il tipo di visibilità è espressa da questa tabella:
+        \begin{figure}[htbp!]
+                \centering
+                \includegraphics[width=0.25\linewidth]{Immagini/Diagrammi/Class Diagram/Design/Legend visibility.png}
+            \caption{Legenda della visibilità}
+            \label{fig:Legenda della visibilità}
+        \end{figure}\\
+        Inoltre, i costruttori della classe sono i metodi contrassegnati da \textless{}\textless{}Create\textgreater{}\textgreater{}.
     
         \subsection{Client}
             % Class Diagram costruito con PlantUML
             \begin{figure}[htbp!]
-                \includegraphics[width=0.9\linewidth]{Immagini/Diagrammi/Class Diagram/Design/ClassDiagramClient.pdf}
-            \caption{Class Diagram client}
-            \label{fig:Class Diagram client}
+                \includegraphics[width=0.43\linewidth]{Immagini/Diagrammi/Class Diagram/Design/ClassDiagramClient.pdf}
+            \caption{Class Diagram di design del Client}
+            \label{fig:Class Diagram di design del Client}
             \end{figure}
     
         \subsection{Server}
             % Class Diagram costruito con PlantUML
             \begin{figure}[htbp!]
-                \includegraphics[width=0.35\linewidth]{Immagini/Diagrammi/Class Diagram/Design/ClassDiagramServer.pdf}
-            \caption{Class Diagram server}
-            \label{fig:Class Diagram server}
+                \includegraphics[width=0.45\linewidth]{Immagini/Diagrammi/Class Diagram/Design/ClassDiagramServer.pdf}
+            \caption{Class Diagram di design del Server}
+            \label{fig:Class Diagram di design del Server}
             \end{figure}
 
     \clearpage
@@ -133,13 +154,18 @@
     \clearpage
 
     \section{Endpoint}
-        In questa sezione vengono descritti gli endpoints esposti dal backend. 
-        
-        NOTA: Gli endpoints che accettano query parameters, le ulteriori "modalità" sono separate da un ";".
+        In questa sezione vengono descritti gli endpoints esposti dal backend. Per gli endpoints che accettano query parameters, le ulteriori "modalità" sono separate da un ";" e, rispettivamente, anche l'autorizzazione minima è separata da un ";".
+
+        Le autorizzazioni definite sono:
+        \begin{itemize}
+            \item ADMIN: E' l'autorizzazione più elevata, che garantisce completo accesso a tutti gli endpoint dell'applicazione;
+            \item USER: E' l'autorizzazione base, che garantisce l'accesso ai soli endpoint che riguardano un utente loggato;
+            \item NO AUTH: Non è necessaria alcuna autenticazione per accedere agli endpoint contrassegnati da questa autorizzazione.
+        \end{itemize}
 
         Per una descrizione dettagliata dei query parameters, esempi di richieste e di risposte per ciascun endpoint, riferirsi alla \href{https://documenter.getpostman.com/view/37147881/2sAYBd67Sj}{\underline{documentazione generata tramite Postman}}.
     
-        \begin{longtable}{|C{4.2cm}|C{1.7cm}|L{6.2cm}|L{2.6cm}|}
+        \begin{longtable}{|C{5.2cm}|C{1.7cm}|L{5.2cm}|L{2.6cm}|}
                 \hline
                     \cellcolor{head}\textbf{URI} &
                     \cellcolor{head}\textbf{METHOD} & \cellcolor{head}\textbf{DESCRIZIONE} &
@@ -271,7 +297,7 @@
                     & Permette di eliminare un'offerta a tempo fisso
                     & ADMIN \\
                 \hline
-                    \multirow[|c|]{5}{*}{/offerte/di-compratori/silenziose}
+                    \multirow[|c|]{1}{*}{/offerte/di-compratori/silenziose}
                     & POST
                     & Permette di creare un'offerta silenziosa
                     & USER \\
