@@ -4,10 +4,49 @@
     La fase di verifica del software fa parte dell'ultima fase del ciclo di vita del software. In particolare, l'obiettivo della \textit{verifica del software} è quello di accertarsi che ciò che è stato implementato sia \textbf{corretto e funzionante}, così da essere coerente con quelle che sono le specifiche descritte nel documento dell'analisi dei requisiti. Si è attraversata sia una prima fase di verifica statica che, in seguito, di verifica dinamica.
 
     \section{Verifica statica}
-        La verifica statica è basata su tecniche di analisi statiche del software, senza ricorso all'esecuzione del codice. Questo è stato fatto prevalentemente per \textbf{ispezione del codice}, così da individuare in anticipo i possibili problemi e risolverli ancor prima che il software fosse pronto per l'esecuzione. In particolare, il processo di ispezione è stato semi-automatizzato attraverso il software \textbf{SonarQube}.
+        La verifica statica è basata su tecniche di analisi statica del software, senza ricorso all'esecuzione del codice. Questo è stato fatto prevalentemente per \textbf{ispezione del codice}, così da individuare in anticipo i possibili problemi e risolverli ancor prima che il software fosse pronto per l'esecuzione. In particolare, il processo di ispezione è stato semi-automatizzato attraverso il software \textbf{SonarQube}. \\
+        SonarQube mette a disposizione degli sviluppatori un'ampia dashboard con numerosi grafici e statistiche che misurano la qualità del codice.
+        Tra i più interessanti possiamo appuntare i seguenti: \\
+        \begin{figure}[htbp!]
+            \centering
+            \includegraphics[width=0.7\linewidth]{Immagini/Verifica Software/Issues.png}
+            \caption{Grafico dei code smells e dei bug}
+        \end{figure} \\
+        Il grafico sopra mostrato evidenzia i \textbf{bug} e i \textbf{code smells} nel codice, ossia delle abitudini o delle tecniche di scrittura dello stesso (definiti "pattern") che sfavoriscono la manutenibilità e/o la sicurezza. \\
+        Sarebbe necessario mantenerne al minimo per cercare di ottenere un codice quanto più pulito possibile. \\
+        Uno strumento che può correre in aiuto in tal senso è anche il plugin \textbf{SonarLint}, che si connette all'istanza in esecuzione di SonarQube sulla macchina per dare consigli on-the-fly per migliorare il codice, simili a quelli che fornirebbe un'analisi effettuata con SonarQube. \\
+        \begin{figure}[htbp!]
+            \centering
+            \includegraphics[width=0.7\linewidth]{Immagini/Verifica Software/Duplications.png}
+            \caption{Grafico della duplicazione}
+        \end{figure} \\
+        Interessante è anche esaminare il grafico che mostra il livello di \textbf{duplicazione} nel codice. \\
+        La linea blu continua mostra l'aumento della quantità delle righe di codice (asse delle ordinate, attualmente circa 8000 righe) nel tempo (asse delle ascisse). \\
+        La linea tratteggiata, invece, mostra la quantità di righe che risultano duplicate all'interno del codice. \\
+        Avere poche duplicazioni è essenziale considerando che sfavorisce la manutenibilità, in quanto in caso di modifica in un punto è necessaria una modifica anche negli altri punti, nonché la leggibilità, poiché allunga il corpo dei metodi nei quali viene inserito. \\
+        Un livello così basso di duplicazione è stato ottenuto grazie a un attento \textbf{refactoring} del codice, ossia un'organizzazione altamente modulare dello stesso per favorire la futura evoluzione del software. \\
+        \begin{figure}[htbp!]
+            \centering
+            \includegraphics[width=0.7\linewidth]{Immagini/Verifica Software/Tests.png}
+            \caption{Tabella dei test eseguiti}
+        \end{figure} \\
+        Osserviamo anche dal report di SonarQube le analisi dei test scritti per confermare il corretto funzionamento del software (sia Unit che Integration tests), appuntando come essi siano tutti risultati in un esito positivo. \\
+        Prendiamo infine in esame il cruscotto riassuntivo del progetto nella dashboard di SonarQube, ove possiamo controllare la valutazione che lo strumento affibbia ad altre quattro qualità del software:
+        \begin{itemize}
+            \item \textbf{Sicurezza}, ossia problemi che possono comportare un accesso o un utilizzo non autorizzato dell backend dell'applicazione da parte di utenti malintenzionati;
+            \item \textbf{Affidabilità}, ossia la capacità del codice di essere eseguito così come documentato gestendo i vari input e casi eccezionali senza causare crash o altri problemi;
+            \item \textbf{Manutenibilità}, ossia la facilità di modifica del software nel caso di futuri sviluppi ed evoluzioni;
+            \item \textbf{Hotspot di sicurezza}, ossia dei punti nei quali bisogna prestare particolare attenzione ai meccanismi di sicurezza per evitare utilizzo non consono o non autorizzato del software. \\
+        \end{itemize}
+        La valutazione per questi aspetti è, in una scala letterale americana, una "\textbf{A}", mostrando gli standard di qualità ai quali si attiene il codice, e tutti i punti caldi di sicurezza risultano revisionati e messi al sicuro. \\
+        \begin{figure}[htbp!]
+            \centering
+            \includegraphics[width=0.7\linewidth]{Immagini/Verifica Software/Overall.png}
+            \caption{Valutazione generale}
+        \end{figure} \\
 
     \section{Verifica dinamica}
-        La verifica dinamica è basata su tecniche di analisi dinamica del software, cioè per mezzo della sua esecuzione e osservandone il comportamento. Attraverso tecniche quali \textbf{testing} e \textbf{debugging} è possibile scovare i \textit{failure} ed individuarne i \textit{fault} che li hanno causati, così da correggerli. In particolare, il testing è stato effettuato attraverso la libreria Java \textbf{JUnit}.
+        La verifica dinamica è basata su tecniche di analisi dinamica del software, cioè per mezzo della sua esecuzione e osservandone il comportamento. Attraverso tecniche quali \textbf{testing} e \textbf{debugging} è possibile scovare i \textit{failure} ed individuarne i \textit{fault} che li hanno causati, così da correggerli. In particolare, il testing è stato effettuato attraverso la libreria \textbf{JUnit} sia su backend che su frontend (in quest'ultimo caso, un'implementazione apposita per Android).
         
         \subsection{I test: offertaService.checkFieldsValid (server)}
             Questo metodo verifica la validità dell'offerta inviata, verificando che i suoi attributi non violino le regole di business. \\
@@ -19,7 +58,7 @@
             \begin{itemize}
                 \item \texttt{idOfferta}, che è un numero intero. Può essere qualsiasi valore;
                 \item \texttt{dataInvio}, che è una data. Deve essere precedente alla data attuale;
-                \item \texttt{oraInvio}, che è un orario. Se la data è la stessa di quella attuale, deve essere precedente all'ora attuale
+                \item \texttt{oraInvio}, che è un orario. Se la data è precedente a quella attuale, può essere qualsiasi valore. Se la data è la stessa di quella attuale, deve essere precedente all'ora attuale
                 \item \texttt{valore}, che è un numero decimale. Deve essere positivo \\
             \end{itemize}
             

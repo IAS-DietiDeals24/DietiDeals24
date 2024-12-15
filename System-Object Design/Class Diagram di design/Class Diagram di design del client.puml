@@ -23,6 +23,9 @@ class com.iasdietideals24.dietideals24.utilities.dto.exceptional.PutProfiloDto {
 + LinksProfiloDto getLinks()
 + TokensAccountDto getTokens()
 }
+com.iasdietideals24.dietideals24.utilities.dto.PutProfiloDto ..> com.iasdietideals24.dietideals24.utilities.dto.AnagraficaProfiloDto
+com.iasdietideals24.dietideals24.utilities.dto.PutProfiloDto ..> com.iasdietideals24.dietideals24.utilities.dto.LinksProfiloDto
+com.iasdietideals24.dietideals24.utilities.dto.PutProfiloDto ..> com.iasdietideals24.dietideals24.utilities.dto.TokensAccountDto
 
 
 class com.iasdietideals24.dietideals24.utilities.paging.AstaTempoFissoPagingSource {
@@ -30,18 +33,22 @@ class com.iasdietideals24.dietideals24.utilities.paging.AstaTempoFissoPagingSour
 + LoadResult<Long, AstaTempoFissoDto> load(LoadParams<Long>)
 + Long? getRefreshKey(PagingState<Long, AstaTempoFissoDto>)
 }
+com.iasdietideals24.dietideals24.utilities.paging.AstaTempoFissoPagingSource ..> com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
+com.iasdietideals24.dietideals24.utilities.paging.AstaTempoFissoPagingSource ..> com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository$ApiCall
 
 class com.iasdietideals24.dietideals24.utilities.paging.NotificaPagingSource {
 + <<Create>> NotificaPagingSource(NotificaRepository,Long)
 + LoadResult<Long, NotificaPagingSource> load(LoadParams<Long>)
 + Long? getRefreshKey(PagingState<Long, NotificaPagingSource>)
 }
+com.iasdietideals24.dietideals24.utilities.paging.NotificaPagingSource ..> com.iasdietideals24.dietideals24.utilities.repositories.NotificaRepository
 
 class com.iasdietideals24.dietideals24.utilities.paging.OffertaTempoFissoPagingSource {
 + <<Create>> OffertaTempoFissoPagingSource(OffertaTempoFissoRepository,Long)
 + LoadResult<Long, OffertaTempoFissoDto> load(LoadParams<Long>)
 + Long? getRefreshKey(PagingState<Long, OffertaTempoFissoDto>)
 }
+com.iasdietideals24.dietideals24.utilities.paging.OffertaTempoFissoPagingSource ..> com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository
 
 class com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShallowDto {
 - String nome
@@ -98,6 +105,7 @@ class com.iasdietideals24.dietideals24.utilities.tools.Logger {
 + void scriviLog(String)
 + void cancellaLog()
 }
+com.iasdietideals24.dietideals24.utilities.tools.Logger ..> DataStore
 
 class com.iasdietideals24.dietideals24.utilities.dto.utilities.NewTokenDto {
 - String authToken
@@ -116,6 +124,8 @@ class com.iasdietideals24.dietideals24.utilities.adapters.AdapterAsteCreate {
 + void onBindViewHolder(ViewHolderAstaCreata, Int)
 + void onViewDetachedFromWindows(ViewHolderAstaCreata)
 }
+com.iasdietideals24.dietideals24.utilities.adapters.AdapterAsteCreate ..> DiffUtil.ItemCallback
+com.iasdietideals24.dietideals24.utilities.adapters.AdapterAsteCreate ..> Resources
 
 class com.iasdietideals24.dietideals24.utilities.tools.Sort {
 - boolean unsorted
@@ -143,6 +153,8 @@ class com.iasdietideals24.dietideals24.utilities.dto.OffertaSilenziosaDto {
 + OffertaRicevuta toOffertaRicevuta()
 + String getStato()
 }
+com.iasdietideals24.dietideals24.utilities.dto.OffertaSilenziosaDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.OffertaSilenziosaDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto
 
 
 class com.iasdietideals24.dietideals24.utilities.paging.OffertaSilenziosaPagingSource {
@@ -150,11 +162,16 @@ class com.iasdietideals24.dietideals24.utilities.paging.OffertaSilenziosaPagingS
 + LoadResult<Long, OffertaSilenziosaDto> load(LoadParams<Long>)
 + Long? getRefreshKey(PagingState<Long, OffertaSilenziosaDto>)
 }
+com.iasdietideals24.dietideals24.utilities.paging.OffertaSilenziosaPagingSource ..> com.iasdietideals24.dietideals24.utilities.repositories.OffertaSilenziosaRepository
 
 abstract class com.iasdietideals24.dietideals24.utilities.dto.AstaDiVenditoreDto {
 + <<Create>> AstaDiVenditoreDto(Long,String,CategoriaAstaShallowDto,String,String,LocalDate,LocalTime,byte[],Set<NotificaShallowDto>,AccountShallowDto,Set<OffertaShallowDto>)
 + <<Create>> AstaDiVenditoreDto()
 }
+com.iasdietideals24.dietideals24.utilities.dto.AstaDiVenditoreDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaDiVenditoreDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaDiVenditoreDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaDiVenditoreDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.OffertaShallowDto
 
 interface com.iasdietideals24.dietideals24.utilities.services.ProfiloService {
 + Response<ProfiloDto> caricaProfilo(String)
@@ -230,6 +247,10 @@ class com.iasdietideals24.dietideals24.utilities.dto.AstaTempoFissoDto {
 + Asta toAsta()
 + BigDecimal getSogliaMinima()
 }
+com.iasdietideals24.dietideals24.utilities.dto.AstaTempoFissoDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaTempoFissoDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaTempoFissoDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaTempoFissoDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.OffertaShallowDto
 
 
 class com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository {
@@ -237,6 +258,7 @@ class com.iasdietideals24.dietideals24.utilities.repositories.CompratoreReposito
 + CompratoreDto accediCompratore(String)
 + CompratoreDto caricaAccountCompratore(Long)
 }
+com.iasdietideals24.dietideals24.utilities.repositories.CompratoreRepository ..> com.iasdietideals24.dietideals24.utilities.services.CompratoreService
 
 abstract class com.iasdietideals24.dietideals24.utilities.dto.OffertaDiVenditoreDto {
 # AccountShallowDto venditoreCollegatoShallow
@@ -244,6 +266,8 @@ abstract class com.iasdietideals24.dietideals24.utilities.dto.OffertaDiVenditore
 + <<Create>> OffertaDiVenditoreDto()
 + AccountShallowDto getVenditoreCollegatoShallow()
 }
+com.iasdietideals24.dietideals24.utilities.dto.OffertaDiVenditoreDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.OffertaDiVenditoreDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto
 
 
 class com.iasdietideals24.dietideals24.utilities.dto.utilities.AnagraficaProfiloDto {
@@ -285,10 +309,16 @@ abstract class com.iasdietideals24.dietideals24.utilities.dto.AstaDiCompratoreDt
 + <<Create>> AstaDiCompratoreDto(Long,String,CategoriaAstaShallowDto,String,String,LocalDate,LocalTime,byte[],Set<NotificaShallowDto>,AccountShallowDto,Set<OffertaShallowDto>)
 + <<Create>> AstaDiCompratoreDto()
 }
+com.iasdietideals24.dietideals24.utilities.dto.AstaDiCompratoreDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaDiCompratoreDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaDiCompratoreDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaDiCompratoreDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.OffertaShallowDto
 
 class com.iasdietideals24.dietideals24.utilities.data.AnteprimaAsta {
 + <<Create>> AnteprimaAsta(Long,StatoAsta,TipoAsta,LocalDate,LocalTime,ByteArray,String,BigDecimal)
 }
+com.iasdietideals24.dietideals24.utilities.data.AnteprimaAsta ..> com.iasdietideals24.dietideals24.utilities.enumerations.StatoAsta
+com.iasdietideals24.dietideals24.utilities.data.AnteprimaAsta ..> com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 
 class com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository {
 + <<Create>> VenditoreRepository(VenditoreService)
@@ -296,6 +326,7 @@ class com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepositor
 + VenditoreDto caricaAccountVenditore(Long)
 + VenditoreDto creaAccountVenditore(VenditoreDto)
 }
+com.iasdietideals24.dietideals24.utilities.repositories.VenditoreRepository ..> com.iasdietideals24.dietideals24.utilities.services.VenditoreService
 
 class com.iasdietideals24.dietideals24.utilities.dto.shallows.OffertaShallowDto {
 - Long idOfferta
@@ -361,6 +392,7 @@ class com.iasdietideals24.dietideals24.model.ModelRegistrazione {
 - void cognome()
 - void dataNascita()
 }
+com.iasdietideals24.dietideals24.model.ModelRegistrazione ..> com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository
 
 
 class com.iasdietideals24.dietideals24.utilities.tools.ImageHandler$Companion {
@@ -413,6 +445,7 @@ class com.iasdietideals24.dietideals24.utilities.tools.Page<T> {
 + Sort getSort()
 + boolean isEmpty()
 }
+com.iasdietideals24.dietideals24.utilities.tools.Page ..> com.iasdietideals24.dietideals24.utilities.tools.Pageable
 
 
 class com.iasdietideals24.dietideals24.utilities.annotations.UIBuilder {
@@ -447,6 +480,9 @@ class com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto {
 + LinksProfiloDto getLinks()
 + Set<AccountShallowDto> getAccountsShallow()
 }
+com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto ..> com.iasdietideals24.dietideals24.utilities.dto.utilities.AnagraficaProfiloDto
+com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto ..> com.iasdietideals24.dietideals24.utilities.dto.utilities.LinksProfiloDto
+com.iasdietideals24.dietideals24.utilities.dto.ProfiloDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
 
 
 class com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneAccountNonEsistente {
@@ -479,6 +515,7 @@ class com.iasdietideals24.dietideals24.model.ModelNotifiche {
 - void invalidateNotifiche()
 + void invalidate()
 }
+com.iasdietideals24.dietideals24.model.ModelNotifiche ..> com.iasdietideals24.dietideals24.utilities.repositories.NotificaRepository
 
 class com.iasdietideals24.dietideals24.utilities.comparators.AstaDtoComparator {
 + Boolean areItemsTheSame(AstaDto,AstaDto)
@@ -492,6 +529,7 @@ class com.iasdietideals24.dietideals24.utilities.paging.OffertaInversaPagingSour
 + LoadResult<Long, OffertaInversaDto> load(LoadParams<Long>)
 + Long? getRefreshKey(PagingState<Long, OffertaInversaDto>)
 }
+com.iasdietideals24.dietideals24.utilities.paging.OffertaInversaPagingSource ..> com.iasdietideals24.dietideals24.utilities.repositories.OffertaInversaRepository
 
 abstract class com.iasdietideals24.dietideals24.utilities.dto.OffertaDto {
 # Long idOfferta
@@ -514,6 +552,7 @@ abstract class com.iasdietideals24.dietideals24.utilities.dto.OffertaDto {
 + boolean equals(Object)
 + int hashCode()
 }
+com.iasdietideals24.dietideals24.utilities.dto.OffertaDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto
 
 
 class com.iasdietideals24.dietideals24.utilities.dto.NotificaDto {
@@ -552,6 +591,7 @@ class com.iasdietideals24.dietideals24.utilities.repositories.OffertaInversaRepo
 + OffertaInversaDto inviaOffertaInversa(OffertaInversaDto)
 + Page<OffertaInversaDto> recuperaOfferteInverse(Long,Long,Long)
 }
+com.iasdietideals24.dietideals24.utilities.repositories.OffertaInversaRepository ..> com.iasdietideals24.dietideals24.utilities.services.OffertaInversaService
 
 class com.iasdietideals24.dietideals24.utilities.exceptions.EccezioneEmailUsata {
 + String message
@@ -635,6 +675,8 @@ class com.iasdietideals24.dietideals24.utilities.adapters.AdapterOfferte {
 + void onBindViewHolder(ViewHolderOfferta, Int)
 + void onViewDetachedFromWindows(ViewHolderOfferta)
 }
+com.iasdietideals24.dietideals24.utilities.adapters.AdapterOfferte ..> DiffUtil.ItemCallback
+com.iasdietideals24.dietideals24.utilities.adapters.AdapterOfferte ..> Resources
 
 class com.iasdietideals24.dietideals24.controller.ControllerModificaAsta {
 - ControllerModificaAstaArgs args
@@ -671,12 +713,15 @@ class com.iasdietideals24.dietideals24.controller.ControllerModificaAsta {
 class com.iasdietideals24.dietideals24.utilities.data.AnteprimaProfilo {
 + <<Create>> AnteprimaProfilo(String,TipoAccount,ByteArray)
 }
+com.iasdietideals24.dietideals24.utilities.data.AnteprimaProfilo ..> com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 
 class com.iasdietideals24.dietideals24.utilities.paging.AstaInversaPagingSource {
 + <<Create>> AstaInversaPagingSource(AstaInversaRepository,Long,String,String,ApiCall)
 + LoadResult<Long, AstaInversaDto> load(LoadParams<Long>)
 + Long? getRefreshKey(PagingState<Long, AstaInversaDto>)
 }
+com.iasdietideals24.dietideals24.utilities.paging.AstaInversaPagingSource ..> com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
+com.iasdietideals24.dietideals24.utilities.paging.AstaInversaPagingSource ..> com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository$ApiCall
 
 class com.iasdietideals24.dietideals24.controller.ControllerHome {
 - ModelHome viewModel
@@ -709,6 +754,7 @@ class com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepo
 + Page<AstaSilenziosaDto> ricercaAsteSilenziose(String,String,Long,Long)
 + Page<AstaSilenziosaDto> recuperaPartecipazioniSilenziose(Long,Long,Long)
 }
+com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository ..> com.iasdietideals24.dietideals24.utilities.services.AstaSilenziosaService
 
 class com.iasdietideals24.dietideals24.activities.Home {
 - ModelAsta viewModelAsta
@@ -766,6 +812,7 @@ class com.iasdietideals24.dietideals24.utilities.repositories.NotificaRepository
 + <<Create>> NotificaRepository(NotificaService)
 + Page<NotificaDto> recuperaNotifiche(Long,Long,Long)
 }
+com.iasdietideals24.dietideals24.utilities.repositories.NotificaRepository ..> com.iasdietideals24.dietideals24.utilities.services.NotificaService
 
 class com.iasdietideals24.dietideals24.utilities.dto.OffertaTempoFissoDto {
 + <<Create>> OffertaTempoFissoDto(Long,LocalDate,LocalTime,BigDecimal,AccountShallowDto,AstaShallowDto)
@@ -773,12 +820,15 @@ class com.iasdietideals24.dietideals24.utilities.dto.OffertaTempoFissoDto {
 + Offerta toOfferta()
 + OffertaRicevuta toOffertaRicevuta()
 }
+com.iasdietideals24.dietideals24.utilities.dto.OffertaTempoFissoDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.OffertaTempoFissoDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto
 
 class com.iasdietideals24.dietideals24.utilities.annotations.Utility {
 }
 class com.iasdietideals24.dietideals24.utilities.data.Notifica {
 + <<Create>> Notifica(Long,TipoAsta,Long,String,ByteArray,String,LocalDate,LocalTime)
 }
+com.iasdietideals24.dietideals24.utilities.data.Notifica ..> com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
 
 class com.iasdietideals24.dietideals24.model.ModelHome {
 - Int _tipo
@@ -823,6 +873,9 @@ class com.iasdietideals24.dietideals24.model.ModelHome {
 - void invalidateRicerca()
 - void invalidate()
 }
+com.iasdietideals24.dietideals24.model.ModelHome ..> com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
+com.iasdietideals24.dietideals24.model.ModelHome ..> com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
+com.iasdietideals24.dietideals24.model.ModelHome ..> com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
 
 class com.iasdietideals24.dietideals24.utilities.tools.CurrentUser {
 - Long _id
@@ -862,6 +915,9 @@ class com.iasdietideals24.dietideals24.model.ModelPartecipazioni {
 - void invalidateSilenziose()
 - void invalidate()
 }
+com.iasdietideals24.dietideals24.model.ModelPartecipazioni ..> com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
+com.iasdietideals24.dietideals24.model.ModelPartecipazioni ..> com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
+com.iasdietideals24.dietideals24.model.ModelPartecipazioni ..> com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
 
 abstract class com.iasdietideals24.dietideals24.activities.DietiDeals24Activity<bindingType extends ViewBinding> {
 # bindingType binding
@@ -875,6 +931,8 @@ abstract class com.iasdietideals24.dietideals24.utilities.dto.OffertaDiComprator
 + <<Create>> OffertaDiCompratoreDto()
 + AccountShallowDto getCompratoreCollegatoShallow()
 }
+com.iasdietideals24.dietideals24.utilities.dto.OffertaDiCompratoreDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.OffertaDiCompratoreDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto
 
 
 class com.iasdietideals24.dietideals24.utilities.dto.shallows.ProfiloShallowDto {
@@ -922,6 +980,7 @@ class com.iasdietideals24.dietideals24.utilities.repositories.CategoriaAstaRepos
 + <<Create>> CategoriaAstaRepository(CategoriaAstaService)
 + List<CategoriaAstaDto> recuperaCategorieAsta()
 }
+com.iasdietideals24.dietideals24.utilities.repositories.CategoriaAstaRepository ..> com.iasdietideals24.dietideals24.utilities.services.CategoriaAstaService
 
 class com.iasdietideals24.dietideals24.utilities.adapters.AdapterNotifiche {
 + <<Create>> AdapterNotifiche(DiffUtil.ItemCallback<NotificaDto>,Resources)
@@ -929,12 +988,17 @@ class com.iasdietideals24.dietideals24.utilities.adapters.AdapterNotifiche {
 + void onBindViewHolder(ViewHolderNotifica, Int)
 + void onViewDetachedFromWindows(ViewHolderNotifica)
 }
+com.iasdietideals24.dietideals24.utilities.adapters.AdapterNotifiche ..> DiffUtil.ItemCallback
+com.iasdietideals24.dietideals24.utilities.adapters.AdapterNotifiche ..> Resources
 
 class com.iasdietideals24.dietideals24.utilities.annotations.EventHandler {
 }
 class com.iasdietideals24.dietideals24.utilities.data.Asta {
 + <<Create>> Asta(Long,StatoAsta,Long,TipoAsta,LocalDate,LocalTime?,BigDecimal,ByteArray,String,CategoriaAsta,String)
 }
+com.iasdietideals24.dietideals24.utilities.data.Asta ..> com.iasdietideals24.dietideals24.utilities.enumerations.StatoAsta
+com.iasdietideals24.dietideals24.utilities.data.Asta ..> com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
+com.iasdietideals24.dietideals24.utilities.data.Asta ..> com.iasdietideals24.dietideals24.utilities.enumerations.CategoriaAsta
 
 class com.iasdietideals24.dietideals24.utilities.adapters.AdapterPartecipazioni {
 + <<Create>> AdapterPartecipazioni(DiffUtil.ItemCallback<AstaDto>,Resources)
@@ -942,6 +1006,8 @@ class com.iasdietideals24.dietideals24.utilities.adapters.AdapterPartecipazioni 
 + void onBindViewHolder(ViewHolderPartecipazione, Int)
 + void onViewDetachedFromWindows(ViewHolderPartecipazione)
 }
+com.iasdietideals24.dietideals24.utilities.adapters.AdapterPartecipazioni ..> DiffUtil.ItemCallback
+com.iasdietideals24.dietideals24.utilities.adapters.AdapterPartecipazioni ..> Resources
 
 class com.iasdietideals24.dietideals24.utilities.dto.AstaSilenziosaDto {
 + <<Create>> AstaSilenziosaDto(Long,String,CategoriaAstaShallowDto,String,String,LocalDate,LocalTime,byte[],Set<NotificaShallowDto>,AccountShallowDto,Set<OffertaShallowDto>)
@@ -949,6 +1015,10 @@ class com.iasdietideals24.dietideals24.utilities.dto.AstaSilenziosaDto {
 + AnteprimaAsta toAnteprimaAsta()
 + Asta toAsta()
 }
+com.iasdietideals24.dietideals24.utilities.dto.AstaSilenziosaDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaSilenziosaDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaSilenziosaDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaSilenziosaDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.OffertaShallowDto
 
 class com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto {
 - Long idAsta
@@ -969,10 +1039,14 @@ class com.iasdietideals24.dietideals24.utilities.adapters.AdapterHome {
 + void onBindViewHolder(ViewHolderAnteprimaAsta, Int)
 + void onViewDetachedFromWindows(ViewHolderAnteprimaAsta)
 }
+com.iasdietideals24.dietideals24.utilities.adapters.AdapterHome ..> DiffUtil.ItemCallback
+com.iasdietideals24.dietideals24.utilities.adapters.AdapterHome ..> Resources
 
 class com.iasdietideals24.dietideals24.utilities.data.DettagliAsta {
 + <<Create>> DettagliAsta(AnteprimaAsta,CategoriaAsta,Long,String,String)
 }
+com.iasdietideals24.dietideals24.utilities.data.DettagliAsta ..> AnteprimaAsta
+com.iasdietideals24.dietideals24.utilities.data.DettagliAsta ..> CategoriaAsta
 
 class com.iasdietideals24.dietideals24.model.ModelAsteCreate {
 - Int _filtro
@@ -996,6 +1070,9 @@ class com.iasdietideals24.dietideals24.model.ModelAsteCreate {
 - void invalidateSilenziose()
 + void invalidate()
 }
+com.iasdietideals24.dietideals24.model.ModelAsteCreate ..> com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository
+com.iasdietideals24.dietideals24.model.ModelAsteCreate ..> com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
+com.iasdietideals24.dietideals24.model.ModelAsteCreate ..> com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
 
 class com.iasdietideals24.dietideals24.utilities.data.Profilo {
 + <<Create>> Profilo(Pair<Long, Long>,String,String,ByteArray,String,String,String,LocalDate,String,String,String,String,String,String,String,String)
@@ -1068,6 +1145,7 @@ interface com.iasdietideals24.dietideals24.utilities.kscripts.OnHideMaterialDivi
 class com.iasdietideals24.dietideals24.utilities.data.AccountProfilo {
 + <<Create>> AccountProfilo(Account,String,String,String,LocalDate,ByteArray,String,String,String,String,String,String,String,String)
 }
+com.iasdietideals24.dietideals24.utilities.data.AccountProfilo ..> com.iasdietideals24.dietideals24.utilities.data.Account
 
 class com.iasdietideals24.dietideals24.utilities.viewHolders.ViewHolderNotifica {
 - CoroutineScope scope
@@ -1093,6 +1171,8 @@ class com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto {
 + <<Create>> CompratoreDto()
 + Account toAccount()
 }
+com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto ..> com.iasdietideals24.dietideals24.utilities.dto.utilities.TokensAccountDto
+com.iasdietideals24.dietideals24.utilities.dto.CompratoreDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.ProfiloShallowDto
 
 class com.iasdietideals24.dietideals24.utilities.tools.Pageable {
 - int pageNumber
@@ -1115,6 +1195,8 @@ class com.iasdietideals24.dietideals24.utilities.tools.Pageable {
 class com.iasdietideals24.dietideals24.utilities.data.OffertaRicevuta {
 + <<Create>> OffertaRicevuta(Long,Long,TipoAsta,Long,String,ByteArray,BigDecimal,LocalDate,LocalTime,StatoOfferta?)
 }
+com.iasdietideals24.dietideals24.utilities.data.OffertaRicevuta ..> com.iasdietideals24.dietideals24.utilities.enumerations.TipoAsta
+com.iasdietideals24.dietideals24.utilities.data.OffertaRicevuta ..> com.iasdietideals24.dietideals24.utilities.enumerations.StatoOfferta
 
 enum com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository$ApiCall {
 +  CREATE
@@ -1134,6 +1216,7 @@ class com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaReposit
 + Page<AstaInversaDto> ricercaAsteInverse(String,String,Long,Long)
 + Page<AstaInversaDto> recuperaPartecipazioniInverse(Long,Long,Long)
 }
+com.iasdietideals24.dietideals24.utilities.repositories.AstaInversaRepository ..> com.iasdietideals24.dietideals24.utilities.services.AstaInversaService
 
 class com.iasdietideals24.dietideals24.utilities.dto.OffertaInversaDto {
 + <<Create>> OffertaInversaDto(Long,LocalDate,LocalTime,BigDecimal,AccountShallowDto,AstaShallowDto)
@@ -1141,6 +1224,8 @@ class com.iasdietideals24.dietideals24.utilities.dto.OffertaInversaDto {
 + Offerta toOfferta()
 + OffertaRicevuta toOffertaRicevuta()
 }
+com.iasdietideals24.dietideals24.utilities.dto.OffertaInversaDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.OffertaInversaDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AstaShallowDto
 
 class com.iasdietideals24.dietideals24.controller.ControllerPartecipazioni {
 - ModelPartecipazioni viewModel
@@ -1176,6 +1261,7 @@ class com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepo
 + Page<AstaTempoFissoDto> ricercaAsteTempoFisso(String,String,Long,Long)
 + Page<AstaTempoFissoDto> recuperaPartecipazioniTempoFisso(Long,Long,Long)
 }
+com.iasdietideals24.dietideals24.utilities.repositories.AstaTempoFissoRepository ..> com.iasdietideals24.dietideals24.utilities.services.AstaTempoFissoService
 
 class com.iasdietideals24.dietideals24.controller.ControllerAiuto {
 - OnBackButton? listenerBackButton
@@ -1191,6 +1277,7 @@ class com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository 
 + ProfiloDto aggiornaProfilo(ProfiloDto,String)
 + ProfiloDto creazioneAccountProfilo(String,PutProfiloDto)
 }
+com.iasdietideals24.dietideals24.utilities.repositories.ProfiloRepository ..> com.iasdietideals24.dietideals24.utilities.services.ProfiloService
 
 interface com.iasdietideals24.dietideals24.utilities.services.AstaSilenziosaService {
 + Response<Page<AstaSilenziosaDto>> recuperaAsteCreateSilenziose(Long,Long,Long)
@@ -1208,6 +1295,8 @@ class com.iasdietideals24.dietideals24.utilities.dto.VenditoreDto {
 + <<Create>> VenditoreDto()
 + Account toAccount()
 }
+com.iasdietideals24.dietideals24.utilities.dto.VenditoreDto ..> com.iasdietideals24.dietideals24.utilities.dto.utilities.TokensAccountDto
+com.iasdietideals24.dietideals24.utilities.dto.VenditoreDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.ProfiloShallowDto
 
 class com.iasdietideals24.dietideals24.controller.ControllerDettagliProfilo {
 - ControllerDettagliProfiloArgs args
@@ -1242,6 +1331,10 @@ class com.iasdietideals24.dietideals24.utilities.dto.AstaInversaDto {
 + Asta toAsta()
 + BigDecimal getSogliaIniziale()
 }
+com.iasdietideals24.dietideals24.utilities.dto.AstaInversaDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaInversaDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto 
+com.iasdietideals24.dietideals24.utilities.dto.AstaInversaDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaInversaDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.OffertaShallowDto
 
 
 enum com.iasdietideals24.dietideals24.utilities.enumerations.StatoOfferta {
@@ -1366,6 +1459,7 @@ class com.iasdietideals24.dietideals24.utilities.repositories.OffertaTempoFissoR
 + OffertaTempoFissoDto inviaOffertaTempoFisso(OffertaTempoFissoDto)
 + Page<OffertaTempoFissoDto> recuperaOfferteTempoFisso(Long,Long,Long)
 }
+com.iasdietideals24.dietideals24.utilities.repositories.OffertaTempoFissoRepository ..> com.iasdietideals24.dietideals24.utilities.services.OffertaTempoFissoService
 
 class com.iasdietideals24.dietideals24.utilities.dto.utilities.TokensAccountDto {
 - String idFacebook
@@ -1403,6 +1497,8 @@ class com.iasdietideals24.dietideals24.utilities.repositories.AuthRepository {
 + String leggiRuolo()
 + void cancellaRuolo()
 }
+com.iasdietideals24.dietideals24.utilities.repositories.AuthRepository ..> com.iasdietideals24.dietideals24.utilities.services.AuthService
+com.iasdietideals24.dietideals24.utilities.repositories.AuthRepository ..> DataStore
 
 class com.iasdietideals24.dietideals24.utilities.exceptions.EccezionePasswordNonSicura {
 + String message
@@ -1413,6 +1509,7 @@ class com.iasdietideals24.dietideals24.utilities.exceptions.EccezionePasswordNon
 class com.iasdietideals24.dietideals24.utilities.data.Account {
 + <<Create>> Account(Long,String,String,String,TipoAccount)
 }
+com.iasdietideals24.dietideals24.utilities.data.Account ..> com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount
 
 class com.iasdietideals24.dietideals24.controller.ControllerOfferte {
 - ControllerOfferteArgs args
@@ -1485,6 +1582,9 @@ class com.iasdietideals24.dietideals24.model.ModelAsta {
 - void invalidateSilenziose()
 + void invalidate()
 }
+com.iasdietideals24.dietideals24.model.ModelAsta ..> com.iasdietideals24.dietideals24.utilities.repositories.OffertaInversaRepository
+com.iasdietideals24.dietideals24.model.ModelAsta ..> com.iasdietideals24.dietideals24.utilities.repositories.OffertaTempoFissoRepository
+com.iasdietideals24.dietideals24.model.ModelAsta ..> com.iasdietideals24.dietideals24.utilities.repositories.OffertaSilenziosaRepository
 
 
 interface com.iasdietideals24.dietideals24.utilities.services.CompratoreService {
@@ -1525,6 +1625,7 @@ class com.iasdietideals24.dietideals24.utilities.repositories.OffertaSilenziosaR
 + OffertaSilenziosaDto accettaOfferta(OffertaSilenziosaDto,Long)
 + OffertaSilenziosaDto rifiutaOfferta(OffertaSilenziosaDto,Long)
 }
+com.iasdietideals24.dietideals24.utilities.repositories.OffertaSilenziosaRepository ..> com.iasdietideals24.dietideals24.utilities.services.OffertaSilenziosaService
 
 enum com.iasdietideals24.dietideals24.utilities.enumerations.TipoAccount {
 +  COMPRATORE
@@ -1593,6 +1694,10 @@ abstract class com.iasdietideals24.dietideals24.utilities.dto.AstaDto {
 + boolean equals(Object)
 + int hashCode()
 }
+com.iasdietideals24.dietideals24.utilities.dto.AstaDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.CategoriaAstaShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.NotificaShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.AccountShallowDto
+com.iasdietideals24.dietideals24.utilities.dto.AstaDto ..> com.iasdietideals24.dietideals24.utilities.dto.shallows.OffertaShallowDto
 
 
 class com.iasdietideals24.dietideals24.controller.ControllerNotifiche {
@@ -1717,6 +1822,8 @@ class com.iasdietideals24.dietideals24.utilities.paging.AstaSilenziosaPagingSour
 + LoadResult<Long, AstaSilenziosaDto> load(LoadParams<Long>)
 + Long? getRefreshKey(PagingState<Long, AstaSilenziosaDto>)
 }
+com.iasdietideals24.dietideals24.utilities.paging.AstaSilenziosaPagingSource ..> com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository
+com.iasdietideals24.dietideals24.utilities.paging.AstaSilenziosaPagingSource ..> com.iasdietideals24.dietideals24.utilities.repositories.AstaSilenziosaRepository$ApiCall
 
 class com.iasdietideals24.dietideals24.controller.ControllerDettagliAsta {
 - ControllerDettagliAstaArgs args
