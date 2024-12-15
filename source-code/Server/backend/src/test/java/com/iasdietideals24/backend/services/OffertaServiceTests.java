@@ -49,13 +49,13 @@ class OffertaServiceTests {
     }
 
     @Test
-    void testCheckFieldsValid_idMinoreDataMinoreOraAttualeValoreMaggiore() {
+    void testCheckFieldsValid_idMinoreDataMinoreOraMaggioreValoreMaggiore() {
         // Arrange
         OffertaDto offertaDto = new OffertaDto();
         offertaDto.setIdOfferta(-5L);
         offertaDto.setDataInvio(LocalDate.now().minusDays(5));
-        offertaDto.setOraInvio(LocalTime.now());
-        offertaDto.setValore(BigDecimal.valueOf(3));
+        offertaDto.setOraInvio(LocalTime.now().plusMinutes(6));
+        offertaDto.setValore(BigDecimal.valueOf(4));
 
         // Act & Assert
         assertDoesNotThrow(() -> offertaService.checkFieldsValid(offertaDto));
@@ -75,16 +75,16 @@ class OffertaServiceTests {
     }
 
     @Test
-    void testCheckFieldsValid_idMaggioreDataMinoreOraMaggioreValoreMaggiore() {
+    void testCheckFieldsValid_idMaggioreDataAttualeOraMaggioreValoreMaggiore() {
         // Arrange
         OffertaDto offertaDto = new OffertaDto();
-        offertaDto.setIdOfferta(4L);
-        offertaDto.setDataInvio(LocalDate.now().minusDays(5));
-        offertaDto.setOraInvio(LocalTime.now().plusMinutes(6));
-        offertaDto.setValore(BigDecimal.valueOf(4));
+        offertaDto.setIdOfferta(5L);
+        offertaDto.setDataInvio(LocalDate.now());
+        offertaDto.setOraInvio(LocalTime.now().plusMinutes(5));
+        offertaDto.setValore(BigDecimal.valueOf(1));
 
         // Act & Assert
-        assertDoesNotThrow(() -> offertaService.checkFieldsValid(offertaDto));
+        assertThrowsExactly(InvalidParameterException.class, () -> offertaService.checkFieldsValid(offertaDto));
     }
 
     @Test

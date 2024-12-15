@@ -31,9 +31,9 @@ public class AccountServiceImpl implements AccountService {
 
     private final RelationsConverter relationsConverter;
 
-    protected AccountServiceImpl(TokensAccountMapper tokensAccountMapper,
-                                 RelationsConverter relationsConverter,
-                                 AccountRepository accountRepository) {
+    public AccountServiceImpl(TokensAccountMapper tokensAccountMapper,
+                              RelationsConverter relationsConverter,
+                              AccountRepository accountRepository) {
         this.tokensAccountMapper = tokensAccountMapper;
         this.relationsConverter = relationsConverter;
         this.accountRepository = accountRepository;
@@ -49,6 +49,20 @@ public class AccountServiceImpl implements AccountService {
         checkProfiloShallowValid(accountDto.getProfiloShallow());
 
         log.debug("Integrità dei dati di account verificata.");
+    }
+
+    // Traduzione dei metodi checkEmailValid(accountDto.getEmail()) e checkPasswordValid(accountDto.getPassword()) per fare Unit testing
+    public boolean isEmailAndPasswordValid(String email, String password) {
+
+        boolean valid = true;
+
+        if (email == null || email.isBlank() || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$"))
+            valid = false;
+
+        if (password == null || password.isBlank())
+            valid = false;
+
+        return valid;
     }
 
     private void checkEmailValid(String email) throws InvalidParameterException {

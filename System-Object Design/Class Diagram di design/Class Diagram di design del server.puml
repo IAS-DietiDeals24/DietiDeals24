@@ -71,8 +71,7 @@ class com.iasdietideals24.backend.controllers.OffertaSilenziosaController {
 + ResponseEntity<OffertaSilenziosaDto> partialUpdateOffertaSilenziosa(Long,OffertaSilenziosaDto)
 + ResponseEntity<OffertaSilenziosaDto> deleteOffertaSilenziosa(Long)
 }
-OffertaSilenziosaController -- OffertaSilenziosaService
-
+com.iasdietideals24.backend.controllers.OffertaSilenziosaController ..> com.iasdietideals24.backend.services.OffertaSilenziosaService
 
 class com.iasdietideals24.backend.controllers.OffertaInversaController {
 + {static} String LOG_OFFERTA_NON_TROVATA
@@ -88,7 +87,7 @@ class com.iasdietideals24.backend.controllers.OffertaInversaController {
 + ResponseEntity<OffertaInversaDto> partialUpdateOffertaInversa(Long,OffertaInversaDto)
 + ResponseEntity<OffertaInversaDto> deleteOffertaInversa(Long)
 }
-OffertaInversaController -- OffertaInversaService
+com.iasdietideals24.backend.controllers.OffertaInversaController ..> com.iasdietideals24.backend.services.OffertaInversaService
 
 
 interface com.iasdietideals24.backend.repositories.CompratoreRepository {
@@ -120,8 +119,6 @@ abstract class com.iasdietideals24.backend.entities.OffertaDiVenditore {
 # <<Create>> OffertaDiVenditore(LocalDate,LocalTime,BigDecimal,Venditore)
 + String toString()
 }
-OffertaDiVenditore -- Venditore
-
 
 interface com.iasdietideals24.backend.mapstruct.mappers.ProfiloMapper {
 ~ ProfiloDto toDto(Profilo)
@@ -153,10 +150,10 @@ class com.iasdietideals24.backend.services.implementations.CompratoreServiceImpl
 - void convertOfferteCollegateShallow(Set<OffertaShallowDto>,Compratore)
 + void updatePresentFields(CompratoreDto,Compratore)
 }
-CompratoreServiceImpl -- AccountService
-CompratoreServiceImpl -- CompratoreMapper
-CompratoreServiceImpl -- CompratoreRepository
-CompratoreServiceImpl -- RelationsConverter
+com.iasdietideals24.backend.services.implementations.CompratoreServiceImpl ..> com.iasdietideals24.backend.services.AccountService
+com.iasdietideals24.backend.services.implementations.CompratoreServiceImpl ..> com.iasdietideals24.backend.mapstruct.mappers.CompratoreMapper
+com.iasdietideals24.backend.services.implementations.CompratoreServiceImpl ..> com.iasdietideals24.backend.repositories.CompratoreRepository
+com.iasdietideals24.backend.services.implementations.CompratoreServiceImpl ..> com.iasdietideals24.backend.services.helper.RelationsConverterRelationsConverter
 
 interface com.iasdietideals24.backend.mapstruct.mappers.StatoOffertaSilenziosaMapper {
 ~ String toStringEnum(StatoOffertaSilenziosa)
@@ -189,8 +186,6 @@ class com.iasdietideals24.backend.entities.OffertaTempoFisso {
 + <<Create>> OffertaTempoFisso(LocalDate,LocalTime,BigDecimal,Compratore,AstaTempoFisso)
 + String toString()
 }
-OffertaTempoFisso -- Compratore
-OffertaTempoFisso -- AstaTempoFisso
 
 class com.iasdietideals24.backend.services.implementations.AstaDiVenditoreServiceImpl {
 - AstaService astaService
@@ -202,8 +197,8 @@ class com.iasdietideals24.backend.services.implementations.AstaDiVenditoreServic
 - void convertProprietarioShallow(AccountShallowDto,AstaDiVenditore)
 + void updatePresentFields(AstaDiVenditoreDto,AstaDiVenditore)
 }
-AstaDiVenditoreServiceImpl -- AstaService
-AstaDiVenditoreServiceImpl -- RelationsConverter
+com.iasdietideals24.backend.services.implementations.AstaDiVenditoreServiceImpl ..> com.iasdietideals24.backend.services.AstaService
+com.iasdietideals24.backend.services.implementations.AstaDiVenditoreServiceImpl ..> com.iasdietideals24.backend.services.helper.RelationsConverter
 
 class com.iasdietideals24.backend.config.SecurityConfig {
 + {static} String ROLE_USER
@@ -269,8 +264,6 @@ class com.iasdietideals24.backend.entities.Venditore {
 + void removeOffertaCollegata(OffertaDiVenditore)
 + String toString()
 }
-Venditore -- TokensAccount
-Venditore -- Profilo
 
 class com.iasdietideals24.backend.controllers.OffertaTempoFissoController {
 + {static} String LOG_OFFERTA_NON_TROVATA
@@ -286,7 +279,7 @@ class com.iasdietideals24.backend.controllers.OffertaTempoFissoController {
 + ResponseEntity<OffertaTempoFissoDto> partialUpdateOffertaTempoFisso(Long,OffertaTempoFissoDto)
 + ResponseEntity<OffertaTempoFissoDto> deleteOffertaTempoFisso(Long)
 }
-OffertaTempoFissoController -- OffertaTempoFissoService
+com.iasdietideals24.backend.controllers.OffertaTempoFissoController ..> com.iasdietideals24.backend.services.OffertaTempoFissoService
 
 abstract class com.iasdietideals24.backend.mapstruct.mappers.AccountMapper {
 + AccountShallowDto toShallowDto(Account)
@@ -309,7 +302,7 @@ class com.iasdietideals24.backend.controllers.CompratoreController {
 + ResponseEntity<CompratoreDto> partialUpdateCompratore(Long,CompratoreDto)
 + ResponseEntity<CompratoreDto> deleteCompratore(Long)
 }
-CompratoreController -- CompratoreService
+com.iasdietideals24.backend.controllers.CompratoreController ..> com.iasdietideals24.backend.services.CompratoreService
 
 class com.iasdietideals24.backend.mapstruct.dto.OffertaSilenziosaDto {
 - String stato
@@ -357,18 +350,15 @@ class com.iasdietideals24.backend.mapstruct.mappers.impl.PutProfiloMapperImpl {
 + <<Create>> PutProfiloMapperImpl(AnagraficaProfiloMapper,TokensAccountMapper,LinksProfiloMapper)
 + Profilo toEntity(PutProfiloDto)
 }
-PutProfiloMapperImpl -- AnagraficaProfiloMapper
-PutProfiloMapperImpl -- TokensAccountMapper
-PutProfiloMapperImpl -- LinksProfiloMapper
+com.iasdietideals24.backend.mapstruct.mappers.impl.PutProfiloMapperImpl ..> com.iasdietideals24.backend.mapstruct.mappers.AnagraficaProfiloMapper
+com.iasdietideals24.backend.mapstruct.mappers.impl.PutProfiloMapperImpl ..> com.iasdietideals24.backend.mapstruct.mappers.TokensAccountMapper
+com.iasdietideals24.backend.mapstruct.mappers.impl.PutProfiloMapperImpl ..> com.iasdietideals24.backend.mapstruct.mappers.LinksProfiloMapper
 
 abstract class com.iasdietideals24.backend.entities.AstaDiCompratore {
 - Compratore proprietario
 # <<Create>> AstaDiCompratore(CategoriaAsta,String,String,LocalDate,LocalTime,byte[],Compratore,StatoAsta)
 + String toString()
 }
-AstaDiCompratore -- CategoriaAsta
-AstaDiCompratore -- Compratore
-AstaDiCompratore -- StatoAsta
 
 interface com.iasdietideals24.backend.services.OffertaDiCompratoreService {
 ~ void checkFieldsValid(OffertaDiCompratoreDto)
@@ -392,6 +382,7 @@ class com.iasdietideals24.backend.mapstruct.dto.CategoriaAstaDto {
 
 interface com.iasdietideals24.backend.repositories.OffertaDiVenditoreRepository {
 }
+
 class com.iasdietideals24.backend.services.implementations.AstaDiCompratoreServiceImpl {
 - AstaService astaService
 - RelationsConverter relationsConverter
@@ -402,8 +393,8 @@ class com.iasdietideals24.backend.services.implementations.AstaDiCompratoreServi
 - void convertProprietarioShallow(AccountShallowDto,AstaDiCompratore)
 + void updatePresentFields(AstaDiCompratoreDto,AstaDiCompratore)
 }
-AstaDiCompratoreServiceImpl -- AstaService
-AstaDiCompratoreServiceImpl -- RelationsConverter
+com.iasdietideals24.backend.services.implementations.AstaDiCompratoreServiceImpl ..> com.iasdietideals24.backend.services.AstaService
+com.iasdietideals24.backend.services.implementations.AstaDiCompratoreServiceImpl ..> com.iasdietideals24.backend.services.helper.RelationsConverter
 
 class com.iasdietideals24.backend.entities.Notifica {
 - Long idNotifica
@@ -418,8 +409,6 @@ class com.iasdietideals24.backend.entities.Notifica {
 + void removeDestinatario(Account)
 + String toString()
 }
-Notifica -- Account
-
 
 class com.iasdietideals24.backend.mapstruct.dto.shallows.AstaShallowDto {
 - Long idAsta
@@ -442,8 +431,6 @@ abstract class com.iasdietideals24.backend.entities.Account {
 + void removeNotificaRicevuta(Notifica)
 + String toString()
 }
-Account -- TokensAccount
-Account -- Profilo
 
 class com.iasdietideals24.backend.exceptions.UpdateRuntimeException {
 + <<Create>> UpdateRuntimeException()
@@ -452,6 +439,7 @@ class com.iasdietideals24.backend.exceptions.UpdateRuntimeException {
 
 interface com.iasdietideals24.backend.repositories.CategoriaAstaRepository {
 }
+
 class com.iasdietideals24.backend.controllers.AstaSilenziosaController {
 + {static} String LOG_ASTA_NON_TROVATA
 + {static} String LOG_RECUPERO_ASTE_IN_CORSO
@@ -468,7 +456,7 @@ class com.iasdietideals24.backend.controllers.AstaSilenziosaController {
 + ResponseEntity<AstaSilenziosaDto> partialUpdateAstaSilenziosa(Long,AstaSilenziosaDto)
 + ResponseEntity<AstaSilenziosaDto> deleteAstaSilenziosa(Long)
 }
-AstaSilenziosaController -- AstaSilenziosaService
+com.iasdietideals24.backend.controllers.AstaSilenziosaController ..> com.iasdietideals24.backend.services.AstaSilenziosaService
 
 interface com.iasdietideals24.backend.mapstruct.mappers.OffertaInversaMapper {
 ~ OffertaInversaDto toDto(OffertaInversa)
@@ -521,13 +509,13 @@ class com.iasdietideals24.backend.services.implementations.OffertaSilenziosaServ
 - void acceptedOffertaTasks(OffertaSilenziosa)
 - void rejectedOffertaTasks(OffertaSilenziosa)
 }
-OffertaSilenziosaServiceImpl -- OffertaDiCompratoreService
-OffertaSilenziosaServiceImpl -- StatoOffertaSilenziosaMapper
-OffertaSilenziosaServiceImpl -- OffertaSilenziosaMapper
-OffertaSilenziosaServiceImpl -- OffertaSilenziosaRepository
-OffertaSilenziosaServiceImpl -- RelationsConverter
-OffertaSilenziosaServiceImpl -- BuildNotice
-OffertaSilenziosaServiceImpl -- AstaScheduler
+com.iasdietideals24.backend.services.implementations.OffertaSilenziosaServiceImpl ..> com.iasdietideals24.backend.services.OffertaDiCompratoreService
+com.iasdietideals24.backend.services.implementations.OffertaSilenziosaServiceImpl ..> com.iasdietideals24.backend.mapstruct.mappers.StatoOffertaSilenziosaMapper
+com.iasdietideals24.backend.services.implementations.OffertaSilenziosaServiceImpl ..> com.iasdietideals24.backend.mapstruct.mappers.OffertaSilenziosaMapper
+com.iasdietideals24.backend.services.implementations.OffertaSilenziosaServiceImpl ..> com.iasdietideals24.backend.repositories.OffertaSilenziosaRepository
+com.iasdietideals24.backend.services.implementations.OffertaSilenziosaServiceImpl ..> com.iasdietideals24.backend.services.helper.RelationsConverter
+com.iasdietideals24.backend.services.implementations.OffertaSilenziosaServiceImpl ..> com.iasdietideals24.backend.services.helper.BuildNotice
+com.iasdietideals24.backend.services.implementations.OffertaSilenziosaServiceImpl ..> com.iasdietideals24.backend.scheduled.AstaScheduler
 
 
 interface com.iasdietideals24.backend.services.VenditoreService {
@@ -568,10 +556,10 @@ class com.iasdietideals24.backend.scheduled.AstaScheduler {
 + <<Create>> AstaScheduler(AstaRepository,AstaInversaService,AstaSilenziosaService,AstaTempoFissoService)
 + void updateExpiredAste()
 }
-AstaScheduler -- AstaRepository
-AstaScheduler -- AstaInversaService
-AstaScheduler -- AstaSilenziosaService
-AstaScheduler -- AstaTempoFissoService
+com.iasdietideals24.backend.scheduled.AstaScheduler ..> com.iasdietideals24.backend.repositories.AstaRepository
+com.iasdietideals24.backend.scheduled.AstaScheduler ..> com.iasdietideals24.backend.services.AstaInversaService
+com.iasdietideals24.backend.scheduled.AstaScheduler ..> com.iasdietideals24.backend.services.AstaSilenziosaService
+com.iasdietideals24.backend.scheduled.AstaScheduler ..> com.iasdietideals24.backend.services.AstaTempoFissoService
 
 
 class com.iasdietideals24.backend.services.implementations.OffertaServiceImpl {
@@ -611,7 +599,7 @@ class com.iasdietideals24.backend.services.helper.implementations.BuildNoticeImp
 + void notifyOffertaTempoFissoPerdente(Set<OffertaTempoFisso>)
 - void sendNotifica(Notifica)
 }
-BuildNotice -- NotificaRepository
+com.iasdietideals24.backend.services.helper.BuildNotice ..> com.iasdietideals24.backend.repositories.NotificaRepository
 
 interface com.iasdietideals24.backend.repositories.OffertaSilenziosaRepository {
 ~ Page<OffertaSilenziosa> findByAstaRiferimento_IdAsta(Long,Pageable)
@@ -624,7 +612,6 @@ abstract class com.iasdietideals24.backend.entities.OffertaDiCompratore {
 # <<Create>> OffertaDiCompratore(LocalDate,LocalTime,BigDecimal,Compratore)
 + String toString()
 }
-OffertaDiCompratore -- Compratore
 
 class com.iasdietideals24.backend.mapstruct.dto.utilities.LinksProfiloDto {
 - String linkPersonale
@@ -682,9 +669,9 @@ class com.iasdietideals24.backend.services.implementations.CategoriaAstaServiceI
 + void updatePresentFields(CategoriaAstaDto,CategoriaAsta)
 - void ifPresentUpdateNome(String,CategoriaAsta)
 }
-CategoriaAstaServiceImpl -- CategoriaAstaMapper
-CategoriaAstaServiceImpl -- CategoriaAstaRepository
-CategoriaAstaServiceImpl -- RelationsConverter
+com.iasdietideals24.backend.services.implementations.CategoriaAstaServiceImpl ..> com.iasdietideals24.backend.mapstruct.mappers.CategoriaAstaMapper
+com.iasdietideals24.backend.services.implementations.CategoriaAstaServiceImpl ..> com.iasdietideals24.backend.repositories.CategoriaAstaRepository
+com.iasdietideals24.backend.services.implementations.CategoriaAstaServiceImpl ..> com.iasdietideals24.backend.services.helper.RelationsConverter
 
 
 class com.iasdietideals24.backend.controllers.AstaInversaController {
@@ -703,7 +690,7 @@ class com.iasdietideals24.backend.controllers.AstaInversaController {
 + ResponseEntity<AstaInversaDto> partialUpdateAstaInversa(Long,AstaInversaDto)
 + ResponseEntity<AstaInversaDto> deleteAstaInversa(Long)
 }
-AstaInversaController -- AstaInversaService
+com.iasdietideals24.backend.controllers.AstaInversaController ..> com.iasdietideals24.backend.services.AstaInversaService
 
 
 class com.iasdietideals24.backend.mapstruct.dto.shallows.NotificaShallowDto {
@@ -726,7 +713,7 @@ class com.iasdietideals24.backend.controllers.VenditoreController {
 + ResponseEntity<VenditoreDto> partialUpdateVenditore(Long,VenditoreDto)
 + ResponseEntity<VenditoreDto> deleteVenditore(Long)
 }
-VenditoreController -- VenditoreService
+com.iasdietideals24.backend.controllers.VenditoreController ..> com.iasdietideals24.backend.services.VenditoreService
 
 class com.iasdietideals24.backend.entities.Profilo {
 - String nomeUtente
@@ -742,9 +729,6 @@ class com.iasdietideals24.backend.entities.Profilo {
 + Venditore getVenditore()
 + String toString()
 }
-Profilo -- AnagraficaProfilo
-Profilo -- LinksProfilo
-Profilo -- TokensAccount
 
 interface com.iasdietideals24.backend.repositories.ProfiloRepository {
 }
@@ -771,8 +755,7 @@ class com.iasdietideals24.backend.entities.OffertaInversa {
 + <<Create>> OffertaInversa(LocalDate,LocalTime,BigDecimal,Venditore,AstaInversa)
 + String toString()
 }
-OffertaInversa -- Venditore
-OffertaInversa -- AstaInversa
+
 
 interface com.iasdietideals24.backend.services.OffertaService {
 ~ void checkFieldsValid(OffertaDto)
@@ -782,6 +765,7 @@ interface com.iasdietideals24.backend.services.OffertaService {
 
 interface com.iasdietideals24.backend.repositories.OffertaDiCompratoreRepository {
 }
+
 class com.iasdietideals24.backend.mapstruct.dto.CompratoreDto {
 - Set<AstaShallowDto> astePosseduteShallow
 - Set<OffertaShallowDto> offerteCollegateShallow
@@ -865,9 +849,9 @@ class com.iasdietideals24.backend.services.implementations.AccountServiceImpl {
 + void checkEmailNotAlreadyTaken(String)
 + void checkEmailNotAlreadyTaken(Account)
 }
-AccountServiceImpl -- TokensAccountMapper
-AccountServiceImpl -- RelationsConverter
-AccountServiceImpl -- AccountRepository
+com.iasdietideals24.backend.services.implementations.AccountServiceImpl ..> com.iasdietideals24.backend.mapstruct.mappers.TokensAccountMapper
+com.iasdietideals24.backend.services.implementations.AccountServiceImpl ..> com.iasdietideals24.backend.services.helper.RelationsConverter
+com.iasdietideals24.backend.services.implementations.AccountServiceImpl ..> com.iasdietideals24.backend.repositories.AccountRepository
 
 class com.iasdietideals24.backend.entities.utilities.AnagraficaProfilo {
 - String nome
@@ -934,13 +918,13 @@ class com.iasdietideals24.backend.services.implementations.ProfiloServiceImpl {
 - void ifPresentUpdateLinkGitHub(String,LinksProfilo)
 - void ifPresentUpdateLinkX(String,LinksProfilo)
 }
-ProfiloServiceImpl -- ProfiloMapper
-ProfiloServiceImpl -- PutProfiloMapper
-ProfiloServiceImpl -- AnagraficaProfiloMapper
-ProfiloServiceImpl -- LinksProfiloMapper
-ProfiloServiceImpl -- ProfiloRepository
-ProfiloServiceImpl -- RelationsConverter
-ProfiloServiceImpl -- AccountService
+com.iasdietideals24.backend.services.implementations.ProfiloServiceImpl ..> com.iasdietideals24.backend.mapstruct.mappers.ProfiloMapper
+com.iasdietideals24.backend.services.implementations.ProfiloServiceImpl ..> com.iasdietideals24.backend.mapstruct.mappers.PutProfiloMapper
+com.iasdietideals24.backend.services.implementations.ProfiloServiceImpl ..> com.iasdietideals24.backend.mapstruct.mappers.AnagraficaProfiloMapper
+com.iasdietideals24.backend.services.implementations.ProfiloServiceImpl ..> com.iasdietideals24.backend.mapstruct.mappers.LinksProfiloMapper
+com.iasdietideals24.backend.services.implementations.ProfiloServiceImpl ..> com.iasdietideals24.backend.repositories.ProfiloRepository
+com.iasdietideals24.backend.services.implementations.ProfiloServiceImpl ..> com.iasdietideals24.backend.services.helper.RelationsConverter
+com.iasdietideals24.backend.services.implementations.ProfiloServiceImpl ..> com.iasdietideals24.backend.services.AccountService
 
 interface com.iasdietideals24.backend.services.AccountService {
 ~ void checkFieldsValid(AccountDto)
@@ -991,12 +975,12 @@ class com.iasdietideals24.backend.services.helper.implementations.RelationsConve
 + Account convertAccountShallowRelation(AccountShallowDto)
 + CategoriaAsta convertCategoriaAstaShallowRelation(CategoriaAstaShallowDto)
 }
-RelationsConverterImpl -- ProfiloRepository
-RelationsConverterImpl -- NotificaRepository
-RelationsConverterImpl -- AstaRepository
-RelationsConverterImpl -- OffertaRepository
-RelationsConverterImpl -- AccountRepository
-RelationsConverterImpl -- CategoriaAstaRepository
+com.iasdietideals24.backend.services.helper.implementations.RelationsConverterImpl ..> com.iasdietideals24.backend.repositories.ProfiloRepository
+com.iasdietideals24.backend.services.helper.implementations.RelationsConverterImpl ..> com.iasdietideals24.backend.repositories.NotificaRepository
+com.iasdietideals24.backend.services.helper.implementations.RelationsConverterImpl ..> com.iasdietideals24.backend.repositories.AstaRepository
+com.iasdietideals24.backend.services.helper.implementations.RelationsConverterImpl ..> com.iasdietideals24.backend.repositories.OffertaRepository
+com.iasdietideals24.backend.services.helper.implementations.RelationsConverterImpl ..> com.iasdietideals24.backend.repositories.AccountRepository
+com.iasdietideals24.backend.services.helper.implementations.RelationsConverterImpl ..> com.iasdietideals24.backend.repositories.CategoriaAstaRepository
 
 
 class com.iasdietideals24.backend.entities.AstaTempoFisso {
@@ -1007,19 +991,12 @@ class com.iasdietideals24.backend.entities.AstaTempoFisso {
 + void removeOffertaRicevuta(OffertaTempoFisso)
 + String toString()
 }
-AstaTempoFisso -- CategoriaAsta
-AstaTempoFisso -- Venditore
-AstaTempoFisso -- StatoAsta
 
 abstract class com.iasdietideals24.backend.entities.AstaDiVenditore {
 - Venditore proprietario
 # <<Create>> AstaDiVenditore(CategoriaAsta,String,String,LocalDate,LocalTime,byte[],Venditore,StatoAsta)
 + String toString()
 }
-AstaDiVenditore -- CategoriaAsta
-AstaDiVenditore -- Venditore
-AstaDiVenditore -- StatoAsta
-
 
 interface com.iasdietideals24.backend.mapstruct.mappers.AstaInversaMapper {
 ~ AstaInversaDto toDto(AstaInversa)
@@ -1045,6 +1022,7 @@ interface com.iasdietideals24.backend.mapstruct.mappers.StatoAstaMapper {
 
 interface com.iasdietideals24.backend.repositories.OffertaRepository {
 }
+
 class com.iasdietideals24.backend.services.implementations.OffertaTempoFissoServiceImpl {
 + {static} String LOG_RECUPERO_OFFERTA
 + {static} String LOG_FOUND_OFFERTA
@@ -1076,12 +1054,12 @@ class com.iasdietideals24.backend.services.implementations.OffertaTempoFissoServ
 - void checkProprietarioAstaNotMe(OffertaTempoFisso)
 - void checkBestOfferta(OffertaTempoFisso)
 }
-OffertaRepository -- OffertaDiCompratoreService
-OffertaRepository -- OffertaTempoFissoMapper
-OffertaRepository -- OffertaTempoFissoRepository
-OffertaRepository -- RelationsConverter
-OffertaRepository -- BuildNotice
-OffertaRepository -- AstaScheduler
+com.iasdietideals24.backend.repositories.OffertaRepository ..> com.iasdietideals24.backend.services.OffertaDiCompratoreService
+com.iasdietideals24.backend.repositories.OffertaRepository ..> com.iasdietideals24.backend.mapstruct.mappers.OffertaTempoFissoMapper
+com.iasdietideals24.backend.repositories.OffertaRepository ..> com.iasdietideals24.backend.repositories.OffertaTempoFissoRepository
+com.iasdietideals24.backend.repositories.OffertaRepository ..> com.iasdietideals24.backend.services.helper.RelationsConverter
+com.iasdietideals24.backend.repositories.OffertaRepository ..> com.iasdietideals24.backend.services.helper.BuildNotice
+com.iasdietideals24.backend.repositories.OffertaRepository ..> com.iasdietideals24.backend.scheduled.AstaScheduler
 
 
 class com.iasdietideals24.backend.mapstruct.dto.AstaDto {
@@ -1122,7 +1100,7 @@ class com.iasdietideals24.backend.controllers.ProfiloController {
 + ResponseEntity<ProfiloDto> partialUpdateProfilo(String,ProfiloDto)
 + ResponseEntity<ProfiloDto> deleteProfilo(String)
 }
-ProfiloController -- ProfiloService
+com.iasdietideals24.backend.controllers.ProfiloController ..> com.iasdietideals24.backend.services.ProfiloService
 
 
 class com.iasdietideals24.backend.mapstruct.dto.shallows.CategoriaAstaShallowDto {
@@ -1221,12 +1199,12 @@ class com.iasdietideals24.backend.services.implementations.OffertaInversaService
 - void checkProprietarioAstaNotMe(OffertaInversa)
 - void checkBestOfferta(OffertaInversa)
 }
-OffertaInversaServiceImpl -- OffertaDiVenditoreService
-OffertaInversaServiceImpl -- OffertaInversaMapper
-OffertaInversaServiceImpl -- OffertaInversaRepository
-OffertaInversaServiceImpl -- RelationsConverter
-OffertaInversaServiceImpl -- BuildNotice
-OffertaInversaServiceImpl -- AstaScheduler
+com.iasdietideals24.backend.services.implementations.OffertaInversaServiceImpl ..> com.iasdietideals24.backend.services.OffertaDiVenditoreService
+com.iasdietideals24.backend.services.implementations.OffertaInversaServiceImpl ..> com.iasdietideals24.backend.mapstruct.mappers.OffertaInversaMapper
+com.iasdietideals24.backend.services.implementations.OffertaInversaServiceImpl ..> com.iasdietideals24.backend.repositories.OffertaInversaRepository
+com.iasdietideals24.backend.services.implementations.OffertaInversaServiceImpl ..> com.iasdietideals24.backend.services.helper.RelationsConverter
+com.iasdietideals24.backend.services.implementations.OffertaInversaServiceImpl ..> com.iasdietideals24.backend.services.helper.BuildNotice
+com.iasdietideals24.backend.services.implementations.OffertaInversaServiceImpl ..> com.iasdietideals24.backend.scheduled.AstaScheduler
 
 
 interface com.iasdietideals24.backend.repositories.NotificaRepository {
@@ -1244,10 +1222,6 @@ class com.iasdietideals24.backend.entities.OffertaSilenziosa {
 + <<Create>> OffertaSilenziosa(LocalDate,LocalTime,BigDecimal,Compratore,StatoOffertaSilenziosa,AstaSilenziosa)
 + String toString()
 }
-OffertaSilenziosa -- Compratore
-OffertaSilenziosa -- StatoOffertaSilenziosa
-OffertaSilenziosa -- AstaSilenziosa
-
 
 class com.iasdietideals24.backend.services.implementations.AstaServiceImpl {
 - StatoAstaMapper statoAstaMapper
@@ -1271,8 +1245,8 @@ class com.iasdietideals24.backend.services.implementations.AstaServiceImpl {
 - void ifPresentUpdateOraScadenza(LocalTime,Asta)
 - void ifPresentUpdateImmagine(byte[],Asta)
 }
-AstaServiceImpl -- RelationsConverter
-AstaServiceImpl -- StatoAstaMapper
+com.iasdietideals24.backend.services.implementations.AstaServiceImpl ..> com.iasdietideals24.backend.services.helper.RelationsConverter
+com.iasdietideals24.backend.services.implementations.AstaServiceImpl ..> com.iasdietideals24.backend.mapstruct.mappers.StatoAstaMapper
 
 
 class com.iasdietideals24.backend.exceptions.IllegalDeleteRequestException {
@@ -1307,9 +1281,6 @@ abstract class com.iasdietideals24.backend.entities.Asta {
 + void removeNotificaAssociata(Notifica)
 + String toString()
 }
-Asta -- CategoriaAsta
-Asta -- StatoAsta
-
 
 interface com.iasdietideals24.backend.repositories.OffertaTempoFissoRepository {
 ~ Page<OffertaTempoFisso> findByAstaRiferimento_IdAsta(Long,Pageable)
@@ -1329,9 +1300,6 @@ class com.iasdietideals24.backend.entities.AstaSilenziosa {
 + void removeOffertaRicevuta(OffertaSilenziosa)
 + String toString()
 }
-AstaSilenziosa -- CategoriaAsta
-AstaSilenziosa -- Venditore
-AstaSilenziosa -- StatoAsta
 
 class com.iasdietideals24.backend.services.implementations.OffertaDiCompratoreServiceImpl {
 - OffertaService offertaService
@@ -1343,8 +1311,8 @@ class com.iasdietideals24.backend.services.implementations.OffertaDiCompratoreSe
 - void convertCompratoreCollegatoShallow(AccountShallowDto,OffertaDiCompratore)
 + void updatePresentFields(OffertaDiCompratoreDto,OffertaDiCompratore)
 }
-OffertaDiCompratoreServiceImpl -- OffertaService
-OffertaDiCompratoreServiceImpl -- RelationsConverter
+com.iasdietideals24.backend.services.implementations.OffertaDiCompratoreServiceImpl ..> com.iasdietideals24.backend.services.OffertaService
+com.iasdietideals24.backend.services.implementations.OffertaDiCompratoreServiceImpl ..> com.iasdietideals24.backend.services.helper.RelationsConverter
 
 
 class com.iasdietideals24.backend.services.implementations.AstaSilenziosaServiceImpl {
@@ -1376,11 +1344,11 @@ class com.iasdietideals24.backend.services.implementations.AstaSilenziosaService
 + void updatePresentFields(AstaSilenziosaDto,AstaSilenziosa)
 + void closeAstaSilenziosa(AstaSilenziosa)
 }
-AstaSilenziosaServiceImpl -- AstaDiVenditoreService
-AstaSilenziosaServiceImpl -- AstaSilenziosaMapper
-AstaSilenziosaServiceImpl -- AstaSilenziosaRepository
-AstaSilenziosaServiceImpl -- RelationsConverter
-AstaSilenziosaServiceImpl -- BuildNotice
+com.iasdietideals24.backend.services.implementations.AstaSilenziosaServiceImpl ..> com.iasdietideals24.backend.services.AstaDiVenditoreService
+com.iasdietideals24.backend.services.implementations.AstaSilenziosaServiceImpl ..> com.iasdietideals24.backend.mapstruct.mappers.AstaSilenziosaMapper
+com.iasdietideals24.backend.services.implementations.AstaSilenziosaServiceImpl ..> com.iasdietideals24.backend.repositories.AstaSilenziosaRepository
+com.iasdietideals24.backend.services.implementations.AstaSilenziosaServiceImpl ..> com.iasdietideals24.backend.services.helper.RelationsConverter
+com.iasdietideals24.backend.services.implementations.AstaSilenziosaServiceImpl ..> com.iasdietideals24.backend.services.helper.BuildNotice
 
 
 interface com.iasdietideals24.backend.services.AstaDiVenditoreService {
@@ -1412,10 +1380,6 @@ class com.iasdietideals24.backend.entities.AstaInversa {
 + void removeOffertaRicevuta(OffertaInversa)
 + String toString()
 }
-AstaInversa -- CategoriaAsta
-AstaInversa -- Compratore
-AstaInversa -- StatoAsta
-
 
 class com.iasdietideals24.backend.mapstruct.dto.NotificaDto {
 - Long idNotifica
@@ -1458,9 +1422,6 @@ class com.iasdietideals24.backend.entities.Compratore {
 + void removeOffertaCollegata(OffertaDiCompratore)
 + String toString()
 }
-Compratore -- TokensAccount
-Compratore -- Profilo
-
 
 class com.iasdietideals24.backend.services.implementations.NotificaServiceImpl {
 + {static} String LOG_RECUPERO_NOTIFICA
@@ -1494,9 +1455,9 @@ class com.iasdietideals24.backend.services.implementations.NotificaServiceImpl {
 - void ifPresentUpdateOraInvio(LocalTime,Notifica)
 - void ifPresentUpdateMessaggio(String,Notifica)
 }
-NotificaServiceImpl -- NotificaMapper
-NotificaServiceImpl -- NotificaRepository
-NotificaServiceImpl -- RelationsConverter
+com.iasdietideals24.backend.services.implementations.NotificaServiceImpl ..> com.iasdietideals24.backend.mapstruct.mappers.NotificaMapper
+com.iasdietideals24.backend.services.implementations.NotificaServiceImpl ..> com.iasdietideals24.backend.repositories.NotificaRepository
+com.iasdietideals24.backend.services.implementations.NotificaServiceImpl ..> com.iasdietideals24.backend.services.helper.RelationsConverter
 
 
 class com.iasdietideals24.backend.mapstruct.dto.utilities.ErrorDto {
@@ -1540,10 +1501,10 @@ class com.iasdietideals24.backend.services.implementations.VenditoreServiceImpl 
 - void convertOfferteCollegateShallow(Set<OffertaShallowDto>,Venditore)
 + void updatePresentFields(VenditoreDto,Venditore)
 }
-VenditoreServiceImpl -- AccountService
-VenditoreServiceImpl -- VenditoreMapper
-VenditoreServiceImpl -- VenditoreRepository
-VenditoreServiceImpl -- RelationsConverter
+com.iasdietideals24.backend.services.implementations.VenditoreServiceImpl ..> com.iasdietideals24.backend.services.AccountService
+com.iasdietideals24.backend.services.implementations.VenditoreServiceImpl ..> com.iasdietideals24.backend.mapstruct.mappers.VenditoreMapper
+com.iasdietideals24.backend.services.implementations.VenditoreServiceImpl ..> com.iasdietideals24.backend.repositories.VenditoreRepository
+com.iasdietideals24.backend.services.implementations.VenditoreServiceImpl ..> com.iasdietideals24.backend.services.helper.RelationsConverter
 
 
 class com.iasdietideals24.backend.mapstruct.dto.utilities.TokensAccountDto {
@@ -1589,11 +1550,11 @@ class com.iasdietideals24.backend.services.implementations.AstaTempoFissoService
 - void ifPresentUpdateSogliaMinima(BigDecimal,AstaTempoFisso)
 + void closeAstaTempoFisso(AstaTempoFisso)
 }
-AstaTempoFissoServiceImpl -- AstaDiVenditoreService
-AstaTempoFissoServiceImpl -- AstaTempoFissoMapper
-AstaTempoFissoServiceImpl -- AstaTempoFissoRepository
-AstaTempoFissoServiceImpl -- RelationsConverter
-AstaTempoFissoServiceImpl -- BuildNotice
+com.iasdietideals24.backend.services.implementations.AstaTempoFissoServiceImpl ..> com.iasdietideals24.backend.services.AstaDiVenditoreService
+com.iasdietideals24.backend.services.implementations.AstaTempoFissoServiceImpl ..> com.iasdietideals24.backend.mapstruct.mappers.AstaTempoFissoMapper
+com.iasdietideals24.backend.services.implementations.AstaTempoFissoServiceImpl ..> com.iasdietideals24.backend.repositories.AstaTempoFissoRepository
+com.iasdietideals24.backend.services.implementations.AstaTempoFissoServiceImpl ..> com.iasdietideals24.backend.services.helper.RelationsConverter
+com.iasdietideals24.backend.services.implementations.AstaTempoFissoServiceImpl ..> com.iasdietideals24.backend.services.helper.BuildNotice
 
 
 interface com.iasdietideals24.backend.repositories.AstaDiVenditoreRepository {
@@ -1630,7 +1591,7 @@ class com.iasdietideals24.backend.controllers.AstaTempoFissoController {
 + ResponseEntity<AstaTempoFissoDto> partialUpdateAstaTempoFisso(Long,AstaTempoFissoDto)
 + ResponseEntity<AstaTempoFissoDto> deleteAstaTempoFisso(Long)
 }
-AstaTempoFissoController -- AstaTempoFissoService
+com.iasdietideals24.backend.controllers.AstaTempoFissoController ..> com.iasdietideals24.backend.services.AstaTempoFissoService
 
 interface com.iasdietideals24.backend.repositories.AstaTempoFissoRepository {
 ~ Page<AstaTempoFisso> findByProprietario_IdAccountIs(Long,Pageable)
@@ -1671,7 +1632,7 @@ class com.iasdietideals24.backend.controllers.NotificaController {
 + ResponseEntity<NotificaDto> partialUpdateNotifica(Long,NotificaDto)
 + ResponseEntity<NotificaDto> deleteNotifica(Long)
 }
-NotificaController -- NotificaService
+com.iasdietideals24.backend.controllers.NotificaController ..> com.iasdietideals24.backend.services.NotificaService
 
 
 class com.iasdietideals24.backend.services.implementations.OffertaDiVenditoreServiceImpl {
@@ -1684,8 +1645,8 @@ class com.iasdietideals24.backend.services.implementations.OffertaDiVenditoreSer
 - void convertVenditoreCollegatoShallow(AccountShallowDto,OffertaDiVenditore)
 + void updatePresentFields(OffertaDiVenditoreDto,OffertaDiVenditore)
 }
-OffertaDiVenditoreServiceImpl -- OffertaService
-OffertaDiVenditoreServiceImpl -- RelationsConverter
+com.iasdietideals24.backend.services.implementations.OffertaDiVenditoreServiceImpl ..> com.iasdietideals24.backend.services.OffertaService
+com.iasdietideals24.backend.services.implementations.OffertaDiVenditoreServiceImpl ..> com.iasdietideals24.backend.services.helper.RelationsConverter
 
 
 class com.iasdietideals24.backend.controllers.CategoriaAstaController {
@@ -1698,7 +1659,7 @@ class com.iasdietideals24.backend.controllers.CategoriaAstaController {
 + ResponseEntity<CategoriaAstaDto> partialUpdateCategoriaAsta(String,CategoriaAstaDto)
 + ResponseEntity<CategoriaAstaDto> deleteCategoriaAsta(String)
 }
-CategoriaAstaController -- CategoriaAstaService
+com.iasdietideals24.backend.controllers.CategoriaAstaController ..> com.iasdietideals24.backend.services.CategoriaAstaService
 
 
 class com.iasdietideals24.backend.mapstruct.dto.OffertaDiVenditoreDto {
@@ -1736,11 +1697,11 @@ class com.iasdietideals24.backend.services.implementations.AstaInversaServiceImp
 - void ifPresentUpdateSogliaIniziale(BigDecimal,AstaInversa)
 + void closeAstaInversa(AstaInversa)
 }
-AstaInversaServiceImpl -- AstaDiCompratoreService
-AstaInversaServiceImpl -- AstaInversaMapper
-AstaInversaServiceImpl -- AstaInversaRepository
-AstaInversaServiceImpl -- RelationsConverter
-AstaInversaServiceImpl -- BuildNotice
+com.iasdietideals24.backend.services.implementations.AstaInversaServiceImpl ..> com.iasdietideals24.backend.services.AstaDiCompratoreService
+com.iasdietideals24.backend.services.implementations.AstaInversaServiceImpl ..> com.iasdietideals24.backend.mapstruct.mappers.AstaInversaMapper
+com.iasdietideals24.backend.services.implementations.AstaInversaServiceImpl ..> com.iasdietideals24.backend.repositories.AstaInversaRepository
+com.iasdietideals24.backend.services.implementations.AstaInversaServiceImpl ..> com.iasdietideals24.backend.services.helper.RelationsConverter
+com.iasdietideals24.backend.services.implementations.AstaInversaServiceImpl ..> com.iasdietideals24.backend.services.helper.BuildNotice
 
 
 class com.iasdietideals24.backend.entities.utilities.TokensAccount {
@@ -1775,104 +1736,122 @@ enum com.iasdietideals24.backend.entities.utilities.StatoOffertaSilenziosa {
 }
 
 
-
-com.iasdietideals24.backend.mapstruct.dto.AstaDto <|-- com.iasdietideals24.backend.mapstruct.dto.AstaDiCompratoreDto
-com.iasdietideals24.backend.exceptions.InvalidParameterException <|-- com.iasdietideals24.backend.exceptions.InvalidTypeException
 org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.CompratoreRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.VenditoreRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaDiVenditoreRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.CategoriaAstaRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.ProfiloRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaDiCompratoreRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaInversaRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AccountRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaDiVenditoreRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaTempoFissoRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaDiCompratoreRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaSilenziosaRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaSilenziosaRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaTempoFissoRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.NotificaRepository
+org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaInversaRepository
+
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaTempoFissoRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.VenditoreRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaDiVenditoreRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaDiCompratoreRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaInversaRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaDiCompratoreRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaDiVenditoreRepository
 org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.CompratoreRepository
-com.iasdietideals24.backend.entities.Offerta <|-- com.iasdietideals24.backend.entities.OffertaDiVenditore
-com.iasdietideals24.backend.services.CompratoreService <|.. com.iasdietideals24.backend.services.implementations.CompratoreServiceImpl
-org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler <|-- com.iasdietideals24.backend.controllers.GlobalExceptionHandlerController
-com.iasdietideals24.backend.entities.OffertaDiCompratore <|-- com.iasdietideals24.backend.entities.OffertaTempoFisso
-com.iasdietideals24.backend.services.AstaDiVenditoreService <|.. com.iasdietideals24.backend.services.implementations.AstaDiVenditoreServiceImpl
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaTempoFissoRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.NotificaRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.CategoriaAstaRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaInversaRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaSilenziosaRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaSilenziosaRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AccountRepository
+org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.ProfiloRepository
+
+com.iasdietideals24.backend.mapstruct.dto.AccountDto <|-- com.iasdietideals24.backend.mapstruct.dto.CompratoreDto
+com.iasdietideals24.backend.mapstruct.dto.AccountDto --> com.iasdietideals24.backend.mapstruct.dto.utilities.TokensAccountDto
+com.iasdietideals24.backend.mapstruct.dto.exceptional.PutProfiloDto --> com.iasdietideals24.backend.mapstruct.dto.utilities.TokensAccountDto
+com.iasdietideals24.backend.mapstruct.dto.exceptional.PutProfiloDto --> com.iasdietideals24.backend.mapstruct.dto.utilities.LinksProfiloDto
+com.iasdietideals24.backend.mapstruct.dto.exceptional.PutProfiloDto --> com.iasdietideals24.backend.mapstruct.dto.utilities.AnagraficaProfiloDto
+com.iasdietideals24.backend.mapstruct.dto.ProfiloDto --> com.iasdietideals24.backend.mapstruct.dto.utilities.LinksProfiloDto
+com.iasdietideals24.backend.mapstruct.dto.ProfiloDto --> com.iasdietideals24.backend.mapstruct.dto.utilities.AnagraficaProfiloDto
+com.iasdietideals24.backend.mapstruct.dto.OffertaDiCompratoreDto <|-- com.iasdietideals24.backend.mapstruct.dto.OffertaTempoFissoDto
+com.iasdietideals24.backend.mapstruct.dto.AstaDiVenditoreDto <|-- com.iasdietideals24.backend.mapstruct.dto.AstaTempoFissoDto
+com.iasdietideals24.backend.mapstruct.dto.OffertaDto <|-- com.iasdietideals24.backend.mapstruct.dto.OffertaDiVenditoreDto
+com.iasdietideals24.backend.mapstruct.dto.OffertaDiVenditoreDto <|-- com.iasdietideals24.backend.mapstruct.dto.OffertaInversaDto
+com.iasdietideals24.backend.mapstruct.dto.AstaDto <|-- com.iasdietideals24.backend.mapstruct.dto.AstaDiCompratoreDto
 com.iasdietideals24.backend.mapstruct.dto.AstaDto <|-- com.iasdietideals24.backend.mapstruct.dto.AstaDiVenditoreDto
-com.iasdietideals24.backend.exceptions.RuntimeException <|-- com.iasdietideals24.backend.exceptions.AuthRuntimeException
-com.iasdietideals24.backend.entities.Account <|-- com.iasdietideals24.backend.entities.Venditore
 com.iasdietideals24.backend.mapstruct.dto.OffertaDiCompratoreDto <|-- com.iasdietideals24.backend.mapstruct.dto.OffertaSilenziosaDto
 com.iasdietideals24.backend.mapstruct.dto.AccountDto <|-- com.iasdietideals24.backend.mapstruct.dto.VenditoreDto
 com.iasdietideals24.backend.mapstruct.dto.AstaDiVenditoreDto <|-- com.iasdietideals24.backend.mapstruct.dto.AstaSilenziosaDto
 com.iasdietideals24.backend.mapstruct.mappers.PutProfiloMapper <|.. com.iasdietideals24.backend.mapstruct.mappers.impl.PutProfiloMapperImpl
-com.iasdietideals24.backend.entities.Asta <|-- com.iasdietideals24.backend.entities.AstaDiCompratore
-com.iasdietideals24.backend.exceptions.Exception <|-- com.iasdietideals24.backend.exceptions.InvalidParameterException
-org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.VenditoreRepository
-org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.VenditoreRepository
-org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaDiVenditoreRepository
-org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaDiVenditoreRepository
-com.iasdietideals24.backend.services.AstaDiCompratoreService <|.. com.iasdietideals24.backend.services.implementations.AstaDiCompratoreServiceImpl
-com.iasdietideals24.backend.exceptions.RuntimeException <|-- com.iasdietideals24.backend.exceptions.UpdateRuntimeException
-org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.CategoriaAstaRepository
-org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.CategoriaAstaRepository
-org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaInversaRepository
-org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaInversaRepository
+com.iasdietideals24.backend.mapstruct.dto.OffertaDto <|-- com.iasdietideals24.backend.mapstruct.dto.OffertaDiCompratoreDto
 com.iasdietideals24.backend.mapstruct.dto.AstaDiCompratoreDto <|-- com.iasdietideals24.backend.mapstruct.dto.AstaInversaDto
-com.iasdietideals24.backend.services.OffertaSilenziosaService <|.. com.iasdietideals24.backend.services.implementations.OffertaSilenziosaServiceImpl
+
+org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler <|-- com.iasdietideals24.backend.controllers.GlobalExceptionHandlerController
+
+com.iasdietideals24.backend.services.CategoriaAstaService <|.. com.iasdietideals24.backend.services.implementations.CategoriaAstaServiceImpl
+com.iasdietideals24.backend.services.CompratoreService <|.. com.iasdietideals24.backend.services.implementations.CompratoreServiceImpl
+com.iasdietideals24.backend.services.AstaDiCompratoreService <|.. com.iasdietideals24.backend.services.implementations.AstaDiCompratoreServiceImpl
+com.iasdietideals24.backend.services.AstaDiVenditoreService <|.. com.iasdietideals24.backend.services.implementations.AstaDiVenditoreServiceImpl
 com.iasdietideals24.backend.services.OffertaService <|.. com.iasdietideals24.backend.services.implementations.OffertaServiceImpl
 com.iasdietideals24.backend.services.helper.BuildNotice <|.. com.iasdietideals24.backend.services.helper.implementations.BuildNoticeImpl
-org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaSilenziosaRepository
-org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaSilenziosaRepository
-com.iasdietideals24.backend.entities.Offerta <|-- com.iasdietideals24.backend.entities.OffertaDiCompratore
-org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaSilenziosaRepository
-org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaSilenziosaRepository
-com.iasdietideals24.backend.services.CategoriaAstaService <|.. com.iasdietideals24.backend.services.implementations.CategoriaAstaServiceImpl
-org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.ProfiloRepository
-org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.ProfiloRepository
-com.iasdietideals24.backend.entities.OffertaDiVenditore <|-- com.iasdietideals24.backend.entities.OffertaInversa
-org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaDiCompratoreRepository
-org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaDiCompratoreRepository
-com.iasdietideals24.backend.mapstruct.dto.AccountDto <|-- com.iasdietideals24.backend.mapstruct.dto.CompratoreDto
-org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaInversaRepository
-org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaInversaRepository
-com.iasdietideals24.backend.mapstruct.dto.OffertaDiCompratoreDto <|-- com.iasdietideals24.backend.mapstruct.dto.OffertaTempoFissoDto
-org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaDiCompratoreRepository
-org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaDiCompratoreRepository
-com.iasdietideals24.backend.mapstruct.dto.OffertaDto <|-- com.iasdietideals24.backend.mapstruct.dto.OffertaDiCompratoreDto
+com.iasdietideals24.backend.services.OffertaSilenziosaService <|.. com.iasdietideals24.backend.services.implementations.OffertaSilenziosaServiceImpl
+com.iasdietideals24.backend.services.NotificaService <|.. com.iasdietideals24.backend.services.implementations.NotificaServiceImpl
+com.iasdietideals24.backend.services.AstaTempoFissoService <|.. com.iasdietideals24.backend.services.implementations.AstaTempoFissoServiceImpl
+com.iasdietideals24.backend.services.OffertaDiVenditoreService <|.. com.iasdietideals24.backend.services.implementations.OffertaDiVenditoreServiceImpl
+com.iasdietideals24.backend.services.AstaInversaService <|.. com.iasdietideals24.backend.services.implementations.AstaInversaServiceImpl
 com.iasdietideals24.backend.services.AccountService <|.. com.iasdietideals24.backend.services.implementations.AccountServiceImpl
-org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AccountRepository
-org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AccountRepository
 com.iasdietideals24.backend.services.ProfiloService <|.. com.iasdietideals24.backend.services.implementations.ProfiloServiceImpl
 com.iasdietideals24.backend.services.helper.RelationsConverter <|.. com.iasdietideals24.backend.services.helper.implementations.RelationsConverterImpl
-com.iasdietideals24.backend.entities.AstaDiVenditore <|-- com.iasdietideals24.backend.entities.AstaTempoFisso
-com.iasdietideals24.backend.entities.Asta <|-- com.iasdietideals24.backend.entities.AstaDiVenditore
-org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaRepository
-org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaRepository
+com.iasdietideals24.backend.services.VenditoreService <|.. com.iasdietideals24.backend.services.implementations.VenditoreServiceImpl
 com.iasdietideals24.backend.services.OffertaTempoFissoService <|.. com.iasdietideals24.backend.services.implementations.OffertaTempoFissoServiceImpl
 com.iasdietideals24.backend.services.OffertaInversaService <|.. com.iasdietideals24.backend.services.implementations.OffertaInversaServiceImpl
-org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.NotificaRepository
-org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.NotificaRepository
-com.iasdietideals24.backend.entities.OffertaDiCompratore <|-- com.iasdietideals24.backend.entities.OffertaSilenziosa
 com.iasdietideals24.backend.services.AstaService <|.. com.iasdietideals24.backend.services.implementations.AstaServiceImpl
-com.iasdietideals24.backend.exceptions.InvalidParameterException <|-- com.iasdietideals24.backend.exceptions.IllegalDeleteRequestException
-org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.OffertaTempoFissoRepository
-org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.OffertaTempoFissoRepository
-com.iasdietideals24.backend.exceptions.InvalidParameterException <|-- com.iasdietideals24.backend.exceptions.IdNotFoundException
-com.iasdietideals24.backend.entities.AstaDiVenditore <|-- com.iasdietideals24.backend.entities.AstaSilenziosa
 com.iasdietideals24.backend.services.OffertaDiCompratoreService <|.. com.iasdietideals24.backend.services.implementations.OffertaDiCompratoreServiceImpl
 com.iasdietideals24.backend.services.AstaSilenziosaService <|.. com.iasdietideals24.backend.services.implementations.AstaSilenziosaServiceImpl
-com.iasdietideals24.backend.entities.AstaDiCompratore <|-- com.iasdietideals24.backend.entities.AstaInversa
+
+com.iasdietideals24.backend.entities.Profilo --> com.iasdietideals24.backend.entities.utilities.LinksProfilo
+com.iasdietideals24.backend.entities.Profilo --> com.iasdietideals24.backend.entities.utilities.TokensAccount
+com.iasdietideals24.backend.entities.Profilo --> com.iasdietideals24.backend.entities.utilities.AnagraficaProfilo
+com.iasdietideals24.backend.entities.Account --> com.iasdietideals24.backend.entities.utilities.TokensAccount
+com.iasdietideals24.backend.entities.Account <|-- com.iasdietideals24.backend.entities.Venditore
 com.iasdietideals24.backend.entities.Account <|-- com.iasdietideals24.backend.entities.Compratore
-com.iasdietideals24.backend.services.NotificaService <|.. com.iasdietideals24.backend.services.implementations.NotificaServiceImpl
-com.iasdietideals24.backend.mapstruct.dto.AstaDiVenditoreDto <|-- com.iasdietideals24.backend.mapstruct.dto.AstaTempoFissoDto
-com.iasdietideals24.backend.services.VenditoreService <|.. com.iasdietideals24.backend.services.implementations.VenditoreServiceImpl
-com.iasdietideals24.backend.services.AstaTempoFissoService <|.. com.iasdietideals24.backend.services.implementations.AstaTempoFissoServiceImpl
-org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaDiVenditoreRepository
-org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaDiVenditoreRepository
-org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaTempoFissoRepository
-org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaTempoFissoRepository
-org.springframework.data.repository.CrudRepository <|-- com.iasdietideals24.backend.repositories.AstaRepository
-org.springframework.data.repository.PagingAndSortingRepository <|-- com.iasdietideals24.backend.repositories.AstaRepository
-com.iasdietideals24.backend.services.OffertaDiVenditoreService <|.. com.iasdietideals24.backend.services.implementations.OffertaDiVenditoreServiceImpl
-com.iasdietideals24.backend.mapstruct.dto.OffertaDto <|-- com.iasdietideals24.backend.mapstruct.dto.OffertaDiVenditoreDto
-com.iasdietideals24.backend.services.AstaInversaService <|.. com.iasdietideals24.backend.services.implementations.AstaInversaServiceImpl
-com.iasdietideals24.backend.mapstruct.dto.OffertaDiVenditoreDto <|-- com.iasdietideals24.backend.mapstruct.dto.OffertaInversaDto
-Notifica "0..*" --> "1" Asta : è associata a
-Notifica "0..*" <-- "1" Account : mittente
-Notifica "0..*" --> "1..*" Account : destinatario
-Account "1..2" --> "1" Profilo : possiede
-Venditore "1" --> "0..*" AstaDiVenditore: possiede
-Venditore "1" --> "0..*" OffertaDiVenditore : è collegato a
-Compratore "1" --> "0..*" AstaDiCompratore : possiede
-Compratore "1" --> "0..*" OffertaDiCompratore : è collegato a
-AstaInversa "1" <-- "0..*" OffertaInversa : si riferisce a
-AstaSilenziosa "1" <-- "0..*" OffertaSilenziosa : si riferisce a
-AstaTempoFisso "1" <-- "0..*" OffertaTempoFisso : si riferisce a
+com.iasdietideals24.backend.entities.Account "1..2" -- "1" com.iasdietideals24.backend.entities.Profilo : possiede
+com.iasdietideals24.backend.entities.Notifica "0..*" -- "1" com.iasdietideals24.backend.entities.Account : mittente
+com.iasdietideals24.backend.entities.Notifica "0..*" -- "1..*" com.iasdietideals24.backend.entities.Account : destinatario
+com.iasdietideals24.backend.entities.Venditore "1" -- "0..*" com.iasdietideals24.backend.entities.OffertaDiVenditore : è collegato a
+com.iasdietideals24.backend.entities.Venditore "1" -- "0..*" com.iasdietideals24.backend.entities.AstaDiVenditore: possiede
+com.iasdietideals24.backend.entities.Compratore "1" -- "0..*" com.iasdietideals24.backend.entities.OffertaDiCompratore : è collegato a
+com.iasdietideals24.backend.entities.Compratore "1" -- "0..*" com.iasdietideals24.backend.entities.AstaDiCompratore : possiede
+com.iasdietideals24.backend.entities.Asta <|-- com.iasdietideals24.backend.entities.AstaDiCompratore
+com.iasdietideals24.backend.entities.Asta <|-- com.iasdietideals24.backend.entities.AstaDiVenditore
+com.iasdietideals24.backend.entities.Asta --> com.iasdietideals24.backend.entities.CategoriaAsta
+com.iasdietideals24.backend.entities.Asta --> com.iasdietideals24.backend.entities.utilities.StatoAsta
+com.iasdietideals24.backend.entities.Notifica "0..*" -- "1" com.iasdietideals24.backend.entities.Asta : è associata a
+com.iasdietideals24.backend.entities.AstaDiVenditore <|-- com.iasdietideals24.backend.entities.AstaTempoFisso
+com.iasdietideals24.backend.entities.AstaDiVenditore <|-- com.iasdietideals24.backend.entities.AstaSilenziosa
+com.iasdietideals24.backend.entities.AstaDiCompratore <|-- com.iasdietideals24.backend.entities.AstaInversa
+com.iasdietideals24.backend.entities.AstaInversa "1" -- "0..*" com.iasdietideals24.backend.entities.OffertaInversa : si riferisce a
+com.iasdietideals24.backend.entities.AstaSilenziosa "1" -- "0..*" com.iasdietideals24.backend.entities.OffertaSilenziosa : si riferisce a
+com.iasdietideals24.backend.entities.AstaTempoFisso "1" -- "0..*" com.iasdietideals24.backend.entities.OffertaTempoFisso : si riferisce a
+com.iasdietideals24.backend.entities.Offerta <|-- com.iasdietideals24.backend.entities.OffertaDiVenditore
+com.iasdietideals24.backend.entities.Offerta <|-- com.iasdietideals24.backend.entities.OffertaDiCompratore
+com.iasdietideals24.backend.entities.OffertaDiVenditore <|-- com.iasdietideals24.backend.entities.OffertaInversa
+com.iasdietideals24.backend.entities.OffertaDiCompratore <|-- com.iasdietideals24.backend.entities.OffertaSilenziosa
+com.iasdietideals24.backend.entities.OffertaDiCompratore <|-- com.iasdietideals24.backend.entities.OffertaTempoFisso
+com.iasdietideals24.backend.entities.OffertaSilenziosa --> com.iasdietideals24.backend.entities.utilities.StatoOffertaSilenziosa
+
+com.iasdietideals24.backend.exceptions.RuntimeException <|-- com.iasdietideals24.backend.exceptions.UpdateRuntimeException
+com.iasdietideals24.backend.exceptions.InvalidParameterException <|-- com.iasdietideals24.backend.exceptions.InvalidTypeException
+com.iasdietideals24.backend.exceptions.RuntimeException <|-- com.iasdietideals24.backend.exceptions.AuthRuntimeException
+com.iasdietideals24.backend.exceptions.Exception <|-- com.iasdietideals24.backend.exceptions.InvalidParameterException
+com.iasdietideals24.backend.exceptions.InvalidParameterException <|-- com.iasdietideals24.backend.exceptions.IllegalDeleteRequestException
+com.iasdietideals24.backend.exceptions.InvalidParameterException <|-- com.iasdietideals24.backend.exceptions.IdNotFoundException
 @enduml
