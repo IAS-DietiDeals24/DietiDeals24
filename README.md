@@ -16,7 +16,13 @@ Clicca [qui](./DietiDeals24.pdf) per accedere alla documentazione in `pdf`!
 - La directory [System-Object Design](./System-Object%20Design/) è la root folder di tutti i documenti prodotti e utilizzati per i capitoli di *System Design* e *Object Design* della [documentazione](./DietiDeals24.pdf)
 - La directory [Verification-Validation Software](./Verification-Validation%20Software/) è la root folder di tutti i documenti prodotti e utilizzati per i capitoli di *Verifica del software* e *Validazione del software* della [documentazione](./DietiDeals24.pdf)
 - La directory [source-code](./source-code/) è la root folder dell'implementazione del progetto. Al suo interno vi sono il codice sorgente del client [android](./source-code/Client/frontendandroid/) e del [backend](./source-code/Server/backend/), oltre che file per il [database](./source-code/Server/database/), [build automatica](./source-code/docker-compose/), [scripts](./source-code/scripts/) e [SonarQube](./source-code/sonarqube/)
+- La directory [Presentazione](./Presentazione/) è la root folder dei documenti utilizzati per la presentazione del progetto. Al suo interno vi sono il [PowerPoint](./Presentazione/Presentazione%20DietiDeals24.pptx) e il documento [Word](./Presentazione/Presentazione%20DietiDeals24.docx) utilizzati
 - Il documento [DietiDeals24.pdf](./DietiDeals24.pdf), cioè la documentazione compilata dal progetto LaTeX in [Documentazione](./Documentazione/)
 - Il documento [Progetto-INGSW-2023-2024.pdf](./Progetto-INGSW-2023-2024.pdf), cioè la Traccia Progetto a.a. 2023/24
 
 Accedere alle singole directory per eventuali approfondimenti!
+
+## Valutazione finale
+
+- Progetto consegnato il **15/12/2024**
+- Presentazione effettuata il **29/01/2025** con valutazione **28** su 30
